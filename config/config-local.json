@@ -1,0 +1,138 @@
+{
+    "clientId": null,
+    "requestId": "53ad5251c07d5",
+    "dir": "/var/www/front",
+    "environment": null,
+    "debugLevel": 1,
+    "hostname": "enter.loc",
+    "logger": {
+        "fileAppender": {
+            "file": "/var/www/logs/mobile.log",
+            "enabled": true
+        }
+    },
+    "session": {
+        "name": "enter",
+        "cookieLifetime": 15552000,
+        "cookieDomain": ".enter.ru"
+    },
+    "userToken": {
+        "authCookieName": "_token"
+    },
+    "region": {
+        "defaultId": "14974",
+        "cookieName": "geoshop"
+    },
+    "credit": {
+        "cookieName": "credit_on"
+    },
+    "curl": {
+        "queryChunkSize": 50,
+        "logResponse": true,
+        "timeout": 90,
+        "retryTimeout": 0.5,
+        "retryCount": 2
+    },
+    "coreService": {
+        "clientId": "site",
+        "url": "http://api.enter.ru/",
+        "user": null,
+        "password": null,
+        "timeout": 5,
+        "hugeTimeout": null
+    },
+    "cmsService": {
+        "url": "http://cms.enter.ru/",
+        "user": null,
+        "password": null,
+        "timeout": 1,
+        "hugeTimeout": null
+    },
+    "adminService": {
+        "enabled": true,
+        "url": "http://admin.enter.ru/",
+        "user": null,
+        "password": null,
+        "timeout": 2,
+        "hugeTimeout": null
+    },
+    "reviewService": {
+        "url": "http://admin.enter.ru/reviews/",
+        "user": null,
+        "password": null,
+        "timeout": 2,
+        "hugeTimeout": null
+    },
+    "contentService": {
+        "url": "http://content.enter.ru/",
+        "user": null,
+        "password": null,
+        "timeout": null,
+        "hugeTimeout": null
+    },
+    "retailRocketService": {
+        "account": "519c7f3c0d422d0fe0ee9775",
+        "url": "http://api.retailrocket.ru/api/",
+        "user": null,
+        "password": null,
+        "timeout": 0.5,
+        "hugeTimeout": null
+    },
+    "mustacheRenderer": {
+        "dir": "/var/www/front/vendor/mustache",
+        "templateDir": "/var/www/front/template",
+        "cacheDir": "/tmp/mustache-cache",
+        "templateClassPrefix": "enter_ru_v2_"
+    },
+    "mediaHosts": [
+        "http://fs01.enter.ru",
+        "http://fs02.enter.ru",
+        "http://fs03.enter.ru",
+        "http://fs04.enter.ru",
+        "http://fs05.enter.ru",
+        "http://fs06.enter.ru",
+        "http://fs07.enter.ru",
+        "http://fs08.enter.ru",
+        "http://fs09.enter.ru",
+        "http://fs10.enter.ru"
+    ],
+    "product": {
+        "itemPerPage": 19,
+        "itemsInSlider": 60
+    },
+    "productReview": {
+        "enabled": true,
+        "itemsInCard": 7
+    },
+    "productPhoto": {
+        "urlPaths": [
+            "/1/1/60/",
+            "/1/1/120/",
+            "/1/1/163/",
+            "/1/1/500/",
+            "/1/1/2500/",
+            "/1/1/1500/"
+        ]
+    },
+    "productCategoryPhoto": {
+        "urlPaths": {
+            "0": "/6/1/163/",
+            "3": "/6/1/500/"
+        }
+    },
+    "search": {
+        "minPhraseLength": 1
+    },
+    "promo": {
+        "urlPaths": [
+            "/4/1/230x302/",
+            "/4/1/768x302/",
+            "/4/1/920x320/"
+        ]
+    },
+    "directCredit": {
+        "enabled": true,
+        "minPrice": 3000,
+        "partnerId": "4427"
+    }
+}
