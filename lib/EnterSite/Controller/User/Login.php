@@ -5,17 +5,19 @@ namespace EnterSite\Controller\User;
 use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
+use EnterSite\RouterTrait;
 use EnterSite\MustacheRendererTrait;
 use EnterSite\DebugContainerTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
+use EnterSite\Routing;
 use EnterSite\Curl\Query;
 use EnterSite\Model;
 use EnterSite\Model\Page\User\Login as Page;
 
 class Login {
-    use ConfigTrait, CurlClientTrait, MustacheRendererTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, CurlClientTrait, RouterTrait, MustacheRendererTrait, DebugContainerTrait {
+        ConfigTrait::getConfig insteadof CurlClientTrait, RouterTrait, MustacheRendererTrait, DebugContainerTrait;
     }
 
     /**
@@ -25,6 +27,10 @@ class Login {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
+        $router = $this->getRouter();
+
+        // редирект
+        $redirectUrl = (new Repository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Login()));
 
         // ид региона
         $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
@@ -55,6 +61,7 @@ class Login {
         $pageRequest = new Repository\Page\User\Login\Request();
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
+        $pageRequest->redirectUrl = $redirectUrl;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница

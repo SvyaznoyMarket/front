@@ -20,6 +20,11 @@ namespace EnterSite\Model\Page\User\Login {
     use EnterSite\Model\Partial;
 
     class Content extends Page\DefaultLayout\Content {
+        /** @var \EnterSite\Model\Form\User\AuthForm */
+        public $authForm;
+        /** @var \EnterSite\Model\Form\User\RegisterForm|null */
+        public $registerForm;
+
         public function __construct() {
             parent::__construct();
         }

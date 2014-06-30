@@ -39,7 +39,7 @@ class Get {
         $cart = $cartRepository->getObjectByHttpSession($session);
 
         // токен пользователя
-        $userToken = (new Repository\User)->getTokenByHttpSession($session);
+        $userToken = (new Repository\User)->getTokenByHttpRequest($request);
 
         // запрос пользователя
         $userItemQuery = $userToken ? new Query\User\GetItemByToken($userToken) : null;

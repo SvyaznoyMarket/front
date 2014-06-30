@@ -1,0 +1,12 @@
+<?php
+
+namespace EnterSite\Model\Form\User;
+
+class AuthForm {
+    /** @var string */
+    public $url;
+    /** @var string */
+    public $username;
+    /** @var string */
+    public $password;
+}

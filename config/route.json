@@ -107,6 +107,18 @@
         "name": "Вход пользователя",
         "pattern": "/login"
     },
+    "User\\Logout": {
+        "name": "Выход пользователя",
+        "pattern": "/logout"
+    },
+    "User\\Auth": {
+        "name": "Авторизация пользователя",
+        "pattern": "/user/auth"
+    },
+    "User\\Register": {
+        "name": "Регистрация пользователя",
+        "pattern": "/user/register"
+    },
     "User\\Index": {
         "name": "Личный кабинет",
         "pattern": "/private"

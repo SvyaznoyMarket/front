@@ -1,0 +1,1 @@
+define(["jquery"],function(t){t("body");t(".js-authTab").on("click",function(e){var a=t(e.target);t(".js-authTab").each(function(e,a){var n=t(a);$content=t(n.data("contentSelector")),$content.slideUp("fast"),n.addClass("borderBd")}),t(a.data("contentSelector")).slideDown("fast"),a.removeClass("borderBd")})});

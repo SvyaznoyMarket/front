@@ -30,10 +30,15 @@ class Login {
 
         $templateDir = $config->mustacheRenderer->templateDir;
 
-        //$page->dataModule = 'login';
+        $page->dataModule = 'user.login';
 
         $page->title = 'Авторизация';
 
+        $page->content->authForm = new Model\Form\User\AuthForm();
+        $page->content->authForm->url = $router->getUrlByRoute(new Routing\User\Auth(), ['redirect_to' => $request->redirectUrl]);
+
+        $page->content->registerForm = new Model\Form\User\RegisterForm();
+        $page->content->registerForm->url = $router->getUrlByRoute(new Routing\User\Register(), ['redirect_to' => $request->redirectUrl]);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
