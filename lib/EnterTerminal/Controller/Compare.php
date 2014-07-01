@@ -77,7 +77,7 @@ class Compare {
         foreach ($compare->product as $compareProduct) {
             $product = !empty($productsById[$compareProduct->id])
                 ? $productsById[$compareProduct->id]
-                : new Model\Product([
+                : new \EnterModel\Product([
                     'id' => $compareProduct->id,
                 ]);
 

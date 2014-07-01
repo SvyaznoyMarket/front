@@ -34,7 +34,7 @@ class Region {
 
     /**
      * @param Query $query
-     * @return Model\Region
+     * @return \EnterModel\Region
      */
     public function getObjectByQuery(Query $query) {
         $region = null;
@@ -42,11 +42,11 @@ class Region {
         $item = $query->getResult();
         if (!$item) {
             // TODO: logger
-            $region = new Model\Region();
+            $region = new \EnterModel\Region();
             $region->id = $this->getConfig()->region->defaultId;
             $region->name = 'Москва*';
         } else {
-            $region = new Model\Region($item);
+            $region = new \EnterModel\Region($item);
         }
 
         return $region;

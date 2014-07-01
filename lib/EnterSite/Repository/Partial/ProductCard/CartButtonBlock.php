@@ -10,8 +10,8 @@ use EnterSite\Model\Partial;
 class CartButtonBlock {
 
     public function getObject(
-        Model\Product $product,
-        Model\Cart\Product $cartProduct = null
+        \EnterModel\Product $product,
+        \EnterModel\Cart\Product $cartProduct = null
     ) {
         $block = new Model\Partial\ProductCard\CartButtonBlock();
         $block->widgetId = self::getWidgetId($product->id);

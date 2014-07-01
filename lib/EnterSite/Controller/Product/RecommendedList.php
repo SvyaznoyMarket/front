@@ -113,7 +113,7 @@ class RecommendedList {
 
         foreach ($alsoBoughtIdList as $i => $productId) {
             // SITE-2818 из списка товаров "с этим товаром также покупают" убираем товары, которые есть только в магазинах
-            /** @var Model\Product|null $product */
+            /** @var \EnterModel\Product|null $product */
             $product = isset($productsById[$productId]) ? $productsById[$productId] : null;
             if (!$product) continue;
 

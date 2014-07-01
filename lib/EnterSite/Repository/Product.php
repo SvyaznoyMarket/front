@@ -42,13 +42,13 @@ class Product {
 
     /**
      * @param Query $query
-     * @return Model\Product
+     * @return \EnterModel\Product
      */
     public function getObjectByQuery(Query $query) {
         $product = null;
 
         if ($item = $query->getResult()) {
-            $product = new Model\Product($item);
+            $product = new \EnterModel\Product($item);
         }
 
         return $product;
@@ -57,7 +57,7 @@ class Product {
     /**
      * @param Query[] $queries
      * @param callable|null $parser
-     * @return Model\Product[]
+     * @return \EnterModel\Product[]
      */
     public function getIndexedObjectListByQueryList(array $queries, $parser = null) {
         $parser = is_callable($parser) ? $parser : function(&$item) {
@@ -74,7 +74,7 @@ class Product {
             foreach ($query->getResult() as $item) {
                 $parser($item);
 
-                $products[$item['id']] = new Model\Product($item);
+                $products[$item['id']] = new \EnterModel\Product($item);
             }
         }
 
@@ -82,16 +82,16 @@ class Product {
     }
 
     /**
-     * @param Model\Product $product
+     * @param \EnterModel\Product $product
      * @param Query $videoListQuery
      */
-    public function setVideoForObjectByQuery(Model\Product $product, Query $videoListQuery) {
+    public function setVideoForObjectByQuery(\EnterModel\Product $product, Query $videoListQuery) {
         try {
             foreach ($videoListQuery->getResult() as $videoItem) {
                 if (empty($videoItem['content'])) continue;
 
                 $videoItem['product_id'] = $product->id;
-                $product->media->videos[] = new Model\Product\Media\Video($videoItem);
+                $product->media->videos[] = new \EnterModel\Product\Media\Video($videoItem);
             }
         } catch (\Exception $e) {
             $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
@@ -99,15 +99,15 @@ class Product {
     }
 
     /**
-     * @param Model\Product $product
+     * @param \EnterModel\Product $product
      * @param Query $photo3dListQuery
      */
-    public function setPhoto3dForObjectByQuery(Model\Product $product, Query $photo3dListQuery) {
+    public function setPhoto3dForObjectByQuery(\EnterModel\Product $product, Query $photo3dListQuery) {
         try {
             foreach ($photo3dListQuery->getResult() as $photo3dItem) {
                 if (empty($photo3dItem['maybe3d'])) continue;
 
-                $product->media->photo3ds[] = new Model\Product\Media\Photo3d([
+                $product->media->photo3ds[] = new \EnterModel\Product\Media\Photo3d([
                     'product_id' => $product->id,
                     'source'     => $photo3dItem['maybe3d'],
                 ]);
@@ -118,7 +118,7 @@ class Product {
     }
 
     /**
-     * @param Model\Product[] $productsById
+     * @param \EnterModel\Product[] $productsById
      * @param Query $videoGroupedListQuery
      */
     public function setVideoForObjectListByQuery(array $productsById, Query $videoGroupedListQuery) {
@@ -126,7 +126,7 @@ class Product {
             foreach ($videoGroupedListQuery->getResult() as $videoItem) {
                 if (!isset($productsById[$videoItem['product_id']])) continue;
 
-                $productsById[$videoItem['product_id']]->media->videos[] = new Model\Product\Media\Video($videoItem);
+                $productsById[$videoItem['product_id']]->media->videos[] = new \EnterModel\Product\Media\Video($videoItem);
             }
         } catch (\Exception $e) {
             $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
@@ -134,7 +134,7 @@ class Product {
     }
 
     /**
-     * @param Model\Product[] $productsById
+     * @param \EnterModel\Product[] $productsById
      * @param Query $ratingListQuery
      */
     public function setRatingForObjectListByQuery(array $productsById, Query $ratingListQuery) {
@@ -143,7 +143,7 @@ class Product {
                 $productId = (string)$ratingItem['product_id'];
                 if (!isset($productsById[$productId])) continue;
 
-                $productsById[$productId]->rating = new Model\Product\Rating($ratingItem);
+                $productsById[$productId]->rating = new \EnterModel\Product\Rating($ratingItem);
             }
         } catch (\Exception $e) {
             $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
@@ -151,7 +151,7 @@ class Product {
     }
 
     /**
-     * @param Model\Product[] $productsById
+     * @param \EnterModel\Product[] $productsById
      * @param Query $deliveryListQuery
      */
     public function setDeliveryForObjectListByQuery(array $productsById, Query $deliveryListQuery) {
@@ -177,7 +177,7 @@ class Product {
                     // FIXME: SITE-3708
                     if (in_array($deliveryItem['token'], ['now'])) continue;
 
-                    $delivery = new Model\Product\NearestDelivery();
+                    $delivery = new \EnterModel\Product\NearestDelivery();
                     $delivery->productId = $productId;
                     $delivery->id = (string)$deliveryItem['id'];
                     $delivery->token = (string)$deliveryItem['token'];
@@ -204,7 +204,7 @@ class Product {
                                     $shopItem['geo'] = $regionData[$regionId];
                                 }
 
-                                $shop = new Model\Shop($shopItem);
+                                $shop = new \EnterModel\Shop($shopItem);
 
                                 $delivery->shopsById[$shopId] = $shop;
                             }
@@ -220,16 +220,16 @@ class Product {
     }
 
     /**
-     * @param Model\Product[] $productsById
+     * @param \EnterModel\Product[] $productsById
      * @param Query $shopListQuery
      */
     public function setNowDeliveryForObjectListByQuery(array $productsById, Query $shopListQuery) {
         try {
             foreach ($productsById as $product) {
-                $delivery = new Model\Product\NearestDelivery();
+                $delivery = new \EnterModel\Product\NearestDelivery();
                 $delivery->productId = $product->id;
-                $delivery->id = Model\Product\NearestDelivery::ID_NOW;
-                $delivery->token = Model\Product\NearestDelivery::TOKEN_NOW;
+                $delivery->id = \EnterModel\Product\NearestDelivery::ID_NOW;
+                $delivery->token = \EnterModel\Product\NearestDelivery::TOKEN_NOW;
                 $delivery->price = 0;
 
                 foreach ($shopListQuery->getResult() as $shopItem) {
@@ -239,7 +239,7 @@ class Product {
                     $shopItem['way_auto'] = '';
                     $shopItem['images'] = [];
 
-                    $delivery->shopsById[$shopItem['id']] = new Model\Shop($shopItem);
+                    $delivery->shopsById[$shopItem['id']] = new \EnterModel\Shop($shopItem);
                 }
 
                 if ((bool)$delivery->shopsById) {
@@ -253,7 +253,7 @@ class Product {
     }
 
     /**
-     * @param Model\Product[] $productsById
+     * @param \EnterModel\Product[] $productsById
      * @param Query $accessoryListQuery
      */
     public function setAccessoryRelationForObjectListByQuery(array $productsById, Query $accessoryListQuery) {
@@ -265,7 +265,7 @@ class Product {
                     $accessoryItem['property'] = [];
                     $accessoryItem['property_group'] = [];
                     $accessoryItem['media'] = [reset($accessoryItem['media'])];
-                    $product->relation->accessories[] = new Model\Product($accessoryItem);
+                    $product->relation->accessories[] = new \EnterModel\Product($accessoryItem);
                 }
             }
         } catch (\Exception $e) {

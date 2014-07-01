@@ -4,9 +4,9 @@ namespace EnterTerminal\Model\Page {
     use EnterSite\Model;
 
     class Compare {
-        /** @var Model\Product[] */
+        /** @var \EnterModel\Product[] */
         public $groups = [];
-        /** @var Model\Product[] */
+        /** @var \EnterModel\Product[] */
         public $products = [];
     }
 }

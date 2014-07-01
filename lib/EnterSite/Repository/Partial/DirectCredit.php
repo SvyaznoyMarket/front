@@ -12,13 +12,13 @@ class DirectCredit {
     use ConfigTrait, ViewHelperTrait;
 
     /**
-     * @param Model\Product[] $products
-     * @param Model\Cart|null $cartModel
+     * @param \EnterModel\Product[] $products
+     * @param \EnterModel\Cart|null $cartModel
      * @return Partial\DirectCredit
      */
     public function getObject(
         $products = [],
-        Model\Cart $cartModel = null
+        \EnterModel\Cart $cartModel = null
     ) {
         $directCredit = new Partial\DirectCredit();
 
@@ -31,9 +31,9 @@ class DirectCredit {
 
         $productData = [];
         foreach ($products as $product) {
-            /** @var Model\Product\Category|null $rootCategory */
+            /** @var \EnterModel\Product\Category|null $rootCategory */
             $rootCategory = ($product->category && !empty($product->category->ascendants[0])) ? $product->category->ascendants[0] : null;
-            /** @var Model\Cart\Product|null $cartProduct */
+            /** @var \EnterModel\Cart\Product|null $cartProduct */
             $cartProduct = !empty($productCartsById[$product->id]) ? $productCartsById[$product->id] : null;
 
             $productData[] = [

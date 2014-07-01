@@ -14,7 +14,7 @@ class IdPager {
 
         $item = $query->getResult();
         if ($item) {
-            $pager = new Model\Product\IdPager($item);
+            $pager = new \EnterModel\Product\IdPager($item);
         }
 
         return $pager;

@@ -15,7 +15,7 @@ class Filter {
 
     /**
      * @param Http\Request $request
-     * @return Model\Product\RequestFilter[]
+     * @return \EnterModel\Product\RequestFilter[]
      */
     public function getRequestObjectListByHttpRequest(Http\Request $request) {
         $filters = [];
@@ -29,7 +29,7 @@ class Filter {
                     || (in_array($key, ['shop', 'category']))
                 )
             ) {
-                $filter = new Model\Product\RequestFilter();
+                $filter = new \EnterModel\Product\RequestFilter();
                 $filter->name = $key;
                 $filter->value = $value;
 
@@ -45,11 +45,11 @@ class Filter {
     }
 
     /**
-     * @param Model\Product\Category $category
-     * @return Model\Product\RequestFilter
+     * @param \EnterModel\Product\Category $category
+     * @return \EnterModel\Product\RequestFilter
      */
-    public function getRequestObjectByCategory(Model\Product\Category $category) {
-        $filter = new Model\Product\RequestFilter();
+    public function getRequestObjectByCategory(\EnterModel\Product\Category $category) {
+        $filter = new \EnterModel\Product\RequestFilter();
         $filter->token = 'category';
         $filter->name = 'category';
         $filter->value = $category->id;
@@ -59,10 +59,10 @@ class Filter {
 
     /**
      * @param string $searchPhrase
-     * @return Model\Product\RequestFilter
+     * @return \EnterModel\Product\RequestFilter
      */
     public function getRequestObjectBySearchPhrase($searchPhrase) {
-        $filter = new Model\Product\RequestFilter();
+        $filter = new \EnterModel\Product\RequestFilter();
         $filter->token = 'q';
         $filter->name = 'q';
         $filter->value = $searchPhrase;
@@ -73,8 +73,8 @@ class Filter {
     /**
      * Возвращает фильтр из http-запроса, который относится к категории товара
      *
-     * @param Model\Product\RequestFilter[] $filters
-     * @return Model\Product\RequestFilter
+     * @param \EnterModel\Product\RequestFilter[] $filters
+     * @return \EnterModel\Product\RequestFilter
      */
     public function getCategoryRequestObjectByRequestList($filters) {
         $return = null;
@@ -91,14 +91,14 @@ class Filter {
 
     /**
      * @param Query $query
-     * @return Model\Product\Filter[]
+     * @return \EnterModel\Product\Filter[]
      */
     public function getObjectListByQuery(Query $query) {
         $filters = [];
 
         try {
             foreach ($query->getResult() as $item) {
-                $filters[] = new Model\Product\Filter($item);
+                $filters[] = new \EnterModel\Product\Filter($item);
             }
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
@@ -110,8 +110,8 @@ class Filter {
     }
 
     /**
-     * @param Model\Product\Category[] $categories
-     * @return Model\Product\Filter[]
+     * @param \EnterModel\Product\Category[] $categories
+     * @return \EnterModel\Product\Filter[]
      */
     public function getObjectListByCategoryList(array $categories) {
         $filters = [];
@@ -126,10 +126,10 @@ class Filter {
                 'image'    => $category->image,
             ];
         }
-        $filters[] = new Model\Product\Filter([
+        $filters[] = new \EnterModel\Product\Filter([
             'filter_id' => 'category',
             'name'      => 'Категории',
-            'type_id'   => Model\Product\Filter::TYPE_LIST,
+            'type_id'   => \EnterModel\Product\Filter::TYPE_LIST,
             'options'   => $categoryOptionData,
         ]);
 
@@ -137,7 +137,7 @@ class Filter {
     }
 
     /**
-     * @param Model\Product\RequestFilter[] $requestFilters
+     * @param \EnterModel\Product\RequestFilter[] $requestFilters
      * @return array
      */
     public function dumpRequestObjectList(array $requestFilters) {

@@ -22,13 +22,13 @@ class ProductLink {
     }
 
     /**
-     * @param Model\Product $product
-     * @param Model\Cart\Product|null $cartProduct
+     * @param \EnterModel\Product $product
+     * @param \EnterModel\Cart\Product|null $cartProduct
      * @return Partial\Cart\ProductLink|null
      */
     public function getObject(
-        Model\Product $product,
-        Model\Cart\Product $cartProduct = null
+        \EnterModel\Product $product,
+        \EnterModel\Cart\Product $cartProduct = null
     ) {
         $link = new Partial\Cart\ProductLink();
 

@@ -16,12 +16,12 @@ class ProductCard {
     }
 
     /**
-     * @param Model\Product $product
+     * @param \EnterModel\Product $product
      * @param Partial\Cart\ProductButton|null $cartButton
      * @return Partial\ProductCard
      */
     public function getObject(
-        Model\Product $product,
+        \EnterModel\Product $product,
         Partial\Cart\ProductButton $cartButton = null
     ) {
         $card = new Partial\ProductCard();
@@ -33,7 +33,7 @@ class ProductCard {
         $card->oldPrice = $product->oldPrice;
         $card->shownOldPrice = $product->oldPrice ? number_format((float)$product->oldPrice, 0, ',', ' ') : null;
         if ($photo = reset($product->media->photos)) {
-            /** @var Model\Product\Media\Photo $photo */
+            /** @var \EnterModel\Product\Media\Photo $photo */
             $card->image = (string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 2));
         }
         $card->id = $product->id;

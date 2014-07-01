@@ -16,14 +16,14 @@ class Sorting {
 
     /**
      * @param Http\Request $request
-     * @return Model\Product\Sorting|null
+     * @return \EnterModel\Product\Sorting|null
      */
     public function getObjectByHttpRequest(Http\Request $request) {
         $sorting = null;
 
         $data = explode('-', $request->query['sort']);
         if (isset($data[0]) && isset($data[1])) {
-            $sorting = new Model\Product\Sorting();
+            $sorting = new \EnterModel\Product\Sorting();
             $sorting->token = $data[0];
             $sorting->direction = $data[1];
         }
@@ -32,7 +32,7 @@ class Sorting {
     }
 
     /**
-     * @return Model\Product\Sorting[]
+     * @return \EnterModel\Product\Sorting[]
      */
     public function getObjectList() {
         $sortings = [];
@@ -50,7 +50,7 @@ class Sorting {
                 continue;
             }
 
-            $sorting = new Model\Product\Sorting();
+            $sorting = new \EnterModel\Product\Sorting();
             $sorting->name = $item['name'];
             $sorting->token = $item['token'];
             $sorting->direction = $item['direction'];

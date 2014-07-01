@@ -14,7 +14,7 @@ class GetListByCartProductList extends Query {
     protected $result;
 
     /**
-     * @param Model\Cart\Product[] $cartProducts
+     * @param \EnterModel\Cart\Product[] $cartProducts
      * @param string|null $regionId
      */
     public function __construct(array $cartProducts, $regionId = null) {
@@ -23,7 +23,7 @@ class GetListByCartProductList extends Query {
         if ($regionId) {
             $this->url->query['geo_id'] = $regionId;
         }
-        $this->data['product_list'] = array_map(function(Model\Cart\Product $cartProduct) {
+        $this->data['product_list'] = array_map(function(\EnterModel\Cart\Product $cartProduct) {
             return ['id' => $cartProduct->id, 'quantity' => $cartProduct->quantity];
         }, $cartProducts);
 

@@ -43,7 +43,7 @@ class SetProduct {
             // корзина из сессии
             $cart = $cartRepository->getObjectByHttpSession($session);
 
-            $cartProduct = new Model\Cart\Product();
+            $cartProduct = new \EnterModel\Cart\Product();
             $cartProduct->id = $productId;
             $cartProduct->quantity = $quantity;
 

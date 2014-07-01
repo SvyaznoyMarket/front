@@ -11,13 +11,13 @@ class UserBlock {
     use RouterTrait;
 
     /**
-     * @param Model\Cart $cart
-     * @param Model\User|null $user
+     * @param \EnterModel\Cart $cart
+     * @param \EnterModel\User|null $user
      * @return Partial\UserBlock
      */
     public function getObject(
-        Model\Cart $cart,
-        Model\User $user = null
+        \EnterModel\Cart $cart,
+        \EnterModel\User $user = null
     ) {
         $router = $this->getRouter();
 

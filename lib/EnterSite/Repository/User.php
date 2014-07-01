@@ -59,13 +59,13 @@ class User {
 
     /**
      * @param Query $query
-     * @return Model\User|null
+     * @return \EnterModel\User|null
      */
     public function getObjectByQuery(Query $query) {
         $user = null;
 
         if ($item = $query->getResult()) {
-            $user = new Model\User($item);
+            $user = new \EnterModel\User($item);
         }
 
         return $user;

@@ -16,12 +16,12 @@ class GetItemByPhrase extends Query {
     /**
      * @param string $phrase
      * @param array $filterData
-     * @param Model\Product\Sorting $sorting
+     * @param \EnterModel\Product\Sorting $sorting
      * @param string|null $regionId
      * @param int|null $offset
      * @param int|null $limit
      */
-    public function __construct($phrase, array $filterData, Model\Product\Sorting $sorting = null, $regionId = null, $offset = null, $limit = null) {
+    public function __construct($phrase, array $filterData, \EnterModel\Product\Sorting $sorting = null, $regionId = null, $offset = null, $limit = null) {
         $this->url = new Url();
         $this->url->path = 'v2/search/get';
         $this->url->query = [

@@ -51,7 +51,7 @@ class Search {
         // сортировка
         $sorting = null;
         if (!empty($request->query['sort']['token']) && !empty($request->query['sort']['direction'])) {
-            $sorting = new Model\Product\Sorting();
+            $sorting = new \EnterModel\Product\Sorting();
             $sorting->token = trim((string)$request->query['sort']['token']);
             $sorting->direction = trim((string)$request->query['sort']['direction']);
         }
@@ -106,10 +106,10 @@ class Search {
 
         // фильтры
         $filters = $filterRepository->getObjectListByQuery($filterListQuery);
-        $filters[] = new Model\Product\Filter([
+        $filters[] = new \EnterModel\Product\Filter([
             'filter_id' => 'phrase',
             'name'      => 'Поисковая строка',
-            'type_id'   => Model\Product\Filter::TYPE_STRING,
+            'type_id'   => \EnterModel\Product\Filter::TYPE_STRING,
             'options'   => [
                 ['id' => null],
             ],

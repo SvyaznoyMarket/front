@@ -9,14 +9,14 @@ use EnterSite\Model;
 class Filter extends BaseRepository {
     /**
      * @param Http\Request $request
-     * @return Model\Product\RequestFilter[]
+     * @return \EnterModel\Product\RequestFilter[]
      */
     public function getRequestObjectListByHttpRequest(Http\Request $request) {
         $filters = [];
 
         foreach ((array)$request->query['filter'] as $key => $value) {
             foreach ((array)$value as $optionToken => $optionValue) {
-                $filter = new Model\Product\RequestFilter();
+                $filter = new \EnterModel\Product\RequestFilter();
                 $filter->token = $key;
                 $filter->name = $key;
                 $filter->value = $optionValue;
@@ -31,7 +31,7 @@ class Filter extends BaseRepository {
     }
 
     /**
-     * @param Model\Product\RequestFilter[] $requestFilters
+     * @param \EnterModel\Product\RequestFilter[] $requestFilters
      * @return array
      */
     public function dumpRequestObjectList(array $requestFilters) {
@@ -67,8 +67,8 @@ class Filter extends BaseRepository {
     }
 
     /**
-     * @param Model\Product\Filter[] $filters
-     * @param Model\Product\RequestFilter[] $requestFilters
+     * @param \EnterModel\Product\Filter[] $filters
+     * @param \EnterModel\Product\RequestFilter[] $requestFilters
      */
     public function setValueForObjectList(array $filters, array $requestFilters) {
         if (!(bool)$requestFilters) {

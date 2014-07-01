@@ -14,10 +14,10 @@ class GetItemByProductCategoryObject extends Query {
     protected $result;
 
     /**
-     * @param Model\Product\Category[] $categories
-     * @param Model\Product|null $product
+     * @param \EnterModel\Product\Category[] $categories
+     * @param \EnterModel\Product|null $product
      */
-    public function __construct(array $categories, Model\Product $product = null) {
+    public function __construct(array $categories, \EnterModel\Product $product = null) {
         $tokens = [];
         foreach ($categories as $category) {
             $tokens[] = $category->token;

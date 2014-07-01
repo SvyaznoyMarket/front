@@ -73,17 +73,17 @@ class ProductCard {
             foreach ($productModel->nearestDeliveries as $deliveryModel) {
                 $delivery = new Page\Content\Product\DeliveryBlock\Delivery();
 
-                if (Model\Product\NearestDelivery::TOKEN_STANDARD == $deliveryModel->token) {
+                if (\EnterModel\Product\NearestDelivery::TOKEN_STANDARD == $deliveryModel->token) {
                     $delivery->name = 'Доставка';
-                } else if (Model\Product\NearestDelivery::TOKEN_SELF == $deliveryModel->token) {
+                } else if (\EnterModel\Product\NearestDelivery::TOKEN_SELF == $deliveryModel->token) {
                     $delivery->name = 'Самовывоз';
-                } else if (Model\Product\NearestDelivery::TOKEN_NOW == $deliveryModel->token) {
+                } else if (\EnterModel\Product\NearestDelivery::TOKEN_NOW == $deliveryModel->token) {
                     $delivery->deliveredAtText = 'Сегодня есть в магазинах';
                 } else {
                     continue;
                 }
 
-                if (in_array($deliveryModel->token, [Model\Product\NearestDelivery::TOKEN_STANDARD, Model\Product\NearestDelivery::TOKEN_SELF])) {
+                if (in_array($deliveryModel->token, [\EnterModel\Product\NearestDelivery::TOKEN_STANDARD, \EnterModel\Product\NearestDelivery::TOKEN_SELF])) {
                     $delivery->priceText = !$deliveryModel->price
                         ? 'бесплатно'
                         : (number_format((float)$deliveryModel->price, 0, ',', ' ') . ' p')
@@ -95,7 +95,7 @@ class ProductCard {
 
                 $delivery->token = $deliveryModel->token;
 
-                if (Model\Product\NearestDelivery::TOKEN_NOW == $deliveryModel->token) {
+                if (\EnterModel\Product\NearestDelivery::TOKEN_NOW == $deliveryModel->token) {
                     $delivery->hasShops = true;
                     foreach ($deliveryModel->shopsById as $shopModel) {
                         if (!$shopModel->region) continue;
@@ -164,7 +164,7 @@ class ProductCard {
             $propertyChunk->properties[] = $property;
 
             foreach ($groupedPropertyModels[$propertyGroupModel->id] as $propertyModel) {
-                /** @var Model\Product\Property $propertyModel */
+                /** @var \EnterModel\Product\Property $propertyModel */
                 $property = new Page\Content\Product\PropertyChunk\Property();
                 $property->isTitle = false;
                 $property->name = $propertyModel->name;
@@ -257,7 +257,7 @@ class ProductCard {
             ] as $i => $range) {
                 $modelBlock = new Page\Content\Product\ModelBlock();
                 foreach (array_slice($productModel->model->properties, $range[0], $range[1]) as $propertyModel) {
-                    /** @var Model\Product\ProductModel\Property $propertyModel */
+                    /** @var \EnterModel\Product\ProductModel\Property $propertyModel */
                     $property = new Page\Content\Product\ModelBlock\Property();
                     //$property->name = !$propertyModel->isImage ? $propertyModel->name : null;
                     $property->name = $propertyModel->name;

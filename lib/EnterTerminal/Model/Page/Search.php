@@ -6,13 +6,13 @@ namespace EnterTerminal\Model\Page {
     class Search {
         /** @var string */
         public $searchPhrase;
-        /** @var Model\Product[] */
+        /** @var \EnterModel\Product[] */
         public $products = [];
         /** @var int */
         public $productCount;
-        /** @var Model\Product\Sorting[] */
+        /** @var \EnterModel\Product\Sorting[] */
         public $sortings = [];
-        /** @var Model\Product\Filter[] */
+        /** @var \EnterModel\Product\Filter[] */
         public $filters = [];
     }
 }

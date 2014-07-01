@@ -34,7 +34,7 @@ class RecommendedList {
         $slider = $productSliderRepository->getObject('alsoBoughtSlider', $url);
         $slider->hasCategories = false;
         foreach ($request->alsoBoughtIdList as $productId) {
-            /** @var Model\Product|null $productModel */
+            /** @var \EnterModel\Product|null $productModel */
             $productModel = !empty($request->productsById[$productId]) ? $request->productsById[$productId] : null;
             if (!$productModel) continue;
 
@@ -47,7 +47,7 @@ class RecommendedList {
         $slider = $productSliderRepository->getObject('alsoViewedSlider', $url);
         $slider->hasCategories = false;
         foreach ($request->alsoViewedIdList as $productId) {
-            /** @var Model\Product|null $productModel */
+            /** @var \EnterModel\Product|null $productModel */
             $productModel = !empty($request->productsById[$productId]) ? $request->productsById[$productId] : null;
             if (!$productModel) continue;
 
@@ -60,7 +60,7 @@ class RecommendedList {
         $slider = $productSliderRepository->getObject('similarSlider', $url);;
         $slider->hasCategories = false;
         foreach ($request->similarIdList as $productId) {
-            /** @var Model\Product|null $productModel */
+            /** @var \EnterModel\Product|null $productModel */
             $productModel = !empty($request->productsById[$productId]) ? $request->productsById[$productId] : null;
             if (!$productModel) continue;
 

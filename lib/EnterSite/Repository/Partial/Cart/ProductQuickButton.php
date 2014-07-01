@@ -26,11 +26,11 @@ class ProductQuickButton {
     }
 
     /**
-     * @param Model\Product $product
+     * @param \EnterModel\Product $product
      * @return Partial\Cart\ProductQuickButton
      */
     public function getObject(
-        Model\Product $product
+        \EnterModel\Product $product
     ) {
         if (!$product->isBuyable) {
             return null;

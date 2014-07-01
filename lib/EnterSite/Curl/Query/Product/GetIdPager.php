@@ -15,13 +15,13 @@ class GetIdPager extends Query {
 
     /**
      * @param array $filterData
-     * @param Model\Product\Sorting $sorting
+     * @param \EnterModel\Product\Sorting $sorting
      * @param string|null $regionId
      * @param $offset
      * @param $limit
-     * @param Model\Product\Catalog\Config|null $catalogConfig
+     * @param \EnterModel\Product\Catalog\Config|null $catalogConfig
      */
-    public function __construct(array $filterData, Model\Product\Sorting $sorting = null, $regionId = null, $offset = null, $limit = null, $catalogConfig = null) {
+    public function __construct(array $filterData, \EnterModel\Product\Sorting $sorting = null, $regionId = null, $offset = null, $limit = null, $catalogConfig = null) {
         $sortingData = []; // TODO: вынести в Repository\Product\Sorting::dumpObjectList
         if ($sorting) {
             if (('default' == $sorting->token) && $catalogConfig && (bool)$catalogConfig->sortings) {

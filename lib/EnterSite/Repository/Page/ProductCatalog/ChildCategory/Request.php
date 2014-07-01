@@ -7,17 +7,17 @@ use EnterSite\Model;
 use EnterSite\Repository;
 
 class Request extends Repository\Page\DefaultLayout\Request {
-    /** @var Model\Product\Category */
+    /** @var \EnterModel\Product\Category */
     public $category;
-    /** @var Model\Product\Catalog\Config */
+    /** @var \EnterModel\Product\Catalog\Config */
     public $catalogConfig;
-    /** @var Model\Product\RequestFilter[] */
+    /** @var \EnterModel\Product\RequestFilter[] */
     public $requestFilters = [];
-    /** @var Model\Product\Filter[] */
+    /** @var \EnterModel\Product\Filter[] */
     public $filters = [];
-    /** @var Model\Product\Sorting */
+    /** @var \EnterModel\Product\Sorting */
     public $sorting;
-    /** @var Model\Product\Sorting[] */
+    /** @var \EnterModel\Product\Sorting[] */
     public $sortings = [];
     /** @var int */
     public $pageNum;
@@ -25,7 +25,7 @@ class Request extends Repository\Page\DefaultLayout\Request {
     public $limit;
     /** @var int */
     public $count;
-    /** @var Model\Product[] */
+    /** @var \EnterModel\Product[] */
     public $products = [];
     /** @var Http\Request */
     public $httpRequest;

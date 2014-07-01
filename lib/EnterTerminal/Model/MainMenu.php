@@ -1,19 +1,16 @@
 <?php
 
 namespace EnterTerminal\Model {
-    use EnterSite\Model\ImportArrayConstructorTrait;
     use EnterTerminal\Model;
 
     class MainMenu {
-        use ImportArrayConstructorTrait;
-
         /** @var Model\MainMenu\Element[] */
         public $elements = [];
 
         /**
          * @param array $data
          */
-        public function import(array $data) {
+        public function __construct(array $data = []) {
             if (isset($data['items'][0])) {
                 foreach ($data['items'] as $elementItem) {
                     $this->elements[] = new Model\MainMenu\Element($elementItem);
@@ -24,12 +21,9 @@ namespace EnterTerminal\Model {
 }
 
 namespace EnterTerminal\Model\MainMenu {
-    use EnterSite\Model\ImportArrayConstructorTrait;
     use EnterTerminal\Model;
 
     class Element {
-        use ImportArrayConstructorTrait;
-
         /** @var string */
         public $type;
         /** @var string */
@@ -58,7 +52,7 @@ namespace EnterTerminal\Model\MainMenu {
         /**
          * @param array $data
          */
-        public function import(array $data) {
+        public function __construct(array $data = []) {
             if (array_key_exists('type', $data)) $this->type = (string)$data['type'];
             if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];

@@ -12,12 +12,12 @@ class Cart {
     use TranslateHelperTrait;
 
     /**
-     * @param Model\Cart $cartModel
-     * @param Model\Product[] $productModels
+     * @param \EnterModel\Cart $cartModel
+     * @param \EnterModel\Product[] $productModels
      * @return Partial\Cart
      */
     public function getObject(
-        Model\Cart $cartModel,
+        \EnterModel\Cart $cartModel,
         $productModels = []
     ) {
         $cart = new Partial\Cart();

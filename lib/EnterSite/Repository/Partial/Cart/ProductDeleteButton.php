@@ -26,11 +26,11 @@ class ProductDeleteButton {
     }
 
     /**
-     * @param Model\Product $product
+     * @param \EnterModel\Product $product
      * @return Partial\Cart\ProductDeleteButton
      */
     public function getObject(
-        Model\Product $product
+        \EnterModel\Product $product
     ) {
         $button = new Partial\Cart\ProductDeleteButton();
 

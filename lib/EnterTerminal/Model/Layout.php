@@ -4,9 +4,9 @@ namespace EnterTerminal\Model {
     use EnterSite\Model;
 
     class Layout {
-        /** @var Model\Region */
+        /** @var \EnterModel\Region */
         public $region;
-        /** @var Model\Shop */
+        /** @var \EnterModel\Shop */
         public $shop;
         /** @var Model\MainMenu */
         public $mainMenu;

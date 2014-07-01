@@ -4,17 +4,17 @@ namespace EnterTerminal\Model\Page\ProductCatalog {
     use EnterSite\Model;
 
     class Category {
-        /** @var Model\Product\Category */
+        /** @var \EnterModel\Product\Category */
         public $category;
-        /** @var Model\Product\Catalog\Config */
+        /** @var \EnterModel\Product\Catalog\Config */
         public $catalogConfig;
-        /** @var Model\Product[] */
+        /** @var \EnterModel\Product[] */
         public $products = [];
         /** @var int */
         public $productCount;
-        /** @var Model\Product\Sorting[] */
+        /** @var \EnterModel\Product\Sorting[] */
         public $sortings = [];
-        /** @var Model\Product\Filter[] */
+        /** @var \EnterModel\Product\Filter[] */
         public $filters = [];
     }
 }

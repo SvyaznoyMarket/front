@@ -7,8 +7,8 @@ use EnterSite\Model;
 use EnterSite\Repository;
 
 class Request extends Repository\Page\DefaultLayout\Request {
-    /** @var Model\Product\Category */
+    /** @var \EnterModel\Product\Category */
     public $category;
-    /** @var Model\Product\Catalog\Config */
+    /** @var \EnterModel\Product\Catalog\Config */
     public $catalogConfig;
 }

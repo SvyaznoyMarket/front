@@ -68,7 +68,7 @@ class ProductCard {
         // запрос доставки товара
         $deliveryListQuery = null;
         if ($product->isBuyable) {
-            $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList([new Model\Cart\Product(['id' => $product->id, 'quantity' => 1])], $region->id);
+            $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList([new \EnterModel\Cart\Product(['id' => $product->id, 'quantity' => 1])], $region->id);
             $curl->prepare($deliveryListQuery);
         }
 
@@ -152,7 +152,7 @@ class ProductCard {
         // группированные товары
         $productsById = [];
         foreach (array_merge([$product], $product->relation->accessories) as $iProduct) {
-            /** @var Model\Product $iProduct */
+            /** @var \EnterModel\Product $iProduct */
             $productsById[$iProduct->id] = $iProduct;
         }
 

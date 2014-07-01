@@ -6,7 +6,7 @@ namespace EnterTerminal\Model\Page {
     class Cart {
         /** @var float */
         public $sum;
-        /** @var Model\Product[] */
+        /** @var \EnterModel\Product[] */
         public $products = [];
     }
 }

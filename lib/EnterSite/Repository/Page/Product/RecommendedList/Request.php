@@ -5,9 +5,9 @@ namespace EnterSite\Repository\Page\Product\RecommendedList;
 use EnterSite\Model;
 
 class Request {
-    /** @var Model\Product */
+    /** @var \EnterModel\Product */
     public $product;
-    /** @var Model\Product[] */
+    /** @var \EnterModel\Product[] */
     public $productsById;
     /** @var string[] */
     public $alsoBoughtIdList = [];

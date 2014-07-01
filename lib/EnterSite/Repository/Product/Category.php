@@ -25,7 +25,7 @@ class Category {
      * Возвращает список категорий без дочерних узлов
      *
      * @param Query $query
-     * @return Model\Product\Category[]
+     * @return \EnterModel\Product\Category[]
      */
     public function getObjectListByQuery(Query $query) {
         $categories = [];
@@ -33,7 +33,7 @@ class Category {
         foreach ($query->getResult() as $item) {
             if (isset($item['children'])) unset($item['children']);
 
-            $categories[] = new Model\Product\Category($item);
+            $categories[] = new \EnterModel\Product\Category($item);
         }
 
         return $categories;
@@ -44,7 +44,7 @@ class Category {
      * и возвращает список категорий от верхнего уровня до нижнего (branch)
      *
      * @param \Enter\Curl\Query $query
-     * @return Model\Product\Category[]
+     * @return \EnterModel\Product\Category[]
      */
     public function getAscendantListByQuery(Query $query) {
         $categories = [];
@@ -53,7 +53,7 @@ class Category {
             $childItem = isset($item['children'][0]['id']) ? $item['children'][0] : null;
             // удаляем children, т.к. он не загружен полностью - в нем только один элемент
             if (isset($item['children'])) unset($item['children']);
-            $categories[] = new Model\Product\Category($item);
+            $categories[] = new \EnterModel\Product\Category($item);
 
             if ($childItem) {
                 $walk($childItem);
@@ -70,7 +70,7 @@ class Category {
     /**
      * @param Query $coreQuery
      * @param Query $adminQuery
-     * @return Model\Product\Category
+     * @return \EnterModel\Product\Category
      */
     public function getObjectByQuery(Query $coreQuery, Query $adminQuery = null) {
         $category = null;
@@ -86,7 +86,7 @@ class Category {
                 }
             }
 
-            $category = new Model\Product\Category($item);
+            $category = new \EnterModel\Product\Category($item);
         }
 
         return $category;
@@ -95,10 +95,10 @@ class Category {
     /**
      * К переданной категории добавляет предков и детей
      *
-     * @param Model\Product\Category $category
+     * @param \EnterModel\Product\Category $category
      * @param Query $query
      */
-    public function setBranchForObjectByQuery(Model\Product\Category $category, Query $query) {
+    public function setBranchForObjectByQuery(\EnterModel\Product\Category $category, Query $query) {
         $walk = function($item) use (&$walk, &$category) {
             if (!$item) {
                 return;
@@ -111,7 +111,7 @@ class Category {
                     foreach ($item['children'] as $childItem) {
                         if (!isset($childItem['id'])) continue;
 
-                        $category->children[] = new Model\Product\Category($childItem);
+                        $category->children[] = new \EnterModel\Product\Category($childItem);
                     }
                 }
             } else if ($level < $category->level) {
@@ -121,7 +121,7 @@ class Category {
                     $walk($childItem);
                     unset($item['children']);
                 }
-                $category->ascendants[] = new Model\Product\Category($item);
+                $category->ascendants[] = new \EnterModel\Product\Category($item);
             }
         };
 
@@ -131,9 +131,9 @@ class Category {
     }
 
     /**
-     * @param Model\Product[] $products
+     * @param \EnterModel\Product[] $products
      * @param string[] $categoryTokens
-     * @return Model\Product\Category[]
+     * @return \EnterModel\Product\Category[]
      */
     public function getIndexedObjectListByProductListAndTokenList(array $products, array $categoryTokens) {
         $categoriesById = [];
@@ -143,7 +143,7 @@ class Category {
 
             $isValid = false;
             foreach (array_merge([$product->category], $product->category->ascendants) as $category) {
-                /** @var Model\Product\Category $category */
+                /** @var \EnterModel\Product\Category $category */
                 if (in_array($category->token, $categoryTokens)) {
                     $isValid = true;
                     break;
@@ -159,13 +159,13 @@ class Category {
     }
 
     /**
-     * @param Model\SearchResult $searchResult
-     * @return Model\Product\Category[]
+     * @param \EnterModel\SearchResult $searchResult
+     * @return \EnterModel\Product\Category[]
      */
-    public function getObjectListBySearchResult(Model\SearchResult $searchResult) {
+    public function getObjectListBySearchResult(\EnterModel\SearchResult $searchResult) {
         $categories = [];
         foreach ($searchResult->categories as $searchCategory) {
-            $category = new Model\Product\Category();
+            $category = new \EnterModel\Product\Category();
             $category->id = $searchCategory->id;
             $category->name = $searchCategory->name;
             $category->productCount = $searchCategory->productCount;

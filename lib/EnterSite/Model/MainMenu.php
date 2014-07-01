@@ -1,19 +1,16 @@
 <?php
 
 namespace EnterSite\Model {
-    use EnterSite\Model\ImportArrayConstructorTrait;
     use EnterSite\Model;
 
     class MainMenu {
-        use ImportArrayConstructorTrait;
-
         /** @var Model\MainMenu\Element[] */
         public $elements = [];
 
         /**
          * @param array $data
          */
-        public function import(array $data) {
+        public function __construct(array $data = []) {
             if (isset($data['items'][0])) {
                 foreach ($data['items'] as $elementItem) {
                     $this->elements[] = new Model\MainMenu\Element($elementItem);
@@ -24,12 +21,9 @@ namespace EnterSite\Model {
 }
 
 namespace EnterSite\Model\MainMenu {
-    use EnterSite\Model\ImportArrayConstructorTrait;
     use EnterSite\Model;
 
     class Element {
-        use ImportArrayConstructorTrait;
-
         /** @var string */
         public $name;
         /** @var string */
@@ -54,7 +48,7 @@ namespace EnterSite\Model\MainMenu {
         /**
          * @param array $data
          */
-        public function import(array $data) {
+        public function __construct(array $data = []) {
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
             if (array_key_exists('char', $data)) $this->char = (string)$data['char'];
             if (array_key_exists('image', $data)) $this->image = (string)$data['image'];

@@ -52,7 +52,7 @@ class Index {
         // регион
         $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
-        $productListQuery = (bool)$cart->product ? new Query\Product\GetListByIdList(array_values(array_map(function(Model\Cart\Product $cartProduct) { return $cartProduct->id; }, $cart->product)), $region->id) : null;
+        $productListQuery = (bool)$cart->product ? new Query\Product\GetListByIdList(array_values(array_map(function(\EnterModel\Cart\Product $cartProduct) { return $cartProduct->id; }, $cart->product)), $region->id) : null;
         if ($productListQuery) {
             $curl->prepare($productListQuery);
         }

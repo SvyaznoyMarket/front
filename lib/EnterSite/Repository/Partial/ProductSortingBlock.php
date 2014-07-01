@@ -15,15 +15,15 @@ class ProductSortingBlock {
     use RouterTrait, UrlHelperTrait, ViewHelperTrait;
 
     /**
-     * @param Model\Product\Sorting[] $sortingModels
-     * @param Model\Product\Sorting|null $currentSortingModel
+     * @param \EnterModel\Product\Sorting[] $sortingModels
+     * @param \EnterModel\Product\Sorting|null $currentSortingModel
      * @param Routing\Route|null $route
      * @param Http\Request|null $httpRequest
      * @return \EnterSite\Model\Partial\SortingBlock
      */
     public function getObject(
         array $sortingModels,
-        Model\Product\Sorting $currentSortingModel = null,
+        \EnterModel\Product\Sorting $currentSortingModel = null,
         Routing\Route $route = null,
         Http\Request $httpRequest = null
     ) {

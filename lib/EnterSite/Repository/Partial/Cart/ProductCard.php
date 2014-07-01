@@ -9,15 +9,15 @@ use EnterSite\Repository;
 
 class ProductCard {
     /**
-     * @param Model\Cart\Product $cartProduct
-     * @param Model\Product $product
+     * @param \EnterModel\Cart\Product $cartProduct
+     * @param \EnterModel\Product $product
      * @param Partial\Cart\ProductSpinner|null $cartSpinner
      * @param Partial\Cart\ProductDeleteButton|null $cartDeleteButton
      * @return Partial\ProductCard
      */
     public function getObject(
-        Model\Cart\Product $cartProduct,
-        Model\Product $product,
+        \EnterModel\Cart\Product $cartProduct,
+        \EnterModel\Product $product,
         Partial\Cart\ProductSpinner $cartSpinner = null,
         Partial\Cart\ProductDeleteButton $cartDeleteButton = null
     ) {
@@ -31,7 +31,7 @@ class ProductCard {
         $card->oldPrice = $product->oldPrice;
         $card->shownOldPrice = $product->oldPrice ? number_format((float)$product->oldPrice, 0, ',', ' ') : null;
         if ($photo = reset($product->media->photos)) {
-            /** @var Model\Product\Media\Photo $photo */
+            /** @var \EnterModel\Product\Media\Photo $photo */
             $card->image = (string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 1));
         }
         $card->id = $product->id;

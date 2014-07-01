@@ -20,14 +20,14 @@ class Promo {
 
     /**
      * @param Query $query
-     * @return Model\Promo[]
+     * @return \EnterModel\Promo[]
      */
     public function getObjectListByQuery(Query $query) {
         $promos = [];
 
         try {
             foreach ($query->getResult() as $item) {
-                $promos[] = new Model\Promo($item);
+                $promos[] = new \EnterModel\Promo($item);
             }
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
@@ -40,7 +40,7 @@ class Promo {
     /**
      * @param $id
      * @param Query $query
-     * @return Model\Promo|null
+     * @return \EnterModel\Promo|null
      */
     public function getObjectByIdAndQuery($id, Query $query) {
         $promo = null;
@@ -48,7 +48,7 @@ class Promo {
         try {
             foreach ($query->getResult() as $item) {
                 if (isset($item['id']) && ($id == $item['id'])) {
-                    $promo = new Model\Promo($item);
+                    $promo = new \EnterModel\Promo($item);
                     break;
                 }
             }

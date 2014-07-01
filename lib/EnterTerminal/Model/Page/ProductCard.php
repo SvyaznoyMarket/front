@@ -4,9 +4,9 @@ namespace EnterTerminal\Model\Page {
     use EnterSite\Model;
 
     class ProductCard {
-        /** @var Model\Product */
+        /** @var \EnterModel\Product */
         public $product;
-        /** @var Model\Product\Review[] */
+        /** @var \EnterModel\Product\Review[] */
         public $reviews = [];
     }
 }

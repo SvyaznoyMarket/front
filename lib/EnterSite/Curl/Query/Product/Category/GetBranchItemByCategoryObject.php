@@ -14,10 +14,10 @@ class GetBranchItemByCategoryObject extends Query {
     protected $result;
 
     /**
-     * @param Model\Product\Category $category
+     * @param \EnterModel\Product\Category $category
      * @param string $regionId
      */
-    public function __construct(Model\Product\Category $category, $regionId = null) {
+    public function __construct(\EnterModel\Product\Category $category, $regionId = null) {
         $this->url = new Url();
         $this->url->path = 'v2/category/tree';
         $this->url->query = [

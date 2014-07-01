@@ -95,7 +95,7 @@ class SetProduct {
         // товар
         $product = (new Repository\Product())->getObjectByQuery($productItemQuery);
         if (!$product) {
-            $product = new Model\Product();
+            $product = new \EnterModel\Product();
             $product->id = $cartProduct->id;
 
             throw new \Exception(sprintf('Товар #%s не найден', $cartProduct->id));

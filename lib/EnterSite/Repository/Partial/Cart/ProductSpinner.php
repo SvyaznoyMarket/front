@@ -26,14 +26,14 @@ class ProductSpinner {
     }
 
     /**
-     * @param Model\Product $product
+     * @param \EnterModel\Product $product
      * @param int $count
      * @param bool $isDisabled
      * @param bool $hasBuyButton
      * @return Partial\Cart\ProductSpinner
      */
     public function getObject(
-        Model\Product $product,
+        \EnterModel\Product $product,
         $count = 1,
         $isDisabled = false,
         $hasBuyButton = true

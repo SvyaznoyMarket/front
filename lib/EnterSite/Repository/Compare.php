@@ -11,7 +11,7 @@ class Compare {
 
     /**
      * @param Http\Request $request
-     * @return Model\Compare\Product|null
+     * @return \EnterModel\Compare\Product|null
      */
     public function getProductObjectByHttpRequest(Http\Request $request) {
         $compareProduct = null;
@@ -26,7 +26,7 @@ class Compare {
         }
 
         if ($productData['id']) {
-            $compareProduct = new Model\Compare\Product();
+            $compareProduct = new \EnterModel\Compare\Product();
             $compareProduct->id = (string)$productData['id'];
         }
 
@@ -35,17 +35,17 @@ class Compare {
 
     /**
      * @param Http\Session $session
-     * @return Model\Compare
+     * @return \EnterModel\Compare
      */
     public function getObjectByHttpSession(Http\Session $session) {
-        $compare = new Model\Compare();
+        $compare = new \EnterModel\Compare();
 
         $compareData = array_merge([
             'product' => [],
         ], (array)$session->get('compare'));
 
         foreach ($compareData['product'] as $productId => $productQuantity) {
-            $compareProduct = new Model\Compare\Product();
+            $compareProduct = new \EnterModel\Compare\Product();
             $compareProduct->id = (string)$productId;
 
             $compare->product[$compareProduct->id] = $compareProduct;
@@ -56,9 +56,9 @@ class Compare {
 
     /**
      * @param Http\Session $session
-     * @param Model\Compare $compare
+     * @param \EnterModel\Compare $compare
      */
-    public function saveObjectToHttpSession(Http\Session $session, Model\Compare $compare) {
+    public function saveObjectToHttpSession(Http\Session $session, \EnterModel\Compare $compare) {
         $compareData = [
             'product' => [],
         ];
@@ -73,18 +73,18 @@ class Compare {
     }
 
     /**
-     * @param Model\Compare $compare
-     * @param Model\Compare\Product $compareProduct
+     * @param \EnterModel\Compare $compare
+     * @param \EnterModel\Compare\Product $compareProduct
      */
-    public function setProductForObject(Model\Compare $compare, Model\Compare\Product $compareProduct) {
+    public function setProductForObject(\EnterModel\Compare $compare, \EnterModel\Compare\Product $compareProduct) {
         $compare->product[$compareProduct->id] = $compareProduct;
     }
 
     /**
-     * @param Model\Compare $compare
-     * @param Model\Compare\Product $compareProduct
+     * @param \EnterModel\Compare $compare
+     * @param \EnterModel\Compare\Product $compareProduct
      */
-    public function deleteProductForObject(Model\Compare $compare, Model\Compare\Product $compareProduct) {
+    public function deleteProductForObject(\EnterModel\Compare $compare, \EnterModel\Compare\Product $compareProduct) {
         if (array_key_exists($compareProduct->id, $compare->product)) {
             unset($compare->product[$compareProduct->id]);
         }
@@ -92,10 +92,10 @@ class Compare {
 
     /**
      * @param $id
-     * @param Model\Compare $compare
-     * @return Model\Compare\Product|null
+     * @param \EnterModel\Compare $compare
+     * @return \EnterModel\Compare\Product|null
      */
-    public function getProductById($id, Model\Compare $compare) {
+    public function getProductById($id, \EnterModel\Compare $compare) {
         $return = null;
 
         foreach ($compare->product as $compareProduct) {
@@ -110,11 +110,11 @@ class Compare {
     }
 
     /**
-     * @param Model\Compare $compare
-     * @param Model\Product[] $productsById
+     * @param \EnterModel\Compare $compare
+     * @param \EnterModel\Product[] $productsById
      */
-    public function compareProductObjectList(Model\Compare $compare, array $productsById) {
-        $compareFunction = function(Model\Product $product, Model\Product $productToCompare) {
+    public function compareProductObjectList(\EnterModel\Compare $compare, array $productsById) {
+        $compareFunction = function(\EnterModel\Product $product, \EnterModel\Product $productToCompare) {
             foreach ($product->properties as $property) {
                 foreach ($productToCompare->properties as $propertyToCompare) {
                     if (!isset($property->equalProductIds)) {
@@ -131,7 +131,7 @@ class Compare {
         };
 
         foreach ($compare->product as $comparedProduct) {
-            /** @var Model\Product|null $product */
+            /** @var \EnterModel\Product|null $product */
             $product = isset($productsById[$comparedProduct->id]) ? $productsById[$comparedProduct->id] : null;
             if (!$product) continue;
 
@@ -146,22 +146,22 @@ class Compare {
     }
 
     /**
-     * @param Model\Compare $compare
-     * @param Model\Product[] $productsById
-     * @return Model\Compare\Group[]
+     * @param \EnterModel\Compare $compare
+     * @param \EnterModel\Product[] $productsById
+     * @return \EnterModel\Compare\Group[]
      */
-    public function getGroupListByObject(Model\Compare $compare, array $productsById) {
+    public function getGroupListByObject(\EnterModel\Compare $compare, array $productsById) {
         $groupsById = [];
 
         foreach ($compare->product as $comparedProduct) {
-            /** @var Model\Product|null $product */
+            /** @var \EnterModel\Product|null $product */
             $product = isset($productsById[$comparedProduct->id]) ? $productsById[$comparedProduct->id] : null;
             if (!$product) continue;
 
             $groupId = $product->category ? $product->category->id : null;
             if (!$groupId || isset($groupsById[$groupId])) continue;
 
-            $group = new Model\Compare\Group();
+            $group = new \EnterModel\Compare\Group();
             $group->id = $groupId;
             $group->name = $product->category->name;
 

@@ -30,13 +30,13 @@ class Search {
 
     /**
      * @param Query $query
-     * @return Model\SearchResult|null
+     * @return \EnterModel\SearchResult|null
      */
     public function getObjectByQuery(Query $query) {
         $searchResult = null;
 
         if ($item = $query->getResult()) {
-            $searchResult = new Model\SearchResult($item);
+            $searchResult = new \EnterModel\SearchResult($item);
         }
 
         return $searchResult;

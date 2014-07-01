@@ -92,10 +92,10 @@ class Index {
 
         // фильтры
         $filters = $filterRepository->getObjectListByQuery($filterListQuery);
-        $filters[] = new Model\Product\Filter([
+        $filters[] = new \EnterModel\Product\Filter([
             'filter_id' => 'q',
             'name'      => 'Поисковая строка',
-            'type_id'   => Model\Product\Filter::TYPE_STRING,
+            'type_id'   => \EnterModel\Product\Filter::TYPE_STRING,
             'options'   => [
                 ['id' => null],
             ],

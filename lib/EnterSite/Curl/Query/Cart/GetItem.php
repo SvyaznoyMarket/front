@@ -14,17 +14,17 @@ class GetItem extends Query {
     protected $result;
 
     /**
-     * @param Model\Cart $cart
+     * @param \EnterModel\Cart $cart
      * @param string $regionId
      */
-    public function __construct(Model\Cart $cart, $regionId) {
+    public function __construct(\EnterModel\Cart $cart, $regionId) {
         $this->url = new Url();
         $this->url->path = 'v2/cart/get-price';
         $this->url->query = [
             'geo_id' => $regionId,
         ];
         $this->data = [
-            'product_list'  => array_map(function(Model\Cart\Product $cartProduct) {
+            'product_list'  => array_map(function(\EnterModel\Cart\Product $cartProduct) {
                 return [
                     'id'       => $cartProduct->id,
                     'quantity' => $cartProduct->quantity,

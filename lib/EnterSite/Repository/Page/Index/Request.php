@@ -7,6 +7,6 @@ use EnterSite\Model;
 use EnterSite\Repository;
 
 class Request extends Repository\Page\DefaultLayout\Request {
-    /** @var Model\Promo[] */
+    /** @var \EnterModel\Promo[] */
     public $promos = [];
 }

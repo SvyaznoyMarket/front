@@ -90,7 +90,7 @@ class Get {
         foreach ($cart->product as $cartProduct) {
             $product = !empty($productsById[$cartProduct->id])
                 ? $productsById[$cartProduct->id]
-                : new Model\Product([
+                : new \EnterModel\Product([
                     'id' => $cartProduct->id,
                 ]);
 

@@ -6,10 +6,10 @@ use EnterSite\Model;
 use EnterSite\Repository;
 
 class Request extends Repository\Page\DefaultLayout\Request {
-    /** @var Model\Product */
+    /** @var \EnterModel\Product */
     public $product;
-    /** @var Model\Product\Category[] */
+    /** @var \EnterModel\Product\Category[] */
     public $accessoryCategories = [];
-    /** @var Model\Product\Review[] */
+    /** @var \EnterModel\Product\Review[] */
     public $reviews = [];
 }

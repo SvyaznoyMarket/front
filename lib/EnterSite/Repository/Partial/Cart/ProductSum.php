@@ -7,11 +7,11 @@ use EnterSite\Model\Partial;
 
 class ProductSum {
     /**
-     * @param Model\Cart\Product|null $cartProduct
+     * @param \EnterModel\Cart\Product|null $cartProduct
      * @return Partial\Cart\ProductSum|null
      */
     public function getObject(
-        Model\Cart\Product $cartProduct
+        \EnterModel\Cart\Product $cartProduct
     ) {
         $productSum = null;
 
