@@ -17,6 +17,9 @@ return function(\EnterSite\Config\Application $config) {
 
     $config->userToken->authCookieName = '_token';
 
+    $config->googleAnalitics->enabled = true;
+    $config->googleAnalitics->id = 'UA-25485956-5';
+
     $config->region->defaultId = '14974';
     $config->region->cookieName = 'geoshop';
 

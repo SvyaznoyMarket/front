@@ -23,6 +23,8 @@ namespace EnterSite\Config {
         public $userToken;
         /** @var Application\Region */
         public $region;
+        /** @var Application\GoogleAnalytics */
+        public $googleAnalitics;
         /** @var Application\Credit */
         public $credit;
         /** @var Application\Curl */
@@ -63,6 +65,8 @@ namespace EnterSite\Config {
 
             $this->session = new Application\Session();
             $this->userToken = new Application\UserToken();
+
+            $this->googleAnalitics = new Application\GoogleAnalytics();
 
             $this->region = new Application\Region();
             $this->credit = new Application\Credit();
@@ -115,6 +119,13 @@ namespace EnterSite\Config\Application {
          * @var string
          */
         public $authCookieName;
+    }
+
+    class GoogleAnalytics {
+        /** @var string */
+        public $id;
+        /** @var bool */
+        public $enabled;
     }
 
     class Region {

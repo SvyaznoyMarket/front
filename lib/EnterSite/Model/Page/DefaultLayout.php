@@ -15,6 +15,8 @@ namespace EnterSite\Model\Page {
         public $dataConfig;
         /** @var DefaultLayout\Template[] */
         public $templates = [];
+        /** @var DefaultLayout\GoogleAnalytics|null */
+        public $googleAnalytics;
         /** @var DefaultLayout\RegionBlock */
         public $regionBlock;
         /** @var DefaultLayout\MainMenu */
@@ -41,6 +43,10 @@ namespace EnterSite\Model\Page {
 }
 
 namespace EnterSite\Model\Page\DefaultLayout {
+    class GoogleAnalytics {
+        public $id;
+    }
+
     /**
      * Шаблоны mustache для блоков <script id="{{id}}" type="text/html">{{content}}</script>
      */

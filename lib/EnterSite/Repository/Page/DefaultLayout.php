@@ -54,6 +54,12 @@ class DefaultLayout {
             ],
         ]);
 
+        $page->googleAnalytics = false;
+        if ($config->googleAnalitics->enabled) {
+            $page->googleAnalytics = new Page\GoogleAnalytics();
+            $page->googleAnalytics->id = $config->googleAnalitics->id;
+        }
+
         // регион
         $page->regionBlock->regionName = $request->region->name;
         $page->regionBlock->setUrl = $router->getUrlByRoute(new Routing\Region\SetByName());

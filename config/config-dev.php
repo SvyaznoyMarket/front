@@ -7,4 +7,5 @@ return function(\EnterSite\Config\Application $config) {
 
     // dev config
     $config->debugLevel = 1;
+    //$config->googleAnalitics->enabled = false;
 };
