@@ -9,7 +9,7 @@ use EnterSite\MustacheRendererTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
-use EnterSite\Model;
+use EnterModel as Model;
 use EnterTerminal\Model\Page\Search as Page;
 
 class Search {
@@ -51,7 +51,7 @@ class Search {
         // сортировка
         $sorting = null;
         if (!empty($request->query['sort']['token']) && !empty($request->query['sort']['direction'])) {
-            $sorting = new \EnterModel\Product\Sorting();
+            $sorting = new Model\Product\Sorting();
             $sorting->token = trim((string)$request->query['sort']['token']);
             $sorting->direction = trim((string)$request->query['sort']['direction']);
         }
@@ -106,10 +106,10 @@ class Search {
 
         // фильтры
         $filters = $filterRepository->getObjectListByQuery($filterListQuery);
-        $filters[] = new \EnterModel\Product\Filter([
+        $filters[] = new Model\Product\Filter([
             'filter_id' => 'phrase',
             'name'      => 'Поисковая строка',
-            'type_id'   => \EnterModel\Product\Filter::TYPE_STRING,
+            'type_id'   => Model\Product\Filter::TYPE_STRING,
             'options'   => [
                 ['id' => null],
             ],

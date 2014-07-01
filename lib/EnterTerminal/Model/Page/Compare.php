@@ -1,12 +1,12 @@
 <?php
 
 namespace EnterTerminal\Model\Page {
-    use EnterSite\Model;
+    use EnterModel as Model;
 
     class Compare {
-        /** @var \EnterModel\Product[] */
+        /** @var Model\Product[] */
         public $groups = [];
-        /** @var \EnterModel\Product[] */
+        /** @var Model\Product[] */
         public $products = [];
     }
 }

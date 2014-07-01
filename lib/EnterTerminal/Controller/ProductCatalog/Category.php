@@ -9,7 +9,7 @@ use EnterSite\MustacheRendererTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
-use EnterSite\Model;
+use EnterModel as Model;
 use EnterTerminal\Model\Page\ProductCatalog\Category as Page;
 
 class Category {
@@ -50,7 +50,7 @@ class Category {
         // сортировка
         $sorting = null;
         if (!empty($request->query['sort']['token']) && !empty($request->query['sort']['direction'])) {
-            $sorting = new \EnterModel\Product\Sorting();
+            $sorting = new Model\Product\Sorting();
             $sorting->token = trim((string)$request->query['sort']['token']);
             $sorting->direction = trim((string)$request->query['sort']['direction']);
         }
@@ -131,7 +131,7 @@ class Category {
         if ((bool)$productIdPager->ids) {
             $cartProducts = [];
             foreach ($productIdPager->ids as $productId) {
-                $cartProducts[] = new \EnterModel\Cart\Product(['id' => $productId, 'quantity' => 1]);
+                $cartProducts[] = new Model\Cart\Product(['id' => $productId, 'quantity' => 1]);
             }
 
             if ((bool)$cartProducts) {

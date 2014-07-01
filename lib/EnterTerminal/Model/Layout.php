@@ -1,14 +1,14 @@
 <?php
 
 namespace EnterTerminal\Model {
-    use EnterSite\Model;
+    use EnterModel as Model;
 
     class Layout {
-        /** @var \EnterModel\Region */
+        /** @var Model\Region */
         public $region;
-        /** @var \EnterModel\Shop */
+        /** @var Model\Shop */
         public $shop;
-        /** @var Model\MainMenu */
+        /** @var \EnterTerminal\Model\MainMenu */
         public $mainMenu;
     }
 }

@@ -1,12 +1,12 @@
 <?php
 
 namespace EnterTerminal\Model\Page {
-    use EnterSite\Model;
+    use EnterModel as Model;
 
     class ProductCard {
-        /** @var \EnterModel\Product */
+        /** @var Model\Product */
         public $product;
-        /** @var \EnterModel\Product\Review[] */
+        /** @var Model\Product\Review[] */
         public $reviews = [];
     }
 }

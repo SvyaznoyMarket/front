@@ -4,19 +4,19 @@ namespace EnterTerminal\Repository\Product;
 
 use Enter\Http;
 use EnterSite\Repository\Product\Filter as BaseRepository;
-use EnterSite\Model;
+use EnterModel as Model;
 
 class Filter extends BaseRepository {
     /**
      * @param Http\Request $request
-     * @return \EnterModel\Product\RequestFilter[]
+     * @return Model\Product\RequestFilter[]
      */
     public function getRequestObjectListByHttpRequest(Http\Request $request) {
         $filters = [];
 
         foreach ((array)$request->query['filter'] as $key => $value) {
             foreach ((array)$value as $optionToken => $optionValue) {
-                $filter = new \EnterModel\Product\RequestFilter();
+                $filter = new Model\Product\RequestFilter();
                 $filter->token = $key;
                 $filter->name = $key;
                 $filter->value = $optionValue;
@@ -31,7 +31,7 @@ class Filter extends BaseRepository {
     }
 
     /**
-     * @param \EnterModel\Product\RequestFilter[] $requestFilters
+     * @param Model\Product\RequestFilter[] $requestFilters
      * @return array
      */
     public function dumpRequestObjectList(array $requestFilters) {
@@ -67,8 +67,8 @@ class Filter extends BaseRepository {
     }
 
     /**
-     * @param \EnterModel\Product\Filter[] $filters
-     * @param \EnterModel\Product\RequestFilter[] $requestFilters
+     * @param Model\Product\Filter[] $filters
+     * @param Model\Product\RequestFilter[] $requestFilters
      */
     public function setValueForObjectList(array $filters, array $requestFilters) {
         if (!(bool)$requestFilters) {

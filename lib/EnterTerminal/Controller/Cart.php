@@ -9,7 +9,7 @@ use EnterSite\CurlClientTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\SessionTrait;
 use EnterSite\Curl\Query;
-use EnterSite\Model;
+use EnterModel as Model;
 use EnterSite\Repository;
 use EnterTerminal\Model\Page\Cart as Page;
 
@@ -79,7 +79,7 @@ class Cart {
         foreach (array_reverse($cart->product) as $cartProduct) {
             $product = !empty($productsById[$cartProduct->id])
                 ? $productsById[$cartProduct->id]
-                : new \EnterModel\Product([
+                : new Model\Product([
                     'id' => $cartProduct->id,
                 ]);
 

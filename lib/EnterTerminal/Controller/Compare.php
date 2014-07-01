@@ -9,7 +9,7 @@ use EnterSite\CurlClientTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\SessionTrait;
 use EnterSite\Curl\Query;
-use EnterSite\Model;
+use EnterModel as Model;
 use EnterSite\Repository;
 use EnterTerminal\Model\Page\Compare as Page;
 
@@ -77,7 +77,7 @@ class Compare {
         foreach ($compare->product as $compareProduct) {
             $product = !empty($productsById[$compareProduct->id])
                 ? $productsById[$compareProduct->id]
-                : new \EnterModel\Product([
+                : new Model\Product([
                     'id' => $compareProduct->id,
                 ]);
 

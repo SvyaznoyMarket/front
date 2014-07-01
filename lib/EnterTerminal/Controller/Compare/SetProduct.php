@@ -8,7 +8,6 @@ use EnterSite\CurlClientTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\SessionTrait;
 use EnterSite\Curl\Query;
-use EnterSite\Model;
 use EnterSite\Repository;
 use EnterTerminal\Controller;
 

@@ -8,7 +8,7 @@ use EnterSite\CurlClientTrait;
 use EnterSite\Controller;
 use EnterTerminal\Repository;
 use EnterSite\Curl\Query;
-use EnterSite\Model;
+use EnterModel as Model;
 use EnterTerminal\Model\Layout as Page;
 
 class Layout {

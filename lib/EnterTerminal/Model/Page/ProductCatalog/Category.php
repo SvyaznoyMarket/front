@@ -1,20 +1,20 @@
 <?php
 
 namespace EnterTerminal\Model\Page\ProductCatalog {
-    use EnterSite\Model;
+    use EnterModel as Model;
 
     class Category {
-        /** @var \EnterModel\Product\Category */
+        /** @var Model\Product\Category */
         public $category;
-        /** @var \EnterModel\Product\Catalog\Config */
+        /** @var Model\Product\Catalog\Config */
         public $catalogConfig;
-        /** @var \EnterModel\Product[] */
+        /** @var Model\Product[] */
         public $products = [];
         /** @var int */
         public $productCount;
-        /** @var \EnterModel\Product\Sorting[] */
+        /** @var Model\Product\Sorting[] */
         public $sortings = [];
-        /** @var \EnterModel\Product\Filter[] */
+        /** @var Model\Product\Filter[] */
         public $filters = [];
     }
 }

@@ -8,7 +8,6 @@ use EnterSite\CurlClientTrait;
 use EnterSite\Controller;
 use EnterTerminal\Repository;
 use EnterSite\Curl\Query;
-use EnterSite\Model;
 use EnterTerminal\Model\Page\Content as Page;
 
 class Content {

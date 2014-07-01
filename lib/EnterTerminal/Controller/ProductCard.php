@@ -8,7 +8,7 @@ use EnterSite\CurlClientTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
-use EnterSite\Model;
+use EnterModel as Model;
 use EnterTerminal\Model\Page\ProductCard as Page;
 
 class ProductCard {
@@ -62,7 +62,7 @@ class ProductCard {
         // запрос доставки товара
         $deliveryListQuery = null;
         if ($product->isBuyable) {
-            $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList([new \EnterModel\Cart\Product(['id' => $product->id, 'quantity' => 1])], $shop->regionId);
+            $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList([new Model\Cart\Product(['id' => $product->id, 'quantity' => 1])], $shop->regionId);
             $curl->prepare($deliveryListQuery);
         }
 
@@ -128,7 +128,7 @@ class ProductCard {
         // группированные товары
         $productsById = [];
         foreach (array_merge([$product], $product->relation->accessories) as $iProduct) {
-            /** @var \EnterModel\Product $iProduct */
+            /** @var Model\Product $iProduct */
             $productsById[$iProduct->id] = $iProduct;
         }
 
