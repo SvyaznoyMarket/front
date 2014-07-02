@@ -135,7 +135,14 @@ class ProductCard {
         }
 
         // наборы
-        $kitProducts = $kitListQuery ? array_values($productRepository->getIndexedObjectListByQueryList([$kitListQuery])) : [];
+        $kitProductsById = $kitListQuery ? $productRepository->getIndexedObjectListByQueryList([$kitListQuery]) : [];
+        foreach ($product->kit as $kit) {
+            /** @var Model\Product|null $kiProduct */
+            $kiProduct = isset($kitProductsById[$kit->id]) ? $kitProductsById[$kit->id] : null;
+            if (!$kiProduct) continue;
+
+            $kiProduct->kitCount = $kit->count; // FIXME
+        }
 
         // группированные товары
         $productsById = [];
@@ -153,7 +160,7 @@ class ProductCard {
         $page = new Page();
         $page->product = $product;
         $page->reviews = $reviews;
-        $page->kitProducts = $kitProducts;
+        $page->kitProducts = array_values($kitProductsById);
 
         return new Http\JsonResponse($page);
     }
