@@ -17,7 +17,7 @@
         <ul class="menuCat clearfix">
         {{#elements}}
             <li class="menuCat_item">
-                <a class="menuCat_link" href="{{url}}">
+                <a class="js-ga-click menuCat_link" href="{{url}}" data-ga-click="{{&dataGa}}">
                     <span class="menuCat_chartWrap">
                         <span class="menuCat_chart"{{#style}} style="{{style}}"{{/style}}>{{char}}</span>
                         {{#image}}<img src="{{image}}" />{{/image}}
@@ -31,25 +31,25 @@
 
     <ul class="bannersLine clearfix">
 		<li class="bannersLine_item">
-			<a href="/how_choose_product" class="js-ga-click bannersLine_link" data-ga="{&quot;m_main_promo_link&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_main_promo_link&quot;,&quot;Как выбрать&quot;]}">
+			<a href="/how_choose_product" class="js-ga-click bannersLine_link" data-ga-click="{&quot;m_main_promo_link&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_main_promo_link&quot;,&quot;Как выбрать&quot;]}">
 				<img src="/css/modules/main-page/img/how_choose_product.png" alt="Как выбрать" class="bannersLine_img" />
 			</a>
 		</li>
 		
 		<li class="bannersLine_item">
-			<a href="/enterprize" class="js-ga-click bannersLine_link" data-ga="{&quot;m_main_promo_link&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_main_promo_link&quot;,&quot;Enterprize&quot;]}">
+			<a href="/enterprize" class="js-ga-click bannersLine_link" data-ga-click="{&quot;m_main_promo_link&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_main_promo_link&quot;,&quot;Enterprize&quot;]}">
 				<img src="/css/modules/main-page/img/enterprize.png" alt="Enter Prize" class="bannersLine_img" />
 			</a>
 		</li>
 
 		<li class="bannersLine_item">
-			<a href="/special_offers" class="js-ga-click bannersLine_link" data-ga="{&quot;m_main_promo_link&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_main_promo_link&quot;,&quot;WOW&quot;]}">
+			<a href="/special_offers" class="js-ga-click bannersLine_link" data-ga-click="{&quot;m_main_promo_link&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_main_promo_link&quot;,&quot;WOW&quot;]}">
 				<img src="/css/modules/main-page/img/special_offers.png" alt="WOW акции" class="bannersLine_img" />
 			</a>
 		</li>
 
 		<li class="bannersLine_item">
-			<a href="/take_credit" class="js-ga-click bannersLine_link" data-ga="{&quot;m_main_promo_link&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_main_promo_link&quot;,&quot;Кредит&quot;]}">
+			<a href="/take_credit" class="js-ga-click bannersLine_link" data-ga-click="{&quot;m_main_promo_link&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_main_promo_link&quot;,&quot;Кредит&quot;]}">
 				<img src="/css/modules/main-page/img/take_credit.png" alt="Купи в кредит" class="bannersLine_img" />
 			</a>
 		</li>

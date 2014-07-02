@@ -50,6 +50,22 @@ class Index {
         }
         $page->content->promoDataValue = $viewHelper->json($promoData);
 
+        // ga
+        $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$viewHelper) {
+            /** @var \EnterSite\Model\MainMenu\Element[] $menuElements */
+            foreach ($menuElements as $menuElement) {
+                $menuElement->dataGa = $viewHelper->json([
+                    'm_main_category' => ['send', 'event', 'm_main_category', $menuElement->name],
+                ]);
+                /*
+                if ((bool)$menuElement->children) {
+                    $walkByMenu($menuElement->children);
+                }
+                */
+            }
+        };
+        $walkByMenu($request->mainMenu->elements);
+
         // шаблоны mustache
         foreach ([
 

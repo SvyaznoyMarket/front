@@ -30,7 +30,7 @@ define(
 
         $body.on('click', '.js-ga-click', function(e) {
             var $el = $(this),
-                dataGa = $el.data('ga')
+                dataGa = $el.data('gaClick')
             ;
 
             console.info('js-ga-click', $el, dataGa);
