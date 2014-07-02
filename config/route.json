@@ -40,6 +40,14 @@
             "categoryPath": "[\\w\\d-_]+/[\\w\\d-_]+"
         }
     },
+    "ProductCatalog\\GetBrandCategory": {
+        "name": "Каталог товаров - бренд-категория",
+        "pattern": "/catalog/{categoryPath}/{brandToken}",
+        "require": {
+            "categoryPath": "[\\w\\d-_]+/[\\w\\d-_]+",
+            "brandToken": "[\\w\\d-_]+"
+        }
+    },
     "Product\\GetListByFilter": {
         "name": "Список товаров",
         "pattern": "/ajax/product-list"
