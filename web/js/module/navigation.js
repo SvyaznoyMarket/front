@@ -36,8 +36,7 @@ define(
             /**
              * Показываем/скрываем навигацию
              */
-            slideNav = function slideNav() {
-
+            slideNav = function slideNav(e) {
                 if ( navSite.css('display') == 'block' ) {
                     closeNav();
                 }
@@ -48,7 +47,7 @@ define(
                     $('html,body').addClass('noScroll');
                 }
 
-                return false;
+                e.preventDefault();
             },
 
             /**

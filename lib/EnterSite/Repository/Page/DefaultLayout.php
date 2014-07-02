@@ -22,7 +22,7 @@ class DefaultLayout {
      */
     public function buildObjectByRequest(Page $page, DefaultLayout\Request $request) {
         $config = $this->getConfig();
-        $helper = $this->getViewHelper();
+        $viewHelper = $this->getViewHelper();
         $router = $this->getRouter();
 
         $templateDir = $config->mustacheRenderer->templateDir;
@@ -38,7 +38,7 @@ class DefaultLayout {
         $page->dataModule = 'default';
 
         // body[data-value]
-        $page->dataConfig = $helper->json([
+        $page->dataConfig = $viewHelper->json([
             'requestId' => $config->requestId,
             'debug'     => $config->debugLevel,
             'env'       => $config->environment,
@@ -82,6 +82,20 @@ class DefaultLayout {
         $page->userBlock->isUserAuthorized = false;
         $page->userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Login());
         $page->userBlock->cart->url = $router->getUrlByRoute(new Routing\Cart\Index());
+
+        // ga
+        $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$viewHelper) {
+            /** @var \EnterSite\Model\MainMenu\Element[] $menuElements */
+            foreach ($menuElements as $menuElement) {
+                $menuElement->dataGa = $viewHelper->json([
+                    'm_sidebar_category_click' => ['send', 'event', 'm_sidebar_category_click', $menuElement->name],
+                ]);
+                if ((bool)$menuElement->children) {
+                    $walkByMenu($menuElement->children);
+                }
+            }
+        };
+        $walkByMenu($request->mainMenu->elements);
 
         // шаблоны mustache
         foreach ([
