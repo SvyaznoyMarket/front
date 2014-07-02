@@ -15,6 +15,8 @@ namespace EnterSite\Model\Partial\Cart {
         public $dataUrl;
         /** @var string */
         public $dataValue;
+        /** @var string */
+        public $dataGa;
         /** @var bool */
         public $isDisabled;
         /** @var bool */

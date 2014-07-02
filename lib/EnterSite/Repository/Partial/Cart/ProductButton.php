@@ -48,6 +48,11 @@ class ProductButton {
             ],
         ]);
 
+        // ga
+        $button->dataGa = $this->helper->json([
+            'm_add_to_basket' => ['send', 'event', $product->isInShopOnly ? 'm_1_click_order' : 'm_add_to_basket', $product->name, $product->article, '{product.sum}'],
+        ]);
+
         $button->id = self::getId($product->id);
         $button->widgetId = self::getWidgetId($product->id);
         $button->text = 'Купить';
