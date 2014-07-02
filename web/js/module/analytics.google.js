@@ -29,10 +29,11 @@ define(
         ;
 
         $body.on('click', '.js-ga-click', function(e) {
-            var $el = $(e.target),
+            var $el = $(this),
                 dataGa = $el.data('ga')
             ;
 
+            console.info('js-ga-click', $el, dataGa);
             if (ga && !_.isUndefined(ga) && _.isObject(dataGa)) {
 
                 _.each(dataGa, function(data, handlerName) {
