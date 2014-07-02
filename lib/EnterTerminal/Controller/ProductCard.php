@@ -84,6 +84,15 @@ class ProductCard {
             $curl->prepare($accessoryListQuery);
         }
 
+        // запрос наборов
+        $kitListQuery = null;
+        if ((bool)$product->kit) {
+            $kitListQuery = new Query\Product\GetListByIdList(array_map(function(Model\Product\Kit $kit) {
+                return $kit->id;
+            }, $product->kit), $shop->regionId);
+            $curl->prepare($kitListQuery);
+        }
+
         // запрос списка рейтингов товаров
         $ratingListQuery = null;
         if ($config->productReview->enabled) {
@@ -125,6 +134,9 @@ class ProductCard {
             $productRepository->setAccessoryRelationForObjectListByQuery([$product->id => $product], $accessoryListQuery);
         }
 
+        // наборы
+        $kitProducts = $kitListQuery ? array_values($productRepository->getIndexedObjectListByQueryList([$kitListQuery])) : [];
+
         // группированные товары
         $productsById = [];
         foreach (array_merge([$product], $product->relation->accessories) as $iProduct) {
@@ -141,6 +153,7 @@ class ProductCard {
         $page = new Page();
         $page->product = $product;
         $page->reviews = $reviews;
+        $page->kitProducts = $kitProducts;
 
         return new Http\JsonResponse($page);
     }

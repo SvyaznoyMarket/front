@@ -8,5 +8,7 @@ namespace EnterTerminal\Model\Page {
         public $product;
         /** @var Model\Product\Review[] */
         public $reviews = [];
+        /** @var Model\Product[] */
+        public $kitProducts = [];
     }
 }

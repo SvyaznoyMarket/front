@@ -57,6 +57,8 @@ class Product {
     public $relatedIds = [];
     /** @var Model\Product\Relation */
     public $relation;
+    /** @var Model\Product\Kit[] */
+    public $kit = [];
 
     /**
      * @param array $data
@@ -104,7 +106,7 @@ class Product {
 
         if (isset($data['media'][0])) {
             foreach ($data['media'] as $mediaItem) {
-                if (!isset($mediaItem['id'])) continue;
+                if (empty($mediaItem['id'])) continue;
                 $this->media->photos[] = new Model\Product\Media\Photo($mediaItem);
             }
         }
@@ -112,6 +114,13 @@ class Product {
         if (isset($data['stock'][0])) {
             foreach ($data['stock'] as $stockItem) {
                 $this->stock[] = new Model\Product\Stock((array)$stockItem);
+            }
+        }
+
+        if (isset($data['kit'][0])) {
+            foreach ($data['kit'] as $kitItem) {
+                if (empty($kitItem['id'])) continue;
+                $this->kit[] = new Model\Product\Kit((array)$kitItem);
             }
         }
 
