@@ -26,6 +26,8 @@ namespace EnterSite\Model\Page\Cart\Index {
         public $cart;
         /** @var string */
         public $orderUrl;
+        /** @var string */
+        public $orderDataGa;
 
         public function __construct() {
             parent::__construct();

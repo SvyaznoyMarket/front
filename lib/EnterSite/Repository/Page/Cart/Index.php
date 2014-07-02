@@ -6,6 +6,7 @@ use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\RouterTrait;
 use EnterSite\TranslateHelperTrait;
+use EnterSite\ViewHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
@@ -13,8 +14,8 @@ use EnterSite\Model\Partial;
 use EnterSite\Model\Page\Cart\Index as Page;
 
 class Index {
-    use ConfigTrait, LoggerTrait, RouterTrait, TranslateHelperTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, RouterTrait, TranslateHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, TranslateHelperTrait, ViewHelperTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, RouterTrait, TranslateHelperTrait, ViewHelperTrait;
     }
 
     /**
@@ -26,6 +27,7 @@ class Index {
 
         $config = $this->getConfig();
         $router = $this->getRouter();
+        $viewHelper = $this->getViewHelper();
 
         $productCardRepository = new Repository\Partial\Cart\ProductCard();
         $productSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
@@ -34,6 +36,9 @@ class Index {
         $templateDir = $config->mustacheRenderer->templateDir;
 
         $page->dataModule = 'cart';
+
+        // ga
+        $page->content->orderDataGa = $viewHelper->json(['m_checkout' => ['send', 'event', 'm_checkout', 'cart']]);
 
         if (count($request->cart)) {
             $page->content->cart = (new Repository\Partial\Cart())->getObject($request->cart, $request->productsById);

@@ -8,7 +8,7 @@ define(
         var $body = $('body')
 
             handlers = {
-                'default': function($el, gaData, e) {
+                'default': function($el, dataGa, e) {
                     ga.apply(ga, dataGa);
                 },
 
@@ -33,11 +33,11 @@ define(
                 dataGa = $el.data('ga')
             ;
 
-            console.info('ga', dataGa, $el.data());
-
             if (ga && !_.isUndefined(ga) && _.isObject(dataGa)) {
 
                 _.each(dataGa, function(data, handlerName) {
+                    console.info('ga', handlerName, data);
+
                     if (!handlers[handlerName]) {
                         handlerName = 'default';
                     }

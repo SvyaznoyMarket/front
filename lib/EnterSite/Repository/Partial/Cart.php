@@ -3,13 +3,14 @@
 namespace EnterSite\Repository\Partial;
 
 use EnterSite\TranslateHelperTrait;
+use EnterSite\ViewHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
 class Cart {
-    use TranslateHelperTrait;
+    use TranslateHelperTrait, ViewHelperTrait;
 
     /**
      * @param \EnterModel\Cart $cartModel
