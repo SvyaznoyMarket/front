@@ -30,24 +30,24 @@ class Index {
         $config = $this->getConfig();
         $logger = $this->getLogger();
         $curl = $this->getCurlClient();
-        $productRepository = new Repository\Product();
+        $productRepository = new \EnterRepository\Product();
         $filterRepository = new Repository\Product\Filter();
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // поисковая строка
-        $searchPhrase = (new Repository\Search())->getPhraseByHttpRequest($request);
+        $searchPhrase = (new \EnterRepository\Search())->getPhraseByHttpRequest($request);
 
         // номер страницы
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
-        $limit = (new Repository\Product\Catalog\Config())->getLimitByHttpRequest($request);
+        $limit = (new \EnterRepository\Product\Catalog\Config())->getLimitByHttpRequest($request);
 
         // список сортировок
-        $sortings = (new Repository\Product\Sorting())->getObjectList();
+        $sortings = (new \EnterRepository\Product\Sorting())->getObjectList();
 
         // сортировка
-        $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
+        $sorting = (new \EnterRepository\Product\Sorting())->getObjectByHttpRequest($request);
         if (!$sorting) {
             $sorting = reset($sortings);
         }
@@ -59,7 +59,7 @@ class Index {
         $curl->execute();
 
         // регион
-        $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         // фильтры в http-запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
@@ -83,7 +83,7 @@ class Index {
 
         // листинг идентификаторов товаров
         try {
-            $searchResult = (new Repository\Search())->getObjectByQuery($searchResultQuery);
+            $searchResult = (new \EnterRepository\Search())->getObjectByQuery($searchResultQuery);
         } catch (\Exception $e) {
             $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['region']]);
 
@@ -101,7 +101,7 @@ class Index {
             ],
         ]);
         // добавление фильтров категории
-        $filters = array_merge($filters, $filterRepository->getObjectListByCategoryList((new Repository\Product\Category())->getObjectListBySearchResult($searchResult)));
+        $filters = array_merge($filters, $filterRepository->getObjectListByCategoryList((new \EnterRepository\Product\Category())->getObjectListBySearchResult($searchResult)));
 
         // запрос списка товаров
         $productListQuery = null;

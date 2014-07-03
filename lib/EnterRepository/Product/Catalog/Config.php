@@ -1,12 +1,12 @@
 <?php
 
-namespace EnterSite\Repository\Product\Catalog;
+namespace EnterRepository\Product\Catalog;
 
 use Enter\Curl\Query;
 use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
-use EnterSite\Model;
+use EnterModel as Model;
 
 class Config {
     use ConfigTrait, LoggerTrait {
@@ -15,7 +15,7 @@ class Config {
 
     /**
      * @param Query $query
-     * @return \EnterModel\Product\Catalog\Config|null
+     * @return Model\Product\Catalog\Config|null
      */
     public function getObjectByQuery(Query $query) {
         $object = null;
@@ -23,7 +23,7 @@ class Config {
         try {
             $item = $query->getResult();
             if ($item) {
-                $object = new \EnterModel\Product\Catalog\Config($item);
+                $object = new Model\Product\Catalog\Config($item);
             }
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);

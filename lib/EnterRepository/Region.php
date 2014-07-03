@@ -1,11 +1,11 @@
 <?php
 
-namespace EnterSite\Repository;
+namespace EnterRepository;
 
 use Enter\Http;
 use Enter\Curl\Query;
 use EnterSite\ConfigTrait;
-use EnterSite\Model;
+use EnterModel as Model;
 
 class Region {
     use ConfigTrait;
@@ -34,7 +34,7 @@ class Region {
 
     /**
      * @param Query $query
-     * @return \EnterModel\Region
+     * @return Model\Region
      */
     public function getObjectByQuery(Query $query) {
         $region = null;
@@ -42,11 +42,11 @@ class Region {
         $item = $query->getResult();
         if (!$item) {
             // TODO: logger
-            $region = new \EnterModel\Region();
+            $region = new Model\Region();
             $region->id = $this->getConfig()->region->defaultId;
             $region->name = 'Москва*';
         } else {
-            $region = new \EnterModel\Region($item);
+            $region = new Model\Region($item);
         }
 
         return $region;

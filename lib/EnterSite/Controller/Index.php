@@ -22,11 +22,11 @@ class Index {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
-        $productCategoryRepository = new Repository\Product\Category();
-        $promoRepository = new Repository\Promo();
+        $productCategoryRepository = new \EnterRepository\Product\Category();
+        $promoRepository = new \EnterRepository\Promo();
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // запрос региона
         $regionQuery = new Query\Region\GetItemById($regionId);
@@ -35,7 +35,7 @@ class Index {
         $curl->execute();
 
         // регион
-        $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         // запрос категорий
         $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);

@@ -32,10 +32,10 @@ class Index {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
         $session = $this->getSession();
-        $cartRepository = new Repository\Cart();
+        $cartRepository = new \EnterRepository\Cart();
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // корзина из сессии
         $cart = $cartRepository->getObjectByHttpSession($session);
@@ -50,7 +50,7 @@ class Index {
         $curl->execute();
 
         // регион
-        $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         $productListQuery = (bool)$cart->product ? new Query\Product\GetListByIdList(array_values(array_map(function(\EnterModel\Cart\Product $cartProduct) { return $cartProduct->id; }, $cart->product)), $region->id) : null;
         if ($productListQuery) {
@@ -71,7 +71,7 @@ class Index {
         $curl->execute();
 
         $cartProducts = $cart->product;
-        $productsById = $productListQuery ? (new Repository\Product)->getIndexedObjectListByQueryList([$productListQuery]) : [];
+        $productsById = $productListQuery ? (new \EnterRepository\Product)->getIndexedObjectListByQueryList([$productListQuery]) : [];
 
         // меню
         $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);

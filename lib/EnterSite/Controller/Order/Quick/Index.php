@@ -23,7 +23,7 @@ class Index {
     public function execute(Http\Request $request) {
         $session = $this->getSession();
 
-        $cartProduct = (new Repository\Cart())->getProductObjectByHttpRequest($request);
+        $cartProduct = (new \EnterRepository\Cart())->getProductObjectByHttpRequest($request);
         if (!$cartProduct) {
             throw new \Exception('Не передан товар');
         }

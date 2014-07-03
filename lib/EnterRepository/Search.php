@@ -1,11 +1,11 @@
 <?php
 
-namespace EnterSite\Repository;
+namespace EnterRepository;
 
 use Enter\Http;
 use Enter\Curl\Query;
 use EnterSite\ConfigTrait;
-use EnterSite\Model;
+use EnterModel as Model;
 
 class Search {
     use ConfigTrait;
@@ -30,13 +30,13 @@ class Search {
 
     /**
      * @param Query $query
-     * @return \EnterModel\SearchResult|null
+     * @return Model\SearchResult|null
      */
     public function getObjectByQuery(Query $query) {
         $searchResult = null;
 
         if ($item = $query->getResult()) {
-            $searchResult = new \EnterModel\SearchResult($item);
+            $searchResult = new Model\SearchResult($item);
         }
 
         return $searchResult;

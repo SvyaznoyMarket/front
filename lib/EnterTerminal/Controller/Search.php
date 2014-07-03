@@ -25,8 +25,8 @@ class Search {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
-        $productRepository = new Repository\Product();
-        $productCategoryRepository = new Repository\Product\Category();
+        $productRepository = new \EnterRepository\Product();
+        $productCategoryRepository = new \EnterRepository\Product\Category();
         $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME
 
         // ид магазина
@@ -34,7 +34,7 @@ class Search {
 
         // ид категории
         // поисковая строка
-        $searchPhrase = (new Repository\Search())->getPhraseByHttpRequest($request, 'phrase');
+        $searchPhrase = (new \EnterRepository\Search())->getPhraseByHttpRequest($request, 'phrase');
         if (!$searchPhrase) {
             throw new \Exception('Не передана поисковая фраза');
         }
@@ -46,7 +46,7 @@ class Search {
         $limit = (int)$request->query['limit'] ?: 10;
 
         // сортировки
-        $sortings = (new Repository\Product\Sorting())->getObjectList();
+        $sortings = (new \EnterRepository\Product\Sorting())->getObjectList();
 
         // сортировка
         $sorting = null;
@@ -63,7 +63,7 @@ class Search {
         $curl->execute();
 
         // магазин
-        $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
+        $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
         if (!$shop) {
             throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
         }
@@ -90,7 +90,7 @@ class Search {
         $filterRepository->setValueForObjectList($filters, $requestFilters);
 
         // листинг идентификаторов товаров
-        $searchResult = (new Repository\Search())->getObjectByQuery($searchResultQuery);
+        $searchResult = (new \EnterRepository\Search())->getObjectByQuery($searchResultQuery);
 
         // TODO: убрать когда поиск будет возвращать картинки категорий
         $categoryListQuery =
@@ -116,7 +116,7 @@ class Search {
         ]);
         // добавление фильтров категории
         //$categories = (new Repository\Product\Category())->getObjectListBySearchResult($searchResult); // TODO: вернуть когда поиск будет возвращать картинки категорий
-        $categories = $categoryListQuery ? (new Repository\Product\Category())->getObjectListByQuery($categoryListQuery) : [];
+        $categories = $categoryListQuery ? (new \EnterRepository\Product\Category())->getObjectListByQuery($categoryListQuery) : [];
         $categoryFilters = $filterRepository->getObjectListByCategoryList($categories);
         $filters = array_merge($filters, $categoryFilters);
 

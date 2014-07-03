@@ -30,16 +30,16 @@ class Get {
         $config = $this->getConfig();
         $session = $this->getSession();
         $curl = $this->getCurlClient();
-        $cartRepository = new Repository\Cart();
+        $cartRepository = new \EnterRepository\Cart();
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // корзина из сессии
         $cart = $cartRepository->getObjectByHttpSession($session);
 
         // токен пользователя
-        $userToken = (new Repository\User)->getTokenByHttpRequest($request);
+        $userToken = (new \EnterRepository\User)->getTokenByHttpRequest($request);
 
         // запрос пользователя
         $userItemQuery = $userToken ? new Query\User\GetItemByToken($userToken) : null;
@@ -68,10 +68,10 @@ class Get {
 
         $curl->execute();
 
-        $user = $userItemQuery ? (new Repository\User())->getObjectByQuery($userItemQuery) : null;
+        $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
 
         if ($productListQuery) {
-            $productsById = (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+            $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
         }
 
         // корзина из ядра

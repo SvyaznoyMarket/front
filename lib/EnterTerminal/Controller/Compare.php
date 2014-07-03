@@ -28,7 +28,7 @@ class Compare {
         $config = $this->getConfig();
         $session = $this->getSession();
         $curl = $this->getCurlClient();
-        $compareRepository = new Repository\Compare();
+        $compareRepository = new \EnterRepository\Compare();
 
         // ид магазина
         $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
@@ -40,7 +40,7 @@ class Compare {
         $curl->execute();
 
         // магазин
-        $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
+        $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
         if (!$shop) {
             throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
         }
@@ -62,7 +62,7 @@ class Compare {
         $curl->execute();
 
         if ($productListQuery) {
-            $productsById = (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery], function(&$item) {
+            $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery], function(&$item) {
                 // оптимизация
                 $item['media'] = [reset($item['media'])];
             });

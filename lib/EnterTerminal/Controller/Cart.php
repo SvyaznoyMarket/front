@@ -28,7 +28,7 @@ class Cart {
         $config = $this->getConfig();
         $session = $this->getSession();
         $curl = $this->getCurlClient();
-        $cartRepository = new Repository\Cart();
+        $cartRepository = new \EnterRepository\Cart();
 
         // ид магазина
         $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
@@ -40,7 +40,7 @@ class Cart {
         $curl->execute();
 
         // магазин
-        $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
+        $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
         if (!$shop) {
             throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
         }
@@ -65,7 +65,7 @@ class Cart {
         $curl->execute();
 
         if ($productListQuery) {
-            $productsById = (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+            $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
         }
 
         // корзина из ядра

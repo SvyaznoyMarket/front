@@ -22,10 +22,10 @@ class RecommendedList {
         $logger = $this->getLogger();
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
-        $productRepository = new Repository\Product();
+        $productRepository = new \EnterRepository\Product();
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // ид товара
         $productId = $productRepository->getIdByHttpRequest($request);
@@ -37,7 +37,7 @@ class RecommendedList {
         $curl->execute();
 
         // регион
-        $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         // запрос товара
         $productItemQuery = new Query\Product\GetItemById($productId, $region->id);

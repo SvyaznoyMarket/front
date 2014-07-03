@@ -24,26 +24,26 @@ class ListByFilter {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
-        $productRepository = new Repository\Product();
+        $productRepository = new \EnterRepository\Product();
         $filterRepository = new Repository\Product\Filter();
 
         // поисковая фраза
-        if ($searchPhrase = (new Repository\Search())->getPhraseByHttpRequest($request)) {
+        if ($searchPhrase = (new \EnterRepository\Search())->getPhraseByHttpRequest($request)) {
             return (new Controller\Product\ListBySearchPhrase())->execute($request);
         }
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // номер страницы
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
-        $limit = (new Repository\Product\Catalog\Config())->getLimitByHttpRequest($request);
+        $limit = (new \EnterRepository\Product\Catalog\Config())->getLimitByHttpRequest($request);
 
         // список сортировок
-        $sortings = (new Repository\Product\Sorting())->getObjectList();
+        $sortings = (new \EnterRepository\Product\Sorting())->getObjectList();
 
         // сортировка
-        $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
+        $sorting = (new \EnterRepository\Product\Sorting())->getObjectByHttpRequest($request);
         if (!$sorting) {
             $sorting = reset($sortings);
         }
@@ -55,7 +55,7 @@ class ListByFilter {
         $curl->execute();
 
         // регион
-        $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         $curl->execute();
 
@@ -79,7 +79,7 @@ class ListByFilter {
         $filters = $filterListQuery ? $filterRepository->getObjectListByQuery($filterListQuery) : [];
 
         // листинг идентификаторов товаров
-        $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
+        $productIdPager = (new \EnterRepository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
 
         // запрос списка товаров
         $productListQuery = null;

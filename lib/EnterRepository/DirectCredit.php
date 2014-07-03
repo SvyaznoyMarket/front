@@ -1,9 +1,9 @@
 <?php
 
-namespace EnterSite\Repository;
+namespace EnterRepository;
 
 use EnterSite\ConfigTrait;
-use EnterSite\Model;
+use EnterModel as Model;
 
 class DirectCredit {
     use ConfigTrait;
@@ -19,10 +19,10 @@ class DirectCredit {
     }
 
     /**
-     * @param \EnterModel\Product $product
+     * @param Model\Product $product
      * @return bool
      */
-    public function isEnabledForProduct(\EnterModel\Product $product) {
+    public function isEnabledForProduct(Model\Product $product) {
         // FIXME: использовать cartProduct.sum
         $config = $this->getConfig();
 
@@ -30,10 +30,10 @@ class DirectCredit {
     }
 
     /**
-     * @param \EnterModel\Cart $cart
+     * @param Model\Cart $cart
      * @return bool
      */
-    public function isEnabledForCart(\EnterModel\Cart $cart) {
+    public function isEnabledForCart(Model\Cart $cart) {
         $config = $this->getConfig();
 
         return $config->directCredit->enabled && ($cart->sum >= $config->directCredit->minPrice);

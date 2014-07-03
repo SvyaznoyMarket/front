@@ -34,7 +34,7 @@ class Logout {
         // http-ответ
         $response = (new Controller\Redirect())->execute($redirectUrl, 302);
         // сброс cookie
-        (new Repository\User())->setTokenToHttpResponse(null, $response);
+        (new \EnterRepository\User())->setTokenToHttpResponse(null, $response);
 
         return $response;
     }

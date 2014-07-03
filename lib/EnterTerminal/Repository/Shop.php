@@ -3,7 +3,7 @@
 namespace EnterTerminal\Repository;
 
 use Enter\Http;
-use EnterSite\Repository\Shop as BaseRepository;
+use EnterRepository\Shop as BaseRepository;
 
 class Shop extends BaseRepository {
     /**

@@ -24,7 +24,7 @@ class ProductCard {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
-        $productRepository = new Repository\Product();
+        $productRepository = new \EnterRepository\Product();
 
         // ид магазина
         $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
@@ -42,7 +42,7 @@ class ProductCard {
         $curl->execute();
 
         // магазин
-        $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
+        $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
         if (!$shop) {
             throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
         }
@@ -103,7 +103,7 @@ class ProductCard {
         $curl->execute();
 
         // отзывы товара
-        $reviews = $reviewListQuery ? (new Repository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
+        $reviews = $reviewListQuery ? (new \EnterRepository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
 
         // видео товара
         $productRepository->setVideoForObjectByQuery($product, $videoListQuery);

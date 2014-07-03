@@ -2,8 +2,6 @@
 
 namespace EnterSite\Action;
 
-use Enter\Http;
-
 class HandleError {
     /**
      * @param $error

@@ -1,21 +1,21 @@
 <?php
 
-namespace EnterSite\Repository\Product;
+namespace EnterRepository\Product;
 
 use Enter\Curl\Query;
-use EnterSite\Model;
+use EnterModel as Model;
 
 class Review {
     /**
      * @param Query $query
-     * @return \EnterModel\Product\Review[]
+     * @return Model\Product\Review[]
      */
     public function getObjectListByQuery(Query $query) {
         $reviews = [];
 
         try {
             foreach ($query->getResult() as $item) {
-                $reviews[] = new \EnterModel\Product\Review($item);
+                $reviews[] = new Model\Product\Review($item);
             }
         } catch (\Exception $e) {
             //trigger_error($e, E_USER_ERROR);

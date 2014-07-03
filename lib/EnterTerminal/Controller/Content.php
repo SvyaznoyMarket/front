@@ -76,8 +76,8 @@ class Content {
             }
 
             $curl->execute();
-            $categoryRepository = new \EnterSite\Repository\Product\Category();
-            $productRepository = new \EnterSite\Repository\Product();
+            $categoryRepository = new \EnterRepository\Product\Category();
+            $productRepository = new \EnterRepository\Product();
 
             $shift = 0;
             foreach ($matches as $match) {

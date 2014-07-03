@@ -28,10 +28,10 @@ class DeleteProduct {
      */
     public function execute(Http\Request $request) {
         $session = $this->getSession();
-        $cartRepository = new Repository\Cart();
+        $cartRepository = new \EnterRepository\Cart();
 
         try {
-            $productId = (new Repository\Product())->getIdByHttpRequest($request);
+            $productId = (new \EnterRepository\Product())->getIdByHttpRequest($request);
             if (!$productId) {
                 throw new \Exception(sprintf('Товар #%s не найден', $productId));
             }

@@ -30,10 +30,10 @@ class Login {
         $router = $this->getRouter();
 
         // редирект
-        $redirectUrl = (new Repository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Login()));
+        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Login()));
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // запрос региона
         $regionQuery = new Query\Region\GetItemById($regionId);
@@ -42,7 +42,7 @@ class Login {
         $curl->execute();
 
         // регион
-        $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         // запрос дерева категорий для меню
         $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);

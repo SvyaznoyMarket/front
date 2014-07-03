@@ -25,8 +25,8 @@ class Category {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
-        $productRepository = new Repository\Product();
-        $productCategoryRepository = new Repository\Product\Category();
+        $productRepository = new \EnterRepository\Product();
+        $productCategoryRepository = new \EnterRepository\Product\Category();
         $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME
 
         // ид магазина
@@ -45,7 +45,7 @@ class Category {
         $limit = (int)$request->query['limit'] ?: 10;
 
         // сортировки
-        $sortings = (new Repository\Product\Sorting())->getObjectList();
+        $sortings = (new \EnterRepository\Product\Sorting())->getObjectList();
 
         // сортировка
         $sorting = null;
@@ -62,7 +62,7 @@ class Category {
         $curl->execute();
 
         // магазин
-        $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
+        $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
         if (!$shop) {
             throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
         }
@@ -117,7 +117,7 @@ class Category {
         $category->parent = $parentCategoryItemQuery ? $productCategoryRepository->getObjectByQuery($parentCategoryItemQuery) : null;
 
         // листинг идентификаторов товаров
-        $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
+        $productIdPager = (new \EnterRepository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
 
         // запрос списка товаров
         $productListQuery = null;
@@ -182,7 +182,7 @@ class Category {
         }
 
         // настройки каталога
-        $catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
+        $catalogConfig = $catalogConfigQuery ? (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
 
         // список рейтингов товаров
         if ($ratingListQuery) {

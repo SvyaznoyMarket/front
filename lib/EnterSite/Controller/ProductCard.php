@@ -25,10 +25,10 @@ class ProductCard {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
-        $productRepository = new Repository\Product();
+        $productRepository = new \EnterRepository\Product();
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // токен товара
         $productToken = $productRepository->getTokenByHttpRequest($request);
@@ -40,7 +40,7 @@ class ProductCard {
         $curl->execute();
 
         // регион
-        $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         // запрос товара
         $productItemQuery = new Query\Product\GetItemByToken($productToken, $region->id);
@@ -109,7 +109,7 @@ class ProductCard {
         $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
 
         // отзывы товара
-        $reviews = $reviewListQuery ? (new Repository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
+        $reviews = $reviewListQuery ? (new \EnterRepository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
 
         // видео товара
         $productRepository->setVideoForObjectByQuery($product, $videoListQuery);
@@ -142,7 +142,7 @@ class ProductCard {
         }
 
         // настройки каталога
-        $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
+        $catalogConfig = (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
 
         // аксессуары
         if ($accessoryListQuery) {
@@ -162,7 +162,7 @@ class ProductCard {
         }
 
         // категории аксессуаров
-        $accessoryCategories = (new Repository\Product\Category())->getIndexedObjectListByProductListAndTokenList($product->relation->accessories, $catalogConfig->accessoryCategoryTokens);
+        $accessoryCategories = (new \EnterRepository\Product\Category())->getIndexedObjectListByProductListAndTokenList($product->relation->accessories, $catalogConfig->accessoryCategoryTokens);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCard\Request();

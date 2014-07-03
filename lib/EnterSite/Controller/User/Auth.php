@@ -28,7 +28,7 @@ class Auth {
         $router = $this->getRouter();
 
         // редирект
-        $redirectUrl = (new Repository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Login()));
+        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Login()));
         // http-ответ
         $response = (new Controller\Redirect())->execute($redirectUrl, 302);
 
@@ -52,7 +52,7 @@ class Auth {
             }
 
             // установка cookie
-            (new Repository\User())->setTokenToHttpResponse($token, $response);
+            (new \EnterRepository\User())->setTokenToHttpResponse($token, $response);
         } catch (\Exception $e) {
             $request->data['error'] = sprintf('Неверные %s или пароль', $isEmailAuth ? 'email' : 'номер телефона');
 

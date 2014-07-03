@@ -26,7 +26,7 @@ class DeleteProduct {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
         $session = $this->getSession();
-        $compareRepository = new Repository\Compare();
+        $compareRepository = new \EnterRepository\Compare();
 
         // сравнение из сессии
         $compare = $compareRepository->getObjectByHttpSession($session);
@@ -50,7 +50,7 @@ class DeleteProduct {
         $curl->execute();
 
         // магазин
-        $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
+        $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
         if (!$shop) {
             throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
         }

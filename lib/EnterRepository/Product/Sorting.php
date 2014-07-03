@@ -1,12 +1,12 @@
 <?php
 
-namespace EnterSite\Repository\Product;
+namespace EnterRepository\Product;
 
 use Enter\Http;
 use Enter\Util\JsonDecoderTrait;
 use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
-use EnterSite\Model;
+use EnterModel as Model;
 
 class Sorting {
     use JsonDecoderTrait;
@@ -16,14 +16,14 @@ class Sorting {
 
     /**
      * @param Http\Request $request
-     * @return \EnterModel\Product\Sorting|null
+     * @return Model\Product\Sorting|null
      */
     public function getObjectByHttpRequest(Http\Request $request) {
         $sorting = null;
 
         $data = explode('-', $request->query['sort']);
         if (isset($data[0]) && isset($data[1])) {
-            $sorting = new \EnterModel\Product\Sorting();
+            $sorting = new Model\Product\Sorting();
             $sorting->token = $data[0];
             $sorting->direction = $data[1];
         }
@@ -32,7 +32,7 @@ class Sorting {
     }
 
     /**
-     * @return \EnterModel\Product\Sorting[]
+     * @return Model\Product\Sorting[]
      */
     public function getObjectList() {
         $sortings = [];
@@ -50,7 +50,7 @@ class Sorting {
                 continue;
             }
 
-            $sorting = new \EnterModel\Product\Sorting();
+            $sorting = new Model\Product\Sorting();
             $sorting->name = $item['name'];
             $sorting->token = $item['token'];
             $sorting->direction = $item['direction'];

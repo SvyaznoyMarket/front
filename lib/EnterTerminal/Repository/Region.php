@@ -2,7 +2,7 @@
 
 namespace EnterTerminal\Repository;
 
-use EnterSite\Repository\Region as BaseRepository;
+use EnterRepository\Region as BaseRepository;
 
 class Region extends BaseRepository {
 }

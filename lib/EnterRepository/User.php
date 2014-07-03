@@ -1,11 +1,11 @@
 <?php
 
-namespace EnterSite\Repository;
+namespace EnterRepository;
 
 use Enter\Http;
 use Enter\Curl\Query;
 use EnterSite\ConfigTrait;
-use EnterSite\Model;
+use EnterModel as Model;
 
 class User {
     use ConfigTrait;
@@ -59,13 +59,13 @@ class User {
 
     /**
      * @param Query $query
-     * @return \EnterModel\User|null
+     * @return Model\User|null
      */
     public function getObjectByQuery(Query $query) {
         $user = null;
 
         if ($item = $query->getResult()) {
-            $user = new \EnterModel\User($item);
+            $user = new Model\User($item);
         }
 
         return $user;

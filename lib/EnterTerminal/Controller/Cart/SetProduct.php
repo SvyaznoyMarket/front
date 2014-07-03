@@ -27,7 +27,7 @@ class SetProduct {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
         $session = $this->getSession();
-        $cartRepository = new Repository\Cart();
+        $cartRepository = new \EnterRepository\Cart();
 
         // корзина из сессии
         $cart = $cartRepository->getObjectByHttpSession($session);
@@ -51,7 +51,7 @@ class SetProduct {
         $curl->execute();
 
         // магазин
-        $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
+        $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
         if (!$shop) {
             throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
         }

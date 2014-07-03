@@ -22,7 +22,7 @@ class Clear {
      */
     public function execute(Http\Request $request) {
         $session = $this->getSession();
-        $cartRepository = new Repository\Cart();
+        $cartRepository = new \EnterRepository\Cart();
 
         // корзина из сессии
         $cart = $cartRepository->getObjectByHttpSession($session);

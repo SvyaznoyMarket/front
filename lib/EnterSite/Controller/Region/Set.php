@@ -28,7 +28,7 @@ class Set {
         $logger = $this->getLogger();
         $curl = $this->getCurlClient();
 
-        $regionRepository = new Repository\Region();
+        $regionRepository = new \EnterRepository\Region();
 
         $regionId = $regionRepository->getIdByHttpRequestQuery($request);
         $keyword = trim((string)$request->query['q']);

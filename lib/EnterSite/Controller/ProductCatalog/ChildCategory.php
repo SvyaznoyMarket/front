@@ -25,25 +25,25 @@ class ChildCategory {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
-        $productRepository = new Repository\Product();
-        $productCategoryRepository = new Repository\Product\Category();
+        $productRepository = new \EnterRepository\Product();
+        $productCategoryRepository = new \EnterRepository\Product\Category();
         $filterRepository = new Repository\Product\Filter();
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // токен категории
         $categoryToken = $productCategoryRepository->getTokenByHttpRequest($request);
 
         // номер страницы
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
-        $limit = (new Repository\Product\Catalog\Config())->getLimitByHttpRequest($request);
+        $limit = (new \EnterRepository\Product\Catalog\Config())->getLimitByHttpRequest($request);
 
         // список сортировок
-        $sortings = (new Repository\Product\Sorting())->getObjectList();
+        $sortings = (new \EnterRepository\Product\Sorting())->getObjectList();
 
         // сортировка
-        $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
+        $sorting = (new \EnterRepository\Product\Sorting())->getObjectByHttpRequest($request);
         if (!$sorting) {
             $sorting = reset($sortings);
         }
@@ -55,7 +55,7 @@ class ChildCategory {
         $curl->execute();
 
         // регион
-        $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         // запрос категории
         $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryToken, $region->id);
@@ -119,7 +119,7 @@ class ChildCategory {
         $productCategoryRepository->setBranchForObjectByQuery($category, $branchCategoryItemQuery);
 
         // листинг идентификаторов товаров
-        $productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
+        $productIdPager = (new \EnterRepository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
 
         // запрос списка товаров
         $productListQuery = null;
@@ -156,7 +156,7 @@ class ChildCategory {
         $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
 
         // настройки каталога
-        $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
+        $catalogConfig = (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
 
         // список рейтингов товаров
         if ($ratingListQuery) {

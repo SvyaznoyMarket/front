@@ -1,10 +1,10 @@
 <?php
 
-namespace EnterSite\Repository\Product;
+namespace EnterRepository\Product;
 
 use Enter\Curl\Query;
 use EnterSite\ConfigTrait;
-use EnterSite\Model;
+use EnterModel as Model;
 
 class IdPager {
     use ConfigTrait;
@@ -14,7 +14,7 @@ class IdPager {
 
         $item = $query->getResult();
         if ($item) {
-            $pager = new \EnterModel\Product\IdPager($item);
+            $pager = new Model\Product\IdPager($item);
         }
 
         return $pager;

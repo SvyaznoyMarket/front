@@ -1,18 +1,18 @@
 <?php
 
-namespace EnterSite\Repository;
+namespace EnterRepository;
 
 use Enter\Http;
 use Enter\Curl\Query;
 use EnterSite\ConfigTrait;
-use EnterSite\Model;
+use EnterModel as Model;
 
 class Cart {
     use ConfigTrait;
 
     /**
      * @param Http\Request $request
-     * @return \EnterModel\Cart\Product|null
+     * @return Model\Cart\Product|null
      */
     public function getProductObjectByHttpRequest(Http\Request $request) {
         $cartProduct = null;
@@ -28,7 +28,7 @@ class Cart {
         }
 
         if ($productData['id']) {
-            $cartProduct = new \EnterModel\Cart\Product();
+            $cartProduct = new Model\Cart\Product();
             $cartProduct->id = (string)$productData['id'];
             $cartProduct->quantity = (int)$productData['quantity'];
         }
@@ -38,17 +38,17 @@ class Cart {
 
     /**
      * @param Http\Session $session
-     * @return \EnterModel\Cart
+     * @return Model\Cart
      */
     public function getObjectByHttpSession(Http\Session $session) {
-        $cart = new \EnterModel\Cart();
+        $cart = new Model\Cart();
 
         $cartData = array_merge([
             'productList' => [],
         ], (array)$session->get('userCart'));
 
         foreach ($cartData['productList'] as $productId => $productQuantity) {
-            $cartProduct = new \EnterModel\Cart\Product();
+            $cartProduct = new Model\Cart\Product();
             $cartProduct->id = (string)$productId;
             $cartProduct->quantity = (int)$productQuantity;
 
@@ -60,9 +60,9 @@ class Cart {
 
     /**
      * @param Http\Session $session
-     * @param \EnterModel\Cart $cart
+     * @param Model\Cart $cart
      */
-    public function saveObjectToHttpSession(Http\Session $session, \EnterModel\Cart $cart) {
+    public function saveObjectToHttpSession(Http\Session $session, Model\Cart $cart) {
         // TODO: купоны, ...
 
         $cartData = [
@@ -78,22 +78,22 @@ class Cart {
 
     /**
      * @param Query $query
-     * @return \EnterModel\Cart
+     * @return Model\Cart
      */
     public function getObjectByQuery(Query $query) {
         $cart = null;
 
         $item = $query->getResult();
-        $cart = new \EnterModel\Cart($item);
+        $cart = new Model\Cart($item);
 
         return $cart;
     }
 
     /**
-     * @param \EnterModel\Cart $cart
-     * @param \EnterModel\Cart\Product $cartProduct
+     * @param Model\Cart $cart
+     * @param Model\Cart\Product $cartProduct
      */
-    public function setProductForObject(\EnterModel\Cart $cart, \EnterModel\Cart\Product $cartProduct) {
+    public function setProductForObject(Model\Cart $cart, Model\Cart\Product $cartProduct) {
         if ($cartProduct->quantity <= 0) {
             if (isset($cart->product[$cartProduct->id])) unset($cart->product[$cartProduct->id]);
         } else {
@@ -103,10 +103,10 @@ class Cart {
 
     /**
      * @param $id
-     * @param \EnterModel\Cart $cart
-     * @return \EnterModel\Cart\Product|null
+     * @param Model\Cart $cart
+     * @return Model\Cart\Product|null
      */
-    public function getProductById($id, \EnterModel\Cart $cart) {
+    public function getProductById($id, Model\Cart $cart) {
         $return = null;
 
         foreach ($cart->product as $cartProduct) {

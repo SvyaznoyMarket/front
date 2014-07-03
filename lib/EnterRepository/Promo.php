@@ -1,11 +1,11 @@
 <?php
 
-namespace EnterSite\Repository;
+namespace EnterRepository;
 
 use Enter\Http;
 use Enter\Curl\Query;
 use EnterSite\LoggerTrait;
-use EnterSite\Model;
+use EnterModel as Model;
 
 class Promo {
     use LoggerTrait;
@@ -20,14 +20,14 @@ class Promo {
 
     /**
      * @param Query $query
-     * @return \EnterModel\Promo[]
+     * @return Model\Promo[]
      */
     public function getObjectListByQuery(Query $query) {
         $promos = [];
 
         try {
             foreach ($query->getResult() as $item) {
-                $promos[] = new \EnterModel\Promo($item);
+                $promos[] = new Model\Promo($item);
             }
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
@@ -40,7 +40,7 @@ class Promo {
     /**
      * @param $id
      * @param Query $query
-     * @return \EnterModel\Promo|null
+     * @return Model\Promo|null
      */
     public function getObjectByIdAndQuery($id, Query $query) {
         $promo = null;
@@ -48,7 +48,7 @@ class Promo {
         try {
             foreach ($query->getResult() as $item) {
                 if (isset($item['id']) && ($id == $item['id'])) {
-                    $promo = new \EnterModel\Promo($item);
+                    $promo = new Model\Promo($item);
                     break;
                 }
             }

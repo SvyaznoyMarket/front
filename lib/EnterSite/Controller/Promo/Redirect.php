@@ -24,14 +24,14 @@ class Redirect {
         $logger = $this->getLogger();
         $curl = $this->getCurlClient();
         $router = $this->getRouter();
-        $productCategoryRepository = new Repository\Product\Category();
-        $promoRepository = new Repository\Promo();
+        $productCategoryRepository = new \EnterRepository\Product\Category();
+        $promoRepository = new \EnterRepository\Promo();
 
         // ид баннера
         $promoId = $promoRepository->getIdByHttpRequest($request);
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // запрос региона
         $regionQuery = new Query\Region\GetItemById($regionId);
@@ -40,7 +40,7 @@ class Redirect {
         $curl->execute();
 
         // регион
-        $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         // запрос баннеров
         $promoListQuery = new Query\Promo\GetList($region->id);

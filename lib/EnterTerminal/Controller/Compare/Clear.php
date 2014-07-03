@@ -24,7 +24,7 @@ class Clear {
      */
     public function execute(Http\Request $request) {
         $session = $this->getSession();
-        $compareRepository = new Repository\Compare();
+        $compareRepository = new \EnterRepository\Compare();
 
         // корзина из сессии
         $compare = $compareRepository->getObjectByHttpSession($session);

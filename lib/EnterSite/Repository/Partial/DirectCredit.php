@@ -41,7 +41,7 @@ class DirectCredit {
                 'name'  => $product->name,
                 'price' => $product->price,
                 'count' => $cartProduct ? $cartProduct->quantity : 1,
-                'type'  => $rootCategory ? (new Repository\DirectCredit())->getTypeByCategoryToken($rootCategory->token) : null,
+                'type'  => $rootCategory ? (new \EnterRepository\DirectCredit())->getTypeByCategoryToken($rootCategory->token) : null,
             ];
         }
 
@@ -50,7 +50,7 @@ class DirectCredit {
             'partnerId' => $this->getConfig()->directCredit->partnerId,
             'product'   => $productData,
         ]);
-        $directCredit->isHidden = $cartModel ? !(new Repository\DirectCredit())->isEnabledForCart($cartModel) : false;
+        $directCredit->isHidden = $cartModel ? !(new \EnterRepository\DirectCredit())->isEnabledForCart($cartModel) : false;
 
         return $directCredit;
     }

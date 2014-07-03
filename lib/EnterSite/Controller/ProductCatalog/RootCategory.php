@@ -25,11 +25,11 @@ class RootCategory {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
-        $productRepository = new Repository\Product();
-        $productCategoryRepository = new Repository\Product\Category();
+        $productRepository = new \EnterRepository\Product();
+        $productCategoryRepository = new \EnterRepository\Product\Category();
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // токен категории
         $categoryToken = $productCategoryRepository->getTokenByHttpRequest($request);
@@ -41,7 +41,7 @@ class RootCategory {
         $curl->execute();
 
         // регион
-        $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         // запрос категории
         $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryToken, $region->id);
@@ -102,7 +102,7 @@ class RootCategory {
         $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
 
         // настройки каталога
-        $catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
+        $catalogConfig = (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\RootCategory\Request();

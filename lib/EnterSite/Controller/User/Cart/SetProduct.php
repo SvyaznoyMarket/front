@@ -27,7 +27,7 @@ class SetProduct {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
         $session = $this->getSession();
-        $cartRepository = new Repository\Cart();
+        $cartRepository = new \EnterRepository\Cart();
 
         // корзина из сессии
         $cart = $cartRepository->getObjectByHttpSession($session);
@@ -42,13 +42,13 @@ class SetProduct {
         $cartRepository->setProductForObject($cart, $cartProduct);
 
         // ид региона
-        $regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         $productItemQuery = new Query\Product\GetItemById($cartProduct->id, $regionId);
         $curl->prepare($productItemQuery);
 
         // токен пользователя
-        $userToken = (new Repository\User)->getTokenByHttpRequest($request);
+        $userToken = (new \EnterRepository\User)->getTokenByHttpRequest($request);
 
         // запрос пользователя
         $userItemQuery = $userToken ? new Query\User\GetItemByToken($userToken) : null;
@@ -86,14 +86,14 @@ class SetProduct {
 
         // товары
         if ($productListQuery) {
-            $productsById = (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+            $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
         }
 
         // сохранение корзины в сессию
         $cartRepository->saveObjectToHttpSession($session, $cart);
 
         // товар
-        $product = (new Repository\Product())->getObjectByQuery($productItemQuery);
+        $product = (new \EnterRepository\Product())->getObjectByQuery($productItemQuery);
         if (!$product) {
             $product = new \EnterModel\Product();
             $product->id = $cartProduct->id;
@@ -102,7 +102,7 @@ class SetProduct {
         }
 
         // пользователь
-        $user = $userItemQuery ? (new Repository\User())->getObjectByQuery($userItemQuery) : null;
+        $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
 
         $page = new Page();
         // кнопка купить

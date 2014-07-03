@@ -3,19 +3,19 @@
 namespace EnterSite\Repository\Product;
 
 use Enter\Http;
-use Enter\Curl\Query;
+use EnterRepository\Product\Filter as BaseRepository;
 use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
-use EnterSite\Model;
+use EnterModel as Model;
 
-class Filter {
+class Filter extends BaseRepository {
     use ConfigTrait, LoggerTrait {
         ConfigTrait::getConfig insteadof LoggerTrait;
     }
 
     /**
      * @param Http\Request $request
-     * @return \EnterModel\Product\RequestFilter[]
+     * @return Model\Product\RequestFilter[]
      */
     public function getRequestObjectListByHttpRequest(Http\Request $request) {
         $filters = [];
@@ -29,7 +29,7 @@ class Filter {
                     || (in_array($key, ['shop', 'category']))
                 )
             ) {
-                $filter = new \EnterModel\Product\RequestFilter();
+                $filter = new Model\Product\RequestFilter();
                 $filter->name = $key;
                 $filter->value = $value;
 
@@ -45,11 +45,11 @@ class Filter {
     }
 
     /**
-     * @param \EnterModel\Product\Category $category
-     * @return \EnterModel\Product\RequestFilter
+     * @param Model\Product\Category $category
+     * @return Model\Product\RequestFilter
      */
-    public function getRequestObjectByCategory(\EnterModel\Product\Category $category) {
-        $filter = new \EnterModel\Product\RequestFilter();
+    public function getRequestObjectByCategory(Model\Product\Category $category) {
+        $filter = new Model\Product\RequestFilter();
         $filter->token = 'category';
         $filter->name = 'category';
         $filter->value = $category->id;
@@ -59,10 +59,10 @@ class Filter {
 
     /**
      * @param string $searchPhrase
-     * @return \EnterModel\Product\RequestFilter
+     * @return Model\Product\RequestFilter
      */
     public function getRequestObjectBySearchPhrase($searchPhrase) {
-        $filter = new \EnterModel\Product\RequestFilter();
+        $filter = new Model\Product\RequestFilter();
         $filter->token = 'q';
         $filter->name = 'q';
         $filter->value = $searchPhrase;
@@ -73,8 +73,8 @@ class Filter {
     /**
      * Возвращает фильтр из http-запроса, который относится к категории товара
      *
-     * @param \EnterModel\Product\RequestFilter[] $filters
-     * @return \EnterModel\Product\RequestFilter
+     * @param Model\Product\RequestFilter[] $filters
+     * @return Model\Product\RequestFilter
      */
     public function getCategoryRequestObjectByRequestList($filters) {
         $return = null;
@@ -90,54 +90,7 @@ class Filter {
     }
 
     /**
-     * @param Query $query
-     * @return \EnterModel\Product\Filter[]
-     */
-    public function getObjectListByQuery(Query $query) {
-        $filters = [];
-
-        try {
-            foreach ($query->getResult() as $item) {
-                $filters[] = new \EnterModel\Product\Filter($item);
-            }
-        } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
-
-            trigger_error($e, E_USER_ERROR);
-        }
-
-        return $filters;
-    }
-
-    /**
-     * @param \EnterModel\Product\Category[] $categories
-     * @return \EnterModel\Product\Filter[]
-     */
-    public function getObjectListByCategoryList(array $categories) {
-        $filters = [];
-
-        $categoryOptionData = [];
-        foreach ($categories as $category) {
-            $categoryOptionData[] = [
-                'id'       => $category->id,
-                'token'    => $category->id,
-                'name'     => $category->name,
-                'quantity' => $category->productCount,
-                'image'    => $category->image,
-            ];
-        }
-        $filters[] = new \EnterModel\Product\Filter([
-            'filter_id' => 'category',
-            'name'      => 'Категории',
-            'type_id'   => \EnterModel\Product\Filter::TYPE_LIST,
-            'options'   => $categoryOptionData,
-        ]);
-
-        return $filters;
-    }
-
-    /**
-     * @param \EnterModel\Product\RequestFilter[] $requestFilters
+     * @param Model\Product\RequestFilter[] $requestFilters
      * @return array
      */
     public function dumpRequestObjectList(array $requestFilters) {
