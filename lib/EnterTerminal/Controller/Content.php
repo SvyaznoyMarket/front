@@ -65,11 +65,11 @@ class Content {
             foreach ($matches as $key => $match) {
                 $url = $this->getUrlFromHrefAttributeValue($match[1][0]);
 
-                if (strpos($url, '/catalog/') === 0) {
+                if (strpos($url, 'http://www.enter.ru/catalog/') === 0 || strpos($url, '/catalog/') === 0) {
                     $matches[$key]['query'] = new Query\Product\Category\GetItemByToken($this->getTokenByUrl($url), $regionId);
                     $curl->prepare($matches[$key]['query']);
                 }
-                else if (strpos($url, '/product/') === 0) {
+                else if (strpos($url, 'http://www.enter.ru/product/') === 0 || strpos($url, '/product/') === 0) {
                     $matches[$key]['query'] = new Query\Product\GetItemByToken($this->getTokenByUrl($url), $regionId);
                     $curl->prepare($matches[$key]['query']);
                 }
@@ -84,11 +84,11 @@ class Content {
                 $linkTagEndPos = $match[0][1] + strlen($match[0][0]) + $shift;
                 $url = $this->getUrlFromHrefAttributeValue($match[1][0]);
 
-                if (strpos($url, '/catalog/') === 0) {
+                if (strpos($url, 'http://www.enter.ru/catalog/') === 0 || strpos($url, '/catalog/') === 0) {
                     $category = $categoryRepository->getObjectByQuery($match['query']);
                     $newAttributes = ' data-type="ProductCatalog/Category" data-category-id="' . $this->getViewHelper()->escape($category->id) . '"';
                 }
-                else if (strpos($url, '/product/') === 0) {
+                else if (strpos($url, 'http://www.enter.ru/product/') === 0 || strpos($url, '/product/') === 0) {
                     $product = $productRepository->getObjectByQuery($match['query']);
                     $newAttributes = ' data-type="ProductCard" data-product-id="' . $this->getViewHelper()->escape($product->id) . '"';
                 }
