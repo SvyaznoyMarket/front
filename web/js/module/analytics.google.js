@@ -5,14 +5,29 @@ define(
     function (
         require, $, _
     ) {
-        var $body = $('body')
+        var $body = $('body'),
+
+            handle = function(dataGa, $el, e) {
+                if (ga && !_.isUndefined(ga) && _.isObject(dataGa)) {
+
+                    _.each(dataGa, function(data, handlerName) {
+                        console.info('ga', handlerName, data);
+
+                        if (!handlers[handlerName]) {
+                            handlerName = 'default';
+                        }
+
+                        handlers[handlerName](data, $el, e);
+                    });
+                }
+            },
 
             handlers = {
-                'default': function($el, dataGa, e) {
+                'default': function(dataGa, $el, e) {
                     ga.apply(ga, dataGa);
                 },
 
-                'm_add_to_basket': function($el, dataGa, e) {
+                'm_add_to_basket': function(dataGa, $el, e) {
                     var dataValue = $el.data('value');
 
                     _.each(dataGa, function(v, k) {
@@ -34,18 +49,20 @@ define(
             ;
 
             console.info('js-ga-click', $el, dataGa);
-            if (ga && !_.isUndefined(ga) && _.isObject(dataGa)) {
+            handle(dataGa, $el, e);
+        });
 
-                _.each(dataGa, function(data, handlerName) {
-                    console.info('ga', handlerName, data);
+        $body.on('submit', '.js-ga-submit', function(e) {
+            var $el = $(this),
+                dataGa = $el.data('gaSubmit')
+            ;
 
-                    if (!handlers[handlerName]) {
-                        handlerName = 'default';
-                    }
+            console.info('js-ga-submit', $el, dataGa);
+            handle(dataGa, $el, e);
+        });
 
-                    handlers[handlerName]($el, data, e);
-                });
-            }
-        })
+        return {
+            handle: handle
+        };
     }
 );

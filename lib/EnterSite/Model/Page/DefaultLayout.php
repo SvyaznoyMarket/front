@@ -108,6 +108,8 @@ namespace EnterSite\Model\Page\DefaultLayout\RegionBlock {
         public $name;
         /** @var string */
         public $url;
+        /** @var string */
+        public $dataGa;
     }
 }
 

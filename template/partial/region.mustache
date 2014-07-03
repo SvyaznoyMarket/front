@@ -4,7 +4,7 @@
 
     <div class="popupBox_title">Ваш город</div>
 
-    <form action="{{setUrl}}" class="js-regionSet-form regionForm form2col clearfix">
+    <form action="{{setUrl}}" class="js-ga-submit js-regionSet-form regionForm form2col clearfix">
         <button type="submit" class="regionForm_btn form2col_btn btnStyle">Сохранить</button>
 
         <div class="regionForm_selectCity form2col_boxWrap">
@@ -14,15 +14,13 @@
 
                 <div class="regionForm_autocomplete" id="js-region-autocomplete"></div>
             </div>
-
-            
         </div>
     </form>
 
     <ul class="regionList">
     {{#regions}}
         <li class="regionList_item">
-            <a class="regionList_link" href="{{url}}">{{name}}</a>
+            <a class="js-ga-click regionList_link" href="{{url}}" data-ga-click="{{&dataGa}}">{{name}}</a>
         </li>
     {{/regions}}
     </ul>

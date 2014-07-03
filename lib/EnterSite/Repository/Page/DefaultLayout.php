@@ -71,6 +71,9 @@ class DefaultLayout {
             $region = new Page\RegionBlock\Region();
             $region->name = $regionItem['name'];
             $region->url = $router->getUrlByRoute(new Routing\Region\SetById($regionItem['id']));
+            $region->dataGa = $viewHelper->json([
+                'm_city_changed' => ['send', 'event', 'm_city_changed', $regionItem['name']],
+            ]);
 
             $page->regionBlock->regions[] = $region;
         }

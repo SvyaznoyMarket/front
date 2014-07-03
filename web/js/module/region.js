@@ -1,9 +1,10 @@
 define(
     [
         'jquery',
-        'jquery.ui'
+        'module/analytics.google',
+        'jquery.ui',
     ],
-    function ($) {
+    function ($, googleAnalytics) {
         // автоподстановка регионов
         var $regionSetInput = $('#js-regionSet-input');
         $regionSetInput.autocomplete({
@@ -21,7 +22,8 @@ define(
                             return {
                                 label: item.name,
                                 value: item.name,
-                                url: item.url
+                                url: item.url,
+                                dataGa: {'m_city_selected': ['send', 'event', 'm_city_selected', item.name]}
                             };
                         }));
                     }
@@ -31,8 +33,13 @@ define(
             select: function(e, ui) {
                 console.info('select:js-regionSet-input', e, ui);
 
-                $($regionSetInput.data('formSelector'))
-                    .attr('action', ui.item.url);
+                var $form = $($regionSetInput.data('formSelector'));
+
+                $form.attr('action', ui.item.url);
+
+                // ga
+                googleAnalytics.handle(ui.item.dataGa, $(e.target), e);
+                $form.data('gaSubmit', {'m_city_changed': ['send', 'event', 'm_city_changed', ui.item.label]})
             },
             open: function() {
                 //$(this).removeClass('ui-corner-all').addClass('ui-corner-top');
