@@ -53,6 +53,11 @@ class ProductSortingBlock {
                 $sorting->isActive = false;
             }
 
+            // ga
+            $sorting->dataGa = $viewHelper->json([
+                'm_sort_button' => ['send', 'event', 'm_sort_button', $sorting->name],
+            ]);
+
             $block->sortings[] = $sorting;
         }
 

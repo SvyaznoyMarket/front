@@ -4,7 +4,7 @@
 
         {{#sortings}}
             <li class="sorting_item">
-                <a class="js-productFilter-sort sorting_link{{#isActive}} sorting_link-active{{/isActive}}" href="{{url}}" data-value="{{&dataValue}}">{{&name}}</a>
+                <a class="js-ga-click js-productFilter-sort sorting_link{{#isActive}} sorting_link-active{{/isActive}}" href="{{url}}" data-value="{{&dataValue}}" data-ga-click="{{&dataGa}}">{{&name}}</a>
             </li>
         {{/sortings}}
     </ul><!--/ сортировка -->
@@ -17,7 +17,7 @@
         <ul class="sortingList">
         {{#sortings}}
             <li class="sortingList_item">
-                <a class="js-productFilter-sort sortingList_link" href="{{url}}" data-value="{{&dataValue}}">{{&name}}</a>
+                <a class="js-ga-click js-productFilter-sort sortingList_link" href="{{url}}" data-value="{{&dataValue}}" data-ga-click="{{&dataGa}}">{{&name}}</a>
             </li>
         {{/sortings}}
         </ul>

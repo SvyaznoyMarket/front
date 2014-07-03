@@ -11,6 +11,8 @@ class ProductFilterBlock {
     public $openedFilters = [];
     /** @var Partial\ProductFilterActionBlock */
     public $actionBlock;
+    /** @var string */
+    public $dataGa;
 
     public function __construct() {
         $this->actionBlock = new Partial\ProductFilterActionBlock();

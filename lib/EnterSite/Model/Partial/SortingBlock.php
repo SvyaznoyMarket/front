@@ -21,6 +21,8 @@ namespace EnterSite\Model\Partial\SortingBlock {
         public $url;
         /** @var string */
         public $dataValue;
+        /** @var string */
+        public $dataGa;
         /** @var bool */
         public $isActive;
     }

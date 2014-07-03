@@ -100,7 +100,7 @@ class ChildCategory {
                 $request->httpRequest
             );
 
-            $page->content->productBlock->moreLink = (new Repository\Partial\ProductList\MoreLink())->getObject($request->pageNum, $request->limit, $request->count) ?: false;
+            $page->content->productBlock->moreLink = (new Repository\Partial\ProductList\MoreLink())->getObject($request->pageNum, $request->limit, $request->count, $request->category) ?: false;
 
             // фильтры
             $page->content->filterBlock = false;
@@ -109,6 +109,9 @@ class ChildCategory {
                 $page->content->filterBlock->filters = $filters;
                 $page->content->filterBlock->openedFilters = (new Repository\Partial\ProductFilter())->getList($request->filters, $request->requestFilters, true);
                 $page->content->filterBlock->actionBlock->shownProductCount = sprintf('Показать (%s)', $request->count > 999 ? '&infin;' : $request->count);
+                $page->content->filterBlock->dataGa = $viewHelper->json([
+                    'm_cat_params' => ['send', 'event', 'm_cat_params', $request->category->name],
+                ]);
             }
 
             // выбранные фильтры

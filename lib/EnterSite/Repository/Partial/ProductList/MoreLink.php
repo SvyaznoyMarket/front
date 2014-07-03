@@ -3,16 +3,27 @@
 namespace EnterSite\Repository\Partial\ProductList;
 
 use EnterSite\TranslateHelperTrait;
+use EnterSite\ViewHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
 class MoreLink {
+    use ViewHelperTrait;
+
+    /**
+     * @param $pageNum
+     * @param $limit
+     * @param $count
+     * @param \EnterModel\Product\Category|null $category
+     * @return Partial\Link|null
+     */
     public function getObject(
         $pageNum,
         $limit,
-        $count
+        $count,
+        \EnterModel\Product\Category $category = null
     ) {
         $link = null;
 
@@ -23,6 +34,12 @@ class MoreLink {
 
             //$link->name = sprintf('Показать еще %s', $rest < $limit ? $rest : $limit);
             $link->name = 'Показать еще';
+            // FIXME
+            if ($category) {
+                $link->dataGa = $this->getViewHelper()->json([
+                    'm_cat_show_more' => ['send', 'event', 'm_cat_show_more', $category->name],
+                ]);
+            }
         }
 
         return $link;
