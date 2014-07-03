@@ -11,7 +11,7 @@ use EnterSite\Controller;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Curl\Query;
-use EnterSite\Model;
+use EnterModel as Model;
 
 class Redirect {
     use ConfigTrait, LoggerTrait, CurlClientTrait, RouterTrait {
