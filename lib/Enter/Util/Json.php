@@ -2,13 +2,13 @@
 
 namespace Enter\Util;
 
-trait JsonDecoderTrait {
+class Json {
     /**
      * @param $value
      * @return array
      * @throws \Exception
      */
-    public function jsonToArray($value) {
+    public static function toArray($value) {
         $data = json_decode($value, true);
 
         if ($code = json_last_error()) {
@@ -44,7 +44,7 @@ trait JsonDecoderTrait {
      * @return \StdClass
      * @throws \Exception
      */
-    public function jsonToObject($value) {
+    public static function toObject($value) {
         $data = json_decode($value, false);
 
         if ($code = json_last_error()) {

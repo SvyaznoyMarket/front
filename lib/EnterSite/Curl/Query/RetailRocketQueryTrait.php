@@ -3,7 +3,7 @@
 namespace EnterSite\Curl\Query;
 
 use EnterSite\ConfigTrait;
-use Enter\Util\JsonDecoderTrait;
+use Enter\Util;
 
 /**
  * @property RetailRocketUrl $url
@@ -14,7 +14,6 @@ use Enter\Util\JsonDecoderTrait;
  * @property string $response
  */
 trait RetailRocketQueryTrait {
-    use JsonDecoderTrait;
     use ConfigTrait;
 
     protected function init() {
@@ -35,7 +34,7 @@ trait RetailRocketQueryTrait {
         }
 
         try {
-            $response = $this->jsonToArray($response);
+            $response = Util\Json::toArray($response);
             // TODO: обработка ошибок
         } catch (\Exception $e) {
             $this->error = $e;

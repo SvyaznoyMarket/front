@@ -3,13 +3,12 @@
 namespace EnterRepository\Product;
 
 use Enter\Http;
-use Enter\Util\JsonDecoderTrait;
+use Enter\Util;
 use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
 use EnterModel as Model;
 
 class Sorting {
-    use JsonDecoderTrait;
     use ConfigTrait, LoggerTrait {
         ConfigTrait::getConfig insteadof LoggerTrait;
     }
@@ -37,7 +36,7 @@ class Sorting {
     public function getObjectList() {
         $sortings = [];
 
-        $data = $this->jsonToArray(file_get_contents($this->getConfig()->dir . '/data/cms/v2/catalog/sorting.json'));
+        $data = Util\Json::toArray(file_get_contents($this->getConfig()->dir . '/data/cms/v2/catalog/sorting.json'));
         foreach ($data as $item) {
             $item = array_merge([
                 'token'     => null,

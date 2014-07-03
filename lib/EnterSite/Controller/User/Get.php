@@ -3,7 +3,6 @@
 namespace EnterSite\Controller\User;
 
 use Enter\Http;
-use Enter\Util\JsonDecoderTrait;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\LoggerTrait;

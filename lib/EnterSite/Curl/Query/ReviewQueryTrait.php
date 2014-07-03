@@ -3,7 +3,7 @@
 namespace EnterSite\Curl\Query;
 
 use EnterSite\ConfigTrait;
-use Enter\Util\JsonDecoderTrait;
+use Enter\Util;
 
 /**
  * @property Url $url
@@ -14,7 +14,6 @@ use Enter\Util\JsonDecoderTrait;
  * @property string $response
  */
 trait ReviewQueryTrait {
-    use JsonDecoderTrait;
     use ConfigTrait;
 
     protected function init() {
@@ -37,7 +36,7 @@ trait ReviewQueryTrait {
         }
 
         try {
-            $response = $this->jsonToArray($response);
+            $response = Util\Json::toArray($response);
             if (array_key_exists('error', $response)) {
                 $response = array_merge(['code' => 0, 'message' => null], $response['error']);
 

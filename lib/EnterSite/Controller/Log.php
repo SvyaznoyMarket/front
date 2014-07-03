@@ -4,7 +4,7 @@ namespace EnterSite\Controller;
 
 use Enter\Http;
 use Enter\Templating;
-use Enter\Util\JsonDecoderTrait;
+use Enter\Util;
 use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\MustacheRendererTrait;
@@ -14,7 +14,6 @@ class Log {
     use ConfigTrait, LoggerTrait, MustacheRendererTrait {
         ConfigTrait::getConfig insteadof LoggerTrait, MustacheRendererTrait;
     }
-    use JsonDecoderTrait;
 
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
@@ -62,7 +61,7 @@ class Log {
             // query
             if (isset($line['query']['response'])) {
                 try {
-                    $line['query']['response'] = $this->jsonToArray($line['query']['response']);
+                    $line['query']['response'] = Util\Json::toArray($line['query']['response']);
                 } catch (\Exception $e) {
                     $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['debug']]);
                 }

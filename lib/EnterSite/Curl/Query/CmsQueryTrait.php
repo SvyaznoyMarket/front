@@ -3,7 +3,7 @@
 namespace EnterSite\Curl\Query;
 
 use EnterSite\ConfigTrait;
-use Enter\Util\JsonDecoderTrait;
+use Enter\Util;
 
 /**
  * @property Url $url
@@ -13,7 +13,6 @@ use Enter\Util\JsonDecoderTrait;
  * @property string $response
  */
 trait CmsQueryTrait {
-    use JsonDecoderTrait;
     use ConfigTrait;
 
     protected function init() {
@@ -33,7 +32,7 @@ trait CmsQueryTrait {
         }
 
         try {
-            $response = $this->jsonToArray($response);
+            $response = Util\Json::toArray($response);
         } catch (\Exception $e) {
             $this->error = $e;
         }
