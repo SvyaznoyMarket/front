@@ -62,7 +62,13 @@ class ProductCard {
         // запрос доставки товара
         $deliveryListQuery = null;
         if ($product->isBuyable) {
-            $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList([new Model\Cart\Product(['id' => $product->id, 'quantity' => 1])], $shop->regionId);
+            $cartProducts = [];
+            $cartProducts[] = new Model\Cart\Product(['id' => $product->id, 'quantity' => 1]);
+            foreach ($product->kit as $kit) {
+                $cartProducts[] = new Model\Cart\Product(['id' => $kit->id, 'quantity' => $kit->count]);
+            }
+
+            $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList($cartProducts, $shop->regionId);
             $curl->prepare($deliveryListQuery);
         }
 
@@ -110,9 +116,26 @@ class ProductCard {
         // 3d фото товара (maybe3d)
         $productRepository->setPhoto3dForObjectByQuery($product, $videoListQuery);
 
+        // наборы
+        $kitProductsById = $kitListQuery ? $productRepository->getIndexedObjectListByQueryList([$kitListQuery]) : [];
+        foreach ($product->kit as $kit) {
+            /** @var Model\Product|null $kiProduct */
+            $kiProduct = isset($kitProductsById[$kit->id]) ? $kitProductsById[$kit->id] : null;
+            if (!$kiProduct) continue;
+
+            $kiProduct->kitCount = $kit->count; // FIXME
+        }
+
+        // группированные товары
+        $productsById = [];
+        foreach (array_merge([$product], $product->relation->accessories, $kitProductsById) as $iProduct) {
+            /** @var Model\Product $iProduct */
+            $productsById[$iProduct->id] = $iProduct;
+        }
+
         // доставка товара
         if ($deliveryListQuery) {
-            $productRepository->setDeliveryForObjectListByQuery([$product->id => $product], $deliveryListQuery);
+            $productRepository->setDeliveryForObjectListByQuery($productsById, $deliveryListQuery);
         }
 
         // список магазинов, в которых товар может быть только в магазине
@@ -134,23 +157,6 @@ class ProductCard {
         // аксессуары
         if ($accessoryListQuery) {
             $productRepository->setAccessoryRelationForObjectListByQuery([$product->id => $product], $accessoryListQuery);
-        }
-
-        // наборы
-        $kitProductsById = $kitListQuery ? $productRepository->getIndexedObjectListByQueryList([$kitListQuery]) : [];
-        foreach ($product->kit as $kit) {
-            /** @var Model\Product|null $kiProduct */
-            $kiProduct = isset($kitProductsById[$kit->id]) ? $kitProductsById[$kit->id] : null;
-            if (!$kiProduct) continue;
-
-            $kiProduct->kitCount = $kit->count; // FIXME
-        }
-
-        // группированные товары
-        $productsById = [];
-        foreach (array_merge([$product], $product->relation->accessories) as $iProduct) {
-            /** @var Model\Product $iProduct */
-            $productsById[$iProduct->id] = $iProduct;
         }
 
         // список рейтингов товаров
