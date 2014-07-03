@@ -2,7 +2,7 @@
     <ul class="userBox">
         {{#isCartNotEmpty}}
             <li class="userBox_item">
-                <a class="userBox_link userBox_link-cart userBox_link-cartVal" href="{{cart.url}}">
+                <a class="js-ga-click userBox_link userBox_link-cart userBox_link-cartVal" href="{{cart.url}}" data-ga-click="{&quot;m_top_menu&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_top_menu&quot;,&quot;Cart&quot;]}">
                     <span class="qnt">{{cart.quantity}}</span>
                     <span class="userBox_text"><strong>{{cart.shownSum}}</strong> <span class="rubl">p</span></span>
                 </a>
@@ -10,7 +10,7 @@
         {{/isCartNotEmpty}}
         {{^isCartNotEmpty}}
             <li class="userBox_item">
-                <a class="userBox_link userBox_link-cart" href="{{cart.url}}">
+                <a class="js-ga-click userBox_link userBox_link-cart" href="{{cart.url}}" data-ga-click="{&quot;m_top_menu&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_top_menu&quot;,&quot;Cart&quot;]}">
                     <span class="userBox_text">Корзина</span>
                 </a>
             </li><!-- пустая корзина -->
@@ -18,7 +18,7 @@
 
         {{#isUserAuthorized}}
             <li class="userBox_item">
-                <a class="userBox_link userBox_link-auth userBox_link-authVal" href="{{userLink.url}}">
+                <a class="js-ga-click userBox_link userBox_link-auth userBox_link-authVal" href="{{userLink.url}}" data-ga-click="{&quot;m_top_menu&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_top_menu&quot;,&quot;Profile&quot;]}">
                     <span class="userBox_text">{{userLink.name}}</span>
                     <div class="transBg"></div>
                 </a>
@@ -26,14 +26,16 @@
         {{/isUserAuthorized}}
         {{^isUserAuthorized}}
             <li class="userBox_item">
-                <a class="userBox_link userBox_link-auth userBox_item-last" href="{{userLink.url}}">
+                <a class="js-ga-click userBox_link userBox_link-auth userBox_item-last" href="{{userLink.url}}" data-ga-click="{&quot;m_top_menu&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_top_menu&quot;,&quot;Profile&quot;]}">
                     <span class="userBox_text">Личный кабинет</span>
                 </a>
             </li><!-- пользователь не залогинен -->
         {{/isUserAuthorized}}
 
         <li class="userBox_item userBox_item-last">
-            <a class="userBox_link js-searchLink" href=""><span class="userBox_text">Поиск</span></a>
+            <a class="js-ga-click userBox_link js-searchLink" href="#" data-ga-click="{&quot;m_top_menu&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_top_menu&quot;,&quot;Search&quot;]}">
+                <span class="userBox_text">Поиск</span>
+            </a>
         </li>
     </ul>
 </div>
