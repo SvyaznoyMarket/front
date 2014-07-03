@@ -166,6 +166,7 @@ class Category {
         }
 
         // список магазинов, в которых товар может быть только в магазине
+        /*
         $shopsIds = [];
         foreach ($productsById as $product) {
             foreach ($product->stock as $stock) {
@@ -180,6 +181,7 @@ class Category {
 
             $productRepository->setNowDeliveryForObjectListByQuery($productsById, $shopListQuery);
         }
+        */
 
         // настройки каталога
         $catalogConfig = $catalogConfigQuery ? (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;

@@ -33,6 +33,8 @@ class Shop {
     public $walkWay;
     /** @var string */
     public $carWay;
+    /** @var Model\Subway|null */
+    public $subway;
 
     /**
      * @param array $data
@@ -61,5 +63,9 @@ class Shop {
                 $this->photo[] = new Model\Shop\Photo($photoItem);
             }
         }
+
+        if (isset($data['subway']['ui'])) {
+            $this->region = new Model\Subway($data['subway']);
+        };
     }
 }

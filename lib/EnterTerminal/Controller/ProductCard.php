@@ -116,6 +116,7 @@ class ProductCard {
         }
 
         // список магазинов, в которых товар может быть только в магазине
+        /*
         $shopsIds = [];
         foreach ($product->stock as $stock) {
             if ($stock->shopId && ($stock->quantity > 0)) {
@@ -128,6 +129,7 @@ class ProductCard {
 
             $productRepository->setNowDeliveryForObjectListByQuery([$product->id => $product], $shopListQuery);
         }
+        */
 
         // аксессуары
         if ($accessoryListQuery) {
