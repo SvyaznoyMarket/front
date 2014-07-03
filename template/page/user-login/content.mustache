@@ -15,6 +15,8 @@
 					<a class="fl-r orangeText borderBs" href="">Забыли пароль?</a>
 					<input type="password" name="password" class="formReg_textfield textfield" />
 
+                    <input type="hidden" name="redirect_to" value="{{redirectUrl}}" />
+
 					<input type="submit" class="formReg_btn btnsubmit" value="Войти" />
 				</div>
 			</fieldset>
@@ -26,20 +28,22 @@
 
 				<div id="id-registerContent" class="formReg_fields" style="display: none;">
 					<label for="" class="formReg_fieldname labeltext">Ваше имя:</label>
-					<input type="text" class="formReg_textfield textfield" />
+					<input type="text" name="name" class="formReg_textfield textfield" />
 
                     <label for="" class="formReg_fieldname labeltext fl-l">Ваш e-mail:</label>
                     <span class="fl-r lightGreyText borderBd">У меня нет e-mail</span>
-                    <input type="text" class="formReg_textfield textfield" />
+                    <input type="email" name="email" class="formReg_textfield textfield" />
 
                     <label for="" class="formReg_fieldname labeltext fl-l">Ваш мобильный телефон:</label>
                     <span class="fl-r lightGreyText borderBd">Ввести e-mail</span>
-                    <input type="text" class="formReg_textfield textfield" />
+                    <input type="text" name="phone" class="formReg_textfield textfield" />
 
 					<div class="formReg_subscribe fl-l">
-						<input class="customInput customInput-bigCheck" type="checkbox" id="subscribe" checked />
+						<input class="customInput customInput-bigCheck" type="checkbox" name="subscribe" id="subscribe" checked />
 						<label class="customLabel" for="subscribe">Хочу знать об интересных предложениях</label>
 					</div>
+
+                    <input type="hidden" name="redirect_to" value="{{redirectUrl}}" />
 
 					<input type="submit" class="formReg_btn btnsubmit mb20" value="Регистрация" />
 

@@ -49,7 +49,7 @@ class User {
      */
     public function getRedirectUrlByHttpRequest(Http\Request $request, $defaultUrl = '/') {
         // редирект
-        $url = !empty($request->query['redirect_to']) ? $request->query['redirect_to'] : null;
+        $url = trim((string)($request->data['redirect_to'] ?: $request->query['redirect_to']));
         if (!$url) {
             $url = $defaultUrl;
         }

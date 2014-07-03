@@ -24,6 +24,8 @@ namespace EnterSite\Model\Page\User\Login {
         public $authForm;
         /** @var \EnterSite\Model\Form\User\RegisterForm|null */
         public $registerForm;
+        /** @var string */
+        public $redirectUrl;
 
         public function __construct() {
             parent::__construct();
