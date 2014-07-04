@@ -27,4 +27,6 @@ class ProductCard {
     public $cartButton;
     /** @var Partial\Rating|null */
     public $rating;
+    /** @var string */
+    public $dataGa;
 }

@@ -12,9 +12,10 @@ use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 use EnterSite\Model\Page\Product\RecommendedList as Page;
+use EnterSite\ViewHelperTrait;
 
 class RecommendedList {
-    use ConfigTrait, LoggerTrait, RouterTrait, DateHelperTrait, TranslateHelperTrait {
+    use ConfigTrait, LoggerTrait, RouterTrait, DateHelperTrait, TranslateHelperTrait, ViewHelperTrait {
         ConfigTrait::getConfig insteadof LoggerTrait;
     }
 
@@ -24,6 +25,7 @@ class RecommendedList {
      */
     public function buildObjectByRequest(Page $page, RecommendedList\Request $request) {
         $router = $this->getRouter();
+        $viewHelper = $this->getViewHelper();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $productCardRepository = new Repository\Partial\ProductCard();
         $productSliderRepository = new Repository\Partial\ProductSlider();
@@ -38,7 +40,12 @@ class RecommendedList {
             $productModel = !empty($request->productsById[$productId]) ? $request->productsById[$productId] : null;
             if (!$productModel) continue;
 
-            $slider->productCards[] = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
+            $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
+            $productCard->dataGa = $viewHelper->json([
+                'm_recommended' => ['send', 'event', 'm_recommended', $productModel->article],
+            ]);
+
+            $slider->productCards[] = $productCard;
         }
         $slider->count = count($slider->productCards);
         $page->widgets['.' . $slider->widgetId] = $slider;

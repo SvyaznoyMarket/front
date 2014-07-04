@@ -16,7 +16,7 @@
                 <ul class="sliderBoxItems">
                     {{#productCards}}
                         <li class="sliderBoxItems_item" data-category="{{categoryId}}">
-                            <a class="productDesc" href="{{url}}">
+                            <a class="js-ga-click productDesc" href="{{url}}" data-ga-click="{{&dataGa}}">
                                 <img class="productDesc_img" src="{{image}}" />
                                 <span class="productDesc_name">{{name}} </span>
                             </a>
