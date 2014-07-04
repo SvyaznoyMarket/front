@@ -166,7 +166,7 @@
     },
 
     "Log": {
-        "name": ":Журнал",
+        "name": "Журнал",
         "pattern": "/log/{id}",
         "require": {
             "productId": "[\\w\\d-_]+"
