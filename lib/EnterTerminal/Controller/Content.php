@@ -54,7 +54,9 @@ class Content {
         $page = new Page();
 
         $item = $contentItemQuery->getResult();
-        $page->content = $this->processContentLinks($item['content'], $curl, $shop->regionId);
+        $page->content = $item['content'];
+        $page->content = $this->processContentLinks($page->content, $curl, $shop->regionId);
+        $page->content = $this->removeExternalScripts($page->content);
         $page->title = isset($item['title']) ? $item['title'] : null;
 
         return new Http\JsonResponse($page);
@@ -126,5 +128,11 @@ class Content {
             return end($segments);
 
         return null;
+    }
+
+    private function removeExternalScripts($content) {
+        $content = preg_replace('/<script(?:\s+[^>]*)?>\s*\/\*\s*build:::7\s*\*\/\s*var\s+liveTex\s.*?<\/script>/is', '', $content);
+        $content = preg_replace('/<!-- AddThis Button BEGIN -->.*?<!-- AddThis Button END -->/is', '', $content);
+        return $content;
     }
 }
