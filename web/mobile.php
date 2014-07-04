@@ -7,7 +7,7 @@ $startAt = microtime(true);
 $applicationDir = realpath(__DIR__ . '/..');
 
 // environment
-$environment = isset($_SERVER['APPLICATION_ENV']) ? $_SERVER['APPLICATION_ENV'] : 'live';
+$environment = call_user_func(require $applicationDir . '/config/environment.php', 'live');
 
 // response
 $response = null;
