@@ -117,7 +117,10 @@ class ProductCard {
         $productRepository->setPhoto3dForObjectByQuery($product, $videoListQuery);
 
         // наборы
-        $kitProductsById = $kitListQuery ? $productRepository->getIndexedObjectListByQueryList([$kitListQuery]) : [];
+        $kitProductsById = $kitListQuery ? $productRepository->getIndexedObjectListByQueryList([$kitListQuery], function(&$item) {
+            // оптимизация
+            $item['media'] = [reset($item['media'])];
+        }) : [];
         foreach ($product->kit as $kit) {
             /** @var Model\Product|null $kiProduct */
             $kiProduct = isset($kitProductsById[$kit->id]) ? $kitProductsById[$kit->id] : null;
