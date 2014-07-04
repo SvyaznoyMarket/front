@@ -1,6 +1,10 @@
 <?php
 
 return function(\EnterTerminal\Config\Application $config) {
+    ini_set('session.use_cookies', false);
+    ini_set('session.use_only_cookies', false);
+    ini_set('session.use_trans_sid', true);
+
     $config->requestId = uniqid();
 
     $config->dir = realpath(__DIR__ . '/../..');
