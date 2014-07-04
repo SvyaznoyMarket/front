@@ -7,7 +7,7 @@ use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\SessionTrait;
-use EnterSite\Curl\Query;
+use EnterCurlQuery as Query;
 use EnterModel as Model;
 use EnterSite\Repository;
 use EnterTerminal\Controller;

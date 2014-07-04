@@ -11,7 +11,7 @@ use EnterSite\DebugContainerTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Routing;
-use EnterSite\Curl\Query;
+use EnterCurlQuery as Query;
 use EnterSite\Model;
 use EnterSite\Model\Page\User\Login as Page;
 

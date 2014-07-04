@@ -9,7 +9,7 @@ use EnterSite\CurlClientTrait;
 use EnterSite\MustacheRendererTrait;
 use EnterSite\DebugContainerTrait;
 use EnterSite\Repository;
-use EnterSite\Curl\Query;
+use EnterCurlQuery as Query;
 use EnterSite\Model;
 use EnterSite\Model\Page\Index as Page;
 

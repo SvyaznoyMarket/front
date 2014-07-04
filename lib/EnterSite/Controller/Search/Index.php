@@ -10,7 +10,7 @@ use EnterSite\MustacheRendererTrait;
 use EnterSite\DebugContainerTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
-use EnterSite\Curl\Query;
+use EnterCurlQuery as Query;
 use EnterSite\RouterTrait;
 use EnterSite\Routing;
 use EnterSite\Model;

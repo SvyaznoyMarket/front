@@ -12,7 +12,7 @@ use EnterSite\SessionTrait;
 use EnterSite\DebugContainerTrait;
 use EnterSite\Routing;
 use EnterSite\Controller;
-use EnterSite\Curl\Query;
+use EnterCurlQuery as Query;
 use EnterSite\Model;
 use EnterSite\Model\Page\Cart\Index as Page;
 use EnterSite\Repository;

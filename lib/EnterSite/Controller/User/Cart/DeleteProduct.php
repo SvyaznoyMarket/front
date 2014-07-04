@@ -8,7 +8,7 @@ use EnterSite\CurlClientTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\SessionTrait;
 use EnterSite\RouterTrait;
-use EnterSite\Curl\Query;
+use EnterCurlQuery as Query;
 use EnterSite\Model;
 use EnterSite\Routing;
 use EnterSite\Repository;

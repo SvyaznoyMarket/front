@@ -7,7 +7,7 @@ use EnterTerminal\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
-use EnterSite\Curl\Query;
+use EnterCurlQuery as Query;
 use EnterModel as Model;
 use EnterTerminal\Model\Page\ProductCard as Page;
 

@@ -10,7 +10,7 @@ use EnterSite\RouterTrait;
 use EnterSite\Controller;
 use EnterSite\Routing;
 use EnterSite\Repository;
-use EnterSite\Curl\Query;
+use EnterCurlQuery as Query;
 use EnterModel as Model;
 
 class Redirect {

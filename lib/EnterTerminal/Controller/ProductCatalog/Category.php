@@ -8,7 +8,7 @@ use EnterSite\CurlClientTrait;
 use EnterSite\MustacheRendererTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
-use EnterSite\Curl\Query;
+use EnterCurlQuery as Query;
 use EnterModel as Model;
 use EnterTerminal\Model\Page\ProductCatalog\Category as Page;
 
