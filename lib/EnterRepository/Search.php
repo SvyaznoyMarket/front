@@ -41,4 +41,17 @@ class Search {
 
         return $searchResult;
     }
+
+    /**
+     * @param Query $query
+     * @return Model\Search\AutocompleteResult
+     */
+    public function getAutocompleteObjectByQuery(Query $query) {
+        $item = $query->getResult();
+        if ($item) {
+            return new Model\Search\AutocompleteResult($item);
+        }
+
+        return null;
+    }
 }
