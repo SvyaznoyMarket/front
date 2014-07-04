@@ -61,16 +61,16 @@ class Content {
     }
 
     private function processContentLinks($content, Client $curl, $regionId) {
-        if (preg_match_all('/<a\s+[^>]*href="((?:http:\/\/www\.enter\.ru)?\/[^"]*)"/i', $content, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
+        if (preg_match_all('/<a\s+[^>]*href="(?:http:\/\/(?:www\.)?enter\.ru)?(\/[^"]*)"/i', $content, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
             foreach ($matches as $key => $match) {
-                $url = $this->getUrlFromHrefAttributeValue($match[1][0]);
+                $path = $this->getPathFromHrefAttributeValue($match[1][0]);
 
-                if (strpos($url, 'http://www.enter.ru/catalog/') === 0 || strpos($url, '/catalog/') === 0) {
-                    $matches[$key]['query'] = new Query\Product\Category\GetItemByToken($this->getTokenByUrl($url), $regionId);
+                if (0 === strpos($path, '/catalog/')) {
+                    $matches[$key]['query'] = new Query\Product\Category\GetItemByToken($this->getTokenByUrl($path), $regionId);
                     $curl->prepare($matches[$key]['query']);
                 }
-                else if (strpos($url, 'http://www.enter.ru/product/') === 0 || strpos($url, '/product/') === 0) {
-                    $matches[$key]['query'] = new Query\Product\GetItemByToken($this->getTokenByUrl($url), $regionId);
+                else if (0 === strpos($path, '/product/')) {
+                    $matches[$key]['query'] = new Query\Product\GetItemByToken($this->getTokenByUrl($path), $regionId);
                     $curl->prepare($matches[$key]['query']);
                 }
             }
@@ -82,21 +82,21 @@ class Content {
             $shift = 0;
             foreach ($matches as $match) {
                 $linkTagEndPos = $match[0][1] + strlen($match[0][0]) + $shift;
-                $url = $this->getUrlFromHrefAttributeValue($match[1][0]);
+                $path = $this->getPathFromHrefAttributeValue($match[1][0]);
+                $newAttributes = null;
 
-                if (strpos($url, 'http://www.enter.ru/catalog/') === 0 || strpos($url, '/catalog/') === 0) {
+                if (0 === strpos($path, '/catalog/')) {
                     $category = $categoryRepository->getObjectByQuery($match['query']);
-                    $newAttributes = ' data-type="ProductCatalog/Category" data-category-id="' . $this->getViewHelper()->escape($category->id) . '"';
+                    if (null !== $category)
+                        $newAttributes = ' data-type="ProductCatalog/Category" data-category-id="' . $this->getViewHelper()->escape($category->id) . '"';
                 }
-                else if (strpos($url, 'http://www.enter.ru/product/') === 0 || strpos($url, '/product/') === 0) {
+                else if (0 === strpos($path, '/product/')) {
                     $product = $productRepository->getObjectByQuery($match['query']);
-                    $newAttributes = ' data-type="ProductCard" data-product-id="' . $this->getViewHelper()->escape($product->id) . '"';
+                    if (null !== $product)
+                        $newAttributes = ' data-type="ProductCard" data-product-id="' . $this->getViewHelper()->escape($product->id) . '"';
                 }
-                else if (strpos($url, 'http://www.enter.ru/') === 0) {
-                    $newAttributes = ' data-type="Content" data-content-token="' . $this->getTokenByUrl($url) . '"';
-                }
-                else {
-                    $newAttributes = null;
+                else if (0 === strpos($path, '/')) {
+                    $newAttributes = ' data-type="Content" data-content-token="' . $this->getTokenByUrl($path) . '"';
                 }
 
                 if ($newAttributes !== null) {
@@ -109,17 +109,14 @@ class Content {
         return $content;
     }
 
-    private function getUrlFromHrefAttributeValue($href) {
+    private function getPathFromHrefAttributeValue($href) {
         $url = html_entity_decode($href);
         $url = preg_replace('/\?.*$|\#.*$/s', '', $url);
         return $url;
     }
 
     private function getTokenByUrl($url) {
-        if (strpos($url, 'http://www.enter.ru/') === 0) {
-            $url = substr($url, strlen('http://www.enter.ru/'));
-        }
-        else if (strpos($url, '/') === 0) {
+        if (strpos($url, '/') === 0) {
             $url = substr($url, 1);
         }
 
