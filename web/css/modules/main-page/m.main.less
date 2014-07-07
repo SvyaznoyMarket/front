@@ -28,16 +28,14 @@
 
 	.bannersLine {
 		width: 100%;
-
 		padding: 0;
 
 		&_item {
 			float: left;
+			overflow: hidden;
 
 			width: 50%;
 			height: 158px;
-
-			overflow: hidden;
 
 			&:nth-child(2n) {
 
@@ -48,15 +46,15 @@
 		}
 
 		&_link {
+			height: 127px;
 			padding: 15px 0;
 
-			border-bottom: 1px solid #858585;
-			border-right: 1px solid #858585;
-
 			text-align: center;
-			line-height: 127px;
 
-			height: 127px;
+			border-right: 1px solid #858585;
+			border-bottom: 1px solid #858585;
+
+			line-height: 127px;
 		}
 
 		&_img {
@@ -71,10 +69,16 @@
 			left: 0;
 
 			width: 100%;
+			margin-left: 0 !important;
+			padding: 5px 0 5px 0;
+
 			text-align: center;
 
-			padding: 5px 0 5px 0;
-			margin-left: 0 !important;
+			&_item {
+				width: 7px;
+				height: 7px;
+				margin-right: 6px;
+			}
 		}
 	}
 }
