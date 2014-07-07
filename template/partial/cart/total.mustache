@@ -6,14 +6,16 @@
         </div><!--/ дубль для мобилки -->
 
         {{#credit}}
-        <div class="js-creditPayment cartLine_right clearfix" data-template-selector="#tpl-creditPayment" data-value="{{&dataValue}}" data-price-selector=".{{widgetId}}">
-            <input class="js-creditButton customInput customInput-checkbox jsCustomRadio" type="checkbox" id="id-credit-input" name="" />
+        <div class="js-creditPayment fl-r" data-template-selector="#tpl-creditPayment" data-value="{{&dataValue}}" data-price-selector=".{{widgetId}}">
+            <div class="cartLine_right">
+                <input class="js-creditButton customInput customInput-checkbox jsCustomRadio" type="checkbox" id="id-credit-input" name="" />
 
-            <label class="{{widgetId}} customLabel" for="id-credit-input"{{#isHidden}} style="display: none;"{{/isHidden}}>
-                <strong class="creditText">Купить в кредит</strong>
-                <span class="creditSum">&nbsp;</span>
-            </label>
+                <label class="{{widgetId}} customLabel" for="id-credit-input"{{#isHidden}} style="display: none;"{{/isHidden}}>
+                    <strong class="creditText">Купить в кредит</strong>
+                    <span class="creditSum">&nbsp;</span>
+                </label>
 
+            </div>
         </div>
         {{/credit}}
 
