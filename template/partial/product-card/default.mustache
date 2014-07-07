@@ -13,7 +13,7 @@
 
         <div class="price">
             {{#oldPrice}}<div class="price_old">{{shownOldPrice}} <span class="rubl">p</span></div>{{/oldPrice}}
-            {{#price}}<div class="price_now">{{shownPrice}} <span class="rubl">p</span></div>{{/price}}
+            {{#price}}<div class="price_now{{#oldPrice}} price_now-sale{{/oldPrice}}">{{shownPrice}} <span class="rubl">p</span></div>{{/price}}
         </div>
     </div>
 </a>
