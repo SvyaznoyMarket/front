@@ -177,8 +177,8 @@ textarea[contenteditable] {
 }
 
 .clear {
-    clear: both;
     float: none;
+    clear: both;
 }
 /*
  * For IE 6/7 only
@@ -329,15 +329,16 @@ textarea[contenteditable] {
 // основные стили элементов форм 
 .textfield {
     .rounded(4px);
+    .box-sizing();
+    display: block;
+
     height: 35px;
+    margin: 0 0 15px;
+    padding-left: 10px;
 
     border: 1px solid @inputBorder;
 
     line-height: 35px;
-    display: block;
-    margin: 0 0 15px;
-    .box-sizing();
-    padding-left: 10px;
 }
 
 .btnsubmit {
@@ -355,13 +356,30 @@ textarea[contenteditable] {
 
 .labeltext {
     display: block;
-    line-height: 1.5;
+
     margin: 0 0 5px;
 
     font-size: 12px;
+    line-height: 1.5;
 }
 
 .legend {
-    font-size: 18px;
     margin: 10px 0 15px;
+
+    font-size: 18px;
+}
+
+.fieldError {
+    border-color: #ff0000;
+}
+
+.errorText {
+    position: absolute;
+    right: 10px;
+
+    margin-top: -42px;
+
+    color: #ff0000;
+
+    font-size: 12px;
 }

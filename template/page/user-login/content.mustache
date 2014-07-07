@@ -9,7 +9,8 @@
 
 				<div id="id-authContent" class="formReg_fields">
 					<label for="" class="formReg_fieldname labeltext">E-mail или мобильный телефон:</label>
-					<input type="text" name="username" class="formReg_textfield textfield" />
+					<input type="text" name="username" class="formReg_textfield textfield fieldError" />
+					<span class="errorText">Не верно заполнено поле</span> {{! текст ошибки }}
 
 					<label for="" class="formReg_fieldname labeltext fl-l">Пароль:</label>
 					<a class="fl-r orangeText borderBs" href="">Забыли пароль?</a>
@@ -30,13 +31,17 @@
 					<label for="" class="formReg_fieldname labeltext">Ваше имя:</label>
 					<input type="text" name="name" class="formReg_textfield textfield" />
 
-                    <label for="" class="formReg_fieldname labeltext fl-l">Ваш e-mail:</label>
-                    <span class="fl-r lightGreyText borderBd">У меня нет e-mail</span>
-                    <input type="email" name="email" class="formReg_textfield textfield" />
+					<div class="clearfix">
+	                    <label for="" class="formReg_fieldname labeltext fl-l">Ваш e-mail:</label>
+	                    <span class="fl-r lightGreyText borderBd">У меня нет e-mail</span>
+	                    <input type="email" name="email" class="formReg_textfield textfield" />
+                    </div>
 
-                    <label for="" class="formReg_fieldname labeltext fl-l">Ваш мобильный телефон:</label>
-                    <span class="fl-r lightGreyText borderBd">Ввести e-mail</span>
-                    <input type="text" name="phone" class="formReg_textfield textfield" />
+                    <div class="clearfix">
+	                    <label for="" class="formReg_fieldname labeltext fl-l">Ваш мобильный телефон:</label>
+	                    <span class="fl-r lightGreyText borderBd">Ввести e-mail</span>
+	                    <input type="text" name="phone" class="formReg_textfield textfield" />
+	                </div>
 
 					<div class="formReg_subscribe fl-l">
 						<input class="customInput customInput-bigCheck" type="checkbox" name="subscribe" id="subscribe" checked />
