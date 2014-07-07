@@ -1639,12 +1639,12 @@ body.noScroll {
 }
 .chooseModelNum_item {
   display: inline-block;
-  zoom: 1;
+  *zoom: 1;
+  *display: inline;
   width: 30.72727%;
   margin: 0 5px 5px 0;
   vertical-align: top;
   font-size: 16px;
-  *display: inline;
 }
 .chooseModelNum_item-active {
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAALCAYAAABPhbxiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3Mzg5Q0JFRjgxNzYxMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3Mzg5Q0JGMDgxNzYxMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjczODlDQkVEODE3NjExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjczODlDQkVFODE3NjExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+/LwoywAAAN9JREFUeNpi/P//PwMI/JrLyEAAgBSEArEOEPezMBAHZIF4ORBbQ/nrGX/OIahJD4h3AbE4lL8aiMOYgAQPEJsDMR8WTQpAvAdJ02UgTgUxQBoLgfgEEL8E4iYgZoYq4gLijUAsCuXfAWIvIP4I0why+1cg5gDiWiCeDA2IhVBngsATIHaE0pCQgvrRD4g3QDWAwCaoGAh8A2ILqDPhgAlJYQOSuB8SOwddE7JGEGgGBTOa/Dogno81UtGigxeInwMxNxD/A2JpIH6BTSMTGv8zEBsB8VIgdsGlCQQAAgwATOMq829bMEIAAAAASUVORK5CYII=) no-repeat 10px 50%;
@@ -3124,7 +3124,7 @@ body.noScroll {
   float: left;
   width: 304px;
   height: 78px;
-  margin: 0 10px 10px 0;
+  margin: 0 11px 10px 0;
   border: 1px solid #b8b8b8;
   font-size: 16px;
 }
@@ -3282,12 +3282,13 @@ body.noScroll {
 .catalogList .name {
   display: inline-block;
   overflow: hidden;
-  max-height: 110px;
+  height: 110px;
   margin: 0 0 10px;
   vertical-align: top;
   font-size: 16px;
 }
 .catalogList .reviews {
+  height: 15px;
   margin: 0 0 10px;
 }
 .catalogList .reviews_star {
@@ -3309,11 +3310,18 @@ body.noScroll {
   margin: 15px 0 20px;
 }
 .catalogList .price_old {
+  display: inline-block;
+  *zoom: 1;
+  *display: inline;
+  margin-right: 15px;
   text-decoration: line-through;
   color: #6b6b6b;
-  font-size: 14px;
+  font-size: 18px;
 }
 .catalogList .price_now {
+  display: inline-block;
+  *zoom: 1;
+  *display: inline;
   font-size: 22px;
   font-weight: bold;
 }
