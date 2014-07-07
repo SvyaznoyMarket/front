@@ -4094,6 +4094,10 @@ body.noScroll {
     padding: 5px 0 5px 0;
     margin-left: 0 !important;
   }
+  .slidesImg_pager_item {
+    width: 7px;
+    height: 7px;
+  }
 }
 /* ==========================================================================
    Категории товаров
