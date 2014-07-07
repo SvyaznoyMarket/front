@@ -23,5 +23,14 @@ define(
             $el.removeClass('borderBd');
         });
 
+        $('.js-authLoginLink').on('click', function(e) {
+            var $content = $($(e.target).data('contentSelector'));
+
+            if ($content.length) {
+                $('.js-authLoginContent').hide();
+            }
+
+            $content.show();
+        });
     }
 );
