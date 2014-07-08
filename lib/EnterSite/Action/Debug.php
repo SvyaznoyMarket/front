@@ -141,7 +141,7 @@ class Debug {
                     'color1'       => $curlQuery->getError() ? '#cc0000' : '#00bce1',
                     'color2'       => $curlQuery->getError() ? '#ff0000' : '#43c6ed',
                 ];
-                $query->css['width2'] = $info['total_time'] / $totalTime * 100 / $query->css['width1'] * 100;
+                $query->css['width2'] = $info['time']['total'] / $totalTime * 100 / $query->css['width1'] * 100;
 
                 $page->queries[] = $query;
 

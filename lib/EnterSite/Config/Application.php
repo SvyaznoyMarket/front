@@ -27,6 +27,8 @@ namespace EnterSite\Config {
         public $googleAnalitics;
         /** @var Application\Credit */
         public $credit;
+        /** @var Application\Partner */
+        public $partner;
         /** @var Application\Curl */
         public $curl;
         /** @var Application\CoreService */
@@ -70,6 +72,7 @@ namespace EnterSite\Config {
 
             $this->region = new Application\Region();
             $this->credit = new Application\Credit();
+            $this->partner = new Application\Partner();
 
             $this->curl = new Application\Curl();
 
@@ -138,6 +141,12 @@ namespace EnterSite\Config\Application {
     class Credit {
         /** @var string */
         public $cookieName;
+    }
+    class Partner {
+        /** @var string */
+        public $cookieName;
+        /** @var int */
+        public $cookieLifetime;
     }
 
     class Curl {

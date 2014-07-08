@@ -27,15 +27,24 @@ class HandleResponse {
             'cookie' => $request->cookies,
         ], 'action' => __METHOD__, 'tag' => ['request']]);
 
-        // check redirect
+        // проверка редиректа
         $response = (new Action\CheckRedirect())->execute($request);
-
+        // запуск контроллера
         if (!$response) {
             // controller call
             $controllerCall = (new Action\MatchRoute())->execute($request);
 
             // response
             $response = call_user_func($controllerCall, $request);
+        }
+
+        // партнерские куки
+        if ($response) {
+            try {
+                (new Action\CheckPartner())->execute($request, $response);
+            } catch (\Exception $e) {
+                $logger->push(['type' => 'error', 'action' => __METHOD__, 'error'  => $e]);
+            }
         }
 
         // debug cookie

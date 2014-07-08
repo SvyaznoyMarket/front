@@ -57,7 +57,7 @@ class Set {
         // регион
         $region = $regionRepository->getObjectByQuery($regionItemQuery);
         if ($region) {
-            $cookie = new Http\Cookie(
+            $response->headers->setCookie(new Http\Cookie(
                 $config->region->cookieName,
                 $region->id,
                 time() + $config->session->cookieLifetime,
@@ -65,8 +65,7 @@ class Set {
                 $config->session->cookieDomain,
                 false,
                 false
-            );
-            $response->headers->setCookie($cookie);
+            ));
         }
 
         return $response;

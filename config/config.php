@@ -25,6 +25,9 @@ return function(\EnterSite\Config\Application $config) {
 
     $config->credit->cookieName = 'credit_on';
 
+    $config->partner->cookieName = 'last_partner';
+    $config->partner->cookieLifetime = 2592000; // 30 дней
+
     $config->curl->queryChunkSize = 50;
     $config->curl->logResponse = false;
     $config->curl->timeout = 90;
