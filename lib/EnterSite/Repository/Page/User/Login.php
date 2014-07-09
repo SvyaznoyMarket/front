@@ -43,6 +43,9 @@ class Login {
 
         $page->content->registerForm = new Model\Form\User\RegisterForm();
         $page->content->registerForm->url = $router->getUrlByRoute(new Routing\User\Register());
+        $page->content->registerForm->name = $request->httpRequest->data['name'];
+        $page->content->registerForm->email = $request->httpRequest->data['email'];
+        $page->content->registerForm->phone = $request->httpRequest->data['phone'];
         $page->content->registerForm->errors = (bool)$request->httpRequest->data['registerForm_error'] ? $request->httpRequest->data['registerForm_error'] : false;
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));

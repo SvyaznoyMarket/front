@@ -26,24 +26,28 @@
         </form>
         {{/authForm}}
 
-        <form action="{{registerForm.url}}" method="post" class="formReg">
+        {{#registerForm}}
+        <form action="{{url}}" method="post" class="formReg">
 			<fieldset class="formReg_field">
 				<legend class="js-authTab formReg_title legend borderBd" data-content-selector="#id-registerContent">Я новый пользователь</legend>
 
 				<div id="id-registerContent" class="formReg_fields" style="display: none;">
 					<label for="" class="formReg_fieldname labeltext">Ваше имя:</label>
-					<input type="text" name="name" class="formReg_textfield textfield" />
+					<input type="text" name="name" class="formReg_textfield textfield{{#errors.name}} fieldError{{/errors.name}}" value="{{name}}" />
+                    {{#errors.name}}<span class="errorText">{{errors.name}}</span>{{/errors.name}}
 
 					<div id="id-authLoginContent-email" class="js-authLoginContent clearfix">
 	                    <label for="" class="formReg_fieldname labeltext fl-l">Ваш e-mail:</label>
 	                    <span class="js-authLoginLink fl-r lightGreyText borderBd" data-content-selector="#id-authLoginContent-phone">У меня нет e-mail</span>
-	                    <input type="email" name="email" class="formReg_textfield textfield" />
+	                    <input type="text" name="email" class="formReg_textfield textfield{{#errors.email}} fieldError{{/errors.email}}" value="{{email}}" />
+                        {{#errors.email}}<span class="errorText">{{errors.email}}</span>{{/errors.email}}
                     </div>
 
                     <div id="id-authLoginContent-phone" class="js-authLoginContent clearfix" style="display: none;">
 	                    <label for="" class="formReg_fieldname labeltext fl-l">Ваш мобильный телефон:</label>
 	                    <span class="js-authLoginLink fl-r lightGreyText borderBd" data-content-selector="#id-authLoginContent-email">Ввести e-mail</span>
-	                    <input type="text" name="phone" class="formReg_textfield textfield" />
+	                    <input type="text" name="phone" class="formReg_textfield textfield{{#errors.phone}} fieldError{{/errors.phone}}" value="{{phone}}" />
+                        {{#errors.phone}}<span class="errorText">{{errors.phone}}</span>{{/errors.phone}}
 	                </div>
 
 					<div class="formReg_subscribe fl-l">
@@ -59,6 +63,8 @@
 				</div>
 			</fieldset>
 		</form>
+        {{/registerForm}}
+
     </div>
 </div>
 

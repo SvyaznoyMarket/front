@@ -27,10 +27,20 @@ define(
             var $content = $($(e.target).data('contentSelector'));
 
             if ($content.length) {
-                $('.js-authLoginContent').hide();
+                $('.js-authLoginContent').each(function(i, el) {
+                    var $el = $(el),
+                        $input = $el.find(':text')
+                    ;
+                    $el.hide();
+                    $input.data('value', $input.val());
+                    $input.val('');
+                    console.warn($input);
+                });
             }
 
             $content.show();
+            var $input = $content.find(':text');
+            $input.val($input.data('value'));
         });
     }
 );

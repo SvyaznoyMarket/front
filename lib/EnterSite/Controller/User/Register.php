@@ -5,6 +5,7 @@ namespace EnterSite\Controller\User;
 use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
+use EnterSite\DebugContainerTrait;
 use EnterSite\RouterTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
@@ -14,8 +15,8 @@ use EnterSite\Model\Form;
 use EnterSite\Routing;
 
 class Register {
-    use ConfigTrait, CurlClientTrait, RouterTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait, RouterTrait;
+    use ConfigTrait, CurlClientTrait, RouterTrait, DebugContainerTrait {
+        ConfigTrait::getConfig insteadof CurlClientTrait, RouterTrait, DebugContainerTrait;
     }
 
     /**
@@ -53,17 +54,29 @@ class Register {
             $createItemQuery->setTimeout($config->coreService->hugeTimeout);
             $curl->query($createItemQuery);
 
-            try {
-                $result = $createItemQuery->getResult();
-            } catch (\Exception $e) {
-                $result = null;
-            }
+            $result = $createItemQuery->getResult();
 
             if (empty($result['id'])) {
                 throw new \Exception('Не удалось создать пользователя');
             }
         } catch (\Exception $e) {
-            $request->data['error'] = $e->getMessage();
+            if ($config->debugLevel) $this->getDebugContainer()->error = $e;
+
+            $formErrors = [];
+            switch ($e->getCode()) {
+                case 684:
+                    $formErrors['email'] = $e->getMessage();
+                    break;
+                case 686:
+                    $formErrors['phone'] = $e->getMessage();
+                    break;
+                case 689: case 690:
+                    $formErrors['name'] = $e->getMessage();
+                    break;
+                default:
+                    $request->data['error'] = 'Произошла ошибка. Возможно неверно указаны данные';
+            }
+            $request->data['registerForm_error'] = $formErrors;
 
             return (new Controller\User\Login())->execute($request);
         }
