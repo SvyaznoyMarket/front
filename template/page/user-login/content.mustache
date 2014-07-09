@@ -2,19 +2,21 @@
     <div class="contentBox960">
 
         <h1 class="pageTitle">{{title}}</h1>
-		
-		<form action="{{authForm.url}}" method="post" class="formReg">
+
+        {{#authForm}}
+		<form action="{{url}}" method="post" class="formReg">
 			<fieldset class="formReg_field">
 				<legend class="js-authTab formReg_title legend" data-content-selector="#id-authContent">Мои логин и пароль</legend>
 
 				<div id="id-authContent" class="formReg_fields">
 					<label for="" class="formReg_fieldname labeltext">E-mail или мобильный телефон:</label>
-					<input type="text" name="username" class="formReg_textfield textfield fieldError" />
-					<span class="errorText">Не верно заполнено поле</span> {{! текст ошибки }}
+					<input type="text" name="username" class="formReg_textfield textfield{{#errors.username}} fieldError{{/errors.username}}" value="{{username}}" />
+					{{#errors.username}}<span class="errorText">{{errors.username}}</span>{{/errors.username}}
 
 					<label for="" class="formReg_fieldname labeltext fl-l">Пароль:</label>
 					<a class="fl-r orangeText borderBs" href="">Забыли пароль?</a>
-					<input type="password" name="password" class="formReg_textfield textfield" />
+					<input type="password" name="password" class="formReg_textfield textfield{{#errors.password}} fieldError{{/errors.password}}" />
+                    {{#errors.password}}<span class="errorText">{{errors.password}}</span>{{/errors.password}}
 
                     <input type="hidden" name="redirect_to" value="{{redirectUrl}}" />
 
@@ -22,6 +24,7 @@
 				</div>
 			</fieldset>
         </form>
+        {{/authForm}}
 
         <form action="{{registerForm.url}}" method="post" class="formReg">
 			<fieldset class="formReg_field">

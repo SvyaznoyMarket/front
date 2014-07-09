@@ -7,15 +7,14 @@ use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
 use EnterSite\RouterTrait;
 use EnterSite\Controller;
-use EnterSite\Repository;
 use EnterCurlQuery as Query;
-use EnterSite\Model;
 use EnterSite\Model\Form;
 use EnterSite\Routing;
+use EnterSite\DebugContainerTrait;
 
 class Auth {
-    use ConfigTrait, CurlClientTrait, RouterTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait, RouterTrait;
+    use ConfigTrait, CurlClientTrait, RouterTrait, DebugContainerTrait {
+        ConfigTrait::getConfig insteadof CurlClientTrait, RouterTrait, DebugContainerTrait;
     }
 
     /**
@@ -54,7 +53,20 @@ class Auth {
             // установка cookie
             (new \EnterRepository\User())->setTokenToHttpResponse($token, $response);
         } catch (\Exception $e) {
-            $request->data['error'] = sprintf('Неверные %s или пароль', $isEmailAuth ? 'email' : 'номер телефона');
+            if ($config->debugLevel) $this->getDebugContainer()->error = $e;
+
+            $formErrors = [];
+            switch ($e->getCode()) {
+                case 613:
+                    $formErrors['password'] = 'Неверный пароль'; //sprintf('Неверные %s или пароль', $isEmailAuth ? 'email' : 'номер телефона');
+                    break;
+                case 614:
+                    $formErrors['username'] = 'Пользователь не найден';
+                    break;
+                default:
+                    $request->data['error'] = 'Произошла ошибка. Возможно неверно указаны логин или пароль';
+            }
+            $request->data['authForm_error'] = $formErrors;
 
             return (new Controller\User\Login())->execute($request);
         }

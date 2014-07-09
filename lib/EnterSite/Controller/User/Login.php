@@ -62,6 +62,7 @@ class Login {
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->redirectUrl = $redirectUrl;
+        $pageRequest->httpRequest = $request;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница

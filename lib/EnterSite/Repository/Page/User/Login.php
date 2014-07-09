@@ -38,9 +38,12 @@ class Login {
 
         $page->content->authForm = new Model\Form\User\AuthForm();
         $page->content->authForm->url = $router->getUrlByRoute(new Routing\User\Auth());
+        $page->content->authForm->username = $request->httpRequest->data['username'];
+        $page->content->authForm->errors = (bool)$request->httpRequest->data['authForm_error'] ? $request->httpRequest->data['authForm_error'] : false;
 
         $page->content->registerForm = new Model\Form\User\RegisterForm();
         $page->content->registerForm->url = $router->getUrlByRoute(new Routing\User\Register());
+        $page->content->registerForm->errors = (bool)$request->httpRequest->data['registerForm_error'] ? $request->httpRequest->data['registerForm_error'] : false;
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }

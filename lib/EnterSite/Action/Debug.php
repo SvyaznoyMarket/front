@@ -47,6 +47,13 @@ class Debug {
         }
         else if ($lastError = error_get_last()) {
             $page->error = new Page\Error($lastError);
+        } else if (isset($this->getDebugContainer()->error) && ($this->getDebugContainer()->error instanceof \Exception)) {
+            $page->error = new Page\Error([
+                'message' => $this->getDebugContainer()->error->getMessage(),
+                'type'    => $this->getDebugContainer()->error->getCode(),
+                'file'    => $this->getDebugContainer()->error->getFile(),
+                'line'    => $this->getDebugContainer()->error->getLine(),
+            ]);
         }
 
         // git

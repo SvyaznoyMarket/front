@@ -9,4 +9,6 @@ use EnterSite\Repository;
 class Request extends Repository\Page\DefaultLayout\Request {
     /** @var string */
     public $redirectUrl;
+    /** @var Http\Request */
+    public $httpRequest;
 }

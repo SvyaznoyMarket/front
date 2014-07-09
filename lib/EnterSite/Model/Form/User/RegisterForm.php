@@ -15,4 +15,6 @@ class RegisterForm {
     public $phone;
     /** @var bool */
     public $subscribe;
+    /** @var string[] */
+    public $errors = [];
 }

@@ -9,4 +9,6 @@ class AuthForm {
     public $username;
     /** @var string */
     public $password;
+    /** @var string[] */
+    public $errors = [];
 }
