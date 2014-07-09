@@ -27,6 +27,19 @@ class Partner {
     }
 
     /**
+     * @return array
+     */
+    public function getFreeHosts() {
+        static $data = [];
+
+        if (!(bool)$data) {
+            $data = Util\Json::toArray(file_get_contents($this->getConfig()->dir . '/data/cms/v2/partner/free-host.json'));
+        }
+
+        return $data;
+    }
+
+    /**
      * @return string[]
      */
     public function getDefaultCookieNames() {

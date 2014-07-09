@@ -43,7 +43,7 @@ class HandleResponse {
             try {
                 (new Action\CheckPartner())->execute($request, $response);
             } catch (\Exception $e) {
-                $logger->push(['type' => 'error', 'action' => __METHOD__, 'error'  => $e]);
+                $logger->push(['type' => 'error', 'action' => __METHOD__, 'error'  => $e, 'tag' => ['partner']]);
             }
         }
 
