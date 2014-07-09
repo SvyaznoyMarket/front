@@ -175,7 +175,7 @@ class Product {
                     if (!isset($deliveryItem['date_list']) || !is_array($deliveryItem['date_list'])) continue;
 
                     // FIXME
-                    //if (in_array($deliveryItem['token'], ['now'])) continue;
+                    if (in_array($deliveryItem['token'], ['now'])) continue;
 
                     $delivery = new Model\Product\NearestDelivery();
                     $delivery->productId = $productId;
