@@ -18,6 +18,12 @@ define(
 
                 if (_.isObject(response.result.user)) {
                     $body.data('user', response.result.user);
+                    $body.trigger(config.event.userLoaded);
+                }
+
+                if (_.isObject(response.result.cart)) {
+                    $body.data('cart', response.result.cart);
+                    $body.trigger(config.event.cartLoaded);
                 }
             }
         });

@@ -1,0 +1,1 @@
+define(["require","jquery"],function(a,n){console.info("parner"),n(".js-partner").each(function(e,t){var i=n(t);id=i.data("id"),action=i.data("action"),dataValue=i.data("value"),console.info("parner",i,i.data()),a(["module/partner/"+id],function(a){a.handle(action,dataValue,i)})})});

@@ -147,6 +147,12 @@ namespace EnterSite\Config\Application {
         public $cookieName;
         /** @var int */
         public $cookieLifetime;
+        /** @var Partner\Service */
+        public $service;
+
+        public function __construct() {
+            $this->service = new Partner\Service();
+        }
     }
 
     class Curl {
@@ -280,5 +286,44 @@ namespace EnterSite\Config\Application\Logger {
     class FileAppender extends BaseAppender {
         /** @var string */
         public $file;
+    }
+}
+
+namespace EnterSite\Config\Application\Partner {
+    class Service {
+        /** @var Service\Actionpay */
+        public $actionpay;
+        /** @var Service\Criteo */
+        public $criteo;
+        /** @var Service\Sociomantic */
+        public $sociomantic;
+        /** @var Service\GoogleRetargeting */
+        public $googleRetargeting;
+
+        public function __construct() {
+            $this->actionpay = new Service\Actionpay();
+            $this->criteo = new Service\Criteo();
+            $this->sociomantic = new Service\Sociomantic();
+            $this->googleRetargeting = new Service\GoogleRetargeting();
+        }
+    }
+}
+
+namespace EnterSite\Config\Application\Partner\Service {
+    abstract class PartnerConfig {
+        /** @var bool */
+        public $enabled;
+    }
+
+    class Actionpay extends PartnerConfig {
+    }
+
+    class Criteo extends PartnerConfig {
+    }
+
+    class Sociomantic extends PartnerConfig {
+    }
+
+    class GoogleRetargeting extends PartnerConfig {
     }
 }

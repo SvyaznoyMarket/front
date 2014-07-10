@@ -6,11 +6,11 @@ use Enter\Http;
 use EnterSite\Model;
 use EnterSite\Repository;
 
-class Request extends Repository\Page\DefaultLayout\Request {
+class Request extends Repository\Page\ProductCatalog\RootCategory\Request {
     /** @var \EnterModel\Product\Category */
-    public $category;
+    //public $category;
     /** @var \EnterModel\Product\Catalog\Config */
-    public $catalogConfig;
+    //public $catalogConfig;
     /** @var \EnterModel\Product\RequestFilter[] */
     public $requestFilters = [];
     /** @var \EnterModel\Product\Filter[] */

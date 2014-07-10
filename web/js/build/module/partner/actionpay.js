@@ -1,0 +1,1 @@
+define(["require","jquery"],function(n,e){var o=(e("body"),function(e,o){window.APRT_DATA=o,console.info("partner","actionpay",window.APRT_DATA),n(["//rt.actionpay.ru/code/enter/"])});return{handle:o}});

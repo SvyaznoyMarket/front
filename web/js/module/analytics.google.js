@@ -8,7 +8,7 @@ define(
         var $body = $('body'),
 
             handle = function(dataGa, $el, e) {
-                if (ga && !_.isUndefined(ga) && _.isObject(dataGa)) {
+                if (('undefined' != typeof ga) && _.isObject(dataGa)) {
 
                     _.each(dataGa, function(data, handlerName) {
                         console.info('ga', handlerName, data);

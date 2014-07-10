@@ -27,6 +27,10 @@ return function(\EnterSite\Config\Application $config) {
 
     $config->partner->cookieName = 'last_partner';
     $config->partner->cookieLifetime = 2592000; // 30 дней
+    $config->partner->service->actionpay->enabled = true;
+    $config->partner->service->criteo->enabled = true;
+    $config->partner->service->sociomantic->enabled = true;
+    $config->partner->service->googleRetargeting->enabled = true;
 
     $config->curl->queryChunkSize = 50;
     $config->curl->logResponse = false;

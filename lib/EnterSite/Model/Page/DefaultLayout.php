@@ -29,6 +29,8 @@ namespace EnterSite\Model\Page {
         public $search;
         /** @var DefaultLayout\Content */
         public $content;
+        /** @var Partial\Partner[] */
+        public $partners = [];
 
         public function __construct() {
             parent::__construct();
@@ -91,6 +93,7 @@ namespace EnterSite\Model\Page\DefaultLayout {
 
         public function __construct() {}
     }
+
 }
 
 namespace EnterSite\Model\Page\DefaultLayout\BreadcrumbBlock {

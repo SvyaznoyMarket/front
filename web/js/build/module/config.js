@@ -1,1 +1,1 @@
-define(["jquery","underscore"],function(e,n){return n.extend({cookie:{domain:null,lifetime:null},user:{infoUrl:null},credit:{cookieName:null}},e("body").data("config"))});
+define(["jquery","underscore"],function(e,d){return d.extend({cookie:{domain:null,lifetime:null},user:{infoUrl:null},credit:{cookieName:null},event:{userLoaded:"user_loaded",cartLoaded:"cart_loaded"}},e("body").data("config"))});
