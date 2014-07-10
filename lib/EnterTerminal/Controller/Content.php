@@ -118,9 +118,7 @@ class Content {
     }
 
     private function getTokenByUrl($url) {
-        if (strpos($url, '/') === 0) {
-            $url = substr($url, 1);
-        }
+        $url = preg_replace('/^\/+|\/+$/s', '', $url);
 
         $segments = explode('/', $url);
         // TODO: добавить поддержку для путей из 4х сегментов
