@@ -22,13 +22,15 @@ class Partner {
         $config = $this->getConfig()->partner->service;
         $viewHelper = $this->getViewHelper();
 
+        $dataAction = 'default';
+
         $partners = [];
 
         // actionpay
         if ($config->actionpay->enabled) {
             $partner = new Partial\Partner();
             $partner->id = 'actionpay';
-            $partner->dataAction = 'default';
+            $partner->dataAction = $dataAction;
 
             $partners[] = $partner;
         }
@@ -42,9 +44,11 @@ class Partner {
      * @param Repository\Page\Index\Request $request
      * @return array
      */
-    public function getIndexList(Repository\Page\Index\Request $request) {
+    public function getListForIndex(Repository\Page\Index\Request $request) {
         $config = $this->getConfig()->partner->service;
         $viewHelper = $this->getViewHelper();
+
+        $dataAction = 'index';
 
         $partners = [];
 
@@ -52,7 +56,7 @@ class Partner {
         if ($config->actionpay->enabled) {
             $partner = new Partial\Partner();
             $partner->id = 'actionpay';
-            $partner->dataAction = 'index';
+            $partner->dataAction = $dataAction;
             $partner->dataValue = $viewHelper->json([
                 'pageType' => 1,
             ]);
@@ -69,11 +73,13 @@ class Partner {
      * @param Repository\Page\ProductCatalog\RootCategory\Request $request
      * @return array
      */
-    public function getProductCatalogList(Repository\Page\ProductCatalog\RootCategory\Request $request) {
+    public function getListForProductCatalog(Repository\Page\ProductCatalog\RootCategory\Request $request) {
         $config = $this->getConfig()->partner->service;
         $viewHelper = $this->getViewHelper();
 
         $category = $request->category;
+        $products = $request instanceof Repository\Page\ProductCatalog\ChildCategory\Request ? $request->products : [];
+        $dataAction = 'product.catalog';
 
         $partners = [];
 
@@ -81,13 +87,13 @@ class Partner {
         if ($config->actionpay->enabled) {
             $partner = new Partial\Partner();
             $partner->id = 'actionpay';
-            $partner->dataAction = 'product.catalog';
+            $partner->dataAction = $dataAction;
             $partner->dataValue = $viewHelper->json([
                 'pageType'         => 3,
                 'currentCategory'  => ['id' => $category->id, 'name' => $category->name],
                 'parentCategories' => $category->parent
                     ? [
-                        ['id' => $category->parent->id, 'name' => $category->parent->name]
+                        ['id' => $category->parent->id, 'name' => $category->parent->name],
                     ]
                     : [],
             ]);
@@ -95,21 +101,76 @@ class Partner {
             $partners[] = $partner;
         }
 
+        // criteo
+        if ($config->criteo->enabled) {
+            if ((bool)$products) {
+
+                $partner = new Partial\Partner();
+                $partner->id = 'criteo';
+                $partner->dataAction = $dataAction;
+                $partner->dataValue = $viewHelper->json(array_merge($this->getCriteoDataValue(), [
+                    [
+                        'event' => 'viewList',
+                        'item'  => array_values(array_map(function(\EnterModel\Product $product) { return $product->id; }, $products)),
+                    ],
+                ]));
+
+                $partners[] = $partner;
+            }
+        }
+
         return $partners;
     }
 
     /**
-     * Данные для каталога товаров
+     * Данные для результатов поиска
+     *
+     * @param Repository\Page\Search\Request $request
+     * @return array
+     */
+    public function getListForSearch(Repository\Page\Search\Request $request) {
+        $config = $this->getConfig()->partner->service;
+        $viewHelper = $this->getViewHelper();
+
+        $products = $request->products;
+        $dataAction = 'search';
+
+        $partners = [];
+
+        // criteo
+        if ($config->criteo->enabled) {
+            if ((bool)$products) {
+
+                $partner = new Partial\Partner();
+                $partner->id = 'criteo';
+                $partner->dataAction = $dataAction;
+                $partner->dataValue = $viewHelper->json(array_merge($this->getCriteoDataValue(), [
+                    [
+                        'event' => 'viewList',
+                        'item'  => array_values(array_map(function(\EnterModel\Product $product) { return $product->id; }, $products)),
+                    ],
+                ]));
+
+                $partners[] = $partner;
+            }
+        }
+
+        return $partners;
+    }
+
+    /**
+     * Данные для карточки товара
      *
      * @param Repository\Page\ProductCard\Request $request
      * @return array
      */
-    public function getProductCardList(Repository\Page\ProductCard\Request $request) {
+    public function getListForProductCard(Repository\Page\ProductCard\Request $request) {
         $config = $this->getConfig()->partner->service;
         $viewHelper = $this->getViewHelper();
 
         $product = $request->product;
         $category = $request->product->category;
+        $dataAction = 'product.card';
 
         $partners = [];
 
@@ -117,17 +178,32 @@ class Partner {
         if ($config->actionpay->enabled) {
             $partner = new Partial\Partner();
             $partner->id = 'actionpay';
-            $partner->dataAction = 'product.card';
+            $partner->dataAction = $dataAction;
             $partner->dataValue = $viewHelper->json([
                 'pageType'         => 2,
-                'currentProduct'   => ['id'    => $product->id, 'name'  => $product->name, 'price' => $product->price],
+                'currentProduct'   => ['id' => $product->id, 'name' => $product->name, 'price' => $product->price],
                 'currentCategory'  => $category ? ['id' => $category->id, 'name' => $category->name] : null,
                 'parentCategories' => ($category && $category->parent)
                     ? [
-                        ['id' => $category->parent->id, 'name' => $category->parent->name]
+                        ['id' => $category->parent->id, 'name' => $category->parent->name],
                     ]
                     : [],
             ]);
+
+            $partners[] = $partner;
+        }
+
+        // criteo
+        if ($config->criteo->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'criteo';
+            $partner->dataAction = $dataAction;
+            $partner->dataValue = $viewHelper->json(array_merge($this->getCriteoDataValue(), [
+                [
+                    'event'   => 'viewItem',
+                    'account' => $product->id,
+                ],
+            ]));
 
             $partners[] = $partner;
         }
@@ -141,9 +217,12 @@ class Partner {
      * @param Repository\Page\Cart\Index\Request $request
      * @return array
      */
-    public function getCartList(Repository\Page\Cart\Index\Request $request) {
+    public function getListForCart(Repository\Page\Cart\Index\Request $request) {
         $config = $this->getConfig()->partner->service;
         $viewHelper = $this->getViewHelper();
+
+        $cart = $request->cart;
+        $dataAction = 'cart';
 
         $partners = [];
 
@@ -151,7 +230,7 @@ class Partner {
         if ($config->actionpay->enabled) {
             $partner = new Partial\Partner();
             $partner->id = 'actionpay';
-            $partner->dataAction = 'cart';
+            $partner->dataAction = $dataAction;
             $partner->dataValue = $viewHelper->json([
                 'pageType' => 4,
             ]);
@@ -159,6 +238,48 @@ class Partner {
             $partners[] = $partner;
         }
 
+        // criteo
+        if ($config->criteo->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'criteo';
+            $partner->dataAction = $dataAction;
+            $partner->dataValue = $viewHelper->json(array_merge($this->getCriteoDataValue(), [
+                [
+                    'event' => 'viewBasket',
+                    'item'  => array_values(array_map(function(\EnterModel\Cart\Product $product) { return [
+                        'id'       => $product->id,
+                        'price'    => $product->price,
+                        'quantity' => $product->quantity,
+                    ]; }, $cart->product)),
+                ],
+            ]));
+
+            $partners[] = $partner;
+        }
+
         return $partners;
+    }
+
+
+    /**
+     * @return array
+     */
+    private function getCriteoDataValue() {
+        $config = $this->getConfig()->partner->service->criteo;
+
+        return [
+            [
+                'event'   => 'setAccount',
+                'account' => $config->account,
+            ],
+            [
+                'event' => 'setCustomerId',
+                'id'    => '{userId}',
+            ],
+            [
+                'event' => 'setSiteType',
+                'type'  => 'm',
+            ],
+        ];
     }
 }

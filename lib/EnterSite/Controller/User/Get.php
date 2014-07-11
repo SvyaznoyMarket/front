@@ -83,6 +83,7 @@ class Get {
 
         // пользователь
         $page->user->sessionId = $session->getId();
+        $page->user->id = $user ? $user->id : null;
 
         $userBlock = (new Repository\Partial\UserBlock())->getObject($cart, $user);
         $page->widgets['.' . $userBlock->widgetId] = $userBlock;
