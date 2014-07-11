@@ -4,13 +4,14 @@ namespace EnterSite\Action;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
+use EnterSite\CurrentRouteTrait;
 use EnterSite\LoggerTrait;
 use EnterSite\DebugContainerTrait;
 use EnterSite\RouterTrait;
 use EnterSite\Controller;
 
 class MatchRoute {
-    use ConfigTrait, LoggerTrait, RouterTrait, DebugContainerTrait {
+    use ConfigTrait, LoggerTrait, RouterTrait, CurrentRouteTrait, DebugContainerTrait {
         ConfigTrait::getConfig insteadof LoggerTrait, RouterTrait, DebugContainerTrait;
         LoggerTrait::getLogger insteadof ConfigTrait;
     }
@@ -27,6 +28,10 @@ class MatchRoute {
 
         try {
             $route = $router->getRouteByPath($request->getPathInfo(), $request->getMethod(), $request->query->all());
+
+            // FIXME: осторожно, хардкод
+            $GLOBALS['EnterSite\CurrentRouteTrait::getCurrentRoute'] = $route;
+
             if ($this->getConfig()->debugLevel) $this->getDebugContainer()->route = [
                 'name'       => get_class($route),
                 'action'     => $route->action,

@@ -66,6 +66,9 @@ class Index {
         };
         $walkByMenu($request->mainMenu->elements);
 
+        // partner
+        $page->partners = (new Repository\Partial\Partner())->getIndexList($request);
+
         // шаблоны mustache
         foreach ([
 

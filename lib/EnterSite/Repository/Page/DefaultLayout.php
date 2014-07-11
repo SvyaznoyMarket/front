@@ -100,6 +100,9 @@ class DefaultLayout {
         };
         $walkByMenu($request->mainMenu->elements);
 
+        // partner
+        $page->partners = (new Repository\Partial\Partner())->getDefaultList($request);
+
         // шаблоны mustache
         foreach ([
             [

@@ -19,6 +19,10 @@ define(
                 if (_.isObject(response.result.user)) {
                     $body.data('user', response.result.user);
                 }
+
+                if (_.isObject(response.result.cart)) {
+                    $body.data('cart', response.result.cart);
+                }
             }
         });
 

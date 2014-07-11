@@ -82,10 +82,12 @@ require.config({
     }
 });
 
+// отладка
 if (debug) {
     require(['module/debug']);
 }
 
+// основные скрипты
 require(
     [
         'require',
@@ -112,7 +114,8 @@ require(
     }
 );
 
-require(
-    [moduleName],
-    function(module) {}
-);
+// модуль страницы
+require([moduleName], function(module) {
+    // партнерский модуль
+    setTimeout(function() { require(['module/partner']); }, 400);
+});

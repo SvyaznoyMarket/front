@@ -125,6 +125,9 @@ class ChildCategory {
             $page->content->selectedFilterBlock->hasFilter = (bool)$page->content->selectedFilterBlock->filters;
         }
 
+        // partner
+        $page->partners = (new Repository\Partial\Partner())->getProductCatalogList($request);
+
         // шаблоны mustache
         foreach ([
             [

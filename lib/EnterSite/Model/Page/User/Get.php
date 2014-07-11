@@ -6,6 +6,8 @@ namespace EnterSite\Model\Page\User {
     class Get {
         /** @var Get\User */
         public $user;
+        /** @var Get\Cart */
+        public $cart;
         /**
          * Виджеты, индексированные по css-селектору
          * @var Partial\Widget[]
@@ -14,6 +16,7 @@ namespace EnterSite\Model\Page\User {
 
         public function __construct() {
             $this->user = new Get\User();
+            $this->user = new Get\Cart();
         }
     }
 }
@@ -22,5 +25,23 @@ namespace EnterSite\Model\Page\User\Get {
     class User {
         /** @var string */
         public $sessionId;
+    }
+
+    class Cart {
+        /** @var Cart\Product[] */
+        public $products = [];
+    }
+}
+
+namespace EnterSite\Model\Page\User\Get\Cart {
+    class Product {
+        /** @var string */
+        public $id;
+        /** @var string */
+        public $name;
+        /** @var int */
+        public $price;
+        /** @var int */
+        public $quantity;
     }
 }

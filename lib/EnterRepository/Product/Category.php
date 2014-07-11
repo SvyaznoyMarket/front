@@ -127,6 +127,7 @@ class Category {
 
         $walk($query->getResult(), $category);
 
+        $category->parent = reset($category->ascendants);
         $category->ascendants = array_reverse($category->ascendants, true);
     }
 

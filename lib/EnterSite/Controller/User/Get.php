@@ -81,6 +81,7 @@ class Get {
         // страница
         $page = new Page();
 
+        // пользователь
         $page->user->sessionId = $session->getId();
 
         $userBlock = (new Repository\Partial\UserBlock())->getObject($cart, $user);
@@ -92,6 +93,13 @@ class Get {
                 : new \EnterModel\Product([
                     'id' => $cartProduct->id,
                 ]);
+
+            $pageCartProduct = new Page\Cart\Product();
+            $pageCartProduct->id = $product->id;
+            $pageCartProduct->name = $product->name;
+            $pageCartProduct->price = $cartProduct->price;
+            $pageCartProduct->quantity = $cartProduct->quantity;
+            $page->cart->products[] = $pageCartProduct;
 
             $widget = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, $cartProduct);
             $page->widgets['.' . $widget->widgetId] = $widget;
