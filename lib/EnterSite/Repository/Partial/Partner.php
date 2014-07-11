@@ -134,4 +134,31 @@ class Partner {
 
         return $partners;
     }
+
+    /**
+     * Данные для корзины
+     *
+     * @param Repository\Page\Cart\Index\Request $request
+     * @return array
+     */
+    public function getCartList(Repository\Page\Cart\Index\Request $request) {
+        $config = $this->getConfig()->partner->service;
+        $viewHelper = $this->getViewHelper();
+
+        $partners = [];
+
+        // actionpay
+        if ($config->actionpay->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'actionpay';
+            $partner->dataAction = 'cart';
+            $partner->dataValue = $viewHelper->json([
+                'pageType' => 4,
+            ]);
+
+            $partners[] = $partner;
+        }
+
+        return $partners;
+    }
 }

@@ -48,6 +48,9 @@ class RootCategory {
             }
         }
 
+        // partner
+        $page->partners = (new Repository\Partial\Partner())->getProductCatalogList($request);
+
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }

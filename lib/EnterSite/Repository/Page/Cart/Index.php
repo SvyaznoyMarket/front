@@ -63,6 +63,9 @@ class Index {
             $page->content->productBlock->products[] = $productCard;
         }
 
+        // partner
+        $page->partners = (new Repository\Partial\Partner())->getCartList($request);
+
         // шаблоны mustache
         foreach ([
             [
