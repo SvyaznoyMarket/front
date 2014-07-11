@@ -13,6 +13,8 @@ class Partner {
     use ConfigTrait, ViewHelperTrait;
 
     /**
+     * Данные по умолчанию
+     *
      * @param Repository\Page\DefaultLayout\Request $request
      * @return array
      */
@@ -35,6 +37,35 @@ class Partner {
     }
 
     /**
+     * Данные для главной страницы
+     *
+     * @param Repository\Page\Index\Request $request
+     * @return array
+     */
+    public function getIndexList(Repository\Page\Index\Request $request) {
+        $config = $this->getConfig()->partner->service;
+        $viewHelper = $this->getViewHelper();
+
+        $partners = [];
+
+        // actionpay
+        if ($config->actionpay->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'actionpay';
+            $partner->dataAction = 'index';
+            $partner->dataValue = $viewHelper->json([
+                'pageType' => 1,
+            ]);
+
+            $partners[] = $partner;
+        }
+
+        return $partners;
+    }
+
+    /**
+     * Данные для каталога товаров
+     *
      * @param Repository\Page\ProductCatalog\RootCategory\Request $request
      * @return array
      */
@@ -51,14 +82,13 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'actionpay';
             $partner->dataAction = 'product.catalog';
-            $dataValue = [
+            $partner->dataValue = $viewHelper->json([
                 'pageType'         => 3,
                 'currentCategory'  => ['id' => $category->id, 'name' => $category->name],
                 'parentCategories' => $category->parent
                     ? [ ['id' => $category->parent->id, 'name' => $category->parent->name] ]
                     : [],
-            ];
-            $partner->dataValue = $viewHelper->json($dataValue);
+            ]);
 
             $partners[] = $partner;
         }
