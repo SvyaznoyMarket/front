@@ -11,10 +11,6 @@ define(
             },
             credit: {
                 cookieName: null
-            },
-            event: {
-                userLoaded: 'user_loaded',
-                cartLoaded: 'cart_loaded'
             }
         }, $('body').data('config'));
     }
