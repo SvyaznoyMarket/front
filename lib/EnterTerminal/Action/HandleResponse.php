@@ -4,10 +4,13 @@ namespace EnterTerminal\Action;
 
 use Enter\Http;
 use EnterTerminal\ConfigTrait;
+use EnterSite\LoggerTrait;
 use EnterTerminal\Action;
 
 class HandleResponse {
-    use ConfigTrait;
+    use ConfigTrait, LoggerTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait;
+    }
 
     /**
      * @param \Enter\Http\Request $request
@@ -16,6 +19,15 @@ class HandleResponse {
      */
     public function execute(Http\Request $request, Http\Response &$response = null) {
         $config = $this->getConfig();
+        $logger = $this->getLogger();
+
+        $logger->push(['request' => [
+                'uri'    => $request->getRequestUri(),
+                'query'  => $request->query,
+                'data'   => $request->data,
+                'cookie' => $request->cookies,
+                'server' => $request->server,
+            ], 'action' => __METHOD__, 'tag' => ['request']]);
 
         if ($request) {
             $config->clientId = is_scalar($request->query['clientId']) ? $request->query['clientId'] : null;

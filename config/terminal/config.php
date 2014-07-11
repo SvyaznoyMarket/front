@@ -11,6 +11,7 @@ return function(\EnterTerminal\Config\Application $config) {
     $config->hostname = 't.enter.ru';
 
     $config->logger->fileAppender->file = realpath($config->dir . '/../logs') . '/terminal.log';
+    $config->logger->fileAppender->enabled = true;
 
     $config->session->name = 'clientId';
     $config->session->cookieLifetime = 15552000;

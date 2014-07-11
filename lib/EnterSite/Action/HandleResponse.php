@@ -25,6 +25,7 @@ class HandleResponse {
             'query'  => $request->query,
             'data'   => $request->data,
             'cookie' => $request->cookies,
+            'server' => $request->server,
         ], 'action' => __METHOD__, 'tag' => ['request']]);
 
         // проверка редиректа
