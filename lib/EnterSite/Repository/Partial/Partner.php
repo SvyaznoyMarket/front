@@ -86,7 +86,46 @@ class Partner {
                 'pageType'         => 3,
                 'currentCategory'  => ['id' => $category->id, 'name' => $category->name],
                 'parentCategories' => $category->parent
-                    ? [ ['id' => $category->parent->id, 'name' => $category->parent->name] ]
+                    ? [
+                        ['id' => $category->parent->id, 'name' => $category->parent->name]
+                    ]
+                    : [],
+            ]);
+
+            $partners[] = $partner;
+        }
+
+        return $partners;
+    }
+
+    /**
+     * Данные для каталога товаров
+     *
+     * @param Repository\Page\ProductCard\Request $request
+     * @return array
+     */
+    public function getProductCardList(Repository\Page\ProductCard\Request $request) {
+        $config = $this->getConfig()->partner->service;
+        $viewHelper = $this->getViewHelper();
+
+        $product = $request->product;
+        $category = $request->product->category;
+
+        $partners = [];
+
+        // actionpay
+        if ($config->actionpay->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'actionpay';
+            $partner->dataAction = 'product.card';
+            $partner->dataValue = $viewHelper->json([
+                'pageType'         => 2,
+                'currentProduct'   => ['id'    => $product->id, 'name'  => $product->name, 'price' => $product->price],
+                'currentCategory'  => $category ? ['id' => $category->id, 'name' => $category->name] : null,
+                'parentCategories' => ($category && $category->parent)
+                    ? [
+                        ['id' => $category->parent->id, 'name' => $category->parent->name]
+                    ]
                     : [],
             ]);
 
