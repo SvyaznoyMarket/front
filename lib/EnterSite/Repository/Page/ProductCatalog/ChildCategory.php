@@ -126,7 +126,7 @@ class ChildCategory {
         }
 
         // partner
-        $page->partners = array_merge($page->partners, (new Repository\Partial\Partner())->getProductCatalogList($request));
+        $page->partners = (new Repository\Partial\Partner())->getProductCatalogList($request);
 
         // шаблоны mustache
         foreach ([

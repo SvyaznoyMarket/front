@@ -11,6 +11,10 @@ define(
             },
             credit: {
                 cookieName: null
+            },
+            event: {
+                productAddedToCart: 'cart_product_added',
+                productRemovedFromCart: 'cart_product_removed'
             }
         }, $('body').data('config'));
     }

@@ -13,6 +13,28 @@ class Partner {
     use ConfigTrait, ViewHelperTrait;
 
     /**
+     * @param Repository\Page\DefaultLayout\Request $request
+     * @return array
+     */
+    public function getDefaultList(Repository\Page\DefaultLayout\Request $request) {
+        $config = $this->getConfig()->partner->service;
+        $viewHelper = $this->getViewHelper();
+
+        $partners = [];
+
+        // actionpay
+        if ($config->actionpay->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'actionpay';
+            $partner->dataAction = 'default';
+
+            $partners[] = $partner;
+        }
+
+        return $partners;
+    }
+
+    /**
      * @param Repository\Page\ProductCatalog\RootCategory\Request $request
      * @return array
      */

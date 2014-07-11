@@ -5,7 +5,7 @@ define(
     function (
         require, $
     ) {
-        console.info('parner');
+        console.info('partner');
 
         $('.js-partner').each(function(i, el) {
             var $el = $(el)
@@ -14,7 +14,7 @@ define(
                 dataValue = $el.data('value')
             ;
 
-            console.info('parner', $el, $el.data());
+            console.info('partner', $el, $el.data());
             require(['module/partner/' + id], function(module) {
                 module.handle(action, dataValue, $el);
             });

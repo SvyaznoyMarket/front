@@ -28,6 +28,8 @@ define(
                                 $(selector).trigger('render', templateData);
                             });
                         }
+
+                        $body.trigger(config.event.productAddedToCart, data.value);
                     });
 
                     e.preventDefault();
@@ -81,6 +83,8 @@ define(
                             console.warn(error);
                         }
                     }
+
+                    $body.trigger(config.event.productRemovedFromCart, data.value);
                 }
             },
 
