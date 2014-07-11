@@ -36,6 +36,6 @@ class Clear {
         $compareRepository->saveObjectToHttpSession($session, $compare);
 
         // response
-        return (new Controller\Cart())->execute($request);
+        return (new Controller\Compare())->execute($request);
     }
 }
