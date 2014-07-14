@@ -99,6 +99,11 @@ class ProductCard {
             $curl->prepare($kitListQuery);
         }
 
+        // запрос настроек каталога
+        // TODO: Проверить существование категории
+        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($product->category->ascendants, [$product->category]), $product);
+        $curl->prepare($catalogConfigQuery);
+
         // запрос списка рейтингов товаров
         $ratingListQuery = null;
         if ($config->productReview->enabled) {
@@ -165,6 +170,9 @@ class ProductCard {
             $productRepository->setAccessoryRelationForObjectListByQuery([$product->id => $product], $accessoryListQuery);
         }
 
+        // настройки каталога
+        $catalogConfig = $catalogConfigQuery ? (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
+
         // список рейтингов товаров
         if ($ratingListQuery) {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
@@ -172,6 +180,7 @@ class ProductCard {
 
         // страница
         $page = new Page();
+        $page->catalogConfig = $catalogConfig;
         $page->product = $product;
         $page->reviews = $reviews;
         $page->kitProducts = array_values($kitProductsById);
