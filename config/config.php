@@ -27,6 +27,7 @@ return function(\EnterSite\Config\Application $config) {
 
     $config->partner->cookieName = 'last_partner';
     $config->partner->cookieLifetime = 2592000; // 30 дней
+    $config->partner->enabled = true;
     // actionpay
     $config->partner->service->actionpay->enabled = true;
     // criteo

@@ -147,6 +147,8 @@ namespace EnterSite\Config\Application {
         public $cookieName;
         /** @var int */
         public $cookieLifetime;
+        /** @var bool */
+        public $enabled;
         /** @var Partner\Service */
         public $service;
 

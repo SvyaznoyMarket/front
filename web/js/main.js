@@ -8,7 +8,7 @@ var
 console.info('Init app', debug, version, moduleName);
 
 require.config({
-    //urlArgs: 't=' + version,
+    urlArgs: 't=' + version,
     baseUrl: '/js' + (debug ? '' : '/build'),
     //baseUrl: '/js',
     paths: {
@@ -117,5 +117,5 @@ require(
 // модуль страницы
 require([moduleName], function(module) {
     // партнерский модуль
-    setTimeout(function() { require(['module/partner']); }, 400);
+    setTimeout(function() { require(['module/partner']); }, 600);
 });

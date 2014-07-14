@@ -14,6 +14,7 @@ class HandleConfig {
     public function execute($environment, $debugLevel) {
         $config = $this->getConfig();
 
+        // environment & debug
         $config->environment = $environment;
         $config->debugLevel = $debugLevel;
         if ($config->debugLevel) {
@@ -21,6 +22,15 @@ class HandleConfig {
         }
         if (2 == $config->debugLevel) {
             $config->curl->logResponse = true;
+        }
+
+        // partner
+        if (!$config->partner->enabled) {
+            foreach (get_object_vars($config->partner->service) as $iConfig) {
+                if (!isset($iConfig->enabled)) continue;
+
+                $iConfig->enabled = false;
+            }
         }
     }
 }
