@@ -24,6 +24,8 @@ namespace EnterSite\Model\Page\User {
 namespace EnterSite\Model\Page\User\Get {
     class User {
         /** @var string */
+        public $id;
+        /** @var string */
         public $sessionId;
     }
 

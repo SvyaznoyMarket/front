@@ -127,6 +127,13 @@ class Search {
             $page->content->selectedFilterBlock->hasFilter = (bool)$page->content->selectedFilterBlock->filters;
         }
 
+        // partner
+        try {
+            $page->partners = (new Repository\Partial\Partner())->getListForSearch($request);
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['partner']]);
+        }
+
         // шаблоны mustache
         foreach ([
             [

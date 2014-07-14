@@ -126,7 +126,11 @@ class ChildCategory {
         }
 
         // partner
-        $page->partners = (new Repository\Partial\Partner())->getProductCatalogList($request);
+        try {
+            $page->partners = (new Repository\Partial\Partner())->getListForProductCatalog($request);
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['partner']]);
+        }
 
         // шаблоны mustache
         foreach ([

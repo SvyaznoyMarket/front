@@ -289,6 +289,13 @@ class ProductCard {
             }
         }
 
+        // partner
+        try {
+            $page->partners = (new Repository\Partial\Partner())->getListForProductCard($request);
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['partner']]);
+        }
+
         // шаблоны mustache
         foreach ([
             [

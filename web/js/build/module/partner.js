@@ -1,1 +1,1 @@
-define(["require","jquery"],function(a,n){console.info("partner"),n(".js-partner").each(function(e,t){var i=n(t);id=i.data("id"),action=i.data("action"),dataValue=i.data("value"),console.info("partner",i,i.data()),a(["module/partner/"+id],function(a){a.handle(action,dataValue,i)})})});
+define(["require","jquery"],function(n,a){console.info("partner"),a(".js-partner").each(function(e,r){var o=a(r),t=o.data("id"),c=o.data("action"),i=o.data("value");console.info("partner",c,i,o),n(["module/partner/"+t],function(n){try{n.handle(c,i,o)}catch(a){console.warn(a)}})})});

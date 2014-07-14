@@ -319,6 +319,8 @@ namespace EnterSite\Config\Application\Partner\Service {
     }
 
     class Criteo extends PartnerConfig {
+        /** @var int */
+        public $account;
     }
 
     class Sociomantic extends PartnerConfig {
