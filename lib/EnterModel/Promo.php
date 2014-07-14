@@ -31,6 +31,15 @@ namespace EnterModel {
                     $this->items[] = new Model\Promo\Item($item);
                 }
             }
+
+            if (!count($this->items)) {
+                $contentRepository = new \EnterRepository\Content();
+
+                $item = new Model\Promo\Item();
+                $item->typeId = Model\Promo\Item::TYPE_CONTENT;
+                $item->contentToken = $contentRepository->getTokenByPath(parse_url($this->url, PHP_URL_PATH));
+                $this->items[] = $item;
+            }
         }
     }
 }
@@ -43,6 +52,7 @@ namespace EnterModel\Promo {
         const TYPE_PRODUCT = 1;
         //const TYPE_SERVICE = 2;
         const TYPE_PRODUCT_CATEGORY = 3;
+        const TYPE_CONTENT = 4;
 
         /** @var int */
         public $typeId;
@@ -52,6 +62,7 @@ namespace EnterModel\Promo {
         //public $serviceId;
         /** @var string */
         public $productCategoryId;
+        public $contentToken;
 
         /**
          * @param array $data

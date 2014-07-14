@@ -64,15 +64,17 @@ class Content {
 
     private function processContentLinks($content, Client $curl, $regionId) {
         if (preg_match_all('/<a\s+[^>]*href="(?:http:\/\/(?:www\.)?enter\.ru)?(\/[^"]*)"/i', $content, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
+            $contentRepository = new \EnterRepository\Content();
+
             foreach ($matches as $key => $match) {
                 $path = $this->getPathFromHrefAttributeValue($match[1][0]);
 
                 if (0 === strpos($path, '/catalog/')) {
-                    $matches[$key]['query'] = new Query\Product\Category\GetItemByToken($this->getTokenByUrl($path), $regionId);
+                    $matches[$key]['query'] = new Query\Product\Category\GetItemByToken($contentRepository->getTokenByPath($path), $regionId);
                     $curl->prepare($matches[$key]['query']);
                 }
                 else if (0 === strpos($path, '/product/')) {
-                    $matches[$key]['query'] = new Query\Product\GetItemByToken($this->getTokenByUrl($path), $regionId);
+                    $matches[$key]['query'] = new Query\Product\GetItemByToken($contentRepository->getTokenByPath($path), $regionId);
                     $curl->prepare($matches[$key]['query']);
                 }
             }
@@ -98,7 +100,7 @@ class Content {
                         $newAttributes = ' data-type="ProductCard" data-product-id="' . $this->getViewHelper()->escape($product->id) . '"';
                 }
                 else if (0 === strpos($path, '/')) {
-                    $newAttributes = ' data-type="Content" data-content-token="' . $this->getTokenByUrl($path) . '"';
+                    $newAttributes = ' data-type="Content" data-content-token="' . $contentRepository->getTokenByPath($path) . '"';
                 }
 
                 if ($newAttributes !== null) {
@@ -115,17 +117,6 @@ class Content {
         $url = html_entity_decode($href);
         $url = preg_replace('/\?.*$|\#.*$/s', '', $url);
         return $url;
-    }
-
-    private function getTokenByUrl($url) {
-        $url = preg_replace('/^\/+|\/+$/s', '', $url);
-
-        $segments = explode('/', $url);
-        // TODO: добавить поддержку для путей из 4х сегментов
-        if (count($segments) <= 3)
-            return end($segments);
-
-        return null;
     }
 
     private function removeExternalScripts($content) {
