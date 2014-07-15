@@ -1,6 +1,8 @@
 <?php
 
 return function(\EnterSite\Config\Application $config) {
+    mb_internal_encoding('UTF-8');
+
     $config->requestId = uniqid();
 
     $config->dir = realpath(__DIR__ . '/..');

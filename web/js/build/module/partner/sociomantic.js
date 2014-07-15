@@ -1,0 +1,1 @@
+define(["require","jquery","underscore","module/config"],function(o,r){var d=(r("body"),function(o,r){window.sonar_product=window.sonar_product||{},r.product&&(window.sonar_product=r.product),r.category&&(window.sonar_product.category=r.category),r.cartProduct&&(window.sonar_basket={products:cartProduct})});return{handle:d}});
