@@ -21,6 +21,8 @@ class Product {
     public $link;
     /** @var string */
     public $description;
+    /** @var string */
+    public $tagline;
     /** @var bool */
     public $isBuyable;
     /** @var bool */
@@ -75,6 +77,7 @@ class Product {
         if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
         if (array_key_exists('link', $data)) $this->link = rtrim((string)$data['link'], '/');
         if (array_key_exists('description', $data)) $this->description = (string)$data['description'];
+        if (array_key_exists('tagline', $data)) $this->tagline = (string)$data['tagline'];
         if (array_key_exists('price', $data)) $this->price = $data['price'] ? (int)$data['price'] : null;
         if (array_key_exists('price_old', $data)) $this->oldPrice = $data['price_old'] ? (int)$data['price_old'] : null;
 

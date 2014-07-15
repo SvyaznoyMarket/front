@@ -166,6 +166,7 @@ class ProductCard {
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCard\Request();
+        $pageRequest->httpRequest = $request;
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->product = $product;

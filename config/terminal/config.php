@@ -1,6 +1,8 @@
 <?php
 
 return function(\EnterTerminal\Config\Application $config) {
+    mb_internal_encoding('UTF-8');
+
     ini_set('session.use_cookies', false);
     ini_set('session.use_only_cookies', false);
     ini_set('session.use_trans_sid', true);

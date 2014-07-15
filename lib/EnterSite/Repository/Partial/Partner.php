@@ -119,6 +119,17 @@ class Partner {
             }
         }
 
+        // sociomantic
+        if ($config->sociomantic->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'sociomantic';
+            $partner->dataAction = $dataAction;
+            $partner->dataValue = $viewHelper->json([
+                'category' => array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge($category->ascendants, [$category])),
+            ]);
+            $partners[] = $partner;
+        }
+
         return $partners;
     }
 
@@ -208,6 +219,38 @@ class Partner {
             $partners[] = $partner;
         }
 
+        // sociomantic
+        if ($config->sociomantic->enabled) {
+            $categoryNames = array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge($category->ascendants, [$category]));
+            $description = $product->tagline ?: ($product->description ?: $product->name);
+            if (mb_strlen($description) > 90) {
+                $description = mb_substr($description, 0, 90) . '...';
+            }
+            $photo = isset($product->media->photos[0]) ? $product->media->photos[0] : null;
+
+            $partner = new Partial\Partner();
+            $partner->id = 'sociomantic';
+            $partner->dataAction = $dataAction;
+            $partner->dataValue = $viewHelper->json([
+                'product'  => [
+                    'amount'      => $product->oldPrice ?: $product->price,
+                    'brand'       => $product->brand ? $product->brand->name : null,
+                    'category'    => $categoryNames,
+                    'currency'    => 'RUB',
+                    'description' => $description,
+                    'fn'          => $product->name,
+                    'identifier'  => $product->article . '_' . $request->region->id,
+                    'photo'       => $photo ? ((string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 3))) : null,
+                    'price' => $product->price,
+                    'url'   => $request->httpRequest->getSchemeAndHttpHost() . $product->link,
+                    'valid' => $product->isBuyable ? 0 : time(),
+                ],
+                'category' => $categoryNames,
+            ]);
+
+            $partners[] = $partner;
+        }
+
         return $partners;
     }
 
@@ -222,6 +265,7 @@ class Partner {
         $viewHelper = $this->getViewHelper();
 
         $cart = $request->cart;
+        $productsById = $request->productsById;
         $dataAction = 'cart';
 
         $partners = [];
@@ -253,6 +297,27 @@ class Partner {
                     ]; }, $cart->product)),
                 ],
             ]));
+
+            $partners[] = $partner;
+        }
+
+        // sociomantic
+        if ($config->sociomantic->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'sociomantic';
+            $partner->dataAction = $dataAction;
+            $partner->dataValue = $viewHelper->json([
+                'cartProduct' => array_values(array_map(function(\EnterModel\Cart\Product $cartProduct) use (&$productsById, &$request) {
+                    $product = isset($productsById[$cartProduct->id]) ? $productsById[$cartProduct->id] : null;
+
+                    return [
+                        'amount'     => $cartProduct->price * $cartProduct->quantity,
+                        'currency'   => 'RUB',
+                        'identifier' => $product ? ($product->article . '_' . $request->region->id) : null,
+                        'quantity'   => $cartProduct->quantity,
+                    ];
+                }, $cart->product))
+            ]);
 
             $partners[] = $partner;
         }
