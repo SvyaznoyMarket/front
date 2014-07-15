@@ -17,9 +17,9 @@ define(
             console.info('partner', action, dataValue, $el);
             require(['module/partner/' + id], function(module) {
                 try {
-                    module.handle(action, dataValue, $el);
+                    module.handle && module.handle(action, dataValue, $el);
                 } catch (error) {
-                    console.warn(error);
+                    console.warn('partner', id, error);
                 }
             });
         });

@@ -35,6 +35,16 @@ class Partner {
             $partners[] = $partner;
         }
 
+        // google retargeting
+        if ($config->googleRetargeting->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'google-retargeting';
+            $partner->dataAction = $dataAction;
+            $partner->dataValue = $viewHelper->json($this->getGoogleRetargetingDataValue());
+
+            $partners[] = $partner;
+        }
+
         return $partners;
     }
 
@@ -60,6 +70,19 @@ class Partner {
             $partner->dataValue = $viewHelper->json([
                 'pageType' => 1,
             ]);
+
+            $partners[] = $partner;
+        }
+
+        // google retargeting
+        if ($config->googleRetargeting->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'google-retargeting';
+            $partner->dataAction = $dataAction;
+
+            $dataValue = $this->getGoogleRetargetingDataValue();
+            $dataValue['tagParams'] = array_merge($dataValue['tagParams'], ['pagetype' => 'homepage']);
+            $partner->dataValue = $viewHelper->json($dataValue);
 
             $partners[] = $partner;
         }
@@ -130,6 +153,19 @@ class Partner {
             $partners[] = $partner;
         }
 
+        // google retargeting
+        if ($config->googleRetargeting->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'google-retargeting';
+            $partner->dataAction = $dataAction;
+
+            $dataValue = $this->getGoogleRetargetingDataValue();
+            $dataValue['tagParams'] = array_merge($dataValue['tagParams'], ['pagetype' => 'category', 'pcat' => $category->token]);
+            $partner->dataValue = $viewHelper->json($dataValue);
+
+            $partners[] = $partner;
+        }
+
         return $partners;
     }
 
@@ -164,6 +200,18 @@ class Partner {
 
                 $partners[] = $partner;
             }
+        }
+
+        // google retargeting
+        if ($config->googleRetargeting->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'google-retargeting';
+            $partner->dataAction = $dataAction;
+
+            $dataValue = $this->getGoogleRetargetingDataValue();
+            $partner->dataValue = $viewHelper->json($dataValue);
+
+            $partners[] = $partner;
         }
 
         return $partners;
@@ -251,6 +299,25 @@ class Partner {
             $partners[] = $partner;
         }
 
+        // google retargeting
+        if ($config->googleRetargeting->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'google-retargeting';
+            $partner->dataAction = $dataAction;
+
+            $dataValue = $this->getGoogleRetargetingDataValue();
+            $dataValue['tagParams'] = array_merge($dataValue['tagParams'], [
+                'pagetype' => 'product',
+                'prodid'   => $product->id,
+                'pname'    => $product->name,
+                'pcat'     => ($category) ? $category->token : '',
+                'pvalue'   => $product->price,
+            ]);
+            $partner->dataValue = $viewHelper->json($dataValue);
+
+            $partners[] = $partner;
+        }
+
         return $partners;
     }
 
@@ -322,6 +389,28 @@ class Partner {
             $partners[] = $partner;
         }
 
+        // google retargeting
+        if ($config->googleRetargeting->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'google-retargeting';
+            $partner->dataAction = $dataAction;
+
+            $dataValue = $this->getGoogleRetargetingDataValue();
+            $tagParams = ['pagetype' => 'cart', 'cartvalue' => $cart->sum, 'prodid' => [], 'pname' => [], 'pcat' => []];
+            foreach ($cart->product as $cartProduct) {
+                $product = isset($productsById[$cartProduct->id]) ? $productsById[$cartProduct->id] : null;
+                if (!$product) continue;
+
+                $tagParams['prodid'][] = $product->id;
+                $tagParams['pname'][] = $product->name;
+                $tagParams['pcat'][] = $product->category ? $product->category->token : '';
+            }
+            $dataValue['tagParams'] = array_merge($dataValue['tagParams'], $tagParams);
+            $partner->dataValue = $viewHelper->json($dataValue);
+
+            $partners[] = $partner;
+        }
+
         return $partners;
     }
 
@@ -344,6 +433,17 @@ class Partner {
             [
                 'event' => 'setSiteType',
                 'type'  => 'm',
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getGoogleRetargetingDataValue() {
+        return [
+            'tagParams' => [
+                'pagetype' => 'default',
             ],
         ];
     }

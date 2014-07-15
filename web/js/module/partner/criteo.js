@@ -17,7 +17,7 @@ define(
 
                 console.info('partner', 'criteo', 'criteo_q', window.criteo_q);
 
-                require(['//static.criteo.net/js/ld/ld.js']);
+                //require(['//static.criteo.net/js/ld/ld.js']);
             }
         ;
 
