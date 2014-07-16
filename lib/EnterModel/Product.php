@@ -109,7 +109,7 @@ class Product {
 
         if (isset($data['media'][0])) {
             foreach ($data['media'] as $mediaItem) {
-                if (empty($mediaItem['id'])) continue;
+                if (empty($mediaItem['id']) || $mediaItem['type_id'] != 1) continue;
                 $this->media->photos[] = new Model\Product\Media\Photo($mediaItem);
             }
         }
