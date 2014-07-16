@@ -309,7 +309,7 @@ class Partner {
 
         // sociomantic
         if ($config->sociomantic->enabled) {
-            $categoryNames = array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge($category->ascendants, [$category]));
+            $categoryNames = $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge($category->ascendants, [$category])) : [];
             $description = $product->tagline ?: ($product->description ?: $product->name);
             if (mb_strlen($description) > 90) {
                 $description = mb_substr($description, 0, 90) . '...';

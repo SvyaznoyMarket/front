@@ -100,8 +100,11 @@ class ProductCard {
         // TODO: загрузка предков категории как в каталоге
 
         // запрос настроек каталога
-        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($product->category ? $product->category->ascendants : [], [$product->category]), $product);
-        $curl->prepare($catalogConfigQuery);
+        $catalogConfigQuery = null;
+        if ($product->category) {
+            $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($product->category->ascendants, [$product->category]), $product);
+            $curl->prepare($catalogConfigQuery);
+        }
 
         $curl->execute();
 
@@ -142,7 +145,7 @@ class ProductCard {
         }
 
         // настройки каталога
-        $catalogConfig = (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
+        $catalogConfig = $catalogConfigQuery ? (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
 
         // аксессуары
         if ($accessoryListQuery) {
@@ -162,7 +165,7 @@ class ProductCard {
         }
 
         // категории аксессуаров
-        $accessoryCategories = (new \EnterRepository\Product\Category())->getIndexedObjectListByProductListAndTokenList($product->relation->accessories, $catalogConfig->accessoryCategoryTokens);
+        $accessoryCategories = (new \EnterRepository\Product\Category())->getIndexedObjectListByProductListAndTokenList($product->relation->accessories, $catalogConfig ? $catalogConfig->accessoryCategoryTokens : []);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCard\Request();
