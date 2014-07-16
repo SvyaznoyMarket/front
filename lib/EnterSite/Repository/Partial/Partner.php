@@ -45,6 +45,16 @@ class Partner {
             $partners[] = $partner;
         }
 
+        // cityads
+        if ($config->cityads->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'cityads';
+            $partner->dataAction = $dataAction;
+            $partner->dataValue = $viewHelper->json([]);
+
+            $partners[] = $partner;
+        }
+
         return $partners;
     }
 
@@ -83,6 +93,16 @@ class Partner {
             $dataValue = $this->getGoogleRetargetingDataValue();
             $dataValue['tagParams'] = array_merge($dataValue['tagParams'], ['pagetype' => 'homepage']);
             $partner->dataValue = $viewHelper->json($dataValue);
+
+            $partners[] = $partner;
+        }
+
+        // cityads
+        if ($config->cityads->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'cityads';
+            $partner->dataAction = $dataAction;
+            $partner->dataValue = $viewHelper->json([]);
 
             $partners[] = $partner;
         }
@@ -166,6 +186,16 @@ class Partner {
             $partners[] = $partner;
         }
 
+        // cityads
+        if ($config->cityads->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'cityads';
+            $partner->dataAction = $dataAction;
+            $partner->dataValue = $viewHelper->json([]);
+
+            $partners[] = $partner;
+        }
+
         return $partners;
     }
 
@@ -210,6 +240,16 @@ class Partner {
 
             $dataValue = $this->getGoogleRetargetingDataValue();
             $partner->dataValue = $viewHelper->json($dataValue);
+
+            $partners[] = $partner;
+        }
+
+        // cityads
+        if ($config->cityads->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'cityads';
+            $partner->dataAction = $dataAction;
+            $partner->dataValue = $viewHelper->json([]);
 
             $partners[] = $partner;
         }
@@ -318,6 +358,19 @@ class Partner {
             $partners[] = $partner;
         }
 
+        // cityads
+        if ($config->cityads->enabled) {
+            $partner = new Partial\Partner();
+            $partner->id = 'cityads';
+            $partner->dataAction = $dataAction;
+            $partner->dataValue = $viewHelper->json([
+                'page'    => 'product',
+                'product' => ['id' => $product->id],
+            ]);
+
+            $partners[] = $partner;
+        }
+
         return $partners;
     }
 
@@ -407,6 +460,27 @@ class Partner {
             }
             $dataValue['tagParams'] = array_merge($dataValue['tagParams'], $tagParams);
             $partner->dataValue = $viewHelper->json($dataValue);
+
+            $partners[] = $partner;
+        }
+
+        // cityads
+        if ($config->cityads->enabled) {
+            $productIds = [];
+            $productQuantities = [];
+            foreach ($cart->product as $cartProduct) {
+                $productIds[] = $cartProduct->id;
+                $productQuantities[] = $cartProduct->quantity;
+            }
+
+            $partner = new Partial\Partner();
+            $partner->id = 'cityads';
+            $partner->dataAction = $dataAction;
+            $partner->dataValue = $viewHelper->json([
+                'page'            => 'cart',
+                'productId'       => implode(',', $productIds),
+                'productQuantity' => implode(',', $productQuantities),
+            ]);
 
             $partners[] = $partner;
         }

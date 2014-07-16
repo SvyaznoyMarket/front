@@ -39,6 +39,8 @@ return function(\EnterSite\Config\Application $config) {
     $config->partner->service->sociomantic->enabled = true;
     // google retargeting
     $config->partner->service->googleRetargeting->enabled = true;
+    // cityads
+    $config->partner->service->cityads->enabled = true;
 
     $config->curl->queryChunkSize = 50;
     $config->curl->logResponse = false;

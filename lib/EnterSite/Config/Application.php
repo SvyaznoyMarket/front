@@ -301,12 +301,15 @@ namespace EnterSite\Config\Application\Partner {
         public $sociomantic;
         /** @var Service\GoogleRetargeting */
         public $googleRetargeting;
+        /** @var Service\Cityads */
+        public $cityads;
 
         public function __construct() {
             $this->actionpay = new Service\Actionpay();
             $this->criteo = new Service\Criteo();
             $this->sociomantic = new Service\Sociomantic();
             $this->googleRetargeting = new Service\GoogleRetargeting();
+            $this->cityads = new Service\Cityads();
         }
     }
 }
@@ -317,17 +320,16 @@ namespace EnterSite\Config\Application\Partner\Service {
         public $enabled;
     }
 
-    class Actionpay extends PartnerConfig {
-    }
+    class Actionpay extends PartnerConfig {}
 
     class Criteo extends PartnerConfig {
         /** @var int */
         public $account;
     }
 
-    class Sociomantic extends PartnerConfig {
-    }
+    class Sociomantic extends PartnerConfig {}
 
-    class GoogleRetargeting extends PartnerConfig {
-    }
+    class GoogleRetargeting extends PartnerConfig {}
+
+    class Cityads extends PartnerConfig {}
 }
