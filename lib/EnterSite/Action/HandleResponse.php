@@ -6,10 +6,12 @@ use Enter\Http;
 use EnterSite\Action;
 use EnterSite\ConfigTrait;
 use EnterSite\LoggerTrait;
+use EnterSite\SessionTrait;
 
 class HandleResponse {
-    use ConfigTrait, LoggerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
+    use ConfigTrait, LoggerTrait, SessionTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, SessionTrait;
+        LoggerTrait::getLogger insteadof SessionTrait;
     }
 
     /**
@@ -21,11 +23,11 @@ class HandleResponse {
         $logger = $this->getLogger();
 
         $logger->push(['request' => [
-            'uri'    => $request->getRequestUri(),
-            'query'  => $request->query,
-            'data'   => $request->data,
-            'cookie' => $request->cookies,
-            'server' => $request->server,
+            'uri'     => $request->getRequestUri(),
+            'query'   => $request->query,
+            'data'    => $request->data,
+            'cookie'  => $request->cookies,
+            'server'  => $request->server,
         ], 'action' => __METHOD__, 'tag' => ['request']]);
 
         // проверка редиректа
@@ -46,6 +48,15 @@ class HandleResponse {
             } catch (\Exception $e) {
                 $logger->push(['type' => 'error', 'action' => __METHOD__, 'error'  => $e, 'tag' => ['partner']]);
             }
+        }
+
+        // log session
+        // FIXME: осторожно, опасный код
+        if (isset($GLOBALS['EnterSite\SessionTrait::getSession'])) {
+            $logger->push(['session' => [
+                'id'    => $this->getSession()->getId(),
+                'value' => $this->getSession()->all(),
+            ], 'action' => __METHOD__, 'tag' => ['request']]);
         }
 
         // debug cookie
