@@ -1,0 +1,27 @@
+<?php
+
+namespace EnterTerminal\Controller\Error;
+
+use Enter\Http;
+use EnterTerminal\ConfigTrait;
+
+class NotFound {
+    use ConfigTrait;
+
+    /**
+     * @param Http\Request $request
+     * @param string|null $message
+     * @return Http\Response|Http\JsonResponse
+     */
+    public function execute(Http\Request $request) {
+        $response = new Http\JsonResponse();
+        $response->statusCode = Http\JsonResponse::STATUS_NOT_FOUND;
+
+        $response->data['error'] = [
+            'code'    => 404,
+            'message' => 'Not Found',
+        ];
+
+        return $response;
+    }
+}
