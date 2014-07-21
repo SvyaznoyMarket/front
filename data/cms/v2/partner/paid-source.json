@@ -53,15 +53,16 @@
             "utm_source": "flocktory"
         }
     },
-    "vk_cpc": {
+    "vk.com": {
         "match": {
-            "utm_source": "vk",
+            "utm_source": "vk.com",
             "utm_medium": "cpc"
         }
     },
-    "vk.com": {
+    "vk_cpc": {
         "match": {
-            "utm_source": "vk.com"
+            "utm_source": "vk",
+            "utm_medium": "vk_cpc"
         }
     },
     "targetmailru": {
