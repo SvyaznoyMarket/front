@@ -42,6 +42,7 @@ class Index {
                 continue;
             }
             $promoItem = [
+                'id'    => $promoModel->id,
                 'url'   => $router->getUrlByRoute(new Routing\Promo\Redirect($promoModel->id)),
                 'image' => $host . $config->promo->urlPaths[1] . $promoModel->image,
             ];
