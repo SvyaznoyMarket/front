@@ -50,10 +50,13 @@ class Content {
 
         $curl->execute();
 
-        // страница
-        $page = new Page();
+        if ($contentItemQuery->getError() && $contentItemQuery->getError()->getCode() === 404)
+            return (new \EnterTerminal\Controller\Error\NotFound())->execute($request);
 
         $item = $contentItemQuery->getResult();
+
+        // страница
+        $page = new Page();
         $page->content = $item['content'];
         $page->content = $this->processContentLinks($page->content, $curl, $shop->regionId);
         $page->content = $this->removeExternalScripts($page->content);
