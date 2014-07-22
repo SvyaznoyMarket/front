@@ -103,6 +103,7 @@ require(
         'module/navigation',
         'module/region',
         'module/search',
+        'module/popupShow',
         'module/widget',      // виджеты
         'module/user.common', // инфо о пользователе
         'module/cart.common', // кнопка купить, спиннер

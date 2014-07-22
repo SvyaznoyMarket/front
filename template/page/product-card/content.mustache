@@ -1,49 +1,49 @@
 <div class="content">
     <div class="contentBox960">
         <!-- Название товара, артикул, отзывы -->
-        <div class="productDescHead">
+        <div class="prodHd">
 
-            <h1 class="productDescHead_name">
+            <h1 class="prodHd_n">
                 {{#product.namePrefix}}{{product.namePrefix}}<br />{{/product.namePrefix}}
                 {{product.name}}
             </h1>
 
             {{#product.article}}
-                <div class="productDescHead_article">Артикул: {{product.article}}</div>
+                <div class="prodHd_artcl">Артикул: {{product.article}}</div>
             {{/product.article}}
 
             {{#product.rating}}
-                <div class="productDescHead_reviews">
+                <div class="prodHd_rating">
                     {{#product.rating}}
                         {{>partial/rating/star-list}}
                     {{/product.rating}}
-                    <span class="reviewsCount">{{product.rating.reviewCount}}</span>
+                    <span class="prodHd_rating_count">{{product.rating.reviewCount}}</span>
                 </div>
             {{/product.rating}}
         </div>
         <!--/ Название товара, артикул, отзывы -->
 
-        <div class="productDesc clearfix">
+        <div class="prodDescr clearfix">
 
             <!-- Изображение товара -->
-            <div class="productDescImg slidesItems">
-                <ul class="slidesItemsList clearfix">
+            <div class="prodDescr_l slider js-slider-wpar">
+                <ul class="slider_lst js-slider-list clearfix">
                     {{#product.photos}}
-                        <li class="slidesItemsList_item">
-                            <img class="slidesItemsList_img" src="{{url}}" alt="{{&name}}" />
+                        <li class="slider_lst_i js-slider-list-item">
+                            <img class="slider_lst_img js-slider-list-img" src="{{url}}" alt="{{&name}}" />
                         </li>
                     {{/product.photos}}
                 </ul>
 
-                <div class="slidesItemsBtn slidesItemsBtn_left jsBtnSlidesLeft"></div>
-                <div class="slidesItemsBtn slidesItemsBtn_right jsBtnSlidesRight"></div>
+                <div class="slider_btn slider_btn-l js-slider-btn-left"></div>
+                <div class="slider_btn slider_btn-r js-slider-btn-right"></div>
 
-                <ul class="slidesItemsBtnPag"></ul>
+                <ul class="slider_pag js-slider-pag"></ul>
             </div>
             <!--/ Изображение товара -->
 
             <!-- Информация о покупке -->
-            <div class="productDescInfo clearfix">
+            <div class="prodDescr_r clearfix">
                 {{#product.hasModel}}
                 <div class="chooseModel">
                     {{#product.modelBlock}}
@@ -61,88 +61,108 @@
                     {{/product.moreModelBlock}}
                 </div>
                 {{/product.hasModel}}
-
-                <div class="buyWidth">
-                    <!-- Выбор варианта покупки, каунтер -->
-                    <div class="buyInfoWrap clearfix">
-                        <div class="buyInfo">
-                            <div class="buyInfoPrice">
-                                <!-- Купить по полной цене -->
-                                <div class="buyInfoPrice_item">
-                                    {{#product.credit}}
-                                    <input class="js-creditButton-remove customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
-
-                                    <label class="customLabel customLabel-bigRadio" for="buyprice">
-                                        {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
-                                        <span class="nowPrice">{{product.shownPrice}} <span class="rubl">p</span></span>
-                                    </label>
-                                    {{/product.credit}}
-
-                                    {{^product.credit}}
-                                        {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
-                                        <span class="nowPrice">{{product.shownPrice}} <span class="rubl">p</span></span>
-                                    {{/product.credit}}
-                                </div>
-                                <!--/ Купить по полной цене -->
-
+                
+                <div class="prodBuy clearfix">
+                    {{! информация о покупке }}
+                    <div class="prodBuy_l">
+                        <div class="prodBuy_l_w">
+                            {{! Цена }}
+                            <div class="prodBuy_i">
                                 {{#product.credit}}
-                                <!-- Купить в кредит -->
-                                <div class="js-creditPayment buyInfoPrice_item buyInfoPrice_item-credit" data-template-selector="#tpl-creditPayment" data-value="{{&product.credit.dataValue}}" data-price-selector=".{{product.credit.widgetId}}">
+                                <input class="js-creditButton-remove customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
+
+                                <label class="customLabel customLabel-bigRadio" for="buyprice">
+                                    {{#product.shownOldPrice}}<span class="oldP">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
+                                    <span class="nowP">{{product.shownPrice}} <span class="rubl">p</span></span>
+                                </label>
+                                {{/product.credit}}
+
+                                {{^product.credit}}
+                                    {{#product.shownOldPrice}}<span class="oldP">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
+                                    <span class="nowP">{{product.shownPrice}} <span class="rubl">p</span></span>
+                                {{/product.credit}}
+                            </div>
+                            {{! Цена }}
+                            
+                            {{! Цена в кредит }}
+                            {{#product.credit}}
+                                <div class="js-creditPayment prodBuy_i prodBuy_i-credit" data-template-selector="#tpl-creditPayment" data-value="{{&product.credit.dataValue}}" data-price-selector=".{{product.credit.widgetId}}">
                                     <input class="js-creditButton customInput customInput-radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" />
 
                                     <label class="{{product.credit.widgetId}} customLabel customLabel-bigRadio" for="creditinput">
-                                        <span class="creditPrice">В кредит</span>
+                                        <span class="creditP">В кредит</span>
                                     </label>
 
                                     <script id="tpl-creditPayment" type="text/html">
                                     {{={{{ }}}=}}
-                                        <span class="creditPrice">В кредит от <strong>{{shownPrice}}</strong> <span class="rubl">p</span> в месяц</span>
+                                        <span class="creditP">В кредит от <strong>{{shownPrice}}</strong> <span class="rubl">p</span> в месяц</span>
                                     {{{={{ }}=}}}
                                     </script>
                                 </div>
-                                <!--/ Купить в кредит -->
-                                {{/product.credit}}
-                            </div>
-
-                            <!-- Купить дешевле -->
-                            <!--<div class="buyInfoLess"><a class="buyInfoLess__link" href="">Хочешь дешевле?</a></div>-->
-                            <!--/ Купить дешевле -->
+                            {{/product.credit}}
+                            {{! Цена в кредит }}
 
                             {{#product.cartButtonBlock}}
                                 {{>page/product-card/buttonBlock}}
                             {{/product.cartButtonBlock}}
                         </div>
                     </div>
-                    <!--/ Выбор варианта покупки, каунтер -->
 
-                    <!-- Информация о доставке -->
-                    {{#product.deliveryBlock}}
-                        <div class="deliveryInfo">
-                            <ul class="deliveryList">
-                                {{#deliveries}}
-                                    <li class="deliveryList_item deliveryList_item-{{token}}">
-                                        {{#name}}
-                                            {{name}} {{#priceText}}<strong>{{priceText}}</strong>{{/priceText}}
-                                        {{/name}}
-                                        <span class="{{#name}}descText{{/name}}{{^name}}descTextDotted{{/name}}">{{deliveredAtText}}
-                                        </span>
+                    {{! о доставке }}
+                    <div class="prodBuy_r">
+                        <div class="prodBuy_b clearfix">
+                            <div class="prodBuy_b_t">Есть в магазине</div>
 
-                                        {{#hasShops}}
-                                            <ul class="addressShopsList">
-                                                {{#shops}}
-                                                    <li class="addressShopsList_item"><a class="" href="{{url}}">{{name}}</a></li>
-                                                {{/shops}}
-                                            </ul>
-                                        {{/hasShops}}
-                                    </li>
-                                {{/deliveries}}
-                            </ul>
+                            <div class="prodBuy_b_r"><a href="" class="delivrB_btn btn2">Резерв</a></div>
+
+                            <div class="prodBuy_b_l">
+                                <div style="background: green;" class="shopLst_addrs">
+                                    <span class="shopLst_addrs_tx">
+                                        <span class="shopLst_addrs_row1">м. Ленинский проспект,</span>
+                                        <a href="" class="shopLst_addrs_row2">ул. Орджоникидзе, д. 11, стр. 10&nbsp;</a>
+                                        <span class="shopLst_addrs_row3">с 9.00 до 22.00</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="prodBuy_b_f"><a href="" class="delivrB_btn btn2">Резерв</a></div>
                         </div>
-                    {{/product.deliveryBlock}}
-                    <!--/ Информация о доставке -->
+
+                        <div class="prodBuy_b ta-c">
+                            <div class="prodBuy_b_t">Есть в 5 магазинах</div>
+
+                            <div class="prodBuy_b_f" style="display: block;">
+                                <span class="delivrB_btn btn1 js-popup-middle-link">Забрать сегодня</span>
+                            </div>
+                        </div>
+
+                        {{#product.deliveryBlock}}
+                            <div class="deliveryInfo">
+                                <ul class="deliveryList">
+                                    {{#deliveries}}
+                                        <li class="deliveryList_item deliveryList_item-{{token}}">
+                                            {{#name}}
+                                                {{name}} {{#priceText}}<strong>{{priceText}}</strong>{{/priceText}}
+                                            {{/name}}
+                                            <span class="{{#name}}descText{{/name}}{{^name}}descTextDotted{{/name}}">{{deliveredAtText}}
+                                            </span>
+
+                                            {{#hasShops}}
+                                                <ul class="addressShopsList">
+                                                    {{#shops}}
+                                                        <li class="addressShopsList_item"><a class="" href="{{url}}">{{name}}</a></li>
+                                                    {{/shops}}
+                                                </ul>
+                                            {{/hasShops}}
+                                        </li>
+                                    {{/deliveries}}
+                                </ul>
+                            </div>
+                        {{/product.deliveryBlock}}
+                    </div>
+                    {{! о доставке }}
                 </div>
             </div>
-            <!--/ Информация о покупке -->
         </div>
     </div>
 
@@ -278,3 +298,91 @@
     </div>
 
 </div><!--/ Контент -->
+
+<div class="popupBox popupHint js-popup-middle">
+    <div class="popupBox_close"></div>
+
+    <div class="popupBox_inn">
+        <div class="popupHint_header">Телефон DECT  Panasonic KX-TG1611 черно-серый<br/>850 <span class="rubl">p</span></div>
+
+        <div class="popupHint_cont">
+            <ul class="table3Col hintList">
+                <li class="table3Col_row table3Col_row-head">
+                    <span class="table3Col_col">Магазин</span>
+                    <span class="table3Col_col table3Col_col-hdn">Режим работы</span>
+                    <span class="table3Col_col"></span>
+                </li>
+
+                <li class="table3Col_row">
+                    <span class="table3Col_col">
+                        <div class="shopLst_addrs" style="background: green;">
+                            <span class="shopLst_addrs_tx">
+                                <span class="shopLst_addrs_row1">м. Ленинский проспект,</span>
+                                <a class="shopLst_addrs_row2" href="">ул. Орджоникидзе, д. 11, стр. 10&nbsp;</a>
+                                <span class="shopLst_addrs_row3">с 9.00 до 22.00</span>
+                            </span>
+                        </div>
+                    </span>
+                    <span class="table3Col_col table3Col_col-hdn">с 9.00 до 21.00</span>
+                    <span class="table3Col_col table3Col_col-right"><a href="" class="hintList_btn btn2">Резерв</a></span>
+                </li>
+
+                <li class="table3Col_row">
+                    <span class="table3Col_col">
+                        <div class="shopLst_addrs" style="background: green;">
+                            <span class="shopLst_addrs_tx">
+                                <span class="shopLst_addrs_row1">м. Ленинский проспект,</span>
+                                <a class="shopLst_addrs_row2" href="">ул. Орджоникидзе, д. 11, стр. 10&nbsp;</a>
+                                <span class="shopLst_addrs_row3">с 9.00 до 22.00</span>
+                            </span>
+                        </div>
+                    </span>
+                    <span class="table3Col_col table3Col_col-hdn">с 9.00 до 21.00</span>
+                    <span class="table3Col_col table3Col_col-right"><a href="" class="hintList_btn btn2">Резерв</a></span>
+                </li>
+
+                <li class="table3Col_row">
+                    <span class="table3Col_col">
+                        <div class="shopLst_addrs" style="background: green;">
+                            <span class="shopLst_addrs_tx">
+                                <span class="shopLst_addrs_row1">м. Ленинский проспект,</span>
+                                <a class="shopLst_addrs_row2" href="">ул. Орджоникидзе, д. 11, стр. 10&nbsp;</a>
+                                <span class="shopLst_addrs_row3">с 9.00 до 22.00</span>
+                            </span>
+                        </div>
+                    </span>
+                    <span class="table3Col_col table3Col_col-hdn">с 9.00 до 21.00</span>
+                    <span class="table3Col_col table3Col_col-right"><a href="" class="hintList_btn btn2">Резерв</a></span>
+                </li>
+
+                <li class="table3Col_row">
+                    <span class="table3Col_col">
+                        <div class="shopLst_addrs" style="background: green;">
+                            <span class="shopLst_addrs_tx">
+                                <span class="shopLst_addrs_row1">м. Ленинский проспект,</span>
+                                <a class="shopLst_addrs_row2" href="">ул. Орджоникидзе, д. 11, стр. 10&nbsp;</a>
+                                <span class="shopLst_addrs_row3">с 9.00 до 22.00</span>
+                            </span>
+                        </div>
+                    </span>
+                    <span class="table3Col_col table3Col_col-hdn">с 9.00 до 21.00</span>
+                    <span class="table3Col_col table3Col_col-right"><a href="" class="hintList_btn btn2">Резерв</a></span>
+                </li>
+
+                <li class="table3Col_row">
+                    <span class="table3Col_col">
+                        <div class="shopLst_addrs" style="background: green;">
+                            <span class="shopLst_addrs_tx">
+                                <span class="shopLst_addrs_row1">м. Ленинский проспект,</span>
+                                <a class="shopLst_addrs_row2" href="">ул. Орджоникидзе, д. 11, стр. 10&nbsp;</a>
+                                <span class="shopLst_addrs_row3">с 9.00 до 22.00</span>
+                            </span>
+                        </div>
+                    </span>
+                    <span class="table3Col_col table3Col_col-hdn">с 9.00 до 21.00</span>
+                    <span class="table3Col_col table3Col_col-right"><a href="" class="hintList_btn btn2">Резерв</a></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
