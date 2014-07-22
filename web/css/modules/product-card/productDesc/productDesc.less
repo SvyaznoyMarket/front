@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Карточка товара -> описание товара .productDesc .productDescHead
+   Карточка товара -> описание товара .prodDescr .prodHd .prodBuy
    ========================================================================== */
 .prodDescr {
 	margin: 0 0 40px;
@@ -166,105 +166,5 @@
 	.counter {
 		.inline-block();
 		vertical-align: top;
-	}
-}
-
-.table3Col {
-	display: table;
-
-	width: 100%;
-
-	font-size: 16px;
-
-	&_row {
-		display: table-row;
-
-		&-head {
-			color: @typBoxShadowColor;
-
-			.table3Col_col {
-				padding: 5px 0;
-			}
-		}
-
-		&:last-child {
-
-			.table3Col_col {
-				border-bottom: none;
-			}
-		}
-	}
-
-	.shopLst_addrs_row3 {
-		display: none;
-	}
-
-	.shopLst_addrs {
-
-		&:after {
-		    top: 7px;
-		}
-	}
-
-	.shopLst_addrs_tx {
-		margin-top: -1px;
-		margin-bottom: -1px;
-		padding: 1px 0;
-	}
-
-	&_col {
-		display: table-cell;
-
-		vertical-align: middle;
-
-		border-bottom: 1px solid #d3d3d3;
-
-		line-height: 1.2;
-
-
-		//min-width: 115px;
-		padding: 5px;
-
-		&-right {
-			text-align: right;
-		}
-	}
-}
-
-.hintList {
-
-	&_btn {
-		float: right;
-	}
-
-	&_bullet {
-		display: block;
-	}
-
-	&_light {
-		color: @typBoxShadowColor;
-	}
-}
-
-//попап окна подсказки
-.popupHint {
-
-	&_header {
-		margin: 0 0 5px;
-		padding-right: 25px;
-
-		font-size: 22px;
-	}
-
-	&_cont {
-		overflow: auto;
-
-		max-height: 244px;
-
-		-webkit-overflow-scrolling: touch;
-
-		&::-webkit-scrollbar {
-            display: none;
-        }
 	}
 }

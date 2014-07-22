@@ -23,10 +23,13 @@
 	z-index: 1035;
 	top: 50%;
 	left: 10px;
+	max-width: 700px;
+	width: 100%;
 
 	display: none;
 
-	width: 100%;
+	
+	//max-width: 100%;
 	//padding: 10px;
 
 	background: @white;
@@ -193,3 +196,25 @@
 	}
 }
 
+//попап окна подсказки
+.popupHint {
+
+	&_hd {
+		margin: 0 0 5px;
+		padding-right: 25px;
+
+		font-size: 22px;
+	}
+
+	&_cnt {
+		overflow: auto;
+
+		max-height: 244px;
+
+		-webkit-overflow-scrolling: touch;
+
+		&::-webkit-scrollbar {
+            display: none;
+        }
+	}
+}
