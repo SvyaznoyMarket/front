@@ -28,7 +28,7 @@
                     heightHtml = $('body').height(),
                     heightPopup = $self.height()-20;
 
-                $self.css({'width' : widthBody - 40, 'margin-top' :  -heightPopup/2}).css(options.popupCSS);;
+                $self.css({'left' : '50%', 'margin-left' :  -$self.width()/2, 'max-width' : '700px', 'margin-top' :  -heightPopup/2}).css(options.popupCSS);;
             }
 
             function closePopup() {

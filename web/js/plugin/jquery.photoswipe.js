@@ -2,16 +2,16 @@
 
   var curSlide = 0,
       body = $('body'),
-      slideWrap = $('.slidesItems'),
+      slideWrap = $('.js-slider-wpar'),
       slideWrapWidth = slideWrap.width(),
-      slideList = $('.slidesItemsList'),
-      slideWrapItem = slideList.find('.slidesItemsList_item'),
+      slideList = $('.js-slider-list'),
+      slideWrapItem = slideList.find('.js-slider-list-item'),
       countItem = slideWrapItem.length,
 
-      slidePag = $('.slidesItemsBtnPag'),
+      slidePag = $('.js-slider-pag'),
 
-      btnSlidesLeft = $('.jsBtnSlidesLeft'),
-      btnSlidesRight = $('.jsBtnSlidesRight');
+      btnSlidesLeft = $('.js-slider-btn-left'),
+      btnSlidesRight = $('.js-slider-btn-right');
   // end of vars
 
   var
@@ -22,10 +22,10 @@
         slideWrapItem.css({'display' : 'block', 'float' : 'left'});
 
         var slideWrapHeight = 350,
-            slideImg = slideWrapItem.find('.slidesItemsList_img');
+            slideImg = slideWrapItem.find('.js-slider-list-img');
         // end of vars
 
-        slideWrapWidth = $('.slidesItems').width();
+        slideWrapWidth = $('.js-slider-wpar').width();
 
         if ( slideWrapWidth < 360 ) {
             slideWrapHeight = slideWrapWidth;
@@ -55,11 +55,11 @@
 
         if ( countItem > 1 ) {
             for ( var i = 1; i <= countItem; i++) {
-              slidePag.append('<li class="slidesItemsBtnPag_item"></li>')
+              slidePag.append('<li class="slider_pag_i"></li>')
             };
           }
 
-        $('.slidesItemsBtnPag_item').first().addClass('slidesItemsBtnPag_item__active');
+        $('.slider_pag_i').first().addClass('slider_pag_i-act');
       },
 
       /*
@@ -68,15 +68,15 @@
       nextSlides = function nextSlides() {
         curSlide++;
 
-        var slideListLeft = $('.slidesItemsList').css('left'),
+        var slideListLeft = $('.js-slider-list').css('left'),
             slideListLeftNew = -1 * slideWrapWidth * curSlide,
 
-            slidePag = $('.slidesItemsBtnPag'),
-            slidePagItemActive = slidePag.find('.slidesItemsBtnPag_item__active'),
-            pagActive = 'slidesItemsBtnPag_item__active';
+            slidePag = $('.js-slider-pag'),
+            slidePagItemActive = slidePag.find('.slider_pag_i-act'),
+            pagActive = 'slider_pag_i-act';
 
         if( curSlide >= (countItem - 1) ) {
-          $('.jsBtnSlidesRight').hide();
+          $('.js-slider-btn-right').hide();
         }
 
         if( curSlide <= (countItem - 1) ) {
@@ -87,7 +87,7 @@
         }
 
         if( curSlide > 0 ) {
-          $('.jsBtnSlidesLeft').show();
+          $('.js-slider-btn-left').show();
         }
       },
 
@@ -97,15 +97,15 @@
       prevSlides = function prevSlides() {
         curSlide--;
 
-        var slideListLeft = $('.slidesItemsList').css('left'),
+        var slideListLeft = $('.js-slider-list').css('left'),
             slideListLeftNew = -1 * slideWrapWidth * curSlide,
 
-            slidePag = $('.slidesItemsBtnPag'),
-            slidePagItemActive = slidePag.find('.slidesItemsBtnPag_item__active'),
-            pagActive = 'slidesItemsBtnPag_item__active';
+            slidePag = $('.js-slider-pag'),
+            slidePagItemActive = slidePag.find('.slider_pag_i-act'),
+            pagActive = 'slider_pag_i-act';
 
         if ( curSlide <= 0 ) {
-            $('.jsBtnSlidesLeft').hide();
+            $('.js-slider-btn-left').hide();
         }
 
         if( curSlide >= 0 ) {
@@ -116,12 +116,12 @@
         }
 
         if( curSlide < (countItem - 1) ) {
-          $('.jsBtnSlidesRight').show();
+          $('.js-slider-btn-right').show();
         }
       };
   // end of vars
 
-  $('.productDescImg').touchwipe({
+  $('.js-slider-wpar').touchwipe({
     wipeLeft : function() {
       if ( curSlide < countItem - 1 ) {
         nextSlides();
