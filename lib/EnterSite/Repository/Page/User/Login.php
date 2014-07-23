@@ -48,6 +48,14 @@ class Login {
         $page->content->registerForm->phone = $request->httpRequest->data['phone'];
         $page->content->registerForm->errors = (bool)$request->httpRequest->data['registerForm_error'] ? $request->httpRequest->data['registerForm_error'] : false;
 
+        if ((bool)$request->httpRequest->data['registerForm_error']) {
+            $page->content->registerForm->isHidden = false;
+            $page->content->authForm->isHidden = true;
+        } else {
+            $page->content->registerForm->isHidden = true;
+            $page->content->authForm->isHidden = false;
+        }
+
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }

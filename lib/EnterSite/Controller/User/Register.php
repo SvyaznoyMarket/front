@@ -29,7 +29,8 @@ class Register {
         $router = $this->getRouter();
 
         // редирект
-        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Login()));
+        //$redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Login()));
+        $redirectUrl = $router->getUrlByRoute(new Routing\User\Login());
         // http-ответ
         $response = (new Controller\Redirect())->execute($redirectUrl, 302);
 
@@ -64,6 +65,9 @@ class Register {
 
             $formErrors = [];
             switch ($e->getCode()) {
+                case 680:
+                    $formErrors['email'] = $formErrors['phone'] = 'Неверные email или телефон';
+                    break;
                 case 684:
                     $formErrors['email'] = $e->getMessage();
                     break;

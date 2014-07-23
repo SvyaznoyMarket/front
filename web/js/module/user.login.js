@@ -1,17 +1,28 @@
 define(
     [
-        'jquery',
+        'jquery', 'underscore'
     ],
     function (
-        $
+        $, _
     ) {
-        var $body = $('body');
+        var
+            $body = $('body'),
+            urlHash = $(location).attr('hash') ? $(location).attr('hash').substring(1) : null;
+        ;
 
         $('.js-authTab').on('click', function(e) {
-            var $el = $(e.target);
+            var
+                $el = $(e.target),
+                $content = $($el.data('contentSelector')),
+                urlHash = $el.data('urlHash')
+            ;
+
+            if ($content.is(':visible')) {
+                return false;
+            }
 
             $('.js-authTab').each(function(i, el) {
-                var $el = $(el)
+                var $el = $(el),
                     $content = $($el.data('contentSelector'))
                 ;
 
@@ -19,8 +30,14 @@ define(
                 $el.addClass('borderBd');
             });
 
-            $($el.data('contentSelector')).slideDown('fast');
+            $content.slideDown('fast');
             $el.removeClass('borderBd');
+
+            if (urlHash) {
+                $(location).attr('hash', urlHash);
+            } else {
+                $(location).removeAttr('hash');
+            }
         });
 
         $('.js-authLoginLink').on('click', function(e) {
@@ -42,5 +59,10 @@ define(
             var $input = $content.find(':text');
             $input.val($input.data('value'));
         });
+
+
+        if (urlHash) {
+            $('.js-authTab').filter('[data-url-hash="' + urlHash + '"]').trigger('click', [false]);
+        }
     }
 );

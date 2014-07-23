@@ -29,8 +29,26 @@ class Login {
         $curl = $this->getCurlClient();
         $router = $this->getRouter();
 
+        $referer = $request->server['HTTP_REFERER'];
+        if ($referer) {
+            try {
+                $route = $router->getRouteByPath(parse_url($referer, PHP_URL_PATH));
+                if (
+                    $route instanceof Routing\User\Auth
+                    || $route instanceof Routing\User\Register
+                ) {
+                    $referer = null;
+                }
+            } catch (\Exception $e) {
+                // TODO журналирование
+            }
+        }
+
         // редирект
-        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, null);
+        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest(
+            $request,
+            $referer ?: $router->getUrlByRoute(new Routing\User\Index())
+        );
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);

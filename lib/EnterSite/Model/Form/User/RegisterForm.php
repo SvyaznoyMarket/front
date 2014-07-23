@@ -17,4 +17,6 @@ class RegisterForm {
     public $subscribe;
     /** @var string[] */
     public $errors = [];
+    /** @var bool */
+    public $isHidden;
 }

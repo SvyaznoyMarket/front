@@ -5,6 +5,8 @@ namespace EnterSite\Controller\User;
 use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
+use EnterSite\LoggerTrait;
+use EnterSite\SessionTrait;
 use EnterSite\RouterTrait;
 use EnterSite\Controller;
 use EnterCurlQuery as Query;
@@ -13,8 +15,9 @@ use EnterSite\Routing;
 use EnterSite\DebugContainerTrait;
 
 class Auth {
-    use ConfigTrait, CurlClientTrait, RouterTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait, RouterTrait, DebugContainerTrait;
+    use ConfigTrait, LoggerTrait, CurlClientTrait, RouterTrait, SessionTrait, DebugContainerTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, RouterTrait, SessionTrait, DebugContainerTrait;
+        LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
     }
 
     /**
@@ -52,6 +55,11 @@ class Auth {
 
             // установка cookie
             (new \EnterRepository\User())->setTokenToHttpResponse($token, $response);
+
+            // FIXME: костыль для project13
+            $this->getSession()->set($config->userToken->authCookieName, $token);
+            $this->getSession()->set('authSource', $isEmailAuth ? 'email' : 'phone');
+
         } catch (\Exception $e) {
             if ($config->debugLevel) $this->getDebugContainer()->error = $e;
 

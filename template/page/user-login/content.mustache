@@ -6,9 +6,9 @@
         {{#authForm}}
 		<form action="{{url}}" method="post" class="formReg">
 			<fieldset class="formReg_field">
-				<legend class="js-authTab formReg_title legend" data-content-selector="#id-authContent">Мои логин и пароль</legend>
+				<legend class="js-authTab formReg_title legend" data-content-selector="#id-authContent" data-url-hash="auth">Мои логин и пароль</legend>
 
-				<div id="id-authContent" class="formReg_fields">
+				<div id="id-authContent" class="formReg_fields"{{#isHidden}} style="display: none;"{{/isHidden}}>
 					<label for="" class="formReg_fieldname labeltext">E-mail или мобильный телефон:</label>
 					<input type="text" name="username" class="formReg_textfield textfield{{#errors.username}} fieldError{{/errors.username}}" value="{{username}}" />
 					{{#errors.username}}<span class="errorText">{{errors.username}}</span>{{/errors.username}}
@@ -29,9 +29,9 @@
         {{#registerForm}}
         <form action="{{url}}" method="post" class="formReg">
 			<fieldset class="formReg_field">
-				<legend class="js-authTab formReg_title legend borderBd" data-content-selector="#id-registerContent">Я новый пользователь</legend>
+				<legend class="js-authTab formReg_title legend borderBd" data-content-selector="#id-registerContent" data-url-hash="register">Я новый пользователь</legend>
 
-				<div id="id-registerContent" class="formReg_fields" style="display: none;">
+				<div id="id-registerContent" class="formReg_fields"{{#isHidden}} style="display: none;"{{/isHidden}}>
 					<label for="" class="formReg_fieldname labeltext">Ваше имя:</label>
 					<input type="text" name="name" class="formReg_textfield textfield{{#errors.name}} fieldError{{/errors.name}}" value="{{name}}" />
                     {{#errors.name}}<span class="errorText">{{errors.name}}</span>{{/errors.name}}
