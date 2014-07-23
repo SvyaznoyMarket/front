@@ -114,6 +114,11 @@ namespace EnterSite\Config\Application {
         public $cookieLifetime;
         /** @var string */
         public $cookieDomain;
+        /**
+         * Ключ для параметра, который отвечает за хранение данных между ДВУМЯ http-запросами
+         * @var string
+         */
+        public $flashKey;
     }
 
     class UserToken {

@@ -9,6 +9,10 @@ use EnterSite\Repository;
 class Request extends Repository\Page\DefaultLayout\Request {
     /** @var string */
     public $redirectUrl;
-    /** @var Http\Request */
-    public $httpRequest;
+    /** @var string[] */
+    public $authFormErrors = [];
+    /** @var string[] */
+    public $registerFormErrors = [];
+    /** @var \EnterModel\Message[] */
+    public $messages = [];
 }

@@ -20,6 +20,7 @@ trait SessionTrait {
             $config->name = $globalConfig->session->name;
             $config->cookieLifetime = $globalConfig->session->cookieLifetime;
             $config->cookieDomain = $globalConfig->session->cookieDomain;
+            $config->flashKey = $globalConfig->session->flashKey;
 
             $instance = new Http\Session($config);
             try {

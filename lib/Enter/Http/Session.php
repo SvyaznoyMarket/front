@@ -7,6 +7,8 @@ use Enter\Http\Session\Config;
 class Session {
     /** @var Config */
     private $config;
+    /** @var Session\FlashBag|null */
+    public $flashBag;
     /** @var bool */
     static private $started = false;
 
@@ -49,6 +51,18 @@ class Session {
 
             self::$started = true;
         }
+
+        if ($this->config->flashKey) {
+            $this->flashBag = new Session\FlashBag($this->get($this->config->flashKey));
+            $this->flashBag->renew();
+        }
+
+        // поддержка FlashBag
+        register_shutdown_function(function() {
+            if ($this->flashBag) {
+                $_SESSION[$this->config->flashKey] = $this->flashBag->dump();
+            }
+        });
     }
 
     /**

@@ -16,6 +16,7 @@ return function(\EnterSite\Config\Application $config) {
     $config->session->name = 'enter';
     $config->session->cookieLifetime = 15552000;
     $config->session->cookieDomain = '.enter.ru';
+    $config->session->flashKey = '_flash';
 
     $config->userToken->authCookieName = '_token';
 

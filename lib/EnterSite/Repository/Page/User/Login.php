@@ -36,19 +36,21 @@ class Login {
 
         $page->content->redirectUrl = $request->redirectUrl;
 
+        $page->content->messages = (new Repository\Partial\Message())->getList($request->messages);
+
         $page->content->authForm = new Model\Form\User\AuthForm();
         $page->content->authForm->url = $router->getUrlByRoute(new Routing\User\Auth());
         $page->content->authForm->username = $request->httpRequest->data['username'];
-        $page->content->authForm->errors = (bool)$request->httpRequest->data['authForm_error'] ? $request->httpRequest->data['authForm_error'] : false;
+        $page->content->authForm->errors = (bool)$request->authFormErrors ? $request->authFormErrors : false;
 
         $page->content->registerForm = new Model\Form\User\RegisterForm();
         $page->content->registerForm->url = $router->getUrlByRoute(new Routing\User\Register());
         $page->content->registerForm->name = $request->httpRequest->data['name'];
         $page->content->registerForm->email = $request->httpRequest->data['email'];
         $page->content->registerForm->phone = $request->httpRequest->data['phone'];
-        $page->content->registerForm->errors = (bool)$request->httpRequest->data['registerForm_error'] ? $request->httpRequest->data['registerForm_error'] : false;
+        $page->content->registerForm->errors = (bool)$request->registerFormErrors ? $request->registerFormErrors : false;
 
-        if ((bool)$request->httpRequest->data['registerForm_error']) {
+        if ((bool)$request->registerFormErrors) {
             $page->content->registerForm->isHidden = false;
             $page->content->authForm->isHidden = true;
         } else {

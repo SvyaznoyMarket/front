@@ -5,7 +5,9 @@ namespace EnterSite\Controller\User;
 use Enter\Http;
 use EnterSite\ConfigTrait;
 use EnterSite\CurlClientTrait;
+use EnterSite\LoggerTrait;
 use EnterSite\RouterTrait;
+use EnterSite\SessionTrait;
 use EnterSite\MustacheRendererTrait;
 use EnterSite\DebugContainerTrait;
 use EnterSite\Controller;
@@ -16,8 +18,9 @@ use EnterSite\Model;
 use EnterSite\Model\Page\User\Login as Page;
 
 class Login {
-    use ConfigTrait, CurlClientTrait, RouterTrait, MustacheRendererTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait, RouterTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, LoggerTrait, CurlClientTrait, RouterTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait {
+        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, RouterTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait;
+        LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
     }
 
     /**
@@ -28,6 +31,8 @@ class Login {
         $config = $this->getConfig();
         $curl = $this->getCurlClient();
         $router = $this->getRouter();
+        $session = $this->getSession();
+        $messageRepository = new \EnterRepository\Message();
 
         $referer = $request->server['HTTP_REFERER'];
         if ($referer) {
@@ -80,6 +85,9 @@ class Login {
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->redirectUrl = $redirectUrl;
+        $pageRequest->authFormErrors = array_map(function(\EnterModel\Message $message) { return $message->name; }, $messageRepository->getObjectListByHttpSession('authForm.error', $session));
+        $pageRequest->registerFormErrors = array_map(function(\EnterModel\Message $message) { return $message->name; }, $messageRepository->getObjectListByHttpSession('registerForm.error', $session));
+        $pageRequest->messages = $messageRepository->getObjectListByHttpSession('messages', $session);
         $pageRequest->httpRequest = $request;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
