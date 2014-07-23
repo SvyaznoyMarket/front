@@ -48,7 +48,7 @@
                     <div id="id-authLoginContent-phone" class="js-authLoginContent clearfix" style="display: none;">
 	                    <label for="" class="formReg_fieldname labeltext fl-l">Ваш мобильный телефон:</label>
 	                    <span class="js-authLoginLink fl-r lightGreyText borderBd" data-content-selector="#id-authLoginContent-email">Ввести e-mail</span>
-	                    <input type="text" name="phone" class="formReg_textfield textfield{{#errors.phone}} fieldError{{/errors.phone}}" value="{{phone}}" />
+	                    <input type="text" name="phone" class="formReg_textfield js-phone-mask textfield{{#errors.phone}} fieldError{{/errors.phone}}" value="{{phone}}" />
                         {{#errors.phone}}<span class="errorText">{{errors.phone}}</span>{{/errors.phone}}
 	                </div>
 
