@@ -1,4 +1,11 @@
 <div class="content">
+    <div class="contentBox960 js-fullimg-wrap">
+        
+        {{#product.photos}}
+            <img class="" src="{{url}}" alt="{{&name}}" />
+        {{/product.photos}}
+    </div>
+
     <div class="contentBox960">
         <!-- Название товара, артикул, отзывы -->
         <div class="productDescHead">
@@ -26,7 +33,7 @@
         <div class="productDesc clearfix">
 
             <!-- Изображение товара -->
-            <div class="productDescImg slidesItems">
+            <div class="productDescImg slidesItems js-fullimg-open">
                 <ul class="slidesItemsList clearfix">
                     {{#product.photos}}
                         <li class="slidesItemsList_item">
