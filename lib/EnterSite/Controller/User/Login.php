@@ -86,6 +86,7 @@ class Login {
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->redirectUrl = $redirectUrl;
         $pageRequest->authFormErrors = array_map(function(\EnterModel\Message $message) { return $message->name; }, $messageRepository->getObjectListByHttpSession('authForm.error', $session));
+        $pageRequest->resetFormErrors = array_map(function(\EnterModel\Message $message) { return $message->name; }, $messageRepository->getObjectListByHttpSession('resetForm.error', $session));
         $pageRequest->registerFormErrors = array_map(function(\EnterModel\Message $message) { return $message->name; }, $messageRepository->getObjectListByHttpSession('registerForm.error', $session));
         $pageRequest->messages = $messageRepository->getObjectListByHttpSession('messages', $session);
         $pageRequest->httpRequest = $request;

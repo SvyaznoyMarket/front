@@ -16,7 +16,7 @@
 					{{#errors.username}}<span class="errorText">{{errors.username}}</span>{{/errors.username}}
 
 					<label for="" class="formReg_fieldname labeltext fl-l">Пароль:</label>
-					<a class="fl-r orangeText borderBs" href="">Забыли пароль?</a>
+					<a class="js-authTab fl-r orangeText borderBs" href="#" data-content-selector="#id-forgotContent" data-url-hash="forgot">Забыли пароль?</a>
 					<input type="password" name="password" class="formReg_textfield textfield{{#errors.password}} fieldError{{/errors.password}}" />
                     {{#errors.password}}<span class="errorText">{{errors.password}}</span>{{/errors.password}}
 
@@ -27,6 +27,23 @@
 			</fieldset>
         </form>
         {{/authForm}}
+
+        {{#resetForm}}
+            <form action="{{url}}" method="post" class="formReg">
+                <fieldset class="formReg_field">
+                    <div id="id-forgotContent" class="formReg_fields"{{#isHidden}} style="display: none;"{{/isHidden}}>
+                        <label for="" class="formReg_fieldname labeltext">E-mail или мобильный телефон:</label>
+                        <a class="js-authTab fl-r orangeText borderBs" href="#" data-content-selector="#id-authContent" data-url-hash="auth">Войти</a>
+                        <input type="text" name="username" class="formReg_textfield textfield{{#errors.username}} fieldError{{/errors.username}}" value="{{username}}" />
+                        {{#errors.username}}<span class="errorText">{{errors.username}}</span>{{/errors.username}}
+
+                        <input type="hidden" name="redirect_to" value="{{redirectUrl}}" />
+
+                        <input type="submit" class="formReg_btn btnsubmit" value="Восстановить" />
+                    </div>
+                </fieldset>
+            </form>
+        {{/resetForm}}
 
         {{#registerForm}}
         <form action="{{url}}" method="post" class="formReg">

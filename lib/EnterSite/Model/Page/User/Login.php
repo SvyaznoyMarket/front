@@ -24,6 +24,8 @@ namespace EnterSite\Model\Page\User\Login {
         public $messages = [];
         /** @var \EnterSite\Model\Form\User\AuthForm */
         public $authForm;
+        /** @var \EnterSite\Model\Form\User\ResetForm */
+        public $resetForm;
         /** @var \EnterSite\Model\Form\User\RegisterForm|null */
         public $registerForm;
         /** @var string */

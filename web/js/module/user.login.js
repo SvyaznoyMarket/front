@@ -11,6 +11,8 @@ define(
         ;
 
         $('.js-authTab').on('click', function(e) {
+            e.stopPropagation();
+
             var
                 $el = $(e.target),
                 $content = $($el.data('contentSelector')),
@@ -38,6 +40,8 @@ define(
             } else {
                 $(location).removeAttr('hash');
             }
+
+            e.preventDefault();
         });
 
         $('.js-authLoginLink').on('click', function(e) {

@@ -43,6 +43,11 @@ class Login {
         $page->content->authForm->username = $request->httpRequest->data['username'];
         $page->content->authForm->errors = (bool)$request->authFormErrors ? $request->authFormErrors : false;
 
+        $page->content->resetForm = new Model\Form\User\ResetForm();
+        $page->content->resetForm->url = $router->getUrlByRoute(new Routing\User\Reset());
+        $page->content->resetForm->username = $request->httpRequest->data['username'];
+        $page->content->resetForm->errors = (bool)$request->resetFormErrors ? $request->resetFormErrors : false;
+
         $page->content->registerForm = new Model\Form\User\RegisterForm();
         $page->content->registerForm->url = $router->getUrlByRoute(new Routing\User\Register());
         $page->content->registerForm->name = $request->httpRequest->data['name'];
@@ -53,9 +58,15 @@ class Login {
         if ((bool)$request->registerFormErrors) {
             $page->content->registerForm->isHidden = false;
             $page->content->authForm->isHidden = true;
-        } else {
+            $page->content->resetForm->isHidden = true;
+        } else if ((bool)$request->resetFormErrors) {
+            $page->content->resetForm->isHidden = false;
             $page->content->registerForm->isHidden = true;
+            $page->content->authForm->isHidden = true;
+        } else {
             $page->content->authForm->isHidden = false;
+            $page->content->registerForm->isHidden = true;
+            $page->content->resetForm->isHidden = true;
         }
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
