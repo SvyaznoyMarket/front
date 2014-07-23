@@ -60,12 +60,12 @@ require.config({
             deps: ['jquery', 'jquery.touchwipe']
         },
         'jquery.slides': {
-            deps: ['jquery', 'jquery.maskedinput']
+            deps: ['jquery', 'jquery.touchwipe']
         },
         'jquery.scrollTo': {
             deps: ['jquery']
         },
-        'jquery.scrollTo': {
+        'jquery.maskedinput': {
             deps: ['jquery']
         },
         'underscore': {
