@@ -1,6 +1,6 @@
 define(
     [
-        'jquery', 'underscore'
+        'jquery', 'underscore', 'jquery.maskedinput'
     ],
     function (
         $, _
@@ -60,6 +60,7 @@ define(
             $input.val($input.data('value'));
         });
 
+        $(".js-phone-mask").mask("+7 (999) 999 - 99 - 99");
 
         if (urlHash) {
             $('.js-authTab').filter('[data-url-hash="' + urlHash + '"]').trigger('click', [false]);
