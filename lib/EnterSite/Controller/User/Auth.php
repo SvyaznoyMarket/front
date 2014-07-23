@@ -27,7 +27,7 @@ class Auth {
         $router = $this->getRouter();
 
         // редирект
-        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Login()));
+        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Index()));
         // http-ответ
         $response = (new Controller\Redirect())->execute($redirectUrl, 302);
 

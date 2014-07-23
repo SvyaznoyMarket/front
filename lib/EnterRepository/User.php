@@ -47,7 +47,14 @@ class User {
      * @param $defaultUrl
      * @return string
      */
-    public function getRedirectUrlByHttpRequest(Http\Request $request, $defaultUrl = '/') {
+    public function getRedirectUrlByHttpRequest(Http\Request $request, $defaultUrl = null) {
+        if (!$defaultUrl) {
+            $defaultUrl = $request->server['HTTP_REFERER'];
+        }
+        if (!$defaultUrl) {
+            $defaultUrl = '/';
+        }
+
         // редирект
         $url = trim((string)($request->data['redirect_to'] ?: $request->query['redirect_to']));
         if (!$url) {

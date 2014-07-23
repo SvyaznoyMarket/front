@@ -30,7 +30,7 @@ class Login {
         $router = $this->getRouter();
 
         // редирект
-        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Login()));
+        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, null);
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
