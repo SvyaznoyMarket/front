@@ -28,7 +28,10 @@
 
                 curSlides = 0,
                 direction = 0,
-                index = 1;
+                index = 1,
+				id,
+				itemUrl,
+				contSrc;
             // end of vars
 
             var
@@ -36,8 +39,11 @@
 	            	var i = 0;
 
 	                item.each(function() {
+	                    id = $self.data('value')[i].id;
 	                    itemUrl = $self.data('value')[i].url;
 	                    contSrc = $self.data('value')[i].image;
+
+	                    $(this).attr('data-ga-click', '{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + id + '&quot;]}');
 	                    $(this).attr('href', itemUrl);
 	                    $(this).find(cont).attr('src', contSrc);
 
@@ -64,6 +70,7 @@
                 		direction = 0;
 
 	                    if ( index <= slidesDataLength - 1 ) {
+	                        id = $self.data('value')[index].id;
 	                        itemUrl = $self.data('value')[index].url;
 	                    	contSrc = $self.data('value')[index].image;
 	                    };
@@ -72,7 +79,7 @@
 	                    slidesImgCenter.removeClass(centerClass).addClass(leftClass);
 	                    slidesImgCenter.next().removeClass(rightClass).addClass(centerClass);
 
-	                    slides.append('<a href="' + itemUrl + '" class="js-slides-img-item slidesImg_item slidesImg_item-right"><img src="' + contSrc + '" class="js-slides-img-cont slidesImg_cont"></a>');
+	                    slides.append('<a href="' + itemUrl + '" class="js-ga-click js-slides-img-item slidesImg_item slidesImg_item-right" data-ga-click="{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + id + '&quot;]}"><img src="' + contSrc + '" class="js-slides-img-cont slidesImg_cont"></a>');
 		               	$('.slidesImg_item-left').prev().remove();
 
 	                    pagerCustom();
@@ -93,6 +100,7 @@
                 		direction = 1;
 	                    
                 		if ( index >= 0 ) {		
+		                    id = $self.data('value')[index].id;
 		                    itemUrl = $self.data('value')[index].url;
 		                    contSrc = $self.data('value')[index].image;
 		                }
@@ -101,7 +109,7 @@
 	                    slidesImgCenter.removeClass(centerClass).addClass(rightClass);
 	                    slidesImgCenter.prev().removeClass(leftClass).addClass(centerClass);
 
-	                    slides.prepend('<a href="' + itemUrl + '" class="js-slides-img-item slidesImg_item slidesImg_item-left"><img src="' + contSrc + '" class="js-slides-img-cont slidesImg_cont"></a>');
+	                    slides.prepend('<a href="' + itemUrl + '" class="js-ga-click js-slides-img-item slidesImg_item slidesImg_item-left" data-ga-click="{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + id + '&quot;]}"><img src="' + contSrc + '" class="js-slides-img-cont slidesImg_cont"></a>');
 	                    $('.slidesImg_item-right').next().remove();
 
 	                    pagerCustom();
