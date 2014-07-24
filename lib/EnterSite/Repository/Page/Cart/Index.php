@@ -3,10 +3,10 @@
 namespace EnterSite\Repository\Page\Cart;
 
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\RouterTrait;
-use EnterSite\TranslateHelperTrait;
-use EnterSite\ViewHelperTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\TranslateHelperTrait;
+use EnterAggregator\TemplateHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
@@ -14,9 +14,7 @@ use EnterSite\Model\Partial;
 use EnterSite\Model\Page\Cart\Index as Page;
 
 class Index {
-    use ConfigTrait, LoggerTrait, RouterTrait, TranslateHelperTrait, ViewHelperTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, RouterTrait, TranslateHelperTrait, ViewHelperTrait;
-    }
+    use ConfigTrait, LoggerTrait, RouterTrait, TranslateHelperTrait, TemplateHelperTrait;
 
     /**
      * @param Page $page
@@ -27,7 +25,7 @@ class Index {
 
         $config = $this->getConfig();
         $router = $this->getRouter();
-        $viewHelper = $this->getViewHelper();
+        $viewHelper = $this->getTemplateHelper();
 
         $productCardRepository = new Repository\Partial\Cart\ProductCard();
         $productSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();

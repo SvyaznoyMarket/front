@@ -6,20 +6,17 @@ use Enter\Http;
 use EnterCurlQuery as Query;
 use EnterRepository as Repository;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\SessionTrait;
-use EnterSite\RouterTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\SessionTrait;
+use EnterAggregator\RouterTrait;
 use EnterSite\Controller;
 use EnterSite\Model\Form;
 use EnterSite\Routing;
-use EnterSite\DebugContainerTrait;
+use EnterAggregator\DebugContainerTrait;
 
 class Reset {
-    use ConfigTrait, LoggerTrait, CurlClientTrait, RouterTrait, SessionTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, RouterTrait, SessionTrait, DebugContainerTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, RouterTrait, SessionTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -27,7 +24,7 @@ class Reset {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $router = $this->getRouter();
         $session = $this->getSession();
         $messageRepository = new Repository\Message();

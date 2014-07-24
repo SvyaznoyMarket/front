@@ -4,12 +4,12 @@ namespace EnterSite\Controller\User;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\RouterTrait;
-use EnterSite\SessionTrait;
-use EnterSite\MustacheRendererTrait;
-use EnterSite\DebugContainerTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\SessionTrait;
+use EnterAggregator\MustacheRendererTrait;
+use EnterAggregator\DebugContainerTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Routing;
@@ -18,10 +18,7 @@ use EnterSite\Model;
 use EnterSite\Model\Page\User\Login as Page;
 
 class Login {
-    use ConfigTrait, LoggerTrait, CurlClientTrait, RouterTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, RouterTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, RouterTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -29,7 +26,7 @@ class Login {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $router = $this->getRouter();
         $session = $this->getSession();
         $messageRepository = new \EnterRepository\Message();

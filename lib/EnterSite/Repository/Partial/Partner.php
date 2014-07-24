@@ -3,14 +3,14 @@
 namespace EnterSite\Repository\Partial;
 
 use EnterSite\ConfigTrait;
-use EnterSite\ViewHelperTrait;
+use EnterAggregator\TemplateHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
 class Partner {
-    use ConfigTrait, ViewHelperTrait;
+    use ConfigTrait, TemplateHelperTrait;
 
     /**
      * Данные по умолчанию
@@ -20,7 +20,7 @@ class Partner {
      */
     public function getDefaultList(Repository\Page\DefaultLayout\Request $request) {
         $config = $this->getConfig()->partner->service;
-        $viewHelper = $this->getViewHelper();
+        $viewHelper = $this->getTemplateHelper();
 
         $dataAction = 'default';
 
@@ -66,7 +66,7 @@ class Partner {
      */
     public function getListForIndex(Repository\Page\Index\Request $request) {
         $config = $this->getConfig()->partner->service;
-        $viewHelper = $this->getViewHelper();
+        $viewHelper = $this->getTemplateHelper();
 
         $dataAction = 'index';
 
@@ -118,7 +118,7 @@ class Partner {
      */
     public function getListForProductCatalog(Repository\Page\ProductCatalog\RootCategory\Request $request) {
         $config = $this->getConfig()->partner->service;
-        $viewHelper = $this->getViewHelper();
+        $viewHelper = $this->getTemplateHelper();
 
         $category = $request->category;
         $products = $request instanceof Repository\Page\ProductCatalog\ChildCategory\Request ? $request->products : [];
@@ -207,7 +207,7 @@ class Partner {
      */
     public function getListForSearch(Repository\Page\Search\Request $request) {
         $config = $this->getConfig()->partner->service;
-        $viewHelper = $this->getViewHelper();
+        $viewHelper = $this->getTemplateHelper();
 
         $products = $request->products;
         $dataAction = 'search';
@@ -265,7 +265,7 @@ class Partner {
      */
     public function getListForProductCard(Repository\Page\ProductCard\Request $request) {
         $config = $this->getConfig()->partner->service;
-        $viewHelper = $this->getViewHelper();
+        $viewHelper = $this->getTemplateHelper();
 
         $product = $request->product;
         $category = $request->product->category;
@@ -382,7 +382,7 @@ class Partner {
      */
     public function getListForCart(Repository\Page\Cart\Index\Request $request) {
         $config = $this->getConfig()->partner->service;
-        $viewHelper = $this->getViewHelper();
+        $viewHelper = $this->getTemplateHelper();
 
         $cart = $request->cart;
         $productsById = $request->productsById;

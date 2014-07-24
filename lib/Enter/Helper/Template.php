@@ -2,7 +2,7 @@
 
 namespace Enter\Helper;
 
-class View {
+class Template {
     /**
      * @param $value
      * @return string

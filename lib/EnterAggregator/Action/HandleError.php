@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterSite\Action;
+namespace EnterAggregator\Action;
 
 class HandleError {
     /**

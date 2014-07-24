@@ -4,18 +4,16 @@ namespace EnterTerminal\Controller;
 
 use Enter\Curl\Client;
 use Enter\Http;
-use EnterSite\ViewHelperTrait;
 use EnterTerminal\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\Controller;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\TemplateHelperTrait;
+use EnterTerminal\Controller;
 use EnterTerminal\Repository;
 use EnterCurlQuery as Query;
 use EnterTerminal\Model\Page\Content as Page;
 
 class Content {
-    use ConfigTrait, CurlClientTrait, ViewHelperTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait;
-    }
+    use ConfigTrait, CurlTrait, TemplateHelperTrait;
 
     /**
      * @param Http\Request $request
@@ -23,7 +21,7 @@ class Content {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
 
         // ид магазина
         $shopId = (new Repository\Shop())->getIdByHttpRequest($request);
@@ -95,12 +93,12 @@ class Content {
                 if (0 === strpos($path, '/catalog/')) {
                     $category = $categoryRepository->getObjectByQuery($match['query']);
                     if (null !== $category)
-                        $newAttributes = ' data-type="ProductCatalog/Category" data-category-id="' . $this->getViewHelper()->escape($category->id) . '"';
+                        $newAttributes = ' data-type="ProductCatalog/Category" data-category-id="' . $this->getTemplateHelper()->escape($category->id) . '"';
                 }
                 else if (0 === strpos($path, '/product/')) {
                     $product = $productRepository->getObjectByQuery($match['query']);
                     if (null !== $product)
-                        $newAttributes = ' data-type="ProductCard" data-product-id="' . $this->getViewHelper()->escape($product->id) . '"';
+                        $newAttributes = ' data-type="ProductCard" data-product-id="' . $this->getTemplateHelper()->escape($product->id) . '"';
                 }
                 else if (0 === strpos($path, '/')) {
                     $newAttributes = ' data-type="Content" data-content-token="' . $contentRepository->getTokenByPath($path) . '"';

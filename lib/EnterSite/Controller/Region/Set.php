@@ -4,19 +4,16 @@ namespace EnterSite\Controller\Region;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\RouterTrait;
-use EnterSite\CurlClientTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\CurlTrait;
 use EnterCurlQuery as Query;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Controller;
 
 class Set {
-    use ConfigTrait, LoggerTrait, RouterTrait, CurlClientTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait;
-    }
+    use ConfigTrait, LoggerTrait, RouterTrait, CurlTrait;
 
     /**
      * @param Http\Request $request
@@ -26,7 +23,7 @@ class Set {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $logger = $this->getLogger();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
 
         $regionRepository = new \EnterRepository\Region();
 

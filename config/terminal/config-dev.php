@@ -1,6 +1,6 @@
 <?php
 
-return function(\EnterTerminal\Config\Application $config) {
+return function(EnterTerminal\Config $config) {
     /** @var \Closure $handler */
     $handler = include __DIR__ . '/config.php';
     $handler($config);

@@ -2,7 +2,7 @@
 
 namespace EnterSite\Repository\Partial;
 
-use EnterSite\RouterTrait;
+use EnterAggregator\RouterTrait;
 use EnterSite\Routing;
 use EnterSite\Model;
 use EnterSite\Model\Partial;

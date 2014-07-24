@@ -4,24 +4,21 @@ namespace EnterSite\Controller;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\MustacheRendererTrait;
-use EnterSite\DebugContainerTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\MustacheRendererTrait;
+use EnterAggregator\DebugContainerTrait;
 use EnterSite\Repository;
 use EnterCurlQuery as Query;
 use EnterSite\Model;
 use EnterSite\Model\Page\Index as Page;
 
 class Index {
-    use ConfigTrait, LoggerTrait, CurlClientTrait, MustacheRendererTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, MustacheRendererTrait, DebugContainerTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
 
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $productCategoryRepository = new \EnterRepository\Product\Category();
         $promoRepository = new \EnterRepository\Promo();
 

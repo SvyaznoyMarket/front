@@ -4,11 +4,11 @@ namespace EnterSite\Controller\User;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\RouterTrait;
-use EnterSite\SessionTrait;
-use EnterSite\DebugContainerTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\SessionTrait;
+use EnterAggregator\DebugContainerTrait;
 use EnterCurlQuery as Query;
 use EnterSite\Model;
 use EnterSite\Repository;
@@ -16,10 +16,7 @@ use EnterSite\Model\Page\User\Get as Page;
 use EnterSite\Routing;
 
 class Get {
-    use ConfigTrait, LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait, DebugContainerTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait, RouterTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -28,7 +25,7 @@ class Get {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $session = $this->getSession();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $cartRepository = new \EnterRepository\Cart();
 
         // ид региона

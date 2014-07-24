@@ -4,18 +4,14 @@ namespace EnterTerminal\Controller\ProductCatalog;
 
 use Enter\Http;
 use EnterTerminal\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\MustacheRendererTrait;
-use EnterSite\Controller;
-use EnterSite\Repository;
+use EnterAggregator\CurlTrait;
+use EnterTerminal\Controller;
 use EnterCurlQuery as Query;
 use EnterModel as Model;
 use EnterTerminal\Model\Page\ProductCatalog\Category as Page;
 
 class Category {
-    use ConfigTrait, CurlClientTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait;
-    }
+    use ConfigTrait, CurlTrait;
 
     /**
      * @param Http\Request $request
@@ -24,7 +20,7 @@ class Category {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $productRepository = new \EnterRepository\Product();
         $productCategoryRepository = new \EnterRepository\Product\Category();
         $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME

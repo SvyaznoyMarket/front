@@ -10,7 +10,6 @@ class NotFound {
 
     /**
      * @param Http\Request $request
-     * @param string|null $message
      * @return Http\Response|Http\JsonResponse
      */
     public function execute(Http\Request $request) {

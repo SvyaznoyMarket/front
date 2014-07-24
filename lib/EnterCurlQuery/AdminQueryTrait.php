@@ -3,8 +3,8 @@
 namespace EnterCurlQuery;
 
 use EnterCurlQuery\Url;
-use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
+use EnterAggregator\ConfigTrait;
+use EnterAggregator\LoggerTrait;
 use Enter\Util;
 
 /**

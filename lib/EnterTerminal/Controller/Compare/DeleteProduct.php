@@ -3,19 +3,15 @@
 namespace EnterTerminal\Controller\Compare;
 
 use Enter\Http;
-use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\SessionTrait;
+use EnterTerminal\ConfigTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\SessionTrait;
 use EnterCurlQuery as Query;
-use EnterSite\Repository;
 use EnterTerminal\Controller;
 
 class DeleteProduct {
-    use ConfigTrait, LoggerTrait, CurlClientTrait, SessionTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -24,7 +20,7 @@ class DeleteProduct {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $session = $this->getSession();
         $compareRepository = new \EnterRepository\Compare();
 

@@ -3,7 +3,7 @@
 namespace EnterSite\Repository\Page\Product;
 
 use EnterSite\ConfigTrait;
-use EnterSite\MustacheRendererTrait;
+use EnterAggregator\MustacheRendererTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
@@ -11,9 +11,7 @@ use EnterSite\Model\Partial;
 use EnterSite\Model\Page\Product\ListByFilter as Page;
 
 class ListByFilter {
-    use ConfigTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof MustacheRendererTrait;
-    }
+    use ConfigTrait, MustacheRendererTrait;
 
     /**
      * @param Page $page

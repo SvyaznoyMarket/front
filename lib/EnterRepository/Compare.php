@@ -3,7 +3,7 @@
 namespace EnterRepository;
 
 use Enter\Http;
-use EnterSite\ConfigTrait;
+use EnterAggregator\ConfigTrait;
 use EnterModel as Model;
 
 class Compare {

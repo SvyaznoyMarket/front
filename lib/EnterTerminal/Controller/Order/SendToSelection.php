@@ -3,11 +3,11 @@
 namespace EnterTerminal\Controller\Order;
 
 use Enter\Http;
-use EnterSite\CurlClientTrait;
+use EnterAggregator\CurlTrait;
 use EnterCurlQuery as Query;
 
 class SendToSelection {
-    use CurlClientTrait;
+    use CurlTrait;
 
     /**
      * @param Http\Request $request
@@ -15,7 +15,7 @@ class SendToSelection {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
 
         if (!is_scalar($request->query['orderNumber'])) {
             throw new \Exception('Параметр orderNumber должен быть строкой');

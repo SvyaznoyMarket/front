@@ -10,10 +10,8 @@ class LoadCachedConfig {
 
     public function execute($configFile) {
         // cache
-        $GLOBALS['EnterSite\ConfigTrait::getConfig'] = Util\Json::toObject(file_get_contents($configFile));
+        $GLOBALS['enter.config'] = Util\Json::toObject(file_get_contents($configFile));
 
         $config = $this->getConfig();
-
-        $config->requestId = uniqid();
     }
 }

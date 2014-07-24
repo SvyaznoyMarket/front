@@ -4,12 +4,10 @@ namespace EnterSite\Controller;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
+use EnterAggregator\LoggerTrait;
 
 class Redirect {
-    use ConfigTrait, LoggerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
-    }
+    use ConfigTrait, LoggerTrait;
 
     public function execute($url, $statusCode) {
         $content = sprintf('<!DOCTYPE html>

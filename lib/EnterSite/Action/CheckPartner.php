@@ -4,14 +4,12 @@ namespace EnterSite\Action;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
+use EnterAggregator\LoggerTrait;
 use EnterRepository as Repository;
 use EnterModel as Model;
 
 class CheckPartner {
-    use ConfigTrait, LoggerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
-    }
+    use ConfigTrait, LoggerTrait;
 
     /**
      * Установка кук для партнера

@@ -6,17 +6,12 @@ use EnterTerminal\Config;
 
 trait ConfigTrait {
     /**
-     * @return Config\Application
+     * @return Config
      */
     protected function getConfig() {
-        $key = 'EnterSite\ConfigTrait::getConfig'; // FIXME
+        /** @var Service $service */
+        $service = $GLOBALS['enter.service'];
 
-        if (!isset($GLOBALS[$key])) {
-            $instance = new Config\Application();
-
-            $GLOBALS[$key] = $instance;
-        }
-
-        return $GLOBALS[$key];
+        return $service->getConfig();
     }
 }

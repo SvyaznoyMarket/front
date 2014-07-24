@@ -4,15 +4,13 @@ namespace EnterSite\Controller\Error;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\MustacheRendererTrait;
+use EnterAggregator\MustacheRendererTrait;
 //use EnterSite\Repository;
 //use EnterSite\Model;
 //use EnterSite\Model\Page\Error\InternalServerError as Page;
 
 class InternalServerError {
-    use ConfigTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof MustacheRendererTrait;
-    }
+    use ConfigTrait, MustacheRendererTrait;
 
     /**
      * @param Http\Request $request

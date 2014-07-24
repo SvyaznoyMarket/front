@@ -1,27 +1,24 @@
 <?php
 
-namespace EnterSite\Action;
+namespace EnterAggregator\Action;
 
 use Enter\Http;
 use Enter\Curl\Query;
-use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\MustacheRendererTrait;
-use EnterSite\SessionTrait;
-use EnterSite\ViewHelperTrait;
-use EnterSite\DebugContainerTrait;
+use EnterAggregator\RequestIdTrait;
+use EnterAggregator\ConfigTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\MustacheRendererTrait;
+use EnterAggregator\SessionTrait;
+use EnterAggregator\TemplateHelperTrait;
+use EnterAggregator\DebugContainerTrait;
 use EnterSite\Model\Page\Debug as Page;
 
 class Debug {
-    use ConfigTrait, LoggerTrait, MustacheRendererTrait, SessionTrait, ViewHelperTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait;
-        LoggerTrait::getLogger insteadof SessionTrait;
-    }
+    use RequestIdTrait, ConfigTrait, LoggerTrait, MustacheRendererTrait, SessionTrait, TemplateHelperTrait, DebugContainerTrait;
 
     public function execute(Http\Request $request = null, Http\Response $response = null, \Exception $error = null, $startAt, $endAt) {
         $config = $this->getConfig();
         $logger = $this->getLogger();
-        $viewHelper = $this->getViewHelper();
 
         if (!$config->debugLevel) {
             return;
@@ -32,7 +29,7 @@ class Debug {
         $page = new Page();
 
         // request id
-        $page->requestId = $config->requestId;
+        $page->requestId = $this->getRequestId();
 
         $page->path = $request ? ltrim($request->getPathInfo(), '/') : null;
 
@@ -76,7 +73,7 @@ class Debug {
         $page->memory->unit = 'Mb';
 
         // session
-        if (isset($GLOBALS['EnterSite\SessionTrait::getSession'])) {
+        if (isset($GLOBALS['enter.http.session'])) {
             $page->session = json_encode($this->getSession()->all(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
         }
 
@@ -172,7 +169,7 @@ class Debug {
             } else {
                 $response->content = str_replace('</body>', PHP_EOL . $this->getRenderer()->render('partial/debug', [
                     'requestId' => $page->requestId,
-                    'debug'     => $this->getViewHelper()->json($page),
+                    'debug'     => $this->getTemplateHelper()->json($page),
                 ]) . PHP_EOL . '</body>', $response->content);
             }
         }

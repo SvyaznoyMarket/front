@@ -4,23 +4,20 @@ namespace EnterSite\Controller\Search;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\MustacheRendererTrait;
-use EnterSite\DebugContainerTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\MustacheRendererTrait;
+use EnterAggregator\DebugContainerTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterCurlQuery as Query;
-use EnterSite\RouterTrait;
+use EnterAggregator\RouterTrait;
 use EnterSite\Routing;
 use EnterSite\Model;
 use EnterSite\Model\Page\Search\Index as Page;
 
 class Index {
-    use ConfigTrait, LoggerTrait, RouterTrait, CurlClientTrait, MustacheRendererTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, RouterTrait, CurlClientTrait, MustacheRendererTrait, DebugContainerTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait;
-    }
+    use ConfigTrait, LoggerTrait, RouterTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -29,7 +26,7 @@ class Index {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $logger = $this->getLogger();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $productRepository = new \EnterRepository\Product();
         $filterRepository = new Repository\Product\Filter();
 

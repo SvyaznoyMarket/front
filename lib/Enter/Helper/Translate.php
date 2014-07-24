@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterSite\Helper;
+namespace Enter\Helper;
 
 class Translate {
     /**

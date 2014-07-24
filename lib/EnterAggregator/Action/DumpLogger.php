@@ -1,14 +1,12 @@
 <?php
 
-namespace EnterSite\Action;
+namespace EnterAggregator\Action;
 
-use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
+use EnterAggregator\ConfigTrait;
+use EnterAggregator\LoggerTrait;
 
 class DumpLogger {
-    use ConfigTrait, LoggerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
-    }
+    use ConfigTrait, LoggerTrait;
 
     public function execute() {
         try {

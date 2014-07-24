@@ -1,9 +1,7 @@
 <?php
 
-return function(\EnterSite\Config\Application $config) {
+return function(\EnterSite\Config $config) {
     mb_internal_encoding('UTF-8');
-
-    $config->requestId = uniqid();
 
     $config->dir = realpath(__DIR__ . '/..');
     $config->hostname = 'enter.ru';

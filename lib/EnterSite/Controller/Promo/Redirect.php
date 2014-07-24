@@ -4,9 +4,9 @@ namespace EnterSite\Controller\Promo;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\RouterTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\RouterTrait;
 use EnterSite\Controller;
 use EnterSite\Routing;
 use EnterSite\Repository;
@@ -14,15 +14,12 @@ use EnterCurlQuery as Query;
 use EnterModel as Model;
 
 class Redirect {
-    use ConfigTrait, LoggerTrait, CurlClientTrait, RouterTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, RouterTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, RouterTrait;
 
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $logger = $this->getLogger();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $router = $this->getRouter();
         $productCategoryRepository = new \EnterRepository\Product\Category();
         $promoRepository = new \EnterRepository\Promo();

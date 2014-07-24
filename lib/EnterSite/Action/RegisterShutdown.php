@@ -3,7 +3,7 @@
 namespace EnterSite\Action;
 
 use Enter\Http;
-use EnterSite\LoggerTrait;
+use EnterAggregator\LoggerTrait;
 use EnterSite\Action;
 use EnterSite\Controller;
 
@@ -23,7 +23,7 @@ class RegisterShutdown {
             }
 
             // logger
-            (new Action\DumpLogger())->execute();
+            (new \EnterAggregator\Action\DumpLogger())->execute();
 
             $lastError = error_get_last();
             if ($lastError && (error_reporting() & $lastError['type'])) {
@@ -39,7 +39,7 @@ class RegisterShutdown {
             $endAt = microtime(true);
 
             // debug info
-            (new Action\Debug())->execute($request, $response, $error, $startAt, $endAt);
+            (new \EnterAggregator\Action\Debug())->execute($request, $response, $error, $startAt, $endAt);
 
             // send response
             $response->send();

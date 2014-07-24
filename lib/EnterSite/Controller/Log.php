@@ -6,14 +6,12 @@ use Enter\Http;
 use Enter\Templating;
 use Enter\Util;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\MustacheRendererTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\MustacheRendererTrait;
 use EnterSite\Controller;
 
 class Log {
-    use ConfigTrait, LoggerTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, MustacheRendererTrait;
-    }
+    use ConfigTrait, LoggerTrait, MustacheRendererTrait;
 
     public function execute(Http\Request $request) {
         $config = $this->getConfig();

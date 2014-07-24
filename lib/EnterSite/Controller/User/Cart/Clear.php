@@ -4,16 +4,13 @@ namespace EnterSite\Controller\User\Cart;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\SessionTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\SessionTrait;
 use EnterSite\Repository;
 
 class Clear {
-    use ConfigTrait, LoggerTrait, CurlClientTrait, SessionTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
