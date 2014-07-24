@@ -88,7 +88,7 @@ class DefaultLayout {
 
         // ga
         $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$viewHelper) {
-            /** @var \EnterSite\Model\MainMenu\Element[] $menuElements */
+            /** @var \EnterModel\MainMenu\Element[] $menuElements */
             foreach ($menuElements as $menuElement) {
                 $menuElement->dataGa = $viewHelper->json([
                     'm_sidebar_category_click' => ['send', 'event', 'm_sidebar_category_click', $menuElement->name],

@@ -1,7 +1,7 @@
 <?php
 
-namespace EnterSite\Model {
-    use EnterSite\Model;
+namespace EnterModel {
+    use EnterModel as Model;
 
     class MainMenu {
         /** @var Model\MainMenu\Element[] */
@@ -20,10 +20,14 @@ namespace EnterSite\Model {
     }
 }
 
-namespace EnterSite\Model\MainMenu {
-    use EnterSite\Model;
+namespace EnterModel\MainMenu {
+    use EnterModel as Model;
 
     class Element {
+        /** @var string */
+        public $type;
+        /** @var string */
+        public $id;
         /** @var string */
         public $name;
         /** @var string */
@@ -49,6 +53,8 @@ namespace EnterSite\Model\MainMenu {
          * @param array $data
          */
         public function __construct(array $data = []) {
+            if (array_key_exists('type', $data)) $this->type = (string)$data['type'];
+            if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
             if (array_key_exists('char', $data)) $this->char = (string)$data['char'];
             if (array_key_exists('image', $data)) $this->image = (string)$data['image'];

@@ -8,7 +8,7 @@ namespace EnterTerminal\Model {
         public $region;
         /** @var Model\Shop */
         public $shop;
-        /** @var \EnterTerminal\Model\MainMenu */
+        /** @var \EnterModel\MainMenu */
         public $mainMenu;
     }
 }

@@ -8,7 +8,7 @@ use EnterSite\Model;
 class Request {
     /** @var \EnterModel\Region */
     public $region;
-    /** @var Model\MainMenu */
+    /** @var \EnterModel\MainMenu */
     public $mainMenu;
     /** @var Http\Request */
     public $httpRequest;
