@@ -1,9 +1,21 @@
 <div class="content">
-    <div class="contentBox960 js-fullimg-wrap">
-        
-        {{#product.photos}}
-            <img class="" src="{{url}}" alt="{{&name}}" />
-        {{/product.photos}}
+    <div class="contentBox960 fullImgCnt js-fullimg-wrap">
+        <img class="fullImgCnt_img js-fullimg-img" src="http://fs04.enter.ru/1/1/500/d0/202993.jpg" alt="" />
+
+        <div class="fullImgCnt_thmb js-fullimg-thmb-wrap">
+            <ul class="fullImgCnt_thmb_w js-fullimg-thmb">
+            {{#product.photos}}
+                <li class="fullImgCnt_thmb_i js-fullimg-thmb-i">
+                    <span class="fullImgCnt_thmb_i_w">
+                        <img class="fullImgCnt_thmb_img js-fullimg-thmb-img" src="{{url}}" alt="{{&name}}" />
+                    </span>
+                </li>
+            {{/product.photos}}
+            </ul>
+
+            <div class="fullImgCnt_thmb_btn fullImgCnt_thmb_btn-l js-fullimg-thmb-btn-l fullImgCnt_thmb_btn-disbl"></div>
+            <div class="fullImgCnt_thmb_btn fullImgCnt_thmb_btn-r js-fullimg-thmb-btn-r"></div>
+        </div>
     </div>
 
     <div class="contentBox960">
@@ -26,18 +38,18 @@
                     {{/product.rating}}
                     <span class="prodHd_rating_count">{{product.rating.reviewCount}}</span>
                 </div>
-            {{/product.rating}}
+            {{/product.rating}} 
         </div>
         <!--/ Название товара, артикул, отзывы -->
 
         <div class="prodDescr clearfix">
 
             <!-- Изображение товара -->
-            <div class="prodDescr_l slider js-slider-wpar js-fullimg-open">
+            <div class="prodDescr_l slider js-slider-wpar">
                 <ul class="slider_lst js-slider-list clearfix">
                     {{#product.photos}}
                         <li class="slider_lst_i js-slider-list-item">
-                            <img class="slider_lst_img js-slider-list-img" src="{{url}}" alt="{{&name}}" />
+                            <img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}" />
                         </li>
                     {{/product.photos}}
                 </ul>
