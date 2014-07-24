@@ -3,16 +3,16 @@
 namespace EnterTerminal\Controller\Search;
 
 use Enter\Http;
-use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\SessionTrait;
+use EnterTerminal\ConfigTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\SessionTrait;
 use EnterCurlQuery as Query;
 use EnterModel as Model;
 use EnterTerminal\Model\Page\Search\Autocomplete as Page;
 
 class Autocomplete {
-    use CurlClientTrait;
+    use CurlTrait;
 
     /**
      * @param Http\Request $request
@@ -20,7 +20,7 @@ class Autocomplete {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
 
         // ид магазина
         $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request);

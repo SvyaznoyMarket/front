@@ -4,13 +4,11 @@ namespace EnterSite\Repository;
 
 use Enter\Curl\Query;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
+use EnterAggregator\LoggerTrait;
 use EnterSite\Model;
 
 class MainMenu {
-    use ConfigTrait, LoggerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
-    }
+    use ConfigTrait, LoggerTrait;
 
     /**
      * @param Query $menuListQuery

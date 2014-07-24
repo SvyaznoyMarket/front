@@ -4,23 +4,20 @@ namespace EnterSite\Controller\User;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\DebugContainerTrait;
-use EnterSite\RouterTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\DebugContainerTrait;
+use EnterAggregator\RouterTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterCurlQuery as Query;
 use EnterModel as Model;
 use EnterSite\Model\Form;
 use EnterSite\Routing;
-use EnterSite\SessionTrait;
+use EnterAggregator\SessionTrait;
 
 class Register {
-    use ConfigTrait, LoggerTrait, CurlClientTrait, RouterTrait, SessionTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, RouterTrait, SessionTrait, DebugContainerTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, RouterTrait, SessionTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -28,7 +25,7 @@ class Register {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $router = $this->getRouter();
         $session = $this->getSession();
         $messageRepository = new \EnterRepository\Message();

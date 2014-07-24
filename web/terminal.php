@@ -22,22 +22,19 @@ call_user_func(require $applicationDir . '/config/error-report.php', $debug);
 call_user_func(require $applicationDir . '/config/autoload.php', $applicationDir);
 
 // request
-//$request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
-$request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, [], $_SERVER);
+$request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
 
 // exception
 $error = null;
 
 // config
-//(new \EnterSite\Action\ImportConfig())->execute($applicationDir, $applicationDir . sprintf('/config/config-%s.php', $environment));
-(new \EnterSite\Action\LoadConfig())->execute(include $applicationDir . sprintf('/config/terminal/config-%s.php', $environment));
-//(new \EnterSite\Action\LoadCachedConfig())->execute($applicationDir . sprintf('/config/terminal/config-%s.json', $environment));
+(new \EnterTerminal\Action\InitService())->execute(include $applicationDir . sprintf('/config/terminal/config-%s.php', $environment));
 
 // config post-handler
-(new \EnterSite\Action\HandleConfig())->execute($environment, $debug);
+(new \EnterAggregator\Action\HandleConfig())->execute($environment, $debug);
 
 // error handler
-(new \EnterSite\Action\HandleError())->execute($error);
+(new \EnterAggregator\Action\HandleError())->execute($error);
 
 // shutdown handler, send response
 (new \EnterTerminal\Action\RegisterShutdown())->execute($request, $response, $error, $startAt);

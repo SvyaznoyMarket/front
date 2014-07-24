@@ -4,8 +4,8 @@ namespace EnterSite\Repository\Partial\Cart;
 
 use Enter\Routing\Router;
 use Enter\Helper;
-use EnterSite\RouterTrait;
-use EnterSite\ViewHelperTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\TemplateHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
@@ -13,16 +13,16 @@ use EnterSite\Model\Partial;
 
 class ProductQuickButton {
     use RouterTrait;
-    use ViewHelperTrait;
+    use TemplateHelperTrait;
 
     /** @var Router */
     protected $router;
-    /** @var Helper\View */
+    /** @var Helper\Template */
     protected $helper;
 
     public function __construct() {
         $this->router = $this->getRouter();
-        $this->helper = $this->getViewHelper();
+        $this->helper = $this->getTemplateHelper();
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace EnterCurlQuery;
 
 use EnterCurlQuery\Url;
-use EnterSite\ConfigTrait;
+use EnterAggregator\ConfigTrait;
 use Enter\Util;
 
 /**

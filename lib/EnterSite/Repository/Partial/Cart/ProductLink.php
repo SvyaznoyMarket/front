@@ -4,8 +4,8 @@ namespace EnterSite\Repository\Partial\Cart;
 
 use Enter\Routing\Router;
 use Enter\Helper;
-use EnterSite\RouterTrait;
-use EnterSite\ViewHelperTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\TemplateHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;

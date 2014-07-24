@@ -3,20 +3,16 @@
 namespace EnterTerminal\Controller;
 
 use Enter\Http;
-use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\SessionTrait;
+use EnterTerminal\ConfigTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\SessionTrait;
 use EnterCurlQuery as Query;
 use EnterModel as Model;
-use EnterSite\Repository;
 use EnterTerminal\Model\Page\Compare as Page;
 
 class Compare {
-    use ConfigTrait, LoggerTrait, CurlClientTrait, SessionTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -26,7 +22,7 @@ class Compare {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $session = $this->getSession();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $compareRepository = new \EnterRepository\Compare();
 
         // ид магазина

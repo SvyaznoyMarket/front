@@ -3,8 +3,8 @@
 namespace EnterTerminal\Action;
 
 use Enter\Http;
-use EnterSite\LoggerTrait;
-use EnterSite\Action;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\Action;
 use EnterTerminal\Controller;
 
 class RegisterShutdown {

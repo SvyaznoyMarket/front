@@ -4,10 +4,10 @@ namespace EnterSite\Controller\User\Cart;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\SessionTrait;
-use EnterSite\RouterTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\SessionTrait;
+use EnterAggregator\RouterTrait;
 use EnterCurlQuery as Query;
 use EnterSite\Model;
 use EnterSite\Routing;
@@ -15,10 +15,7 @@ use EnterSite\Repository;
 use EnterSite\Model\Page\User\Cart\SetProduct as Page;
 
 class DeleteProduct {
-    use ConfigTrait, LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, SessionTrait, RouterTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait, RouterTrait;
 
     /**
      * @param Http\Request $request
@@ -27,7 +24,7 @@ class DeleteProduct {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $session = $this->getSession();
         $cartRepository = new \EnterRepository\Cart();
 

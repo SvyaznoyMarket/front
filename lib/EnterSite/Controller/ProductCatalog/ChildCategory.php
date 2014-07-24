@@ -4,9 +4,9 @@ namespace EnterSite\Controller\ProductCatalog;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\MustacheRendererTrait;
-use EnterSite\DebugContainerTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\MustacheRendererTrait;
+use EnterAggregator\DebugContainerTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterCurlQuery as Query;
@@ -14,9 +14,7 @@ use EnterSite\Model;
 use EnterSite\Model\Page\ProductCatalog\ChildCategory as Page;
 
 class ChildCategory {
-    use ConfigTrait, CurlClientTrait, MustacheRendererTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait, DebugContainerTrait;
-    }
+    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -24,7 +22,7 @@ class ChildCategory {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $productRepository = new \EnterRepository\Product();
         $productCategoryRepository = new \EnterRepository\Product\Category();
         $filterRepository = new Repository\Product\Filter();

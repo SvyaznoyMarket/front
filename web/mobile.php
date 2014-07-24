@@ -28,15 +28,13 @@ $request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
 $error = null;
 
 // config
-//(new \EnterSite\Action\ImportConfig())->execute($applicationDir, $applicationDir . sprintf('/config/config-%s.php', $environment));
-(new \EnterSite\Action\LoadConfig())->execute(include $applicationDir . sprintf('/config/config-%s.php', $environment));
-//(new \EnterSite\Action\LoadCachedConfig())->execute($applicationDir . sprintf('/config/config-%s.json', $environment));
+(new \EnterSite\Action\InitService())->execute(include $applicationDir . sprintf('/config/config-%s.php', $environment));
 
 // config post-handler
-(new \EnterSite\Action\HandleConfig())->execute($environment, $debug);
+(new \EnterAggregator\Action\HandleConfig())->execute($environment, $debug);
 
 // error handler
-(new \EnterSite\Action\HandleError())->execute($error);
+(new \EnterAggregator\Action\HandleError())->execute($error);
 
 // shutdown handler, send response
 (new \EnterSite\Action\RegisterShutdown())->execute($request, $response, $error, $startAt);

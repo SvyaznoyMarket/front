@@ -4,10 +4,10 @@ namespace EnterSite\Controller\Cart;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\SessionTrait;
-use EnterSite\RouterTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\SessionTrait;
+use EnterAggregator\RouterTrait;
 use EnterSite\Routing;
 use EnterSite\Controller;
 use EnterCurlQuery as Query;
@@ -16,10 +16,7 @@ use EnterSite\Model;
 use EnterSite\Repository;
 
 class SetProduct {
-    use ConfigTrait, RouterTrait, LoggerTrait, CurlClientTrait, SessionTrait {
-        ConfigTrait::getConfig insteadof RouterTrait, LoggerTrait, CurlClientTrait, SessionTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait, SessionTrait;
-    }
+    use ConfigTrait, RouterTrait, LoggerTrait, CurlTrait, SessionTrait;
 
     /**
      * @param Http\Request $request

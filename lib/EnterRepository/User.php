@@ -4,8 +4,7 @@ namespace EnterRepository;
 
 use Enter\Http;
 use Enter\Curl\Query;
-use EnterSite\ConfigTrait;
-use EnterSite\Routing;
+use EnterAggregator\ConfigTrait;
 use EnterModel as Model;
 
 class User {

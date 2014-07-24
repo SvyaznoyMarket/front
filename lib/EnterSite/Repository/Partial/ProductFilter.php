@@ -4,15 +4,15 @@ namespace EnterSite\Repository\Partial;
 
 use Enter\Http;
 use Enter\Util;
-use EnterSite\RouterTrait;
-use EnterSite\UrlHelperTrait;
-use EnterSite\ViewHelperTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\UrlHelperTrait;
+use EnterAggregator\TemplateHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
 class ProductFilter {
-    use RouterTrait, UrlHelperTrait, ViewHelperTrait;
+    use RouterTrait, UrlHelperTrait, TemplateHelperTrait;
 
     /**
      * @param \EnterModel\Product\Filter[] $filterModels
@@ -25,7 +25,7 @@ class ProductFilter {
         array $requestFilterModels = [],
         $isOpened = false
     ) {
-        $viewHelper = $this->getViewHelper();
+        $viewHelper = $this->getTemplateHelper();
 
         $filters = [];
 

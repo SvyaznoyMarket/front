@@ -5,14 +5,11 @@ namespace EnterSite\Action;
 use Enter\Http;
 use EnterSite\Action;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\SessionTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\SessionTrait;
 
 class HandleResponse {
-    use ConfigTrait, LoggerTrait, SessionTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, SessionTrait;
-        LoggerTrait::getLogger insteadof SessionTrait;
-    }
+    use ConfigTrait, LoggerTrait, SessionTrait;
 
     /**
      * @param \Enter\Http\Request $request
@@ -52,7 +49,7 @@ class HandleResponse {
 
         // log session
         // FIXME: осторожно, опасный код
-        if (isset($GLOBALS['EnterSite\SessionTrait::getSession'])) {
+        if (isset($GLOBALS['enter.http.session'])) {
             $logger->push(['session' => [
                 'id'    => $this->getSession()->getId(),
                 'value' => $this->getSession()->all(),

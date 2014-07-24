@@ -3,7 +3,7 @@
 namespace EnterTerminal\Action;
 
 use Enter\Http;
-use EnterSite\LoggerTrait;
+use EnterAggregator\LoggerTrait;
 use EnterTerminal\Controller;
 
 class MatchRoute {

@@ -1,9 +1,9 @@
 <?php
 
-namespace EnterTerminal\Config {
-    use EnterSite\Config\Application as BaseApplicationConfig;
+namespace EnterTerminal {
+    use EnterAggregator\Config as BaseConfig;
 
-    class Application extends BaseApplicationConfig {
+    class Config extends BaseConfig {
         /** @var string */
         public $clientId;
 

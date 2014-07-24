@@ -4,18 +4,14 @@ namespace EnterTerminal\Controller;
 
 use Enter\Http;
 use EnterTerminal\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\MustacheRendererTrait;
-use EnterSite\Controller;
-use EnterSite\Repository;
+use EnterAggregator\CurlTrait;
 use EnterCurlQuery as Query;
 use EnterModel as Model;
+use EnterTerminal\Controller;
 use EnterTerminal\Model\Page\Search as Page;
 
 class Search {
-    use ConfigTrait, CurlClientTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait;
-    }
+    use ConfigTrait, CurlTrait;
 
     /**
      * @param Http\Request $request
@@ -24,9 +20,8 @@ class Search {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $productRepository = new \EnterRepository\Product();
-        $productCategoryRepository = new \EnterRepository\Product\Category();
         $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME
 
         // ид магазина

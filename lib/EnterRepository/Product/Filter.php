@@ -4,14 +4,12 @@ namespace EnterRepository\Product;
 
 use Enter\Http;
 use Enter\Curl\Query;
-use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
+use EnterAggregator\ConfigTrait;
+use EnterAggregator\LoggerTrait;
 use EnterModel as Model;
 
 class Filter {
-    use ConfigTrait, LoggerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
-    }
+    use ConfigTrait, LoggerTrait;
 
     /**
      * @param Query $query

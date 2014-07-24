@@ -4,17 +4,14 @@ namespace EnterTerminal\Controller;
 
 use Enter\Http;
 use EnterTerminal\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\Controller;
-use EnterSite\Repository;
+use EnterAggregator\CurlTrait;
 use EnterCurlQuery as Query;
 use EnterModel as Model;
+use EnterTerminal\Controller;
 use EnterTerminal\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use ConfigTrait, CurlClientTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait;
-    }
+    use ConfigTrait, CurlTrait;
 
     /**
      * @param Http\Request $request
@@ -23,7 +20,7 @@ class ProductCard {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $productRepository = new \EnterRepository\Product();
 
         // ид магазина

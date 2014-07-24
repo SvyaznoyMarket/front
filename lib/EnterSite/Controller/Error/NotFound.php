@@ -4,16 +4,14 @@ namespace EnterSite\Controller\Error;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\MustacheRendererTrait;
+use EnterAggregator\MustacheRendererTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Model;
 //use EnterSite\Model\Page\Error\NotFound as Page;
 
 class NotFound {
-    use ConfigTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof MustacheRendererTrait;
-    }
+    use ConfigTrait, MustacheRendererTrait;
 
     /**
      * @param Http\Request $request

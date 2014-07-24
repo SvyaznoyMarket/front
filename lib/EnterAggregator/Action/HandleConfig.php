@@ -1,8 +1,8 @@
 <?php
 
-namespace EnterSite\Action;
+namespace EnterAggregator\Action;
 
-use EnterSite\ConfigTrait;
+use EnterAggregator\ConfigTrait;
 
 class HandleConfig {
     use ConfigTrait;

@@ -2,15 +2,15 @@
 
 namespace EnterSite\Repository\Partial;
 
-use EnterSite\TranslateHelperTrait;
-use EnterSite\ViewHelperTrait;
+use EnterAggregator\TranslateHelperTrait;
+use EnterAggregator\TemplateHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
 class Cart {
-    use TranslateHelperTrait, ViewHelperTrait;
+    use TranslateHelperTrait, TemplateHelperTrait;
 
     /**
      * @param \EnterModel\Cart $cartModel

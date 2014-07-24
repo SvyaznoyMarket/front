@@ -4,17 +4,15 @@ namespace EnterTerminal\Controller;
 
 use Enter\Http;
 use EnterTerminal\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\Controller;
+use EnterAggregator\CurlTrait;
+use EnterTerminal\Controller;
 use EnterTerminal\Repository;
 use EnterCurlQuery as Query;
 use EnterModel as Model;
 use EnterTerminal\Model\MainPromo as Page;
 
 class MainPromo {
-    use ConfigTrait, CurlClientTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait;
-    }
+    use ConfigTrait, CurlTrait;
 
     /**
      * @param Http\Request $request
@@ -23,7 +21,7 @@ class MainPromo {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
 
         $promoRepository = new \EnterRepository\Promo();
 

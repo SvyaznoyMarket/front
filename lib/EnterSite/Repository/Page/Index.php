@@ -3,9 +3,9 @@
 namespace EnterSite\Repository\Page;
 
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\RouterTrait;
-use EnterSite\ViewHelperTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\TemplateHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
@@ -13,9 +13,7 @@ use EnterSite\Model\Partial;
 use EnterSite\Model\Page\Index as Page;
 
 class Index {
-    use ConfigTrait, LoggerTrait, RouterTrait, ViewHelperTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, RouterTrait, ViewHelperTrait;
-    }
+    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait;
 
     /**
      * @param Page $page
@@ -26,7 +24,7 @@ class Index {
 
         $config = $this->getConfig();
         $router = $this->getRouter();
-        $viewHelper = $this->getViewHelper();
+        $viewHelper = $this->getTemplateHelper();
 
         $templateDir = $config->mustacheRenderer->templateDir;
 

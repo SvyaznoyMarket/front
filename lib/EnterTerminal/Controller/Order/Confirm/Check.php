@@ -4,17 +4,12 @@ namespace EnterTerminal\Controller\Order\Confirm;
 
 use Enter\Http;
 use EnterCurlQuery;
-use EnterSite\ViewHelperTrait;
 use EnterTerminal\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\Controller;
-use EnterTerminal\Repository;
+use EnterAggregator\CurlTrait;
 use EnterCurlQuery as Query;
 
 class Check {
-    use ConfigTrait, CurlClientTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait;
-    }
+    use ConfigTrait, CurlTrait;
 
     /**
      * @param Http\Request $request
@@ -22,7 +17,7 @@ class Check {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
 
         if (!is_scalar($request->query['phone'])) {
             throw new \Exception('Параметр phone должен быть строкой');

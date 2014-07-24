@@ -6,15 +6,12 @@ use EnterSite\Config;
 
 trait ConfigTrait {
     /**
-     * @return Config\Application
+     * @return Config
      */
     protected function getConfig() {
-        if (!isset($GLOBALS[__METHOD__])) {
-            $instance = new Config\Application();
+        /** @var Service $service */
+        $service = $GLOBALS['enter.service'];
 
-            $GLOBALS[__METHOD__] = $instance;
-        }
-
-        return $GLOBALS[__METHOD__];
+        return $service->getConfig();
     }
 }

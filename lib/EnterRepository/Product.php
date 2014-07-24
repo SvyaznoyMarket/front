@@ -5,14 +5,12 @@ namespace EnterRepository;
 use Enter\Http;
 use Enter\Curl\Query;
 use Enter\Logging\Logger;
-use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
+use EnterAggregator\ConfigTrait;
+use EnterAggregator\LoggerTrait;
 use EnterModel as Model;
 
 class Product {
-    use ConfigTrait, LoggerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
-    }
+    use ConfigTrait, LoggerTrait;
 
     /** @var Logger */
     protected $logger;

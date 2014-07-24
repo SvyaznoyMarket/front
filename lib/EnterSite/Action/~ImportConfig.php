@@ -78,8 +78,6 @@ class ImportConfig {
         $config->promo->urlPaths = $importedConfig->banner['url'];
 
         // собственные настройки
-        $config->requestId = uniqid();
-
         $config->mustacheRenderer->dir = $config->dir . '/v2/vendor/mustache';
         $config->mustacheRenderer->templateDir = $config->dir . '/v2/template';
         $config->mustacheRenderer->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache';

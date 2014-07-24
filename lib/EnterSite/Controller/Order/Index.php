@@ -4,16 +4,13 @@ namespace EnterSite\Controller\Order;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
+use EnterAggregator\LoggerTrait;
 use EnterSite\Controller;
-use EnterSite\SessionTrait;
+use EnterAggregator\SessionTrait;
 use EnterSite\Repository;
 
 class Index {
-    use ConfigTrait, LoggerTrait, SessionTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, SessionTrait;
-        LoggerTrait::getLogger insteadof SessionTrait;
-    }
+    use ConfigTrait, LoggerTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
