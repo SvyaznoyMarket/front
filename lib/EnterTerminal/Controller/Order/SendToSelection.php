@@ -29,6 +29,16 @@ class SendToSelection {
         $curl->prepare($contentItemQuery);
         $curl->execute();
 
+        if ($contentItemQuery->getError()) {
+            $response = new Http\JsonResponse();
+            $response->data['error'] = [
+                'code'    => $contentItemQuery->getError()->getCode(),
+                'message' => $contentItemQuery->getError()->getMessage(),
+            ];
+
+            return $response;
+        }
+
         return new Http\JsonResponse($contentItemQuery->getResult());
     }
 }
