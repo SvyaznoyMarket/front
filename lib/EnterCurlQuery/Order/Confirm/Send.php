@@ -31,6 +31,6 @@ class Send extends Query {
      */
     public function callback($response) {
         $data = $this->parse($response);
-        $this->result = isset($data['result']) ? $data : $data;
+        $this->result = isset($data['result']) ? $data : null;
     }
 }
