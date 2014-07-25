@@ -9,7 +9,7 @@ class HandleConfig {
 
     /**
      * @param string $environment
-     * @param bool $debugLevel
+     * @param int $debugLevel
      */
     public function execute($environment, $debugLevel) {
         $config = $this->getConfig();
