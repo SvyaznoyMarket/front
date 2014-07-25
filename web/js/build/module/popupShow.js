@@ -1,0 +1,1 @@
+define(["jquery","jquery.popup"],function(o){var p=o("body"),e=function(p){p.stopPropagation(),console.log("showPopupHint"),o(".js-popup-middle").enterPopup(),p.preventDefault()};p.on("click",".js-popup-middle-link",e)});

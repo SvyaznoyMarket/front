@@ -54,6 +54,8 @@ namespace EnterSite\Model\Page\ProductCard\Content {
         public $deliveryBlock;
         /** @var string */
         public $description;
+        /** @var Product\Photo|null */
+        public $mainPhoto;
         /** @var Product\Photo[] */
         public $photos = [];
         /** @var bool */
@@ -104,6 +106,10 @@ namespace EnterSite\Model\Page\ProductCard\Content\Product {
         public $name;
         /** @var string */
         public $url;
+        /** @var string */
+        public $previewUrl;
+        /** @var string */
+        public $originalUrl;
     }
 
     class Video {

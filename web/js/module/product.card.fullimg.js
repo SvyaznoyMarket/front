@@ -50,7 +50,7 @@ define(
             */
             imgSrc = function imgSrc() {
                 var $self = $(this),
-                    src = $self.attr('src');
+                    src = $self.data('fullimg');
 
                 thmbImg.parent().parent().removeClass(actClass);
 

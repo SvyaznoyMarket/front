@@ -31,10 +31,7 @@ class ProductCard {
         $translateHelper = $this->getTranslateHelper();
 
         $templateDir = $config->mustacheRenderer->templateDir;
-        $cartProductLinkRepository = new Repository\Partial\Cart\ProductLink();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
-        $cartProductSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
-        $cartProductQuickButtonRepository = new Repository\Partial\Cart\ProductQuickButton();
         $productCardRepository = new Repository\Partial\ProductCard();
         $ratingRepository = new Repository\Partial\Rating();
         $productSliderRepository = new Repository\Partial\ProductSlider();
@@ -111,12 +108,18 @@ class ProductCard {
         }
 
         // фотографии товара
-        foreach ($productModel->media->photos as $photoModel) {
+        foreach ($productModel->media->photos as $i => $photoModel) {
             $photo = new Page\Content\Product\Photo();
             $photo->name = $productModel->name;
             $photo->url = (string)(new Routing\Product\Media\GetPhoto($photoModel->source, $photoModel->id, 3));
+            $photo->previewUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel->source, $photoModel->id, 0));
+            $photo->originalUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel->source, $photoModel->id, 5));
 
             $page->content->product->photos[] = $photo;
+
+            if (0 == $i) {
+                $page->content->product->mainPhoto = $photo;
+            }
         }
 
         // видео товара
