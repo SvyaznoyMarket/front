@@ -1910,7 +1910,7 @@ body.noScroll {
   text-align: center;
   white-space: nowrap;
   color: #5e5d5d;
-  border-right: 1px solid #b1b1b1;
+  border-left: 1px solid #b1b1b1;
   border-bottom: 1px solid #b1b1b1;
   background-color: #f6f6f6;
   font-size: 20px;
@@ -1923,7 +1923,7 @@ body.noScroll {
   background-color: #ffffff;
 }
 .productDescTab_item:last-child {
-  border-right: none;
+  border-right: 1px solid #b1b1b1;
 }
 .productDescTab .tabText {
   display: inline-block;
@@ -2198,7 +2198,6 @@ body.noScroll {
   width: 100%;
   max-width: 1500px;
   height: auto;
-  max-height: 1500px;
   margin: 0 0 10px;
 }
 .fullImgCnt_thmb {
@@ -2266,6 +2265,11 @@ body.noScroll {
 }
 .fullImgCnt_thmb_btn-disbl {
   display: none;
+}
+@media screen and (max-device-width: 1024px) and (orientation: landscape) {
+  .fullImgCnt_img {
+    max-width: 500px;
+  }
 }
 /* ==========================================================================
    Блока каунтера .counter

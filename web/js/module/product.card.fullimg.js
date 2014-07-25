@@ -31,8 +31,8 @@ define(
             imgShow = function imgShow() {
                 $('html, body').animate({scrollTop:0}, 'fast');
         
-                wrap.slideDown();
-                hiddenCnt.delay(200).fadeOut(200);
+                wrap.slideDown().show(0);
+                hiddenCnt.css({'overflow' : 'hidden'}).delay(100).animate({'opacity' : 0, 'height' : 0});
                 return false;
             },
 
@@ -40,8 +40,8 @@ define(
              * скрываем блок большого изображения
             */
             imgHide = function imgHide() {
-                wrap.slideUp();
-                hiddenCnt.delay(200).fadeIn(200);
+                wrap.slideUp().hide(0);
+                hiddenCnt.css({'opacity' : 1, 'height' : 'auto', 'overflow' : 'visible'});
                 return false;
             },
 
@@ -50,11 +50,21 @@ define(
             */
             imgSrc = function imgSrc() {
                 var $self = $(this),
+                    ww = w.width();
+
+                if ( ww <= 800 ) {
+                    src = $self.data('middleimg');
+
+                    console.log('middle');
+                } else {
                     src = $self.data('fullimg');
 
-                thmbImg.parent().parent().removeClass(actClass);
+                    console.log('full');
+                }
 
+                thmbImg.parent().parent().removeClass(actClass);
                 $self.parent().parent().addClass(actClass);
+
                 img.fadeOut(100, function(){
                     img.attr("src", src);
                     img.fadeIn(100);
@@ -65,8 +75,6 @@ define(
              * прокрутка првью изображений товара
             */
             thmbSlide = function thmbSlide() {
-                console.log('thmbSlide');
-
                 var thmb = $('.js-fullimg-thmb'),
                     thmbW = $('.js-fullimg-thmb-wrap'),
                     item = thmb.find('.js-fullimg-thmb-i'),
