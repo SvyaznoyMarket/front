@@ -16,6 +16,13 @@ use EnterSite\Model\Page\Debug as Page;
 class Debug {
     use RequestIdTrait, ConfigTrait, LoggerTrait, MustacheRendererTrait, SessionTrait, TemplateHelperTrait, DebugContainerTrait;
 
+    /**
+     * @param Http\Request $request
+     * @param Http\Response $response
+     * @param \Exception $error
+     * @param $startAt
+     * @param $endAt
+     */
     public function execute(Http\Request $request = null, Http\Response $response = null, \Exception $error = null, $startAt, $endAt) {
         $config = $this->getConfig();
         $logger = $this->getLogger();
