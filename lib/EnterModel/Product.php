@@ -61,6 +61,8 @@ class Product {
     public $relation;
     /** @var Model\Product\Kit[] */
     public $kit = [];
+    /** @var Model\Product\Review[] */
+    public $reviews = [];
 
     /**
      * @param array $data

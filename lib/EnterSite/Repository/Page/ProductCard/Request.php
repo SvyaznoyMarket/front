@@ -10,6 +10,4 @@ class Request extends Repository\Page\DefaultLayout\Request {
     public $product;
     /** @var \EnterModel\Product\Category[] */
     public $accessoryCategories = [];
-    /** @var \EnterModel\Product\Review[] */
-    public $reviews = [];
 }
