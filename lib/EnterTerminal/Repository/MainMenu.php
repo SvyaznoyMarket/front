@@ -4,7 +4,7 @@ namespace EnterTerminal\Repository;
 
 use Enter\Curl\Query;
 use EnterTerminal\ConfigTrait;
-use EnterTerminal\Model;
+use EnterModel as Model;
 
 class MainMenu {
     use ConfigTrait;

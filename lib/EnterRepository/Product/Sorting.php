@@ -4,14 +4,12 @@ namespace EnterRepository\Product;
 
 use Enter\Http;
 use Enter\Util;
-use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
+use EnterAggregator\ConfigTrait;
+use EnterAggregator\LoggerTrait;
 use EnterModel as Model;
 
 class Sorting {
-    use ConfigTrait, LoggerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
-    }
+    use ConfigTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request

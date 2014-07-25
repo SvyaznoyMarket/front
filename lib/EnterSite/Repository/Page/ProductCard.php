@@ -3,11 +3,11 @@
 namespace EnterSite\Repository\Page;
 
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\RouterTrait;
-use EnterSite\ViewHelperTrait;
-use EnterSite\DateHelperTrait;
-use EnterSite\TranslateHelperTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\TemplateHelperTrait;
+use EnterAggregator\DateHelperTrait;
+use EnterAggregator\TranslateHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
@@ -15,9 +15,7 @@ use EnterSite\Model\Partial;
 use EnterSite\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use ConfigTrait, LoggerTrait, RouterTrait, ViewHelperTrait, DateHelperTrait, TranslateHelperTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
-    }
+    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, DateHelperTrait, TranslateHelperTrait;
 
     /**
      * @param Page $page
@@ -28,7 +26,7 @@ class ProductCard {
 
         $config = $this->getConfig();
         $router = $this->getRouter();
-        $viewHelper = $this->getViewHelper();
+        $viewHelper = $this->getTemplateHelper();
         $dateHelper = $this->getDateHelper();
         $translateHelper = $this->getTranslateHelper();
 

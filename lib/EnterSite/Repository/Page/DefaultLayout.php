@@ -2,19 +2,18 @@
 
 namespace EnterSite\Repository\Page;
 
+use EnterAggregator\RequestIdTrait;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\RouterTrait;
-use EnterSite\ViewHelperTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\TemplateHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Page\DefaultLayout as Page;
 
 class DefaultLayout {
-    use ConfigTrait, RouterTrait, LoggerTrait, ViewHelperTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
-    }
+    use RequestIdTrait, ConfigTrait, RouterTrait, LoggerTrait, TemplateHelperTrait;
 
     /**
      * @param Page $page
@@ -22,7 +21,7 @@ class DefaultLayout {
      */
     public function buildObjectByRequest(Page $page, DefaultLayout\Request $request) {
         $config = $this->getConfig();
-        $viewHelper = $this->getViewHelper();
+        $viewHelper = $this->getTemplateHelper();
         $router = $this->getRouter();
 
         $templateDir = $config->mustacheRenderer->templateDir;
@@ -39,7 +38,7 @@ class DefaultLayout {
 
         // body[data-value]
         $page->dataConfig = $viewHelper->json([
-            'requestId' => $config->requestId,
+            'requestId' => $this->getRequestId(),
             'debug'     => $config->debugLevel,
             'env'       => $config->environment,
             'cookie'     => [
@@ -88,7 +87,7 @@ class DefaultLayout {
 
         // ga
         $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$viewHelper) {
-            /** @var \EnterSite\Model\MainMenu\Element[] $menuElements */
+            /** @var \EnterModel\MainMenu\Element[] $menuElements */
             foreach ($menuElements as $menuElement) {
                 $menuElement->dataGa = $viewHelper->json([
                     'm_sidebar_category_click' => ['send', 'event', 'm_sidebar_category_click', $menuElement->name],

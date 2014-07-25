@@ -3,7 +3,7 @@
 namespace EnterSite\Repository\Page\ProductCatalog;
 
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
+use EnterAggregator\LoggerTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
@@ -11,9 +11,7 @@ use EnterSite\Model\Partial;
 use EnterSite\Model\Page\ProductCatalog\RootCategory as Page;
 
 class RootCategory {
-    use ConfigTrait, LoggerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
-    }
+    use ConfigTrait, LoggerTrait;
 
     /**
      * @param Page $page

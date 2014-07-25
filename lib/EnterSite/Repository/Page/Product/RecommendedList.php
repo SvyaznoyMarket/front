@@ -3,21 +3,19 @@
 namespace EnterSite\Repository\Page\Product;
 
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\RouterTrait;
-use EnterSite\DateHelperTrait;
-use EnterSite\TranslateHelperTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\DateHelperTrait;
+use EnterAggregator\TranslateHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 use EnterSite\Model\Page\Product\RecommendedList as Page;
-use EnterSite\ViewHelperTrait;
+use EnterAggregator\TemplateHelperTrait;
 
 class RecommendedList {
-    use ConfigTrait, LoggerTrait, RouterTrait, DateHelperTrait, TranslateHelperTrait, ViewHelperTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
-    }
+    use ConfigTrait, LoggerTrait, RouterTrait, DateHelperTrait, TranslateHelperTrait, TemplateHelperTrait;
 
     /**
      * @param Page $page
@@ -25,7 +23,7 @@ class RecommendedList {
      */
     public function buildObjectByRequest(Page $page, RecommendedList\Request $request) {
         $router = $this->getRouter();
-        $viewHelper = $this->getViewHelper();
+        $viewHelper = $this->getTemplateHelper();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $productCardRepository = new Repository\Partial\ProductCard();
         $productSliderRepository = new Repository\Partial\ProductSlider();

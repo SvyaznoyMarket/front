@@ -24,6 +24,7 @@ require.config({
         'jquery.photoswipe'     : 'plugin/jquery.photoswipe',
         'jquery.slides'         : 'plugin/jquery.slides',
         'jquery.scrollTo'       : 'plugin/jquery.scrollTo',
+        'jquery.maskedinput'    : 'plugin/jquery.maskedinput',
 
         'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
         'mustache'           : 'vendor/mustache-0.8.2',
@@ -62,6 +63,9 @@ require.config({
             deps: ['jquery', 'jquery.touchwipe']
         },
         'jquery.scrollTo': {
+            deps: ['jquery']
+        },
+        'jquery.maskedinput': {
             deps: ['jquery']
         },
         'underscore': {

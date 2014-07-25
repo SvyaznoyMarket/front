@@ -2,7 +2,7 @@
 
 namespace EnterRepository;
 
-use EnterSite\ConfigTrait;
+use EnterAggregator\ConfigTrait;
 use EnterModel as Model;
 
 class DirectCredit {

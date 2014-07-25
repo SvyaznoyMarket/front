@@ -4,8 +4,8 @@ namespace EnterSite\Controller\Product;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\MustacheRendererTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\MustacheRendererTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterCurlQuery as Query;
@@ -13,9 +13,7 @@ use EnterSite\Model;
 use EnterSite\Model\Page\Product\ListByFilter as Page;
 
 class ListBySearchPhrase {
-    use ConfigTrait, CurlClientTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait, MustacheRendererTrait;
-    }
+    use ConfigTrait, CurlTrait, MustacheRendererTrait;
 
     /**
      * @param Http\Request $request
@@ -23,7 +21,7 @@ class ListBySearchPhrase {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $productRepository = new \EnterRepository\Product();
         $filterRepository = new Repository\Product\Filter();
 

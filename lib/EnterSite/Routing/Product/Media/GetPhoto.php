@@ -9,7 +9,7 @@ use EnterSite\Config;
 class GetPhoto extends Route {
     use ConfigTrait;
 
-    /** @var Config\Application */
+    /** @var Config */
     protected $config;
 
     /**

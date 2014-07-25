@@ -5,13 +5,11 @@ namespace EnterSite\Repository\Product;
 use Enter\Http;
 use EnterRepository\Product\Filter as BaseRepository;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
+use EnterAggregator\LoggerTrait;
 use EnterModel as Model;
 
 class Filter extends BaseRepository {
-    use ConfigTrait, LoggerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
-    }
+    use ConfigTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request

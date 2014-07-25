@@ -4,20 +4,20 @@ namespace EnterSite\Controller\User;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\DebugContainerTrait;
-use EnterSite\RouterTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\DebugContainerTrait;
+use EnterAggregator\RouterTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterCurlQuery as Query;
 use EnterModel as Model;
 use EnterSite\Model\Form;
 use EnterSite\Routing;
+use EnterAggregator\SessionTrait;
 
 class Register {
-    use ConfigTrait, CurlClientTrait, RouterTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait, RouterTrait, DebugContainerTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, RouterTrait, SessionTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -25,11 +25,14 @@ class Register {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $router = $this->getRouter();
+        $session = $this->getSession();
+        $messageRepository = new \EnterRepository\Message();
 
         // редирект
-        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Login()));
+        //$redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Login()));
+        $redirectUrl = $router->getUrlByRoute(new Routing\User\Login());
         // http-ответ
         $response = (new Controller\Redirect())->execute($redirectUrl, 302);
 
@@ -59,24 +62,39 @@ class Register {
             if (empty($result['id'])) {
                 throw new \Exception('Не удалось создать пользователя');
             }
+
+            $messageRepository->setObjectListToHttpSesion('messages', [
+                new \EnterModel\Message([
+                    'name' => 'Пароль отправлен на ваш ' . ($form->email ? 'email' : 'телефон'),
+                    'type' => \EnterModel\Message::TYPE_SUCCESS
+                ]),
+            ], $session);
         } catch (\Exception $e) {
             if ($config->debugLevel) $this->getDebugContainer()->error = $e;
 
-            $formErrors = [];
+            $errors = [];
             switch ($e->getCode()) {
+                case 680:
+                    $errors['email'] = $errors['phone'] = 'Неверные email или телефон';
+                    break;
                 case 684:
-                    $formErrors['email'] = $e->getMessage();
+                    $errors['email'] = $e->getMessage();
                     break;
                 case 686:
-                    $formErrors['phone'] = $e->getMessage();
+                    $errors['phone'] = $e->getMessage();
                     break;
                 case 689: case 690:
-                    $formErrors['name'] = $e->getMessage();
+                    $errors['name'] = $e->getMessage();
                     break;
                 default:
-                    $request->data['error'] = 'Произошла ошибка. Возможно неверно указаны данные';
+                    $messageRepository->setObjectListToHttpSesion('messages', [
+                        new \EnterModel\Message([
+                            'name' => 'Произошла ошибка. Возможно неверно указаны данные',
+                            'type' => \EnterModel\Message::TYPE_ERROR
+                        ]),
+                    ], $session);
             }
-            $request->data['registerForm_error'] = $formErrors;
+            $messageRepository->setObjectListToHttpSesion('registerForm.error', $errors, $session);
 
             return (new Controller\User\Login())->execute($request);
         }

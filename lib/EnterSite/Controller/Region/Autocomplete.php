@@ -4,24 +4,21 @@ namespace EnterSite\Controller\Region;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\RouterTrait;
-use EnterSite\CurlClientTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\CurlTrait;
 use EnterCurlQuery as Query;
 use EnterSite\Routing;
 
 class Autocomplete {
-    use ConfigTrait, LoggerTrait, RouterTrait, CurlClientTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait;
-    }
+    use ConfigTrait, LoggerTrait, RouterTrait, CurlTrait;
 
     /**
      * @param Http\Request $request
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $router = $this->getRouter();
 
         $result = [];

@@ -4,12 +4,12 @@ namespace EnterSite\Controller\Cart;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\MustacheRendererTrait;
-use EnterSite\RouterTrait;
-use EnterSite\SessionTrait;
-use EnterSite\DebugContainerTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\SessionTrait;
+use EnterAggregator\MustacheRendererTrait;
+use EnterAggregator\DebugContainerTrait;
 use EnterSite\Routing;
 use EnterSite\Controller;
 use EnterCurlQuery as Query;
@@ -18,10 +18,7 @@ use EnterSite\Model\Page\Cart\Index as Page;
 use EnterSite\Repository;
 
 class Index {
-    use ConfigTrait, RouterTrait, LoggerTrait, CurlClientTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof RouterTrait, LoggerTrait, CurlClientTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait;
-        LoggerTrait::getLogger insteadof SessionTrait, CurlClientTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, RouterTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -30,7 +27,7 @@ class Index {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $session = $this->getSession();
         $cartRepository = new \EnterRepository\Cart();
 

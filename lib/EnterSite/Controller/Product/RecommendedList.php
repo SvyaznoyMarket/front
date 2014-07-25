@@ -4,24 +4,21 @@ namespace EnterSite\Controller\Product;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\MustacheRendererTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\MustacheRendererTrait;
 use EnterSite\Repository;
 use EnterCurlQuery as Query;
 use EnterSite\Model;
 use EnterSite\Model\Page\Product\RecommendedList as Page;
 
 class RecommendedList {
-    use ConfigTrait, LoggerTrait, CurlClientTrait, MustacheRendererTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, CurlClientTrait, MustacheRendererTrait;
-        LoggerTrait::getLogger insteadof CurlClientTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, MustacheRendererTrait;
 
     public function execute(Http\Request $request) {
         $logger = $this->getLogger();
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $productRepository = new \EnterRepository\Product();
 
         // ид региона

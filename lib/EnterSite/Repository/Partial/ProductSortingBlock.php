@@ -3,16 +3,16 @@
 namespace EnterSite\Repository\Partial;
 
 use Enter\Http;
-use EnterSite\RouterTrait;
-use EnterSite\UrlHelperTrait;
-use EnterSite\ViewHelperTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\UrlHelperTrait;
+use EnterAggregator\TemplateHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
 class ProductSortingBlock {
-    use RouterTrait, UrlHelperTrait, ViewHelperTrait;
+    use RouterTrait, UrlHelperTrait, TemplateHelperTrait;
 
     /**
      * @param \EnterModel\Product\Sorting[] $sortingModels
@@ -29,7 +29,7 @@ class ProductSortingBlock {
     ) {
         $router = $this->getRouter();
         $urlHelper = $this->getUrlHelper();
-        $viewHelper = $this->getViewHelper();
+        $viewHelper = $this->getTemplateHelper();
 
         $block = new Partial\SortingBlock();
         $block->widgetId = 'id-productSorting';

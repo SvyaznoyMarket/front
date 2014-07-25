@@ -3,19 +3,20 @@
 namespace EnterSite\Controller\User;
 
 use Enter\Http;
-use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\RouterTrait;
-use EnterSite\Controller;
 use EnterCurlQuery as Query;
+use EnterRepository as Repository;
+use EnterSite\ConfigTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\SessionTrait;
+use EnterAggregator\RouterTrait;
+use EnterSite\Controller;
 use EnterSite\Model\Form;
 use EnterSite\Routing;
-use EnterSite\DebugContainerTrait;
+use EnterAggregator\DebugContainerTrait;
 
 class Auth {
-    use ConfigTrait, CurlClientTrait, RouterTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait, RouterTrait, DebugContainerTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, RouterTrait, SessionTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -23,11 +24,13 @@ class Auth {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $router = $this->getRouter();
+        $session = $this->getSession();
+        $messageRepository = new Repository\Message();
 
         // редирект
-        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Login()));
+        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Index()));
         // http-ответ
         $response = (new Controller\Redirect())->execute($redirectUrl, 302);
 
@@ -52,23 +55,34 @@ class Auth {
 
             // установка cookie
             (new \EnterRepository\User())->setTokenToHttpResponse($token, $response);
+
+            // FIXME: костыль для project13
+            $session->set($config->userToken->authCookieName, $token);
+            $session->set('authSource', $isEmailAuth ? 'email' : 'phone');
+
         } catch (\Exception $e) {
             if ($config->debugLevel) $this->getDebugContainer()->error = $e;
 
-            $formErrors = [];
+            $errors = [];
             switch ($e->getCode()) {
                 case 613:
-                    $formErrors['password'] = 'Неверный пароль'; //sprintf('Неверные %s или пароль', $isEmailAuth ? 'email' : 'номер телефона');
+                    $errors['password'] = 'Неверный пароль';
                     break;
                 case 614:
-                    $formErrors['username'] = 'Пользователь не найден';
+                    $errors['username'] = 'Пользователь не найден';
                     break;
                 default:
-                    $request->data['error'] = 'Произошла ошибка. Возможно неверно указаны логин или пароль';
+                    $messageRepository->setObjectListToHttpSesion('messages', [
+                        new \EnterModel\Message([
+                            'name' => 'Произошла ошибка. Возможно неверно указаны логин или пароль',
+                            'type' => \EnterModel\Message::TYPE_ERROR
+                        ]),
+                    ], $session);
             }
-            $request->data['authForm_error'] = $formErrors;
+            $messageRepository->setObjectListToHttpSesion('authForm.error', $errors, $session);
 
-            return (new Controller\User\Login())->execute($request);
+            return (new Controller\Redirect())->execute($router->getUrlByRoute(new Routing\User\Login()), 302);
+            //return (new Controller\User\Login())->execute($request);
         }
 
         return $response;

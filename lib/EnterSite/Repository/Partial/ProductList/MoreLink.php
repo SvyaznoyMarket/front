@@ -2,15 +2,15 @@
 
 namespace EnterSite\Repository\Partial\ProductList;
 
-use EnterSite\TranslateHelperTrait;
-use EnterSite\ViewHelperTrait;
+use EnterAggregator\TranslateHelperTrait;
+use EnterAggregator\TemplateHelperTrait;
 use EnterSite\Routing;
 use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
 class MoreLink {
-    use ViewHelperTrait;
+    use TemplateHelperTrait;
 
     /**
      * @param $pageNum
@@ -36,7 +36,7 @@ class MoreLink {
             $link->name = 'Показать еще';
             // FIXME
             if ($category) {
-                $link->dataGa = $this->getViewHelper()->json([
+                $link->dataGa = $this->getTemplateHelper()->json([
                     'm_cat_show_more' => ['send', 'event', 'm_cat_show_more', $category->name],
                 ]);
             }

@@ -1,13 +1,11 @@
 <?php
 
-return function(\EnterTerminal\Config\Application $config) {
-    mb_internal_encoding('UTF-8');
-
+return function(EnterTerminal\Config $config) {
     ini_set('session.use_cookies', false);
     ini_set('session.use_only_cookies', false);
     ini_set('session.use_trans_sid', true);
 
-    $config->requestId = uniqid();
+    mb_internal_encoding('UTF-8');
 
     $config->dir = realpath(__DIR__ . '/../..');
     $config->hostname = 't.enter.ru';

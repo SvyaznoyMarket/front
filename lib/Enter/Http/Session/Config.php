@@ -9,4 +9,6 @@ class Config {
     public $cookieLifetime;
     /** @var string */
     public $cookieDomain;
+    /** @var string */
+    public $flashKey;
 }

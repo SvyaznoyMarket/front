@@ -4,10 +4,12 @@ namespace EnterSite\Controller\User;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\RouterTrait;
-use EnterSite\MustacheRendererTrait;
-use EnterSite\DebugContainerTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\SessionTrait;
+use EnterAggregator\MustacheRendererTrait;
+use EnterAggregator\DebugContainerTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Routing;
@@ -16,9 +18,7 @@ use EnterSite\Model;
 use EnterSite\Model\Page\User\Login as Page;
 
 class Login {
-    use ConfigTrait, CurlClientTrait, RouterTrait, MustacheRendererTrait, DebugContainerTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait, RouterTrait, MustacheRendererTrait, DebugContainerTrait;
-    }
+    use ConfigTrait, LoggerTrait, CurlTrait, RouterTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -26,11 +26,31 @@ class Login {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurlClient();
+        $curl = $this->getCurl();
         $router = $this->getRouter();
+        $session = $this->getSession();
+        $messageRepository = new \EnterRepository\Message();
+
+        $referer = $request->server['HTTP_REFERER'];
+        if ($referer) {
+            try {
+                $route = $router->getRouteByPath(parse_url($referer, PHP_URL_PATH));
+                if (
+                    $route instanceof Routing\User\Auth
+                    || $route instanceof Routing\User\Register
+                ) {
+                    $referer = null;
+                }
+            } catch (\Exception $e) {
+                // TODO журналирование
+            }
+        }
 
         // редирект
-        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Login()));
+        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest(
+            $request,
+            $referer ?: $router->getUrlByRoute(new Routing\User\Index())
+        );
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
@@ -62,6 +82,10 @@ class Login {
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->redirectUrl = $redirectUrl;
+        $pageRequest->authFormErrors = array_map(function(\EnterModel\Message $message) { return $message->name; }, $messageRepository->getObjectListByHttpSession('authForm.error', $session));
+        $pageRequest->resetFormErrors = array_map(function(\EnterModel\Message $message) { return $message->name; }, $messageRepository->getObjectListByHttpSession('resetForm.error', $session));
+        $pageRequest->registerFormErrors = array_map(function(\EnterModel\Message $message) { return $message->name; }, $messageRepository->getObjectListByHttpSession('registerForm.error', $session));
+        $pageRequest->messages = $messageRepository->getObjectListByHttpSession('messages', $session);
         $pageRequest->httpRequest = $request;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 

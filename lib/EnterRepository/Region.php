@@ -4,7 +4,7 @@ namespace EnterRepository;
 
 use Enter\Http;
 use Enter\Curl\Query;
-use EnterSite\ConfigTrait;
+use EnterAggregator\ConfigTrait;
 use EnterModel as Model;
 
 class Region {
@@ -17,7 +17,7 @@ class Region {
     public function getIdByHttpRequestCookie(Http\Request $request) {
         $config = $this->getConfig()->region;
 
-        $id = (string)$request->cookies[$config->cookieName] ?: $config->defaultId;
+        $id = (string)(int)$request->cookies[$config->cookieName] ?: $config->defaultId;
 
         return $id;
     }

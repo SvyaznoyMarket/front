@@ -4,21 +4,19 @@ namespace EnterSite\Repository;
 
 use Enter\Curl\Query;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
+use EnterAggregator\LoggerTrait;
 use EnterSite\Model;
 
 class MainMenu {
-    use ConfigTrait, LoggerTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait;
-    }
+    use ConfigTrait, LoggerTrait;
 
     /**
      * @param Query $menuListQuery
      * @param Query $categoryListQuery
-     * @return Model\MainMenu\Element[]
+     * @return \EnterModel\MainMenu\Element[]
      */
     public function getObjectByQuery(Query $menuListQuery, Query $categoryListQuery = null) {
-        $menu = new Model\MainMenu();
+        $menu = new \EnterModel\MainMenu();
 
         try {
             $menuData = $menuListQuery->getResult();
@@ -51,7 +49,7 @@ class MainMenu {
         };
         $walkByCategoryData($categoryData);
 
-        $walkByMenuElementItem = function($elementItems, Model\MainMenu\Element $parentElement = null) use (&$menu, &$walkByMenuElementItem, &$categoryItemsById) {
+        $walkByMenuElementItem = function($elementItems, \EnterModel\MainMenu\Element $parentElement = null) use (&$menu, &$walkByMenuElementItem, &$categoryItemsById) {
             foreach ($elementItems as $elementItem) {
                 if (isset($elementItem['disabled']) && (true === $elementItem['disabled'])) {
                     continue;
@@ -65,7 +63,7 @@ class MainMenu {
                     parse_str(parse_url($source, PHP_URL_QUERY), $params);
 
                     if ((0 === strpos($source, 'category/get')) && !empty($params['id']) && isset($categoryItemsById[$params['id']])) {
-                        $element = new Model\MainMenu\Element($elementItem);
+                        $element = new \EnterModel\MainMenu\Element($elementItem);
                         if (!$element->name) {
                             $element->name = (string)$categoryItemsById[$params['id']]['name'];
                         }
@@ -83,7 +81,7 @@ class MainMenu {
                         $walkByMenuElementItem($elementItems, $parentElement);
                     }
                 } else {
-                    $element = new Model\MainMenu\Element($elementItem);
+                    $element = new \EnterModel\MainMenu\Element($elementItem);
                 }
 
                 if (!$element) continue;

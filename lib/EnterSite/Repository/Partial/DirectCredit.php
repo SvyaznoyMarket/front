@@ -3,13 +3,13 @@
 namespace EnterSite\Repository\Partial;
 
 use EnterSite\ConfigTrait;
-use EnterSite\ViewHelperTrait;
+use EnterAggregator\TemplateHelperTrait;
 use EnterSite\Repository;
 use EnterSite\Model;
 use EnterSite\Model\Partial;
 
 class DirectCredit {
-    use ConfigTrait, ViewHelperTrait;
+    use ConfigTrait, TemplateHelperTrait;
 
     /**
      * @param \EnterModel\Product[] $products
@@ -46,7 +46,7 @@ class DirectCredit {
         }
 
         $directCredit->widgetId = 'id-creditPayment';
-        $directCredit->dataValue = $this->getViewHelper()->json([
+        $directCredit->dataValue = $this->getTemplateHelper()->json([
             'partnerId' => $this->getConfig()->directCredit->partnerId,
             'product'   => $productData,
         ]);

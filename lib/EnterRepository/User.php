@@ -4,7 +4,7 @@ namespace EnterRepository;
 
 use Enter\Http;
 use Enter\Curl\Query;
-use EnterSite\ConfigTrait;
+use EnterAggregator\ConfigTrait;
 use EnterModel as Model;
 
 class User {
@@ -47,7 +47,11 @@ class User {
      * @param $defaultUrl
      * @return string
      */
-    public function getRedirectUrlByHttpRequest(Http\Request $request, $defaultUrl = '/') {
+    public function getRedirectUrlByHttpRequest(Http\Request $request, $defaultUrl = null) {
+        if (!$defaultUrl) {
+            $defaultUrl = '/';
+        }
+
         // редирект
         $url = trim((string)($request->data['redirect_to'] ?: $request->query['redirect_to']));
         if (!$url) {

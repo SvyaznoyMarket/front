@@ -4,7 +4,7 @@ namespace EnterRepository;
 
 use Enter\Http;
 use Enter\Curl\Query;
-use EnterSite\LoggerTrait;
+use EnterAggregator\LoggerTrait;
 use EnterModel as Model;
 
 class Promo {

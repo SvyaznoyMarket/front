@@ -4,14 +4,12 @@ namespace EnterSite\Controller;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\LoggerTrait;
-use EnterSite\RouterTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
 use EnterSite\Action;
 
 class Router {
-    use ConfigTrait, LoggerTrait, RouterTrait {
-        ConfigTrait::getConfig insteadof LoggerTrait, RouterTrait;
-    }
+    use ConfigTrait, LoggerTrait, RouterTrait;
 
     /**
      * @param Http\Request $request

@@ -127,6 +127,10 @@
         "name": "Регистрация пользователя",
         "pattern": "/user/register"
     },
+    "User\\Reset": {
+        "name": "Восстановление пароля",
+        "pattern": "/user/request-password"
+    },
     "User\\Index": {
         "name": "Личный кабинет",
         "pattern": "/private"

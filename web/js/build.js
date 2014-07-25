@@ -12,6 +12,7 @@
         'jquery.touchwipe'      : 'plugin/jquery.touchwipe',
         'jquery.photoswipe'     : 'plugin/jquery.photoswipe',
         'jquery.slides'         : 'plugin/jquery.slides',
+        'jquery.maskedinput'    : 'plugin/jquery.maskedinput',
 
         'underscore'         : 'empty:',
         'mustache'           : 'vendor/mustache-0.8.2',

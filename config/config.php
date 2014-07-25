@@ -1,9 +1,7 @@
 <?php
 
-return function(\EnterSite\Config\Application $config) {
+return function(\EnterSite\Config $config) {
     mb_internal_encoding('UTF-8');
-
-    $config->requestId = uniqid();
 
     $config->dir = realpath(__DIR__ . '/..');
     $config->hostname = 'enter.ru';
@@ -16,6 +14,7 @@ return function(\EnterSite\Config\Application $config) {
     $config->session->name = 'enter';
     $config->session->cookieLifetime = 15552000;
     $config->session->cookieDomain = '.enter.ru';
+    $config->session->flashKey = '_flash';
 
     $config->userToken->authCookieName = '_token';
 

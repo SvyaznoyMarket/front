@@ -4,8 +4,8 @@ namespace EnterSite\Controller\User;
 
 use Enter\Http;
 use EnterSite\ConfigTrait;
-use EnterSite\CurlClientTrait;
-use EnterSite\RouterTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\RouterTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterCurlQuery as Query;
@@ -14,9 +14,7 @@ use EnterSite\Model\Form;
 use EnterSite\Routing;
 
 class Logout {
-    use ConfigTrait, CurlClientTrait, RouterTrait {
-        ConfigTrait::getConfig insteadof CurlClientTrait, RouterTrait;
-    }
+    use ConfigTrait, CurlTrait, RouterTrait;
 
     /**
      * @param Http\Request $request
