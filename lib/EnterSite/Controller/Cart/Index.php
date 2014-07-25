@@ -71,7 +71,7 @@ class Index {
         $productsById = $productListQuery ? (new \EnterRepository\Product)->getIndexedObjectListByQueryList([$productListQuery]) : [];
 
         // меню
-        $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Cart\Index\Request();

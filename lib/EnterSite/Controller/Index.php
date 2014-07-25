@@ -52,7 +52,7 @@ class Index {
         $promos = $promoRepository->getObjectListByQuery($promoListQuery);
 
         // меню
-        $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Index\Request();

@@ -1,22 +1,21 @@
 <?php
 
-namespace EnterSite\Repository;
+namespace EnterRepository;
 
 use Enter\Curl\Query;
-use EnterSite\ConfigTrait;
-use EnterAggregator\LoggerTrait;
-use EnterSite\Model;
+use EnterAggregator\ConfigTrait;
+use EnterModel as Model;
 
 class MainMenu {
-    use ConfigTrait, LoggerTrait;
+    use ConfigTrait;
 
     /**
      * @param Query $menuListQuery
      * @param Query $categoryListQuery
-     * @return \EnterModel\MainMenu\Element[]
+     * @return Model\MainMenu
      */
     public function getObjectByQuery(Query $menuListQuery, Query $categoryListQuery = null) {
-        $menu = new \EnterModel\MainMenu();
+        $menu = new Model\MainMenu();
 
         try {
             $menuData = $menuListQuery->getResult();
@@ -26,9 +25,8 @@ class MainMenu {
         } catch (\Exception $e) {
             $menuData = json_decode(file_get_contents($this->getConfig()->dir . '/data/cms/v2/main-menu.json'), true);
 
-            trigger_error($e, E_USER_ERROR);
+            //trigger_error($e, E_USER_ERROR);
         }
-        $menuData = json_decode(file_get_contents($this->getConfig()->dir . '/data/cms/v2/main-menu.json'), true);
         $categoryData = $categoryListQuery->getResult();
 
         $categoryItemsById = [];
@@ -49,7 +47,7 @@ class MainMenu {
         };
         $walkByCategoryData($categoryData);
 
-        $walkByMenuElementItem = function($elementItems, \EnterModel\MainMenu\Element $parentElement = null) use (&$menu, &$walkByMenuElementItem, &$categoryItemsById) {
+        $walkByMenuElementItem = function($elementItems, Model\MainMenu\Element $parentElement = null) use (&$menu, &$walkByMenuElementItem, &$categoryItemsById) {
             foreach ($elementItems as $elementItem) {
                 if (isset($elementItem['disabled']) && (true === $elementItem['disabled'])) {
                     continue;
@@ -63,7 +61,9 @@ class MainMenu {
                     parse_str(parse_url($source, PHP_URL_QUERY), $params);
 
                     if ((0 === strpos($source, 'category/get')) && !empty($params['id']) && isset($categoryItemsById[$params['id']])) {
-                        $element = new \EnterModel\MainMenu\Element($elementItem);
+                        $element = new Model\MainMenu\Element($elementItem);
+                        $element->type = 'category';
+                        $element->id = (string)$categoryItemsById[$params['id']]['id'];
                         if (!$element->name) {
                             $element->name = (string)$categoryItemsById[$params['id']]['name'];
                         }
@@ -81,7 +81,7 @@ class MainMenu {
                         $walkByMenuElementItem($elementItems, $parentElement);
                     }
                 } else {
-                    $element = new \EnterModel\MainMenu\Element($elementItem);
+                    $element = new Model\MainMenu\Element($elementItem);
                 }
 
                 if (!$element) continue;

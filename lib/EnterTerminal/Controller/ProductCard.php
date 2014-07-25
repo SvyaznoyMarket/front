@@ -3,7 +3,7 @@
 namespace EnterTerminal\Controller;
 
 use Enter\Http;
-use EnterTerminal\ConfigTrait;
+use EnterAggregator\Model\Context;
 use EnterAggregator\CurlTrait;
 use EnterCurlQuery as Query;
 use EnterModel as Model;
@@ -11,7 +11,7 @@ use EnterTerminal\Controller;
 use EnterTerminal\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use ConfigTrait, CurlTrait;
+    use CurlTrait;
 
     /**
      * @param Http\Request $request
@@ -19,9 +19,7 @@ class ProductCard {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
-        $config = $this->getConfig();
         $curl = $this->getCurl();
-        $productRepository = new \EnterRepository\Product();
 
         // ид магазина
         $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
@@ -50,137 +48,20 @@ class ProductCard {
 
         $curl->execute();
 
+        $context = new Context();
+        $context->mainMenu = false;
+        $controllerResponse = (new \EnterAggregator\Controller\ProductCard())->execute($shop->regionId, ['id' => $productId], $context);
         // товар
-        $product = $productRepository->getObjectByQuery($productItemQuery);
-        if (!$product) {
+        if (!$controllerResponse->product) {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Товар #%s не найден', $productId));
-        }
-
-        // запрос доставки товара
-        $deliveryListQuery = null;
-        if ($product->isBuyable) {
-            $cartProducts = [];
-            $cartProducts[] = new Model\Cart\Product(['id' => $product->id, 'quantity' => 1]);
-            foreach ($product->kit as $kit) {
-                $cartProducts[] = new Model\Cart\Product(['id' => $kit->id, 'quantity' => $kit->count]);
-            }
-
-            $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList($cartProducts, $shop->regionId);
-            $curl->prepare($deliveryListQuery);
-        }
-
-        // запрос отзывов товара
-        $reviewListQuery = null;
-        if ($config->productReview->enabled) {
-            $reviewListQuery = new Query\Product\Review\GetListByProductId($product->id, 0, $config->productReview->itemsInCard);
-            $curl->prepare($reviewListQuery);
-        }
-
-        // запрос видео товара
-        $videoListQuery = new Query\Product\Media\Video\GetListByProductId($product->id);
-        $curl->prepare($videoListQuery);
-
-        // запрос аксессуаров товара
-        $accessoryListQuery = null;
-        if ((bool)$product->accessoryIds) {
-            $accessoryListQuery = new Query\Product\GetListByIdList(array_slice($product->accessoryIds, 0, $config->product->itemsInSlider), $shop->regionId);
-            $curl->prepare($accessoryListQuery);
-        }
-
-        // запрос наборов
-        $kitListQuery = null;
-        if ((bool)$product->kit) {
-            $kitListQuery = new Query\Product\GetListByIdList(array_map(function(Model\Product\Kit $kit) {
-                return $kit->id;
-            }, $product->kit), $shop->regionId);
-            $curl->prepare($kitListQuery);
-        }
-
-        // запрос настроек каталога
-        // TODO: Проверить существование категории
-        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($product->category->ascendants, [$product->category]), $product);
-        $curl->prepare($catalogConfigQuery);
-
-        // запрос списка рейтингов товаров
-        $ratingListQuery = null;
-        if ($config->productReview->enabled) {
-            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList(array_merge([$product->id], (bool)$product->accessoryIds ? $product->accessoryIds : []));
-            $curl->prepare($ratingListQuery);
-        }
-
-        $curl->execute();
-
-        // отзывы товара
-        $reviews = $reviewListQuery ? (new \EnterRepository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
-
-        // видео товара
-        $productRepository->setVideoForObjectByQuery($product, $videoListQuery);
-        // 3d фото товара (maybe3d)
-        $productRepository->setPhoto3dForObjectByQuery($product, $videoListQuery);
-
-        // наборы
-        $kitProductsById = $kitListQuery ? $productRepository->getIndexedObjectListByQueryList([$kitListQuery], function(&$item) {
-            // оптимизация
-            $item['media'] = [reset($item['media'])];
-        }) : [];
-        foreach ($product->kit as $kit) {
-            /** @var Model\Product|null $kiProduct */
-            $kiProduct = isset($kitProductsById[$kit->id]) ? $kitProductsById[$kit->id] : null;
-            if (!$kiProduct) continue;
-
-            $kiProduct->kitCount = $kit->count; // FIXME
-        }
-
-        // группированные товары
-        $productsById = [];
-        foreach (array_merge([$product], $product->relation->accessories, $kitProductsById) as $iProduct) {
-            /** @var Model\Product $iProduct */
-            $productsById[$iProduct->id] = $iProduct;
-        }
-
-        // доставка товара
-        if ($deliveryListQuery) {
-            $productRepository->setDeliveryForObjectListByQuery($productsById, $deliveryListQuery);
-        }
-
-        // если у товара нет доставок, запрашиваем список магазинов, в которых товар может быть на витрине
-        if (!(bool)$product->nearestDeliveries) {
-            $shopsIds = [];
-            foreach ($product->stock as $stock) {
-                if ($stock->shopId && ($stock->showroomQuantity > 0)) {
-                    $shopsIds[] = $stock->shopId;
-                }
-            }
-
-            if ((bool)$shopsIds) {
-                $shopListQuery = new Query\Shop\GetListByIdList($shopsIds);
-                $curl->prepare($shopListQuery);
-
-                $curl->execute();
-
-                $productRepository->setNowDeliveryForObjectListByQuery([$product->id => $product], $shopListQuery);
-            }
-        }
-
-        // аксессуары
-        if ($accessoryListQuery) {
-            $productRepository->setAccessoryRelationForObjectListByQuery([$product->id => $product], $accessoryListQuery);
-        }
-
-        // настройки каталога
-        $catalogConfig = $catalogConfigQuery ? (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
-
-        // список рейтингов товаров
-        if ($ratingListQuery) {
-            $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
 
         // страница
         $page = new Page();
-        $page->catalogConfig = $catalogConfig;
-        $page->product = $product;
-        $page->reviews = $reviews;
-        $page->kitProducts = array_values($kitProductsById);
+        $page->catalogConfig = $controllerResponse->catalogConfig;
+        $page->product = $controllerResponse->product;
+        $page->reviews = $controllerResponse->product ? $controllerResponse->product->reviews : []; // FIXME: удалить
+        $page->kitProducts = $controllerResponse->product ? $controllerResponse->product->relation->kits : []; // FIXME: удалить
 
         return new Http\JsonResponse($page);
     }

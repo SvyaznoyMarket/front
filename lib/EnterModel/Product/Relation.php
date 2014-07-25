@@ -9,4 +9,6 @@ class Relation {
     public $accessories = [];
     /** @var Model\Product[] */
     public $similar = [];
+    /** @var Model\Product[] */
+    public $kits = [];
 }
