@@ -134,7 +134,10 @@ class Debug {
                 ];
 
                 if ($config->curl->logResponse) {
-                    $info['response'] = $curlQuery->getResult();
+                    try {
+                        // TODO: в response должны записываться данные из $curlQuery->response
+                        $info['response'] = $curlQuery->getResult();
+                    } catch (\Exception $e) {}
                 }
 
                 $query->info = json_encode($info, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
