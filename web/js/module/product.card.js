@@ -1,7 +1,7 @@
 define(
     [
         'require', 'jquery', 'underscore', 'mustache', 'module/util',
-        'jquery.enterslide', 'jquery.photoswipe', 'module/product.card.tab'
+        'jquery.enterslide', 'jquery.photoswipe', 'module/product.card.tab', 'module/product.card.fullimg'
     ],
     function (
         require, $, _, mustache, util
@@ -74,30 +74,5 @@ define(
                 }
             );
         });
-
-        var body = $('body'),
-            w = $(window),
-
-            fullImgW = $('.js-fullimg-wrap'),
-            fullImgLk = $('.js-fullimg-open');
-
-        fullImgW.css({ 'display' : 'none', 'overflow': 'hidden' });
-
-        var 
-            fullImgScale = function fullImgScale() {
-                fullImgW.css({ 'height' : body.height() });
-            },
-
-            fullImgShow = function fullImgShow() {
-                $('html, body').animate({scrollTop:0}, 'fast').css({'overflow' : 'hidden'});
-        
-                fullImgW.slideDown();
-                return false;
-            };
-
-        fullImgScale();
-        w.on('resize', fullImgScale);
-        fullImgLk.on('click', fullImgShow);
-
     }
 );
