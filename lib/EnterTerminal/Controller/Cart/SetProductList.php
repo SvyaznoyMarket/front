@@ -6,7 +6,7 @@ use Enter\Http;
 use EnterAggregator\SessionTrait;
 use EnterTerminal\Controller;
 
-class SetProduct {
+class SetProductList {
     use SessionTrait;
 
     /**
@@ -22,13 +22,15 @@ class SetProduct {
         $cart = $cartRepository->getObjectByHttpSession($session);
 
         // товара для корзины
-        $cartProduct = $cartRepository->getProductObjectByHttpRequest($request);
-        if (!$cartProduct) {
-            throw new \Exception('Товар не получен');
+        $cartProducts = $cartRepository->getProductObjectListByHttpRequest($request);
+        if (!$cartProducts) {
+            throw new \Exception('Товары не получены');
         }
 
         // добавление товара в корзину
-        $cartRepository->setProductForObject($cart, $cartProduct);
+        foreach ($cartProducts as $cartProduct) {
+            $cartRepository->setProductForObject($cart, $cartProduct);
+        }
 
         // сохранение корзины в сессию
         $cartRepository->saveObjectToHttpSession($session, $cart);
