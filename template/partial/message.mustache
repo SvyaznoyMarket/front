@@ -1,5 +1,5 @@
 {{#messages}}
-    <span style="{{#isError}}background-color: red{{/isError}}{{#isSuccess}}background-color: green{{/isSuccess}}" data-code="{{code}}">
+    <span class="txEvnt {{#isError}}txEvnt-err{{/isError}}{{#isSuccess}}txEvnt-complt{{/isSuccess}}" data-code="{{code}}">
         {{name}}
     </span>
 {{/messages}}
