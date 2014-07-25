@@ -42,14 +42,14 @@ class Cart {
      */
     public function getProductObjectListByHttpRequest(Http\Request $request) {
         $products = [];
-        foreach ($request->query['products'] as $product) {
-            if (isset($product['id'])) {
-                $cartProduct = new Model\Cart\Product();
-                $cartProduct->id = (string)$product['id'];
-                $cartProduct->quantity = isset($product['quantity']) ? (int)$product['quantity'] : 0;
+        foreach ((array)$request->query['products'] as $product) {
+            if (!isset($product['id'])) continue;
 
-                $products[] = $cartProduct;
-            }
+            $cartProduct = new Model\Cart\Product();
+            $cartProduct->id = (string)$product['id'];
+            $cartProduct->quantity = isset($product['quantity']) ? (int)$product['quantity'] : 0;
+
+            $products[] = $cartProduct;
         }
 
         return $products;
