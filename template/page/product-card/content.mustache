@@ -3,9 +3,11 @@
     <div class="contentBox960 fullImgCnt js-fullimg-wrap">
         <div class="clsr1 js-fullimg-close"></div>
 
-        {{#product.mainPhoto}}
-            <img class="fullImgCnt_img js-fullimg-img" src="{{product.mainPhoto.originalUrl}}" alt="{{&product.name}}" />
-        {{/product.mainPhoto}}
+        <div class="fullImgCnt_img_load js-fullimg-img-loader">
+            {{#product.mainPhoto}}
+                <img class="fullImgCnt_img js-fullimg-img" src="{{product.mainPhoto.originalUrl}}" alt="{{&product.name}}" />
+            {{/product.mainPhoto}}
+        </div>
 
         <div class="fullImgCnt_thmb js-fullimg-thmb-wrap">
             <ul class="fullImgCnt_thmb_w js-fullimg-thmb">

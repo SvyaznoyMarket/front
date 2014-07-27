@@ -10,12 +10,15 @@ define(
             hiddenCnt= $('.js-fullimg-hidden'),
 
             img = $('.js-fullimg-img'),
+            imgLoad = $('.fullImgCnt_img_load'),
             thmbW = $('.js-fullimg-thmb-wrap'),
             thmbImg = $('.js-fullimg-thmb-img'),
             actClass = 'fullImgCnt_thmb_i-act';
         // end of vars
 
-        thmbW.css({ 'width' : wrap.width() });
+            thmbW.css({ 'width' : wrap.width() });
+            img.css({ 'width' : wrap.width() });
+            imgLoad.css({ 'min-height' : wrap.width(), 'width' : wrap.width() });
 
         var 
             /*  
@@ -23,6 +26,8 @@ define(
             */
             imgScale = function imgScale() {
                 thmbW.css({ 'width' : wrap.width() });
+                img.css({ 'width' : wrap.width() });
+                imgLoad.css({ 'min-height' : wrap.width(), 'width' : wrap.width() });
             },
 
             /*  
@@ -32,6 +37,7 @@ define(
                 $('html, body').animate({scrollTop:0}, 'fast');
         
                 wrap.slideDown().show(0);
+                $('.js-fullimg-thmb-i').first().addClass(actClass);
                 hiddenCnt.css({'overflow' : 'hidden'}).delay(100).animate({'opacity' : 0, 'height' : 0});
                 return false;
             },
@@ -56,6 +62,7 @@ define(
                     src = $self.data('middleimg');
 
                     console.log('middle');
+
                 } else {
                     src = $self.data('fullimg');
 
@@ -66,8 +73,7 @@ define(
                 $self.parent().parent().addClass(actClass);
 
                 img.fadeOut(100, function(){
-                    img.attr("src", src);
-                    img.fadeIn(100);
+                    img.attr("src", src).hide().load( function() { img.fadeIn(100) })
                 });
             },
 
