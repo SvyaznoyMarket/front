@@ -2584,7 +2584,7 @@ body.noScroll {
   text-decoration: none;
 }
 .debug__tab__content {
-  max-height: 400px;
+  max-height: 500px;
   overflow: auto;
 }
 .debug__tab__content tr:nth-child(2n) {
