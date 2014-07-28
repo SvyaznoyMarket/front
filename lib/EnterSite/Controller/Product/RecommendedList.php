@@ -8,7 +8,7 @@ use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterSite\Repository;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterSite\Model;
 use EnterSite\Model\Page\Product\RecommendedList as Page;
 

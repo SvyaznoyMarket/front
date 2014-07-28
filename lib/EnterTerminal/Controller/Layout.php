@@ -7,7 +7,7 @@ use EnterTerminal\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterTerminal\Controller;
 use EnterTerminal\Repository;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterModel as Model;
 use EnterTerminal\Model\Layout as Page;
 

@@ -4,7 +4,7 @@ namespace EnterTerminal\Controller;
 
 use Enter\Http;
 use EnterAggregator\CurlTrait;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterTerminal\Model\Page\Config as Page;
 
 class Config {

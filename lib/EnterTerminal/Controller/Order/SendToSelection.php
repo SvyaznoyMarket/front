@@ -4,7 +4,7 @@ namespace EnterTerminal\Controller\Order;
 
 use Enter\Http;
 use EnterAggregator\CurlTrait;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 
 class SendToSelection {
     use CurlTrait;

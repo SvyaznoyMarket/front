@@ -7,7 +7,7 @@ use EnterTerminal\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\Model\Context;
 use EnterTerminal\Controller;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterModel as Model;
 use EnterTerminal\Model\Page\ProductCatalog\Category as Page;
 

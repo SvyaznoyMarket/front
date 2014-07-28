@@ -12,7 +12,7 @@ use EnterAggregator\MustacheRendererTrait;
 use EnterAggregator\DebugContainerTrait;
 use EnterSite\Routing;
 use EnterSite\Controller;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterSite\Model;
 use EnterSite\Model\Page\Cart\Index as Page;
 use EnterSite\Repository;

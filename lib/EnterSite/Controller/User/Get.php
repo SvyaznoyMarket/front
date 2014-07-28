@@ -9,7 +9,7 @@ use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\SessionTrait;
 use EnterAggregator\DebugContainerTrait;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterSite\Model;
 use EnterSite\Repository;
 use EnterSite\Model\Page\User\Get as Page;
