@@ -39,6 +39,8 @@ namespace EnterAggregator {
         public $reviewService;
         /** @var Config\ContentService */
         public $contentService;
+        /** @var Config\InfoService */
+        public $infoService;
         /** @var Config\RetailRocketService */
         public $retailRocketService;
         /** @var Config\MustacheRenderer */
@@ -79,6 +81,7 @@ namespace EnterAggregator {
             $this->adminService = new Config\AdminService();
             $this->reviewService = new Config\ReviewService();
             $this->contentService = new Config\ContentService();
+            $this->infoService = new Config\InfoService();
             $this->retailRocketService = new Config\RetailRocketService();
 
             $this->mustacheRenderer = new Config\MustacheRenderer();
@@ -205,6 +208,9 @@ namespace EnterAggregator\Config {
     }
 
     class ContentService extends CurlService {
+    }
+
+    class InfoService extends CurlService {
     }
 
     class RetailRocketService extends CurlService {
