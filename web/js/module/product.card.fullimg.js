@@ -20,6 +20,8 @@ define(
             img.css({ 'width' : wrap.width() });
             imgLoad.css({ 'min-height' : wrap.width(), 'width' : wrap.width() });
 
+            $('.js-fullimg-thmb-i').first().addClass(actClass);
+
         var 
             /*  
              * адаптивная ширина большого изображения
@@ -37,8 +39,10 @@ define(
                 $('html, body').animate({scrollTop:0}, 'fast');
         
                 wrap.slideDown().show(0);
-                $('.js-fullimg-thmb-i').first().addClass(actClass);
+                
                 hiddenCnt.css({'overflow' : 'hidden'}).delay(100).animate({'opacity' : 0, 'height' : 0});
+                imgScale();
+
                 return false;
             },
 
