@@ -33,17 +33,18 @@ class Config {
         if (!$data) {
             throw new \Exception('Не удалось получить конфигурацию терминала');
         }
+        $shopId = $page->info['shop_id'];
 
         $page->info = $data;
 
-        $shopQuery = new Query\Shop\GetItemById($page->shop->id);
+        $shopQuery = new Query\Shop\GetItemById($shopId);
         $curl->prepare($shopQuery);
 
         $curl->execute();
 
         $shop = (new \EnterTerminal\Repository\Shop())->getObjectByQuery($shopQuery);
         if (!$shop) {
-            throw new \Exception(sprintf('Магазин #%s не найден', $page->shop->id));
+            throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
         }
 
         $page->shop = $shop;
