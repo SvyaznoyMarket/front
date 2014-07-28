@@ -97,7 +97,7 @@ class RootCategory {
         $curl->execute();
 
         // меню
-        $mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
 
         // настройки каталога
         $catalogConfig = (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);

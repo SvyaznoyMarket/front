@@ -37,6 +37,25 @@ class Cart {
     }
 
     /**
+     * @param Http\Request $request
+     * @return Model\Cart\Product[]
+     */
+    public function getProductObjectListByHttpRequest(Http\Request $request) {
+        $products = [];
+        foreach ((array)$request->query['products'] as $product) {
+            if (!isset($product['id'])) continue;
+
+            $cartProduct = new Model\Cart\Product();
+            $cartProduct->id = (string)$product['id'];
+            $cartProduct->quantity = isset($product['quantity']) ? (int)$product['quantity'] : 0;
+
+            $products[] = $cartProduct;
+        }
+
+        return $products;
+    }
+
+    /**
      * @param Http\Session $session
      * @return Model\Cart
      */

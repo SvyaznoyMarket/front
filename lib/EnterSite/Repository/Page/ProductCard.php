@@ -227,9 +227,9 @@ class ProductCard {
         $page->content->product->similarSlider->hasCategories = false;
 
         // отзывы товара
-        if ((bool)$request->reviews) {
+        if ((bool)$productModel->reviews) {
             $page->content->product->reviewBlock = new Page\Content\Product\ReviewBlock();
-            foreach ($request->reviews as $reviewModel) {
+            foreach ($productModel->reviews as $reviewModel) {
                 $review = new Page\Content\Product\ReviewBlock\Review();
                 $review->author = $reviewModel->author;
                 $review->createdAt = $reviewModel->createdAt ? $dateHelper->dateToRu($reviewModel->createdAt): null;
