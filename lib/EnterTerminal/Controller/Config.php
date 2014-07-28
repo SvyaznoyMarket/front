@@ -5,6 +5,7 @@ namespace EnterTerminal\Controller;
 use Enter\Http;
 use EnterAggregator\CurlTrait;
 use EnterCurlQuery as Query;
+use EnterTerminal\Model\Page\Config as Page;
 
 class Config {
     use CurlTrait;
@@ -23,25 +24,30 @@ class Config {
 
         $infoQuery = new Query\Terminal\GetInfoByIp($request->query['ip']);
         $curl->prepare($infoQuery);
+
         $curl->execute();
 
-        $info = $infoQuery->getResult();
-        if ($info) {
-            $configModel = new \EnterTerminal\Model\Page\Config($info);
-        } else {
+        $page = new Page();
+
+        $data = $infoQuery->getResult();
+        if (!$data) {
             throw new \Exception('Не удалось получить конфигурацию терминала');
         }
 
-        $shopQuery = new Query\Shop\GetItemById($configModel->shop->id);
+        $page->info = $data;
+
+        $shopQuery = new Query\Shop\GetItemById($page->shop->id);
         $curl->prepare($shopQuery);
+
         $curl->execute();
 
         $shop = (new \EnterTerminal\Repository\Shop())->getObjectByQuery($shopQuery);
         if (!$shop) {
-            throw new \Exception(sprintf('Магазин #%s не найден', $configModel->shop->id));
+            throw new \Exception(sprintf('Магазин #%s не найден', $page->shop->id));
         }
 
-        $configModel->shop = $shop;
-        return new Http\JsonResponse($configModel);
+        $page->shop = $shop;
+
+        return new Http\JsonResponse($page);
     }
 }
