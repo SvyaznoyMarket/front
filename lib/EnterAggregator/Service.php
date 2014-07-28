@@ -142,7 +142,7 @@ class Service {
 
         if (!$instance) {
             $config = new Routing\Config();
-            $config->routeClassPrefix = 'EnterSite\Routing\\'; // TODO брать из Config\Application\Router
+            $config->routeClassPrefix = 'EnterMobile\Routing\\'; // TODO брать из Config\Application\Router
             $config->routes = json_decode(file_get_contents(__DIR__ . '/../../config/route.json'), true); // TODO брать из Config\Application\Router
 
             $instance = new Routing\Router($config);

@@ -1,6 +1,6 @@
 <?php
 
-return function(\EnterSite\Config $config) {
+return function(\EnterMobile\Config $config) {
     mb_internal_encoding('UTF-8');
 
     $config->dir = realpath(__DIR__ . '/..');

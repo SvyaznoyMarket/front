@@ -1,6 +1,6 @@
 <?php
 
-return function(\EnterSite\Config $config) {
+return function(\EnterMobile\Config $config) {
     /** @var \Closure $handler */
     $handler = include __DIR__ . '/config-dev.php';
     $handler($config);

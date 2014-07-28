@@ -12,7 +12,7 @@ return function($applicationDir) {
 
         if (
             (0 !== strpos($class, 'Enter'))
-            && (0 !== strpos($class, 'EnterSite'))
+            && (0 !== strpos($class, 'EnterMobile'))
             && (0 !== strpos($class, 'EnterTerminal')) // FIXME: вынести в отдельный автозагрузчик
         ) {
             return;
