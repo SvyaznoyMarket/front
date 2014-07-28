@@ -8,7 +8,7 @@ use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\SessionTrait;
 use EnterAggregator\RouterTrait;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterSite\Model;
 use EnterSite\Routing;
 use EnterSite\Repository;

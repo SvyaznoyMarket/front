@@ -5,7 +5,7 @@ namespace EnterAggregator\Controller\ProductCatalog {
     use EnterAggregator\ConfigTrait;
     use EnterAggregator\CurlTrait;
     use EnterAggregator\Model\Context;
-    use EnterCurlQuery as Query;
+    use EnterQuery as Query;
     use EnterRepository as Repository;
     use EnterModel as Model;
 

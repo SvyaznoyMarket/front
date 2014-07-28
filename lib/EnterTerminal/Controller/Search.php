@@ -5,7 +5,7 @@ namespace EnterTerminal\Controller;
 use Enter\Http;
 use EnterTerminal\ConfigTrait;
 use EnterAggregator\CurlTrait;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterModel as Model;
 use EnterTerminal\Controller;
 use EnterTerminal\Model\Page\Search as Page;

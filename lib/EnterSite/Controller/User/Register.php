@@ -10,7 +10,7 @@ use EnterAggregator\DebugContainerTrait;
 use EnterAggregator\RouterTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterModel as Model;
 use EnterSite\Model\Form;
 use EnterSite\Routing;

@@ -3,10 +3,10 @@
 namespace EnterTerminal\Controller\Order\Confirm;
 
 use Enter\Http;
-use EnterCurlQuery;
+use EnterQuery;
 use EnterTerminal\ConfigTrait;
 use EnterAggregator\CurlTrait;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 
 class Check {
     use ConfigTrait, CurlTrait;

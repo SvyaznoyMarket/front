@@ -13,7 +13,7 @@ use EnterAggregator\DebugContainerTrait;
 use EnterSite\Controller;
 use EnterSite\Repository;
 use EnterSite\Routing;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterSite\Model;
 use EnterSite\Model\Page\User\Login as Page;
 

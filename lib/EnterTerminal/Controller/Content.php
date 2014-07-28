@@ -9,7 +9,7 @@ use EnterAggregator\CurlTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterTerminal\Controller;
 use EnterTerminal\Repository;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterTerminal\Model\Page\Content as Page;
 
 class Content {

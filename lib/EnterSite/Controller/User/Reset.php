@@ -3,7 +3,7 @@
 namespace EnterSite\Controller\User;
 
 use Enter\Http;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterRepository as Repository;
 use EnterSite\ConfigTrait;
 use EnterAggregator\LoggerTrait;

@@ -7,7 +7,7 @@ use EnterSite\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\CurlTrait;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterSite\Routing;
 
 class Autocomplete {

@@ -7,7 +7,7 @@ use EnterSite\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\SessionTrait;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterSite\Model;
 use EnterSite\Repository;
 use EnterSite\Model\Page\User\Cart\SetProduct as Page;

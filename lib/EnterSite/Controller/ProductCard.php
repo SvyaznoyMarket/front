@@ -9,7 +9,7 @@ use EnterAggregator\DebugContainerTrait;
 use EnterAggregator\Model\Context;
 use EnterSite\Controller;
 use EnterSite\Repository;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterSite\Model;
 use EnterSite\Model\Page\ProductCard as Page;
 

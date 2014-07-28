@@ -7,7 +7,7 @@ use EnterTerminal\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\SessionTrait;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterModel as Model;
 use EnterTerminal\Model\Page\Compare as Page;
 

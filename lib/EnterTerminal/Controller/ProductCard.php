@@ -5,7 +5,7 @@ namespace EnterTerminal\Controller;
 use Enter\Http;
 use EnterAggregator\Model\Context;
 use EnterAggregator\CurlTrait;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterModel as Model;
 use EnterTerminal\Controller;
 use EnterTerminal\Model\Page\ProductCard as Page;

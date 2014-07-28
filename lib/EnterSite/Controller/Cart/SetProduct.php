@@ -10,7 +10,7 @@ use EnterAggregator\SessionTrait;
 use EnterAggregator\RouterTrait;
 use EnterSite\Routing;
 use EnterSite\Controller;
-use EnterCurlQuery as Query;
+use EnterQuery as Query;
 use EnterSite\Model;
 //use EnterSite\Model\JsonPage as Page;
 use EnterSite\Repository;
