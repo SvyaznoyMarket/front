@@ -42,12 +42,6 @@ namespace EnterTerminal\Controller {
                 throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
             }
 
-            // запрос товара
-            $productItemQuery = new Query\Product\GetItemById($productId, $shop->regionId);
-            $curl->prepare($productItemQuery);
-
-            $curl->execute();
-
             $context = new Context();
             $context->mainMenu = false;
             $controllerResponse = (new \EnterAggregator\Controller\ProductCard())->execute($shop->regionId, ['id' => $productId], $context);
