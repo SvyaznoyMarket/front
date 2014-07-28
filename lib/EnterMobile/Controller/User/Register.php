@@ -96,7 +96,8 @@ class Register {
             }
             $messageRepository->setObjectListToHttpSesion('registerForm.error', $errors, $session);
 
-            return (new Controller\User\Login())->execute($request);
+            return (new Controller\Redirect())->execute($router->getUrlByRoute(new Routing\User\Login()), 302);
+            //return (new Controller\User\Login())->execute($request);
         }
 
         return $response;
