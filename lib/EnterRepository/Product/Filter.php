@@ -57,4 +57,27 @@ class Filter {
 
         return $filters;
     }
+
+    /**
+     * @param Model\Product\Category $category
+     * @return Model\Product\RequestFilter
+     */
+    public function getRequestObjectByCategory(Model\Product\Category $category) {
+        $filter = new Model\Product\RequestFilter();
+        $filter->token = 'category';
+        $filter->name = 'category';
+        $filter->value = $category->id;
+
+        return $filter;
+    }
+
+    /**
+     * @param Model\Product\RequestFilter[] $requestFilters
+     * @return array
+     */
+    public function dumpRequestObjectList(array $requestFilters) {
+        // FIXME
+
+        return [];
+    }
 }

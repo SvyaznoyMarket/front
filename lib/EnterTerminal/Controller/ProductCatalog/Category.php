@@ -5,6 +5,7 @@ namespace EnterTerminal\Controller\ProductCatalog;
 use Enter\Http;
 use EnterTerminal\ConfigTrait;
 use EnterAggregator\CurlTrait;
+use EnterAggregator\Model\Context;
 use EnterTerminal\Controller;
 use EnterCurlQuery as Query;
 use EnterModel as Model;
@@ -21,9 +22,7 @@ class Category {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
-        $productRepository = new \EnterRepository\Product();
-        $productCategoryRepository = new \EnterRepository\Product\Category();
-        $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME
+        $filterRepository = new \EnterTerminal\Repository\Product\Filter();
 
         // ид магазина
         $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
@@ -40,9 +39,6 @@ class Category {
         // количество товаров на страницу
         $limit = (int)$request->query['limit'] ?: 10;
 
-        // сортировки
-        $sortings = (new \EnterRepository\Product\Sorting())->getObjectList();
-
         // сортировка
         $sorting = null;
         if (!empty($request->query['sort']['token']) && !empty($request->query['sort']['direction'])) {
@@ -51,7 +47,7 @@ class Category {
             $sorting->direction = trim((string)$request->query['sort']['direction']);
         }
 
-        // запрос региона
+        // запрос магазина
         $shopItemQuery = new Query\Shop\GetItemById($shopId);
         $curl->prepare($shopItemQuery);
 
@@ -63,141 +59,38 @@ class Category {
             throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
         }
 
-        // запрос категории
-        $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryId, $shop->regionId);
-        $curl->prepare($categoryItemQuery);
-
-        $curl->execute();
-
-        // категория
-        $category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, null);
-        if (!$category) {
-            return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
-        }
-
         // фильтры в запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
         // фильтр категории в http-запросе
-        $requestFilters[] = $filterRepository->getRequestObjectByCategory($category);
+        //$requestFilters[] = $filterRepository->getRequestObjectByCategory($category);
 
-        // запрос фильтров
-        $filterListQuery = new Query\Product\Filter\GetListByCategoryId($category->id, $shop->regionId);
-        $curl->prepare($filterListQuery);
+        $context = new Context\ProductCatalog();
+        $context->mainMenu = false;
+        $context->parentCategory = true;
+        $controllerResponse = (new \EnterAggregator\Controller\ProductCatalog\ChildCategory())->execute(
+            $shop->regionId,
+            ['id' => $categoryId], // критерий получения категории товара
+            $pageNum, // номер страницы
+            $limit, // лимит
+            $sorting, // сортировка
+            $filterRepository, // репозиторий фильтров
+            $requestFilters, // фильтры в http-запросе
+            $context
+        );
 
-        // запрос предка категории
-        $ascendantCategoryItemQuery = new Query\Product\Category\GetAscendantItemByCategoryObject($category, $shop->regionId);
-        $curl->prepare($ascendantCategoryItemQuery);
-
-        // запрос родителя категории
-        $parentCategoryItemQuery = null;
-        if ($category->parentId) {
-            $parentCategoryItemQuery = new Query\Product\Category\GetTreeItemById($category->parentId, $shop->regionId);
-            $curl->prepare($parentCategoryItemQuery);
+        // категория
+        if (!$controllerResponse->category) {
+            return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
         }
-
-        // запрос листинга идентификаторов товаров
-        $productIdPagerQuery = new Query\Product\GetIdPager($filterRepository->dumpRequestObjectList($requestFilters), $sorting, $shop->regionId, ($pageNum - 1) * $limit, $limit);
-        $curl->prepare($productIdPagerQuery);
-
-        $curl->execute();
-
-        // фильтры
-        $filters = $filterRepository->getObjectListByQuery($filterListQuery);
-        // значения для фильтров
-        $filterRepository->setValueForObjectList($filters, $requestFilters);
-
-        // предки категории
-        $category->ascendants = $productCategoryRepository->getAscendantListByQuery($ascendantCategoryItemQuery);
-
-        // родитель категории
-        $category->parent = $parentCategoryItemQuery ? $productCategoryRepository->getObjectByQuery($parentCategoryItemQuery) : null;
-
-        // листинг идентификаторов товаров
-        $productIdPager = (new \EnterRepository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
-
-        // запрос списка товаров
-        $productListQuery = null;
-        if ((bool)$productIdPager->ids) {
-            $productListQuery = new Query\Product\GetListByIdList($productIdPager->ids, $shop->regionId);
-            $curl->prepare($productListQuery);
-        }
-
-        // запрос доставки товаров
-        $deliveryListQuery = null;
-        if ((bool)$productIdPager->ids) {
-            $cartProducts = [];
-            foreach ($productIdPager->ids as $productId) {
-                $cartProducts[] = new Model\Cart\Product(['id' => $productId, 'quantity' => 1]);
-            }
-
-            if ((bool)$cartProducts) {
-                $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList($cartProducts, $shop->regionId);
-                $curl->prepare($deliveryListQuery);
-            }
-        }
-
-        // запрос настроек каталога
-        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($category->ascendants, [$category]));
-        $curl->prepare($catalogConfigQuery);
-
-        // запрос списка рейтингов товаров
-        $ratingListQuery = null;
-        if ($config->productReview->enabled && (bool)$productIdPager->ids) {
-            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($productIdPager->ids);
-            $curl->prepare($ratingListQuery);
-        }
-
-        // запрос списка видео для товаров
-        $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($productIdPager->ids);
-        $curl->prepare($videoGroupedListQuery);
-
-        $curl->execute();
-
-        // список товаров
-        $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
-
-        // доставка товаров
-        if ($deliveryListQuery) {
-            $productRepository->setDeliveryForObjectListByQuery($productsById, $deliveryListQuery);
-        }
-
-        // список магазинов, в которых товар может быть только в магазине
-        /*
-        $shopsIds = [];
-        foreach ($productsById as $product) {
-            foreach ($product->stock as $stock) {
-                if ($stock->shopId && ($stock->quantity > 0)) {
-                    $shopsIds[] = $stock->shopId;
-                }
-            }
-        }
-        if ((bool)$shopsIds) {
-            $shopListQuery = new Query\Shop\GetListByIdList($shopsIds);
-            $curl->prepare($shopListQuery)->execute();
-
-            $productRepository->setNowDeliveryForObjectListByQuery($productsById, $shopListQuery);
-        }
-        */
-
-        // настройки каталога
-        $catalogConfig = $catalogConfigQuery ? (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
-
-        // список рейтингов товаров
-        if ($ratingListQuery) {
-            $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
-        }
-
-        // список видео для товаров
-        $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
 
         // страница
         $page = new Page();
-        $page->category = $category;
-        $page->catalogConfig = $catalogConfig;
-        $page->products = array_values($productsById);
-        $page->productCount = $productIdPager->count;
-        $page->filters = $filters;
-        $page->sortings = $sortings;
+        $page->category = $controllerResponse->category;
+        $page->catalogConfig = $controllerResponse->catalogConfig;
+        $page->products = $controllerResponse->products;
+        $page->productCount = $controllerResponse->productIdPager->count;
+        $page->filters = $controllerResponse->filters;
+        $page->sortings = $controllerResponse->sortings;
 
         return new Http\JsonResponse($page);
     }
