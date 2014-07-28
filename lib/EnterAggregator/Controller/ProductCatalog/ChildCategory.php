@@ -66,7 +66,8 @@ namespace EnterAggregator\Controller\ProductCatalog {
             // запрос категории
             $categoryItemQuery = null;
             if (!empty($categoryCriteria['id'])) {
-                $categoryItemQuery = new Query\Product\Category\GetItemById($categoryCriteria['id'], $response->region->id);
+                //$categoryItemQuery = new Query\Product\Category\GetItemById($categoryCriteria['id'], $response->region->id);
+                $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryCriteria['id'], $response->region->id);
             } else if (!empty($categoryCriteria['token'])) {
                 $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'], $response->region->id);
             } else if (!empty($categoryCriteria['ui'])) {
