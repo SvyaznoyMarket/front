@@ -11,7 +11,7 @@ use EnterAggregator\MustacheRendererTrait;
 use EnterAggregator\SessionTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\DebugContainerTrait;
-use EnterSite\Model\Page\Debug as Page;
+use EnterMobile\Model\Page\Debug as Page; // FIXME
 
 class Debug {
     use RequestIdTrait, ConfigTrait, LoggerTrait, MustacheRendererTrait, SessionTrait, TemplateHelperTrait, DebugContainerTrait;

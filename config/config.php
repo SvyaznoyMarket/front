@@ -1,6 +1,6 @@
 <?php
 
-return function(\EnterSite\Config $config) {
+return function(\EnterMobile\Config $config) {
     mb_internal_encoding('UTF-8');
 
     $config->dir = realpath(__DIR__ . '/..');
@@ -10,6 +10,9 @@ return function(\EnterSite\Config $config) {
 
     $config->logger->fileAppender->enabled = true;
     $config->logger->fileAppender->file = realpath($config->dir . '/../logs') . '/mobile.log';
+
+    $config->router->classPrefix = 'EnterMobile\Routing\\';
+    $config->router->routeFile = __DIR__ . '/route.json';
 
     $config->session->name = 'enter';
     $config->session->cookieLifetime = 15552000;

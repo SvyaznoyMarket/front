@@ -3,7 +3,7 @@
 namespace EnterTerminal\Repository\Product;
 
 use Enter\Http;
-use EnterSite\Repository\Product\Filter as BaseRepository;
+use EnterMobile\Repository\Product\Filter as BaseRepository;
 use EnterModel as Model;
 
 class Filter extends BaseRepository {

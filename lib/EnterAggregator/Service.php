@@ -141,9 +141,11 @@ class Service {
         static $instance;
 
         if (!$instance) {
+            $applicationConfig = $this->getConfig();
+
             $config = new Routing\Config();
-            $config->routeClassPrefix = 'EnterSite\Routing\\'; // TODO брать из Config\Application\Router
-            $config->routes = json_decode(file_get_contents(__DIR__ . '/../../config/route.json'), true); // TODO брать из Config\Application\Router
+            $config->routeClassPrefix = $applicationConfig->router->classPrefix;
+            $config->routes = $applicationConfig->router->routeFile ? json_decode(file_get_contents($applicationConfig->router->routeFile), true) : [];
 
             $instance = new Routing\Router($config);
         }

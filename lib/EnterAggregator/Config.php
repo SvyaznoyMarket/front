@@ -15,6 +15,8 @@ namespace EnterAggregator {
         public $hostname;
         /** @var Config\Logger */
         public $logger;
+        /** @var Config\Router */
+        public $router;
         /** @var Config\Session */
         public $session;
         /** @var Config\UserToken */
@@ -64,6 +66,7 @@ namespace EnterAggregator {
 
         public function __construct() {
             $this->logger = new Config\Logger();
+            $this->router = new Config\Router();
 
             $this->session = new Config\Session();
             $this->userToken = new Config\UserToken();
@@ -106,6 +109,17 @@ namespace EnterAggregator\Config {
         public function __construct() {
             $this->fileAppender = new Logger\FileAppender();
         }
+    }
+
+    class Router {
+        /** @var string */
+        public $classPrefix;
+        /**
+         * Файл с маршрутами
+         *
+         * @var string
+         */
+        public $routeFile;
     }
 
     class Session {

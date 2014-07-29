@@ -28,7 +28,7 @@ $request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
 $error = null;
 
 // config
-(new \EnterSite\Action\InitService())->execute(include $applicationDir . sprintf('/config/config-%s.php', $environment));
+(new \EnterMobile\Action\InitService())->execute(include $applicationDir . sprintf('/config/config-%s.php', $environment));
 
 // config post-handler
 (new \EnterAggregator\Action\HandleConfig())->execute($environment, $debug);
@@ -37,7 +37,7 @@ $error = null;
 (new \EnterAggregator\Action\HandleError())->execute($error);
 
 // shutdown handler, send response
-(new \EnterSite\Action\RegisterShutdown())->execute($request, $response, $error, $startAt);
+(new \EnterMobile\Action\RegisterShutdown())->execute($request, $response, $error, $startAt);
 
 // response
-(new \EnterSite\Action\HandleResponse())->execute($request, $response);
+(new \EnterMobile\Action\HandleResponse())->execute($request, $response);
