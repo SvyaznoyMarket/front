@@ -39,10 +39,7 @@ class Register {
         $form = new Form\User\RegisterForm();
         $form->name = trim((string)$request->data['name']);
         $form->email = trim((string)$request->data['email']);
-        // phone
         $form->phone = trim((string)$request->data['phone']);
-        $form->phone = preg_replace('/^\+7/', '8', $form->phone);
-        $form->phone = preg_replace('/[^\d]/', '', $form->phone);
 
         $form->subscribe = !empty($request->data['subscribe']);
 
@@ -52,6 +49,8 @@ class Register {
             $user->firstName = $form->name;
             $user->email = $form->email;
             $user->phone = $form->phone;
+            $user->phone = preg_replace('/^\+7/', '8', $user->phone);
+            $user->phone = preg_replace('/[^\d]/', '', $user->phone);
 
             $createItemQuery = new Query\User\CreateItemByObject($user);
             $createItemQuery->setTimeout($config->coreService->hugeTimeout);
