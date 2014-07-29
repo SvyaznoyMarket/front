@@ -143,6 +143,8 @@ namespace EnterAggregator\Controller\ProductCatalog {
 
             // фильтры
             $response->filters = $filterRepository->getObjectListByQuery($filterListQuery);
+            // значения для фильтров
+            $filterRepository->setValueForObjectList($response->filters, $response->requestFilters);
 
             // предки и дети категории
             if ($branchCategoryItemQuery) {
