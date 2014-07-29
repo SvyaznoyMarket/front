@@ -24,12 +24,12 @@ class GetItem extends Query {
             'geo_id' => $regionId,
         ];
         $this->data = [
-            'product_list'  => array_map(function(Model\Cart\Product $cartProduct) {
+            'product_list'  => array_values(array_map(function(Model\Cart\Product $cartProduct) {
                 return [
                     'id'       => $cartProduct->id,
                     'quantity' => $cartProduct->quantity,
                 ];
-            }, $cart->product),
+            }, $cart->product)),
             'service_list'  => [],
             'warranty_list' => [],
         ];
