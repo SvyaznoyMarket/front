@@ -104,7 +104,7 @@ class Filter {
             // FIXME
             $filter->isSelected = true;
             if (!isset($filter->value)) {
-                $filter->value;
+                $filter->value = [];
             }
 
             if ($requestFilter->optionToken) {
