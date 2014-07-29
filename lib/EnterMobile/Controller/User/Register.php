@@ -101,7 +101,7 @@ class Register {
                 'phone' => $form->phone,
             ]);
 
-            return (new Controller\Redirect())->execute($router->getUrlByRoute(new Routing\User\Login()), 302);
+            return (new Controller\Redirect())->execute($router->getUrlByRoute(new Routing\User\Login(), ['redirect_to' => $redirectUrl]), 302);
             //return (new Controller\User\Login())->execute($request);
         }
 
