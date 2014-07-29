@@ -19,4 +19,13 @@ class RegisterForm {
     public $errors = [];
     /** @var bool */
     public $isHidden;
+
+    /**
+     * @param array $data
+     */
+    public function __construct(array $data = []) {
+        if (isset($data['name'])) $this->name = (string)$data['name'];
+        if (isset($data['email'])) $this->email = (string)$data['email'];
+        if (isset($data['phone'])) $this->phone = (string)$data['phone'];
+    }
 }

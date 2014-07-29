@@ -17,4 +17,10 @@ class Request extends Repository\Page\DefaultLayout\Request {
     public $registerFormErrors = [];
     /** @var \EnterModel\Message[] */
     public $messages = [];
+    /** @var string[] */
+    public $authFormFields = [];
+    /** @var string[] */
+    public $registerFormFields = [];
+    /** @var string[] */
+    public $resetFormFields = [];
 }

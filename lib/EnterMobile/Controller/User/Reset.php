@@ -80,6 +80,10 @@ class Reset {
             }
             $messageRepository->setObjectListToHttpSesion('resetForm.error', $errors, $session);
 
+            $session->flashBag->set('resetForm.field', [
+                'username' => $form->username,
+            ]);
+
             return (new Controller\Redirect())->execute($router->getUrlByRoute(new Routing\User\Login()), 302);
             //return (new Controller\User\Login())->execute($request);
         }

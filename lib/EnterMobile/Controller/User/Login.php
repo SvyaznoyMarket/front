@@ -82,9 +82,16 @@ class Login {
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->redirectUrl = $redirectUrl;
+
         $pageRequest->authFormErrors = array_map(function(\EnterModel\Message $message) { return $message->name; }, $messageRepository->getObjectListByHttpSession('authForm.error', $session));
+        $pageRequest->authFormFields = (array)$session->flashBag->get('authForm.field');
+
         $pageRequest->resetFormErrors = array_map(function(\EnterModel\Message $message) { return $message->name; }, $messageRepository->getObjectListByHttpSession('resetForm.error', $session));
+        $pageRequest->resetFormFields = (array)$session->flashBag->get('resetForm.field');
+
         $pageRequest->registerFormErrors = array_map(function(\EnterModel\Message $message) { return $message->name; }, $messageRepository->getObjectListByHttpSession('registerForm.error', $session));
+        $pageRequest->registerFormFields = (array)$session->flashBag->get('registerForm.field');
+
         $pageRequest->messages = $messageRepository->getObjectListByHttpSession('messages', $session);
         $pageRequest->httpRequest = $request;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));

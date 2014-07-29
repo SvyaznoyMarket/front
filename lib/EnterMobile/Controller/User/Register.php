@@ -96,6 +96,12 @@ class Register {
             }
             $messageRepository->setObjectListToHttpSesion('registerForm.error', $errors, $session);
 
+            $session->flashBag->set('registerForm.field', [
+                'name'  => $form->name,
+                'email' => $form->email,
+                'phone' => $form->phone,
+            ]);
+
             return (new Controller\Redirect())->execute($router->getUrlByRoute(new Routing\User\Login()), 302);
             //return (new Controller\User\Login())->execute($request);
         }

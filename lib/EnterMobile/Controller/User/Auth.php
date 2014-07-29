@@ -81,6 +81,10 @@ class Auth {
             }
             $messageRepository->setObjectListToHttpSesion('authForm.error', $errors, $session);
 
+            $session->flashBag->set('authForm.field', [
+                'username' => $form->username,
+            ]);
+
             return (new Controller\Redirect())->execute($router->getUrlByRoute(new Routing\User\Login()), 302);
             //return (new Controller\User\Login())->execute($request);
         }

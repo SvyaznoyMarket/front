@@ -11,4 +11,12 @@ class ResetForm {
     public $errors = [];
     /** @var bool */
     public $isHidden;
+
+
+    /**
+     * @param array $data
+     */
+    public function __construct(array $data = []) {
+        if (isset($data['username'])) $this->username = (string)$data['username'];
+    }
 }
