@@ -50,7 +50,7 @@ class DirectCredit {
             'partnerId' => $this->getConfig()->directCredit->partnerId,
             'product'   => $productData,
         ]);
-        $directCredit->isHidden = $cartModel ? !(new \EnterRepository\DirectCredit())->isEnabledForCart($cartModel) : false;
+        $directCredit->isHidden = $cartModel ? !(new \EnterRepository\DirectCredit())->isEnabledForCart($cartModel) : false; // FIXME
 
         return $directCredit;
     }

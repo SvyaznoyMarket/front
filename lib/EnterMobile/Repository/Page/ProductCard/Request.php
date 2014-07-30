@@ -10,4 +10,6 @@ class Request extends Repository\Page\DefaultLayout\Request {
     public $product;
     /** @var \EnterModel\Product\Category[] */
     public $accessoryCategories = [];
+    /** @var bool */
+    public $hasCredit;
 }

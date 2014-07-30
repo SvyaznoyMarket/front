@@ -19,17 +19,9 @@ class DirectCredit {
     }
 
     /**
-     * @param Model\Product $product
-     * @return bool
-     */
-    public function isEnabledForProduct(Model\Product $product) {
-        // FIXME: использовать cartProduct.sum
-        $config = $this->getConfig();
-
-        return $config->directCredit->enabled && $product->isBuyable && ($product->price >= $config->directCredit->minPrice);
-    }
-
-    /**
+     * Deprecated
+     * FIXME: использовать Query\PaymentGroup\GetList
+     *
      * @param Model\Cart $cart
      * @return bool
      */

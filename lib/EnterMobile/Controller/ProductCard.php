@@ -32,7 +32,11 @@ class ProductCard {
 
         $context = new Context();
         $context->mainMenu = true;
-        $controllerResponse = (new \EnterAggregator\Controller\ProductCard())->execute($regionId, ['token' => $productToken], $context);
+        $controllerResponse = (new \EnterAggregator\Controller\ProductCard())->execute(
+            $regionId,
+            ['token' => $productToken],
+            $context
+        );
         if (!$controllerResponse->product) {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Товар @%s не найден', $productToken));
         }
@@ -47,6 +51,7 @@ class ProductCard {
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
         $pageRequest->product = $controllerResponse->product;
         $pageRequest->accessoryCategories = $controllerResponse->accessoryCategories;
+        $pageRequest->hasCredit = $controllerResponse->hasCredit;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница

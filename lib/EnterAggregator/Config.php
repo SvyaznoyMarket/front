@@ -49,6 +49,8 @@ namespace EnterAggregator {
         public $mustacheRenderer;
         /** @var array */
         public $mediaHosts = [];
+        /** @var Config\Order */
+        public $order;
         /** @var Config\Product */
         public $product;
         /** @var Config\ProductReview */
@@ -89,6 +91,7 @@ namespace EnterAggregator {
 
             $this->mustacheRenderer = new Config\MustacheRenderer();
 
+            $this->order = new Config\Order();
             $this->product = new Config\Product();
             $this->productReview = new Config\ProductReview();
             $this->productPhoto = new Config\ProductPhoto();
@@ -241,6 +244,11 @@ namespace EnterAggregator\Config {
         public $cacheDir;
         /** @var string */
         public $templateClassPrefix;
+    }
+
+    class Order {
+        /** @var string */
+        public $splitSessionKey;
     }
 
     class Product {
