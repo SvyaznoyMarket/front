@@ -6,7 +6,6 @@ use Enter\Curl\Query;
 use EnterModel as Model;
 use EnterQuery\CoreQueryTrait;
 use EnterQuery\Url;
-use EnterModel;
 
 class CreateItemByObject extends Query {
     use CoreQueryTrait;

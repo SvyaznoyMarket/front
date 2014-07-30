@@ -55,14 +55,14 @@
 					<input type="text" name="name" class="formReg_textfield textfield{{#errors.name}} fieldError{{/errors.name}}" value="{{name}}" />
                     {{#errors.name}}<span class="errorText">{{errors.name}}</span>{{/errors.name}}
 
-					<div id="id-authLoginContent-email" class="js-authLoginContent clearfix">
+					<div id="id-authLoginContent-email" class="js-authLoginContent clearfix" {{#errors.phone}}style="display: none;"{{/errors.phone}}>
 	                    <label for="" class="formReg_fieldname labeltext fl-l">Ваш e-mail:</label>
 	                    <span class="js-authLoginLink fl-r lightGreyText borderBd" data-content-selector="#id-authLoginContent-phone">У меня нет e-mail</span>
 	                    <input type="text" name="email" class="formReg_textfield textfield{{#errors.email}} fieldError{{/errors.email}}" value="{{email}}" />
                         {{#errors.email}}<span class="errorText">{{errors.email}}</span>{{/errors.email}}
                     </div>
 
-                    <div id="id-authLoginContent-phone" class="js-authLoginContent clearfix" style="display: none;">
+                    <div id="id-authLoginContent-phone" class="js-authLoginContent clearfix" {{^errors.phone}}style="display: none;"{{/errors.phone}}>
 	                    <label for="" class="formReg_fieldname labeltext fl-l">Ваш мобильный телефон:</label>
 	                    <span class="js-authLoginLink fl-r lightGreyText borderBd" data-content-selector="#id-authLoginContent-email">Ввести e-mail</span>
 	                    <input type="text" name="phone" class="formReg_textfield js-phone-mask textfield{{#errors.phone}} fieldError{{/errors.phone}}" value="{{phone}}" />

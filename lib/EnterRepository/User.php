@@ -53,7 +53,7 @@ class User {
         }
 
         // редирект
-        $url = trim((string)($request->data['redirect_to'] ?: $request->query['redirect_to']));
+        $url = trim((string)($request->query['redirect_to'] ?: $request->data['redirect_to']));
         if (!$url) {
             $url = $defaultUrl;
         }
