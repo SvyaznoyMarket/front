@@ -70,6 +70,9 @@ return function(\EnterMobile\Config $config) {
     $config->retailRocketService->url = 'http://api.retailrocket.ru/api/';
     $config->retailRocketService->timeout = 0.5;
 
+    $config->googleTagManager->enabled = true;
+    $config->googleTagManager->containerId = 'GTM-P65PBR';
+
     $config->mustacheRenderer->dir = $config->dir . '/vendor/mustache';
     $config->mustacheRenderer->templateDir = $config->dir . '/template';
     $config->mustacheRenderer->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache';

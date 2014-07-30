@@ -103,6 +103,7 @@ require(
         'jquery.ui', 'jquery.ui.touch-punch', 'jquery.popup',
         'jquery.touchwipe',
         'module/analytics.google',
+        'module/googleTagManager',
         'module/util',
         'module/navigation',
         'module/region',

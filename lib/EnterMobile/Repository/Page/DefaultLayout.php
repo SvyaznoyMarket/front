@@ -59,6 +59,9 @@ class DefaultLayout {
             $page->googleAnalytics->id = $config->googleAnalitics->id;
         }
 
+        $page->googleTagManager->enabled = $config->googleTagManager->enabled;
+        $page->googleTagManager->containerId = $config->googleTagManager->containerId;
+
         // регион
         $page->regionBlock->regionName = $request->region->name;
         $page->regionBlock->setUrl = $router->getUrlByRoute(new Routing\Region\SetByName());
