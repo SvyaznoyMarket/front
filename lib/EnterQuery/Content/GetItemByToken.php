@@ -15,9 +15,12 @@ class GetItemByToken extends Query {
     /**
      * @param $token
      */
-    public function __construct($token) {
+    public function __construct($token, $showSidebar = true) {
         $this->url = new Url();
         $this->url->path = $token;
+        $this->url->query = [
+            'show_sidebar' => (int)$showSidebar,
+        ];
 
         $this->init();
     }
