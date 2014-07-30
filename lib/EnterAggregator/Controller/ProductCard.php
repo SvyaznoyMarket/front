@@ -122,14 +122,18 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($ratingListQuery);
             }
 
-            // TODO: загрузка предков категории как в каталоге
-
             // запрос настроек каталога
             $catalogConfigQuery = null;
             if ($response->product->category) {
                 $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($response->product->category->ascendants, [$response->product->category]), $response->product);
                 $curl->prepare($catalogConfigQuery);
             }
+
+            // запрос доступности кредита
+            $cart = new Model\Cart();
+            (new Repository\Cart())->setProductForObject($cart, new Model\Cart\Product(['id' => $response->product->id, 'quantity' => 1]));
+            $paymentGroupListQuery = new Query\PaymentGroup\GetList($response->region->id, $cart, ['isCredit' => true]);
+            $curl->prepare($paymentGroupListQuery);
 
             $curl->execute();
 
@@ -207,6 +211,12 @@ namespace EnterAggregator\Controller {
             // категории аксессуаров
             $response->accessoryCategories = (new Repository\Product\Category())->getIndexedObjectListByProductListAndTokenList($response->product->relation->accessories, $response->catalogConfig ? $response->catalogConfig->accessoryCategoryTokens : []);
 
+            // доступность кредита
+            $response->hasCredit =
+                ($config->directCredit->enabled && $response->product->isBuyable && ($response->product->price >= $config->directCredit->minPrice)) // TODO: удалить часть условия после готовности CORE-2035
+                ? (new Repository\PaymentGroup())->checkCreditObjectByListQuery($paymentGroupListQuery)
+                : false;
+
             return $response;
         }
     }
@@ -226,5 +236,7 @@ namespace EnterAggregator\Controller\ProductCard {
         public $catalogConfig;
         /** @var Model\MainMenu|null */
         public $mainMenu;
+        /** @var bool */
+        public $hasCredit;
     }
 }
