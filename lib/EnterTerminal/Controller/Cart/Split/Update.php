@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterTerminal\Controller\Cart {
+namespace EnterTerminal\Controller\Cart\Split {
 
     use Enter\Http;
     use EnterTerminal\ConfigTrait;
@@ -10,9 +10,9 @@ namespace EnterTerminal\Controller\Cart {
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterTerminal\Controller;
-    use EnterTerminal\Controller\Cart\Split\Response;
+    use EnterTerminal\Controller\Cart\Split\Update\Response;
 
-    class Split {
+    class Update {
         use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
 
         /**
@@ -25,6 +25,16 @@ namespace EnterTerminal\Controller\Cart {
             $curl = $this->getCurl();
             $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
+
+            $change = (array)$request->data['change'];
+            if (!$change) {
+                throw new \Exception('Пустой параметр change');
+            }
+
+            $splitData = (array)$session->get($config->order->splitSessionKey);
+            if (!$splitData) {
+                throw new \Exception('Не найдено предыдущее разбиение');
+            }
 
             // корзина из сессии
             $cart = $cartRepository->getObjectByHttpSession($session);
@@ -47,7 +57,10 @@ namespace EnterTerminal\Controller\Cart {
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
                 $shop->regionId,
-                $shop
+                $shop,
+                null,
+                $splitData,
+                $change
             );
             $splitQuery->setTimeout($config->coreService->timeout * 2);
             $curl->prepare($splitQuery);
@@ -71,7 +84,7 @@ namespace EnterTerminal\Controller\Cart {
     }
 }
 
-namespace EnterTerminal\Controller\Cart\Split {
+namespace EnterTerminal\Controller\Cart\Split\Update {
     use EnterModel as Model;
 
     class Response {
