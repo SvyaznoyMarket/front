@@ -71,7 +71,10 @@ return function(\EnterMobile\Config $config) {
     $config->retailRocketService->timeout = 0.5;
 
     $config->googleTagManager->enabled = true;
-    $config->googleTagManager->containerId = 'GTM-P65PBR';
+    $config->googleTagManager->id = 'GTM-P65PBR';
+
+    $config->yandexMetrika->enabled = true;
+    $config->yandexMetrika->id = 10503055;
 
     $config->mustacheRenderer->dir = $config->dir . '/vendor/mustache';
     $config->mustacheRenderer->templateDir = $config->dir . '/template';

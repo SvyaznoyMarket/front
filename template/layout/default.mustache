@@ -42,6 +42,8 @@
 </head>
 
 <body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="">
+    {{>partial/counters}}
+
     <div class="wrapper">
         {{>partial/header}}
 
@@ -59,7 +61,5 @@
     {{/regionBlock}}
 
     {{>partial/partner}}
-
-    {{>partial/googleTagManager}}
 </body>
 </html>

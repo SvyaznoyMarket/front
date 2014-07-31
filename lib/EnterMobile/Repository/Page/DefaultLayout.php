@@ -59,8 +59,17 @@ class DefaultLayout {
             $page->googleAnalytics->id = $config->googleAnalitics->id;
         }
 
-        $page->googleTagManager->enabled = $config->googleTagManager->enabled;
-        $page->googleTagManager->containerId = $config->googleTagManager->containerId;
+        $page->googleTagManager = false;
+        if ($config->googleTagManager->enabled) {
+            $page->googleTagManager = new Page\GoogleTagManager();
+            $page->googleTagManager->id = $config->googleTagManager->id;
+        }
+
+        $page->yandexMetrika = false;
+        if ($config->yandexMetrika->enabled) {
+            $page->yandexMetrika = new Page\YandexMetrika();
+            $page->yandexMetrika->id = $config->yandexMetrika->id;
+        }
 
         // регион
         $page->regionBlock->regionName = $request->region->name;
