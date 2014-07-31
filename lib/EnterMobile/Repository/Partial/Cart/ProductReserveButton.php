@@ -67,7 +67,7 @@ class ProductReserveButton {
 
         if ($shopState->isInShowroomOnly) {
             $button->url = '#';
-            $button->text = $product->isInShopShowroomOnly ? 'На витрине' : 'Недоступен';
+            $button->text = 'На витрине';
             $button->isDisabled = true;
 
 
