@@ -175,5 +175,10 @@
         "require": {
             "productId": "[\\w\\d-_]+"
         }
+    },
+
+    "Content": {
+        "name": "Контентные страницы",
+        "pattern": "/{contentToken}"
     }
 }

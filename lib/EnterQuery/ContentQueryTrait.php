@@ -22,9 +22,9 @@ trait ContentQueryTrait {
         $config = $this->getConfig()->contentService;
 
         $this->url->prefix = $config->url;
-        $this->url->query = [
+        $this->url->query = array_merge($this->url->query, [
             'json' => '1',
-        ];
+        ]);
         $this->timeout = $config->timeout;
     }
 
