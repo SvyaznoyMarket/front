@@ -17,6 +17,8 @@ namespace EnterMobile\Model\Page {
         public $templates = [];
         /** @var DefaultLayout\GoogleAnalytics|null */
         public $googleAnalytics;
+        /** @var DefaultLayout\GoogleTagManager|null */
+        public $googleTagManager;
         /** @var DefaultLayout\RegionBlock */
         public $regionBlock;
         /** @var DefaultLayout\MainMenu */
@@ -35,6 +37,7 @@ namespace EnterMobile\Model\Page {
         public function __construct() {
             parent::__construct();
 
+            $this->googleTagManager = new DefaultLayout\GoogleTagManager();
             $this->regionBlock = new DefaultLayout\RegionBlock();
             $this->mainMenu = new DefaultLayout\MainMenu();
             $this->userBlock = new Partial\UserBlock();
@@ -47,6 +50,13 @@ namespace EnterMobile\Model\Page {
 namespace EnterMobile\Model\Page\DefaultLayout {
     class GoogleAnalytics {
         public $id;
+    }
+
+    class GoogleTagManager {
+        /** @var bool */
+        public $enabled;
+        /** @var string */
+        public $containerId;
     }
 
     /**

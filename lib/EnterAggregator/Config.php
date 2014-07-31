@@ -25,6 +25,8 @@ namespace EnterAggregator {
         public $region;
         /** @var Config\GoogleAnalytics */
         public $googleAnalitics;
+        /** @var Config\GoogleTagManager */
+        public $googleTagManager;
         /** @var Config\Credit */
         public $credit;
         /** @var Config\Partner */
@@ -74,6 +76,7 @@ namespace EnterAggregator {
             $this->userToken = new Config\UserToken();
 
             $this->googleAnalitics = new Config\GoogleAnalytics();
+            $this->googleTagManager = new Config\GoogleTagManager();
 
             $this->region = new Config\Region();
             $this->credit = new Config\Credit();
@@ -152,6 +155,13 @@ namespace EnterAggregator\Config {
         public $id;
         /** @var bool */
         public $enabled;
+    }
+
+    class GoogleTagManager extends CurlService {
+        /** @var bool */
+        public $enabled;
+        /** @var string */
+        public $containerId;
     }
 
     class Region {
