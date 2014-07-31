@@ -27,6 +27,8 @@ namespace EnterAggregator {
         public $googleAnalitics;
         /** @var Config\GoogleTagManager */
         public $googleTagManager;
+        /** @var Config\YandexMetrika */
+        public $yandexMetrika;
         /** @var Config\Credit */
         public $credit;
         /** @var Config\Partner */
@@ -77,6 +79,7 @@ namespace EnterAggregator {
 
             $this->googleAnalitics = new Config\GoogleAnalytics();
             $this->googleTagManager = new Config\GoogleTagManager();
+            $this->yandexMetrika = new Config\YandexMetrika();
 
             $this->region = new Config\Region();
             $this->credit = new Config\Credit();
@@ -161,7 +164,14 @@ namespace EnterAggregator\Config {
         /** @var bool */
         public $enabled;
         /** @var string */
-        public $containerId;
+        public $id;
+    }
+
+    class YandexMetrika extends CurlService {
+        /** @var bool */
+        public $enabled;
+        /** @var int */
+        public $id;
     }
 
     class Region {
