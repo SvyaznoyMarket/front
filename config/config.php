@@ -92,6 +92,7 @@ return function(\EnterMobile\Config $config) {
         9 => 'http://fs10.enter.ru',
     ];
 
+    $config->order->splitSessionKey = 'order_split';
     $config->product->itemPerPage = 19;
     $config->product->itemsInSlider = 60;
     $config->productReview->enabled = true;
