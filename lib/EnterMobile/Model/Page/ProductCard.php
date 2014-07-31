@@ -150,10 +150,6 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product\DeliveryBlock {
         public $priceText;
         /** @var string */
         public $deliveredAtText;
-        /** @var bool */
-        public $hasShops;
-        /** @var Delivery\Shop[] */
-        public $shops = [];
     }
 }
 

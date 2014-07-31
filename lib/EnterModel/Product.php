@@ -41,6 +41,8 @@ class Product {
     public $propertyGroups = [];
     /** @var Model\Product\Stock[] */
     public $stock = [];
+    /** @var Model\Product\ShopState[] */
+    public $shopStates = [];
     /** @var int */
     public $price;
     /** @var int */

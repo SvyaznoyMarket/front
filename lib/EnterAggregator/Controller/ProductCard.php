@@ -176,23 +176,24 @@ namespace EnterAggregator\Controller {
                 $productRepository->setDeliveryForObjectListByQuery($productsById, $deliveryListQuery);
             }
 
-            // если у товара нет доставок, запрашиваем список магазинов, в которых товар может быть на витрине
-            if (!(bool)$response->product->nearestDeliveries) {
-                $shopsIds = [];
-                foreach ($response->product->stock as $stock) {
-                    if ($stock->shopId && ($stock->showroomQuantity > 0)) {
-                        $shopsIds[] = $stock->shopId;
-                    }
+            // список магазинов, в которых есть товар
+            $shopStatesByShopId = [];
+            foreach ($response->product->stock as $stock) {
+                if ($stock->shopId && (($stock->showroomQuantity + $stock->quantity) > 0)) {
+                    $shopState = new Model\Product\ShopState();
+                    $shopState->quantity = $stock->quantity;
+                    $shopState->showroomQuantity = $stock->showroomQuantity;
+
+                    $shopStatesByShopId[$stock->shopId] = $shopState;
                 }
+            }
+            if ((bool)$shopStatesByShopId) {
+                $shopListQuery = new Query\Shop\GetListByIdList(array_keys($shopStatesByShopId));
+                $curl->prepare($shopListQuery);
 
-                if ((bool)$shopsIds) {
-                    $shopListQuery = new Query\Shop\GetListByIdList($shopsIds);
-                    $curl->prepare($shopListQuery);
+                $curl->execute();
 
-                    $curl->execute();
-
-                    $productRepository->setNowDeliveryForObjectListByQuery([$response->product->id => $response->product], $shopListQuery);
-                }
+                $productRepository->setShopStateForObjectListByQuery([$response->product->id => $response->product], $shopStatesByShopId, $shopListQuery);
             }
 
             // настройки каталога

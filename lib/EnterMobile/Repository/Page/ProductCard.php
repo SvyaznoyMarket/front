@@ -66,6 +66,8 @@ class ProductCard {
         if ((bool)$productModel->nearestDeliveries) {
             $page->content->product->deliveryBlock = new Page\Content\Product\DeliveryBlock();
             foreach ($productModel->nearestDeliveries as $deliveryModel) {
+                if (\EnterModel\Product\NearestDelivery::TOKEN_NOW == $deliveryModel->token) continue;
+
                 $delivery = new Page\Content\Product\DeliveryBlock\Delivery();
 
                 if (\EnterModel\Product\NearestDelivery::TOKEN_STANDARD == $deliveryModel->token) {
@@ -89,19 +91,6 @@ class ProductCard {
                 }
 
                 $delivery->token = $deliveryModel->token;
-
-                if (\EnterModel\Product\NearestDelivery::TOKEN_NOW == $deliveryModel->token) {
-                    $delivery->hasShops = true;
-                    foreach ($deliveryModel->shopsById as $shopModel) {
-                        if (!$shopModel->region) continue;
-
-                        $shop = new Page\Content\Product\DeliveryBlock\Delivery\Shop();
-                        $shop->name = $shopModel->name;
-                        $shop->url = $router->getUrlByRoute(new Routing\ShopCard\Get($shopModel->token, $shopModel->region->token));
-
-                        $delivery->shops[] = $shop;
-                    }
-                }
 
                 $page->content->product->deliveryBlock->deliveries[] = $delivery;
             }

@@ -171,16 +171,7 @@
                                             {{#name}}
                                                 {{name}} {{#priceText}}<strong>{{priceText}}</strong>{{/priceText}}
                                             {{/name}}
-                                            <span class="{{#name}}descText{{/name}}{{^name}}descTextDotted{{/name}}">{{deliveredAtText}}
-                                            </span>
-
-                                            {{#hasShops}}
-                                                <ul class="addressShopsList">
-                                                    {{#shops}}
-                                                        <li class="addressShopsList_item"><a class="" href="{{url}}">{{name}}</a></li>
-                                                    {{/shops}}
-                                                </ul>
-                                            {{/hasShops}}
+                                            <span class="{{#name}}descText{{/name}}{{^name}}descTextDotted{{/name}}">{{deliveredAtText}}</span>
                                         </li>
                                     {{/deliveries}}
                                 </ul>
