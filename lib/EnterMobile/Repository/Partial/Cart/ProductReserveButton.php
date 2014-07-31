@@ -11,7 +11,7 @@ use EnterMobile\Repository;
 use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 
-class ProductButton {
+class ProductReserveButton {
     use RouterTrait;
     use TemplateHelperTrait;
 
@@ -27,19 +27,19 @@ class ProductButton {
 
     /**
      * @param \EnterModel\Product $product
-     * @param \EnterModel\Cart\Product|null $cartProduct
+     * @param \EnterModel\Product\ShopState|null $shopState
      * @return Partial\Cart\ProductButton
      */
     public function getObject(
         \EnterModel\Product $product,
-        \EnterModel\Cart\Product $cartProduct = null
+        \EnterModel\Product\ShopState $shopState = null
     ) {
-        if ($product->isInShopOnly) {
-            return null;
-        }
-
         $button = new Partial\Cart\ProductButton();
 
+        $button->url = $this->router->getUrlByRoute(new Routing\Order\Quick\Index(), [
+            'product' => ['id' => $product->id, 'quantity' => 1],
+            'shopId'  => $shopState->shop ? $shopState->shop->id : null,
+        ]);
         $button->dataUrl = $this->router->getUrlByRoute(new Routing\User\Cart\Product\Set());
         $button->dataValue = $this->helper->json([
             'product' => [
@@ -48,37 +48,37 @@ class ProductButton {
                 'token'    => $product->token,
                 'price'    => $product->price,
                 'url'      => $product->link,
-                'quantity' => $cartProduct ? $cartProduct->quantity : 1,
+                'quantity' => $shopState ? $shopState->quantity : 1,
             ],
         ]);
 
         // ga
         $button->dataGa = $this->helper->json([
-            'm_add_to_basket' => ['send', 'event', 'm_add_to_basket', $product->name, $product->article, '{product.sum}'],
+            'm_add_to_basket' => ['send', 'event', 'm_1_click_order', $product->name, $product->article, '{product.sum}'],
         ]);
 
         $button->id = self::getId($product->id);
         $button->widgetId = self::getWidgetId($product->id);
-        $button->text = 'Купить';
+        $button->text = 'Резерв';
         $button->isDisabled = false;
-        $button->isInShopOnly = false;
+        $button->isInShopOnly = true;
         $button->isInCart = false;
-        $button->isQuick = false;
+        $button->isQuick = true;
 
-        // если товар в корзине
-        if ($cartProduct) {
-            $button->text = 'В корзине';
-            $button->url = '/cart'; // TODO: route
-            $button->dataUrl = '';
-            $button->isInCart = true;
-        } else {
-            if (!$product->isBuyable) {
-                $button->url = '#';
-                $button->text = $product->isInShopShowroomOnly ? 'На витрине' : 'Недоступен';
-                $button->isDisabled = true;
-            } else if (!$button->url) {
-                $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id));
-            }
+        if ($shopState->isInShowroomOnly) {
+            $button->url = '#';
+            $button->text = $product->isInShopShowroomOnly ? 'На витрине' : 'Недоступен';
+            $button->isDisabled = true;
+
+
+
+
+        }
+
+        if (!$product->isBuyable) {
+
+        } else if (!$button->url) {
+            $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id));
         }
 
         return $button;
@@ -89,7 +89,7 @@ class ProductButton {
      * @return string
      */
     public static function getId($productId) {
-        return 'id-cart-product-buyButton-' . $productId;
+        return 'id-cart-product-reserveButton-' . $productId;
     }
 
     /**

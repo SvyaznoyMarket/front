@@ -45,6 +45,9 @@ class Index {
             'm.'    => '',
             ':8080' => '', //FIXME: костыль для nginx-а
         ]) . '/orders/one-click/new';
+        if ($request->query['shopId']) {
+            $url .= (false === strpos($url, '?') ? '?' : '&') . http_build_query(['shopId' => $request->query['shopId']]);
+        }
 
         return (new Controller\Redirect())->execute($url, 302);
     }

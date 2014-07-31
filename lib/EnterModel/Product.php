@@ -41,6 +41,8 @@ class Product {
     public $propertyGroups = [];
     /** @var Model\Product\Stock[] */
     public $stock = [];
+    /** @var Model\Product\ShopState[] */
+    public $shopStates = [];
     /** @var int */
     public $price;
     /** @var int */
@@ -154,8 +156,8 @@ class Product {
             }
         }
 
+        $this->isInShopOnly = !$inStore && ($inShop || $inShowroom); // не на центральном складе, на складе магазина или на витрине магазина
         $this->isInShopStockOnly = !$inStore && $inShop && !$inShowroom; // не на центральном складе, на складе магазина, не на витрине магазина
         $this->isInShopShowroomOnly = !$inStore && !$inShop && $inShowroom; // не на центральном складе, не на складе магазина, на витрине магазина
-        $this->isInShopOnly = $this->isInShopStockOnly || $this->isInShopShowroomOnly;
     }
 }

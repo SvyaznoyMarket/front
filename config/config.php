@@ -77,6 +77,7 @@ return function(\EnterMobile\Config $config) {
     $config->mustacheRenderer->templateDir = $config->dir . '/template';
     $config->mustacheRenderer->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache';
     $config->mustacheRenderer->templateClassPrefix = preg_replace('/[^\w]/', '_', $config->hostname . '_v2' . '-');
+    $config->mustacheRenderer->checkEscape = false;
 
     $config->mediaHosts = [
         0 => 'http://fs01.enter.ru',

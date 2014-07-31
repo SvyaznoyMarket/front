@@ -49,8 +49,6 @@ define(
 			 * Пересчет высоты/ширины контента табов
 			 */
 			tabsToggle = function tabsToggle() {
-				console.log('tabsToggle');
-
 				tabWrapWidth = $('.js-tab-selector').width();
 				tabWrap.css({'height' : tab.first().height(), 'min-height' : 350 })
 
@@ -62,8 +60,6 @@ define(
 				tabItem.first().addClass('productDescTab_item-active');
 				tabList.stop(true, true).animate({'left' : 0});
 				tabWrap.stop(true, true).animate({'height' : tab.first().height() })
-
-				console.log(tabWrapWidth);
 			},
 
 			/*

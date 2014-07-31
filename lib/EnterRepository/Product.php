@@ -219,29 +219,27 @@ class Product {
 
     /**
      * @param Model\Product[] $productsById
+     * @param Model\Product\ShopState[] $shopStatesByShopId
      * @param Query $shopListQuery
      */
-    public function setNowDeliveryForObjectListByQuery(array $productsById, Query $shopListQuery) {
+    public function setShopStateForObjectListByQuery(array $productsById, array $shopStatesByShopId, Query $shopListQuery) {
         try {
             foreach ($productsById as $product) {
-                $delivery = new Model\Product\NearestDelivery();
-                $delivery->productId = $product->id;
-                $delivery->id = Model\Product\NearestDelivery::ID_NOW;
-                $delivery->token = Model\Product\NearestDelivery::TOKEN_NOW;
-                $delivery->price = 0;
-
                 foreach ($shopListQuery->getResult() as $shopItem) {
+                    $shopId = (string)$shopItem['id'];
+
+                    $shopState = isset($shopStatesByShopId[$shopId]) ? $shopStatesByShopId[$shopId] : null;
+                    if (!$shopState) continue;
+
                     // оптимизация
                     $shopItem['description'] = '';
                     $shopItem['way_walk'] = '';
                     $shopItem['way_auto'] = '';
                     $shopItem['images'] = [];
 
-                    $delivery->shopsById[$shopItem['id']] = new Model\Shop($shopItem);
-                }
+                    $shopState->shop = new Model\Shop($shopItem);
 
-                if ((bool)$delivery->shopsById) {
-                    $product->nearestDeliveries[] = $delivery;
+                    $product->shopStates[] = $shopState;
                 }
             }
         } catch (\Exception $e) {

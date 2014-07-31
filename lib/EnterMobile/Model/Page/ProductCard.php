@@ -50,10 +50,14 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
         public $shownOldPrice;
         /** @var Partial\ProductCard\CartButtonBlock|null */
         public $cartButtonBlock;
-        /** @var Product\DeliveryBlock */
+        /** @var Product\DeliveryBlock|null */
         public $deliveryBlock;
+        /** @var Product\ShopStateBlock|null */
+        public $shopStateBlock;
         /** @var string */
         public $description;
+        /** @var Product\Photo|null */
+        public $mainPhoto;
         /** @var Product\Photo[] */
         public $photos = [];
         /** @var bool */
@@ -99,11 +103,28 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product {
         public $deliveries = [];
     }
 
+    class ShopStateBlock {
+        /** @var string */
+        public $shownCount;
+        /** @var ShopStateBlock\State[] */
+        public $states = [];
+        /**
+         * Только один магазин
+         *
+         * @var bool
+         */
+        public $hasOnlyOne;
+    }
+
     class Photo {
         /** @var string */
         public $name;
         /** @var string */
         public $url;
+        /** @var string */
+        public $previewUrl;
+        /** @var string */
+        public $originalUrl;
     }
 
     class Video {
@@ -144,10 +165,27 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product\DeliveryBlock {
         public $priceText;
         /** @var string */
         public $deliveredAtText;
+    }
+}
+
+namespace EnterMobile\Model\Page\ProductCard\Content\Product\ShopStateBlock {
+    use EnterMobile\Model\Partial;
+
+    class State {
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $regime;
+        /** @var string */
+        public $address;
+        /** @var string */
+        public $url;
+        /** @var array */
+        public $subway;
         /** @var bool */
-        public $hasShops;
-        /** @var Delivery\Shop[] */
-        public $shops = [];
+        public $isInShowroomOnly;
+        /** @var Partial\Cart\ProductButton|null */
+        public $cartButton;
     }
 }
 

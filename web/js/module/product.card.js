@@ -1,7 +1,7 @@
 define(
     [
         'require', 'jquery', 'underscore', 'mustache', 'module/util',
-        'jquery.enterslide', 'jquery.photoswipe', 'module/product.card.tab'
+        'jquery.enterslide', 'jquery.photoswipe', 'module/product.card.tab', 'module/product.card.fullimg'
     ],
     function (
         require, $, _, mustache, util
@@ -74,6 +74,5 @@ define(
                 }
             );
         });
-
     }
 );

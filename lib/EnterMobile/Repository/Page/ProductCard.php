@@ -31,10 +31,8 @@ class ProductCard {
         $translateHelper = $this->getTranslateHelper();
 
         $templateDir = $config->mustacheRenderer->templateDir;
-        $cartProductLinkRepository = new Repository\Partial\Cart\ProductLink();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
-        $cartProductSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
-        $cartProductQuickButtonRepository = new Repository\Partial\Cart\ProductQuickButton();
+        $cartProductReserveButtonRepository = new Repository\Partial\Cart\ProductReserveButton();
         $productCardRepository = new Repository\Partial\ProductCard();
         $ratingRepository = new Repository\Partial\Rating();
         $productSliderRepository = new Repository\Partial\ProductSlider();
@@ -69,6 +67,8 @@ class ProductCard {
         if ((bool)$productModel->nearestDeliveries) {
             $page->content->product->deliveryBlock = new Page\Content\Product\DeliveryBlock();
             foreach ($productModel->nearestDeliveries as $deliveryModel) {
+                if (\EnterModel\Product\NearestDelivery::TOKEN_NOW == $deliveryModel->token) continue;
+
                 $delivery = new Page\Content\Product\DeliveryBlock\Delivery();
 
                 if (\EnterModel\Product\NearestDelivery::TOKEN_STANDARD == $deliveryModel->token) {
@@ -93,30 +93,59 @@ class ProductCard {
 
                 $delivery->token = $deliveryModel->token;
 
-                if (\EnterModel\Product\NearestDelivery::TOKEN_NOW == $deliveryModel->token) {
-                    $delivery->hasShops = true;
-                    foreach ($deliveryModel->shopsById as $shopModel) {
-                        if (!$shopModel->region) continue;
-
-                        $shop = new Page\Content\Product\DeliveryBlock\Delivery\Shop();
-                        $shop->name = $shopModel->name;
-                        $shop->url = $router->getUrlByRoute(new Routing\ShopCard\Get($shopModel->token, $shopModel->region->token));
-
-                        $delivery->shops[] = $shop;
-                    }
-                }
-
                 $page->content->product->deliveryBlock->deliveries[] = $delivery;
             }
         }
 
+        // состояние магазинов
+        if ((bool)$productModel->shopStates) {
+            $page->content->product->shopStateBlock = new Page\Content\Product\ShopStateBlock();
+            foreach ($productModel->shopStates as $shopStateModel) {
+                if (!$shopStateModel->shop) continue;
+
+                $shopState = new Page\Content\Product\ShopStateBlock\State();
+
+                $shopState->name = $shopStateModel->shop->name;
+                $shopState->address = $shopStateModel->shop->address;
+                $shopState->url = $shopStateModel->shop->region
+                    ? $router->getUrlByRoute(new Routing\ShopCard\Get($shopStateModel->shop->token, $shopStateModel->shop->region->token))
+                    : $router->getUrlByRoute(new Routing\Shop\Index());
+                $shopState->regime = $shopStateModel->shop->regime;
+                $shopState->isInShowroomOnly = !$shopStateModel->quantity && ($shopStateModel->showroomQuantity > 0);
+                $shopState->cartButton = $cartProductReserveButtonRepository->getObject($productModel, $shopStateModel);
+                $shopState->subway = isset($shopStateModel->shop->subway[0]) ? [
+                    'name'  => $shopStateModel->shop->subway[0]->name,
+                    'color' => isset($shopStateModel->shop->subway[0]->line)
+                        ? $shopStateModel->shop->subway[0]->line->color
+                        : null
+                    ,
+                ] : false;
+
+                $page->content->product->shopStateBlock->states[] = $shopState;
+            }
+
+            $stateCount = count($page->content->product->shopStateBlock->states);
+            if (!$stateCount) {
+                $page->content->product->shopStateBlock = false;
+            } else {
+                $page->content->product->shopStateBlock->shownCount = 'Есть в ' . $stateCount . ' ' . $translateHelper->numberChoice($stateCount, ['магазине', 'магазинах', 'магазинах']);
+                $page->content->product->shopStateBlock->hasOnlyOne = 1 === $stateCount;
+            }
+        }
+
         // фотографии товара
-        foreach ($productModel->media->photos as $photoModel) {
+        foreach ($productModel->media->photos as $i => $photoModel) {
             $photo = new Page\Content\Product\Photo();
             $photo->name = $productModel->name;
             $photo->url = (string)(new Routing\Product\Media\GetPhoto($photoModel->source, $photoModel->id, 3));
+            $photo->previewUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel->source, $photoModel->id, 0));
+            $photo->originalUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel->source, $photoModel->id, 5));
 
             $page->content->product->photos[] = $photo;
+
+            if (0 == $i) {
+                $page->content->product->mainPhoto = $photo;
+            }
         }
 
         // видео товара

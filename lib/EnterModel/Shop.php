@@ -33,8 +33,8 @@ class Shop {
     public $walkWay;
     /** @var string */
     public $carWay;
-    /** @var Model\Subway|null */
-    public $subway;
+    /** @var Model\Subway[] */
+    public $subway = [];
 
     /**
      * @param array $data
@@ -64,8 +64,10 @@ class Shop {
             }
         }
 
-        if (isset($data['subway']['ui'])) {
-            $this->region = new Model\Subway($data['subway']);
+        if (isset($data['subway'][0]['ui'])) {
+            foreach ($data['subway'] as $subwayItem) {
+                $this->subway[] = new Model\Subway($subwayItem);
+            }
         };
     }
 }

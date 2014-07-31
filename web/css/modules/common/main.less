@@ -208,6 +208,10 @@ textarea[contenteditable] {
     color: @tabGreyText;
 }
 
+.greyTx1 {
+    color: @lightGrey2;
+}
+
 .borderBd {
     border-bottom: 1px dotted;
 }
@@ -222,6 +226,10 @@ textarea[contenteditable] {
 
 .mb20 {
     margin-bottom: 20px;
+}
+
+.ta-c {
+    text-align: center;
 }
 
 .btnStyle {
@@ -325,7 +333,57 @@ textarea[contenteditable] {
     }
 }
 
+.btn1 {
+    .rounded(4px);
+    .inline-block();
+    .grayGradLight();
+    padding: 0 15px;
 
+    cursor: pointer;
+    text-align: center;
+
+    color: @black;
+    border: 1px solid @lightGrey1;
+
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.9;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.btn2 {
+    .blackGrad();
+    .inline-block();
+    .rounded(4px);
+    padding: 0 10px;
+
+    cursor: pointer;
+    text-align: center;
+
+    color: @white;
+    border: 1px solid #a1a1a1;
+
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.9;
+
+    &:hover {
+        color: @white;
+        background: @black;
+    }
+}
+
+.clsr1 {
+    background: url("@{base-url}/common/img/clsr1.png") no-repeat 0 0;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 35px;
+    height: 35px;
+}
 // основные стили элементов форм 
 .textfield {
     .rounded(4px);

@@ -6,6 +6,10 @@ return function(\EnterMobile\Config $config) {
     $handler($config);
 
     // dev config
+    $config->mustacheRenderer->checkEscape = true;
+
     $config->debugLevel = 1;
+
     //$config->googleAnalitics->enabled = false;
+
 };
