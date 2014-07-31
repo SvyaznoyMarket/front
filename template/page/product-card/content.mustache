@@ -137,31 +137,47 @@
 
                     {{! о доставке }}
                     <div class="prodBuy_r">
-                        <div class="prodBuy_b clearfix">
-                            <div class="prodBuy_b_t">Есть в магазине</div>
+                        {{#product.shopStateBlock}}
+                            {{#hasOnlyOne}}
+                            <div class="prodBuy_b clearfix">
+                                <div class="prodBuy_b_t">Есть в магазине</div>
 
-                            <div class="prodBuy_b_r"><a href="" class="delivrB_btn btn2">Резерв</a></div>
+                                {{#states}}
+                                <div class="prodBuy_b_r">
+                                    {{#cartButton}}
+                                        {{>partial/cart/button}}
+                                    {{/cartButton}}
+                                </div>
 
-                            <div class="prodBuy_b_l">
-                                <div style="background: green;" class="shopLst_addrs">
-                                    <span class="shopLst_addrs_tx">
-                                        <span class="shopLst_addrs_row1">м. Ленинский проспект,</span>
-                                        <a href="" class="shopLst_addrs_row2">ул. Орджоникидзе, д. 11, стр. 10&nbsp;</a>
-                                        <span class="shopLst_addrs_row3">с 9.00 до 22.00</span>
-                                    </span>
+                                <div class="prodBuy_b_l">
+                                    <div class="shopLst_addrs"{{#subway.color}} style="background: {{subway.color}};"{{/subway.color}}>
+                                        <span class="shopLst_addrs_tx">
+                                            {{#subway}}<span class="shopLst_addrs_row1">м. {{subway.name}},</span>{{/subway}}
+                                            <a href="" class="shopLst_addrs_row2">{{address}}&nbsp;</a>
+                                            <span class="shopLst_addrs_row3">{{regime}}</span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="prodBuy_b_f">
+                                    {{#cartButton}}
+                                        {{>partial/cart/button}}
+                                    {{/cartButton}}
+                                </div>
+                                {{/states}}
+                            </div>
+                            {{/hasOnlyOne}}
+
+                            {{^hasOnlyOne}}
+                            <div class="prodBuy_b ta-c">
+                                <div class="prodBuy_b_t">{{shownCount}}</div>
+
+                                <div class="prodBuy_b_f" style="display: block;">
+                                    <span class="delivrB_btn btn1 js-popup-middle-link">Забрать сегодня</span>
                                 </div>
                             </div>
-
-                            <div class="prodBuy_b_f"><a href="" class="delivrB_btn btn2">Резерв</a></div>
-                        </div>
-
-                        <div class="prodBuy_b ta-c">
-                            <div class="prodBuy_b_t">Есть в 5 магазинах</div>
-
-                            <div class="prodBuy_b_f" style="display: block;">
-                                <span class="delivrB_btn btn1 js-popup-middle-link">Забрать сегодня</span>
-                            </div>
-                        </div>
+                            {{/hasOnlyOne}}
+                        {{/product.shopStateBlock}}
 
                         {{#product.deliveryBlock}}
                             <div class="deliveryInfo">
@@ -317,11 +333,12 @@
 
 </div><!--/ Контент -->
 
+{{#product.shopStateBlock}}
 <div class="popupBox popupHint js-popup-middle">
     <div class="popupBox_close"></div>
 
     <div class="popupBox_inn">
-        <div class="popupHint_hd">Телефон DECT  Panasonic KX-TG1611 черно-серый<br/>850 <span class="rubl">p</span></div>
+        <div class="popupHint_hd">{{product.namePrefix}} {{product.name}}<br/>{{product.shownPrice}} <span class="rubl">p</span></div>
 
         <div class="popupHint_cnt">
             <ul class="table3Col">
@@ -331,76 +348,28 @@
                     <span class="table3Col_col"></span>
                 </li>
 
+                {{#states}}
                 <li class="table3Col_row">
                     <span class="table3Col_col">
-                        <div class="shopLst_addrs" style="background: green;">
+                        <div class="shopLst_addrs"{{#subway.color}} style="background: {{subway.color}};"{{/subway.color}}>
                             <span class="shopLst_addrs_tx">
-                                <span class="shopLst_addrs_row1">м. Ленинский проспект,</span>
-                                <a class="shopLst_addrs_row2" href="">ул. Орджоникидзе, д. 11, стр. 10&nbsp;</a>
-                                <span class="shopLst_addrs_row3">с 9.00 до 22.00</span>
+                                {{#subway}}<span class="shopLst_addrs_row1">м. {{name}},</span>{{/subway}}
+                                <a class="shopLst_addrs_row2" href="{{url}}" target="_blank">{{address}}&nbsp;</a>
+                                <span class="shopLst_addrs_row3">{{regime}}</span>
                             </span>
                         </div>
                     </span>
-                    <span class="table3Col_col table3Col_col-hdn">с 9.00 до 21.00</span>
-                    <span class="table3Col_col table3Col_col-r"><a href="" class="btn2">Резерв</a></span>
+                    <span class="table3Col_col table3Col_col-hdn">{{regime}}</span>
+                    <span class="table3Col_col table3Col_col-r">
+                        {{#cartButton}}
+                            {{>partial/cart/button}}
+                        {{/cartButton}}
+                    </span>
                 </li>
+                {{/states}}
 
-                <li class="table3Col_row">
-                    <span class="table3Col_col">
-                        <div class="shopLst_addrs" style="background: green;">
-                            <span class="shopLst_addrs_tx">
-                                <span class="shopLst_addrs_row1">м. Ленинский проспект,</span>
-                                <a class="shopLst_addrs_row2" href="">ул. Орджоникидзе, д. 11, стр. 10&nbsp;</a>
-                                <span class="shopLst_addrs_row3">с 9.00 до 22.00</span>
-                            </span>
-                        </div>
-                    </span>
-                    <span class="table3Col_col table3Col_col-hdn">с 9.00 до 21.00</span>
-                    <span class="table3Col_col table3Col_col-r"><a href="" class="btn2">Резерв</a></span>
-                </li>
-
-                <li class="table3Col_row">
-                    <span class="table3Col_col">
-                        <div class="shopLst_addrs" style="background: green;">
-                            <span class="shopLst_addrs_tx">
-                                <span class="shopLst_addrs_row1">м. Ленинский проспект,</span>
-                                <a class="shopLst_addrs_row2" href="">ул. Орджоникидзе, д. 11, стр. 10&nbsp;</a>
-                                <span class="shopLst_addrs_row3">с 9.00 до 22.00</span>
-                            </span>
-                        </div>
-                    </span>
-                    <span class="table3Col_col table3Col_col-hdn">с 9.00 до 21.00</span>
-                    <span class="table3Col_col table3Col_col-r"><a href="" class="btn2">Резерв</a></span>
-                </li>
-
-                <li class="table3Col_row">
-                    <span class="table3Col_col">
-                        <div class="shopLst_addrs" style="background: green;">
-                            <span class="shopLst_addrs_tx">
-                                <span class="shopLst_addrs_row1">м. Ленинский проспект,</span>
-                                <a class="shopLst_addrs_row2" href="">ул. Орджоникидзе, д. 11, стр. 10&nbsp;</a>
-                                <span class="shopLst_addrs_row3">с 9.00 до 22.00</span>
-                            </span>
-                        </div>
-                    </span>
-                    <span class="table3Col_col table3Col_col-hdn">с 9.00 до 21.00</span>
-                    <span class="table3Col_col table3Col_col-r"><a href="" class="btn2">Резерв</a></span>
-                </li>
-
-                <li class="table3Col_row">
-                    <span class="table3Col_col">
-                        <div class="shopLst_addrs" style="background: green;">
-                            <span class="shopLst_addrs_tx">
-                                <span class="shopLst_addrs_row1">м. Ленинский проспект,</span>
-                                <a class="shopLst_addrs_row2" href="">ул. Орджоникидзе, д. 11, стр. 10&nbsp;</a>
-                                <span class="shopLst_addrs_row3">с 9.00 до 22.00</span>
-                            </span>
-                        </div>
-                    </span>
-                    <span class="table3Col_col table3Col_col-hdn">с 9.00 до 21.00</span>
-                    <span class="table3Col_col table3Col_col-r"><a href="" class="btn2">Резерв</a></span>
-                </li>
             </ul>
         </div>
     </div>
 </div>
+{{/product.shopStateBlock}}

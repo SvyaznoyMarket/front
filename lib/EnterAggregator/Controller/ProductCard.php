@@ -183,6 +183,7 @@ namespace EnterAggregator\Controller {
                     $shopState = new Model\Product\ShopState();
                     $shopState->quantity = $stock->quantity;
                     $shopState->showroomQuantity = $stock->showroomQuantity;
+                    $shopState->isInShowroomOnly = !$shopState->quantity && ($shopState->showroomQuantity > 0);
 
                     $shopStatesByShopId[$stock->shopId] = $shopState;
                 }

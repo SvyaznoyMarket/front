@@ -2,7 +2,7 @@
     {{^isDisabled}}
         <a
             href="{{url}}"
-            class="btnBuy js-ga-click {{id}}{{^isQuick}} js-buyButton{{/isQuick}}{{#isQuick}} js-quickBuyButton{{/isQuick}}{{#isInShopOnly}} btnBuy-inshop{{/isInShopOnly}}{{#isInCart}} btnBuy-incart{{/isInCart}}"
+            class="js-ga-click {{id}}{{^isQuick}} js-buyButton{{/isQuick}}{{#isQuick}} js-quickBuyButton{{/isQuick}}{{^isInShopOnly}} btnBuy{{/isInShopOnly}}{{#isInShopOnly}} delivrB_btn btn2{{/isInShopOnly}}{{#isInCart}} btnBuy-incart{{/isInCart}}"
             data-ga-click="{{&dataGa}}"
             data-widget-selector=".{{widgetId}}"
             data-url="{{&dataUrl}}"

@@ -32,6 +32,7 @@ class ProductCard {
 
         $templateDir = $config->mustacheRenderer->templateDir;
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
+        $cartProductReserveButtonRepository = new Repository\Partial\Cart\ProductReserveButton();
         $productCardRepository = new Repository\Partial\ProductCard();
         $ratingRepository = new Repository\Partial\Rating();
         $productSliderRepository = new Repository\Partial\ProductSlider();
@@ -93,6 +94,42 @@ class ProductCard {
                 $delivery->token = $deliveryModel->token;
 
                 $page->content->product->deliveryBlock->deliveries[] = $delivery;
+            }
+        }
+
+        // состояние магазинов
+        if ((bool)$productModel->shopStates) {
+            $page->content->product->shopStateBlock = new Page\Content\Product\ShopStateBlock();
+            foreach ($productModel->shopStates as $shopStateModel) {
+                if (!$shopStateModel->shop) continue;
+
+                $shopState = new Page\Content\Product\ShopStateBlock\State();
+
+                $shopState->name = $shopStateModel->shop->name;
+                $shopState->address = $shopStateModel->shop->address;
+                $shopState->url = $shopStateModel->shop->region
+                    ? $router->getUrlByRoute(new Routing\ShopCard\Get($shopStateModel->shop->token, $shopStateModel->shop->region->token))
+                    : $router->getUrlByRoute(new Routing\Shop\Index());
+                $shopState->regime = $shopStateModel->shop->regime;
+                $shopState->isInShowroomOnly = !$shopStateModel->quantity && ($shopStateModel->showroomQuantity > 0);
+                $shopState->cartButton = $cartProductReserveButtonRepository->getObject($productModel, $shopStateModel);
+                $shopState->subway = isset($shopStateModel->shop->subway[0]) ? [
+                    'name'  => $shopStateModel->shop->subway[0]->name,
+                    'color' => isset($shopStateModel->shop->subway[0]->line)
+                        ? $shopStateModel->shop->subway[0]->line->color
+                        : null
+                    ,
+                ] : false;
+
+                $page->content->product->shopStateBlock->states[] = $shopState;
+            }
+
+            $stateCount = count($page->content->product->shopStateBlock->states);
+            if (!$stateCount) {
+                $page->content->product->shopStateBlock = false;
+            } else {
+                $page->content->product->shopStateBlock->shownCount = 'Есть в ' . $stateCount . ' ' . $translateHelper->numberChoice($stateCount, ['магазине', 'магазинах', 'магазинах']);
+                $page->content->product->shopStateBlock->hasOnlyOne = 1 === $stateCount;
             }
         }
 

@@ -15,4 +15,6 @@ class ShopState {
      * @var int
      */
     public $showroomQuantity;
+    /** @var bool */
+    public $isInShowroomOnly;
 }

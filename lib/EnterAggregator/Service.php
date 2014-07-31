@@ -122,9 +122,18 @@ class Service {
                 ]),
                 */
                 'partials_loader'       => new FilesystemAliasLoader($config->templateDir),
-                'escape'                => function($value) {
-                    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-                },
+                'escape'                => $config->checkEscape
+                    ? function($value) {
+                        if (!is_scalar($value)) {
+                            throw new \Exception('Неверное значение ' . json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+                        }
+
+                        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+                    }
+                    : function($value) {
+                        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+                    }
+                ,
                 'charset'               => 'UTF-8',
                 //'logger'                => null,
                 'logger'                => new \Mustache_Logger_StreamLogger('php://stderr'),

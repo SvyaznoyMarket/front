@@ -50,8 +50,10 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
         public $shownOldPrice;
         /** @var Partial\ProductCard\CartButtonBlock|null */
         public $cartButtonBlock;
-        /** @var Product\DeliveryBlock */
+        /** @var Product\DeliveryBlock|null */
         public $deliveryBlock;
+        /** @var Product\ShopStateBlock|null */
+        public $shopStateBlock;
         /** @var string */
         public $description;
         /** @var Product\Photo|null */
@@ -99,6 +101,19 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product {
     class DeliveryBlock {
         /** @var DeliveryBlock\Delivery[] */
         public $deliveries = [];
+    }
+
+    class ShopStateBlock {
+        /** @var string */
+        public $shownCount;
+        /** @var ShopStateBlock\State[] */
+        public $states = [];
+        /**
+         * Только один магазин
+         *
+         * @var bool
+         */
+        public $hasOnlyOne;
     }
 
     class Photo {
@@ -150,6 +165,27 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product\DeliveryBlock {
         public $priceText;
         /** @var string */
         public $deliveredAtText;
+    }
+}
+
+namespace EnterMobile\Model\Page\ProductCard\Content\Product\ShopStateBlock {
+    use EnterMobile\Model\Partial;
+
+    class State {
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $regime;
+        /** @var string */
+        public $address;
+        /** @var string */
+        public $url;
+        /** @var array */
+        public $subway;
+        /** @var bool */
+        public $isInShowroomOnly;
+        /** @var Partial\Cart\ProductButton|null */
+        public $cartButton;
     }
 }
 

@@ -244,6 +244,12 @@ namespace EnterAggregator\Config {
         public $cacheDir;
         /** @var string */
         public $templateClassPrefix;
+        /**
+         * Проверять передаваемые в escape-функцию значения или нет
+         *
+         * @var bool
+         */
+        public $checkEscape;
     }
 
     class Order {
