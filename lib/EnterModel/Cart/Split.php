@@ -2,6 +2,10 @@
 
 namespace EnterModel\Cart {
     class Split {
+        /** @var Split\DeliveryGroup[] */
+        public $deliveryGroups = [];
+        /** @var Split\DeliveryMethod[] */
+        public $deliveryMethods = [];
         /** @var Split\Order[] */
         public $orders = [];
         /** @var Split\User|null */
@@ -10,21 +14,19 @@ namespace EnterModel\Cart {
         public $clientIp;
 
         public function __construct(array $data = []) {
+            $this->deliveryGroups = array_map(function($data) { return new Split\DeliveryGroup($data); }, $data['delivery_groups']);
+            $this->deliveryMethods = array_map(function($data) { return new Split\DeliveryMethod($data); }, $data['delivery_methods']);
             $this->orders = array_map(function($data) { return new Split\Order($data); }, $data['orders']);
             $this->user = $data['user_info'] ? new Split\User($data['user_info']) : null;
         }
 
         public function dump() {
-            $dump = [
-                'orders'    => [],
-                'user_info' => $this->user ? $this->user->dump() : null,
+            return [
+                'delivery_groups'  => array_map(function(Split\DeliveryGroup $deliveryGroup) { return $deliveryGroup->dump(); }, $this->deliveryGroups),
+                'delivery_methods' => array_map(function(Split\DeliveryMethod $deliveryMethod) { return $deliveryMethod->dump(); }, $this->deliveryMethods),
+                'orders'           => array_map(function(Split\Order $product) { return $product->dump(); }, $this->orders),
+                'user_info'        => $this->user ? $this->user->dump() : null,
             ];
-
-            foreach ($this->orders as $order) {
-                $dump['orders'][$order->name] = $order->dump();
-            }
-
-            return $dump;
         }
     }
 }
@@ -45,6 +47,60 @@ namespace EnterModel\Cart\Split {
             return [
                 'from' => $this->from,
                 'to'   => $this->to,
+            ];
+        }
+    }
+
+    class DeliveryGroup {
+        /** @var string */
+        public $id;
+        /** @var string */
+        public $name;
+
+        public function __construct(array $data = []) {
+            $this->id = (string)$data['id'];
+            $this->name = (string)$data['name'];
+        }
+
+        public function dump() {
+            return [
+                'id'   => (int)$this->id, // ядерное
+                'name' => $this->name,
+            ];
+        }
+    }
+
+    class DeliveryMethod {
+        /** @var string */
+        public $token;
+        /** @var string */
+        public $typeId;
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $pointToken;
+        /** @var string */
+        public $groupId;
+        /** @var string|null */
+        public $description;
+
+        public function __construct(array $data = []) {
+            $this->token = (string)$data['token'];
+            $this->typeId = (string)$data['type_id'];
+            $this->name = (string)$data['name'];
+            $this->pointToken = (string)$data['point_token'];
+            $this->groupId = (string)$data['group_id'];
+            $this->description = $data['description'] ? (string)$data['description'] : null;
+        }
+
+        public function dump() {
+            return [
+                'token'       => $this->token,
+                'type_id'     => $this->typeId,
+                'name'        => $this->name,
+                'point_token' => $this->pointToken,
+                'group_id'    => $this->groupId,
+                'description' => $this->description,
             ];
         }
     }
