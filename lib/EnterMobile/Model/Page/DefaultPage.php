@@ -1,10 +1,10 @@
 <?php
 
 namespace EnterMobile\Model\Page {
-    use EnterMobile\Model\HtmlPage;
+    use EnterModel\HtmlPage;
     use EnterMobile\Model\Partial;
 
-    class DefaultLayout extends HtmlPage {
+    class DefaultPage extends HtmlPage {
         /** @var string */
         public $dataDebug;
         /** @var string */
@@ -13,25 +13,25 @@ namespace EnterMobile\Model\Page {
         public $dataModule;
         /** @var string */
         public $dataConfig;
-        /** @var DefaultLayout\Template[] */
+        /** @var DefaultPage\Template[] */
         public $templates = [];
-        /** @var DefaultLayout\GoogleAnalytics|null */
+        /** @var DefaultPage\GoogleAnalytics|null */
         public $googleAnalytics;
-        /** @var DefaultLayout\GoogleTagManager|null|bool */
+        /** @var DefaultPage\GoogleTagManager|null|bool */
         public $googleTagManager;
-        /** @var DefaultLayout\YandexMetrika|null|bool */
+        /** @var DefaultPage\YandexMetrika|null|bool */
         public $yandexMetrika;
-        /** @var DefaultLayout\RegionBlock */
+        /** @var DefaultPage\RegionBlock */
         public $regionBlock;
-        /** @var DefaultLayout\MainMenu */
+        /** @var DefaultPage\MainMenu */
         public $mainMenu;
         /** @var Partial\UserBlock */
         public $userBlock;
-        /** @var DefaultLayout\BreadcrumbBlock|null */
+        /** @var DefaultPage\BreadcrumbBlock|null */
         public $breadcrumbBlock;
-        /** @var DefaultLayout\Search */
+        /** @var DefaultPage\Search */
         public $search;
-        /** @var DefaultLayout\Content */
+        /** @var DefaultPage\Content */
         public $content;
         /** @var Partial\Partner[] */
         public $partners = [];
@@ -39,16 +39,16 @@ namespace EnterMobile\Model\Page {
         public function __construct() {
             parent::__construct();
 
-            $this->regionBlock = new DefaultLayout\RegionBlock();
-            $this->mainMenu = new DefaultLayout\MainMenu();
+            $this->regionBlock = new DefaultPage\RegionBlock();
+            $this->mainMenu = new DefaultPage\MainMenu();
             $this->userBlock = new Partial\UserBlock();
-            $this->search = new DefaultLayout\Search();
-            $this->content = new DefaultLayout\Content();
+            $this->search = new DefaultPage\Search();
+            $this->content = new DefaultPage\Content();
         }
     }
 }
 
-namespace EnterMobile\Model\Page\DefaultLayout {
+namespace EnterMobile\Model\Page\DefaultPage {
     class GoogleAnalytics {
         public $id;
     }
@@ -110,7 +110,7 @@ namespace EnterMobile\Model\Page\DefaultLayout {
 
 }
 
-namespace EnterMobile\Model\Page\DefaultLayout\BreadcrumbBlock {
+namespace EnterMobile\Model\Page\DefaultPage\BreadcrumbBlock {
     class Breadcrumb {
         /** @var string */
         public $name;
@@ -119,7 +119,7 @@ namespace EnterMobile\Model\Page\DefaultLayout\BreadcrumbBlock {
     }
 }
 
-namespace EnterMobile\Model\Page\DefaultLayout\RegionBlock {
+namespace EnterMobile\Model\Page\DefaultPage\RegionBlock {
     class Region {
         /** @var string */
         public $name;
@@ -130,7 +130,7 @@ namespace EnterMobile\Model\Page\DefaultLayout\RegionBlock {
     }
 }
 
-namespace EnterMobile\Model\Page\DefaultLayout\Search {
+namespace EnterMobile\Model\Page\DefaultPage\Search {
     class Hint {
         /** @var string */
         public $name;

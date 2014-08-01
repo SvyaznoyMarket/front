@@ -20,7 +20,7 @@ class Search {
      * @param Search\Request $request
      */
     public function buildObjectByRequest(Page $page, Search\Request $request) {
-        (new Repository\Page\DefaultLayout)->buildObjectByRequest($page, $request);
+        (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
         $config = $this->getConfig();
         $router = $this->getRouter();
@@ -38,8 +38,8 @@ class Search {
         $page->content->title = (bool)$request->products ? 'Нашли ' . '"' . $request->searchPhrase . '"' : '';
 
         // хлебные крошки
-        $page->breadcrumbBlock = new Model\Page\DefaultLayout\BreadcrumbBlock();
-        $breadcrumb = new Model\Page\DefaultLayout\BreadcrumbBlock\Breadcrumb();
+        $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
+        $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
         $breadcrumb->name = 'Поиск ' . '"' . $request->searchPhrase . "'";
         $breadcrumb->url = $router->getUrlByRoute($currentRoute);
         $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
@@ -152,7 +152,7 @@ class Search {
             ],
         ] as $templateItem) {
             try {
-                $template = new Model\Page\DefaultLayout\Template();
+                $template = new Model\Page\DefaultPage\Template();
                 $template->id = $templateItem['id'];
                 $template->content = file_get_contents($templateDir . '/' . $templateItem['name'] . '.mustache');
 

@@ -3,7 +3,7 @@
 namespace EnterMobile\Model\Page\ProductCatalog {
     use EnterMobile\Model\Page;
 
-    class ChildCategory extends Page\DefaultLayout {
+    class ChildCategory extends Page\DefaultPage {
         /** @var ChildCategory\Content */
         public $content;
 
@@ -19,7 +19,7 @@ namespace EnterMobile\Model\Page\ProductCatalog\ChildCategory {
     use EnterMobile\Model\Page;
     use EnterMobile\Model\Partial;
 
-    class Content extends Page\DefaultLayout\Content {
+    class Content extends Page\DefaultPage\Content {
         /** @var Partial\ProductCatalog\CategoryBlock|null */
         public $categoryBlock;
         /** @var Partial\ProductBlock|null */

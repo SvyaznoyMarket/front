@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterMobile\Repository\Page\DefaultLayout;
+namespace EnterMobile\Repository\Page\DefaultPage;
 
 use Enter\Http;
 use EnterMobile\Model;

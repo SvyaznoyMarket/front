@@ -20,7 +20,7 @@ class Login {
      * @param Login\Request $request
      */
     public function buildObjectByRequest(Page $page, Login\Request $request) {
-        (new Repository\Page\DefaultLayout)->buildObjectByRequest($page, $request);
+        (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
         $config = $this->getConfig();
         $router = $this->getRouter();

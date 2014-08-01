@@ -1,7 +1,9 @@
 <?php
 
-namespace EnterMobile\Model {
-    class HtmlPage extends Page {
+namespace EnterModel {
+    class HtmlPage {
+        /** @var string */
+        public $path;
         /** @var string */
         public $title;
         /** @var string */
@@ -17,7 +19,7 @@ namespace EnterMobile\Model {
     }
 }
 
-namespace EnterMobile\Model\HtmlPage {
+namespace EnterModel\HtmlPage {
     class Meta {
         /** @var string */
         public $charset;

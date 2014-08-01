@@ -15,10 +15,10 @@ class Partner {
     /**
      * Данные по умолчанию
      *
-     * @param Repository\Page\DefaultLayout\Request $request
+     * @param \EnterMobile\Repository\Page\DefaultPage\Request $request
      * @return array
      */
-    public function getDefaultList(Repository\Page\DefaultLayout\Request $request) {
+    public function getDefaultList(Repository\Page\DefaultPage\Request $request) {
         $config = $this->getConfig()->partner->service;
         $viewHelper = $this->getTemplateHelper();
 

@@ -18,7 +18,7 @@ class RootCategory {
      * @param RootCategory\Request $request
      */
     public function buildObjectByRequest(Page $page, RootCategory\Request $request) {
-        (new Repository\Page\DefaultLayout)->buildObjectByRequest($page, $request);
+        (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
         $config = $this->getConfig();
 
@@ -27,8 +27,8 @@ class RootCategory {
         $page->content->title = $request->category->name;
 
         // хлебные крошки
-        $page->breadcrumbBlock = new Model\Page\DefaultLayout\BreadcrumbBlock();
-        $breadcrumb = new Model\Page\DefaultLayout\BreadcrumbBlock\Breadcrumb();
+        $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
+        $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
         $breadcrumb->name = $request->category->name;
         $breadcrumb->url = $request->category->link;
         $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;

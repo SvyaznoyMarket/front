@@ -18,7 +18,7 @@ class Content {
      * @param \EnterMobile\Model\Page\Content $page
      */
     public function buildObjectByRequest(\EnterMobile\Model\Page\Content $page, Content\Request $request) {
-        (new Repository\Page\DefaultLayout)->buildObjectByRequest($page, $request);
+        (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
         $page->title = $request->title;
         $page->content = $request->content;

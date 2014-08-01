@@ -22,7 +22,7 @@ class ProductCard {
      * @param ProductCard\Request $request
      */
     public function buildObjectByRequest(Page $page, ProductCard\Request $request) {
-        (new Repository\Page\DefaultLayout)->buildObjectByRequest($page, $request);
+        (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
         $config = $this->getConfig();
         $router = $this->getRouter();
@@ -43,9 +43,9 @@ class ProductCard {
 
         // хлебные крошки
         if ($categoryModel = $productModel->category) {
-            $page->breadcrumbBlock = new Model\Page\DefaultLayout\BreadcrumbBlock();
+            $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
 
-            $breadcrumb = new Model\Page\DefaultLayout\BreadcrumbBlock\Breadcrumb();
+            $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
             $breadcrumb->name = $categoryModel->name;
             $breadcrumb->url = $categoryModel->link;
 
@@ -343,7 +343,7 @@ class ProductCard {
             ],
         ] as $templateItem) {
             try {
-                $template = new Model\Page\DefaultLayout\Template();
+                $template = new Model\Page\DefaultPage\Template();
                 $template->id = $templateItem['id'];
                 $template->content = file_get_contents($templateDir . '/' . $templateItem['name'] . '.mustache');
 

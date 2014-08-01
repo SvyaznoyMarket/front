@@ -3,7 +3,7 @@
 namespace EnterMobile\Model\Page\Cart {
     use EnterMobile\Model\Page;
 
-    class Index extends Page\DefaultLayout {
+    class Index extends Page\DefaultPage {
         /** @var Index\Content */
         public $content;
 
@@ -19,7 +19,7 @@ namespace EnterMobile\Model\Page\Cart\Index {
     use EnterMobile\Model\Page;
     use EnterMobile\Model\Partial;
 
-    class Content extends Page\DefaultLayout\Content {
+    class Content extends Page\DefaultPage\Content {
         /** @var Content\ProductBlock */
         public $productBlock;
         /** @var Partial\Cart */

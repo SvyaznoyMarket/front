@@ -3,7 +3,7 @@
 namespace EnterMobile\Model\Page {
     use EnterMobile\Model\Page;
 
-    class ProductCard extends Page\DefaultLayout {
+    class ProductCard extends Page\DefaultPage {
         /** @var ProductCard\Content */
         public $content;
 
@@ -18,7 +18,7 @@ namespace EnterMobile\Model\Page {
 namespace EnterMobile\Model\Page\ProductCard {
     use EnterMobile\Model\Page;
 
-    class Content extends Page\DefaultLayout\Content {
+    class Content extends Page\DefaultPage\Content {
         /** @var Content\Product */
         public $product;
 

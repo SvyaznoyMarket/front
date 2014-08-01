@@ -21,7 +21,7 @@ class Index {
      * @param Index\Request $request
      */
     public function buildObjectByRequest(Page $page, Index\Request $request) {
-        (new Repository\Page\DefaultLayout)->buildObjectByRequest($page, $request);
+        (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
         $config = $this->getConfig();
         $router = $this->getRouter();
@@ -84,7 +84,7 @@ class Index {
             ],
         ] as $templateItem) {
             try {
-                $template = new Model\Page\DefaultLayout\Template();
+                $template = new Model\Page\DefaultPage\Template();
                 $template->id = $templateItem['id'];
                 $template->content = file_get_contents($templateDir . '/' . $templateItem['name'] . '.mustache');
 

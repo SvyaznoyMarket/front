@@ -10,16 +10,16 @@ use EnterAggregator\TemplateHelperTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
-use EnterMobile\Model\Page\DefaultLayout as Page;
+use EnterMobile\Model\Page\DefaultPage as Page;
 
-class DefaultLayout {
+class DefaultPage {
     use RequestIdTrait, ConfigTrait, RouterTrait, LoggerTrait, TemplateHelperTrait;
 
     /**
      * @param Page $page
-     * @param DefaultLayout\Request $request
+     * @param \EnterMobile\Repository\Page\DefaultPage\Request $request
      */
-    public function buildObjectByRequest(Page $page, DefaultLayout\Request $request) {
+    public function buildObjectByRequest(Page $page, DefaultPage\Request $request) {
         $config = $this->getConfig();
         $viewHelper = $this->getTemplateHelper();
         $router = $this->getRouter();
@@ -134,7 +134,7 @@ class DefaultLayout {
             ],
         ] as $templateItem) {
             try {
-                $template = new Model\Page\DefaultLayout\Template();
+                $template = new Model\Page\DefaultPage\Template();
                 $template->id = $templateItem['id'];
                 $template->content = file_get_contents($templateDir . '/' . $templateItem['name'] . '.mustache');
 
