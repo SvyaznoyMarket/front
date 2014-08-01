@@ -39,12 +39,14 @@ class Log {
             'messages'  => [],
         ];
 
-        $result = shell_exec(sprintf('tail -n %s %s | grep "\"_id\":\"%s\""%s',
+        $command = sprintf('tail -n %s %s | grep "\"_id\":\"%s\""%s',
             $offset,
             $config->logger->fileAppender->file,
             $id,
             $before ? (' -B ' . $before) : ''
-        ));
+        );
+
+        $result = shell_exec($command);
 
         $messages = [];
         foreach (explode(PHP_EOL, $result) as $line) {

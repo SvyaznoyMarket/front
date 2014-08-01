@@ -24,7 +24,11 @@ class Service {
     public function getRequestId() {
         static $instance;
 
-        return $instance ?: uniqid();
+        if (!$instance) {
+            $instance = uniqid();
+        }
+
+        return $instance;
     }
 
     /**
