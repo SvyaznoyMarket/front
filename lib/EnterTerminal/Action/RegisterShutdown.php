@@ -29,7 +29,13 @@ class RegisterShutdown {
             if ($lastError && (error_reporting() & $lastError['type'])) {
                 //$response = (new Controller\Error\InternalServerError())->execute($request);
                 $response->statusCode = Http\Response::STATUS_INTERNAL_SERVER_ERROR;
-                $response->data['error'] = ['code' => 500, 'message' => isset($lastError['message']) ? $lastError['message'] : ''];
+                $response->data['error'] = [
+                    'code'    => 500,
+                    'type'    => isset($lastError['type']) ? $lastError['type'] : null,
+                    'message' => isset($lastError['message']) ? $lastError['message'] : null,
+                    'file'    => isset($lastError['file']) ? $lastError['file'] : null,
+                    'line'    => isset($lastError['line']) ? $lastError['line'] : null,
+                ];
 
                 $this->getLogger()->push(['type' => 'error', 'error' => $lastError, 'tag' => ['critical']]);
             }
