@@ -50,12 +50,15 @@ namespace EnterTerminal\Controller\Order {
                 throw new \Exception('Не найдено предыдущее разбиение');
             }
 
+            $split = new Model\Cart\Split($splitData);
+            /*
             $split = null;
             try {
                 $split = new Model\Cart\Split($splitData);
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical', 'order']]);
             }
+            */
 
             if (!$split) {
                 throw new \Exception('Неверные данные для разбиения корзины');
@@ -72,11 +75,7 @@ namespace EnterTerminal\Controller\Order {
 
             $curl->query($createOrderQuery);
 
-            try {
-                $createOrderQuery->getResult();
-            } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical', 'order']]);
-            }
+            $createOrderQuery->getResult();
 
             // ответ
             $response = new Response();
