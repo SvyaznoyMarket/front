@@ -6,6 +6,10 @@ namespace EnterModel\Cart {
         public $deliveryGroups = [];
         /** @var Split\DeliveryMethod[] */
         public $deliveryMethods = [];
+        /** @var Split\PaymentMethod[] */
+        public $paymentMethods = [];
+        /** @var Split\PointGroup[] */
+        public $pointGroups = [];
         /** @var Split\Order[] */
         public $orders = [];
         /** @var Split\User|null */
@@ -16,6 +20,14 @@ namespace EnterModel\Cart {
         public function __construct(array $data = []) {
             $this->deliveryGroups = array_map(function($data) { return new Split\DeliveryGroup($data); }, $data['delivery_groups']);
             $this->deliveryMethods = array_map(function($data) { return new Split\DeliveryMethod($data); }, $data['delivery_methods']);
+            $this->paymentMethods = array_map(function($data) { return new Split\PaymentMethod($data); }, $data['payment_methods']);
+
+            $this->pointGroups = [];
+            foreach ($data['points'] as $pointGroupToken => $pointGroupItem) {
+                $pointGroupItem['token'] = $pointGroupToken;
+                $this->pointGroups[$pointGroupToken] = new Split\PointGroup($pointGroupItem);
+            }
+
             $this->orders = array_map(function($data) { return new Split\Order($data); }, $data['orders']);
             $this->user = $data['user_info'] ? new Split\User($data['user_info']) : null;
         }
@@ -24,6 +36,8 @@ namespace EnterModel\Cart {
             return [
                 'delivery_groups'  => array_map(function(Split\DeliveryGroup $deliveryGroup) { return $deliveryGroup->dump(); }, $this->deliveryGroups),
                 'delivery_methods' => array_map(function(Split\DeliveryMethod $deliveryMethod) { return $deliveryMethod->dump(); }, $this->deliveryMethods),
+                'points'           => array_map(function(Split\PointGroup $pointGroup) { return $pointGroup->dump(); }, $this->pointGroups),
+                'payment_methods'  => array_map(function(Split\PaymentMethod $paymentMethod) { return $paymentMethod->dump(); }, $this->paymentMethods),
                 'orders'           => array_map(function(Split\Order $product) { return $product->dump(); }, $this->orders),
                 'user_info'        => $this->user ? $this->user->dump() : null,
             ];
@@ -32,6 +46,8 @@ namespace EnterModel\Cart {
 }
 
 namespace EnterModel\Cart\Split {
+    use EnterModel as Model;
+
     class Interval {
         /** @var string|null */
         public $from;
@@ -47,6 +63,60 @@ namespace EnterModel\Cart\Split {
             return [
                 'from' => $this->from,
                 'to'   => $this->to,
+            ];
+        }
+    }
+
+    abstract class Point {
+        /** @var string */
+        public $id;
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $address;
+        /** @var string */
+        public $regime;
+        /** @var float */
+        public $latitude;
+        /** @var float */
+        public $longitude;
+
+        public function __construct(array $data = []) {
+            $this->id = (string)$data['id'];
+            $this->name = (string)$data['name'];
+            $this->address = (string)$data['address'];
+            $this->regime = (string)$data['regtime'];
+            $this->latitude = (float)$data['latitude'];
+            $this->longitude = (float)$data['longitude'];
+        }
+
+        public function dump() {
+            return [
+                'id'        => (int)$this->id, // ядерное
+                'name'      => $this->name,
+                'address'   => $this->address,
+                'regtime'   => $this->regime,
+                'latitude'  => $this->latitude,
+                'longitude' => $this->longitude,
+            ];
+        }
+    }
+
+    class Subway {
+        /** @var string */
+        public $name;
+        /** @var array */
+        public $line;
+
+        public function __construct(array $data = []) {
+            $this->name = (string)$data['name'];
+            $this->line = $data['line'] ? array_merge(['name' => null, 'color' => null], (array)$data['line']) : null;
+        }
+
+        public function dump() {
+            return [
+                'name' => $this->name,
+                'line' => $this->line,
             ];
         }
     }
@@ -101,6 +171,77 @@ namespace EnterModel\Cart\Split {
                 'point_token' => $this->pointToken,
                 'group_id'    => $this->groupId,
                 'description' => $this->description,
+            ];
+        }
+    }
+
+    class PaymentMethod {
+        /** @var string */
+        public $id;
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $description;
+
+        public function __construct(array $data = []) {
+            $this->id = (string)$data['id'];
+            $this->name = (string)$data['name'];
+            $this->description = $data['description'] ? (string)$data['description'] : null;
+        }
+
+        public function dump() {
+            return [
+                'id'          => $this->id,
+                'name'        => $this->name,
+                'description' => $this->description,
+            ];
+        }
+    }
+
+    class PointGroup {
+        const TOKEN_SHOP = 'shops';
+        const TOKEN_PICKPOINT = 'pickpoints';
+
+        /** @var string */
+        public $token;
+        /** @var string */
+        public $actionName;
+        /** @var string */
+        public $blockName;
+        /** @var Model\Cart\Split\Point[] */
+        public $points = [];
+
+        public function __construct(array $data = []) {
+            $this->token = (string)$data['token']; // ядро не высылает
+            $this->actionName = (string)$data['action_name'];
+            $this->blockName = (string)$data['block_name'];
+            foreach ($data['list'] as $pointId => $pointItem) {
+                switch ($this->token) {
+                    case self::TOKEN_SHOP:
+                        $this->points[$pointId] = new Model\Cart\Split\Point\Shop($pointItem);
+                        break;
+                    case self::TOKEN_PICKPOINT:
+                        $this->points[$pointId] = new Model\Cart\Split\Point\Pickpoint($pointItem);
+                        break;
+                }
+            }
+        }
+
+        public function dump() {
+            $pointDump = [];
+            switch ($this->token) {
+                case self::TOKEN_SHOP:
+                    $pointDump = array_map(function(Model\Cart\Split\Point\Shop $point) { return $point->dump(); }, $this->points);
+                    break;
+                case self::TOKEN_PICKPOINT:
+                    $pointDump = array_map(function(Model\Cart\Split\Point\Pickpoint $point) { return $point->dump(); }, $this->points);
+                    break;
+            }
+
+            return [
+                'action_name' => $this->actionName,
+                'block_name'  => $this->blockName,
+                'list'        => $pointDump,
             ];
         }
     }
@@ -172,6 +313,42 @@ namespace EnterModel\Cart\Split {
                 'address'    => $this->address ? $this->address->dump() : null,
                 'email'      => $this->email,
             ];
+        }
+    }
+}
+
+namespace EnterModel\Cart\Split\Point {
+    use EnterModel as Model;
+
+    class Shop extends Model\Cart\Split\Point {
+        /** @var Model\Cart\Split\Subway[] */
+        public $subway = [];
+
+        public function __construct(array $data = []) {
+            parent::__construct($data);
+
+            $this->subway = array_map(function($data) { return new Model\Cart\Split\Subway($data); }, $data['subway']);
+        }
+
+        public function dump() {
+            $dump = parent::dump();
+            $dump['subway'] = array_map(function(Model\Cart\Split\Subway $subway) { return $subway->dump(); }, $this->subway);
+
+            return $dump;
+        }
+    }
+
+    class Pickpoint extends Model\Cart\Split\Point {
+        // TODO
+
+        public function __construct(array $data = []) {
+            parent::__construct($data);
+        }
+
+        public function dump() {
+            $dump = parent::dump();
+
+            return $dump;
         }
     }
 }
