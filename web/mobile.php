@@ -28,7 +28,7 @@ $request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
 $error = null;
 
 // config
-(new \EnterMobile\Action\InitService())->execute(include $applicationDir . sprintf('/config/config-%s.php', $environment));
+(new \EnterMobile\Action\InitService())->execute(include $applicationDir . sprintf('/config/mobile/config-%s.php', $environment));
 
 // config post-handler
 (new \EnterAggregator\Action\HandleConfig())->execute($environment, $debug);

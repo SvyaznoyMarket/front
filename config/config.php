@@ -1,18 +1,11 @@
 <?php
 
-return function(\EnterMobile\Config $config) {
+return function(\EnterAggregator\Config $config) {
     mb_internal_encoding('UTF-8');
 
     $config->dir = realpath(__DIR__ . '/..');
-    $config->hostname = 'enter.ru';
 
     $config->debugLevel = 0;
-
-    $config->logger->fileAppender->enabled = true;
-    $config->logger->fileAppender->file = realpath($config->dir . '/../logs') . '/mobile.log';
-
-    $config->router->classPrefix = 'EnterMobile\Routing\\';
-    $config->router->routeFile = __DIR__ . '/route.json';
 
     $config->session->name = 'enter';
     $config->session->cookieLifetime = 15552000;
@@ -66,6 +59,9 @@ return function(\EnterMobile\Config $config) {
 
     $config->contentService->url = 'http://content.enter.ru/';
 
+    $config->infoService->url = 'http://info.ent3.ru/';
+    $config->infoService->timeout = 5;
+
     $config->retailRocketService->account = '519c7f3c0d422d0fe0ee9775';
     $config->retailRocketService->url = 'http://api.retailrocket.ru/api/';
     $config->retailRocketService->timeout = 0.5;
@@ -77,7 +73,6 @@ return function(\EnterMobile\Config $config) {
     $config->yandexMetrika->id = 10503055;
 
     $config->mustacheRenderer->dir = $config->dir . '/vendor/mustache';
-    $config->mustacheRenderer->templateDir = $config->dir . '/template';
     $config->mustacheRenderer->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache';
     $config->mustacheRenderer->templateClassPrefix = preg_replace('/[^\w]/', '_', $config->hostname . '_v2' . '-');
     $config->mustacheRenderer->checkEscape = false;
@@ -96,10 +91,13 @@ return function(\EnterMobile\Config $config) {
     ];
 
     $config->order->splitSessionKey = 'order_split';
+
     $config->product->itemPerPage = 19;
     $config->product->itemsInSlider = 60;
+
     $config->productReview->enabled = true;
     $config->productReview->itemsInCard = 7;
+
     $config->productPhoto->urlPaths = [
         0 => '/1/1/60/',
         1 => '/1/1/120/',
