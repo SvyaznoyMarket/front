@@ -145,7 +145,7 @@ class Product {
         $inShop = false;
 
         foreach ($stockData as $stockItem) {
-            if ($stockItem['store_id']) {
+            if ($stockItem['store_id'] && $stockItem['quantity']) { // есть на центральном складе
                 $inStore = true;
             }
             if ($stockItem['shop_id'] && $stockItem['quantity']) { // есть на складе магазина
