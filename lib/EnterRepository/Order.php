@@ -17,6 +17,7 @@ class Order {
         $query = null;
 
         $user = $split->user;
+        $address = $user ? $user->address : null;
 
         $data = [];
         foreach ($split->orders as $order) {
@@ -47,6 +48,7 @@ class Order {
                 'address_building'    => null,
                 'address_apartment'   => null,
                 'address_floor'       => null,
+                'shop_id'             => ($delivery && $delivery->point) ? $delivery->point->id : null,
                 'extra'               => null, // FIXME!!! добавить $order->comment
                 'bonus_card_number'   => null, // FIXME!!!
                 'delivery_type_id'    => null, // FIXME!!!
@@ -56,11 +58,25 @@ class Order {
                 'delivery_date'       => $deliveryDate ? $deliveryDate->format('Y-m-d') : null,
                 'ip'                  => $split->clientIp,
                 'product'             => [],
-                'service'             => [],
-                'payment_params'      => [
-                    'qiwi_phone' => null, // FIXME!!!
-                ],
             ];
+
+            $orderData['subway_id'] = null; // FIXME!!!
+
+            if ($address) {
+                $orderData['address_street'] = $address->street;
+                $orderData['address_number'] = $address->number;
+                $orderData['address_building'] = $address->building;
+                $orderData['address_apartment'] = $address->apartment;
+                $orderData['address_floor'] = $address->floor;
+            }
+
+            // товары
+            foreach ($order->products as $product) {
+                $orderData['product'][] = [
+                    'id'       => $product->id,
+                    'quantity' => $product->quantity,
+                ];
+            }
 
             $data[] = $orderData;
         }

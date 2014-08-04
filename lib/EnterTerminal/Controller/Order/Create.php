@@ -50,21 +50,17 @@ namespace EnterTerminal\Controller\Order {
                 throw new \Exception('Не найдено предыдущее разбиение');
             }
 
-            $split = new Model\Cart\Split($splitData);
-            /*
             $split = null;
             try {
                 $split = new Model\Cart\Split($splitData);
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical', 'order']]);
-            }
-            */
 
-            if (!$split) {
-                throw new \Exception('Неверные данные для разбиения корзины');
+                throw new \Exception('Неверные данные для разбиения корзины. ' . $e->getMessage());
             }
 
             // дополнительные свойства разбиения
+            $split->region = $shop->region;
             $split->clientIp = $request->getClientIp();
 
             // создание заказа

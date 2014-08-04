@@ -1,7 +1,11 @@
 <?php
 
 namespace EnterModel\Cart {
+    use EnterModel as Model;
+
     class Split {
+        /** @var Model\Region */
+        public $region;
         /** @var Split\DeliveryGroup[] */
         public $deliveryGroups = [];
         /** @var Split\DeliveryMethod[] */
