@@ -18,8 +18,6 @@ return function(EnterTerminal\Config $config) {
     $config->session->cookieLifetime = 15552000;
     $config->session->cookieDomain = null;
 
-    $config->userToken->authCookieName = null;
-
     $config->region->cookieName = null;
 
     $config->coreService->clientId = 'terminal'; // переопределяется из http.request

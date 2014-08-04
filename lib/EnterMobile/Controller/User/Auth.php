@@ -57,7 +57,7 @@ class Auth {
             (new \EnterRepository\User())->setTokenToHttpResponse($token, $response);
 
             // FIXME: костыль для project13
-            $session->set($config->userToken->authCookieName, $token);
+            $session->set($config->userToken->authName, $token);
             $session->set('authSource', $isEmailAuth ? 'email' : 'phone');
 
         } catch (\Exception $e) {

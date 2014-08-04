@@ -7,7 +7,7 @@ return function(EnterMobileApplication\Config $config) {
 
     ini_set('session.use_cookies', false);
     ini_set('session.use_only_cookies', false);
-    //ini_set('session.use_trans_sid', true);
+    ini_set('session.use_trans_sid', true);
 
     $config->hostname = 'mapi.enter.ru';
 
@@ -17,8 +17,6 @@ return function(EnterMobileApplication\Config $config) {
     $config->session->name = 'clientId';
     $config->session->cookieLifetime = 15552000;
     $config->session->cookieDomain = null;
-
-    $config->userToken->authCookieName = null; // TODO: убрать из настроек mobile-application
 
     $config->region->cookieName = null; // TODO: убрать из настроек mobile-application
 

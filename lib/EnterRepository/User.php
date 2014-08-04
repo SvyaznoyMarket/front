@@ -15,7 +15,7 @@ class User {
      * @return string|null
      */
     public function getTokenByHttpRequest(Http\Request $request) {
-        return $request->cookies[$this->getConfig()->userToken->authCookieName];
+        return $request->cookies[$this->getConfig()->userToken->authName];
     }
 
     /**
@@ -24,7 +24,7 @@ class User {
      */
     public function setTokenToHttpResponse($token, Http\Response $response) {
         $config = $this->getConfig();
-        $cookieName = $config->userToken->authCookieName;
+        $cookieName = $config->userToken->authName;
         $cookieDomain = $config->session->cookieDomain;
 
         if ($token) {

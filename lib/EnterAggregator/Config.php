@@ -150,7 +150,7 @@ namespace EnterAggregator\Config {
          * Кука авторизованного пользователя
          * @var string
          */
-        public $authCookieName;
+        public $authName;
     }
 
     class GoogleAnalytics {
