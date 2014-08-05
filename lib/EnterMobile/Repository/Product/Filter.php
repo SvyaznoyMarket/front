@@ -24,7 +24,7 @@ class Filter extends BaseRepository {
                 && (
                     (0 === strpos($key, 'f-'))
                     || (0 === strpos($key, 'tag-'))
-                    || (in_array($key, ['shop', 'category']))
+                    || (in_array($key, ['shop', 'category', 'slice']))
                 )
             ) {
                 $filter = new Model\Product\RequestFilter();
@@ -72,6 +72,38 @@ class Filter extends BaseRepository {
         }
 
         return $return;
+    }
+
+    /**
+     * Возвращает фильтр из http-запроса, который относится к срезу товаров
+     *
+     * @param Model\Product\RequestFilter[] $filters
+     * @return Model\Product\RequestFilter
+     */
+    public function getSliceRequestObjectByRequestList($filters) {
+        $return = null;
+
+        foreach ($filters as $filter) {
+            if ('slice' == $filter->token) {
+                $return = $filter;
+                break;
+            }
+        }
+
+        return $return;
+    }
+
+    /**
+     * @param Model\Product\Slice $slice
+     * @return Model\Product\RequestFilter
+     */
+    public function getSliceRequestObjectBySlice(Model\Product\Slice $slice) {
+        $filter = new Model\Product\RequestFilter();
+        $filter->token = 'slice';
+        $filter->name = 'slice';
+        $filter->value = $slice->token;
+
+        return $filter;
     }
 
     /**

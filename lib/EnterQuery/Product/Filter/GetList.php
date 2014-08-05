@@ -7,21 +7,21 @@ use EnterQuery\CoreQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
-class GetListByCategoryId extends Query {
+class GetList extends Query {
     use CoreQueryTrait;
 
     /** @var array */
     protected $result;
 
     /**
-     * @param string $categoryId
+     * @param array $filterData
      * @param string|null $regionId
      */
-    public function __construct($categoryId, $regionId = null) {
+    public function __construct(array $filterData, $regionId = null) {
         $this->url = new Url();
         $this->url->path = 'v2/listing/filter';
-        $this->url->query = [
-            'category_id' => $categoryId,
+        $this->url->query['filter'] = [
+            'filters' => $filterData,
         ];
         if ($regionId) {
             $this->url->query['region_id'] = $regionId;

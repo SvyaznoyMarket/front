@@ -1,15 +1,19 @@
 <?php
 
-namespace EnterAggregator\Controller\ProductCatalog {
+namespace EnterAggregator\Controller {
 
     use EnterAggregator\ConfigTrait;
     use EnterAggregator\CurlTrait;
     use EnterAggregator\Model\Context;
+    use EnterModel;
+    use EnterModel\Product\RequestFilter;
     use EnterQuery as Query;
+    use EnterQuery;
     use EnterRepository as Repository;
     use EnterModel as Model;
+    use EnterRepository;
 
-    class ChildCategory {
+    class ProductList {
         use ConfigTrait, CurlTrait;
 
         /**
@@ -19,10 +23,11 @@ namespace EnterAggregator\Controller\ProductCatalog {
          * @param int $limit
          * @param Model\Product\Sorting|null $sorting
          * @param Repository\Product\Filter $filterRepository
+         * @param Model\Product\RequestFilter[] $baseRequestFilters
          * @param Model\Product\RequestFilter[] $requestFilters
          * @param Context\ProductCatalog $context
-         * @return ChildCategory\Response
          * @throws \Exception
+         * @return ProductList\Response
          */
         public function execute(
             $regionId,
@@ -31,6 +36,7 @@ namespace EnterAggregator\Controller\ProductCatalog {
             $limit,
             $sorting,
             Repository\Product\Filter $filterRepository,
+            array $baseRequestFilters,
             array $requestFilters,
             Context\ProductCatalog $context
         ) {
@@ -40,7 +46,7 @@ namespace EnterAggregator\Controller\ProductCatalog {
             $productCategoryRepository = new Repository\Product\Category();
 
             // response
-            $response = new ChildCategory\Response();
+            $response = new ProductList\Response();
 
             // список сортировок
             $response->sortings = (new Repository\Product\Sorting())->getObjectList();
@@ -67,16 +73,19 @@ namespace EnterAggregator\Controller\ProductCatalog {
             $categoryItemQuery = null;
             if (!empty($categoryCriteria['id'])) {
                 //$categoryItemQuery = new Query\Product\Category\GetItemById($categoryCriteria['id'], $response->region->id);
-                $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryCriteria['id'], $response->region->id);
+                $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryCriteria['id'], $response->region->id, $filterRepository->dumpRequestObjectList($baseRequestFilters));
             } else if (!empty($categoryCriteria['token'])) {
                 $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'], $response->region->id);
             } else if (!empty($categoryCriteria['ui'])) {
                 //$categoryItemQuery = new Query\Product\Category\GetItemByUi($categoryCriteria['ui'], $response->region->id);
             }
-            if (!$categoryItemQuery) {
+            if ((bool)$categoryCriteria && !$categoryItemQuery) {
                 throw new \Exception('Неверный критерий для получения категории товара');
             }
-            $curl->prepare($categoryItemQuery);
+
+            if ($categoryItemQuery) {
+                $curl->prepare($categoryItemQuery);
+            }
 
             $categoryAdminItemQuery = null;
             if (!empty($categoryCriteria['token']) && $config->adminService->enabled) {
@@ -87,49 +96,62 @@ namespace EnterAggregator\Controller\ProductCatalog {
             $curl->execute();
 
             // категория
-            $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
-            if (!$response->category) {
-                // костыль для ядра
-                $categoryUi = isset($categoryAdminItemQuery->getResult()['ui']) ? $categoryAdminItemQuery->getResult()['ui'] : null;
-                $categoryItemQuery = $categoryUi ? new Query\Product\Category\GetItemByUi($categoryUi, $response->region->id) : null;
+            if ($categoryItemQuery) {
+                $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
+                if (!$response->category) {
+                    // костыль для ядра
+                    $categoryUi = isset($categoryAdminItemQuery->getResult()['ui']) ? $categoryAdminItemQuery->getResult()['ui'] : null;
+                    $categoryItemQuery = $categoryUi ? new Query\Product\Category\GetItemByUi($categoryUi, $response->region->id) : null;
 
-                if ($categoryItemQuery) {
-                    $curl->prepare($categoryItemQuery)->execute();
-                    $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
+                    if ($categoryItemQuery) {
+                        $curl->prepare($categoryItemQuery)->execute();
+                        $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
+                    }
                 }
             }
 
-            if (!$response->category) {
-                return $response;
+            // базовые фильтры
+            $response->baseRequestFilters = $baseRequestFilters;
+            if ($response->category) {
+                $response->baseRequestFilters[] = $filterRepository->getRequestObjectByCategory($response->category);
             }
 
-            // фильтр категории
-            $response->requestFilters[] = $filterRepository->getRequestObjectByCategory($response->category);
-
             // запрос фильтров
-            $filterListQuery = new Query\Product\Filter\GetListByCategoryId($response->category->id, $response->region->id);
+            $filterListQuery = new Query\Product\Filter\GetList($filterRepository->dumpRequestObjectList($response->baseRequestFilters), $response->region->id);
             $curl->prepare($filterListQuery);
 
             $ascendantCategoryItemQuery = null;
             $parentCategoryItemQuery = null;
             $branchCategoryItemQuery = null;
-            if ($context->parentCategory) {
-                // запрос предка категории
-                $ascendantCategoryItemQuery = new Query\Product\Category\GetAscendantItemByCategoryObject($response->category, $response->region->id);
-                $curl->prepare($ascendantCategoryItemQuery);
-                // запрос родителя категории и его детей
-                if ($response->category->parentId) {
-                    $parentCategoryItemQuery = new Query\Product\Category\GetTreeItemById($response->category->parentId, $response->region->id);
-                    $curl->prepare($parentCategoryItemQuery);
+
+            if ($response->category) {
+                if ($context->parentCategory) {
+                    // запрос предка категории
+                    $ascendantCategoryItemQuery = new Query\Product\Category\GetAscendantItemByCategoryObject($response->category, $response->region->id);
+                    $curl->prepare($ascendantCategoryItemQuery);
+                    // запрос родителя категории и его детей
+                    if ($response->category->parentId) {
+                        $parentCategoryItemQuery = new Query\Product\Category\GetTreeItemById($response->category->parentId, $response->region->id);
+                        $curl->prepare($parentCategoryItemQuery);
+                    }
+                } else {
+                    // запрос предка категории
+                    $branchCategoryItemQuery = new Query\Product\Category\GetBranchItemByCategoryObject($response->category, $response->region->id, $filterRepository->dumpRequestObjectList($baseRequestFilters));
+                    $curl->prepare($branchCategoryItemQuery);
                 }
-            } else {
-                // запрос предка категории
-                $branchCategoryItemQuery = new Query\Product\Category\GetBranchItemByCategoryObject($response->category, $response->region->id);
-                $curl->prepare($branchCategoryItemQuery);
             }
 
             // запрос листинга идентификаторов товаров
-            $productIdPagerQuery = new Query\Product\GetIdPager($filterRepository->dumpRequestObjectList($response->requestFilters), $response->sorting, $response->region->id, ($pageNum - 1) * $limit, $limit);
+            $productIdPagerQuery = new Query\Product\GetIdPager(
+                array_merge(
+                    $filterRepository->dumpRequestObjectList($response->requestFilters),
+                    $filterRepository->dumpRequestObjectList($response->baseRequestFilters)
+                ),
+                $response->sorting,
+                $response->region->id,
+                ($pageNum - 1) * $limit,
+                $limit
+            );
             $curl->prepare($productIdPagerQuery);
 
             // запрос дерева категорий для меню
@@ -191,8 +213,11 @@ namespace EnterAggregator\Controller\ProductCatalog {
             }
 
             // запрос настроек каталога
-            $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($response->category->ascendants, [$response->category]));
-            $curl->prepare($catalogConfigQuery);
+            $catalogConfigQuery = null;
+            if ($response->category) {
+                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($response->category->ascendants, [$response->category]));
+                $curl->prepare($catalogConfigQuery);
+            }
 
             // запрос списка рейтингов товаров
             $ratingListQuery = null;
@@ -221,7 +246,7 @@ namespace EnterAggregator\Controller\ProductCatalog {
             }
 
             // настройки каталога
-            $response->catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
+            $response->catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
 
             // список рейтингов товаров
             if ($ratingListQuery) {
@@ -238,7 +263,7 @@ namespace EnterAggregator\Controller\ProductCatalog {
     }
 }
 
-namespace EnterAggregator\Controller\ProductCatalog\ChildCategory {
+namespace EnterAggregator\Controller\ProductList {
     use EnterModel as Model;
 
     class Response {
@@ -256,6 +281,8 @@ namespace EnterAggregator\Controller\ProductCatalog\ChildCategory {
         public $sorting;
         /** @var Model\Product\Filter[] */
         public $filters = [];
+        /** @var Model\Product\RequestFilter[] */
+        public $baseRequestFilters = [];
         /** @var Model\Product\RequestFilter[] */
         public $requestFilters = [];
         /** @var Model\Product[] */

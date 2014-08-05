@@ -16,8 +16,9 @@ class GetBranchItemByCategoryObject extends Query {
     /**
      * @param Model\Product\Category $category
      * @param string $regionId
+     * @param array $filterData
      */
-    public function __construct(Model\Product\Category $category, $regionId = null) {
+    public function __construct(Model\Product\Category $category, $regionId = null, array $filterData = []) {
         $this->url = new Url();
         $this->url->path = 'v2/category/tree';
         $this->url->query = [
@@ -27,6 +28,11 @@ class GetBranchItemByCategoryObject extends Query {
         ];
         if ($regionId) {
             $this->url->query['region_id'] = $regionId;
+        }
+        if ((bool)$filterData) {
+            $this->url->query['filter'] = [
+                'filters' => $filterData,
+            ];
         }
 
         $this->init();

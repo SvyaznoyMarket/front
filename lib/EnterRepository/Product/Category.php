@@ -15,8 +15,14 @@ class Category {
      * @return string
      */
     public function getTokenByHttpRequest(Http\Request $request) {
-        $token = explode('/', $request->query['categoryPath']);
-        $token = end($token);
+        $token = null;
+
+        if ($request->query['categoryPath']) {
+            $token = explode('/', $request->query['categoryPath']);
+            $token = end($token);
+        } else if ($request->query['categoryToken']) {
+            $token = $request->query['categoryToken'];
+        }
 
         return $token;
     }
