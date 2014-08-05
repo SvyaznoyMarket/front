@@ -4,13 +4,17 @@
 	display: table;
 	width: 100%;
 
+	&-mobile {
+		display: none;
+	}
+
 	&_inner {
 		overflow: auto;
 
 		max-height: 658px;
 	}
 
-	&.mlineKitEdit {
+	&-edit {
 		margin: 0 0 15px;
 
 		.lineKitItem {
@@ -75,11 +79,12 @@
 	&-disabled {
 
 		.lineKitItem_cell {
-			.opacity(0.6);
+			.opacity(0.4);
 		}
 
 		.lineKitItem_cell-counter {
 			.opacity(1);
+			border-bottom: 1px solid rgba(216, 216, 216, 0.6);
 		}
 
 		.lineKitItem_cell-price {
@@ -91,7 +96,7 @@
 		height: auto;
 
 		.lineKitItem_cell {
-			color: #515151;
+			color: @tabGreyText;
 			height: 20px;
 
 			font-size: 12px;
@@ -164,7 +169,7 @@
 	.dimantion {
 
 		&_name {
-			color: #515151;
+			color: @tabGreyText;
 		}
 
 		&_val {

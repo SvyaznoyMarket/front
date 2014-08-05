@@ -1,18 +1,24 @@
 @media only screen and (max-width: 600px) {
 
 	.lineKit {
-		margin: 0 0 30px;
-
-		display: table;
-		width: 100%;
+		display: block;
+	    margin: 0 0 10px;
 
 		&-full {
 			display: none;
 		}
+
+		&-edit {
+
+			.lineKitHead {
+				font-size: 14px;
+    			padding: 15px 0 5px 10px;
+			}
+		}
 	}
 
 	.lineKitHead {
-		border-bottom: 1px solid @tabLightGreyBorder;
+		clear: both;
 
 		&_title {
 			display: block;
@@ -28,6 +34,10 @@
 		display: block;
 		padding: 10px 10px 5px;
 		border-bottom: 1px solid @tabLightGreyBorder;
+
+		&:last-child {
+			border-bottom: 1px solid @tabLightGreyBorder;
+		}
 
 		&_name {
 			font-size: 16px;
@@ -46,7 +56,7 @@
 		}
 
 		&_r {
-			float: left;
+			padding-left: 105px;
 		}
 
 		&_delvr {
@@ -55,6 +65,7 @@
 
 		&_desc {
 			font-size: 12px;
+			min-height: 75px;
 
 			.column {
 				font-size: 12px;
@@ -67,6 +78,25 @@
 
 		&-l {
 			font-size: 16px;
+			line-height: 28px;
+		}
+
+		&_grey {
+			color: @tabGreyText;
+		}
+
+		&-disabled {
+
+			.lineKitItem_name,
+			.lineKitItem_desc,
+			.lineKitItem_l {
+				.opacity(0.4);
+			}
+
+			.lineKitItem_summ {
+				text-decoration: line-through;
+				.opacity(0.4);
+			}
 		}
 
 		.counter {
@@ -86,6 +116,14 @@
 
 		img {
 			width: 120px;
+		}
+	}
+
+	.lineKitFooter {
+
+		&_summ {
+			margin: 10px 0;
+			clear: both;
 		}
 	}
 }
