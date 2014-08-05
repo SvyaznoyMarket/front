@@ -18,14 +18,19 @@ class MatchRoute {
         $callable = null;
 
         try {
-            $controllerClass = '\\EnterMobileApplication\\Controller\\' . implode('\\', array_map('ucfirst', explode('/', trim($request->getPathInfo(), '/')))); // TODO: перенести в настройки
+            $controllerName = implode('\\', array_map('ucfirst', explode('/', trim($request->getPathInfo(), '/'))));
+            if (!$controllerName) {
+                $controllerName = 'Index';
+            }
+
+            $controllerClass = '\\EnterMobileApplication\\Controller\\' . $controllerName; // TODO: перенести в настройки
+
             $this->getLogger()->push(['controller' => $controllerClass, 'action' => __METHOD__, 'tag' => ['routing']]);
             $callable = [new $controllerClass, 'execute'];
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['routing']]);
 
-            //$callable = [new Controller\Error\NotFound(), 'execute'];
-            throw $e;
+            $callable = [new Controller\Error\NotFound(), 'execute'];
         }
 
         return $callable;

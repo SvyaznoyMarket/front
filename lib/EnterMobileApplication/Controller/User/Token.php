@@ -1,13 +1,13 @@
 <?php
 
-namespace EnterMobileApplication\Controller {
+namespace EnterMobileApplication\Controller\User {
 
     use Enter\Http;
     use EnterMobileApplication\ConfigTrait;
     use EnterAggregator\SessionTrait;
     use EnterMobileApplication\Controller;
     use EnterMobileApplication\Repository;
-    use EnterMobileApplication\Controller\Layout\Response;
+    use EnterMobileApplication\Controller\User\Token\Response;
 
     class Token {
         use ConfigTrait, SessionTrait;
@@ -51,7 +51,7 @@ namespace EnterMobileApplication\Controller {
     }
 }
 
-namespace EnterMobileApplication\Controller\Layout {
+namespace EnterMobileApplication\Controller\User\Token {
     class Response {
         /** @var string */
         public $token;
