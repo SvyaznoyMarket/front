@@ -36,7 +36,7 @@ class Shop {
     /** @var Model\Subway[] */
     public $subway = [];
     /** @var bool */
-    public $isGreenCorridor;
+    public $hasGreenCorridor;
 
     /**
      * @param array $data
@@ -54,7 +54,7 @@ class Shop {
         if (array_key_exists('description', $data)) $this->description = (string)$data['description'];
         if (array_key_exists('way_walk', $data)) $this->walkWay = (string)$data['way_walk'];
         if (array_key_exists('way_auto', $data)) $this->carWay = (string)$data['way_auto'];
-        if (array_key_exists('is_green_corridor', $data)) $this->isGreenCorridor = (bool)$data['is_green_corridor'];
+        if (array_key_exists('is_green_corridor', $data)) $this->hasGreenCorridor = (bool)$data['is_green_corridor'];
 
         if (isset($data['geo']['id'])) {
             $this->region = new Model\Region($data['geo']);
