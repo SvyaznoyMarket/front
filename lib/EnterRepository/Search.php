@@ -21,7 +21,7 @@ class Search {
         }
         $phrase = trim(preg_replace('/[^\wА-Яа-я-]+/u', ' ', $phrase));
 
-        if (empty($phrase) || (mb_strlen($phrase) <= $this->getConfig()->search->minPhraseLength)) {
+        if (empty($phrase) || (mb_strlen($phrase) < $this->getConfig()->search->minPhraseLength)) {
             $phrase = null;
         }
 

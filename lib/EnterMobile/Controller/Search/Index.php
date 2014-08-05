@@ -35,6 +35,9 @@ class Index {
 
         // поисковая строка
         $searchPhrase = (new \EnterRepository\Search())->getPhraseByHttpRequest($request);
+        if (!$searchPhrase) {
+            return (new Controller\Redirect())->execute($request->server['HTTP_REFERER'] ?: $this->getRouter()->getUrlByRoute(new Routing\Index()), 302);
+        }
 
         // номер страницы
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
