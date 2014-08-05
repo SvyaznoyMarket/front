@@ -54,7 +54,7 @@ return function(\EnterAggregator\Config $config) {
     $config->adminService->url = 'http://admin.enter.ru/';
     $config->adminService->timeout = 2;
 
-    $config->reviewService->url = 'http://admin.enter.ru/reviews/';
+    $config->reviewService->url = 'http://scms.enter.ru/reviews/';
     $config->reviewService->timeout = 2;
 
     $config->contentService->url = 'http://content.enter.ru/';
