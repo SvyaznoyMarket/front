@@ -57,7 +57,7 @@ class Slice {
         }
 
         // фильтры в http-запросе и настройках среза
-        $sliceRequestFilters = $filterRepository->getRequestObjectListByHttpRequest(new Http\Request($slice->filters));
+        $baseRequestFilters = $filterRepository->getRequestObjectListByHttpRequest(new Http\Request($slice->filters));
 
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
 
@@ -71,23 +71,38 @@ class Slice {
             $limit, // лимит
             $sorting, // сортировка
             $filterRepository, // репозиторий фильтров
-            $sliceRequestFilters,
-            array_merge($requestFilters, $sliceRequestFilters), // фильтры
+            $baseRequestFilters,
+            array_merge($requestFilters, $baseRequestFilters), // фильтры
             $context
         );
 
         if ($categoryToken && !$controllerResponse->category) {
-            return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $sliceToken));
+            return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));
         }
         if ($controllerResponse->category && $controllerResponse->category->redirectLink) {
             // TODO
             //return (new Controller\Redirect())->execute($controllerResponse->category->redirectLink . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), Http\Response::STATUS_MOVED_PERMANENTLY);
         }
 
-        $baseRequestFilters = [];
+        // базовые фильтры
         $baseRequestFilters[] = (new Repository\Product\Filter())->getSliceRequestObjectBySlice($slice);
         if ($controllerResponse->category && ($categoryRequestFilter = $filterRepository->getRequestObjectByCategory($controllerResponse->category))) {
             $baseRequestFilters[] = $categoryRequestFilter;
+        }
+
+        // список категорий
+        $categories = [];
+        if ($controllerResponse->category) {
+            $categories = $controllerResponse->category->children;
+        } else {
+            $categoryListQuery = new Query\Product\Category\GetTreeList($controllerResponse->region->id, null, $filterRepository->dumpRequestObjectList($baseRequestFilters));
+            $curl->prepare($categoryListQuery)->execute();
+
+            try {
+                $categories = (new \EnterRepository\Product\Category())->getObjectListByQuery($categoryListQuery);
+            } catch(\Exception $e) {
+                // TODO
+            }
         }
 
         // запрос для получения страницы
@@ -105,6 +120,7 @@ class Slice {
         $pageRequest->sorting = $controllerResponse->sorting;
         $pageRequest->sortings = $controllerResponse->sortings;
         $pageRequest->category = $controllerResponse->category;
+        $pageRequest->categories = $categories;
         $pageRequest->catalogConfig = $controllerResponse->catalogConfig;
         $pageRequest->products = $controllerResponse->products;
 

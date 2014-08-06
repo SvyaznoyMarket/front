@@ -7,4 +7,6 @@ use EnterMobile\Repository;
 class Request extends Repository\Page\ProductCatalog\ChildCategory\Request {
     /** @var \EnterModel\Product\Slice */
     public $slice;
+    /** @var \EnterModel\Product\Category[] */
+    public $categories = [];
 }

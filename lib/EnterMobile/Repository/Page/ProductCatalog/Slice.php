@@ -44,13 +44,13 @@ class Slice {
         $currentRoute = new Routing\ProductSlice\Get($request->slice->token);
 
         $page->content->categoryBlock = false;
-        if ($request->category && (bool)$request->category->children) {
+        if ($request->categories) {
             $page->content->categoryBlock = new Partial\ProductCatalog\CategoryBlock();
-            foreach ($request->category->children as $childCategoryModel) {
+            foreach ($request->categories as $iCategoryModel) {
                 $childCategory = new Partial\ProductCatalog\CategoryBlock\Category();
-                $childCategory->name = $childCategoryModel->name;
-                $childCategory->url = $childCategoryModel->link;
-                $childCategory->image = (string)(new Routing\Product\Category\GetImage($childCategoryModel->image, $childCategoryModel->id, 1));
+                $childCategory->name = $iCategoryModel->name;
+                $childCategory->url = $router->getUrlByRoute(new Routing\ProductSlice\GetCategory($request->slice->token, $iCategoryModel->token));
+                $childCategory->image = (string)(new Routing\Product\Category\GetImage($iCategoryModel->image, $iCategoryModel->id, 1));
 
                 $page->content->categoryBlock->categories[] = $childCategory;
             }
