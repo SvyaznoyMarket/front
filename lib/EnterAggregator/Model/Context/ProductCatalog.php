@@ -7,4 +7,6 @@ use EnterAggregator\Model\Context;
 class ProductCatalog extends Context {
     /** @var bool */
     public $parentCategory = false;
+    /** @var bool */
+    public $branchCategory = false;
 }

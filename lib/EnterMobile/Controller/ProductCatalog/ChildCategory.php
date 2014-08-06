@@ -47,6 +47,7 @@ class ChildCategory {
         $context = new Context\ProductCatalog();
         $context->mainMenu = true;
         $context->parentCategory = false;
+        $context->branchCategory = true;
         $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
             $regionId,
             ['token' => $categoryToken], // критерий получения категории товара

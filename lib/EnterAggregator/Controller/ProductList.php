@@ -73,7 +73,7 @@ namespace EnterAggregator\Controller {
             $categoryItemQuery = null;
             if (!empty($categoryCriteria['id'])) {
                 //$categoryItemQuery = new Query\Product\Category\GetItemById($categoryCriteria['id'], $response->region->id);
-                $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryCriteria['id'], $response->region->id, $filterRepository->dumpRequestObjectList($baseRequestFilters));
+                $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryCriteria['id'], $response->region->id, null, $filterRepository->dumpRequestObjectList($baseRequestFilters));
             } else if (!empty($categoryCriteria['token'])) {
                 $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'], $response->region->id);
             } else if (!empty($categoryCriteria['ui'])) {
@@ -134,7 +134,7 @@ namespace EnterAggregator\Controller {
                         $parentCategoryItemQuery = new Query\Product\Category\GetTreeItemById($response->category->parentId, $response->region->id);
                         $curl->prepare($parentCategoryItemQuery);
                     }
-                } else {
+                } else if ($context->branchCategory) {
                     // запрос предка категории
                     $branchCategoryItemQuery = new Query\Product\Category\GetBranchItemByCategoryObject($response->category, $response->region->id, $filterRepository->dumpRequestObjectList($baseRequestFilters));
                     $curl->prepare($branchCategoryItemQuery);

@@ -52,6 +52,7 @@ namespace EnterMobileApplication\Controller\ProductCatalog {
             $context = new Context\ProductCatalog();
             $context->mainMenu = false;
             $context->parentCategory = false;
+            $context->branchCategory = false;
             $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
                 $regionId,
                 ['id' => $categoryId], // критерий получения категории товара
