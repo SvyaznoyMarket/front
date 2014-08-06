@@ -36,23 +36,25 @@ class ChildCategory {
         $limit = (new \EnterRepository\Product\Catalog\Config())->getLimitByHttpRequest($request);
 
         // сортировка
-        $sorting = (new \EnterRepository\Product\Sorting())->getObjectByHttpRequest($request); // TODO: перенести метод в \EnterMobile\Repository
+        $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
 
         // фильтры в http-запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
-        // фильтр категории в http-запросе
-        //$requestFilters[] = $filterRepository->getRequestObjectByCategory($category);
+        // базовые фильтры
+        $baseRequestFilters = [];
+        //$baseRequestFilters[] = $filterRepository->getRequestObjectByCategory($category);
 
         $context = new Context\ProductCatalog();
         $context->mainMenu = true;
         $context->parentCategory = false;
-        $controllerResponse = (new \EnterAggregator\Controller\ProductCatalog\ChildCategory())->execute(
+        $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
             $regionId,
             ['token' => $categoryToken], // критерий получения категории товара
             $pageNum, // номер страницы
             $limit, // лимит
             $sorting, // сортировка
             $filterRepository, // репозиторий фильтров
+            $baseRequestFilters, // базовые фильтры
             $requestFilters, // фильтры в http-запросе
             $context
         );
@@ -73,6 +75,7 @@ class ChildCategory {
         $pageRequest->limit = $limit;
         $pageRequest->count = $controllerResponse->productIdPager->count; // TODO: передавать productIdPager
         $pageRequest->requestFilters = $controllerResponse->requestFilters;
+        $pageRequest->baseRequestFilters = $controllerResponse->baseRequestFilters;
         $pageRequest->filters = $controllerResponse->filters;
         $pageRequest->sorting = $controllerResponse->sorting;
         $pageRequest->sortings = $controllerResponse->sortings;

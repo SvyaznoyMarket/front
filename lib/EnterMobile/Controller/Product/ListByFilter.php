@@ -4,6 +4,7 @@ namespace EnterMobile\Controller\Product;
 
 use Enter\Http;
 use EnterMobile\ConfigTrait;
+use EnterAggregator\LoggerTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterMobile\Controller;
@@ -13,7 +14,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Page\Product\ListByFilter as Page;
 
 class ListByFilter {
-    use ConfigTrait, CurlTrait, MustacheRendererTrait;
+    use ConfigTrait, LoggerTrait, CurlTrait, MustacheRendererTrait;
 
     /**
      * @param Http\Request $request
@@ -41,7 +42,7 @@ class ListByFilter {
         $sortings = (new \EnterRepository\Product\Sorting())->getObjectList();
 
         // сортировка
-        $sorting = (new \EnterRepository\Product\Sorting())->getObjectByHttpRequest($request);
+        $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
         if (!$sorting) {
             $sorting = reset($sortings);
         }
@@ -60,15 +61,45 @@ class ListByFilter {
         // фильтры в запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
 
+        // основные фильтры
+        $baseRequestFilters = [];
+        // фильтр категории
+        if ($categoryRequestFilter = $filterRepository->getCategoryRequestObjectByRequestList($requestFilters)) {
+            $baseRequestFilters[] = $categoryRequestFilter;
+        }
+        // фильтр среза
+        if ($sliceRequestFilter = $filterRepository->getSliceRequestObjectByRequestList($requestFilters)) {
+            // запрос среза
+            $sliceItemQuery = new Query\Product\Slice\GetItemByToken($sliceRequestFilter->value);
+            $curl->prepare($sliceItemQuery)->execute();
+
+            // срез
+            $slice = (new \EnterRepository\Product\Slice())->getObjectByQuery($sliceItemQuery);
+            if (!$slice) {
+                $this->getLogger()->push(['type' => 'error', 'error' => ['code' => 0, 'message' => 'Срез товаров не найден'], 'sliceToken' => $sliceRequestFilter->value, 'action' => __METHOD__, 'tag' => ['controller', 'critical']]);
+            } else {
+                foreach ($filterRepository->getRequestObjectListByHttpRequest(new Http\Request($slice->filters)) as $requestFilter) {
+                    $baseRequestFilters[] = $requestFilter;
+                    $requestFilters[] = $requestFilter;
+                }
+            }
+        }
+
         // запрос фильтров
         $filterListQuery = null;
-        if ($categoryFilter = $filterRepository->getCategoryRequestObjectByRequestList($requestFilters)) {
-            $filterListQuery = new Query\Product\Filter\GetListByCategoryId($categoryFilter->value, $region->id);
+        if ((bool)$baseRequestFilters) {
+            $filterListQuery = new Query\Product\Filter\GetList($filterRepository->dumpRequestObjectList($baseRequestFilters), $region->id);
             $curl->prepare($filterListQuery);
         }
 
         // запрос листинга идентификаторов товаров
-        $productIdPagerQuery = new Query\Product\GetIdPager($filterRepository->dumpRequestObjectList($requestFilters), $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
+        $productIdPagerQuery = new Query\Product\GetIdPager(
+            $filterRepository->dumpRequestObjectList($requestFilters),
+            $sorting,
+            $region->id,
+            ($pageNum - 1) * $limit,
+            $limit
+        );
         $curl->prepare($productIdPagerQuery);
 
         $curl->execute();

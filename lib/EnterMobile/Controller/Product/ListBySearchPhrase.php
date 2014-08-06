@@ -39,7 +39,7 @@ class ListBySearchPhrase {
         $sortings = (new \EnterRepository\Product\Sorting())->getObjectList();
 
         // сортировка
-        $sorting = (new \EnterRepository\Product\Sorting())->getObjectByHttpRequest($request);
+        $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
         if (!$sorting) {
             $sorting = reset($sortings);
         }

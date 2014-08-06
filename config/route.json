@@ -53,6 +53,22 @@
         "pattern": "/ajax/product-list"
     },
 
+    "ProductSlice\\GetCategory": {
+        "name": "Срез товаров по категории",
+        "pattern": "/slices/{sliceToken}/{categoryToken}",
+        "require": {
+            "sliceToken": "[\\w\\d-_]+",
+            "categoryToken": "[\\w\\d-_]+"
+        }
+    },
+    "ProductSlice\\Get": {
+        "name": "Срез товаров",
+        "pattern": "/slices/{sliceToken}",
+        "require": {
+            "sliceToken": "[\\w\\d-_]+"
+        }
+    },
+
     "Region\\Autocomplete": {
         "name": "Автоподстановка региона",
         "pattern": "/ajax/region/autocomplete"
