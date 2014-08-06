@@ -105,6 +105,17 @@ class Slice {
             }
         }
 
+        // фильтрация фильтров
+        /*
+        foreach ($controllerResponse->filters as $i => $filter) {
+            foreach ($baseRequestFilters as $requestFilter) {
+                if ($requestFilter->token == $filter->token) {
+                    unset($controllerResponse->filters[$i]);
+                }
+            }
+        }
+        */
+
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\Slice\Request();
         $pageRequest->httpRequest = $request;

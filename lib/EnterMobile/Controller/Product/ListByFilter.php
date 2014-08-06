@@ -141,6 +141,15 @@ class ListByFilter {
         // список видео для товаров
         $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
 
+        // удаление фильтров
+        foreach ($filters as $i => $filter) {
+            foreach ($baseRequestFilters as $requestFilter) {
+                if ($requestFilter->token == $filter->token) {
+                    unset($filters[$i]);
+                }
+            }
+        }
+
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Product\ListByFilter\Request();
         $pageRequest->pageNum = $pageNum + 1;

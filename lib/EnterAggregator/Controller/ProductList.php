@@ -258,6 +258,15 @@ namespace EnterAggregator\Controller {
 
             $response->products = array_values($productsById);
 
+            // удаление фильтров
+            foreach ($response->filters as $i => $filter) {
+                foreach ($response->baseRequestFilters as $requestFilter) {
+                    if ($requestFilter->token == $filter->token) {
+                        unset($response->filters[$i]);
+                    }
+                }
+            }
+
             return $response;
         }
     }
