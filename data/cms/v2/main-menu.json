@@ -172,6 +172,15 @@
             ]
         },
         {
+            "name": "Снова в школу",
+            "style": "",
+            "image": "http://content.enter.ru/wp-content/uploads/2014/08/bell-picta.png",
+            "styleHover": "",
+            "link": "/slices/bts2014",
+            "children": [
+            ]
+        },
+        {
             "disabled": true,
             "name": "Ликвидация!",
             "style": "",
