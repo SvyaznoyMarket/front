@@ -80,6 +80,10 @@ class MainMenu {
                         unset($categoryItem);
 
                         $walkByMenuElementItem($elementItems, $parentElement);
+                    } else if (0 === strpos($source, 'slice/get') && !empty($params['token'])) {
+                        $element = new Model\MainMenu\Element($elementItem);
+                        $element->type = 'slice';
+                        $element->id = (string)$params['token'];
                     }
                 } else {
                     $element = new Model\MainMenu\Element($elementItem);

@@ -127,7 +127,10 @@ class Category {
                     $walk($childItem);
                     unset($item['children']);
                 }
-                $category->ascendants[] = new Model\Product\Category($item);
+
+                if (!empty($item['id'])) {
+                    $category->ascendants[] = new Model\Product\Category($item);
+                }
             }
         };
 

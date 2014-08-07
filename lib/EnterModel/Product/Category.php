@@ -7,7 +7,7 @@ use EnterModel as Model;
 class Category {
     /** @var string */
     public $id;
-    /** @var string */
+    /** @var string|null */
     public $parentId;
     /** @var string */
     public $name;
@@ -41,7 +41,7 @@ class Category {
      */
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
-        if (array_key_exists('parent_id', $data)) $this->parentId = (string)$data['parent_id'];
+        if (array_key_exists('parent_id', $data)) $this->parentId = $data['parent_id'] ? (string)$data['parent_id'] : null;
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
         if (array_key_exists('link', $data)) $this->link = rtrim((string)$data['link'], '/');

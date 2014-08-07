@@ -106,6 +106,10 @@ class Slice {
             }
         }
 
+        if (count($categories) <= 1) {
+            $categories = [];
+        }
+
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\Slice\Request();
         $pageRequest->httpRequest = $request;

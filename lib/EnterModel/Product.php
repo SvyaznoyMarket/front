@@ -93,6 +93,7 @@ class Product {
             $this->category = new Model\Product\Category($categoryItem);
 
             foreach ($data['category'] as $categoryItem) {
+                if (empty($categoryItem['id'])) continue;
                 $this->category->ascendants[] = new Model\Product\Category($categoryItem);
             }
         }

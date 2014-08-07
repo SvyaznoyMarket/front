@@ -20,6 +20,8 @@ namespace EnterModel\Cart {
         public $user;
         /** @var string|null */
         public $clientIp;
+        /** @var float */
+        public $sum;
 
         public function __construct(array $data = []) {
             $this->deliveryGroups = array_map(function($data) { return new Split\DeliveryGroup($data); }, $data['delivery_groups']);
@@ -34,6 +36,7 @@ namespace EnterModel\Cart {
 
             $this->orders = array_map(function($data) { return new Split\Order($data); }, $data['orders']);
             $this->user = $data['user_info'] ? new Split\User($data['user_info']) : null;
+            $this->sum = $data['total_cost'];
         }
 
         public function dump() {
@@ -44,6 +47,7 @@ namespace EnterModel\Cart {
                 'payment_methods'  => array_map(function(Split\PaymentMethod $paymentMethod) { return $paymentMethod->dump(); }, $this->paymentMethods),
                 'orders'           => array_map(function(Split\Order $product) { return $product->dump(); }, $this->orders),
                 'user_info'        => $this->user ? $this->user->dump() : null,
+                'total_cost'       => $this->sum,
             ];
         }
     }
@@ -265,6 +269,8 @@ namespace EnterModel\Cart\Split {
         public $sum;
         /** @var string */
         public $paymentMethodId;
+        /** @var string */
+        public $comment;
 
         public function __construct(array $data = []) {
             $this->name = (string)$data['block_name'];
@@ -274,6 +280,7 @@ namespace EnterModel\Cart\Split {
             $this->delivery = $data['delivery'] ? new Order\Delivery($data['delivery']) : null;
             $this->sum = $data['total_cost'];
             $this->paymentMethodId = $data['payment_method_id'] ? (string)$data['payment_method_id'] : null;
+            $this->comment = (string)$data['comment'];
         }
 
         public function dump() {
@@ -285,6 +292,7 @@ namespace EnterModel\Cart\Split {
                 'delivery'          => $this->delivery ? $this->delivery->dump() : null,
                 'total_cost'        => $this->sum,
                 'payment_method_id' => $this->paymentMethodId ? (int)$this->paymentMethodId : null,
+                'comment'           => $this->comment,
             ];
         }
     }
