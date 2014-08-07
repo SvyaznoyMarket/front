@@ -168,7 +168,7 @@ class Partner {
             $partner->id = 'sociomantic';
             $partner->dataAction = $dataAction;
             $partner->dataValue = $viewHelper->json([
-                'category' => array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge((array)$category->ascendants, [$category])),
+                'category' => array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge($category->ascendants, [$category])),
             ]);
             $partners[] = $partner;
         }
