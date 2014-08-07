@@ -7,13 +7,13 @@ $startAt = microtime(true);
 $applicationDir = realpath(__DIR__ . '/..');
 
 // environment
-$environment = call_user_func(require $applicationDir . '/config/environment.php', 'live');
+$environment = call_user_func(require $applicationDir . '/config/environment.php');
 
 // response
 $response = null;
 
 // debug
-$debug = call_user_func(require $applicationDir . '/config/mobile/debug.php');
+$debug = call_user_func(require $applicationDir . '/config/1c/debug.php');
 
 // error reporting
 call_user_func(require $applicationDir . '/config/error-report.php', $debug);
@@ -28,7 +28,7 @@ $request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
 $error = null;
 
 // config
-(new \EnterMobile\Action\InitService())->execute(include $applicationDir . sprintf('/config/mobile/config-%s.php', $environment));
+(new \Enter1C\Action\InitService())->execute(include $applicationDir . sprintf('/config/1c/config-%s.php', $environment));
 
 // config post-handler
 (new \EnterAggregator\Action\HandleConfig())->execute($environment, $debug);
@@ -37,7 +37,7 @@ $error = null;
 (new \EnterAggregator\Action\HandleError())->execute($error);
 
 // shutdown handler, send response
-(new \EnterMobile\Action\RegisterShutdown())->execute($request, $response, $error, $startAt);
+(new \Enter1C\Action\RegisterShutdown())->execute($request, $response, $error, $startAt);
 
 // response
-(new \EnterMobile\Action\HandleResponse())->execute($request, $response);
+(new \Enter1C\Action\HandleResponse())->execute($request, $response);

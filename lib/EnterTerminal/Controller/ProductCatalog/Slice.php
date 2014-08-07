@@ -9,9 +9,9 @@ namespace EnterTerminal\Controller\ProductCatalog {
     use EnterTerminal\Controller;
     use EnterQuery as Query;
     use EnterModel as Model;
-    use EnterTerminal\Controller\ProductCatalog\Category\Response;
+    use EnterTerminal\Controller\ProductCatalog\Slice\Response;
 
-    class Category {
+    class Slice {
         use ConfigTrait, CurlTrait;
 
         /**
@@ -27,10 +27,16 @@ namespace EnterTerminal\Controller\ProductCatalog {
             // ид магазина
             $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
 
+            // ид среза товаров
+            $sliceToken = trim((string)$request->query['sliceId']);
+            if (!$sliceToken) {
+                throw new \Exception('Не указан параметр sliceId');
+            }
+
             // ид категории
             $categoryId = trim((string)$request->query['categoryId']);
             if (!$categoryId) {
-                throw new \Exception('Не указан параметр categoryId');
+                $categoryId = null;
             }
 
             // номер страницы
@@ -51,6 +57,10 @@ namespace EnterTerminal\Controller\ProductCatalog {
             $shopItemQuery = new Query\Shop\GetItemById($shopId);
             $curl->prepare($shopItemQuery);
 
+            // запрос среза
+            $sliceItemQuery = new Query\Product\Slice\GetItemByToken($sliceToken);
+            $curl->prepare($sliceItemQuery);
+
             $curl->execute();
 
             // магазин
@@ -59,10 +69,17 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
             }
 
+            // срез
+            $slice = (new \EnterRepository\Product\Slice())->getObjectByQuery($sliceItemQuery);
+            if (!$slice) {
+                return (new Controller\Error\NotFound())->execute($request, sprintf('Срез товаров @%s не найден', $sliceToken));
+            }
+
+            // фильтры в http-запросе и настройках среза
+            $baseRequestFilters = $filterRepository->getRequestObjectListByHttpRequest(new Http\Request($slice->filters));
+
             // фильтры в запросе
             $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
-            // фильтр категории в http-запросе
-            //$requestFilters[] = $filterRepository->getRequestObjectByCategory($category);
 
             $context = new Context\ProductCatalog();
             $context->mainMenu = false;
@@ -70,24 +87,41 @@ namespace EnterTerminal\Controller\ProductCatalog {
             $context->branchCategory = false;
             $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
                 $shop->regionId,
-                ['id' => $categoryId], // критерий получения категории товара
+                $categoryId ? ['id' => $categoryId] : [], // критерий получения категории товара
                 $pageNum, // номер страницы
                 $limit, // лимит
                 $sorting, // сортировка
                 $filterRepository, // репозиторий фильтров
-                [],
+                $baseRequestFilters,
                 $requestFilters, // фильтры в http-запросе
                 $context
             );
 
             // категория
-            if (!$controllerResponse->category) {
+            if ($categoryId && !$controllerResponse->category) {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
+            }
+
+            // список категорий
+            $categories = [];
+            if ($controllerResponse->category) {
+                $categories = $controllerResponse->category->children;
+            } else {
+                $categoryListQuery = new Query\Product\Category\GetTreeList($controllerResponse->region->id, null, $filterRepository->dumpRequestObjectList($baseRequestFilters));
+                $curl->prepare($categoryListQuery)->execute();
+
+                try {
+                    $categories = (new \EnterRepository\Product\Category())->getObjectListByQuery($categoryListQuery);
+                } catch(\Exception $e) {
+                    // TODO
+                }
             }
 
             // ответ
             $response = new Response();
+            $response->slice = $slice;
             $response->category = $controllerResponse->category;
+            $response->categories = $categories;
             $response->catalogConfig = $controllerResponse->catalogConfig;
             $response->products = $controllerResponse->products;
             $response->productCount = $controllerResponse->productIdPager->count;
@@ -99,12 +133,16 @@ namespace EnterTerminal\Controller\ProductCatalog {
     }
 }
 
-namespace EnterTerminal\Controller\ProductCatalog\Category {
+namespace EnterTerminal\Controller\ProductCatalog\Slice {
     use EnterModel as Model;
 
     class Response {
+        /** @var Model\Product\Slice */
+        public $slice;
         /** @var Model\Product\Category */
         public $category;
+        /** @var Model\Product\Category[] */
+        public $categories = [];
         /** @var Model\Product\Catalog\Config */
         public $catalogConfig;
         /** @var Model\Product[] */

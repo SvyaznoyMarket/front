@@ -27,6 +27,7 @@ class MainMenu {
 
             //trigger_error($e, E_USER_ERROR);
         }
+        //$menuData = json_decode(file_get_contents($this->getConfig()->dir . '/data/cms/v2/main-menu.json'), true);
         $categoryData = $categoryListQuery->getResult();
 
         $categoryItemsById = [];
@@ -93,6 +94,7 @@ class MainMenu {
                 }
 
                 $element->level = $parentElement ? ($parentElement->level + 1) : 1;
+                $element->hasChildren = (bool)$element->children;
 
                 if ($parentElement) {
                     $parentElement->children[] = $element;

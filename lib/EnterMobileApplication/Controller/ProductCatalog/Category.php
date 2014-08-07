@@ -51,14 +51,16 @@ namespace EnterMobileApplication\Controller\ProductCatalog {
 
             $context = new Context\ProductCatalog();
             $context->mainMenu = false;
-            $context->parentCategory = true;
-            $controllerResponse = (new \EnterAggregator\Controller\ProductCatalog\ChildCategory())->execute(
+            $context->parentCategory = false;
+            $context->branchCategory = false;
+            $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
                 $regionId,
                 ['id' => $categoryId], // критерий получения категории товара
                 $pageNum, // номер страницы
                 $limit, // лимит
                 $sorting, // сортировка
                 $filterRepository, // репозиторий фильтров
+                [],
                 $requestFilters, // фильтры в http-запросе
                 $context
             );

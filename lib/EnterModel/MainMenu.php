@@ -48,6 +48,8 @@ namespace EnterModel\MainMenu {
         public $classHover;
         /** @var Model\MainMenu\Element[] */
         public $children = [];
+        /** @var bool */
+        public $hasChildren;
 
         /**
          * @param array $data

@@ -159,6 +159,15 @@
             ]
         },
         {
+            "name": "Снова в школу",
+            "style": "",
+            "image": "http://content.enter.ru/wp-content/uploads/2014/08/btc2014.png",
+            "styleHover": "",
+            "link": "/slices/bts2014",
+            "children": [
+            ]
+        },
+        {
             "name": "TCHIBO SHOP",
             "char": "",
             "style": "",

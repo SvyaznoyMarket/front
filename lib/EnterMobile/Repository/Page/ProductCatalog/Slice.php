@@ -6,20 +6,21 @@ use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
+use EnterMobile\Model\Page\ProductCatalog\ChildCategory;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\ProductCatalog\ChildCategory as Page;
 
-class ChildCategory {
+class Slice {
     use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait;
 
     /**
      * @param Page $page
-     * @param ChildCategory\Request $request
+     * @param Slice\Request $request
      */
-    public function buildObjectByRequest(Page $page, ChildCategory\Request $request) {
+    public function buildObjectByRequest(Page $page, Slice\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
         $config = $this->getConfig();
@@ -36,20 +37,20 @@ class ChildCategory {
         // хлебные крошки
         $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
         $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
-        $breadcrumb->name = $request->category->name;
-        $breadcrumb->url = $request->category->link;
+        $breadcrumb->name = $request->slice->name;
+        $breadcrumb->url = $router->getUrlByRoute(new Routing\ProductSlice\Get($request->slice->token));
         $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
 
-        $currentRoute = new Routing\ProductCatalog\GetChildCategory($request->category->path);
+        $currentRoute = new Routing\ProductSlice\Get($request->slice->token);
 
         $page->content->categoryBlock = false;
-        if ((bool)$request->category->children) {
+        if ($request->categories) {
             $page->content->categoryBlock = new Partial\ProductCatalog\CategoryBlock();
-            foreach ($request->category->children as $childCategoryModel) {
+            foreach ($request->categories as $iCategoryModel) {
                 $childCategory = new Partial\ProductCatalog\CategoryBlock\Category();
-                $childCategory->name = $childCategoryModel->name;
-                $childCategory->url = $childCategoryModel->link;
-                $childCategory->image = (string)(new Routing\Product\Category\GetImage($childCategoryModel->image, $childCategoryModel->id, 1));
+                $childCategory->name = $iCategoryModel->name;
+                $childCategory->url = $router->getUrlByRoute(new Routing\ProductSlice\GetCategory($request->slice->token, $iCategoryModel->token));
+                $childCategory->image = (string)(new Routing\Product\Category\GetImage($iCategoryModel->image, $iCategoryModel->id, 1));
 
                 $page->content->categoryBlock->categories[] = $childCategory;
             }
@@ -107,9 +108,12 @@ class ChildCategory {
                 $page->content->filterBlock->filters = $filters;
                 $page->content->filterBlock->openedFilters = (new Repository\Partial\ProductFilter())->getList($request->filters, $request->requestFilters, true);
                 $page->content->filterBlock->actionBlock->shownProductCount = sprintf('Показать (%s)', $request->count > 999 ? '&infin;' : $request->count);
-                $page->content->filterBlock->dataGa = $viewHelper->json([
-                    'm_cat_params' => ['send', 'event', 'm_cat_params', $request->category->name],
-                ]);
+
+                if ($request->category) {
+                    $page->content->filterBlock->dataGa = $viewHelper->json([
+                        'm_cat_params' => ['send', 'event', 'm_cat_params', $request->category->name],
+                    ]);
+                }
             }
 
             // выбранные фильтры

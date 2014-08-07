@@ -34,7 +34,7 @@ class DirectCredit {
             /** @var \EnterModel\Product\Category|null $rootCategory */
             $rootCategory = ($product->category && !empty($product->category->ascendants[0])) ? $product->category->ascendants[0] : null;
             /** @var \EnterModel\Cart\Product|null $cartProduct */
-            $cartProduct = !empty($productCartsById[$product->id]) ? $productCartsById[$product->id] : null;
+            $cartProduct = !empty($cartProductsById[$product->id]) ? $cartProductsById[$product->id] : null;
 
             $productData[] = [
                 'id'    => $product->id,
