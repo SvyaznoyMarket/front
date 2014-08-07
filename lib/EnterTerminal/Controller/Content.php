@@ -49,7 +49,7 @@ namespace EnterTerminal\Controller {
             $curl->execute();
 
             if ($contentItemQuery->getError() && $contentItemQuery->getError()->getCode() === 404)
-                return (new \EnterTerminal\Controller\Error\NotFound())->execute($request);
+                return (new \EnterTerminal\Controller\Error\NotFound())->execute($request, sprintf('Контент @%s не найден', $contentToken));
 
             $item = $contentItemQuery->getResult();
 

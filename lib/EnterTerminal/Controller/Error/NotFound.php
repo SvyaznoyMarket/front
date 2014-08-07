@@ -10,15 +10,16 @@ class NotFound {
 
     /**
      * @param Http\Request $request
+     * @param string $message
      * @return Http\Response|Http\JsonResponse
      */
-    public function execute(Http\Request $request) {
+    public function execute(Http\Request $request, $message = 'Not Found') {
         $response = new Http\JsonResponse();
         $response->statusCode = Http\Response::STATUS_NOT_FOUND;
 
         $response->data['error'] = [
             'code'    => 404,
-            'message' => 'Not Found',
+            'message' => $message,
         ];
 
         return $response;
