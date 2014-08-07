@@ -14,7 +14,7 @@ class NotFound {
      */
     public function execute(Http\Request $request) {
         $response = new Http\JsonResponse();
-        $response->statusCode = Http\JsonResponse::STATUS_NOT_FOUND;
+        $response->statusCode = Http\Response::STATUS_NOT_FOUND;
 
         $response->data['error'] = [
             'code'    => 404,

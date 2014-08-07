@@ -1,19 +1,20 @@
 <?php
 
-namespace EnterMobileApplication\Controller\Error;
+namespace Enter1C\Controller\Error;
 
 use Enter\Http;
-use EnterMobileApplication\ConfigTrait;
+use Enter1C\Http\XmlResponse;
+use Enter1C\ConfigTrait;
 
 class NotFound {
     use ConfigTrait;
 
     /**
      * @param Http\Request $request
-     * @return Http\Response|Http\JsonResponse
+     * @return XmlResponse
      */
     public function execute(Http\Request $request) {
-        $response = new Http\JsonResponse();
+        $response = new XmlResponse();
         $response->statusCode = Http\Response::STATUS_NOT_FOUND;
 
         $response->data['error'] = [
