@@ -35,9 +35,12 @@ trait CoreQueryTrait {
         try {
             $response = Util\Json::toArray($response);
             if (array_key_exists('error', $response)) {
-                $response = array_merge(['code' => 0, 'message' => null], $response['error']);
+                $response = array_merge(['code' => 0, 'message' => null, 'detail' => []], $response['error']);
 
-                throw new \Exception($response['message'], $response['code']);
+                $e = new CoreQueryException($response['message'], $response['code']);
+                $e->setDetail((array)$response['detail']);
+
+                throw $e;
             } else if (array_key_exists('result', $response)) {
                 $response = $response['result'];
             }

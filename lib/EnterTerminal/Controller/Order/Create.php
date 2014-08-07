@@ -27,6 +27,9 @@ namespace EnterTerminal\Controller\Order {
             $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
 
+            // ответ
+            $response = new Response();
+
             // корзина из сессии
             $cart = $cartRepository->getObjectByHttpSession($session);
 
@@ -71,16 +74,24 @@ namespace EnterTerminal\Controller\Order {
 
             $curl->query($createOrderQuery);
 
-            $createOrderQuery->getResult();
-
-            // ответ
-            $response = new Response();
+            try {
+                $createOrderQuery->getResult();
+            } catch (Query\CoreQueryException $e) {
+                switch ($e->getCode()) {
+                    case 713:
+                        $response->errors = ['code' => $e->getCode(), 'message' => 'Неправильный метод оплаты'];
+                        break;
+                    default:
+                        $response->errors = ['code' => $e->getCode(), 'message' => 'Неизвестная ошибка'];
+                        break;
+                }
+            }
 
             $response->cart = $cart;
             $response->split = $splitData;
 
             // response
-            return new Http\JsonResponse($response);
+            return new Http\JsonResponse($response, (bool)$response->errors ? Http\Response::STATUS_BAD_REQUEST : Http\Response::STATUS_OK);
         }
     }
 }
@@ -93,5 +104,7 @@ namespace EnterTerminal\Controller\Order\Create {
         public $cart;
         /** @var array */
         public $split;
+        /** @var array */
+        public $errors = [];
     }
 }
