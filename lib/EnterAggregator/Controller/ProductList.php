@@ -142,17 +142,23 @@ namespace EnterAggregator\Controller {
             }
 
             // запрос листинга идентификаторов товаров
-            $productIdPagerQuery = new Query\Product\GetIdPager(
-                array_merge(
-                    $filterRepository->dumpRequestObjectList($response->requestFilters),
-                    $filterRepository->dumpRequestObjectList($response->baseRequestFilters)
-                ),
-                $response->sorting,
-                $response->region->id,
-                ($pageNum - 1) * $limit,
-                $limit
-            );
-            $curl->prepare($productIdPagerQuery);
+            $productIdPagerQuery = null;
+            if (
+                !$context->productOnlyForLeafCategory
+                || ($context->productOnlyForLeafCategory && $response->category && !$response->category->hasChildren)
+            ) {
+                $productIdPagerQuery = new Query\Product\GetIdPager(
+                    array_merge(
+                        $filterRepository->dumpRequestObjectList($response->requestFilters),
+                        $filterRepository->dumpRequestObjectList($response->baseRequestFilters)
+                    ),
+                    $response->sorting,
+                    $response->region->id,
+                    ($pageNum - 1) * $limit,
+                    $limit
+                );
+                $curl->prepare($productIdPagerQuery);
+            }
 
             // запрос дерева категорий для меню
             $categoryListQuery = null;
@@ -182,18 +188,18 @@ namespace EnterAggregator\Controller {
             }
 
             // листинг идентификаторов товаров
-            $response->productIdPager = (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
+            $response->productIdPager = $productIdPagerQuery ? (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery) : null;
 
             // запрос списка товаров
             $productListQuery = null;
-            if ((bool)$response->productIdPager->ids) {
+            if ($response->productIdPager && (bool)$response->productIdPager->ids) {
                 $productListQuery = new Query\Product\GetListByIdList($response->productIdPager->ids, $response->region->id);
                 $curl->prepare($productListQuery);
             }
 
             // запрос доставки товаров
             $deliveryListQuery = null;
-            if ((bool)$response->productIdPager->ids) {
+            if ($response->productIdPager && (bool)$response->productIdPager->ids) {
                 $cartProducts = [];
                 foreach ($response->productIdPager->ids as $productId) {
                     $cartProducts[] = new Model\Cart\Product(['id' => $productId, 'quantity' => 1]);
@@ -221,14 +227,17 @@ namespace EnterAggregator\Controller {
 
             // запрос списка рейтингов товаров
             $ratingListQuery = null;
-            if ($config->productReview->enabled && (bool)$response->productIdPager->ids) {
+            if ($config->productReview->enabled && $response->productIdPager && (bool)$response->productIdPager->ids) {
                 $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($response->productIdPager->ids);
                 $curl->prepare($ratingListQuery);
             }
 
             // запрос списка видео для товаров
-            $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($response->productIdPager->ids);
-            $curl->prepare($videoGroupedListQuery);
+            $videoGroupedListQuery = null;
+            if ($response->productIdPager && (bool)$response->productIdPager->ids) {
+                $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($response->productIdPager->ids);
+                $curl->prepare($videoGroupedListQuery);
+            }
 
             $curl->execute();
 
@@ -254,7 +263,9 @@ namespace EnterAggregator\Controller {
             }
 
             // список видео для товаров
-            $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
+            if ($videoGroupedListQuery) {
+                $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
+            }
 
             $response->products = array_values($productsById);
 
