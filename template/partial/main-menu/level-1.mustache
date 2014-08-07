@@ -1,7 +1,7 @@
 <ul class="navList">
     {{#elements}}
         <li class="navList_item">
-            <span class="navList_text">
+            <span class="navList_text"{{^hasChildren}} data-url="{{url}}"{{/hasChildren}}>
                 <span class="navListIco"{{#style}} style="{{style}}"{{/style}}>
                     {{char}}
                     {{^char}}

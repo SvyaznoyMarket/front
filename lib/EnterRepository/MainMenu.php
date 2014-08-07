@@ -94,6 +94,7 @@ class MainMenu {
                 }
 
                 $element->level = $parentElement ? ($parentElement->level + 1) : 1;
+                $element->hasChildren = (bool)$element->children;
 
                 if ($parentElement) {
                     $parentElement->children[] = $element;
