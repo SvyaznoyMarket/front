@@ -26,6 +26,14 @@
             "productId": "[\\w\\d-_]+"
         }
     },
+
+    "ProductCatalog\\GetSlice": {
+        "name": "Срез товаров в каталоге товаров",
+        "pattern": "/catalog/slice/{sliceToken}",
+        "require": {
+            "sliceToken": "[\\w\\d-_]+"
+        }
+    },
     "ProductCatalog\\GetRootCategory": {
         "name": "Каталог товаров - родительская категория",
         "pattern": "/catalog/{categoryPath}",
