@@ -133,8 +133,8 @@ class Partner {
             $partner->dataAction = $dataAction;
             $partner->dataValue = $viewHelper->json([
                 'pageType'         => 3,
-                'currentCategory'  => ['id' => $category->id, 'name' => $category->name],
-                'parentCategories' => $category->parent
+                'currentCategory'  => $category ? ['id' => $category->id, 'name' => $category->name] : null,
+                'parentCategories' => ($category && $category->parent)
                     ? [
                         ['id' => $category->parent->id, 'name' => $category->parent->name],
                     ]
@@ -168,7 +168,7 @@ class Partner {
             $partner->id = 'sociomantic';
             $partner->dataAction = $dataAction;
             $partner->dataValue = $viewHelper->json([
-                'category' => array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge($category->ascendants, [$category])),
+                'category' => $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge($category->ascendants, [$category])) : [],
             ]);
             $partners[] = $partner;
         }
@@ -180,7 +180,7 @@ class Partner {
             $partner->dataAction = $dataAction;
 
             $dataValue = $this->getGoogleRetargetingDataValue();
-            $dataValue['tagParams'] = array_merge($dataValue['tagParams'], ['pagetype' => 'category', 'pcat' => $category->token]);
+            $dataValue['tagParams'] = array_merge($dataValue['tagParams'], ['pagetype' => 'category', 'pcat' => $category ? $category->token : null]);
             $partner->dataValue = $viewHelper->json($dataValue);
 
             $partners[] = $partner;
