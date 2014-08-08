@@ -12,7 +12,7 @@ class XmlResponse extends Http\Response {
     public function __construct($data = null, $statusCode = self::STATUS_OK) {
         parent::__construct(null, $statusCode);
 
-        $this->data = new \ArrayObject($data ? : []);
+        $this->data = new \ArrayObject((array)$data ? : []);
 
         $this->headers['Content-Type'] = 'text/xml';
     }
@@ -22,7 +22,7 @@ class XmlResponse extends Http\Response {
      */
     public function sendContent() {
         $xml = simplexml_load_string("<?xml version='1.0' encoding='utf-8'?><response />");
-        $this->arrayToXml($this->data, $xml);
+        $this->arrayToXml(json_decode(json_encode($this->data->getArrayCopy()), true), $xml);
 
         $this->content = $xml->asXML();
 

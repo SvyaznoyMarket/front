@@ -20,7 +20,8 @@ return function(Enter1C\Config $config) {
 
     $config->region->cookieName = null;
 
-    $config->coreService->clientId = '1c'; // переопределяется из http.request
+    //$config->coreService->clientId = '1c';
+    $config->coreService->clientId = 'site';
 
     // TODO: убрать из настроек
     //$config->mustacheRenderer;
