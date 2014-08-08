@@ -30,6 +30,9 @@ namespace EnterTerminal\Controller\Order {
             // ответ
             $response = new Response();
 
+            // данные пользователя
+            $userData = (array)$request->data['user_info'];
+
             // корзина из сессии
             $cart = $cartRepository->getObjectByHttpSession($session);
 
@@ -52,6 +55,9 @@ namespace EnterTerminal\Controller\Order {
             if (!$splitData) {
                 throw new \Exception('Не найдено предыдущее разбиение');
             }
+
+            // слияние данных о пользователе
+            $splitData['user_info'] = array_merge($splitData['user_info'], $userData);
 
             $split = null;
             try {
