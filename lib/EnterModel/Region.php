@@ -2,6 +2,8 @@
 
 namespace EnterModel;
 
+use EnterModel as Model;
+
 class Region {
     /** @var string */
     public $id;
@@ -17,6 +19,8 @@ class Region {
     public $longitude;
     /** @var bool */
     public $transportCompanyAvailable;
+    /** @var Model\Region|null */
+    public $parent;
 
     /**
      * @param array $data
