@@ -36,8 +36,11 @@ namespace EnterTerminal\Controller\Cart\Split {
                 throw new \Exception('Не найдено предыдущее разбиение');
             }
 
-            // корзина из сессии
-            $cart = $cartRepository->getObjectByHttpSession($session);
+            // корзина из данных о разбиении
+            $cart = new Model\Cart();
+            foreach ($splitData['cart']['product_list'] as $productItem) {
+                $cartRepository->setProductForObject($cart, new Model\Cart\Product($productItem));
+            }
 
             // ид магазина
             $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
@@ -75,7 +78,6 @@ namespace EnterTerminal\Controller\Cart\Split {
             // ответ
             $response = new Response();
 
-            $response->cart = $cart;
             $response->split = $splitData;
 
             // response
@@ -88,8 +90,6 @@ namespace EnterTerminal\Controller\Cart\Split\Update {
     use EnterModel as Model;
 
     class Response {
-        /** @var Model\Cart */
-        public $cart;
         /** @var array */
         public $split;
     }

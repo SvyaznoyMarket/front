@@ -62,13 +62,18 @@ namespace EnterTerminal\Controller\Cart {
 
             // разбиение
             $splitData = $splitQuery->getResult();
+
+            // добавление данных о корзине
+            $splitData['cart'] = [
+                'product_list' => array_map(function(Model\Cart\Product $product) { return ['id' => $product->id, 'quantity' => $product->quantity]; }, $cart->product),
+            ];
+
             // сохранение в сессии
             $session->set($config->order->splitSessionKey, $splitData);
 
             // ответ
             $response = new Response();
 
-            $response->cart = $cart;
             $response->split = $splitData;
 
             // response
@@ -81,8 +86,6 @@ namespace EnterTerminal\Controller\Cart\Split {
     use EnterModel as Model;
 
     class Response {
-        /** @var Model\Cart */
-        public $cart;
         /** @var array */
         public $split;
     }
