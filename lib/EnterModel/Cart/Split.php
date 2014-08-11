@@ -166,7 +166,7 @@ namespace EnterModel\Cart\Split {
             $this->token = (string)$data['token'];
             $this->typeId = (string)$data['type_id'];
             $this->name = (string)$data['name'];
-            $this->pointToken = (string)$data['point_token'];
+            $this->pointToken = $data['point_token'] ? (string)$data['point_token'] : null;
             $this->groupId = (string)$data['group_id'];
             $this->description = $data['description'] ? (string)$data['description'] : null;
         }
@@ -176,7 +176,7 @@ namespace EnterModel\Cart\Split {
                 'token'       => $this->token,
                 'type_id'     => $this->typeId,
                 'name'        => $this->name,
-                'point_token' => $this->pointToken,
+                'point_token' => (string)$this->pointToken, // ядерное
                 'group_id'    => $this->groupId,
                 'description' => $this->description,
             ];
@@ -271,6 +271,14 @@ namespace EnterModel\Cart\Split {
         public $paymentMethodId;
         /** @var string */
         public $comment;
+        /** @var string[] */
+        public $possibleDeliveryMethods = [];
+        /** @var Model\Cart\Split\Interval[] */
+        public $possibleIntervals = [];
+        /** @var int[] */
+        public $possibleDays = [];
+        /** @var Model\Cart\Split\PaymentMethod[] */
+        public $possiblePaymentMethods = [];
 
         public function __construct(array $data = []) {
             $this->name = (string)$data['block_name'];
@@ -281,18 +289,26 @@ namespace EnterModel\Cart\Split {
             $this->sum = $data['total_cost'];
             $this->paymentMethodId = $data['payment_method_id'] ? (string)$data['payment_method_id'] : null;
             $this->comment = (string)$data['comment'];
+            $this->possibleDeliveryMethods = array_map(function($data) { return (string)$data; }, $data['possible_deliveries']);
+            $this->possibleIntervals = array_map(function($data) { return new Model\Cart\Split\Interval($data); }, $data['possible_intervals']);
+            $this->possibleDays = array_map(function($data) { return (int)$data; }, $data['possible_days']);
+            $this->possiblePaymentMethods = array_map(function($data) { return (string)$data; }, $data['possible_payment_methods']);
         }
 
         public function dump() {
             return [
-                'block_name'        => $this->name,
-                'seller'            => $this->seller ? $this->seller->dump() : null,
-                'products'          => array_map(function(Order\Product $product) { return $product->dump(); }, $this->products),
-                'discounts'         => array_map(function(Order\Discount $discount) { return $discount->dump(); }, $this->discounts),
-                'delivery'          => $this->delivery ? $this->delivery->dump() : null,
-                'total_cost'        => $this->sum,
-                'payment_method_id' => $this->paymentMethodId ? (int)$this->paymentMethodId : null,
-                'comment'           => $this->comment,
+                'block_name'               => $this->name,
+                'seller'                   => $this->seller ? $this->seller->dump() : null,
+                'products'                 => array_map(function(Order\Product $product) { return $product->dump(); }, $this->products),
+                'discounts'                => array_map(function(Order\Discount $discount) { return $discount->dump(); }, $this->discounts),
+                'delivery'                 => $this->delivery ? $this->delivery->dump() : null,
+                'total_cost'               => $this->sum,
+                'payment_method_id'        => $this->paymentMethodId ? (int)$this->paymentMethodId : null,
+                'comment'                  => $this->comment,
+                'possible_deliveries'      => $this->possibleDeliveryMethods,
+                'possible_intervals'       => array_map(function(Model\Cart\Split\Interval $interval) { return $interval->dump(); }, $this->possibleIntervals),
+                'possible_days'            => $this->possibleDays,
+                'possible_payment_methods' => $this->possiblePaymentMethods,
             ];
         }
     }

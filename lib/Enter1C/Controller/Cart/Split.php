@@ -9,6 +9,7 @@ namespace Enter1C\Controller\Cart {
     use EnterAggregator\LoggerTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
+    use Enter1C\Repository;
     use Enter1C\Controller;
     use Enter1C\Controller\Cart\Split\Response;
 
@@ -24,6 +25,9 @@ namespace Enter1C\Controller\Cart {
             $config = $this->getConfig();
             $curl = $this->getCurl();
 
+            // ответ
+            $response = new Response();
+
             $requestData = json_decode(json_encode(simplexml_load_string($request->getContent())), true);
 
             $cart = new Model\Cart();
@@ -31,23 +35,29 @@ namespace Enter1C\Controller\Cart {
                 $cart->product[] = new Model\Cart\Product($productItem);
             }
 
+            // удаление ненужных данных
+            //foreach ($requestData[])
+
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
-                $requestData['geo_ui']
+                $requestData['geo_ui'],
+                null,
+                null,
+                isset($requestData['previous_split']) ? $requestData['previous_split'] : [],
+                isset($requestData['changes']) ? $requestData['changes'] : []
             );
             $splitQuery->setTimeout($config->coreService->timeout * 2);
             $curl->prepare($splitQuery);
 
             $curl->execute();
 
-            // разбиение
+            // данные разбиения
             $splitData = $splitQuery->getResult();
 
-            // ответ
-            $response = new Response();
+            // разбиение
+            $split = new Model\Cart\Split($splitData);
 
-            $response->cart = $cart;
-            $response->split = $splitData;
+            $response->split = (new Repository\Cart\Split())->dumpObject($split);
 
             // response
             return new XmlResponse($response);
@@ -59,8 +69,6 @@ namespace Enter1C\Controller\Cart\Split {
     use EnterModel as Model;
 
     class Response {
-        /** @var Model\Cart */
-        public $cart;
         /** @var array */
         public $split;
     }

@@ -21,8 +21,8 @@ class XmlResponse extends Http\Response {
      * @return $this
      */
     public function sendContent() {
-        $xml = simplexml_load_string("<?xml version='1.0' encoding='utf-8'?><response />");
-        $this->arrayToXml(json_decode(json_encode($this->data->getArrayCopy()), true), $xml);
+        $xml = simplexml_load_string("<?xml version='1.0' encoding='utf-8'?><result />");
+        $this->arrayToXml($xml, json_decode(json_encode($this->data->getArrayCopy()), true));
 
         $this->content = $xml->asXML();
 
@@ -30,20 +30,19 @@ class XmlResponse extends Http\Response {
     }
 
     /**
-     * @param $data
      * @param SimpleXMLElement $xml
+     * @param $data
+     * @param string|null $parentKey
      */
-    private function arrayToXml($data, SimpleXMLElement &$xml) {
+    private function arrayToXml(SimpleXMLElement &$xml, $data, $parentKey = null) {
         foreach ($data as $key => $value) {
-            if (is_numeric($key)) {
-                $key = 'item';
-            }
-
-            $key = preg_replace('/[^a-z]/i', '', $key);
-
             if (is_array($value)) {
-                $node = $xml->addChild($key);
-                $this->arrayToXml($value, $node);
+                if (is_numeric($key)) {
+                    $this->arrayToXml($xml, $value, $parentKey);
+                } else {
+                    $node = $xml->addChild($key);
+                    $this->arrayToXml($node, $value, $key);
+                }
             } else {
                 $value = htmlentities($value);
                 $xml->addChild($key, $value);
