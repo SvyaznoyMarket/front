@@ -22,7 +22,6 @@ class Order {
         $data = [];
         foreach ($split->orders as $order) {
             $delivery = $order->delivery;
-            $deliveryMethod = $delivery ? $split->deliveryMethods[$delivery->methodToken] : null;
 
             $deliveryDate = null;
             try {
@@ -52,7 +51,7 @@ class Order {
                 'shop_id'             => ($delivery && $delivery->point) ? $delivery->point->id : null,
                 'extra'               => $order->comment,
                 'bonus_card_number'   => null, // FIXME!!!
-                'delivery_type_id'    => $deliveryMethod ? $deliveryMethod->typeId : null,
+                'delivery_type_id'    => $delivery ? $delivery->modeId : null, // ATTENTION
                 'delivery_type_token' => $delivery ? $delivery->methodToken : null,
                 'delivery_price'      => $delivery ? $delivery->price : null,
                 'delivery_period'     => ($delivery && $delivery->interval) ? [$delivery->interval->from, $delivery->interval->to] : null,
