@@ -151,7 +151,7 @@ namespace EnterModel\Cart\Split {
     class DeliveryMethod {
         /** @var string */
         public $token;
-        /** @var string */
+        /** @var string|null */
         public $typeId;
         /** @var string */
         public $name;
@@ -164,7 +164,7 @@ namespace EnterModel\Cart\Split {
 
         public function __construct(array $data = []) {
             $this->token = (string)$data['token'];
-            $this->typeId = (string)$data['type_id'];
+            $this->typeId = $data['type_id'] ? (string)$data['type_id'] : null;
             $this->name = (string)$data['name'];
             $this->pointToken = $data['point_token'] ? (string)$data['point_token'] : null;
             $this->groupId = (string)$data['group_id'];

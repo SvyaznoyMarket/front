@@ -26,8 +26,14 @@ namespace EnterTerminal\Controller\Cart {
             $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
 
-            // корзина из сессии
-            $cart = $cartRepository->getObjectByHttpSession($session);
+            if (empty($request->data['cart']['products'][0]['id'])) {
+                throw new \Exception('Не передан параметр cart.products[0].id');
+            }
+
+            $cart = new Model\Cart();
+            foreach ($request->data['cart']['products'] as $productItem) {
+                $cartRepository->setProductForObject($cart, new Model\Cart\Product($productItem));
+            }
 
             // ид магазина
             $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
