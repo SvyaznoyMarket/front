@@ -22,7 +22,11 @@ call_user_func(require $applicationDir . '/config/error-report.php', $debug);
 call_user_func(require $applicationDir . '/config/autoload.php', $applicationDir);
 
 // request
-$request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
+//$request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
+$request = new \Enter\Http\Request($_GET, [], $_COOKIE, $_FILES, $_SERVER);
+foreach ((array)json_decode($request->getContent(), true) as $key => $value) {
+    $request->data[$key] = $value;
+}
 
 // exception
 $error = null;
