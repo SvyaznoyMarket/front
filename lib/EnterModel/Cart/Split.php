@@ -75,6 +75,25 @@ namespace EnterModel\Cart\Split {
         }
     }
 
+    class Error {
+        /** @var int */
+        public $code = 0;
+        /** @var string */
+        public $message;
+
+        public function __construct(array $data = []) {
+            $this->code = (int)$data['code'];
+            $this->message = (string)$data['message'];
+        }
+
+        public function dump() {
+            return [
+                'code'    => $this->code,
+                'message' => $this->message,
+            ];
+        }
+    }
+
     abstract class Point {
         /** @var string */
         public $id;
@@ -279,6 +298,8 @@ namespace EnterModel\Cart\Split {
         public $possibleDays = [];
         /** @var Model\Cart\Split\PaymentMethod[] */
         public $possiblePaymentMethods = [];
+        /** @var Model\Cart\Split\Error[] */
+        public $errors = [];
 
         public function __construct(array $data = []) {
             $this->name = (string)$data['block_name'];
@@ -293,6 +314,7 @@ namespace EnterModel\Cart\Split {
             $this->possibleIntervals = array_map(function($data) { return new Model\Cart\Split\Interval($data); }, $data['possible_intervals']);
             $this->possibleDays = array_map(function($data) { return (int)$data; }, $data['possible_days']);
             $this->possiblePaymentMethods = array_map(function($data) { return (string)$data; }, $data['possible_payment_methods']);
+            $this->errors = array_map(function($data) { return new Model\Cart\Split\Error($data); }, $data['errors']);
         }
 
         public function dump() {
@@ -309,6 +331,7 @@ namespace EnterModel\Cart\Split {
                 'possible_intervals'       => array_map(function(Model\Cart\Split\Interval $interval) { return $interval->dump(); }, $this->possibleIntervals),
                 'possible_days'            => $this->possibleDays,
                 'possible_payment_methods' => $this->possiblePaymentMethods,
+                'errors'                   => array_map(function(Model\Cart\Split\Error $error) { return $error->dump(); }, $this->errors),
             ];
         }
     }
