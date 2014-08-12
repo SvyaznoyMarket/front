@@ -34,7 +34,7 @@ class Order {
 
             $orderData = [
                 'type_id'             => 1, // TODO: вынести в константу
-                'geo_id'              => 14975, // FIXME!!!
+                'geo_id'              => $split->region->id,
                 'user_id'             => null, // FIXME!!!
                 'is_legal'            => false, // FIXME!!!
                 'payment_id'          => $order->paymentMethodId,
