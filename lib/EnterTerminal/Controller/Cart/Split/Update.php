@@ -25,6 +25,10 @@ namespace EnterTerminal\Controller\Cart\Split {
             $curl = $this->getCurl();
             $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
+            $orderRepository = new \EnterRepository\Order();
+
+            // ответ
+            $response = new Response();
 
             $change = (array)$request->data['change'];
             if (!$change) {
@@ -75,7 +79,12 @@ namespace EnterTerminal\Controller\Cart\Split {
             $curl->execute();
 
             // разбиение
-            $splitData = $splitQuery->getResult();
+            $splitData = [];
+            try {
+                $splitData = $splitQuery->getResult();
+            } catch (Query\CoreQueryException $e) {
+                $response->errors = $orderRepository->getErrorList($e);
+            }
 
             // добавление данных о корзине
             $splitData['cart'] = [
@@ -84,9 +93,6 @@ namespace EnterTerminal\Controller\Cart\Split {
 
             // сохранение в сессии
             $session->set($config->order->splitSessionKey, $splitData);
-
-            // ответ
-            $response = new Response();
 
             $response->split = $splitData;
 
@@ -100,6 +106,8 @@ namespace EnterTerminal\Controller\Cart\Split\Update {
     use EnterModel as Model;
 
     class Response {
+        /** @var array */
+        public $errors = [];
         /** @var array */
         public $split;
     }

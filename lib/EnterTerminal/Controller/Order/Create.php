@@ -9,7 +9,6 @@ namespace EnterTerminal\Controller\Order {
     use EnterAggregator\SessionTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
-    use EnterRepository as Repository;
     use EnterTerminal\Controller;
     use EnterTerminal\Controller\Order\Create\Response;
 
@@ -26,7 +25,7 @@ namespace EnterTerminal\Controller\Order {
             $curl = $this->getCurl();
             $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
-            $orderRepository = new Repository\Order();
+            $orderRepository = new \EnterRepository\Order();
 
             // ответ
             $response = new Response();
@@ -110,12 +109,12 @@ namespace EnterTerminal\Controller\Order\Create {
 
     class Response {
         /** @var array */
+        public $errors = [];
+        /** @var array */
         public $order;
         /** @var Model\Cart */
         public $cart;
         /** @var array */
         public $split;
-        /** @var array */
-        public $errors = [];
     }
 }
