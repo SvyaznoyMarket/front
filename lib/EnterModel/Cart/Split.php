@@ -272,7 +272,7 @@ namespace EnterModel\Cart\Split {
         /** @var string */
         public $comment;
         /** @var string[] */
-        public $possibleDeliveryMethods = [];
+        public $possibleDeliveryMethodTokens = [];
         /** @var Model\Cart\Split\Interval[] */
         public $possibleIntervals = [];
         /** @var int[] */
@@ -289,7 +289,7 @@ namespace EnterModel\Cart\Split {
             $this->sum = $data['total_cost'];
             $this->paymentMethodId = $data['payment_method_id'] ? (string)$data['payment_method_id'] : null;
             $this->comment = (string)$data['comment'];
-            $this->possibleDeliveryMethods = array_map(function($data) { return (string)$data; }, $data['possible_deliveries']);
+            $this->possibleDeliveryMethodTokens = array_map(function($data) { return (string)$data; }, $data['possible_deliveries']);
             $this->possibleIntervals = array_map(function($data) { return new Model\Cart\Split\Interval($data); }, $data['possible_intervals']);
             $this->possibleDays = array_map(function($data) { return (int)$data; }, $data['possible_days']);
             $this->possiblePaymentMethods = array_map(function($data) { return (string)$data; }, $data['possible_payment_methods']);
@@ -305,7 +305,7 @@ namespace EnterModel\Cart\Split {
                 'total_cost'               => $this->sum,
                 'payment_method_id'        => $this->paymentMethodId ? (int)$this->paymentMethodId : null,
                 'comment'                  => $this->comment,
-                'possible_deliveries'      => $this->possibleDeliveryMethods,
+                'possible_deliveries'      => $this->possibleDeliveryMethodTokens,
                 'possible_intervals'       => array_map(function(Model\Cart\Split\Interval $interval) { return $interval->dump(); }, $this->possibleIntervals),
                 'possible_days'            => $this->possibleDays,
                 'possible_payment_methods' => $this->possiblePaymentMethods,

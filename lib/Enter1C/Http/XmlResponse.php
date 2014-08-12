@@ -44,7 +44,7 @@ class XmlResponse extends Http\Response {
                     $this->arrayToXml($node, $value, $key);
                 }
             } else {
-                $value = htmlentities($value);
+                //$value = htmlentities($value);
                 $xml->addChild($key, $value);
             }
         }
