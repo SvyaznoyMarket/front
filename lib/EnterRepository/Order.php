@@ -11,6 +11,10 @@ use EnterQuery as Query;
 class Order {
     use ConfigTrait, LoggerTrait;
 
+    /**
+     * @param Model\Cart\Split $split
+     * @return Query\Order\CreatePacket
+     */
     public function getPacketQueryBySplit(Model\Cart\Split $split) {
         $logger = $this->getLogger();
 
@@ -84,5 +88,24 @@ class Order {
         $query = new Query\Order\CreatePacket($data);
 
         return $query;
+    }
+
+    public function getErrorList(Query\CoreQueryException $error) {
+        $errors = [];
+
+        $messagesByCode = json_decode(file_get_contents($this->getConfig()->dir . '/data/core-error.json'), true);
+        if (isset($messagesByCode[(string)$error->getCode()])) {
+            $errors[] = ['code' => $error->getCode(), 'message' => $messagesByCode[(string)$error->getCode()]];
+        }
+
+        if (in_array($error->getCode(), [705, 708])) {
+
+        }
+
+        if (!(bool)$errors) {
+            $errors[] = ['code' => $error->getCode(), 'message' => 'Неизвестная ошибка'];
+        }
+
+        return $errors;
     }
 }

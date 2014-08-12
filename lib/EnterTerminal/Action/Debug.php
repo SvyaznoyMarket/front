@@ -111,7 +111,7 @@ class Debug {
         }
 
         // config
-        $page->config = $config;
+        //$page->config = $config;
 
         // данные из контейнера отладки
         foreach (get_object_vars($this->getDebugContainer()) as $key => $value) {
