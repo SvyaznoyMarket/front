@@ -3,7 +3,7 @@
 namespace Enter1C\Action;
 
 use Enter\Http;
-use Enter1c\Http\XmlResponse;
+use Enter1C\Http\XmlResponse;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\Action;
 use Enter1C\Controller;

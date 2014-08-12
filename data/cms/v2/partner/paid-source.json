@@ -79,5 +79,11 @@
         "match": {
             "utm_source": "exchange"
         }
+    },
+    "imarker": {
+        "match": {
+            "utm_source": "imarker",
+            "utm_medium": "cpo"
+        }
     }
 }

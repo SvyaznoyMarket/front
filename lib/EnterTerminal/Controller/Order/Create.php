@@ -9,7 +9,6 @@ namespace EnterTerminal\Controller\Order {
     use EnterAggregator\SessionTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
-    use EnterRepository as Repository;
     use EnterTerminal\Controller;
     use EnterTerminal\Controller\Order\Create\Response;
 
@@ -26,12 +25,13 @@ namespace EnterTerminal\Controller\Order {
             $curl = $this->getCurl();
             $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
+            $orderRepository = new \EnterRepository\Order();
 
             // ответ
             $response = new Response();
 
-            // корзина из сессии
-            $cart = $cartRepository->getObjectByHttpSession($session);
+            // данные пользователя
+            $userData = (array)$request->data['user_info'];
 
             // ид магазина
             $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
@@ -53,6 +53,19 @@ namespace EnterTerminal\Controller\Order {
                 throw new \Exception('Не найдено предыдущее разбиение');
             }
 
+            if (!isset($splitData['cart']['product_list'])) {
+                throw new \Exception('Не найдены товары в корзине');
+            }
+
+            // корзина из данных о разбиении
+            $cart = new Model\Cart();
+            foreach ($splitData['cart']['product_list'] as $productItem) {
+                $cartRepository->setProductForObject($cart, new Model\Cart\Product($productItem));
+            }
+
+            // слияние данных о пользователе
+            $splitData['user_info'] = array_merge($splitData['user_info'], $userData);
+
             $split = null;
             try {
                 $split = new Model\Cart\Split($splitData);
@@ -67,26 +80,21 @@ namespace EnterTerminal\Controller\Order {
             $split->clientIp = $request->getClientIp();
 
             // создание заказа
-            $createOrderQuery = (new Repository\Order())->getPacketQueryBySplit($split);
+            $createOrderQuery = $orderRepository->getPacketQueryBySplit($split);
             if (!$createOrderQuery) {
                 throw new \Exception('Не удалось создать запрос на создание заказа');
             }
 
             $curl->query($createOrderQuery);
 
+            $order = null;
             try {
-                $createOrderQuery->getResult();
+                $order = $createOrderQuery->getResult();
             } catch (Query\CoreQueryException $e) {
-                switch ($e->getCode()) {
-                    case 713:
-                        $response->errors = ['code' => $e->getCode(), 'message' => 'Неправильный метод оплаты'];
-                        break;
-                    default:
-                        $response->errors = ['code' => $e->getCode(), 'message' => 'Неизвестная ошибка'];
-                        break;
-                }
+                $response->errors = $orderRepository->getErrorList($e);
             }
 
+            $response->order = $order;
             $response->cart = $cart;
             $response->split = $splitData;
 
@@ -100,11 +108,13 @@ namespace EnterTerminal\Controller\Order\Create {
     use EnterModel as Model;
 
     class Response {
+        /** @var array */
+        public $errors = [];
+        /** @var array */
+        public $order;
         /** @var Model\Cart */
         public $cart;
         /** @var array */
         public $split;
-        /** @var array */
-        public $errors = [];
     }
 }

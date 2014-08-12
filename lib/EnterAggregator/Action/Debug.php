@@ -95,8 +95,6 @@ class Debug {
                 $curlQuery = (isset($message['query']) && $message['query'] instanceof Query) ? $message['query'] : null;
                 if (!$curlQuery) continue;
 
-                $info = $curlQuery->getInfo();
-
                 $query = new Page\Query();
 
                 $query->url = urldecode((string)$curlQuery->getUrl());
@@ -114,7 +112,6 @@ class Debug {
                 $info = $curlQuery->getInfo();
                 $info = [
                     'code'         => $info['http_code'],
-                    'error'        => $curlQuery->getError(),
                     'url'          => $info['url'],
                     'data'         => (bool)$curlQuery->getData() ? $curlQuery->getData() : null,
                     'header'       => $headers,
@@ -143,6 +140,13 @@ class Debug {
                         $info['response'] = $curlQuery->getResult();
                     } catch (\Exception $e) {}
                 }
+
+                $info['error'] = $curlQuery->getError() ? [
+                    'code'    => $curlQuery->getError()->getCode(),
+                    'message' => $curlQuery->getError()->getMessage(),
+                    'file'    => $curlQuery->getError()->getFile(),
+                    'line'    => $curlQuery->getError()->getLine(),
+                ] : null;
 
                 $query->info = json_encode($info, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
                 $query->id = md5($curlQuery->getId() . '-' . $curlQuery->getUrl() . '-' . $curlQuery->getStartAt());

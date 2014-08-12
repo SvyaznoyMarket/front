@@ -11,6 +11,10 @@ use EnterQuery as Query;
 class Order {
     use ConfigTrait, LoggerTrait;
 
+    /**
+     * @param Model\Cart\Split $split
+     * @return Query\Order\CreatePacket
+     */
     public function getPacketQueryBySplit(Model\Cart\Split $split) {
         $logger = $this->getLogger();
 
@@ -34,7 +38,7 @@ class Order {
 
             $orderData = [
                 'type_id'             => 1, // TODO: вынести в константу
-                'geo_id'              => 14975, // FIXME!!!
+                'geo_id'              => $split->region->id,
                 'user_id'             => null, // FIXME!!!
                 'is_legal'            => false, // FIXME!!!
                 'payment_id'          => $order->paymentMethodId,
@@ -49,9 +53,9 @@ class Order {
                 'address_apartment'   => null,
                 'address_floor'       => null,
                 'shop_id'             => ($delivery && $delivery->point) ? $delivery->point->id : null,
-                'extra'               => null, // FIXME!!! добавить $order->comment
+                'extra'               => $order->comment,
                 'bonus_card_number'   => null, // FIXME!!!
-                'delivery_type_id'    => null, // FIXME!!!
+                'delivery_type_id'    => $delivery ? $delivery->modeId : null, // ATTENTION
                 'delivery_type_token' => $delivery ? $delivery->methodToken : null,
                 'delivery_price'      => $delivery ? $delivery->price : null,
                 'delivery_period'     => ($delivery && $delivery->interval) ? [$delivery->interval->from, $delivery->interval->to] : null,
@@ -84,5 +88,24 @@ class Order {
         $query = new Query\Order\CreatePacket($data);
 
         return $query;
+    }
+
+    public function getErrorList(Query\CoreQueryException $error) {
+        $errors = [];
+
+        $messagesByCode = json_decode(file_get_contents($this->getConfig()->dir . '/data/core-error.json'), true);
+        if (isset($messagesByCode[(string)$error->getCode()])) {
+            $errors[] = ['code' => $error->getCode(), 'message' => $messagesByCode[(string)$error->getCode()]];
+        }
+
+        if (in_array($error->getCode(), [705, 708])) {
+
+        }
+
+        if (!(bool)$errors) {
+            $errors[] = ['code' => $error->getCode(), 'message' => 'Неизвестная ошибка'];
+        }
+
+        return $errors;
     }
 }

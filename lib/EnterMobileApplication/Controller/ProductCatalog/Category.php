@@ -53,6 +53,7 @@ namespace EnterMobileApplication\Controller\ProductCatalog {
             $context->mainMenu = false;
             $context->parentCategory = false;
             $context->branchCategory = false;
+            $context->productOnlyForLeafCategory = true;
             $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
                 $regionId,
                 ['id' => $categoryId], // критерий получения категории товара
@@ -75,7 +76,7 @@ namespace EnterMobileApplication\Controller\ProductCatalog {
             $response->category = $controllerResponse->category;
             $response->catalogConfig = $controllerResponse->catalogConfig;
             $response->products = $controllerResponse->products;
-            $response->productCount = $controllerResponse->productIdPager->count;
+            $response->productCount = $controllerResponse->productIdPager ? $controllerResponse->productIdPager->count : null;
             $response->filters = $controllerResponse->filters;
             $response->sortings = $controllerResponse->sortings;
 

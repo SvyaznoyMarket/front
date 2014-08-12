@@ -36,15 +36,15 @@ class GetItem extends Query {
         ];
         $this->data = [
             'cart' => [
-                'product_list'       => array_values(array_map(function(Model\Cart\Product $cartProduct) {
+                'product_list' => array_values(array_map(function(Model\Cart\Product $cartProduct) {
                     return [
                         'id'       => $cartProduct->id,
                         'quantity' => $cartProduct->quantity,
                     ];
                 }, $cart->product)),
-                'shop_id'            => $shop ? $shop->id : null,
-                'payment_method_id'  => $paymentMethod ? $paymentMethod->id : null,
             ],
+            'shop_id'            => $shop ? $shop->id : null,
+            'payment_method_id'  => $paymentMethod ? $paymentMethod->id : null,
         ];
 
         if ((bool)$split && (bool)$change) {

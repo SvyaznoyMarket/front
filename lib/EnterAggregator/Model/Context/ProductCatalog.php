@@ -5,8 +5,22 @@ namespace EnterAggregator\Model\Context;
 use EnterAggregator\Model\Context;
 
 class ProductCatalog extends Context {
-    /** @var bool */
+    /**
+     * Загружать родительскую категорию с ее потомками
+     *
+     * @var bool
+     */
     public $parentCategory = false;
-    /** @var bool */
+    /**
+     * Загружать ветку категории
+     *
+     * @var bool
+     */
     public $branchCategory = false;
+    /**
+     * Загружать товары только для конечных категорий
+     *
+     * @var bool
+     */
+    public $productOnlyForLeafCategory = false;
 }
