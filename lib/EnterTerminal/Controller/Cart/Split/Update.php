@@ -36,6 +36,10 @@ namespace EnterTerminal\Controller\Cart\Split {
                 throw new \Exception('Не найдено предыдущее разбиение');
             }
 
+            if (!isset($splitData['cart']['product_list'])) {
+                throw new \Exception('Не найдены товары в корзине');
+            }
+
             // корзина из данных о разбиении
             $cart = new Model\Cart();
             foreach ($splitData['cart']['product_list'] as $productItem) {
@@ -72,6 +76,12 @@ namespace EnterTerminal\Controller\Cart\Split {
 
             // разбиение
             $splitData = $splitQuery->getResult();
+
+            // добавление данных о корзине
+            $splitData['cart'] = [
+                'product_list' => array_map(function(Model\Cart\Product $product) { return ['id' => $product->id, 'quantity' => $product->quantity]; }, $cart->product),
+            ];
+
             // сохранение в сессии
             $session->set($config->order->splitSessionKey, $splitData);
 

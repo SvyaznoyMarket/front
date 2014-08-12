@@ -10,7 +10,6 @@ use EnterAggregator\LoggerTrait;
 use EnterAggregator\SessionTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\DebugContainerTrait;
-use EnterMobile\Model\Page\Debug as Page; // FIXME
 
 class Debug {
     use RequestIdTrait, ConfigTrait, LoggerTrait, SessionTrait, TemplateHelperTrait, DebugContainerTrait;
@@ -37,22 +36,22 @@ class Debug {
 
         // error
         if ($error) {
-            $page->error = new Page\Error([
+            $page->error = [
                 'message' => $error->getMessage(),
                 'type'    => $error->getCode(),
                 'file'    => $error->getFile(),
                 'line'    => $error->getLine(),
-            ]);
+            ];
         }
         else if ($lastError = error_get_last()) {
-            $page->error = new Page\Error($lastError);
+            $page->error = $lastError;
         } else if (isset($this->getDebugContainer()->error) && ($this->getDebugContainer()->error instanceof \Exception)) {
-            $page->error = new Page\Error([
+            $page->error = [
                 'message' => $this->getDebugContainer()->error->getMessage(),
                 'type'    => $this->getDebugContainer()->error->getCode(),
                 'file'    => $this->getDebugContainer()->error->getFile(),
                 'line'    => $this->getDebugContainer()->error->getLine(),
-            ]);
+            ];
         }
 
         // curl query
@@ -99,7 +98,7 @@ class Debug {
 
         // git
         try {
-            $page->git = new Page\Git();
+            $page->git = new \StdClass();
             $page->git->branch = trim(shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath($config->dir))));
             $page->git->tag = trim(shell_exec(sprintf('cd %s && git describe --always --tag', realpath($config->dir))));
         } catch (\Exception $e) {
