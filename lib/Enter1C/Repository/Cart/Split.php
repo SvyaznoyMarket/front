@@ -13,6 +13,7 @@ class Split {
 
         foreach ($split->orders as $order) {
             $orderItem = [
+                'block_name'                => $order->name,
                 'seller'                    => $order->seller ? [
                     'ui'   => $order->seller->id,
                     'name' => $order->seller->name,
@@ -23,7 +24,13 @@ class Split {
                 'payment_method'            => $order->paymentMethodId ? $split->paymentMethods[$order->paymentMethodId]->dump() : null,
                 'possible_delivery_methods' => array_map(function($token) use (&$split) {
                     return ['delivery_method' => $this->dumpDeliveryMethodObject($split->deliveryMethods[$token], $split)];
-                }, $order->possibleDeliveryMethodTokens)
+                }, $order->possibleDeliveryMethodTokens),
+                'possible_intervals'        => array_map(function(Model\Cart\Split\Interval $interval) {
+                    return ['interval' => $interval->dump()];
+                }, $order->possibleIntervals),
+                'possible_dates'            => array_map(function($date) {
+                    return ['date' => (new \DateTime())->setTimestamp($date)->format('Y-m-d\TH:i:s')];
+                }, $order->possibleDays),
             ];
 
             if ($order->delivery && ($deliveryMethod = $split->deliveryMethods[$order->delivery->methodToken])) {
