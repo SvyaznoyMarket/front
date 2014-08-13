@@ -349,7 +349,13 @@ namespace EnterModel\Cart\Split {
         public $email;
 
         public function __construct(array $data = []) {
-            $this->phone = (string)$data['phone'];
+            $this->phone = trim((string)$data['phone']);
+            $this->phone = preg_replace('/^\+7/', '8', $this->phone);
+            $this->phone = preg_replace('/[^\d]/', '', $this->phone);
+            if (10 == strlen($this->phone)) {
+                $this->phone = '8' . $this->phone;
+            }
+
             $this->lastName = (string)$data['last_name'];
             $this->firstName = (string)$data['first_name'];
             $this->address = $data['address'] ? new User\Address($data['address']) : null;

@@ -128,7 +128,7 @@ namespace EnterTerminal\Controller\Order\Create {
         /** @var Model\Order[] */
         public $errors = [];
         /** @var array */
-        public $orders;
+        public $orders = [];
         /** @var Model\Cart */
         public $cart;
         /** @var array */
