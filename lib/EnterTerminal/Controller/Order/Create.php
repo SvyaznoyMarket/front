@@ -101,6 +101,7 @@ namespace EnterTerminal\Controller\Order {
             foreach ($orderData as $orderItem) {
                 $orderItemQuery = new Query\Order\GetItemByNumber($orderItem['number'], $split->user->phone);
                 $curl->prepare($orderItemQuery);
+                $orderItemQueries[] = $orderItemQuery;
             }
 
             $curl->execute();
