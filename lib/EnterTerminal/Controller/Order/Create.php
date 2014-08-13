@@ -87,16 +87,31 @@ namespace EnterTerminal\Controller\Order {
 
             $curl->query($createOrderQuery);
 
-            $order = null;
+            $orderData = [];
             try {
-                $order = $createOrderQuery->getResult();
+                $orderData = $createOrderQuery->getResult();
             } catch (Query\CoreQueryException $e) {
                 $response->errors = $orderRepository->getErrorList($e);
             } catch (\Exception $e) {
                 $response->errors[] = ['code' => $e->getCode(), 'message' => 'Невозможно создать заказ'];
             }
 
-            $response->order = $order;
+            /** @var \Enter\Curl\Query[] $orderItemQueries */
+            $orderItemQueries = [];
+            foreach ($orderData as $orderItem) {
+                $orderItemQuery = new Query\Order\GetItemByNumber($orderItem['number'], $split->user->phone);
+                $curl->prepare($orderItemQuery);
+            }
+
+            $curl->execute();
+
+            // TODO: перенести в репозиторий
+            $orders = [];
+            foreach ($orderItemQueries as $orderItemQuery) {
+                $orders[] = new Model\Order($orderItemQuery->getResult());
+            }
+
+            $response->orders = $orders;
             $response->cart = $cart;
             $response->split = $splitData;
 
@@ -110,10 +125,10 @@ namespace EnterTerminal\Controller\Order\Create {
     use EnterModel as Model;
 
     class Response {
-        /** @var array */
+        /** @var Model\Order[] */
         public $errors = [];
         /** @var array */
-        public $order;
+        public $orders;
         /** @var Model\Cart */
         public $cart;
         /** @var array */
