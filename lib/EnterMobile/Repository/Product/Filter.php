@@ -107,6 +107,19 @@ class Filter extends BaseRepository {
     }
 
     /**
+     * @param Model\Brand $brand
+     * @return Model\Product\RequestFilter
+     */
+    public function getBrandRequestObjectByBrand(Model\Brand $brand) {
+        $filter = new Model\Product\RequestFilter();
+        $filter->token = 'brand';
+        $filter->name = 'f-brand-' . $brand->token;
+        $filter->value = $brand->id;
+
+        return $filter;
+    }
+
+    /**
      * @param Model\Product\RequestFilter[] $requestFilters
      * @return array
      */
