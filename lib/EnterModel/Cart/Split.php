@@ -314,7 +314,7 @@ namespace EnterModel\Cart\Split {
             $this->possibleIntervals = array_map(function($data) { return new Model\Cart\Split\Interval($data); }, $data['possible_intervals']);
             $this->possibleDays = array_map(function($data) { return (int)$data; }, $data['possible_days']);
             $this->possiblePaymentMethods = array_map(function($data) { return (string)$data; }, $data['possible_payment_methods']);
-            $this->errors = array_map(function($data) { return new Model\Cart\Split\Error($data); }, $data['errors']);
+            $this->errors = array_map(function($data) { return new Model\Cart\Split\Error($data); }, isset($data['errors']) ? (array)$data['errors'] : []);
         }
 
         public function dump() {
