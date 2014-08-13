@@ -92,6 +92,8 @@ namespace EnterTerminal\Controller\Order {
                 $order = $createOrderQuery->getResult();
             } catch (Query\CoreQueryException $e) {
                 $response->errors = $orderRepository->getErrorList($e);
+            } catch (\Exception $e) {
+                $response->errors[] = ['code' => $e->getCode(), 'message' => 'Невозможно создать заказ'];
             }
 
             $response->order = $order;

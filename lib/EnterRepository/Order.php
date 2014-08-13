@@ -103,7 +103,7 @@ class Order {
         }
 
         if (!(bool)$errors) {
-            $errors[] = ['code' => $error->getCode(), 'message' => 'Неизвестная ошибка'];
+            $errors[] = ['code' => $error->getCode(), 'message' => 'Невозможно создать заказ'];
         }
 
         return $errors;
