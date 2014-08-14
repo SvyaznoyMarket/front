@@ -25,7 +25,7 @@ class PaymentGroup {
             if (!isset($item['payment_methods'][0])) continue;
 
             foreach ($item['payment_methods'] as $methodItem) {
-                if (isset($methodItem['id']) && (Model\PaymentMethod::CREDIT_ID === (string)$methodItem['id'])) {
+                if (isset($methodItem['id']) && isset($methodItem['is_credit']) && (bool)$methodItem['is_credit']) {
                     return true;
                 }
             }

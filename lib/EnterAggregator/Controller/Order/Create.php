@@ -24,6 +24,7 @@ namespace EnterAggregator\Controller\Order {
             $logger = $this->getLogger();
             $curl = $this->getCurl();
             $orderRepository = new Repository\Order();
+            $paymentMethodRepository = new Repository\PaymentMethod();
 
             // ответ
             $response = new Response();
@@ -39,6 +40,9 @@ namespace EnterAggregator\Controller\Order {
             $orderData = [];
             try {
                 $orderData = $createOrderQuery->getResult();
+                if (!(bool)$orderData) { // костыль для ядра
+                    $response->errors[] = ['code' => 500, 'message' => 'Заказы не подтверждены'];
+                }
             } catch (Query\CoreQueryException $e) {
                 $response->errors = $orderRepository->getErrorList($e);
             } catch (\Exception $e) {
@@ -50,10 +54,22 @@ namespace EnterAggregator\Controller\Order {
 
             /** @var \Enter\Curl\Query[] $orderItemQueries */
             $orderItemQueries = [];
+            /** @var \Enter\Curl\Query[] $paymentMethodListQueriesByOrderNumber */
+            $paymentMethodListQueriesByOrderNumber = [];
             foreach ($orderData as $orderItem) {
-                $orderItemQuery = new Query\Order\GetItemByNumber($orderItem['number'], $split->user->phone);
+                $orderNumber = !empty($orderItem['number']) ? (string)$orderItem['number'] : null;
+                if (!$orderNumber) {
+                    $logger->push(['type' => 'error', 'error' => 'Не получен номер заказа', 'order' => $orderItem, 'action' => __METHOD__, 'tag' => ['controller', 'order']]);
+                    continue;
+                }
+
+                $orderItemQuery = new Query\Order\GetItemByNumber($orderNumber, $split->user->phone);
                 $curl->prepare($orderItemQuery);
                 $orderItemQueries[] = $orderItemQuery;
+
+                $paymentMethodListQuery = new Query\PaymentMethod\GetListByOrderNumber($orderNumber, $regionId);
+                $curl->prepare($paymentMethodListQuery);
+                $paymentMethodListQueriesByOrderNumber[$orderNumber] = $paymentMethodListQuery;
             }
 
             $curl->execute();
@@ -79,19 +95,23 @@ namespace EnterAggregator\Controller\Order {
                 }
             }
 
-            $productListQuery = new Query\Product\GetListByIdList(array_keys($orderProductsById), $regionId);
-            $curl->prepare($productListQuery);
+            $productListQuery = null;
+            if ((bool)$orderProductsById) {
+                $productListQuery = new Query\Product\GetListByIdList(array_keys($orderProductsById), $regionId);
+                $curl->prepare($productListQuery);
+            }
 
             $curl->execute();
 
             // товары сгруппированные по id
             $productsById = [];
             try {
-                $productsById = (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+                $productsById = $productListQuery ? (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]) : [];
             } catch (\Exception $e) {
                 $logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['controller', 'order']]);
             }
 
+            // товары
             foreach ($orders as $order) {
                 foreach ($order->product as $i => $orderProduct) {
                     $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : null;
@@ -105,7 +125,19 @@ namespace EnterAggregator\Controller\Order {
                 }
             }
 
+            // возможные методы оплат
+            $paymentMethodsByOrderNumber = [];
+            foreach ($paymentMethodListQueriesByOrderNumber as $orderNumber => $paymentMethodListQuery) {
+                $paymentMethodsByOrderNumber[$orderNumber] = $paymentMethodRepository->getIndexedObjectListByQuery($paymentMethodListQuery);
+            }
+
+            // доставка
             $orderRepository->setDeliveryTypeForObjectList($orders);
+
+            // установка возможных методов оплат
+            foreach ($orders as $order) {
+                $order->paymentMethods = isset($paymentMethodsByOrderNumber[$order->number]) ? array_values((array)$paymentMethodsByOrderNumber[$order->number]) : [];
+            }
 
             $response->orders = $orders;
 

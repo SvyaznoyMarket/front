@@ -85,13 +85,10 @@ namespace EnterTerminal\Controller\Order {
                 $split
             );
 
-            if (!(bool)$controllerResponse->orders) {
-                throw new \Exception('Не удалось создать заказ');
-            }
-
             $response->orders = $controllerResponse->orders;
             $response->cart = $cart;
             $response->split = $splitData;
+            $response->errors = $controllerResponse->errors;
 
             // response
             return new Http\JsonResponse($response, (bool)$response->errors ? Http\Response::STATUS_BAD_REQUEST : Http\Response::STATUS_OK);
