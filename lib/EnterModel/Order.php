@@ -56,9 +56,9 @@ class Order {
     public $comment;
     /** @var string */
     public $ipAddress;
-    /** @var \DateTime */
+    /** @var int */
     public $createdAt;
-    /** @var \DateTime */
+    /** @var int */
     public $updatedAt;
     /** @var Model\Order\Product[] */
     public $product = [];
@@ -93,12 +93,12 @@ class Order {
         if (array_key_exists('ip', $data)) $this->ipAddress = (string)$data['ip'];
         if (array_key_exists('added', $data) && $data['added'] && ('0000-00-00' != $data['added'])) {
             try {
-                $this->createdAt = new \DateTime($data['added']);
+                $this->createdAt = (new \DateTime($data['added']))->getTimestamp();
             } catch(\Exception $e) {}
         }
         if (array_key_exists('updated', $data) && $data['updated'] && ('0000-00-00' != $data['updated'])) {
             try {
-                $this->updatedAt = new \DateTime($data['updated']);
+                $this->updatedAt = (new \DateTime($data['updated']))->getTimestamp();
             } catch(\Exception $e) {}
         }
         if (array_key_exists('product', $data)) {
