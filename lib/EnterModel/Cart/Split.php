@@ -22,6 +22,8 @@ namespace EnterModel\Cart {
         public $clientIp;
         /** @var float */
         public $sum;
+        /** @var Model\Cart\Split\Error[] */
+        public $errors = [];
 
         public function __construct(array $data = []) {
             $this->deliveryGroups = array_map(function($data) { return new Split\DeliveryGroup($data); }, $data['delivery_groups']);
@@ -37,6 +39,7 @@ namespace EnterModel\Cart {
             $this->orders = array_map(function($data) { return new Split\Order($data); }, $data['orders']);
             $this->user = $data['user_info'] ? new Split\User($data['user_info']) : null;
             $this->sum = $data['total_cost'];
+            $this->errors = array_map(function($data) { return new Model\Cart\Split\Error($data); }, isset($data['errors']) ? (array)$data['errors'] : []);
         }
 
         public function dump() {
@@ -48,6 +51,7 @@ namespace EnterModel\Cart {
                 'orders'           => array_map(function(Split\Order $product) { return $product->dump(); }, $this->orders),
                 'user_info'        => $this->user ? $this->user->dump() : null,
                 'total_cost'       => $this->sum,
+                'errors'           => array_map(function(Model\Cart\Split\Error $error) { return $error->dump(); }, $this->errors),
             ];
         }
     }
@@ -298,8 +302,6 @@ namespace EnterModel\Cart\Split {
         public $possibleDays = [];
         /** @var Model\Cart\Split\PaymentMethod[] */
         public $possiblePaymentMethods = [];
-        /** @var Model\Cart\Split\Error[] */
-        public $errors = [];
 
         public function __construct(array $data = []) {
             $this->name = (string)$data['block_name'];
@@ -314,7 +316,6 @@ namespace EnterModel\Cart\Split {
             $this->possibleIntervals = array_map(function($data) { return new Model\Cart\Split\Interval($data); }, $data['possible_intervals']);
             $this->possibleDays = array_map(function($data) { return (int)$data; }, $data['possible_days']);
             $this->possiblePaymentMethods = array_map(function($data) { return (string)$data; }, $data['possible_payment_methods']);
-            $this->errors = array_map(function($data) { return new Model\Cart\Split\Error($data); }, isset($data['errors']) ? (array)$data['errors'] : []);
         }
 
         public function dump() {
@@ -331,7 +332,6 @@ namespace EnterModel\Cart\Split {
                 'possible_intervals'       => array_map(function(Model\Cart\Split\Interval $interval) { return $interval->dump(); }, $this->possibleIntervals),
                 'possible_days'            => $this->possibleDays,
                 'possible_payment_methods' => $this->possiblePaymentMethods,
-                'errors'                   => array_map(function(Model\Cart\Split\Error $error) { return $error->dump(); }, $this->errors),
             ];
         }
     }
