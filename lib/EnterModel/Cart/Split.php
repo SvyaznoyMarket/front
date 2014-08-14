@@ -519,8 +519,6 @@ namespace EnterModel\Cart\Split\Order {
         /** @var bool */
         public $hasUserAddress;
         /** @var string|null */
-        public $typeId;
-        /** @var string|null */
         public $modeId;
 
         public function __construct(array $data = []) {
@@ -530,7 +528,6 @@ namespace EnterModel\Cart\Split\Order {
             $this->interval = $data['interval'] ? new Model\Cart\Split\Interval($data['interval']) : null;
             $this->point = $data['point'] ? new Delivery\Point($data['point']) : null;
             $this->hasUserAddress = (bool)$data['use_user_address'];
-            $this->typeId = $data['type_id'] ? (string)$data['type_id'] : null;
             $this->modeId = $data['mode_id'] ? (string)$data['mode_id'] : null;
         }
 
@@ -542,7 +539,6 @@ namespace EnterModel\Cart\Split\Order {
                 'interval'              => $this->interval ? $this->interval->dump() : null,
                 'point'                 => $this->point ? $this->point->dump() : null,
                 'use_user_address'      => $this->hasUserAddress,
-                'type_id'               => $this->typeId,
                 'mode_id'               => $this->modeId,
             ];
         }
