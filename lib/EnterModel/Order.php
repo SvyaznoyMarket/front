@@ -70,6 +70,8 @@ class Order {
     public $subwayId;
     /** @var string */
     public $paymentUrl;
+    /** @var Model\Order\Delivery[] */
+    public $deliveries = [];
 
     /**
      * @param array $data
@@ -110,5 +112,12 @@ class Order {
         if (array_key_exists('discount_sum', $data)) $this->discountSum = $data['discount_sum'];
         if (array_key_exists('subway_id', $data)) $this->subwayId = (string)$data['subway_id'];
         if (array_key_exists('payment_url', $data)) $this->paymentUrl = (string)$data['payment_url'];
+        if (isset($data['delivery'][0]['delivery_id'])) {
+            foreach ($data['delivery'] as $deliveryItem) {
+                if (empty($deliveryItem['delivery_id'])) continue;
+
+                $this->deliveries[] = new Model\Order\Delivery($deliveryItem);
+            }
+        };
     }
 }

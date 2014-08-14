@@ -3,6 +3,7 @@
 namespace EnterRepository;
 
 use Enter\Http;
+use Enter\Util;
 use EnterAggregator\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterModel as Model;
@@ -113,6 +114,10 @@ class Order {
         return $errors;
     }
 
+    /**
+     * @param \Enter\Curl\Query $query
+     * @return Model\Order|null
+     */
     public function getObjectByQuery(\Enter\Curl\Query $query) {
         $order = null;
 
@@ -121,5 +126,22 @@ class Order {
         }
 
         return $order;
+    }
+
+    /**
+     * @param Model\Order[] $orders
+     */
+    public function setDeliveryTypeForObjectList(array $orders) {
+        try {
+            $deliveryTypeData = Util\Json::toArray(file_get_contents($this->getConfig()->dir . '/data/query/delivery-type.json'));
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+        }
+
+        foreach ($orders as $order) {
+            foreach ($order->deliveries as $delivery) {
+                $delivery->type = isset($deliveryTypeData[$delivery->typeId]) ? new Model\DeliveryType($deliveryTypeData[$delivery->typeId]) : null;
+            }
+        }
     }
 }

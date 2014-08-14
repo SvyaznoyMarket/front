@@ -105,6 +105,8 @@ namespace EnterAggregator\Controller\Order {
                 }
             }
 
+            $orderRepository->setDeliveryTypeForObjectList($orders);
+
             $response->orders = $orders;
 
             return $response;
