@@ -22,6 +22,7 @@ namespace EnterTerminal\Controller\Order {
          */
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
+            $logger = $this->getLogger();
             $curl = $this->getCurl();
             $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
@@ -106,10 +107,50 @@ namespace EnterTerminal\Controller\Order {
 
             $curl->execute();
 
-            // TODO: перенести в репозиторий
+            // TODO: перенести в EnterAggregator
+
+            /** @var Model\Order[] $orders */
             $orders = [];
-            foreach ($orderItemQueries as $orderItemQuery) {
-                $orders[] = new Model\Order($orderItemQuery->getResult());
+            foreach ($orderItemQueries as $i => $orderItemQuery) {
+                try {
+                    $order = $orderRepository->getObjectByQuery($orderItemQuery);
+
+                    $orders[] = $order;
+                } catch (\Exception $e) {
+                    $logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['controller', 'order']]);
+
+                    $orders[] = new Model\Order($orderData[$i]);
+                }
+            }
+
+            $orderProductsById = [];
+            foreach ($orders as $order) {
+                foreach ($order->product as $orderProduct) {
+                    $orderProductsById[$orderProduct->id] = $orderProduct;
+                }
+            }
+
+            $productListQuery = new Query\Product\GetListByIdList(array_keys($orderProductsById));
+            $curl->prepare($productListQuery);
+
+            $curl->execute();
+
+            $productsById = [];
+            try {
+                $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList($productListQuery);
+            } catch (\Exception $e) {
+                $logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['controller', 'order']]);
+            }
+
+            foreach ($orders as $order) {
+                foreach ($order->product as $orderProduct) {
+                    $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : null;
+                    if (!$product) continue;
+
+                    $product->price = $orderProduct->price;
+                    $product->quantity = $orderProduct->quantity; // FIXME
+                    $product->sum = $orderProduct->sum; // FIXME
+                }
             }
 
             $response->orders = $orders;

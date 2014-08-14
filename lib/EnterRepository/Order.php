@@ -90,6 +90,10 @@ class Order {
         return $query;
     }
 
+    /**
+     * @param Query\CoreQueryException $error
+     * @return array
+     */
     public function getErrorList(Query\CoreQueryException $error) {
         $errors = [];
 
@@ -107,5 +111,15 @@ class Order {
         }
 
         return $errors;
+    }
+
+    public function getObjectByQuery(\Enter\Curl\Query $query) {
+        $order = null;
+
+        if ($item = $query->getResult()) {
+            $order = new Model\Order($item);
+        }
+
+        return $order;
     }
 }
