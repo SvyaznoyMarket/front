@@ -80,80 +80,16 @@ namespace EnterTerminal\Controller\Order {
             $split->region = $shop->region;
             $split->clientIp = $request->getClientIp();
 
-            // создание заказа
-            $createOrderQuery = $orderRepository->getPacketQueryBySplit($split);
-            if (!$createOrderQuery) {
-                throw new \Exception('Не удалось создать запрос на создание заказа');
+            $controllerResponse = (new \EnterAggregator\Controller\Order\Create())->execute(
+                $shop->regionId,
+                $split
+            );
+
+            if (!(bool)$controllerResponse->orders) {
+                throw new \Exception('Не удалось создать заказ');
             }
 
-            $curl->query($createOrderQuery);
-
-            $orderData = [];
-            try {
-                $orderData = $createOrderQuery->getResult();
-            } catch (Query\CoreQueryException $e) {
-                $response->errors = $orderRepository->getErrorList($e);
-            } catch (\Exception $e) {
-                $response->errors[] = ['code' => $e->getCode(), 'message' => 'Невозможно создать заказ'];
-            }
-
-            /** @var \Enter\Curl\Query[] $orderItemQueries */
-            $orderItemQueries = [];
-            foreach ($orderData as $orderItem) {
-                $orderItemQuery = new Query\Order\GetItemByNumber($orderItem['number'], $split->user->phone);
-                $curl->prepare($orderItemQuery);
-                $orderItemQueries[] = $orderItemQuery;
-            }
-
-            $curl->execute();
-
-            // TODO: перенести в EnterAggregator
-
-            /** @var Model\Order[] $orders */
-            $orders = [];
-            foreach ($orderItemQueries as $i => $orderItemQuery) {
-                try {
-                    $order = $orderRepository->getObjectByQuery($orderItemQuery);
-
-                    $orders[] = $order;
-                } catch (\Exception $e) {
-                    $logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['controller', 'order']]);
-
-                    $orders[] = new Model\Order($orderData[$i]);
-                }
-            }
-
-            $orderProductsById = [];
-            foreach ($orders as $order) {
-                foreach ($order->product as $orderProduct) {
-                    $orderProductsById[$orderProduct->id] = $orderProduct;
-                }
-            }
-
-            $productListQuery = new Query\Product\GetListByIdList(array_keys($orderProductsById));
-            $curl->prepare($productListQuery);
-
-            $curl->execute();
-
-            $productsById = [];
-            try {
-                $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList($productListQuery);
-            } catch (\Exception $e) {
-                $logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['controller', 'order']]);
-            }
-
-            foreach ($orders as $order) {
-                foreach ($order->product as $orderProduct) {
-                    $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : null;
-                    if (!$product) continue;
-
-                    $product->price = $orderProduct->price;
-                    $product->quantity = $orderProduct->quantity; // FIXME
-                    $product->sum = $orderProduct->sum; // FIXME
-                }
-            }
-
-            $response->orders = $orders;
+            $response->orders = $controllerResponse->orders;
             $response->cart = $cart;
             $response->split = $splitData;
 

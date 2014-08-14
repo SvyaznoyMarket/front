@@ -15,9 +15,9 @@ class GetListByIdList extends Query {
 
     /**
      * @param array $ids
-     * @param string|null $regionId
+     * @param string $regionId
      */
-    public function __construct(array $ids, $regionId = null) {
+    public function __construct(array $ids, $regionId) {
         $this->url = new Url();
         $this->url->path = 'v2/product/get';
         $this->url->query = [
