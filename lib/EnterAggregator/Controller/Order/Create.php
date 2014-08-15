@@ -45,8 +45,10 @@ namespace EnterAggregator\Controller\Order {
                 }
             } catch (Query\CoreQueryException $e) {
                 $response->errors = $orderRepository->getErrorList($e);
+                $logger->push(['type' => 'error', 'error' => $e, 'query' => $createOrderQuery, 'action' => __METHOD__, 'tag' => ['controller', 'order']]);
             } catch (\Exception $e) {
                 $response->errors[] = ['code' => $e->getCode(), 'message' => 'Невозможно создать заказ'];
+                $logger->push(['type' => 'error', 'error' => $e, 'query' => $createOrderQuery, 'action' => __METHOD__, 'tag' => ['controller', 'order', 'critical']]);
             }
 
             // FIXME: заглушка
