@@ -67,7 +67,7 @@ class Debug {
                 if ($config->curl->logResponse) {
                     try {
                         // TODO: в response должны записываться данные из $curlQuery->response
-                        $info['response'] = $curlQuery->getResult();
+                        $query->response = $curlQuery->getResult();
                     } catch (\Exception $e) {}
                 }
 

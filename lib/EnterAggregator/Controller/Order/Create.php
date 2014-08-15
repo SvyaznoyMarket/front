@@ -30,7 +30,7 @@ namespace EnterAggregator\Controller\Order {
             $response = new Response();
 
             // создание заказа
-            $createOrderQuery = $orderRepository->getPacketQueryBySplit($split);
+            $createOrderQuery = new Query\Order\CreatePacketBySplit($split);
             if (!$createOrderQuery) {
                 throw new \Exception('Не удалось создать запрос на создание заказа');
             }
@@ -40,7 +40,7 @@ namespace EnterAggregator\Controller\Order {
             $orderData = [];
             try {
                 $orderData = $createOrderQuery->getResult();
-                if (!(bool)$orderData) { // костыль для ядра
+                if (!count($orderData)) { // костыль для ядра
                     $response->errors[] = ['code' => 500, 'message' => 'Заказы не подтверждены'];
                 }
             } catch (Query\CoreQueryException $e) {
