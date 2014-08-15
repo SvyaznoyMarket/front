@@ -32,6 +32,7 @@ namespace Enter1C\Controller\Cart {
 
             $cart = new Model\Cart();
             foreach ($requestData['cart']['product'] as $productItem) {
+                if (isset($productItem['id'])) unset($productItem['id']);
                 $cart->product[] = new Model\Cart\Product($productItem);
             }
 

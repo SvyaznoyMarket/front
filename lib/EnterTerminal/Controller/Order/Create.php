@@ -22,6 +22,7 @@ namespace EnterTerminal\Controller\Order {
          */
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
+            $logger = $this->getLogger();
             $curl = $this->getCurl();
             $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
@@ -79,24 +80,15 @@ namespace EnterTerminal\Controller\Order {
             $split->region = $shop->region;
             $split->clientIp = $request->getClientIp();
 
-            // создание заказа
-            $createOrderQuery = $orderRepository->getPacketQueryBySplit($split);
-            if (!$createOrderQuery) {
-                throw new \Exception('Не удалось создать запрос на создание заказа');
-            }
+            $controllerResponse = (new \EnterAggregator\Controller\Order\Create())->execute(
+                $shop->regionId,
+                $split
+            );
 
-            $curl->query($createOrderQuery);
-
-            $order = null;
-            try {
-                $order = $createOrderQuery->getResult();
-            } catch (Query\CoreQueryException $e) {
-                $response->errors = $orderRepository->getErrorList($e);
-            }
-
-            $response->order = $order;
+            $response->orders = $controllerResponse->orders;
             $response->cart = $cart;
             $response->split = $splitData;
+            $response->errors = $controllerResponse->errors;
 
             // response
             return new Http\JsonResponse($response, (bool)$response->errors ? Http\Response::STATUS_BAD_REQUEST : Http\Response::STATUS_OK);
@@ -108,10 +100,10 @@ namespace EnterTerminal\Controller\Order\Create {
     use EnterModel as Model;
 
     class Response {
-        /** @var array */
+        /** @var Model\Order[] */
         public $errors = [];
         /** @var array */
-        public $order;
+        public $orders = [];
         /** @var Model\Cart */
         public $cart;
         /** @var array */

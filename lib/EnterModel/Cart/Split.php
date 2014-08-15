@@ -22,6 +22,8 @@ namespace EnterModel\Cart {
         public $clientIp;
         /** @var float */
         public $sum;
+        /** @var Model\Cart\Split\Error[] */
+        public $errors = [];
 
         public function __construct(array $data = []) {
             $this->deliveryGroups = array_map(function($data) { return new Split\DeliveryGroup($data); }, $data['delivery_groups']);
@@ -37,6 +39,7 @@ namespace EnterModel\Cart {
             $this->orders = array_map(function($data) { return new Split\Order($data); }, $data['orders']);
             $this->user = $data['user_info'] ? new Split\User($data['user_info']) : null;
             $this->sum = $data['total_cost'];
+            $this->errors = array_map(function($data) { return new Model\Cart\Split\Error($data); }, isset($data['errors']) ? (array)$data['errors'] : []);
         }
 
         public function dump() {
@@ -48,6 +51,7 @@ namespace EnterModel\Cart {
                 'orders'           => array_map(function(Split\Order $product) { return $product->dump(); }, $this->orders),
                 'user_info'        => $this->user ? $this->user->dump() : null,
                 'total_cost'       => $this->sum,
+                'errors'           => array_map(function(Model\Cart\Split\Error $error) { return $error->dump(); }, $this->errors),
             ];
         }
     }
@@ -298,8 +302,6 @@ namespace EnterModel\Cart\Split {
         public $possibleDays = [];
         /** @var Model\Cart\Split\PaymentMethod[] */
         public $possiblePaymentMethods = [];
-        /** @var Model\Cart\Split\Error[] */
-        public $errors = [];
 
         public function __construct(array $data = []) {
             $this->name = (string)$data['block_name'];
@@ -314,7 +316,6 @@ namespace EnterModel\Cart\Split {
             $this->possibleIntervals = array_map(function($data) { return new Model\Cart\Split\Interval($data); }, $data['possible_intervals']);
             $this->possibleDays = array_map(function($data) { return (int)$data; }, $data['possible_days']);
             $this->possiblePaymentMethods = array_map(function($data) { return (string)$data; }, $data['possible_payment_methods']);
-            $this->errors = array_map(function($data) { return new Model\Cart\Split\Error($data); }, $data['errors']);
         }
 
         public function dump() {
@@ -331,7 +332,6 @@ namespace EnterModel\Cart\Split {
                 'possible_intervals'       => array_map(function(Model\Cart\Split\Interval $interval) { return $interval->dump(); }, $this->possibleIntervals),
                 'possible_days'            => $this->possibleDays,
                 'possible_payment_methods' => $this->possiblePaymentMethods,
-                'errors'                   => array_map(function(Model\Cart\Split\Error $error) { return $error->dump(); }, $this->errors),
             ];
         }
     }
@@ -349,7 +349,13 @@ namespace EnterModel\Cart\Split {
         public $email;
 
         public function __construct(array $data = []) {
-            $this->phone = (string)$data['phone'];
+            $this->phone = trim((string)$data['phone']);
+            $this->phone = preg_replace('/^\+7/', '8', $this->phone);
+            $this->phone = preg_replace('/[^\d]/', '', $this->phone);
+            if (10 == strlen($this->phone)) {
+                $this->phone = '8' . $this->phone;
+            }
+
             $this->lastName = (string)$data['last_name'];
             $this->firstName = (string)$data['first_name'];
             $this->address = $data['address'] ? new User\Address($data['address']) : null;
@@ -513,8 +519,6 @@ namespace EnterModel\Cart\Split\Order {
         /** @var bool */
         public $hasUserAddress;
         /** @var string|null */
-        public $typeId;
-        /** @var string|null */
         public $modeId;
 
         public function __construct(array $data = []) {
@@ -524,7 +528,6 @@ namespace EnterModel\Cart\Split\Order {
             $this->interval = $data['interval'] ? new Model\Cart\Split\Interval($data['interval']) : null;
             $this->point = $data['point'] ? new Delivery\Point($data['point']) : null;
             $this->hasUserAddress = (bool)$data['use_user_address'];
-            $this->typeId = $data['type_id'] ? (string)$data['type_id'] : null;
             $this->modeId = $data['mode_id'] ? (string)$data['mode_id'] : null;
         }
 
@@ -536,7 +539,6 @@ namespace EnterModel\Cart\Split\Order {
                 'interval'              => $this->interval ? $this->interval->dump() : null,
                 'point'                 => $this->point ? $this->point->dump() : null,
                 'use_user_address'      => $this->hasUserAddress,
-                'type_id'               => $this->typeId,
                 'mode_id'               => $this->modeId,
             ];
         }

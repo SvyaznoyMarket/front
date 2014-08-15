@@ -78,7 +78,7 @@ class Slice {
             }
             foreach (array_merge($request->baseRequestFilters, $request->requestFilters) as $requestFilter) {
                 if (!$requestFilter->name) {
-                    $this->getLogger()->push(['type' => 'warn', 'message' => 'Пустой токен', 'requestFilter' => $requestFilter, 'action' => __METHOD__, 'tag' => ['repository']]);
+                    $this->getLogger()->push(['type' => 'warn', 'message' => 'Пустой токен', 'requestFilter' => $requestFilter, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
                     continue;
                 }
                 $dataValue[$requestFilter->name] = $requestFilter->value;
@@ -131,7 +131,7 @@ class Slice {
         try {
             $page->partners = (new Repository\Partial\Partner())->getListForProductCatalog($request);
         } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['partner']]);
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
         }
 
         // шаблоны mustache
@@ -160,7 +160,7 @@ class Slice {
 
                 $page->templates[] = $template;
             } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['template']]);
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['template']]);
             }
         }
 

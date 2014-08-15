@@ -22,6 +22,7 @@ class HandleConfig {
         }
         if (2 == $config->debugLevel) {
             $config->curl->logResponse = true;
+            $config->coreService->debug = true;
         }
 
         // partner

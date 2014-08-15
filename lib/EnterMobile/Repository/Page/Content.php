@@ -28,7 +28,7 @@ class Content {
 //        try {
 //            $page->partners = (new Repository\Partial\Partner())->getListForIndex($request);
 //        } catch (\Exception $e) {
-//            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['partner']]);
+//            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
 //        }
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));

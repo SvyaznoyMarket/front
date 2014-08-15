@@ -115,7 +115,7 @@ class DefaultPage {
         try {
             $page->partners = (new Repository\Partial\Partner())->getDefaultList($request);
         } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['partner']]);
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
         }
 
         // шаблоны mustache
@@ -140,7 +140,7 @@ class DefaultPage {
 
                 $page->templates[] = $template;
             } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['template']]);
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['template']]);
             }
         }
     }

@@ -46,6 +46,7 @@ return function(\EnterAggregator\Config $config) {
     $config->coreService->url = 'http://api.enter.ru/';
     $config->coreService->timeout = 5;
     $config->coreService->clientId = 'site';
+    $config->coreService->debug = false;
 
     $config->cmsService->url = 'http://cms.enter.ru/';
     $config->cmsService->timeout = 1;

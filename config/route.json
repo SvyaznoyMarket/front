@@ -141,7 +141,6 @@
         }
     },
 
-
     "User\\Login": {
         "name": "Вход пользователя",
         "pattern": "/login"
@@ -175,6 +174,11 @@
     "Search\\Index": {
         "name": "Поиск",
         "pattern": "/search"
+    },
+
+    "ProductSet\\Index": {
+        "name": "Сеты товаров",
+        "pattern": "/products/set/{productBarcodes}"
     },
 
     "Cart\\SetProduct": {

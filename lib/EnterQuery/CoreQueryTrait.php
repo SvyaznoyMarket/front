@@ -20,6 +20,9 @@ trait CoreQueryTrait {
 
         $this->url->prefix = $config->url;
         $this->url->query['client_id'] = $config->clientId;
+        if ($config->debug) {
+            $this->url->query['log4php'] = 'debug';
+        }
         $this->timeout = $config->timeout;
     }
 

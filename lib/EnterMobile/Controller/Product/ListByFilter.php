@@ -76,7 +76,7 @@ class ListByFilter {
             // срез
             $slice = (new \EnterRepository\Product\Slice())->getObjectByQuery($sliceItemQuery);
             if (!$slice) {
-                $this->getLogger()->push(['type' => 'error', 'error' => ['code' => 0, 'message' => 'Срез товаров не найден'], 'sliceToken' => $sliceRequestFilter->value, 'action' => __METHOD__, 'tag' => ['controller', 'critical']]);
+                $this->getLogger()->push(['type' => 'error', 'error' => ['code' => 0, 'message' => 'Срез товаров не найден'], 'sliceToken' => $sliceRequestFilter->value, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'critical']]);
             } else {
                 foreach ($filterRepository->getRequestObjectListByHttpRequest(new Http\Request($slice->filters)) as $requestFilter) {
                     $baseRequestFilters[] = $requestFilter;

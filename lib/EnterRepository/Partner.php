@@ -57,7 +57,7 @@ class Partner {
 
         foreach ($data as $partnerToken => $item) {
             if (!isset($item['match'])) {
-                $this->getLogger()->push(['type' => 'error', 'error' => 'Не указан match', 'action' => __METHOD__, 'tag' => ['partner']]);;
+                $this->getLogger()->push(['type' => 'error', 'error' => 'Не указан match', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);;
                 continue;
             }
 
@@ -131,13 +131,13 @@ class Partner {
 
         // получение партнера по http.request.query
         $partner = $this->getObjectByHttpRequestQuery($request);
-        if ($partner) $logger->push(['type' => 'info', 'message' => 'Обнаружен партнер', 'source' => 'http.request.query', 'partner' => $partner->token, 'action' => __METHOD__, 'tag' => ['partner']]);
+        if ($partner) $logger->push(['type' => 'info', 'message' => 'Обнаружен партнер', 'source' => 'http.request.query', 'partner' => $partner->token, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
 
         // если партнер НЕ обнаружен в http.request.query (или, в GET-параметрах)
         if (!$partner) {
             // получение партнера по http.request.cookie
             $partner = $this->getObjectByHttpRequestCookie($request);
-            if ($partner) $logger->push(['type' => 'info', 'message' => 'Обнаружен партнер', 'source' => 'http.request.cookie', 'partner' => $partner->token, 'action' => __METHOD__, 'tag' => ['partner']]);
+            if ($partner) $logger->push(['type' => 'info', 'message' => 'Обнаружен партнер', 'source' => 'http.request.cookie', 'partner' => $partner->token, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
         }
 
         return $partner;
@@ -177,7 +177,7 @@ class Partner {
                 ));
             }
         } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'partner' => $partner->token, 'action' => __METHOD__, 'tag' => ['partner']]);
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'partner' => $partner->token, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
         }
     }
 }

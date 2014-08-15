@@ -44,7 +44,7 @@ class MatchRoute {
                 $request->query[$key] = $value;
             }
         } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['routing']]);
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['routing']]);
 
             $callable = [new Controller\Error\NotFound(), 'execute'];
         }
