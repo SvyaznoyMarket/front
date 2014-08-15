@@ -45,10 +45,10 @@ namespace EnterAggregator\Controller\Order {
                 }
             } catch (Query\CoreQueryException $e) {
                 $response->errors = $orderRepository->getErrorList($e);
-                $logger->push(['type' => 'error', 'error' => $e, 'query' => $createOrderQuery, 'action' => __METHOD__, 'tag' => ['controller', 'order']]);
+                $logger->push(['type' => 'error', 'error' => $e, 'query' => $createOrderQuery, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
             } catch (\Exception $e) {
                 $response->errors[] = ['code' => $e->getCode(), 'message' => 'Невозможно создать заказ'];
-                $logger->push(['type' => 'error', 'error' => $e, 'query' => $createOrderQuery, 'action' => __METHOD__, 'tag' => ['controller', 'order', 'critical']]);
+                $logger->push(['type' => 'error', 'error' => $e, 'query' => $createOrderQuery, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order', 'critical']]);
             }
 
             // FIXME: заглушка
@@ -61,7 +61,7 @@ namespace EnterAggregator\Controller\Order {
             foreach ($orderData as $orderItem) {
                 $orderNumber = !empty($orderItem['number']) ? (string)$orderItem['number'] : null;
                 if (!$orderNumber) {
-                    $logger->push(['type' => 'error', 'error' => 'Не получен номер заказа', 'order' => $orderItem, 'action' => __METHOD__, 'tag' => ['controller', 'order']]);
+                    $logger->push(['type' => 'error', 'error' => 'Не получен номер заказа', 'order' => $orderItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
                     continue;
                 }
 
@@ -84,7 +84,7 @@ namespace EnterAggregator\Controller\Order {
 
                     $orders[] = $order;
                 } catch (\Exception $e) {
-                    $logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['controller', 'order']]);
+                    $logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
 
                     $orders[] = new Model\Order($orderData[$i]);
                 }
@@ -110,7 +110,7 @@ namespace EnterAggregator\Controller\Order {
             try {
                 $productsById = $productListQuery ? (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]) : [];
             } catch (\Exception $e) {
-                $logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['controller', 'order']]);
+                $logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
             }
 
             // товары

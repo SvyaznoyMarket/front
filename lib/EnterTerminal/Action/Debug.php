@@ -102,7 +102,7 @@ class Debug {
             $page->git->branch = trim(shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath($config->dir))));
             $page->git->tag = trim(shell_exec(sprintf('cd %s && git describe --always --tag', realpath($config->dir))));
         } catch (\Exception $e) {
-            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['debug']]);
+            $logger->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['debug']]);
         }
 
         // session
@@ -116,7 +116,7 @@ class Debug {
         // данные из контейнера отладки
         foreach (get_object_vars($this->getDebugContainer()) as $key => $value) {
             if (isset($page->{$key})) {
-                $logger->push(['type' => 'warn', 'error' => sprintf('Свойство %s уже существует', $key), 'action' => __METHOD__, 'tag' => ['debug']]);
+                $logger->push(['type' => 'warn', 'error' => sprintf('Свойство %s уже существует', $key), 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['debug']]);
                 continue;
             }
 

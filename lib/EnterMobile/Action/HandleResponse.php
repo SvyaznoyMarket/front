@@ -25,7 +25,7 @@ class HandleResponse {
             'data'    => $request->data,
             'cookie'  => $request->cookies,
             'server'  => $request->server,
-        ], 'action' => __METHOD__, 'tag' => ['request']]);
+        ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
 
         // проверка редиректа
         $response = (new Action\CheckRedirect())->execute($request);
@@ -43,7 +43,7 @@ class HandleResponse {
             try {
                 (new Action\CheckPartner())->execute($request, $response);
             } catch (\Exception $e) {
-                $logger->push(['type' => 'error', 'action' => __METHOD__, 'error'  => $e, 'tag' => ['partner']]);
+                $logger->push(['type' => 'error', 'sender' => __FILE__ . ' ' .  __LINE__, 'error'  => $e, 'tag' => ['partner']]);
             }
         }
 
@@ -53,7 +53,7 @@ class HandleResponse {
             $logger->push(['session' => [
                 'id'    => $this->getSession()->getId(),
                 'value' => $this->getSession()->all(),
-            ], 'action' => __METHOD__, 'tag' => ['request']]);
+            ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
         }
 
         // debug cookie
@@ -79,7 +79,7 @@ class HandleResponse {
                 }
             }
         } catch (\Exception $e) {
-            $logger->push(['type' => 'error', 'action' => __METHOD__, 'error'  => $e]);
+            $logger->push(['type' => 'error', 'sender' => __FILE__ . ' ' .  __LINE__, 'error'  => $e]);
         }
     }
 }

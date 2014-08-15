@@ -33,7 +33,7 @@ class CreatePacketBySplit extends Query {
                     $deliveryDate = (new \DateTime())->setTimestamp($delivery->date);
                 }
             } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['critical', 'repository']]);
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['critical', 'repository']]);
             }
 
             $orderData = [

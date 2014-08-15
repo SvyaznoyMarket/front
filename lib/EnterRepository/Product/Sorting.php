@@ -26,7 +26,7 @@ class Sorting {
             ], $item);
 
             if (!$item['token'] || !$item['name'] || !$item['direction']) {
-                $this->getLogger()->push(['type' => 'error', 'error' => 'Неверный элемент сортировки', 'item' => $item, 'action' => __METHOD__, 'tag' => ['repository']]);
+                $this->getLogger()->push(['type' => 'error', 'error' => 'Неверный элемент сортировки', 'item' => $item, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
                 continue;
             }
 

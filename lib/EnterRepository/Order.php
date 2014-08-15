@@ -52,7 +52,7 @@ class Order {
         try {
             $deliveryTypeData = Util\Json::toArray(file_get_contents($this->getConfig()->dir . '/data/query/delivery-type.json'));
         } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
 
         foreach ($orders as $order) {

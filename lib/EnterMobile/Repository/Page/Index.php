@@ -36,7 +36,7 @@ class Index {
         $promoData = [];
         foreach ($request->promos as $promoModel) {
             if (!$promoModel->image) {
-                $this->getLogger()->push(['type' => 'warn', 'error' => sprintf('Нет картинки у промо #', $promoModel->id), 'action' => __METHOD__, 'tag' => ['promo']]);
+                $this->getLogger()->push(['type' => 'warn', 'error' => sprintf('Нет картинки у промо #', $promoModel->id), 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['promo']]);
                 continue;
             }
             $promoItem = [
@@ -69,7 +69,7 @@ class Index {
         try {
             $page->partners = (new Repository\Partial\Partner())->getListForIndex($request);
         } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['partner']]);
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
         }
 
         // шаблоны mustache
@@ -83,7 +83,7 @@ class Index {
 
                 $page->templates[] = $template;
             } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['template']]);
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['template']]);
             }
         }
 

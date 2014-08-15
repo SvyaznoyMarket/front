@@ -25,10 +25,10 @@ class MatchRoute {
 
             $controllerClass = '\\EnterMobileApplication\\Controller\\' . $controllerName; // TODO: перенести в настройки
 
-            $this->getLogger()->push(['controller' => $controllerClass, 'action' => __METHOD__, 'tag' => ['routing']]);
+            $this->getLogger()->push(['controller' => $controllerClass, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['routing']]);
             $callable = [new $controllerClass, 'execute'];
         } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['routing']]);
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['routing']]);
 
             $callable = [new Controller\Error\NotFound(), 'execute'];
         }
