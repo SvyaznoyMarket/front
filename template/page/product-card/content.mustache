@@ -34,7 +34,8 @@
         <div class="lineKitImg"><img src="{{product.mainPhoto.url}}"></div>
 
         <div class="lineKitTitle">
-            Набор мебели для гостиной<br>Ксено № 2, дуб феррара/ясень
+            {{#product.namePrefix}}{{product.namePrefix}}<br />{{/product.namePrefix}}
+            {{product.name}}
         </div>
 
         <!-- планшетная версия -->
