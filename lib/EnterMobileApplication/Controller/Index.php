@@ -28,7 +28,7 @@ namespace EnterMobileApplication\Controller\Index {
     use EnterModel as Model;
 
     class Response {
-        /** @var \EnterModel\MainMenu */
+        /** @var bool */
         public $success;
     }
 }

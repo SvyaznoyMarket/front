@@ -231,6 +231,8 @@ namespace EnterAggregator\Config {
     class CoreService extends CurlService {
         /** @var string */
         public $clientId;
+        /** @var bool */
+        public $debug;
     }
 
     class CmsService extends CurlService {

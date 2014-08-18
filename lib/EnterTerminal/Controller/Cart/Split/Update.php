@@ -25,6 +25,10 @@ namespace EnterTerminal\Controller\Cart\Split {
             $curl = $this->getCurl();
             $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
+            $orderRepository = new \EnterRepository\Order();
+
+            // ответ
+            $response = new Response();
 
             $change = (array)$request->data['change'];
             if (!$change) {
@@ -36,8 +40,15 @@ namespace EnterTerminal\Controller\Cart\Split {
                 throw new \Exception('Не найдено предыдущее разбиение');
             }
 
-            // корзина из сессии
-            $cart = $cartRepository->getObjectByHttpSession($session);
+            if (!isset($splitData['cart']['product_list'])) {
+                throw new \Exception('Не найдены товары в корзине');
+            }
+
+            // корзина из данных о разбиении
+            $cart = new Model\Cart();
+            foreach ($splitData['cart']['product_list'] as $productItem) {
+                $cartRepository->setProductForObject($cart, new Model\Cart\Product($productItem));
+            }
 
             // ид магазина
             $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
@@ -68,14 +79,21 @@ namespace EnterTerminal\Controller\Cart\Split {
             $curl->execute();
 
             // разбиение
-            $splitData = $splitQuery->getResult();
+            $splitData = [];
+            try {
+                $splitData = $splitQuery->getResult();
+            } catch (Query\CoreQueryException $e) {
+                $response->errors = $orderRepository->getErrorList($e);
+            }
+
+            // добавление данных о корзине
+            $splitData['cart'] = [
+                'product_list' => array_map(function(Model\Cart\Product $product) { return ['id' => $product->id, 'quantity' => $product->quantity]; }, $cart->product),
+            ];
+
             // сохранение в сессии
             $session->set($config->order->splitSessionKey, $splitData);
 
-            // ответ
-            $response = new Response();
-
-            $response->cart = $cart;
             $response->split = $splitData;
 
             // response
@@ -88,8 +106,8 @@ namespace EnterTerminal\Controller\Cart\Split\Update {
     use EnterModel as Model;
 
     class Response {
-        /** @var Model\Cart */
-        public $cart;
+        /** @var array */
+        public $errors = [];
         /** @var array */
         public $split;
     }

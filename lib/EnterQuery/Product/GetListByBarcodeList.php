@@ -1,30 +1,31 @@
 <?php
 
-namespace EnterQuery\Product\Filter;
+namespace EnterQuery\Product;
 
 use Enter\Curl\Query;
 use EnterQuery\CoreQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
-class GetListByCategoryId extends Query {
+class GetListByBarcodeList extends Query {
     use CoreQueryTrait;
 
     /** @var array */
     protected $result;
 
     /**
-     * @param string $categoryId
-     * @param string|null $regionId
+     * @param array $barcodes
+     * @param string $regionId
      */
-    public function __construct($categoryId, $regionId = null) {
+    public function __construct(array $barcodes, $regionId) {
         $this->url = new Url();
-        $this->url->path = 'v2/listing/filter';
+        $this->url->path = 'v2/product/get';
         $this->url->query = [
-            'category_id' => $categoryId,
+            'select_type' => 'bar_code',
+            'bar_code'    => $barcodes,
         ];
         if ($regionId) {
-            $this->url->query['region_id'] = $regionId;
+            $this->url->query['geo_id'] = $regionId;
         }
 
         $this->init();
@@ -36,6 +37,6 @@ class GetListByCategoryId extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]['filter_id']) ? $data : [];
+        $this->result = isset($data[0]['id']) ? $data : [];
     }
 }

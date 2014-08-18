@@ -59,7 +59,7 @@ class ProductFilter {
                 $filter->isSliderType = true;
             } else if (in_array($filterModel->typeId, [\EnterModel\Product\Filter::TYPE_LIST, \EnterModel\Product\Filter::TYPE_BOOLEAN])) {
                 $filter->isListType = true;
-            } else if ('q' === $filter->token) {
+            } else if (in_array($filter->token, ['q', 'slice'])) {
                 $filter->isHiddenType = true;
             }
 

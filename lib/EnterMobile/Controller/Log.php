@@ -63,7 +63,7 @@ class Log {
                 try {
                     $line['query']['response'] = Util\Json::toArray($line['query']['response']);
                 } catch (\Exception $e) {
-                    $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['debug']]);
+                    $logger->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['debug']]);
                 }
             }
 

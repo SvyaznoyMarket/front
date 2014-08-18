@@ -3,6 +3,7 @@
 namespace EnterRepository;
 
 use Enter\Http;
+use Enter\Util;
 use EnterAggregator\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterModel as Model;
@@ -11,78 +12,53 @@ use EnterQuery as Query;
 class Order {
     use ConfigTrait, LoggerTrait;
 
-    public function getPacketQueryBySplit(Model\Cart\Split $split) {
-        $logger = $this->getLogger();
+    /**
+     * @param Query\CoreQueryException $error
+     * @return array
+     */
+    public function getErrorList(Query\CoreQueryException $error) {
+        $errors = [];
 
-        $query = null;
-
-        $user = $split->user;
-        $address = $user ? $user->address : null;
-
-        $data = [];
-        foreach ($split->orders as $order) {
-            $delivery = $order->delivery;
-
-            $deliveryDate = null;
-            try {
-                if ($delivery && $delivery->date) {
-                    $deliveryDate = (new \DateTime())->setTimestamp($delivery->date);
-                }
-            } catch (\Exception $e) {
-                $logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['critical', 'repository']]);
-            }
-
-            $orderData = [
-                'type_id'             => 1, // TODO: вынести в константу
-                'geo_id'              => 14975, // FIXME!!!
-                'user_id'             => null, // FIXME!!!
-                'is_legal'            => false, // FIXME!!!
-                'payment_id'          => $order->paymentMethodId,
-                'credit_bank_id'      => null, // FIXME!!!
-                'last_name'           => $user ? $user->lastName : null,
-                'first_name'          => $user ? $user->firstName : null,
-                'email'               => $user ? $user->email : null,
-                'mobile'              => $user ? $user->phone : null,
-                'address_street'      => null,
-                'address_number'      => null,
-                'address_building'    => null,
-                'address_apartment'   => null,
-                'address_floor'       => null,
-                'shop_id'             => ($delivery && $delivery->point) ? $delivery->point->id : null,
-                'extra'               => null, // FIXME!!! добавить $order->comment
-                'bonus_card_number'   => null, // FIXME!!!
-                'delivery_type_id'    => null, // FIXME!!!
-                'delivery_type_token' => $delivery ? $delivery->methodToken : null,
-                'delivery_price'      => $delivery ? $delivery->price : null,
-                'delivery_period'     => ($delivery && $delivery->interval) ? [$delivery->interval->from, $delivery->interval->to] : null,
-                'delivery_date'       => $deliveryDate ? $deliveryDate->format('Y-m-d') : null,
-                'ip'                  => $split->clientIp,
-                'product'             => [],
-            ];
-
-            $orderData['subway_id'] = null; // FIXME!!!
-
-            if ($address) {
-                $orderData['address_street'] = $address->street;
-                $orderData['address_number'] = $address->number;
-                $orderData['address_building'] = $address->building;
-                $orderData['address_apartment'] = $address->apartment;
-                $orderData['address_floor'] = $address->floor;
-            }
-
-            // товары
-            foreach ($order->products as $product) {
-                $orderData['product'][] = [
-                    'id'       => $product->id,
-                    'quantity' => $product->quantity,
-                ];
-            }
-
-            $data[] = $orderData;
+        $messagesByCode = json_decode(file_get_contents($this->getConfig()->dir . '/data/core-error.json'), true);
+        if (isset($messagesByCode[(string)$error->getCode()])) {
+            $errors[] = ['code' => $error->getCode(), 'message' => $messagesByCode[(string)$error->getCode()]];
         }
 
-        $query = new Query\Order\CreatePacket($data);
+        if (!(bool)$errors) {
+            $errors[] = ['code' => $error->getCode(), 'message' => 'Невозможно создать заказ'];
+        }
 
-        return $query;
+        return $errors;
+    }
+
+    /**
+     * @param \Enter\Curl\Query $query
+     * @return Model\Order|null
+     */
+    public function getObjectByQuery(\Enter\Curl\Query $query) {
+        $order = null;
+
+        if ($item = $query->getResult()) {
+            $order = new Model\Order($item);
+        }
+
+        return $order;
+    }
+
+    /**
+     * @param Model\Order[] $orders
+     */
+    public function setDeliveryTypeForObjectList(array $orders) {
+        try {
+            $deliveryTypeData = Util\Json::toArray(file_get_contents($this->getConfig()->dir . '/data/query/delivery-type.json'));
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
+        }
+
+        foreach ($orders as $order) {
+            foreach ($order->deliveries as $delivery) {
+                $delivery->type = isset($deliveryTypeData[$delivery->typeId]) ? new Model\DeliveryType($deliveryTypeData[$delivery->typeId]) : null;
+            }
+        }
     }
 }

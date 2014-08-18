@@ -13,7 +13,7 @@ $environment = call_user_func(require $applicationDir . '/config/environment.php
 $response = null;
 
 // debug
-$debug = call_user_func(require $applicationDir . '/config/debug.php');
+$debug = call_user_func(require $applicationDir . '/config/mobile/debug.php');
 
 // error reporting
 call_user_func(require $applicationDir . '/config/error-report.php', $debug);

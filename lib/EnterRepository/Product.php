@@ -92,7 +92,7 @@ class Product {
                 $product->media->videos[] = new Model\Product\Media\Video($videoItem);
             }
         } catch (\Exception $e) {
-            $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
     }
 
@@ -111,7 +111,7 @@ class Product {
                 ]);
             }
         } catch (\Exception $e) {
-            $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
     }
 
@@ -127,7 +127,7 @@ class Product {
                 $productsById[$videoItem['product_id']]->media->videos[] = new Model\Product\Media\Video($videoItem);
             }
         } catch (\Exception $e) {
-            $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
     }
 
@@ -144,7 +144,7 @@ class Product {
                 $productsById[$productId]->rating = new Model\Product\Rating($ratingItem);
             }
         } catch (\Exception $e) {
-            $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
     }
 
@@ -213,7 +213,7 @@ class Product {
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
     }
 
@@ -243,7 +243,7 @@ class Product {
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
             //trigger_error($e, E_USER_ERROR);
         }
     }
@@ -265,7 +265,7 @@ class Product {
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
     }
 }

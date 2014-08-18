@@ -1,10 +1,12 @@
 <ul class="navList">
     {{#elements}}
         <li class="navList_item">
-            <span class="navList_text">
+            <span class="navList_text"{{^hasChildren}} data-url="{{url}}"{{/hasChildren}}>
                 <span class="navListIco"{{#style}} style="{{style}}"{{/style}}>
                     {{char}}
-                    {{#image}}<img src="{{image}}" />{{/image}}
+                    {{^char}}
+                        {{#image}}<img src="{{image}}" />{{/image}}
+                    {{/char}}
                 </span>
                 <span class="navListName">{{&name}}</span>
             </span>

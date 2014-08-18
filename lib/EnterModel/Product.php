@@ -10,6 +10,8 @@ class Product {
     /** @var string */
     public $article;
     /** @var string */
+    public $barcode;
+    /** @var string */
     public $webName;
     /** @var string */
     public $namePrefix;
@@ -75,6 +77,7 @@ class Product {
 
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('article', $data)) $this->article = (string)$data['article'];
+        if (array_key_exists('bar_code', $data)) $this->barcode = (string)$data['bar_code'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('prefix', $data)) $this->namePrefix = (string)$data['prefix'];
         if (array_key_exists('name_web', $data)) $this->webName = (string)$data['name_web'];
@@ -93,6 +96,7 @@ class Product {
             $this->category = new Model\Product\Category($categoryItem);
 
             foreach ($data['category'] as $categoryItem) {
+                if (empty($categoryItem['id'])) continue;
                 $this->category->ascendants[] = new Model\Product\Category($categoryItem);
             }
         }

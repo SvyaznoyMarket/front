@@ -25,9 +25,19 @@ namespace EnterTerminal\Controller\Cart {
             $curl = $this->getCurl();
             $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
+            $orderRepository = new \EnterRepository\Order();
 
-            // корзина из сессии
-            $cart = $cartRepository->getObjectByHttpSession($session);
+            // ответ
+            $response = new Response();
+
+            if (empty($request->data['cart']['products'][0]['id'])) {
+                throw new \Exception('Не передан параметр cart.products[0].id');
+            }
+
+            $cart = new Model\Cart();
+            foreach ($request->data['cart']['products'] as $productItem) {
+                $cartRepository->setProductForObject($cart, new Model\Cart\Product($productItem));
+            }
 
             // ид магазина
             $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
@@ -55,14 +65,21 @@ namespace EnterTerminal\Controller\Cart {
             $curl->execute();
 
             // разбиение
-            $splitData = $splitQuery->getResult();
+            $splitData = [];
+            try {
+                $splitData = $splitQuery->getResult();
+            } catch (Query\CoreQueryException $e) {
+                $response->errors = $orderRepository->getErrorList($e);
+            }
+
+            // добавление данных о корзине
+            $splitData['cart'] = [
+                'product_list' => array_map(function(Model\Cart\Product $product) { return ['id' => $product->id, 'quantity' => $product->quantity]; }, $cart->product),
+            ];
+
             // сохранение в сессии
             $session->set($config->order->splitSessionKey, $splitData);
 
-            // ответ
-            $response = new Response();
-
-            $response->cart = $cart;
             $response->split = $splitData;
 
             // response
@@ -75,8 +92,8 @@ namespace EnterTerminal\Controller\Cart\Split {
     use EnterModel as Model;
 
     class Response {
-        /** @var Model\Cart */
-        public $cart;
+        /** @var array */
+        public $errors = [];
         /** @var array */
         public $split;
     }

@@ -4,7 +4,7 @@ namespace EnterTerminal\Action;
 
 use Enter\Http;
 use EnterAggregator\LoggerTrait;
-use EnterAggregator\Action;
+use EnterTerminal\Action;
 use EnterTerminal\Controller;
 
 class RegisterShutdown {
@@ -23,7 +23,7 @@ class RegisterShutdown {
             }
 
             // logger
-            (new Action\DumpLogger())->execute();
+            (new \EnterAggregator\Action\DumpLogger())->execute();
 
             $lastError = error_get_last();
             if ($lastError && (error_reporting() & $lastError['type'])) {

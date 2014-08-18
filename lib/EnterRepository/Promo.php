@@ -30,7 +30,7 @@ class Promo {
                 $promos[] = new Model\Promo($item);
             }
         } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
             //trigger_error($e, E_USER_ERROR);
         }
 
@@ -53,7 +53,7 @@ class Promo {
                 }
             }
         } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
             //trigger_error($e, E_USER_ERROR);
         }
 

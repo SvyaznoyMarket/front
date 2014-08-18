@@ -72,7 +72,7 @@ class RecommendedList {
         try {
             $alsoBoughtIdList = array_unique(array_merge($alsoBoughtIdList, $crossSellItemToItemsListQuery->getResult()));
         } catch (\Exception $e) {
-            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['product.recommendation']]);
+            $logger->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['product.recommendation']]);
         }
 
         // идетификаторы товаров "похожие товары"
@@ -80,7 +80,7 @@ class RecommendedList {
         try {
             $similarIdList = $upSellItemToItemsListQuery ? array_unique($upSellItemToItemsListQuery->getResult()) : [];
         } catch (\Exception $e) {
-            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['product.recommendation']]);
+            $logger->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['product.recommendation']]);
         }
 
         // идетификаторы товаров "с этим товаром также смотрят"
@@ -88,7 +88,7 @@ class RecommendedList {
         try {
             $alsoViewedIdList = $itemToItemsListQuery ? array_unique($itemToItemsListQuery->getResult()) : [];
         } catch (\Exception $e) {
-            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['product.recommendation']]);
+            $logger->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['product.recommendation']]);
         }
 
         // список всех идентификаторов товаров

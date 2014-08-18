@@ -66,7 +66,7 @@ class Debug {
             $page->git->branch = trim(shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath($config->dir))));
             $page->git->tag = trim(shell_exec(sprintf('cd %s && git describe --always --tag', realpath($config->dir))));
         } catch (\Exception $e) {
-            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['debug']]);
+            $logger->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['debug']]);
         }
 
         // times
@@ -95,8 +95,6 @@ class Debug {
                 $curlQuery = (isset($message['query']) && $message['query'] instanceof Query) ? $message['query'] : null;
                 if (!$curlQuery) continue;
 
-                $info = $curlQuery->getInfo();
-
                 $query = new Page\Query();
 
                 $query->url = urldecode((string)$curlQuery->getUrl());
@@ -114,7 +112,6 @@ class Debug {
                 $info = $curlQuery->getInfo();
                 $info = [
                     'code'         => $info['http_code'],
-                    'error'        => $curlQuery->getError(),
                     'url'          => $info['url'],
                     'data'         => (bool)$curlQuery->getData() ? $curlQuery->getData() : null,
                     'header'       => $headers,
@@ -144,6 +141,13 @@ class Debug {
                     } catch (\Exception $e) {}
                 }
 
+                $info['error'] = $curlQuery->getError() ? [
+                    'code'    => $curlQuery->getError()->getCode(),
+                    'message' => $curlQuery->getError()->getMessage(),
+                    'file'    => $curlQuery->getError()->getFile(),
+                    'line'    => $curlQuery->getError()->getLine(),
+                ] : null;
+
                 $query->info = json_encode($info, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
                 $query->id = md5($curlQuery->getId() . '-' . $curlQuery->getUrl() . '-' . $curlQuery->getStartAt());
                 $query->logId = 'log-' . $message['time'];
@@ -166,7 +170,7 @@ class Debug {
         // данные из контейнера отладки
         foreach (get_object_vars($this->getDebugContainer()) as $key => $value) {
             if (isset($page->{$key})) {
-                $logger->push(['type' => 'warn', 'error' => sprintf('Свойство %s уже существует', $key), 'action' => __METHOD__, 'tag' => ['debug']]);
+                $logger->push(['type' => 'warn', 'error' => sprintf('Свойство %s уже существует', $key), 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['debug']]);
                 continue;
             }
 

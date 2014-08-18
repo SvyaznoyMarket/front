@@ -42,7 +42,7 @@ class Set {
         }
         if (!$regionId) {
             $e = new \Exception('Не указан ид региона');
-            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['region']]);
+            $logger->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['region']]);
 
             return $response;
         }

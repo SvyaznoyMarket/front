@@ -18,14 +18,14 @@ class PaymentGroup {
         try {
             $data = $query->getResult();
         } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
 
         foreach ($data as $item) {
             if (!isset($item['payment_methods'][0])) continue;
 
             foreach ($item['payment_methods'] as $methodItem) {
-                if (isset($methodItem['id']) && (Model\PaymentMethod::CREDIT_ID === (string)$methodItem['id'])) {
+                if (isset($methodItem['id']) && isset($methodItem['is_credit']) && (bool)$methodItem['is_credit']) {
                     return true;
                 }
             }

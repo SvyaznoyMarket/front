@@ -27,6 +27,7 @@ class MainMenu {
 
             //trigger_error($e, E_USER_ERROR);
         }
+        //$menuData = json_decode(file_get_contents($this->getConfig()->dir . '/data/cms/v2/main-menu.json'), true);
         $categoryData = $categoryListQuery->getResult();
 
         $categoryItemsById = [];
@@ -79,6 +80,10 @@ class MainMenu {
                         unset($categoryItem);
 
                         $walkByMenuElementItem($elementItems, $parentElement);
+                    } else if (0 === strpos($source, 'slice/get') && !empty($params['token'])) {
+                        $element = new Model\MainMenu\Element($elementItem);
+                        $element->type = 'slice';
+                        $element->id = (string)$params['token'];
                     }
                 } else {
                     $element = new Model\MainMenu\Element($elementItem);
@@ -93,6 +98,7 @@ class MainMenu {
                 }
 
                 $element->level = $parentElement ? ($parentElement->level + 1) : 1;
+                $element->hasChildren = (bool)$element->children;
 
                 if ($parentElement) {
                     $parentElement->children[] = $element;

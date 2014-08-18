@@ -12,23 +12,6 @@ class Sorting {
     use ConfigTrait, LoggerTrait;
 
     /**
-     * @param Http\Request $request
-     * @return Model\Product\Sorting|null
-     */
-    public function getObjectByHttpRequest(Http\Request $request) {
-        $sorting = null;
-
-        $data = explode('-', $request->query['sort']);
-        if (isset($data[0]) && isset($data[1])) {
-            $sorting = new Model\Product\Sorting();
-            $sorting->token = $data[0];
-            $sorting->direction = $data[1];
-        }
-
-        return $sorting;
-    }
-
-    /**
      * @return Model\Product\Sorting[]
      */
     public function getObjectList() {
@@ -43,7 +26,7 @@ class Sorting {
             ], $item);
 
             if (!$item['token'] || !$item['name'] || !$item['direction']) {
-                $this->getLogger()->push(['type' => 'error', 'error' => 'Неверный элемент сортировки', 'item' => $item, 'action' => __METHOD__, 'tag' => ['repository']]);
+                $this->getLogger()->push(['type' => 'error', 'error' => 'Неверный элемент сортировки', 'item' => $item, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
                 continue;
             }
 

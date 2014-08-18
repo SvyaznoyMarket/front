@@ -12,6 +12,8 @@ class Request extends Repository\Page\ProductCatalog\RootCategory\Request {
     /** @var \EnterModel\Product\Catalog\Config */
     //public $catalogConfig;
     /** @var \EnterModel\Product\RequestFilter[] */
+    public $baseRequestFilters = [];
+    /** @var \EnterModel\Product\RequestFilter[] */
     public $requestFilters = [];
     /** @var \EnterModel\Product\Filter[] */
     public $filters = [];

@@ -26,7 +26,7 @@ class HandleResponse {
             'data'   => $request->data,
             'cookie' => $request->cookies,
             'server' => $request->server,
-        ], 'action' => __METHOD__, 'tag' => ['request']]);
+        ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
 
         if ($request) {
             $config->clientId = is_scalar($request->query['clientId']) ? $request->query['clientId'] : null;

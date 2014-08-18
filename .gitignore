@@ -2,6 +2,6 @@
 .idea
 /nbproject
 *.nblh~
-/config/config-local.php
+config-local.php
 /config/terminal/config-local.php
 /node_modules

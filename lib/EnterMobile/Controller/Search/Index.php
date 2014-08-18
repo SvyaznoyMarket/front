@@ -47,7 +47,7 @@ class Index {
         $sortings = (new \EnterRepository\Product\Sorting())->getObjectList();
 
         // сортировка
-        $sorting = (new \EnterRepository\Product\Sorting())->getObjectByHttpRequest($request);
+        $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
         if (!$sorting) {
             $sorting = reset($sortings);
         }
@@ -85,7 +85,7 @@ class Index {
         try {
             $searchResult = (new \EnterRepository\Search())->getObjectByQuery($searchResultQuery);
         } catch (\Exception $e) {
-            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['region']]);
+            $logger->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['region']]);
 
             return (new Controller\Redirect())->execute($request->server['HTTP_REFERER'] ?: $this->getRouter()->getUrlByRoute(new Routing\Index()), 302);
         }
