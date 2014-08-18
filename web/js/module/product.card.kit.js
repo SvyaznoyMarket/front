@@ -6,7 +6,7 @@ define(
             wrap = $('.js-kit-wrap'),
             open = $('.js-kit-open'),
             closer = $('.js-kit-close'),
-            hiddenCnt= $('.js-kit-hidden');
+            hiddenCnt= $('.js-fullimg-hidden');
         // end of vars
 
         var 
@@ -14,6 +14,8 @@ define(
              * показываем блок большого изображения
             */
             kitShow = function kitShow() {
+                console.log('kitShow');
+                
                 $('html, body').animate({scrollTop:0}, 'fast');
                 wrap.slideDown().show(0);
                 hiddenCnt.css({'overflow' : 'hidden'}).delay(100).animate({'opacity' : 0, 'height' : 0});
