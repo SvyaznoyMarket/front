@@ -24,7 +24,6 @@ namespace EnterTerminal\Controller {
 
             $infoQuery = new Query\Terminal\GetInfoByIp($request->query['ip']);
             $curl->prepare($infoQuery);
-
             $curl->execute();
 
             // ответ
@@ -34,12 +33,16 @@ namespace EnterTerminal\Controller {
             if (!$data) {
                 throw new \Exception('Не удалось получить конфигурацию терминала');
             }
-            $shopId = $response->info['shop_id'];
 
             $response->info = $data;
 
+            $shopId = $response->info['shop_id'];
+
             $shopQuery = new Query\Shop\GetItemById($shopId);
             $curl->prepare($shopQuery);
+
+            $businessRulesQuery = new Query\BusinessRules\GetList();
+            $curl->prepare($businessRulesQuery);
 
             $curl->execute();
 
@@ -49,6 +52,27 @@ namespace EnterTerminal\Controller {
             }
 
             $response->shop = $shop;
+
+            $businessRules = $businessRulesQuery->getResult();
+            if (!$businessRules) {
+                throw new \Exception('Не удалось получить бизнес правила');
+            }
+
+            foreach ($businessRules as $key => $businessRule) {
+                if (isset($businessRule['filter'])) {
+                    if (isset($businessRule['filter']['api_clients']['alias']) && !preg_match('/' . $businessRule['filter']['api_clients']['alias'] . '/s', $response->info['client_id'])) {
+                        unset($businessRules[$key]);
+                    }
+
+                    if (isset($businessRule['filter']['api_clients']['alias_type']) && $businessRule['filter']['api_clients']['alias_type'] !== 'terminal') {
+                        unset($businessRules[$key]);
+                    }
+
+                    unset($businessRules[$key]['filter']);
+                }
+            }
+
+            $response->businessRules = array_values($businessRules);
 
             return new Http\JsonResponse($response);
         }
@@ -63,5 +87,7 @@ namespace EnterTerminal\Controller\Config {
         public $shop;
         /** @var array */
         public $info;
+        /** @var array */
+        public $businessRules;
     }
 }
