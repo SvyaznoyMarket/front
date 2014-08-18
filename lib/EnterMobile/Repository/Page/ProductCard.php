@@ -211,6 +211,55 @@ class ProductCard {
             $page->content->product->rating = $rating;
         }
 
+        // состав набора
+        $page->content->product->kitBlock = false;
+        if ($productModel->relation && (bool)$productModel->relation->kits) {
+            $page->content->product->kitBlock = new Page\Content\Product\KitBlock();
+
+            $count = 0;
+            $sum = 0;
+            foreach ($productModel->relation->kits as $kitProductModel) {
+                $sum += $kitProductModel->kitCount * $kitProductModel->price;
+                $count += $kitProductModel->kitCount;
+
+                $kit = new Page\Content\Product\KitBlock\Product();
+                $kit->name = $kitProductModel->name;
+                $kit->quantity = $kitProductModel->kitCount;
+                $kit->shownPrice = $kitProductModel->price ? number_format((float)$kitProductModel->price, 0, ',', ' ') : null;
+                $kit->shownSum = $kitProductModel->price ? number_format((float)$kitProductModel->price * $kitProductModel->kitCount, 0, ',', ' ') : null;
+                if (isset($kitProductModel->media->photos[0])) {
+                    $photoModel = $kitProductModel->media->photos[0];
+                    $kit->photoUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel->source, $photoModel->id, 3));
+                }
+
+                if (isset($kitProductModel->nearestDeliveries[0])) {
+                    /** @var \DateTime|null $deliveredDate */
+                    $deliveredDate = $kitProductModel->nearestDeliveries[0]->deliveredAt ?: null;
+                    if ($deliveredDate) {
+                        $kit->deliveryDate = $deliveredDate->format('d.m.Y');
+                    }
+                }
+
+                foreach ($kitProductModel->properties as $propertyModel) {
+                    if ('Ширина' == $propertyModel->name) {
+                        $kit->width = $propertyModel->value;
+                        $kit->unit = $propertyModel->unit;
+                    } else if ('Высота' == $propertyModel->name) {
+                        $kit->height = $propertyModel->value;
+                        $kit->unit = $propertyModel->unit;
+                    } else if ('Глубина' == $propertyModel->name) {
+                        $kit->depth = $propertyModel->value;
+                        $kit->unit = $propertyModel->unit;
+                    }
+
+                }
+
+                $page->content->product->kitBlock->products[] = $kit;
+                $page->content->product->kitBlock->shownSum = number_format((float)$sum, 0, ',', ' ');
+                $page->content->product->kitBlock->shownQuantity = 'Итого за ' . $count . ' ' . $translateHelper->numberChoice($count, ['предмет', 'предмета', 'предметов']);
+            }
+        }
+
         // аксессуары товара
         if ((bool)$productModel->relation->accessories) {
             $page->content->product->accessorySlider = $productSliderRepository->getObject('accessorySlider');

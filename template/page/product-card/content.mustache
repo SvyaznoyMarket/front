@@ -26,11 +26,12 @@
     </div>
     {{! окно большого изображения  }} 
 
+    {{#product.kitBlock}}
     <!-- редактировать комплектацию -->
     <div class="contentBox960 lineKitPopup js-kit-wrap">
         <div class="backLn js-kit-close">Назад</div>
 
-        <div class="lineKitImg"><img src="http://fs05.enter.ru/1/1/500/9b/282644.jpg"></div>
+        <div class="lineKitImg"><img src="{{product.mainPhoto.url}}"></div>
 
         <div class="lineKitTitle">
             Набор мебели для гостиной<br>Ксено № 2, дуб феррара/ясень
@@ -47,25 +48,26 @@
                 <div class="lineKitItem_cell ta-r" style="width: 90px;">Цена</div>
             </div>
 
+            {{#products}}
             <!-- элемент набора -->
             <div class="lineKitItem lineKitItem-body">
                 <!-- изображение элемента набора -->
-                <a href="" class="lineKitItem_cell lineKitItem_cell-img">
-                    <img src="http://fs06.enter.ru/1/1/120/91/233395.jpg">
+                <a href="{{url}}" class="lineKitItem_cell lineKitItem_cell-img">
+                    <img src="{{photoUrl}}">
                 </a>
 
                 <!-- описание элементф набора -->
                 <div class="lineKitItem_cell lineKitItem_cell-desc">
                     <div class="name">
-                        <a href="">Тумба под ТВ «Ксено СТЛ.078.12»</a>
+                        <a href="{{url}}">{{name}}</a>
                     </div>
 
                     <!-- цена за штуку -->
-                    <div class="price">5 100 <span class="rubl">p</span></div>
+                    <div class="price">{{shownPrice}} <span class="rubl">p</span></div>
 
                     <div class="column dimantion">
                         <span class="dimantion_name">Высота</span>
-                        <span class="dimantion_val">38.2</span>
+                        <span class="dimantion_val">{{height}}</span>
                     </div>
 
                     <div class="column dimantion">
@@ -75,7 +77,7 @@
 
                     <div class="column dimantion">
                         <span class="dimantion_name">Ширина</span>
-                        <span class="dimantion_val">153</span>
+                        <span class="dimantion_val">{{width}}</span>
                     </div>
 
                     <div class="column dimantion">
@@ -85,91 +87,35 @@
 
                     <div class="column dimantion">
                         <span class="dimantion_name">Глубина</span>
-                        <span class="dimantion_val">44.5</span>
+                        <span class="dimantion_val">{{depth}}</span>
                     </div>
 
                     <div class="column dimantion">
                         <span class="dimantion_name">&nbsp;</span>
-                        <span class="dimantion_val">см</span>
+                        <span class="dimantion_val">{{unit}}</span>
                     </div>
                 </div>
 
                 <!-- доставка -->
-                <div class="lineKitItem_cell lineKitItem_cell-l">16.8.2014</div>
+                <div class="lineKitItem_cell lineKitItem_cell-l">{{deliveryDate}}</div>
 
                 <!-- каунтер -->
                 <div class="lineKitItem_cell lineKitItem_cell-counter">
                     <div class="counter counter-mini clearfix">
                         <button class="js-buySpinner-dec counter__btn counter__btn-plus">-</button>
-                        <input type="text" value="1" class="js-buySpinner-value counter__input">
+                        <input type="text" value="{{quantity}}" class="js-buySpinner-value counter__input">
                         <button class="js-buySpinner-inc counter__btn counter__btn-minus">+</button>
                     </div>
                 </div>
 
                 <!-- цена на все -->
                 <div class="lineKitItem_cell lineKitItem_cell-price ta-r">
-                    5 100&nbsp;<span class="rubl">p</span>
+                    {{shownSum}}&nbsp;<span class="rubl">p</span>
                 </div>
             </div>
             <!--/ элемент набора -->
+            {{/products}}
 
-            <div class="lineKitItem lineKitItem-body lineKitItem-disabled">
-                <a href="" class="lineKitItem_cell lineKitItem_cell-img">
-                    <img src="http://fs06.enter.ru/1/1/120/91/233395.jpg">
-                </a>
-
-                <div class="lineKitItem_cell lineKitItem_cell-desc">
-                    <div class="name">
-                        <a href="">Тумба под ТВ «Ксено СТЛ.078.12»</a>
-                    </div>
-
-                    <div class="price">5 100 <span class="rubl">p</span></div>
-
-                    <div class="column dimantion">
-                        <span class="dimantion_name">Высота</span>
-                        <span class="dimantion_val">38.2</span>
-                    </div>
-
-                    <div class="column dimantion">
-                        <span class="dimantion_name">&nbsp;</span>
-                        <span class="dimantion_val separation">x</span>
-                    </div>
-
-                    <div class="column dimantion">
-                        <span class="dimantion_name">Ширина</span>
-                        <span class="dimantion_val">153</span>
-                    </div>
-
-                    <div class="column dimantion">
-                        <span class="dimantion_name">&nbsp;</span>
-                        <span class="dimantion_val separation">x</span>
-                    </div>
-
-                    <div class="column dimantion">
-                        <span class="dimantion_name">Глубина</span>
-                        <span class="dimantion_val">44.5</span>
-                    </div>
-
-                    <div class="column dimantion">
-                        <span class="dimantion_name">&nbsp;</span>
-                        <span class="dimantion_val">см</span>
-                    </div>
-                </div>
-
-                <div class="lineKitItem_cell lineKitItem_cell-l">16.8.2014</div>
-
-                <div class="lineKitItem_cell lineKitItem_cell-counter">
-                    <div class="counter counter-mini clearfix">
-                        <button class="js-buySpinner-dec counter__btn counter__btn-plus">-</button>
-                        <input type="text" value="1" class="js-buySpinner-value counter__input">
-                        <button class="js-buySpinner-inc counter__btn counter__btn-minus">+</button>
-                    </div>
-                </div>
-
-                <div class="lineKitItem_cell lineKitItem_cell-price ta-r">
-                    5 100&nbsp;<span class="rubl">p</span>
-                </div>
-            </div>
         </div>
         <!--/ планшетная версия -->
 
@@ -177,15 +123,16 @@
         <div class="lineKit lineKit-edit lineKit-mobile">
             <div class="lineKitHead">Уточните комплектацию</div>
 
+            {{#products}}
             <!-- элемент набора -->
             <div class="lineKitItem clearfix">
                 <div class="lineKitItem_name">
-                    <a href="" class="">Настенный шкаф-витрина «Ксено СТЛ.078.14»</a>
+                    <a href="{{url}}" class="">{{name}}</a>
                 </div>
 
                 <!-- изображение элементф набора -->
                 <a href="" class="lineKitItem_l ta-c">
-                    <img src="http://fs07.enter.ru/1/1/120/97/146336.jpg" />
+                    <img src="{{photoUrl}}" />
                 </a>
 
                 <!-- описание элемента набора -->
@@ -193,12 +140,12 @@
 
                     <!-- доставка -->
                     <div class="lineKitItem_delvr">
-                        <span class="lineKitItem_grey">Дата доставки:</span> 16.8.2014
+                        <span class="lineKitItem_grey">Дата доставки:</span> {{deliveryDate}}
                     </div>
 
                     <div class="column dimantion">
                         <span class="dimantion_name">Высота</span>
-                        <span class="dimantion_val">80.2</span>
+                        <span class="dimantion_val">{{height}}</span>
                     </div>
 
                     <div class="column dimantion">
@@ -208,7 +155,7 @@
 
                     <div class="column dimantion">
                         <span class="dimantion_name">Ширина</span>
-                        <span class="dimantion_val">104</span>
+                        <span class="dimantion_val">{{width}}</span>
                     </div>
 
                     <div class="column dimantion">
@@ -218,95 +165,35 @@
 
                     <div class="column dimantion">
                         <span class="dimantion_name">Глубина</span>
-                        <span class="dimantion_val">29.5</span>
+                        <span class="dimantion_val">{{depth}}</span>
                     </div>
 
                     <div class="column dimantion">
                         <span class="dimantion_name">&nbsp;</span>
-                        <span class="dimantion_val">см</span>
+                        <span class="dimantion_val">{{unit}}</span>
                     </div>
                 </div>
                 
                 <!-- цена за штуку -->
                 <div class="lineKitItem_l lineKitItem-l lineKitItem_grey ta-c">
-                    5 000&nbsp;<span class="rubl">p</span>
+                    {{shownPrice}}&nbsp;<span class="rubl">p</span>
                 </div>
 
                 <!-- каунтер -->
                 <div class="lineKitItem_r lineKitItem_foot lineKitItem-l">
                     <div class="counter counter-mini clearfix">
                         <button class="js-buySpinner-dec counter__btn counter__btn-plus">-</button>
-                        <input type="text" value="1" class="js-buySpinner-value counter__input">
+                        <input type="text" value="{{quantity}}" class="js-buySpinner-value counter__input">
                         <button class="js-buySpinner-inc counter__btn counter__btn-minus">+</button>
                         <span class="counter__num">шт.</span>
                     </div> 
                     
                     <!-- цена за все -->
-                    <span class="lineKitItem_summ lineKitItem_foot">5 000&nbsp;<span class="rubl">p</span></span>
+                    <span class="lineKitItem_summ lineKitItem_foot">{{shownSum}}&nbsp;<span class="rubl">p</span></span>
                 </div>
             </div>
             <!--/ элемент набора -->
-
-            <div class="lineKitItem lineKitItem-disabled clearfix">
-                <div class="lineKitItem_name">
-                    <a href="" class="">Настенный шкаф-витрина «Ксено СТЛ.078.14»</a>
-                </div>
-
-                <a href="" class="lineKitItem_l ta-c">
-                    <img src="http://fs07.enter.ru/1/1/120/97/146336.jpg" />
-                </a>
-
-                <div class="lineKitItem_r lineKitItem_desc">
-                    <div class="lineKitItem_delvr">
-                        <span class="lineKitItem_grey">Дата доставки:</span> 16.8.2014
-                    </div>
-
-                    <div class="column dimantion">
-                        <span class="dimantion_name">Высота</span>
-                        <span class="dimantion_val">80.2</span>
-                    </div>
-
-                    <div class="column dimantion">
-                        <span class="dimantion_name">&nbsp;</span>
-                        <span class="dimantion_val separation">x</span>
-                    </div>
-
-                    <div class="column dimantion">
-                        <span class="dimantion_name">Ширина</span>
-                        <span class="dimantion_val">104</span>
-                    </div>
-
-                    <div class="column dimantion">
-                        <span class="dimantion_name">&nbsp;</span>
-                        <span class="dimantion_val separation">x</span>
-                    </div>
-
-                    <div class="column dimantion">
-                        <span class="dimantion_name">Глубина</span>
-                        <span class="dimantion_val">29.5</span>
-                    </div>
-
-                    <div class="column dimantion">
-                        <span class="dimantion_name">&nbsp;</span>
-                        <span class="dimantion_val">см</span>
-                    </div>
-                </div>
-      
-                <div class="lineKitItem_l lineKitItem-l lineKitItem_grey ta-c">
-                    5 000&nbsp;<span class="rubl">p</span>
-                </div>
-
-                <div class="lineKitItem_r lineKitItem_foot lineKitItem-l">
-                    <div class="counter counter-mini clearfix">
-                        <button class="js-buySpinner-dec counter__btn counter__btn-plus">-</button>
-                        <input type="text" value="1" class="js-buySpinner-value counter__input">
-                        <button class="js-buySpinner-inc counter__btn counter__btn-minus">+</button>
-                        <span class="counter__num">шт.</span>
-                    </div> 
-                   
-                    <span class="lineKitItem_summ lineKitItem_foot">5 000&nbsp;<span class="rubl">p</span></span>
-                </div>
-            </div>
+            {{/products}}
         </div>
         <!--/ мобильная версия -->
 
@@ -314,12 +201,13 @@
             <input type="checkbox" id="defaultSet" class="customInput customInput-checkbox" checked="checked">
             <label for="defaultSet" class="customLabel">Базовый комплект</label>
 
-            <div class="lineKitFooter_summ fl-r">Итого за 6 предметов: 12 700 <span class="rubl">p</span></div>
+            <div class="lineKitFooter_summ fl-r">{{shownQuantity}}: {{shownSum}} <span class="rubl">p</span></div>
 
             <a href="" class="btnBuy fl-r">Купить</a>
         </div>
     </div>
     <!--/ редактировать комплектацию -->
+    {{/product.kitBlock}}
 
     <div class="contentBox960 js-fullimg-hidden">
         <!-- Название товара, артикул, отзывы -->
@@ -542,251 +430,150 @@
                 <div class="tabContent js-cont">
                     <div class="tabContent_title">Подробности</div>
 
-                    <div class="lineKitHead clearfix">
-                        <span class="lineKitHead_title">Базовая комплектация набора</span>
-                        <span class="lineKitHead_change"><span class="borderBd js-kit-open">Изменить комплектацию</span></span>
-                    </div>
-
-                    <!-- планшетная версия -->
-                    <div class="lineKit lineKit-full">
-                        <div class="lineKitItem clearfix lineKitItem-head">
-                            <div class="lineKitItem_cell lineKitItem_cell-img"></div>
-                            <div class="lineKitItem_cell lineKitItem_cell-desc"></div>
-                            <div class="lineKitItem_cell" style="width: 120px">Дата доставки</div>
-                            <div class="lineKitItem_cell ta-c" style="width: 100px">Цена за 1 шт.</div>
-                            <div class="lineKitItem_cell ta-r" style="width: 60px">Кол-во</div>
+                    {{#product.kitBlock}}
+                        <div class="lineKitHead clearfix">
+                            <span class="lineKitHead_title">Базовая комплектация набора</span>
+                            <span class="lineKitHead_change"><span class="borderBd js-kit-open">Изменить комплектацию</span></span>
                         </div>
 
-                        <!-- элемент набора -->
-                        <div class="lineKitItem clearfix">
-
-                            <!-- изображение элемента набора -->
-                            <a href="#product=78589" class="lineKitItem_cell lineKitItem_cell-img">
-                                <img src="http://fs07.enter.ru/1/1/120/97/146336.jpg" />
-                            </a>
-
-                            <!-- описание элемента набора -->
-                            <div class="lineKitItem_cell lineKitItem_cell-desc">
-                                <div class="name">
-                                    <a href="" class="">Настенный шкаф-витрина «Ксено СТЛ.078.14»</a>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">Высота</span>
-                                    <span class="dimantion_val">80.2</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">&nbsp;</span>
-                                    <span class="dimantion_val separation">x</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">Ширина</span>
-                                    <span class="dimantion_val">104</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">&nbsp;</span>
-                                    <span class="dimantion_val separation">x</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">Глубина</span>
-                                    <span class="dimantion_val">29.5</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">&nbsp;</span>
-                                    <span class="dimantion_val">см</span>
-                                </div>
+                        <!-- планшетная версия -->
+                        <div class="lineKit lineKit-full">
+                            <div class="lineKitItem clearfix lineKitItem-head">
+                                <div class="lineKitItem_cell lineKitItem_cell-img"></div>
+                                <div class="lineKitItem_cell lineKitItem_cell-desc"></div>
+                                <div class="lineKitItem_cell" style="width: 120px">Дата доставки</div>
+                                <div class="lineKitItem_cell ta-c" style="width: 100px">Цена за 1 шт.</div>
+                                <div class="lineKitItem_cell ta-r" style="width: 60px">Кол-во</div>
                             </div>
 
-                            <!-- доставка -->
-                            <div class="lineKitItem_cell">
-                                16.8.2014
-                            </div>
+                            {{#products}}
+                                <!-- элемент набора -->
+                                <div class="lineKitItem clearfix">
 
-                            <!-- цена -->
-                            <div class="lineKitItem_cell ta-c">
-                                5 000&nbsp;<span class="rubl">p</span>
-                            </div>
+                                    <!-- изображение элемента набора -->
+                                    <a href="{{url}}" class="lineKitItem_cell lineKitItem_cell-img">
+                                        <img src="{{photoUrl}}" />
+                                    </a>
 
-                            <!-- штук в наборе -->
-                            <div class="lineKitItem_cell ta-r">1 шт.</div>
+                                    <!-- описание элемента набора -->
+                                    <div class="lineKitItem_cell lineKitItem_cell-desc">
+                                        <div class="name">
+                                            <a href="{{url}}" class="">{{name}}</a>
+                                        </div>
+
+                                        <div class="column dimantion">
+                                            <span class="dimantion_name">Высота</span>
+                                            <span class="dimantion_val">{{height}}</span>
+                                        </div>
+
+                                        <div class="column dimantion">
+                                            <span class="dimantion_name">&nbsp;</span>
+                                            <span class="dimantion_val separation">x</span>
+                                        </div>
+
+                                        <div class="column dimantion">
+                                            <span class="dimantion_name">Ширина</span>
+                                            <span class="dimantion_val">{{width}}</span>
+                                        </div>
+
+                                        <div class="column dimantion">
+                                            <span class="dimantion_name">&nbsp;</span>
+                                            <span class="dimantion_val separation">x</span>
+                                        </div>
+
+                                        <div class="column dimantion">
+                                            <span class="dimantion_name">Глубина</span>
+                                            <span class="dimantion_val">{{depth}}</span>
+                                        </div>
+
+                                        <div class="column dimantion">
+                                            <span class="dimantion_name">&nbsp;</span>
+                                            <span class="dimantion_val">{{unit}}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- доставка -->
+                                    <div class="lineKitItem_cell">{{deliveryDate}}</div>
+
+                                    <!-- цена -->
+                                    <div class="lineKitItem_cell ta-c">
+                                        {{shownPrice}}&nbsp;<span class="rubl">p</span>
+                                    </div>
+
+                                    <!-- штук в наборе -->
+                                    <div class="lineKitItem_cell ta-r">{{quantity}} шт.</div>
+                                </div>
+                                <!--/ элемент набора -->
+                            {{/products}}
                         </div>
-                        <!--/ элемент набора -->
+                        <!--/ планшетная версия -->
 
-                        <div class="lineKitItem clearfix">
-                            <a href="#product=78965" class="lineKitItem_cell lineKitItem_cell-img">
-                                <img src="http://fs04.enter.ru/1/1/120/34/147743.jpg" />
-                            </a>
-
-                            <div class="lineKitItem_cell lineKitItem_cell-desc">
-                                <div class="name">
-                                    <a href="" class="">Навесная полка «Ксено СТЛ.078.05»</a>
+                        <!-- мобильная версия -->
+                        <div class="lineKit lineKit-mobile">
+                        {{#products}}
+                            <!-- элемент набора -->
+                            <div class="lineKitItem clearfix">
+                                <div class="lineKitItem_name">
+                                    <a href="{{url}}" class="">{{name}}</a>
                                 </div>
 
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">Высота</span>
-                                    <span class="dimantion_val">20</span>
+                                <!-- изображение элемента набора -->
+                                <a href="{{url}}" class="lineKitItem_l ta-c">
+                                    <img src="{{photoUrl}}" />
+                                </a>
+
+                                <!-- описание элемента набора -->
+                                <div class="lineKitItem_r lineKitItem_desc">
+
+                                    <!-- доставка -->
+                                    <div class="lineKitItem_delvr">
+                                        <span class="lineKitItem_grey">Дата доставки:</span> {{deliveryDate}}
+                                    </div>
+
+                                    <div class="column dimantion">
+                                        <span class="dimantion_name">Высота</span>
+                                        <span class="dimantion_val">{{height}}</span>
+                                    </div>
+
+                                    <div class="column dimantion">
+                                        <span class="dimantion_name">&nbsp;</span>
+                                        <span class="dimantion_val separation">x</span>
+                                    </div>
+
+                                    <div class="column dimantion">
+                                        <span class="dimantion_name">Ширина</span>
+                                        <span class="dimantion_val">{{width}}</span>
+                                    </div>
+
+                                    <div class="column dimantion">
+                                        <span class="dimantion_name">&nbsp;</span>
+                                        <span class="dimantion_val separation">x</span>
+                                    </div>
+
+                                    <div class="column dimantion">
+                                        <span class="dimantion_name">Глубина</span>
+                                        <span class="dimantion_val">{{depth}}</span>
+                                    </div>
+
+                                    <div class="column dimantion">
+                                        <span class="dimantion_name">&nbsp;</span>
+                                        <span class="dimantion_val">{{unit}}</span>
+                                    </div>
                                 </div>
 
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">&nbsp;</span>
-                                    <span class="dimantion_val separation">x</span>
+                                <!-- цена -->
+                                <div class="lineKitItem_l lineKitItem-l ta-c">
+                                    {{shownPrice}}&nbsp;<span class="rubl">p</span>
                                 </div>
 
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">Ширина</span>
-                                    <span class="dimantion_val">104</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">&nbsp;</span>
-                                    <span class="dimantion_val separation">x</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">Глубина</span>
-                                    <span class="dimantion_val">25</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">&nbsp;</span>
-                                    <span class="dimantion_val">см</span>
-                                </div>
+                                <!-- штук в наборе -->
+                                <div class="lineKitItem_r lineKitItem-l">{{quantity}} шт.</div>
                             </div>
-
-                            <div class="lineKitItem_cell">
-                                16.8.2014
-                            </div>
-
-                            <div class="lineKitItem_cell ta-c">
-                                970&nbsp;<span class="rubl">p</span>
-                            </div>
-
-                            <div class="lineKitItem_cell ta-r">1 шт.</div>
+                            <!--/ элемент набора -->
+                        {{/products}}
                         </div>
-                    </div>
-                    <!--/ планшетная версия -->
-
-                    <!-- мобильная версия -->
-                    <div class="lineKit lineKit-mobile">
-
-                        <!-- элемент набора -->
-                        <div class="lineKitItem clearfix">
-                            <div class="lineKitItem_name">
-                                <a href="" class="">Настенный шкаф-витрина «Ксено СТЛ.078.14»</a>
-                            </div>
-
-                            <!-- изображение элемента набора -->
-                            <a href="" class="lineKitItem_l ta-c">
-                                <img src="http://fs07.enter.ru/1/1/120/97/146336.jpg" />
-                            </a>
-
-                            <!-- описание элемента набора -->
-                            <div class="lineKitItem_r lineKitItem_desc">
-
-                                <!-- доставка -->
-                                <div class="lineKitItem_delvr">
-                                    <span class="lineKitItem_grey">Дата доставки:</span> 16.8.2014
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">Высота</span>
-                                    <span class="dimantion_val">80.2</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">&nbsp;</span>
-                                    <span class="dimantion_val separation">x</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">Ширина</span>
-                                    <span class="dimantion_val">104</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">&nbsp;</span>
-                                    <span class="dimantion_val separation">x</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">Глубина</span>
-                                    <span class="dimantion_val">29.5</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">&nbsp;</span>
-                                    <span class="dimantion_val">см</span>
-                                </div>
-                            </div>
-                            
-                            <!-- цена -->
-                            <div class="lineKitItem_l lineKitItem-l ta-c">
-                                5 000&nbsp;<span class="rubl">p</span>
-                            </div>
-
-                            <!-- штук в наборе -->
-                            <div class="lineKitItem_r lineKitItem-l">1 шт.</div>
-                        </div>
-                        <!--/ элемент набора -->
-
-                        <div class="lineKitItem clearfix">
-                            <div class="lineKitItem_name">
-                                <a href="" class="">Настенный шкаф-витрина «Ксено СТЛ.078.14»</a>
-                            </div>
-
-                            <a href="" class="lineKitItem_l ta-c">
-                                <img src="http://fs07.enter.ru/1/1/120/97/146336.jpg" />
-                            </a>
-
-                            <div class="lineKitItem_r lineKitItem_desc">
-                                <div class="lineKitItem_delvr">
-                                    <span class="lineKitItem_grey">Дата доставки:</span> 16.8.2014
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">Высота</span>
-                                    <span class="dimantion_val">80.2</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">&nbsp;</span>
-                                    <span class="dimantion_val separation">x</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">Ширина</span>
-                                    <span class="dimantion_val">104</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">&nbsp;</span>
-                                    <span class="dimantion_val separation">x</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">Глубина</span>
-                                    <span class="dimantion_val">29.5</span>
-                                </div>
-
-                                <div class="column dimantion">
-                                    <span class="dimantion_name">&nbsp;</span>
-                                    <span class="dimantion_val">см</span>
-                                </div>
-                            </div>
-                  
-                            <div class="lineKitItem_l lineKitItem-l ta-c">
-                                5 000&nbsp;<span class="rubl">p</span>
-                            </div>
-
-                            <div class="lineKitItem_r lineKitItem-l">1 шт.</div>
-                        </div>
-                    </div>
-                    <!--/ мобильная версия -->
+                        <!--/ мобильная версия -->
+                    {{/product.kitBlock}}
 
                     <p class="specificationsText">{{product.description}}</p>
 
