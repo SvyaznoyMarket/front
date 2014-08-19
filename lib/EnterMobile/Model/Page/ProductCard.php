@@ -145,12 +145,14 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product {
     }
 
     class KitBlock {
-        /** @var KitBlock/Product[] */
+        /** @var KitBlock\Product[] */
         public $products = [];
         /** @var string */
         public $shownQuantity;
         /** @var string */
         public $shownSum;
+        /** @var Partial\Cart\ProductButton|null */
+        public $cartButton;
     }
 
     class ReviewBlock {

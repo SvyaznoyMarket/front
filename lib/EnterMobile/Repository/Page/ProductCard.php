@@ -258,9 +258,11 @@ class ProductCard {
                 $kit->cartSpinner = $cartSpinnerRepository->getObject($kitProductModel, $kitProductModel->kitCount, false, false);
 
                 $page->content->product->kitBlock->products[] = $kit;
-                $page->content->product->kitBlock->shownSum = number_format((float)$sum, 0, ',', ' ');
-                $page->content->product->kitBlock->shownQuantity = 'Итого за ' . $count . ' ' . $translateHelper->numberChoice($count, ['предмет', 'предмета', 'предметов']);
             }
+
+            $page->content->product->kitBlock->shownSum = number_format((float)$sum, 0, ',', ' ');
+            $page->content->product->kitBlock->shownQuantity = 'Итого за ' . $count . ' ' . $translateHelper->numberChoice($count, ['предмет', 'предмета', 'предметов']);
+            $page->content->product->kitBlock->cartButton = $cartProductButtonRepository->getListObject($productModel->relation->kits);
         }
 
         // аксессуары товара

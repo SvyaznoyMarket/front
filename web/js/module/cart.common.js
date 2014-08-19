@@ -12,7 +12,7 @@ define(
 
                 var $el = $(e.target),
                     data = $el.data(),
-                    $widget = $($el.data('widgetSelector'))
+                    $widget = $el.data('widgetSelector') ? $($el.data('widgetSelector')) : null
                 ;
 
                 console.info('addProductToCart', $el, $widget, data);

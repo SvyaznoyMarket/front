@@ -113,6 +113,11 @@
         "pattern": "/ajax/user/cart/product",
         "method": ["POST", "PUT"]
     },
+    "User\\Cart\\Product\\SetList": {
+        "name": "Установить товары в корзине",
+        "pattern": "/ajax/user/cart/product-list",
+        "method": ["POST", "PUT"]
+    },
     "User\\Cart\\Product\\Delete": {
         "name": "Удалить товар из корзины",
         "pattern": "/ajax/user/cart/product/delete",

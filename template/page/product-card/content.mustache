@@ -1,5 +1,5 @@
 <div class="content">
-    {{! окно большого изображения  }} 
+    {{! окно большого изображения }}
     <div class="contentBox960 fullImgCnt js-fullimg-wrap">
         <div class="clsr1 js-fullimg-close"></div>
 
@@ -24,7 +24,7 @@
             <div class="fullImgCnt_thmb_btn fullImgCnt_thmb_btn-r js-fullimg-thmb-btn-r"></div>
         </div>
     </div>
-    {{! окно большого изображения  }} 
+    {{! окно большого изображения }}
 
     {{#product.kitBlock}}
     <!-- редактировать комплектацию -->
@@ -202,7 +202,10 @@
 
             <div class="lineKitFooter_summ fl-r">{{shownQuantity}}: {{shownSum}} <span class="rubl">p</span></div>
 
-            <a href="" class="btnBuy fl-r">Купить</a>
+            <!--<a href="" class="btnBuy fl-r">Купить</a>-->
+            {{#cartButton}}
+                {{>partial/cart/button}}
+            {{/cartButton}}
         </div>
     </div>
     <!--/ редактировать комплектацию -->

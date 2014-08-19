@@ -85,6 +85,54 @@ class ProductButton {
     }
 
     /**
+     * @param \EnterModel\Product[] $products
+     * @param \EnterModel\Cart\Product[] $cartProductsById
+     * @return Partial\Cart\ProductButton
+     */
+    public function getListObject(
+        array $products,
+        array $cartProductsById = []
+    ) {
+        $button = new Partial\Cart\ProductButton();
+
+        $dataValue = [
+            'products' => [],
+        ];
+        foreach ($products as $product) {
+            $cartProduct = isset($cartProductsById[$product->id]) ? $cartProductsById[$product->id] : null;
+
+            $dataValue['products'][$product->id] = [
+                'id'       => $product->id,
+                'name'     => $product->name,
+                'token'    => $product->token,
+                'price'    => $product->price,
+                'url'      => $product->link,
+                'quantity' => $cartProduct ? $cartProduct->quantity : 1,
+            ];
+        }
+
+        $button->dataUrl = $this->router->getUrlByRoute(new Routing\User\Cart\Product\SetList());
+        $button->dataValue = $this->helper->json($dataValue);
+
+        // ga
+        $dataGa = [];
+        foreach ($products as $product) {
+            $dataGa[] = [
+                ['send', 'event', 'm_add_to_basket', $product->name, $product->article, '{product.sum}'],
+            ];
+        }
+        $button->dataGa = $this->helper->json($dataGa);
+
+        $button->text = 'Купить';
+        $button->isDisabled = false;
+        $button->isInShopOnly = false;
+        $button->isInCart = false;
+        $button->isQuick = false;
+
+        return $button;
+    }
+
+    /**
      * @param $productId
      * @return string
      */

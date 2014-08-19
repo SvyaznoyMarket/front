@@ -17,23 +17,48 @@ class Cart {
     public function getProductObjectByHttpRequest(Http\Request $request) {
         $cartProduct = null;
 
-        $productData = [
+        $productItem = [
             'id'       => null,
             'quantity' => null,
         ];
         if (!empty($request->query['product']['id'])) {
-            $productData = array_merge($productData, $request->query['product']);
+            $productItem = array_merge($productItem, $request->query['product']);
         } else if (!empty($request->data['product']['id'])) {
-            $productData = array_merge($productData, $request->data['product']);
+            $productItem = array_merge($productItem, $request->data['product']);
         }
 
-        if ($productData['id']) {
+        if ($productItem['id']) {
             $cartProduct = new Model\Cart\Product();
-            $cartProduct->id = (string)$productData['id'];
-            $cartProduct->quantity = (int)$productData['quantity'];
+            $cartProduct->id = (string)$productItem['id'];
+            $cartProduct->quantity = (int)$productItem['quantity'];
         }
 
         return $cartProduct;
+    }
+
+    /**
+     * @param Http\Request $request
+     * @return Model\Cart\Product|null
+     */
+    public function getProductListByHttpRequest(Http\Request $request) {
+        $cartProducts = [];
+
+        foreach ((array)$request->data['products'] as $productItem) {
+            $productItem = array_merge([
+                'id'       => null,
+                'quantity' => null,
+            ], (array)$productItem);
+
+            if ($productItem['id']) {
+                $cartProduct = new Model\Cart\Product();
+                $cartProduct->id = (string)$productItem['id'];
+                $cartProduct->quantity = (int)$productItem['quantity'];
+
+                $cartProducts[] = $cartProduct;
+            }
+        }
+
+        return $cartProducts;
     }
 
     /**
