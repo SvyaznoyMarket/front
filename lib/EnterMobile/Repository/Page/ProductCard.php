@@ -33,6 +33,7 @@ class ProductCard {
         $templateDir = $config->mustacheRenderer->templateDir;
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $cartProductReserveButtonRepository = new Repository\Partial\Cart\ProductReserveButton();
+        $cartSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
         $productCardRepository = new Repository\Partial\ProductCard();
         $ratingRepository = new Repository\Partial\Rating();
         $productSliderRepository = new Repository\Partial\ProductSlider();
@@ -253,6 +254,8 @@ class ProductCard {
                     }
 
                 }
+
+                $kit->cartSpinner = $cartSpinnerRepository->getObject($kitProductModel, $kitProductModel->kitCount, false, false);
 
                 $page->content->product->kitBlock->products[] = $kit;
                 $page->content->product->kitBlock->shownSum = number_format((float)$sum, 0, ',', ' ');

@@ -221,6 +221,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product\PropertyChunk {
 }
 
 namespace EnterMobile\Model\Page\ProductCard\Content\Product\KitBlock {
+    use EnterMobile\Model\Partial;
+
     class Product {
         /** @var string */
         public $name;
@@ -244,6 +246,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product\KitBlock {
         public $depth;
         /** @var string */
         public $unit;
+        /** @var Partial\Cart\ProductSpinner|null */
+        public $cartSpinner;
     }
 }
 

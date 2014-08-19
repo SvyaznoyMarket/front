@@ -113,21 +113,6 @@ class Get {
             'result' => $page,
         ]);
 
-        // FIXME: осторожно
-        /*
-        if (!$request->cookies[$config->session->name]) {
-            $response->headers->setCookie(new Http\Cookie(
-                $config->session->name,
-                $session->getId(),
-                time() + $config->session->cookieLifetime,
-                '/',
-                $config->session->cookieDomain,
-                false,
-                false
-            ));
-        }
-        */
-
         return $response;
     }
 }

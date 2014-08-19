@@ -43,7 +43,7 @@ class ProductSpinner {
         $spinner->id = self::getId($product->id, $hasBuyButton);
         $spinner->widgetId = self::getWidgetId($product->id, $hasBuyButton);
         $spinner->value = $count;
-        $spinner->isDisabled = (bool)$isDisabled;
+        $spinner->isDisabled = $isDisabled;
         $spinner->hasBuyButton = $hasBuyButton;
 
         if ($hasBuyButton) {
