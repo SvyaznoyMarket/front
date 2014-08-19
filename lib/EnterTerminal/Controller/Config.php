@@ -53,8 +53,13 @@ namespace EnterTerminal\Controller {
 
             $response->shop = $shop;
 
-            $businessRules = $businessRulesQuery->getResult();
-            if (!$businessRules) {
+            try {
+                $businessRules = $businessRulesQuery->getResult();
+            } catch (\Exception $e) {
+                $businessRules = [];
+            }
+
+            if (!is_array($businessRules)) {
                 throw new \Exception('Не удалось получить бизнес правила');
             }
 
