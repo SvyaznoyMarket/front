@@ -1,4 +1,4 @@
-<div class="js-widget js-buySpinner {{widgetId}}" data-template-selector="#tpl-product-buySpinner">
+<div class="js-widget js-buySpinner {{widgetId}}" data-template-selector="#tpl-product-buySpinner"{{#timer}} data-timer="{{timer}}"{{/timer}}>
     <div class="{{class}} counter{{#isDisabled}} mDisabled{{/isDisabled}}">
         <button
             {{#isDisabled}}disabled="disabled"{{/isDisabled}}
@@ -30,7 +30,7 @@
                 data-value="{{&buttonDataValue}}"
                 data-widget-selector=".{{widgetId}}"
                 data-url="{{&dataUrl}}"
-                {{#timer}}data-timer="{{timer}}"{{/timer}}
+                data-auto-update="{{#buttonDataValue}}on{{/buttonDataValue}}"
             />
         {{/buttonDataValue}}
     </div>

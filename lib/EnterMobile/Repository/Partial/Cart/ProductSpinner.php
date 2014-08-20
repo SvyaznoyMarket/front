@@ -51,9 +51,8 @@ class ProductSpinner {
         $spinner->id = self::getId($product->id);
         $spinner->widgetId = self::getWidgetId($product->id);
         $spinner->value = $cartProduct->quantity;
-        $spinner->isDisabled = false;
         $spinner->buttonDataValue = false;
-        $spinner->timer = false;
+        $spinner->timer = 600;
         $spinner->dataValue = $this->helper->json([
             'product' => [
                 'id'       => $product->id,
@@ -70,7 +69,6 @@ class ProductSpinner {
         } else {
             $spinner->buttonId = $buttonId ?: self::getId($product->id) . '-input';
             $spinner->dataUrl = $this->router->getUrlByRoute(new Routing\User\Cart\Product\Set());
-            $spinner->timer = 600;
             $buttonDataValue = ['product' => [
                 $product->id => [
                     'id'       => $product->id,

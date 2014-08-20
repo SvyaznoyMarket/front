@@ -15,8 +15,6 @@ namespace EnterMobile\Model\Partial\Cart {
         public $class;
         /** @var int */
         public $value;
-        /** @var bool */
-        public $isDisabled;
         /** @var string */
         public $dataUrl;
         /** @var string */
