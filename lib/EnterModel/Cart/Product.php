@@ -11,6 +11,8 @@ class Product {
     public $price;
     /** @var float */
     public $sum;
+    /** @var string */
+    public $parentId;
 
     /**
      * @param array $data

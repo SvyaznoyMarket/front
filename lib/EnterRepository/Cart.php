@@ -105,9 +105,16 @@ class Cart {
         }
 
         foreach ($cartData['product'] as $productItem) {
+            $productItem = array_merge([
+                'id'       => null,
+                'quantity' => null,
+                'parentId' => null,
+            ], $productItem);
+
             $cartProduct = new Model\Cart\Product();
             $cartProduct->id = (string)$productItem['id'];
             $cartProduct->quantity = (int)$productItem['quantity'];
+            $cartProduct->parentId = $productItem['parentId'] ? (string)$productItem['parentId'] : null;
 
             $cart->product[$cartProduct->id] = $cartProduct;
         }
@@ -138,10 +145,15 @@ class Cart {
         ];
 
         foreach ($cart->product as $cartProduct) {
-            $cartData['product'][$cartProduct->id] = [
+            $cartItem = [
                 'id'       => $cartProduct->id,
                 'quantity' => $cartProduct->quantity,
             ];
+            if ($cartProduct->parentId) {
+                $cartItem['parentId'] = $cartProduct->parentId;
+            }
+
+            $cartData['product'][$cartProduct->id] = $cartItem;
         }
         $session->set('cart', $cartData);
     }
