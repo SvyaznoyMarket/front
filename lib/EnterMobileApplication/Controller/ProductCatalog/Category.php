@@ -39,7 +39,7 @@ namespace EnterMobileApplication\Controller\ProductCatalog {
                 throw new \Exception('limit не должен быть меньше 1');
             }
             if ($limit > 40) {
-                throw new \Exception('limit не должен быть меньше 40');
+                throw new \Exception('limit не должен быть больше 40');
             }
 
             // сортировка
