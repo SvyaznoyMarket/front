@@ -216,6 +216,7 @@ class ProductCard {
         $page->content->product->kitBlock = false;
         if ($productModel->relation && (bool)$productModel->relation->kits) {
             $page->content->product->kitBlock = new Page\Content\Product\KitBlock();
+            $page->content->product->kitBlock->isLocked = $productModel->isKitLocked;
 
             $count = 0;
             $sum = 0;
@@ -225,6 +226,7 @@ class ProductCard {
 
                 $kit = new Page\Content\Product\KitBlock\Product();
                 $kit->name = $kitProductModel->name;
+                $kit->url = $kitProductModel->link;
                 $kit->quantity = $kitProductModel->kitCount;
                 $kit->shownPrice = $kitProductModel->price ? number_format((float)$kitProductModel->price, 0, ',', ' ') : null;
                 $kit->shownSum = $kitProductModel->price ? number_format((float)$kitProductModel->price * $kitProductModel->kitCount, 0, ',', ' ') : null;

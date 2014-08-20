@@ -39,7 +39,7 @@ class ProductButton {
         }
 
         // FIXME
-        if ($product->relation && (bool)$product->relation->kits) {
+        if ($product->relation && (bool)$product->relation->kits && !$product->isKitLocked) {
             return null;
         }
 

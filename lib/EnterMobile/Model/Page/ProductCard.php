@@ -153,6 +153,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product {
         public $shownSum;
         /** @var Partial\Cart\ProductButton|null */
         public $cartButton;
+        /** @var bool */
+        public $isLocked;
     }
 
     class ReviewBlock {

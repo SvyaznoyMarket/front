@@ -437,7 +437,9 @@
                     {{#product.kitBlock}}
                         <div class="lineKitHead clearfix">
                             <span class="lineKitHead_title">Базовая комплектация набора</span>
-                            <span class="lineKitHead_change"><span class="borderBd js-kit-open">Изменить комплектацию</span></span>
+                            {{^isLocked}}
+                                <span class="lineKitHead_change"><span class="borderBd js-kit-open">Изменить комплектацию</span></span>
+                            {{/isLocked}}
                         </div>
 
                         <!-- планшетная версия -->
