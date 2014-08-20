@@ -40,8 +40,13 @@ namespace EnterMobileApplication\Controller\ProductCatalog {
             // номер страницы
             $pageNum = (int)$request->query['page'] ?: 1;
 
-            // количество товаров на страницу
-            $limit = (int)$request->query['limit'] ?: 10;
+            $limit = (int)$request->query['limit'];
+            if ($limit < 1) {
+                throw new \Exception('limit не должен быть меньше 1');
+            }
+            if ($limit > 40) {
+                throw new \Exception('limit не должен быть меньше 40');
+            }
 
             // сортировка
             $sorting = null;
