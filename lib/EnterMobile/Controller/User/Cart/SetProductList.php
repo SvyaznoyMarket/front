@@ -21,7 +21,6 @@ class SetProductList {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
-        $config = $this->getConfig();
         $curl = $this->getCurl();
         $session = $this->getSession();
         $cartRepository = new \EnterRepository\Cart();
@@ -39,6 +38,9 @@ class SetProductList {
         foreach ($cartProducts as $cartProduct) {
             $cartRepository->setProductForObject($cart, $cartProduct);
         }
+
+        // сохранение корзины в сессию
+        $cartRepository->saveObjectToHttpSession($session, $cart);
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
@@ -78,23 +80,38 @@ class SetProductList {
             $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
         }
 
-        // сохранение корзины в сессию
-        $cartRepository->saveObjectToHttpSession($session, $cart);
-
         // пользователь
         $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
 
         $page = new Page();
-        // пользователь, корзина
-        $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);
-        $page->widgets['.' . $widget->widgetId] = $widget;
 
-        $widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById));
-        $page->widgets['.' . $widget->widgetId] = $widget;
+        foreach ($cart->product as $cartProduct) {
+            $product = isset($productsById[$cartProduct->id]) ? $productsById[$cartProduct->id] : null;
+            if (!$product) continue;
+
+            // кнопка купить
+            $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
+            $page->widgets['.' . $widget->widgetId] = $widget;
+            // спиннер
+            $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct->quantity, true);
+            $page->widgets['.' . $widget->widgetId] = $widget;
+            // пользователь, корзина
+            $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);
+            $page->widgets['.' . $widget->widgetId] = $widget;
+
+            $widget = (new Repository\Partial\Cart\ProductSum())->getObject($cartProduct);
+            $page->widgets['.' . $widget->widgetId] = $widget;
+
+            $widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById));
+            $page->widgets['.' . $widget->widgetId] = $widget;
+
+            $widget = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, $cartProduct);
+            $page->widgets['.' . $widget->widgetId] = $widget;
+        }
 
         // response
         $response = new Http\JsonResponse([
-            'result' => $page,
+            'result' => $page, // TODO: вынести на уровень JsonPage.result
         ]);
 
         return $response;

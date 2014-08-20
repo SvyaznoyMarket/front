@@ -8,7 +8,7 @@ namespace EnterMobile\Model\Partial\Cart {
         /** @var string */
         public $id;
         /** @var bool */
-        public $hasBuyButton;
+        public $buttonDataValue;
         /** @var string */
         public $buttonId;
         /** @var string */
@@ -21,5 +21,7 @@ namespace EnterMobile\Model\Partial\Cart {
         public $dataUrl;
         /** @var string */
         public $dataValue;
+        /** @var int|null */
+        public $timer;
     }
 }

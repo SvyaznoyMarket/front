@@ -41,8 +41,9 @@ class ProductReserveButton {
             'shopId'  => $shopState->shop ? $shopState->shop->id : null,
         ]);
         $button->dataUrl = $this->router->getUrlByRoute(new Routing\User\Cart\Product\Set());
-        $button->dataValue = $this->helper->json([
-            'product' => [
+
+        $dataValue = ['product' => [
+            $product->id => [
                 'id'       => $product->id,
                 'name'     => $product->name,
                 'token'    => $product->token,
@@ -50,7 +51,8 @@ class ProductReserveButton {
                 'url'      => $product->link,
                 'quantity' => $shopState ? $shopState->quantity : 1,
             ],
-        ]);
+        ]];
+        $button->dataValue = $this->helper->json($dataValue);
 
         // ga
         $button->dataGa = $this->helper->json([
@@ -69,10 +71,6 @@ class ProductReserveButton {
             $button->url = '#';
             $button->text = 'На витрине';
             $button->isDisabled = true;
-
-
-
-
         }
 
         if (!$product->isBuyable) {

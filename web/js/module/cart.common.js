@@ -15,7 +15,7 @@ define(
                     $widget = $el.data('widgetSelector') ? $($el.data('widgetSelector')) : null
                 ;
 
-                console.info('addProductToCart', $el, $widget, data);
+                console.info('addProductToCart', {'$el': $el, '$widget': $widget, 'data': data});
 
                 if (data.url) {
                     $.post(data.url, data.value, function(response) {
@@ -88,7 +88,7 @@ define(
                 }
             },
 
-            changeProductQuantity = function(e, quantity) {
+            changeProductQuantity = function(e, product, quantity) {
                 e.stopPropagation();
 
                 var idSelector = $(e.target),
@@ -98,7 +98,7 @@ define(
                     timer = parseInt($widget.data('timer'))
                 ;
 
-                console.info('changeProductQuantity', $el, quantity);
+                console.info('changeProductQuantity', {'$el' : $el, 'product': product, 'quantity': quantity});
 
                 if (_.isFinite(timer) && (timer > 0)) {
                     try {
@@ -120,7 +120,9 @@ define(
                     return error;
                 }
 
-                dataValue.product.quantity = quantity;
+                if (dataValue.product[product.id]) {
+                    dataValue.product[product.id].quantity = quantity;
+                }
 
                 // FIXME: осторожно, гкод
                 if ($el.hasClass('js-quickBuyButton')) {
@@ -135,13 +137,19 @@ define(
                 var $el = $(e.target),
                     $widget = $($el.data('widgetSelector')),
                     $target = $($el.data('buttonSelector')),
-                    targetDataValue = $target.data('value');
+                    $value = $($el.data('valueSelector')),
+                    targetDataValue = $target.data('value'),
+                    dataValue = $value.data('value')
+                ;
 
-                console.info('incSpinnerValue', $el, $target, $widget);
+                console.info('incSpinnerValue', { '$el': $el, '$target': $target, '$value': $value, '$widget': $widget});
 
-                if (targetDataValue) {
-                    $target.trigger('changeProductQuantityData', targetDataValue.product.quantity + 1);
-                    $widget.trigger('renderValue', targetDataValue.product);
+                var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
+                if (product) {
+                    $target.trigger('changeProductQuantityData', [product, product.quantity + 1]);
+                    $widget.trigger('renderValue', [product]);
+                } else {
+                    console.error('Товар не получен', product);
                 }
 
                 $el.blur();
@@ -153,13 +161,19 @@ define(
                 var $el = $(e.target),
                     $widget = $($el.data('widgetSelector')),
                     $target = $($el.data('buttonSelector')),
-                    targetDataValue = $target.data('value');
+                    $value = $($el.data('valueSelector')),
+                    targetDataValue = $target.data('value'),
+                    dataValue = $value.data('value')
+                ;
 
-                console.info('decSpinnerValue', $el, $target);
+                console.info('incSpinnerValue', { '$el': $el, '$target': $target, '$value': $value, '$widget': $widget});
 
-                if (targetDataValue) {
-                    $target.trigger('changeProductQuantityData', targetDataValue.product.quantity - 1);
-                    $widget.trigger('renderValue', targetDataValue.product);
+                var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
+                if (product) {
+                    $target.trigger('changeProductQuantityData', [product, product.quantity - 1]);
+                    $widget.trigger('renderValue', [product]);
+                } else {
+                    console.error('Товар не получен', product);
                 }
 
                 $el.blur();
@@ -171,17 +185,20 @@ define(
                 var $el = $(e.target),
                     $widget = $($el.data('widgetSelector')),
                     $target = $($el.data('buttonSelector')),
-                    targetDataValue = $target.data('value');
+                    targetDataValue = $target.data('value'),
+                    dataValue = $el.data('value')
+                ;
 
-                console.info('changeSpinnerValue', $el, $target);
+                console.info('changeSpinnerValue', { '$el': $el, '$target': $target, '$widget': $widget});
 
                 var value = $el.val();
                 if ('' != value) {
-                    $target.trigger('changeProductQuantityData', parseInt(value));
-
-                    if (targetDataValue) {
-                        $widget.trigger('renderValue', targetDataValue.product);
+                    var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
+                    if (product) {
+                        $target.trigger('changeProductQuantityData', [product, parseInt(value)]);
                     }
+
+                    $widget.trigger('renderValue', [product]);
                 }
             },
 

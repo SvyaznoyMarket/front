@@ -30,29 +30,47 @@ class ProductSpinner {
      * @param int $count
      * @param bool $isDisabled
      * @param bool $hasBuyButton
+     * @param string|null $buttonId
      * @return Partial\Cart\ProductSpinner
      */
     public function getObject(
         \EnterModel\Product $product,
         $count = 1,
         $isDisabled = false,
-        $hasBuyButton = true
+        $hasBuyButton = true,
+        $buttonId = null
     ) {
+        if ($product->relation && (bool)$product->relation->kits) {
+            return null;
+        }
+
         $spinner = new Partial\Cart\ProductSpinner();
 
         $spinner->id = self::getId($product->id, $hasBuyButton);
         $spinner->widgetId = self::getWidgetId($product->id, $hasBuyButton);
         $spinner->value = $count;
         $spinner->isDisabled = $isDisabled;
-        $spinner->hasBuyButton = $hasBuyButton;
+        $spinner->buttonDataValue = false;
+        $spinner->timer = false;
+        $spinner->dataValue = $this->helper->json([
+            'product' => [
+                'id'       => $product->id,
+                'name'     => $product->name,
+                'token'    => $product->token,
+                'price'    => $product->price,
+                'url'      => $product->link,
+                'quantity' => $count,
+            ],
+        ]);
 
         if ($hasBuyButton) {
-            $spinner->buttonId = Repository\Partial\Cart\ProductButton::getId($product->id);
+            $spinner->buttonId = $buttonId ?: Repository\Partial\Cart\ProductButton::getId($product->id);
         } else {
-            $spinner->buttonId = self::getId($product->id, $hasBuyButton) . '-input';
+            $spinner->buttonId = $buttonId ?: self::getId($product->id, $hasBuyButton) . '-input';
             $spinner->dataUrl = $this->router->getUrlByRoute(new Routing\User\Cart\Product\Set());
-            $spinner->dataValue = $this->helper->json([
-                'product' => [
+            $spinner->timer = 600;
+            $buttonDataValue = ['product' => [
+                $product->id => [
                     'id'       => $product->id,
                     'name'     => $product->name,
                     'token'    => $product->token,
@@ -60,7 +78,8 @@ class ProductSpinner {
                     'url'      => $product->link,
                     'quantity' => $count,
                 ],
-            ]);
+            ]];
+            $spinner->buttonDataValue = $this->helper->json($buttonDataValue);
         }
 
         return $spinner;

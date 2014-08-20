@@ -43,7 +43,7 @@ class Cart {
     public function getProductListByHttpRequest(Http\Request $request) {
         $cartProducts = [];
 
-        foreach ((array)$request->data['products'] as $productItem) {
+        foreach ((array)$request->data['product'] as $productItem) {
             $productItem = array_merge([
                 'id'       => null,
                 'quantity' => null,
