@@ -114,7 +114,11 @@ class Get {
                 $page->widgets['.' . $widget->widgetId] = $widget;
             }
 
-            $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct->quantity, true);
+            $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject(
+                $product,
+                $cartProduct,
+                false
+            );
             $page->widgets['.' . $widget->widgetId] = $widget;
         }
 

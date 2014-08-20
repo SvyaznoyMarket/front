@@ -259,8 +259,7 @@ class ProductCard {
 
                 $kit->cartSpinner = $cartSpinnerRepository->getObject(
                     $kitProductModel,
-                    $kitProductModel->kitCount,
-                    false,
+                    new \EnterModel\Cart\Product(['quantity' => $kitProductModel->kitCount]),
                     true,
                     Repository\Partial\Cart\ProductButton::getId($productModel->id)
                 );

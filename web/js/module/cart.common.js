@@ -94,8 +94,7 @@ define(
                 var idSelector = $(e.target),
                     $el = $(idSelector),
                     dataValue = $el.data('value'),
-                    $widget = $($el.data('widgetSelector')),
-                    timer = parseInt($widget.data('timer'))
+                    timer = parseInt($el.data('timer'))
                 ;
 
                 console.info('changeProductQuantity', {'$el' : $el, 'product': product, 'quantity': quantity});
@@ -109,7 +108,7 @@ define(
 
                     timer = setTimeout(function() { addProductToCart(e); }, 600);
 
-                    $widget.data('timer', timer);
+                    $el.data('timer', timer);
                 }
 
                 if (!_.isFinite(quantity) || (quantity <= 0) || (quantity > 999)) {
