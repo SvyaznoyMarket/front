@@ -88,13 +88,26 @@ class Cart {
         $cart = new Model\Cart();
 
         $cartData = array_merge([
+            'product' => [],
+        ], (array)$session->get('cart'));
+
+        // импорт старой корзины
+        $oldCartData = array_merge([
             'productList' => [],
         ], (array)$session->get('userCart'));
+        foreach ($oldCartData['productList'] as $productId => $productQuantity) {
+            if (!isset($cartData['product'][$productId])) {
+                $cartData['product'][$productId] = [
+                    'id'       => $productId,
+                    'quantity' => $productQuantity,
+                ];
+            }
+        }
 
-        foreach ($cartData['productList'] as $productId => $productQuantity) {
+        foreach ($cartData['product'] as $productItem) {
             $cartProduct = new Model\Cart\Product();
-            $cartProduct->id = (string)$productId;
-            $cartProduct->quantity = (int)$productQuantity;
+            $cartProduct->id = (string)$productItem['id'];
+            $cartProduct->quantity = (int)$productItem['quantity'];
 
             $cart->product[$cartProduct->id] = $cartProduct;
         }
@@ -109,15 +122,28 @@ class Cart {
     public function saveObjectToHttpSession(Http\Session $session, Model\Cart $cart) {
         // TODO: купоны, ...
 
-        $cartData = [
+        // сохранение в старой корзине
+        $oldCartData = [
             'productList' => [],
         ];
 
         foreach ($cart->product as $cartProduct) {
-            $cartData['productList'][$cartProduct->id] = $cartProduct->quantity;
+            $oldCartData['productList'][$cartProduct->id] = $cartProduct->quantity;
         }
+        $session->set('userCart', $oldCartData);
 
-        $session->set('userCart', $cartData);
+        // новая корзина
+        $cartData = [
+            'product' => [],
+        ];
+
+        foreach ($cart->product as $cartProduct) {
+            $cartData['product'][$cartProduct->id] = [
+                'id'       => $cartProduct->id,
+                'quantity' => $cartProduct->quantity,
+            ];
+        }
+        $session->set('cart', $cartData);
     }
 
     /**
