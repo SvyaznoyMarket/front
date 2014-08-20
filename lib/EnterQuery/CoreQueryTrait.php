@@ -19,7 +19,10 @@ trait CoreQueryTrait {
         $config = $this->getConfig()->coreService;
 
         $this->url->prefix = $config->url;
-        $this->url->query['client_id'] = $config->clientId;
+        if (!isset($this->url->query['client_id'])) {
+            $this->url->query['client_id'] = $config->clientId;
+        }
+
         if ($config->debug) {
             $this->url->query['log4php'] = 'debug';
         }
