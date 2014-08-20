@@ -10,6 +10,9 @@ return function ($page) { ?>
     <meta id="js-enter-debug" name="enter-debug" content="<?= $page['dataDebug'] ?>">
     <meta id="js-enter-version" name="enter-version" content="<?//= $page['dataVersion'] ?>">
     <meta id="js-enter-module" name="enter-module" content="default">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+
     <link rel="stylesheet" href="/css/global.min.css">
 
     <script data-main="/js/main.js" src="/js/vendor/require-2.1.14.js"></script>

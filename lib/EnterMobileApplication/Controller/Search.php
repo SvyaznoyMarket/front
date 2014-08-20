@@ -1,14 +1,13 @@
 <?php
 
-namespace EnterTerminal\Controller {
+namespace EnterMobileApplication\Controller {
 
     use Enter\Http;
-    use EnterTerminal\ConfigTrait;
+    use EnterMobileApplication\ConfigTrait;
     use EnterAggregator\CurlTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
-    use EnterTerminal\Controller;
-    use EnterTerminal\Controller\Search\Response;
+    use EnterMobileApplication\Controller\Search\Response;
 
     class Search {
         use ConfigTrait, CurlTrait;
@@ -24,20 +23,29 @@ namespace EnterTerminal\Controller {
             $productRepository = new \EnterRepository\Product();
             $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME
 
-            // ид магазина
-            $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
+            // ид региона
+            $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
+            if (!$regionId) {
+                throw new \Exception('Не указан параметр regionId');
+            }
 
             // поисковая строка
             $searchPhrase = (new \EnterRepository\Search())->getPhraseByHttpRequest($request, 'phrase');
             if (!$searchPhrase) {
-                throw new \Exception('Не передана поисковая фраза');
+                throw new \Exception('Не передана поисковая фраза phrase');
             }
 
             // номер страницы
             $pageNum = (int)$request->query['page'] ?: 1;
 
             // количество товаров на страницу
-            $limit = (int)$request->query['limit'] ?: 10;
+            $limit = (int)$request->query['limit'];
+            if ($limit < 1) {
+                throw new \Exception('limit не должен быть меньше 1');
+            }
+            if ($limit > 40) {
+                throw new \Exception('limit не должен быть больше 40');
+            }
 
             // сортировки
             $sortings = (new \EnterRepository\Product\Sorting())->getObjectList();
@@ -50,16 +58,16 @@ namespace EnterTerminal\Controller {
                 $sorting->direction = trim((string)$request->query['sort']['direction']);
             }
 
-            // запрос магазина
-            $shopItemQuery = new Query\Shop\GetItemById($shopId);
-            $curl->prepare($shopItemQuery);
+            // запрос региона
+            $regionQuery = new Query\Region\GetItemById($regionId);
+            $curl->prepare($regionQuery);
 
             $curl->execute();
 
-            // магазин
-            $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
-            if (!$shop) {
-                throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
+            // регион
+            $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+            if (!$region) {
+                throw new \Exception(sprintf('Регион #%s не найден', $regionId));
             }
 
             // фильтры в http-запросе
@@ -69,11 +77,11 @@ namespace EnterTerminal\Controller {
             $requestFilters[] = $filterRepository->getRequestObjectBySearchPhrase($searchPhrase);
 
             // запрос фильтров
-            $filterListQuery = new Query\Product\Filter\GetListBySearchPhrase($searchPhrase, $shop->regionId);
+            $filterListQuery = new Query\Product\Filter\GetListBySearchPhrase($searchPhrase, $region->id);
             $curl->prepare($filterListQuery);
 
             // запрос результатов поиска
-            $searchResultQuery = new Query\Search\GetItemByPhrase($searchPhrase, $filterData, $sorting, $shop->regionId, ($pageNum - 1) * $limit, $limit);
+            $searchResultQuery = new Query\Search\GetItemByPhrase($searchPhrase, $filterData, $sorting, $region->id, ($pageNum - 1) * $limit, $limit);
             $curl->prepare($searchResultQuery);
 
             $curl->execute();
@@ -91,7 +99,7 @@ namespace EnterTerminal\Controller {
                 (bool)$searchResult->categories
                 ? new Query\Product\Category\GetListByIdList(
                     array_map(function(Model\SearchResult\Category $category) { return $category->id; }, $searchResult->categories),
-                    $shop->regionId
+                    $region->id
                 )
                 : null;
             if ($categoryListQuery) {
@@ -120,7 +128,7 @@ namespace EnterTerminal\Controller {
             // запрос списка товаров
             $productListQuery = null;
             if ((bool)$searchResult->productIds) {
-                $productListQuery = new Query\Product\GetListByIdList($searchResult->productIds, $shop->regionId);
+                $productListQuery = new Query\Product\GetListByIdList($searchResult->productIds, $region->id);
                 $curl->prepare($productListQuery);
             }
 
@@ -161,7 +169,7 @@ namespace EnterTerminal\Controller {
     }
 }
 
-namespace EnterTerminal\Controller\Search {
+namespace EnterMobileApplication\Controller\Search {
     use EnterModel as Model;
 
     class Response {
