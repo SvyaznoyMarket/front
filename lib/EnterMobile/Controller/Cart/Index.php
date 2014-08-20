@@ -55,7 +55,7 @@ class Index {
         }
 
         // корзина из ядра
-        $cart = $cartRepository->getObjectByQuery($cartItemQuery);
+        $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
 
         // запрос дерева категорий для меню
         $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);

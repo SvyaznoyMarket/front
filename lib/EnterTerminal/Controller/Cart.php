@@ -64,7 +64,7 @@ namespace EnterTerminal\Controller {
             }
 
             // корзина из ядра
-            $cart = $cartRepository->getObjectByQuery($cartItemQuery);
+            $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
 
             // ответ
             $response = new Response();

@@ -74,7 +74,7 @@ class DeleteProduct {
         $curl->execute();
 
         // корзина из ядра
-        $cart = $cartRepository->getObjectByQuery($cartItemQuery);
+        $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
 
         // сохранение корзины в сессию
         $cartRepository->saveObjectToHttpSession($session, $cart);

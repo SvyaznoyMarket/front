@@ -73,7 +73,7 @@ class SetProductList {
         $curl->execute();
 
         // корзина из ядра
-        $cart = $cartRepository->getObjectByQuery($cartItemQuery);
+        $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
 
         // товары
         if ($productListQuery) {
@@ -92,9 +92,20 @@ class SetProductList {
             // кнопка купить
             $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
             $page->widgets['.' . $widget->widgetId] = $widget;
+
+            // кнопка купить для родительского товара
+            if ($cartProduct->parentId) {
+                $widget = (new Repository\Partial\Cart\ProductButton())->getObject(
+                    new \EnterModel\Product(['id' => $cartProduct->parentId]),
+                    new \EnterModel\Cart\Product(['id' => $cartProduct->parentId, 'quantity' => 1])
+                );
+                $page->widgets['.' . $widget->widgetId] = $widget;
+            }
+
             // спиннер
             $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct->quantity, true);
             $page->widgets['.' . $widget->widgetId] = $widget;
+
             // пользователь, корзина
             $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);
             $page->widgets['.' . $widget->widgetId] = $widget;

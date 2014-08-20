@@ -94,13 +94,13 @@ class ProductButton {
     /**
      * @param \EnterModel\Product[] $products
      * @param \EnterModel\Cart\Product[] $cartProductsById
-     * @param string $id
+     * @param string $parentId
      * @return Partial\Cart\ProductButton
      */
     public function getListObject(
         array $products,
         array $cartProductsById = [],
-        $id
+        $parentId
     ) {
         $button = new Partial\Cart\ProductButton();
 
@@ -117,6 +117,7 @@ class ProductButton {
                 'price'    => $product->price,
                 'url'      => $product->link,
                 'quantity' => $cartProduct ? $cartProduct->quantity : 1,
+                'parentId' => $parentId,
             ];
         }
 
@@ -132,8 +133,8 @@ class ProductButton {
         }
         $button->dataGa = $this->helper->json($dataGa);
 
-        $button->id = self::getId($id);
-        $button->widgetId = self::getWidgetId($id);
+        $button->id = self::getId($parentId);
+        $button->widgetId = self::getWidgetId($parentId);
         $button->text = 'Купить';
         $button->isDisabled = false;
         $button->isInShopOnly = false;

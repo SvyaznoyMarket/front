@@ -47,12 +47,14 @@ class Cart {
             $productItem = array_merge([
                 'id'       => null,
                 'quantity' => null,
+                'parentId' => null,
             ], (array)$productItem);
 
             if ($productItem['id']) {
                 $cartProduct = new Model\Cart\Product();
                 $cartProduct->id = (string)$productItem['id'];
                 $cartProduct->quantity = (int)$productItem['quantity'];
+                $cartProduct->parentId = (string)$productItem['parentId'];
 
                 $cartProducts[] = $cartProduct;
             }
@@ -159,16 +161,28 @@ class Cart {
     }
 
     /**
+     * @param \EnterModel\Cart $cart
      * @param Query $query
-     * @return Model\Cart
      */
-    public function getObjectByQuery(Query $query) {
-        $cart = null;
+    public function updateObjectByQuery(Model\Cart $cart, Query $query) {
+        $cartProductsById = [];
+        foreach ($cart->product as $cartProduct) {
+            $cartProductsById[$cartProduct->id] = $cartProduct;
+        }
 
         $item = $query->getResult();
-        $cart = new Model\Cart($item);
+        $coreCart = new Model\Cart($item);
 
-        return $cart;
+        $cart->sum = $coreCart->sum;
+        foreach ($coreCart->product as $coreCartProduct) {
+            /** @var \EnterModel\Cart\Product|null $cartProduct */
+            $cartProduct = isset($cartProductsById[$coreCartProduct->id]) ? $cartProductsById[$coreCartProduct->id] : null;
+            if (!$cartProduct) continue;
+
+            $cartProduct->price = $coreCartProduct->price;
+            $cartProduct->sum = $coreCartProduct->sum;
+            $cartProduct->quantity = $coreCartProduct->quantity;
+        }
     }
 
     /**
