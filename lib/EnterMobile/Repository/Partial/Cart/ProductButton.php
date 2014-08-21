@@ -95,12 +95,14 @@ class ProductButton {
      * @param \EnterModel\Product[] $products
      * @param \EnterModel\Cart\Product[] $cartProductsById
      * @param string $parentId
+     * @param bool $updateState
      * @return Partial\Cart\ProductButton
      */
     public function getListObject(
         array $products,
         array $cartProductsById = [],
-        $parentId
+        $parentId,
+        $updateState = true
     ) {
         $button = new Partial\Cart\ProductButton();
 
@@ -133,8 +135,8 @@ class ProductButton {
         }
         $button->dataGa = $this->helper->json($dataGa);
 
-        $button->id = self::getId($parentId);
-        $button->widgetId = self::getWidgetId($parentId);
+        $button->id = self::getId($parentId, $updateState);
+        $button->widgetId = self::getWidgetId($parentId, $updateState);
         $button->text = 'Купить';
         $button->isDisabled = false;
         $button->isInShopOnly = false;
@@ -145,18 +147,20 @@ class ProductButton {
     }
 
     /**
-     * @param $productId
+     * @param string $productId
+     * @param bool $updateState
      * @return string
      */
-    public static function getId($productId) {
-        return 'id-cart-product-buyButton-' . $productId;
+    public static function getId($productId, $updateState = true) {
+        return 'id-cart-product-buyButton-' . $productId . ($updateState ? '' : '-withoutUpdate');
     }
 
     /**
-     * @param $productId
+     * @param string $productId
+     * @param bool $updateState
      * @return string
      */
-    public static function getWidgetId($productId) {
-        return self::getId($productId) . '-widget';
+    public static function getWidgetId($productId, $updateState = true) {
+        return self::getId($productId, $updateState) . '-widget';
     }
 }

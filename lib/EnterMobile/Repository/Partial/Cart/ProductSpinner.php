@@ -30,13 +30,15 @@ class ProductSpinner {
      * @param \EnterModel\Cart\Product|null $cartProduct
      * @param bool $hasBuyButton
      * @param string|null $buttonId
+     * @param bool $updateState
      * @return Partial\Cart\ProductSpinner
      */
     public function getObject(
         \EnterModel\Product $product,
         \EnterModel\Cart\Product $cartProduct = null,
         $hasBuyButton = true,
-        $buttonId = null
+        $buttonId = null,
+        $updateState = true
     ) {
         if ($product->relation && (bool)$product->relation->kits) {
             return null;
@@ -48,8 +50,8 @@ class ProductSpinner {
 
         $spinner = new Partial\Cart\ProductSpinner();
 
-        $spinner->id = self::getId($product->id);
-        $spinner->widgetId = self::getWidgetId($product->id);
+        $spinner->id = self::getId($product->id, $updateState);
+        $spinner->widgetId = self::getWidgetId($product->id, $updateState);
         $spinner->value = $cartProduct->quantity;
         $spinner->buttonDataValue = false;
         $spinner->timer = 600;
@@ -65,9 +67,9 @@ class ProductSpinner {
         ]);
 
         if ($hasBuyButton) {
-            $spinner->buttonId = $buttonId ?: Repository\Partial\Cart\ProductButton::getId($product->id);
+            $spinner->buttonId = $buttonId ?: Repository\Partial\Cart\ProductButton::getId($product->id, $updateState);
         } else {
-            $spinner->buttonId = $buttonId ?: self::getId($product->id) . '-input';
+            $spinner->buttonId = $buttonId ?: self::getId($product->id, false) . '-input';
             $spinner->dataUrl = $this->router->getUrlByRoute(new Routing\User\Cart\Product\Set());
             $buttonDataValue = ['product' => [
                 $product->id => [
@@ -88,17 +90,19 @@ class ProductSpinner {
 
     /**
      * @param $productId
+     * @param bool $updateState
      * @return string
      */
-    public static function getId($productId) {
-        return 'id-cart-product-buySpinner' . '-' . $productId;
+    public static function getId($productId, $updateState) {
+        return 'id-cart-product-buySpinner' . '-' . $productId . ($updateState ? '' : '-withoutUpdate');
     }
 
     /**
      * @param $productId
+     * @param bool $updateState
      * @return string
      */
-    public static function getWidgetId($productId) {
-        return self::getId($productId) . '-widget';
+    public static function getWidgetId($productId, $updateState = true) {
+        return self::getId($productId, $updateState) . '-widget';
     }
 }

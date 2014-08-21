@@ -219,9 +219,15 @@ class ProductCard {
             $page->content->product->kitBlock = new Page\Content\Product\KitBlock();
             $page->content->product->kitBlock->isLocked = $productModel->isKitLocked;
 
+            $cartProductsById = [];
             $count = 0;
             $sum = 0;
             foreach ($productModel->relation->kits as $kitProductModel) {
+                $cartProductsById[$kitProductModel->id] = new \EnterModel\Cart\Product([
+                    'id'       => $kitProductModel->id,
+                    'quantity' => $kitProductModel->kitCount,
+                ]);
+
                 $sum += $kitProductModel->kitCount * $kitProductModel->price;
                 $count += $kitProductModel->kitCount;
 
@@ -262,7 +268,8 @@ class ProductCard {
                     $kitProductModel,
                     new \EnterModel\Cart\Product(['quantity' => $kitProductModel->kitCount]),
                     true,
-                    Repository\Partial\Cart\ProductButton::getId($productModel->id)
+                    Repository\Partial\Cart\ProductButton::getId($productModel->id, false),
+                    false
                 );
 
                 $page->content->product->kitBlock->products[] = $kit;
@@ -271,9 +278,10 @@ class ProductCard {
             $page->content->product->kitBlock->shownSum = number_format((float)$sum, 0, ',', ' ');
             $page->content->product->kitBlock->shownQuantity = 'Итого за ' . $count . ' ' . $translateHelper->numberChoice($count, ['предмет', 'предмета', 'предметов']);
             $page->content->product->kitBlock->cartButton = $cartProductButtonRepository->getListObject(
-                $productModel->relation->kits,
-                [],
-                $productModel->id
+                array_reverse($productModel->relation->kits),
+                $cartProductsById,
+                $productModel->id,
+                false
             );
         }
 

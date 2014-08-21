@@ -30,6 +30,9 @@ define(
                         }
 
                         $body.trigger(config.event.productAddedToCart, data.value);
+
+                        // FIXME
+                        $('.js-kit-close').trigger('click');
                     });
 
                     e.preventDefault();

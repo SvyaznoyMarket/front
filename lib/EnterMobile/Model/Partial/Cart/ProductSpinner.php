@@ -21,5 +21,7 @@ namespace EnterMobile\Model\Partial\Cart {
         public $dataValue;
         /** @var int|null */
         public $timer;
+        /** @var bool */
+        public $updateState;
     }
 }
