@@ -18,11 +18,14 @@ namespace EnterTerminal\Controller {
         public function execute(Http\Request $request) {
             $curl = $this->getCurl();
 
-            if (!is_string($request->query['ip'])) {
-                throw new \Exception('Параметр ip должен быть строкой');
+            if (is_string($request->query['ip'])) {
+                $infoQuery = new Query\Terminal\GetInfoByIp($request->query['ip']);
+            } else if (is_string($request->query['ui'])) {
+                $infoQuery = new Query\Terminal\GetInfoByUi($request->query['ui']);
+            } else {
+                throw new \Exception('Необходимо задать параметр ip или ui');
             }
 
-            $infoQuery = new Query\Terminal\GetInfoByIp($request->query['ip']);
             $curl->prepare($infoQuery);
             $curl->execute();
 
