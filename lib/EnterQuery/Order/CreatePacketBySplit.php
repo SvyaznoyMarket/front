@@ -64,6 +64,10 @@ class CreatePacketBySplit extends Query {
                 'product'             => [],
             ];
 
+            if ($user->smsCode) {
+                $orderData['sms_code'] = $user->smsCode;
+            }
+
             $orderData['subway_id'] = null; // FIXME!!!
 
             // адрес

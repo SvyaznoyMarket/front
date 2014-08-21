@@ -347,6 +347,8 @@ namespace EnterModel\Cart\Split {
         public $address;
         /** @var string */
         public $email;
+        /** @var string|null */
+        public $smsCode;
 
         public function __construct(array $data = []) {
             $this->phone = trim((string)$data['phone']);
@@ -360,6 +362,7 @@ namespace EnterModel\Cart\Split {
             $this->firstName = (string)$data['first_name'];
             $this->address = $data['address'] ? new User\Address($data['address']) : null;
             $this->email = (string)$data['email'];
+            $this->smsCode = isset($data['sms_code']) ? (string)$data['sms_code'] : null;
         }
 
         public function dump() {
