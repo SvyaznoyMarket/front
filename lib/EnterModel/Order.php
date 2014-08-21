@@ -34,6 +34,8 @@ class Order {
     public $number;
     /** @var string */
     public $numberErp;
+    /** @var string|null */
+    public $token;
     /** @var int */
     public $sum;
     /** @var string */
@@ -80,6 +82,7 @@ class Order {
         if (array_key_exists('status_id', $data)) $this->statusId = (int)$data['status_id'];
         if (array_key_exists('number', $data)) $this->number = (string)$data['number'];
         if (array_key_exists('number_erp', $data)) $this->numberErp = (string)$data['number_erp'];
+        if (array_key_exists('access_token', $data)) $this->token = $data['access_token'] ? (string)$data['access_token'] : null;
         if (array_key_exists('sum', $data)) $this->sum = $data['sum'];
         if (array_key_exists('shop_id', $data)) $this->shopId = (string)$data['shop_id'];
         if (array_key_exists('geo_id', $data)) $this->cityId = (string)$data['geo_id'];

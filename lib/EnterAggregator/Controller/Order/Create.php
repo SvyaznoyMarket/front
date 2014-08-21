@@ -60,12 +60,17 @@ namespace EnterAggregator\Controller\Order {
             $paymentMethodListQueriesByOrderNumber = [];
             foreach ($orderData as $orderItem) {
                 $orderNumber = !empty($orderItem['number']) ? (string)$orderItem['number'] : null;
+                $orderToken = !empty($orderItem['access_token']) ? (string)$orderItem['access_token'] : null;
                 if (!$orderNumber) {
                     $logger->push(['type' => 'error', 'error' => 'Не получен номер заказа', 'order' => $orderItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
                     continue;
                 }
 
-                $orderItemQuery = new Query\Order\GetItemByNumber($orderNumber, $split->user->phone);
+                if ($orderToken) {
+                    $orderItemQuery = new Query\Order\GetItemByToken($orderToken);
+                } else {
+                    $orderItemQuery = new Query\Order\GetItemByNumber($orderNumber, $split->user->phone);
+                }
                 $curl->prepare($orderItemQuery);
                 $orderItemQueries[] = $orderItemQuery;
 
