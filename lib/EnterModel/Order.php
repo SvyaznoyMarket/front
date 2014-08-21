@@ -68,6 +68,8 @@ class Order {
     public $deliveries = [];
     /** @var Model\PaymentMethod[] */
     public $paymentMethods = [];
+    /** @var Model\Shop|null */
+    public $shop;
 
     /**
      * @param array $data

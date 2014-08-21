@@ -21,4 +21,20 @@ class Shop {
 
         return $shop;
     }
+
+    /**
+     * @param Query $query
+     * @return Model\Shop[]
+     */
+    public function getIndexedObjectListByQuery(Query $query) {
+        $shops = [];
+
+        foreach ($query->getResult() as $item) {
+            if (empty($item['id'])) continue;
+
+            $shops[(string)$item['id']] = new Model\Shop($item);
+        }
+
+        return $shops;
+    }
 }

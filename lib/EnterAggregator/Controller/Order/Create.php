@@ -141,6 +141,33 @@ namespace EnterAggregator\Controller\Order {
                 $order->paymentMethods = isset($paymentMethodsByOrderNumber[$order->number]) ? array_values((array)$paymentMethodsByOrderNumber[$order->number]) : [];
             }
 
+            // магазин
+            $shopsById = [];
+            foreach ($orders as $order) {
+                if (!$order->shopId) continue;
+                $shopsById[$order->shopId] = null;
+            }
+
+            try {
+                if ((bool)$shopsById) {
+                    $shopRepository = new Repository\Shop();
+
+                    $shopListQuery = new Query\Shop\GetListByIdList(array_keys($shopsById));
+                    $curl->prepare($shopListQuery)->execute();
+
+                    $shopsById = $shopRepository->getIndexedObjectListByQuery($shopListQuery);
+                    foreach ($orders as $order) {
+                        $shop = ($order->shopId && isset($shopsById[$order->shopId])) ? $shopsById[$order->shopId] : null;
+                        if (!$shop) continue;
+
+                        $order->shop = $shop;
+                    }
+                }
+            } catch (\Exception $e) {
+                $logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
+            }
+
+
             $response->orders = $orders;
 
             return $response;

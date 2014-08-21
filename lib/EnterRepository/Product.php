@@ -72,7 +72,7 @@ class Product {
             foreach ($query->getResult() as $item) {
                 $parser($item);
 
-                $products[$item['id']] = new Model\Product($item);
+                $products[(string)$item['id']] = new Model\Product($item);
             }
         }
 
