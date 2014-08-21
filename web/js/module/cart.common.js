@@ -101,7 +101,7 @@ define(
                     timer = parseInt($widget.data('timer'))
                 ;
 
-                console.info('changeProductQuantity', {'$el' : $el, 'product': product, 'quantity': quantity});
+                console.info('changeProductQuantity', {'$el' : $el, '$widget': $widget, 'product': product, 'quantity': quantity});
 
                 if (('on' == $el.data('autoUpdate')) && _.isFinite(timer) && (timer > 0)) {
                     try {
@@ -115,7 +115,7 @@ define(
                     $widget.data('timer', timer);
                 }
 
-                if (!_.isFinite(quantity) || (quantity <= 0) || (quantity > 999)) {
+                if (!_.isFinite(quantity) || (quantity < product.minQuantity) || (quantity > 999)) {
                     var error = {code: 'invalid', message: 'Неверное количество товара'};
 
                     console.info('changeProductQuantityData:js-buyButton', error, quantity, $el);
@@ -149,7 +149,7 @@ define(
 
                 var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
                 if (product) {
-                    $target.trigger('changeProductQuantityData', [product, product.quantity + 1]);
+                    $target.trigger('changeProductQuantityData', [dataValue.product, product.quantity + 1]);
                     $widget.trigger('renderValue', [product]);
                 } else {
                     console.error('Товар не получен', product);
@@ -173,7 +173,7 @@ define(
 
                 var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
                 if (product) {
-                    $target.trigger('changeProductQuantityData', [product, product.quantity - 1]);
+                    $target.trigger('changeProductQuantityData', [dataValue.product, product.quantity - 1]);
                     $widget.trigger('renderValue', [product]);
                 } else {
                     console.error('Товар не получен', product);
@@ -198,7 +198,7 @@ define(
                 if ('' != value) {
                     var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
                     if (product) {
-                        $target.trigger('changeProductQuantityData', [product, parseInt(value)]);
+                        $target.trigger('changeProductQuantityData', [dataValue.product, parseInt(value)]);
                     }
 
                     $widget.trigger('renderValue', [product]);

@@ -57,12 +57,13 @@ class ProductSpinner {
         $spinner->timer = 600;
         $spinner->dataValue = $this->helper->json([
             'product' => [
-                'id'       => $product->id,
-                'name'     => $product->name,
-                'token'    => $product->token,
-                'price'    => $product->price,
-                'url'      => $product->link,
-                'quantity' => $cartProduct->quantity,
+                'id'          => $product->id,
+                'name'        => $product->name,
+                'token'       => $product->token,
+                'price'       => $product->price,
+                'url'         => $product->link,
+                'quantity'    => $cartProduct->quantity,
+                'minQuantity' => $updateState ? 1 : 0,
             ],
         ]);
 
