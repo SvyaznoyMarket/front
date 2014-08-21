@@ -13,6 +13,10 @@ class CartButtonBlock {
         \EnterModel\Product $product,
         \EnterModel\Cart\Product $cartProduct = null
     ) {
+        if ($product->relation && (bool)$product->relation->kits && !$product->isKitLocked) {
+            return null;
+        }
+
         $block = new Model\Partial\ProductCard\CartButtonBlock();
         $block->widgetId = self::getWidgetId($product->id);
 

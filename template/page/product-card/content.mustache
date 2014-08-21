@@ -204,7 +204,6 @@
 
             <div class="lineKitFooter_summ fl-r">{{shownQuantity}}: {{shownSum}} <span class="rubl">p</span></div>
 
-            <!--<a href="" class="btnBuy fl-r">Купить</a>-->
             {{#cartButton}}
                 {{>partial/cart/button}}
             {{/cartButton}}
@@ -315,8 +314,12 @@
                                 </div>
                             {{/product.credit}}
                             {{! Цена в кредит }}
-                            
-                            <div class="btn3 js-kit-open"><a href="" class="btn4">Купить</a></div>
+
+                            {{#product.kitBlock}}
+                                {{^isLocked}}
+                                    <div class="btn3 js-kit-open"><a href="" class="btn4">Купить</a></div>
+                                {{/isLocked}}
+                            {{/product.kitBlock}}
 
                             {{#product.cartButtonBlock}}
                                 {{>page/product-card/buttonBlock}}

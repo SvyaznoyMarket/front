@@ -62,6 +62,7 @@ class ProductCard {
         $page->content->product->shownPrice = $productModel->price ? number_format((float)$productModel->price, 0, ',', ' ') : null;
         $page->content->product->oldPrice = $productModel->oldPrice;
         $page->content->product->shownOldPrice = $productModel->oldPrice ? number_format((float)$productModel->oldPrice, 0, ',', ' ') : null;
+
         $page->content->product->cartButtonBlock = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($productModel);
 
         // доставка товара
