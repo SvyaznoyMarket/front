@@ -44,7 +44,7 @@ namespace EnterTerminal\Controller {
             $shopQuery = new Query\Shop\GetItemById($shopId);
             $curl->prepare($shopQuery);
 
-            $businessRulesQuery = new Query\BusinessRules\GetList();
+            $businessRulesQuery = new Query\BusinessRule\GetList();
             $curl->prepare($businessRulesQuery);
 
             $curl->execute();

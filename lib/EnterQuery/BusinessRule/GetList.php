@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterQuery\BusinessRules;
+namespace EnterQuery\BusinessRule;
 
 use Enter\Curl\Query;
 use EnterQuery\CoreQueryTrait;
