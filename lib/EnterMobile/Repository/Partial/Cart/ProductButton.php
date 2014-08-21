@@ -38,11 +38,17 @@ class ProductButton {
             return null;
         }
 
+        // FIXME
+        if ($product->relation && (bool)$product->relation->kits && !$product->isKitLocked) {
+            return null;
+        }
+
         $button = new Partial\Cart\ProductButton();
 
         $button->dataUrl = $this->router->getUrlByRoute(new Routing\User\Cart\Product\Set());
-        $button->dataValue = $this->helper->json([
-            'product' => [
+
+        $dataValue = ['product' => [
+            $product->id => [
                 'id'       => $product->id,
                 'name'     => $product->name,
                 'token'    => $product->token,
@@ -50,7 +56,8 @@ class ProductButton {
                 'url'      => $product->link,
                 'quantity' => $cartProduct ? $cartProduct->quantity : 1,
             ],
-        ]);
+        ]];
+        $button->dataValue = $this->helper->json($dataValue);
 
         // ga
         $button->dataGa = $this->helper->json([
@@ -80,6 +87,59 @@ class ProductButton {
                 $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id));
             }
         }
+
+        return $button;
+    }
+
+    /**
+     * @param \EnterModel\Product[] $products
+     * @param \EnterModel\Cart\Product[] $cartProductsById
+     * @param string $parentId
+     * @return Partial\Cart\ProductButton
+     */
+    public function getListObject(
+        array $products,
+        array $cartProductsById = [],
+        $parentId
+    ) {
+        $button = new Partial\Cart\ProductButton();
+
+        $dataValue = [
+            'product' => [],
+        ];
+        foreach ($products as $product) {
+            $cartProduct = isset($cartProductsById[$product->id]) ? $cartProductsById[$product->id] : null;
+
+            $dataValue['product'][$product->id] = [
+                'id'       => $product->id,
+                'name'     => $product->name,
+                'token'    => $product->token,
+                'price'    => $product->price,
+                'url'      => $product->link,
+                'quantity' => $cartProduct ? $cartProduct->quantity : 1,
+                'parentId' => $parentId,
+            ];
+        }
+
+        $button->dataUrl = $this->router->getUrlByRoute(new Routing\User\Cart\Product\Set());
+        $button->dataValue = $this->helper->json($dataValue);
+
+        // ga
+        $dataGa = [];
+        foreach ($products as $product) {
+            $dataGa[] = [
+                ['send', 'event', 'm_add_to_basket', $product->name, $product->article, '{product.sum}'],
+            ];
+        }
+        $button->dataGa = $this->helper->json($dataGa);
+
+        $button->id = self::getId($parentId);
+        $button->widgetId = self::getWidgetId($parentId);
+        $button->text = 'Купить';
+        $button->isDisabled = false;
+        $button->isInShopOnly = false;
+        $button->isInCart = false;
+        $button->isQuick = false;
 
         return $button;
     }

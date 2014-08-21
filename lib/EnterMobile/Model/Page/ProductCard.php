@@ -72,6 +72,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
         public $propertyChunks = [];
         /** @var Partial\Rating|null */
         public $rating;
+        /** @var Product\KitBlock|null */
+        public $kitBlock;
         /** @var Partial\ProductSlider|null */
         public $accessorySlider;
         /** @var Partial\ProductSlider|null */
@@ -142,6 +144,19 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product {
         public $properties = [];
     }
 
+    class KitBlock {
+        /** @var KitBlock\Product[] */
+        public $products = [];
+        /** @var string */
+        public $shownQuantity;
+        /** @var string */
+        public $shownSum;
+        /** @var Partial\Cart\ProductButton|null */
+        public $cartButton;
+        /** @var bool */
+        public $isLocked;
+    }
+
     class ReviewBlock {
         /** @var ReviewBlock\Review[] */
         public $reviews = [];
@@ -206,6 +221,37 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product\PropertyChunk {
         public $value;
         /** @var bool */
         public $isTitle;
+    }
+}
+
+namespace EnterMobile\Model\Page\ProductCard\Content\Product\KitBlock {
+    use EnterMobile\Model\Partial;
+
+    class Product {
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $url;
+        /** @var string */
+        public $photoUrl;
+        /** @var string */
+        public $deliveryDate;
+        /** @var string */
+        public $shownPrice;
+        /** @var string */
+        public $shownSum;
+        /** @var int */
+        public $quantity;
+        /** @var string */
+        public $height;
+        /** @var string */
+        public $width;
+        /** @var string */
+        public $depth;
+        /** @var string */
+        public $unit;
+        /** @var Partial\Cart\ProductSpinner|null */
+        public $cartSpinner;
     }
 }
 

@@ -12,7 +12,7 @@ use EnterMobile\Model;
 use EnterMobile\Repository;
 use EnterMobile\Model\Page\User\Cart\SetProduct as Page;
 
-class SetProduct {
+class SetProductList {
     use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
 
     /**
@@ -21,7 +21,6 @@ class SetProduct {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
-        $config = $this->getConfig();
         $curl = $this->getCurl();
         $session = $this->getSession();
         $cartRepository = new \EnterRepository\Cart();
@@ -30,19 +29,21 @@ class SetProduct {
         $cart = $cartRepository->getObjectByHttpSession($session);
 
         // товара для корзины
-        $cartProduct = $cartRepository->getProductObjectByHttpRequest($request);
-        if (!$cartProduct) {
-            throw new \Exception('Товар не получен');
+        $cartProducts = $cartRepository->getProductListByHttpRequest($request);
+        if (!(bool)$cartProducts) {
+            throw new \Exception('Товары не получены');
         }
 
-        // добавление товара в корзину
-        $cartRepository->setProductForObject($cart, $cartProduct);
+        // добавление товаров в корзину
+        foreach ($cartProducts as $cartProduct) {
+            $cartRepository->setProductForObject($cart, $cartProduct);
+        }
+
+        // сохранение корзины в сессию
+        $cartRepository->saveObjectToHttpSession($session, $cart);
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
-
-        $productItemQuery = new Query\Product\GetItemById($cartProduct->id, $regionId);
-        $curl->prepare($productItemQuery);
 
         // токен пользователя
         $userToken = (new \EnterRepository\User)->getTokenByHttpRequest($request);
@@ -72,54 +73,56 @@ class SetProduct {
         $curl->execute();
 
         // корзина из ядра
-        $cart = $cartRepository->getObjectByQuery($cartItemQuery);
-
-        // товар в корзине из ядра
-        $cartProduct = $cartRepository->getProductById($cartProduct->id, $cart);
-        if (!$cartProduct) {
-            // FIXME: костыль
-            $cartProduct = $cartRepository->getProductObjectByHttpRequest($request);
-        }
+        $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
 
         // товары
         if ($productListQuery) {
             $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
         }
 
-        // сохранение корзины в сессию
-        $cartRepository->saveObjectToHttpSession($session, $cart);
-
-        // товар
-        $product = (new \EnterRepository\Product())->getObjectByQuery($productItemQuery);
-        if (!$product) {
-            $product = new \EnterModel\Product();
-            $product->id = $cartProduct->id;
-
-            throw new \Exception(sprintf('Товар #%s не найден', $cartProduct->id));
-        }
-
         // пользователь
         $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
 
         $page = new Page();
-        // кнопка купить
-        $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
-        $page->widgets['.' . $widget->widgetId] = $widget;
-        // спиннер
-        $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct->quantity, true);
-        $page->widgets['.' . $widget->widgetId] = $widget;
-        // пользователь, корзина
-        $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);
-        $page->widgets['.' . $widget->widgetId] = $widget;
 
-        $widget = (new Repository\Partial\Cart\ProductSum())->getObject($cartProduct);
-        $page->widgets['.' . $widget->widgetId] = $widget;
+        foreach ($cart->product as $cartProduct) {
+            $product = isset($productsById[$cartProduct->id]) ? $productsById[$cartProduct->id] : null;
+            if (!$product) continue;
 
-        $widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById));
-        $page->widgets['.' . $widget->widgetId] = $widget;
+            // кнопка купить
+            $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
+            $page->widgets['.' . $widget->widgetId] = $widget;
 
-        $widget = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, $cartProduct);
-        $page->widgets['.' . $widget->widgetId] = $widget;
+            // кнопка купить для родительского товара
+            if ($cartProduct->parentId) {
+                $widget = (new Repository\Partial\Cart\ProductButton())->getObject(
+                    new \EnterModel\Product(['id' => $cartProduct->parentId]),
+                    new \EnterModel\Cart\Product(['id' => $cartProduct->parentId, 'quantity' => 1])
+                );
+                $page->widgets['.' . $widget->widgetId] = $widget;
+            }
+
+            // спиннер
+            $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject(
+                $product,
+                $cartProduct,
+                false
+            );
+            $page->widgets['.' . $widget->widgetId] = $widget;
+
+            // пользователь, корзина
+            $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);
+            $page->widgets['.' . $widget->widgetId] = $widget;
+
+            $widget = (new Repository\Partial\Cart\ProductSum())->getObject($cartProduct);
+            $page->widgets['.' . $widget->widgetId] = $widget;
+
+            $widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById));
+            $page->widgets['.' . $widget->widgetId] = $widget;
+
+            $widget = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, $cartProduct);
+            $page->widgets['.' . $widget->widgetId] = $widget;
+        }
 
         // response
         $response = new Http\JsonResponse([

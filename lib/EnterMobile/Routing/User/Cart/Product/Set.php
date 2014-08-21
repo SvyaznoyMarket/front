@@ -6,7 +6,7 @@ use EnterMobile\Routing\Route;
 
 class Set extends Route {
     public function __construct() {
-        $this->action = ['User\\Cart\\SetProduct', 'execute'];
+        $this->action = ['User\\Cart\\SetProductList', 'execute'];
         $this->parameters = [];
     }
 }

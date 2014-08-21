@@ -184,6 +184,13 @@ textarea[contenteditable] {
  * For IE 6/7 only
  * Include this rule to trigger hasLayout and contain floats.
  */
+.m {
+    font-size: 14px;
+}
+
+.l {
+    font-size: 16px;
+}
 
 .clearfix {
 
@@ -230,6 +237,10 @@ textarea[contenteditable] {
 
 .ta-c {
     text-align: center;
+}
+
+.ta-r {
+    text-align: right;
 }
 
 .btnStyle {
@@ -376,6 +387,47 @@ textarea[contenteditable] {
     }
 }
 
+.btn3 {
+    .gradient(#ffc000, #ffaa01, #ffc000);
+    .rounded(5px);
+    .inline-block();
+    padding: 0 10px;
+
+    height: 38px;
+
+    text-align: center;
+
+    color: @white;
+    border: 1px solid #fb9c00;
+
+    font-size: 21px;
+    line-height: 38px;
+
+    &:hover {
+        .gradient(#ffa200, #f79200, #ffa200);
+        text-decoration: none;
+
+        color: @white;
+    }
+
+    &:active {
+        text-decoration: none;
+
+        background: #f79200;
+    }
+}
+
+.btn4 {
+    color: @white;
+    padding-left: 32px;
+    padding-right: 5px;
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNElEQVQ4EbWUsWoCQRCGT5FAUEExkEJsfIMQ8AXSJvZiE6xSpBBb8wZ5jISkCBGCfYoQCDZaCGIdCDaCBBJTeef3y204rG7Xc+Bj5paZudnd2UkFQeAlKekwWQVdBvPt/I8MkXdQBx9a8AJnUAAbmeI89thyVK75KMI8uhjTfsLPU4U30ABVOIEF1CALNjKTc0pZkxRVeA6qcAW3MIaDEFRsWeLpK2E/EjLA/oR3OI6sxzF7OF0p4QhOwogf9B88QClci6s+5KgzzKOVUJei5L/gLDs38vafVeGQRbPlS+xH6MAR2Ii2/KwzNMkUnINDaILtpSh2k/ACw7TNG/Y3nIJax0Y2Z7+Xxu5Shnl6bexXqILL05vvZTjcU40ZX1/YOkNV7DK+/oeDBqwaWxND2lkSv5Q18LLgXSSy53IAAAAASUVORK5CYII=") no-repeat 5px 50%;
+    
+    &:hover {
+        color: @white;
+    }
+}
+
 .clsr1 {
     background: url("@{base-url}/common/img/clsr1.png") no-repeat 0 0;
     position: absolute;
@@ -383,6 +435,14 @@ textarea[contenteditable] {
     right: 10px;
     width: 35px;
     height: 35px;
+}
+
+.backLn {
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAYAAACQN/8FAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAuElEQVQoFYXR3QnCMBSG4XOlRfBGvA/1ZwQXcAjH6BiCFnUQdQq9EeoSjiAiFIX4nsIJsa148dA235c0JOK9lzYi0sUYiea/SgMKS9wxby0S9JHjjStco8hgDxlKXDDT0leRwQRbPHDAyEqhyGAHK2jpDBeX4uKE8IkbFvVSXNQV19AVT3D1cjgeQt3jDlreo7lHm004xAYvHJGGzF7sSRifY8G30yz82orVoMj/m7EJrKR3PUV11x/05fDNuFCCQAAAAABJRU5ErkJggg==) no-repeat 10px 50%;
+    padding: 0 0 0 30px;
+    line-height: 40px;
+    border-bottom: 1px solid @lightGrey1;
+    font-size: 16px;
 }
 // основные стили элементов форм 
 .textfield {

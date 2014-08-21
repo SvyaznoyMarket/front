@@ -13,14 +13,20 @@ class CartButtonBlock {
         \EnterModel\Product $product,
         \EnterModel\Cart\Product $cartProduct = null
     ) {
+        if ($product->relation && (bool)$product->relation->kits && !$product->isKitLocked) {
+            return null;
+        }
+
         $block = new Model\Partial\ProductCard\CartButtonBlock();
         $block->widgetId = self::getWidgetId($product->id);
 
         $block->cartLink = (new Repository\Partial\Cart\ProductLink())->getObject($product, $cartProduct) ?: false;
         if (!$cartProduct) {
             $block->cartButton = (new Repository\Partial\Cart\ProductButton())->getObject($product);
-            $block->cartSpinner = (new Repository\Partial\Cart\ProductSpinner())->getObject($product);
             $block->cartQuickButton = (new Repository\Partial\Cart\ProductQuickButton())->getObject($product);
+            if ($product->isBuyable && !$product->isInShopOnly) {
+                $block->cartSpinner = (new Repository\Partial\Cart\ProductSpinner())->getObject($product);
+            }
         }
 
         return $block;

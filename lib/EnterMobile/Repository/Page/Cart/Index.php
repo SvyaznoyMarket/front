@@ -55,7 +55,7 @@ class Index {
             $productCard = $productCardRepository->getObject(
                 $cartProduct,
                 $product,
-                $productSpinnerRepository->getObject($product, $cartProduct->quantity, false, false),
+                $productSpinnerRepository->getObject($product, $cartProduct, false),
                 $productDeleteButtonRepository->getObject($product)
             );
             $page->content->productBlock->products[] = $productCard;

@@ -72,7 +72,7 @@ class Get {
 
         // корзина из ядра
         if ($cartItemQuery) {
-            $cart = $cartRepository->getObjectByQuery($cartItemQuery);
+            $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
         }
 
         // страница
@@ -105,28 +105,26 @@ class Get {
             $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
             $page->widgets['.' . $widget->widgetId] = $widget;
 
-            $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct->quantity, true);
+            // кнопка купить для родительского товара
+            if ($cartProduct->parentId) {
+                $widget = (new Repository\Partial\Cart\ProductButton())->getObject(
+                    new \EnterModel\Product(['id' => $cartProduct->parentId]),
+                    new \EnterModel\Cart\Product(['id' => $cartProduct->parentId, 'quantity' => 1])
+                );
+                $page->widgets['.' . $widget->widgetId] = $widget;
+            }
+
+            $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject(
+                $product,
+                $cartProduct,
+                false
+            );
             $page->widgets['.' . $widget->widgetId] = $widget;
         }
 
         $response = new Http\JsonResponse([
             'result' => $page,
         ]);
-
-        // FIXME: осторожно
-        /*
-        if (!$request->cookies[$config->session->name]) {
-            $response->headers->setCookie(new Http\Cookie(
-                $config->session->name,
-                $session->getId(),
-                time() + $config->session->cookieLifetime,
-                '/',
-                $config->session->cookieDomain,
-                false,
-                false
-            ));
-        }
-        */
 
         return $response;
     }

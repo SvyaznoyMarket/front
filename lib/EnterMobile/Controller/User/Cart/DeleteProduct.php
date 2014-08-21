@@ -74,7 +74,7 @@ class DeleteProduct {
         $curl->execute();
 
         // корзина из ядра
-        $cart = $cartRepository->getObjectByQuery($cartItemQuery);
+        $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
 
         // сохранение корзины в сессию
         $cartRepository->saveObjectToHttpSession($session, $cart);
@@ -108,7 +108,7 @@ class DeleteProduct {
         $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
         $page->widgets['.' . $widget->widgetId] = $widget;
         // спиннер
-        $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct->quantity, true);
+        $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);
         $page->widgets['.' . $widget->widgetId] = $widget;
         // пользователь, корзина
         $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);

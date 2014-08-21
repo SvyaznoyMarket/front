@@ -33,6 +33,8 @@ class Product {
     public $isInShopStockOnly;
     /** @var bool */
     public $isInShopShowroomOnly;
+    /** @var bool */
+    public $isKitLocked;
     /** @var Model\Product\Category|null */
     public $category;
     /** @var Model\Brand|null */
@@ -87,6 +89,7 @@ class Product {
         if (array_key_exists('tagline', $data)) $this->tagline = (string)$data['tagline'];
         if (array_key_exists('price', $data)) $this->price = $data['price'] ? (int)$data['price'] : null;
         if (array_key_exists('price_old', $data)) $this->oldPrice = $data['price_old'] ? (int)$data['price_old'] : null;
+        if (array_key_exists('is_kit_locked', $data)) $this->isKitLocked = (bool)$data['is_kit_locked'];
 
         $this->isBuyable = isset($data['state']['is_buyable']) && (bool)$data['state']['is_buyable'];
         $this->calculateState(isset($data['stock'][0]) ? $data['stock'] : []);
