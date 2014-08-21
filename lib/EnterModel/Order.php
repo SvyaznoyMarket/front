@@ -40,10 +40,10 @@ class Order {
     public $sum;
     /** @var string */
     public $shopId;
-    /** @var int */
-    public $cityId;
-    /** @var int */
+    /** @var string */
     public $regionId;
+    /** @var Model\Region|null */
+    public $region;
     /** @var string */
     public $address;
     /** @var string */
@@ -85,8 +85,8 @@ class Order {
         if (array_key_exists('access_token', $data)) $this->token = $data['access_token'] ? (string)$data['access_token'] : null;
         if (array_key_exists('sum', $data)) $this->sum = $data['sum'];
         if (array_key_exists('shop_id', $data)) $this->shopId = (string)$data['shop_id'];
-        if (array_key_exists('geo_id', $data)) $this->cityId = (string)$data['geo_id'];
-        if (array_key_exists('region_id', $data)) $this->regionId = (string)$data['region_id'];
+        if (array_key_exists('geo_id', $data)) $this->regionId = (string)$data['geo_id'];
+        if (isset($data['geo']['id'])) $this->region = new Model\Region($data['geo']);
         if (array_key_exists('address', $data)) $this->address = (string)$data['address'];
         if (array_key_exists('extra', $data)) $this->comment = (string)$data['extra'];
         if (array_key_exists('ip', $data)) $this->ipAddress = (string)$data['ip'];
@@ -117,5 +117,14 @@ class Order {
                 $this->deliveries[] = new Model\Order\Delivery($deliveryItem);
             }
         };
+
+        if (!empty($data['address_street']) || !empty($data['address_building']) || !empty($data['address_number'])) {
+            $this->address = new Model\Order\Address();
+            if (isset($data['address_street'])) $this->address->street = (string)$data['address_street'];
+            if (isset($data['address_building'])) $this->address->building = (string)$data['address_building'];
+            if (isset($data['address_number'])) $this->address->number = (string)$data['address_number'];
+            if (isset($data['address_apartment'])) $this->address->apartment = (string)$data['address_apartment'];
+            if (isset($data['address_floor'])) $this->address->floor = (string)$data['address_floor'];
+        }
     }
 }
