@@ -30,7 +30,7 @@ class Slice {
      * @param array $data
      */
     public function __construct(array $data = []) {
-        if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
+        if (array_key_exists('url', $data)) $this->token = (string)$data['url'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('title', $data)) $this->title = (string)$data['title'];
         if (array_key_exists('meta_keywords', $data)) $this->metaKeywords = (string)$data['meta_keywords'];
