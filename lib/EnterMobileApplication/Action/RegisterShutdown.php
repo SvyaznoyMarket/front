@@ -43,7 +43,7 @@ class RegisterShutdown {
             $endAt = microtime(true);
 
             // debug info
-            (new Action\Debug())->execute($request, $response, $error, $startAt, $endAt);
+            (new \EnterMobileApplication\Action\Debug())->execute($request, $response, $error, $startAt, $endAt);
 
             // send response
             $response->send();
