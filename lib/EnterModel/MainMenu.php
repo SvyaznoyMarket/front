@@ -71,8 +71,10 @@ namespace EnterModel\MainMenu {
                     $this->media[$i] = new Model\MainMenu\Element\Media($mediaItem);
                 }
             }
-            if ((bool)$this->media) {
-                $this->image = reset($this->media);
+            if (empty($this->char) && (bool)$this->media) {
+                /** @var Model\MainMenu\Element\Media|null $media */
+                $media = reset($this->media);
+                $this->image = $media ? $media->url : null;
             }
         }
     }
