@@ -68,7 +68,7 @@ namespace EnterTerminal\Controller {
 
             foreach ($businessRules as $key => $businessRule) {
                 if (isset($businessRule['filter'])) {
-                    if (isset($businessRule['filter']['api_clients']['alias']) && !preg_match('/' . $businessRule['filter']['api_clients']['alias'] . '/s', $response->info['client_id'])) {
+                    if (isset($businessRule['filter']['api_clients']['alias']) && !preg_match('/^' . $businessRule['filter']['api_clients']['alias'] . '$/i', $response->info['client_id'])) {
                         unset($businessRules[$key]);
                     }
 
