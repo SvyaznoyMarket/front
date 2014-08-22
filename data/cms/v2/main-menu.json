@@ -1,195 +1,424 @@
 {
+
     "name": "Главное меню",
-    "verion": "2.0",
-    "items": [
+    "version": "3.0",
+    "item": [
         {
             "name": "Мебель",
             "char": "C",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=80",
+            "style": null,
+            "styleHover": null,
+            "source": {
+                "type": "category-get",
+                "id": 80,
+                "uid": "f7a2f781-c776-4342-81e8-ab2ebe24c51a"
+            },
+            "medias": {
+                "mdpi": {
+                    "uid": "2d8b41e4-461f-473b-9e5a-a2c4c8877d0b",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/16/98/65/9a141c03fb4982801742bb63464d30eb186b2e14.png"
+                },
+                "hdpi": {
+                    "uid": "92ef0481-74bc-4eb0-96b6-873fb6d91447",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/8b/fa/b5/cc9a4b2d34559ced62f92062ab240ce8360d431d.png"
+                },
+                "xhdpi": {
+                    "uid": "ae768718-fa48-45b7-898e-08a5fd33f02d",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/23/f4/18/74813850c14b94dea04e7dcf611c30b14bc95021.png"
+                }
+            },
             "children": [
                 {
-                    "source": "category/tree?root_id=80"
+                    "name": null,
+                    "char": null,
+                    "style": null,
+                    "styleHover": null,
+                    "source": {
+                        "type": "category-tree",
+                        "id": 80,
+                        "uid": "f7a2f781-c776-4342-81e8-ab2ebe24c51a"
+                    },
+                    "medias": [ ],
+                    "children": [ ]
                 }
             ]
         },
         {
             "name": "Товары для дома",
             "char": "A",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=443",
+            "style": null,
+            "styleHover": null,
+            "source": {
+                "type": "category-get",
+                "id": 443,
+                "uid": "b8569e65-e31e-47a1-af20-5b06aff9f189"
+            },
+            "medias": {
+                "mdpi": {
+                    "uid": "aea9f790-da1a-4efd-87ff-a8334d21759e",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/58/3b/63/fd98220197f08c45970666fbfadcd6ca5158971d.png"
+                },
+                "hdpi": {
+                    "uid": "bcb65f19-c2c5-45bc-9140-5fef33026862",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/43/20/ce/5f0e63d7e78b7e3a4688ee38b867f4036e8bbf0a.png"
+                },
+                "xhdpi": {
+                    "uid": "fd469ff6-6324-48f5-9ced-fa81d63aa17f",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/2e/bc/63/5fb792deb784cf72d9b55f0d49e5598ba65b30ee.png"
+                }
+            },
             "children": [
                 {
-                    "source": "category/tree?root_id=443"
+                    "name": null,
+                    "char": null,
+                    "style": null,
+                    "styleHover": null,
+                    "source": {
+                        "type": "category-tree",
+                        "id": 443,
+                        "uid": "b8569e65-e31e-47a1-af20-5b06aff9f189"
+                    },
+                    "medias": [ ],
+                    "children": [ ]
                 }
             ]
         },
         {
             "name": "Бытовая техника",
             "char": "B",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=1",
+            "style": null,
+            "styleHover": null,
+            "source": {
+                "type": "category-get",
+                "id": 1,
+                "uid": "616e6afd-fd4d-4ff4-9fe1-8f78236d9be6"
+            },
+            "medias": {
+                "mdpi": {
+                    "uid": "96f74f56-9565-443b-9a84-e3e32ffd09b4",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/64/ae/58/b5088d6e2f66f56b52c57eba97371485e77673ed.png"
+                },
+                "hdpi": {
+                    "uid": "843d671a-ed0a-4092-a3f6-9a247275c3bb",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/d9/41/3a/2d38e766c31d29b4035fa3cae30670052cba26d4.png"
+                },
+                "xhdpi": {
+                    "uid": "d880e52b-f5a6-4a5e-94a5-cde12604b920",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/aa/cd/20/81607fee05c01cdfd16b48efae41bce6f3f000df.png"
+                }
+            },
             "children": [
                 {
-                    "source": "category/tree?root_id=1"
+                    "name": null,
+                    "char": null,
+                    "style": null,
+                    "styleHover": null,
+                    "source": {
+                        "type": "category-tree",
+                        "id": 1,
+                        "uid": "616e6afd-fd4d-4ff4-9fe1-8f78236d9be6"
+                    },
+                    "medias": [ ],
+                    "children": [ ]
                 }
             ]
         },
         {
             "name": "Электроника",
             "char": "G",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=788",
+            "style": null,
+            "styleHover": null,
+            "source": {
+                "type": "category-get",
+                "id": 788,
+                "uid": "d91b814f-0470-4fd5-a2d0-a0449e63ab6f"
+            },
+            "medias": {
+                "mdpi": {
+                    "uid": "51b8467d-6e90-4d6f-a05f-22a4437599f3",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/2f/b9/dc/2c67d2d05c87c0291acb6c2e4b77691987405b89.png"
+                },
+                "hdpi": {
+                    "uid": "8b0935be-e250-43b1-b9e6-0f7c4ec02512",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/e7/a3/20/119b2890bd515aa196ba07a6a985245a1812025d.png"
+                },
+                "xhdpi": {
+                    "uid": "34b5bd3c-f912-4f02-9843-68e388a1b883",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/d6/85/49/9b89b472080428a30384a0e19e6d3b880259b492.png"
+                }
+            },
             "children": [
                 {
-                    "source": "category/tree?root_id=788"
+                    "name": null,
+                    "char": null,
+                    "style": null,
+                    "styleHover": null,
+                    "source": {
+                        "type": "category-tree",
+                        "id": 788,
+                        "uid": "d91b814f-0470-4fd5-a2d0-a0449e63ab6f"
+                    },
+                    "medias": [ ],
+                    "children": [ ]
                 }
             ]
         },
         {
             "name": "Детские товары",
             "char": "D",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=320",
+            "style": null,
+            "styleHover": null,
+            "source": {
+                "type": "category-get",
+                "id": 320,
+                "uid": "feccd951-d555-42c2-b417-a161a78faf03"
+            },
+            "medias": {
+                "mdpi": {
+                    "uid": "f21e8201-aa98-45aa-b5b6-d03fad0b1cda",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/25/ac/74/6a291099d0fa945686fddd6bd599b8edff88b2b1.png"
+                },
+                "hdpi": {
+                    "uid": "85842d87-bb41-4b3a-8aa7-4732ea7dacc2",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/4c/91/07/34ad5581350caf03abfa7ab407aed925a886752b.png"
+                },
+                "xhdpi": {
+                    "uid": "8ff98c2b-a661-4eb7-925b-f9715b54f98b",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/9c/0e/be/5b97e2b1df08097dddd4c4a269043c4fe1a6aa87.png"
+                }
+            },
             "children": [
                 {
-                    "source": "category/tree?root_id=320"
+                    "name": null,
+                    "char": null,
+                    "style": null,
+                    "styleHover": null,
+                    "source": {
+                        "type": "category-tree",
+                        "id": 320,
+                        "uid": "feccd951-d555-42c2-b417-a161a78faf03"
+                    },
+                    "medias": [ ],
+                    "children": [ ]
                 }
             ]
         },
         {
             "name": "Украшения и часы",
             "char": "H",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=923",
+            "style": null,
+            "styleHover": null,
+            "source": {
+                "type": "category-get",
+                "id": 923,
+                "uid": "022fa1e3-c51f-4a48-87fc-de2c917176d6"
+            },
+            "medias": {
+                "mdpi": {
+                    "uid": "50eff365-e6b0-40d5-b498-f5cea8c6cc3a",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/d6/8e/50/60c3eeed4cabcf5e5fee158eac16074e44d55e48.png"
+                },
+                "hdpi": {
+                    "uid": "0c7e9396-6a30-4531-a7a1-8d9aa3c51a97",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/57/ad/cd/d37f121f7ed673dd373070be8424d0faa54dbd25.png"
+                },
+                "xhdpi": {
+                    "uid": "fa338669-87af-42a9-a8b8-b0d7ef491aca",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/a3/93/86/e0e0bc051b800dce2ff9839925c327f4d5d3d932.png"
+                }
+            },
             "children": [
                 {
-                    "source": "category/tree?root_id=923"
+                    "name": null,
+                    "char": null,
+                    "style": null,
+                    "styleHover": null,
+                    "source": {
+                        "type": "category-tree",
+                        "id": 923,
+                        "uid": "022fa1e3-c51f-4a48-87fc-de2c917176d6"
+                    },
+                    "medias": [ ],
+                    "children": [ ]
                 }
             ]
         },
         {
             "name": "Парфюмерия и косметика",
             "char": "L",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=2545",
+            "style": null,
+            "styleHover": null,
+            "source": {
+                "type": "category-get",
+                "id": 2545,
+                "uid": "19b9f12c-d489-4540-9a17-23dba0641166"
+            },
+            "medias": {
+                "mdpi": {
+                    "uid": "9ada7657-fdea-4692-bc8e-d91531021ec5",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/23/94/29/68bc6b9e8d130ed5edda7115d7502cc701405542.png"
+                },
+                "hdpi": {
+                    "uid": "0803e75c-a90b-4876-a6b2-5ba4aeb652ff",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/37/25/75/ff471975db2c0a7f429a8268f7ddd6a10b5a668a.png"
+                },
+                "xhdpi": {
+                    "uid": "34d2b892-e226-4b76-bc9d-1d7b63d7d1cb",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/7a/4b/53/e51de8619dd8bf459aade82c9313fa32bd944d58.png"
+                }
+            },
             "children": [
                 {
-                    "source": "category/tree?root_id=2545"
+                    "name": null,
+                    "char": null,
+                    "style": null,
+                    "styleHover": null,
+                    "source": {
+                        "type": "category-tree",
+                        "id": 2545,
+                        "uid": "19b9f12c-d489-4540-9a17-23dba0641166"
+                    },
+                    "medias": [ ],
+                    "children": [ ]
                 }
             ]
         },
         {
             "name": "Подарки и хобби",
             "char": "J",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=185",
+            "style": null,
+            "styleHover": null,
+            "source": {
+                "type": "category-get",
+                "id": 185,
+                "uid": "c9c2dc8d-1ee5-4355-a0c1-898f219eb892"
+            },
+            "medias": {
+                "mdpi": {
+                    "uid": "27ad5fde-3c9f-4e3e-a4b1-477ad9432874",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/53/0e/5a/304289a048f06203239691cdf0a55ffcd39c1628.png"
+                },
+                "hdpi": {
+                    "uid": "173b79bc-43d1-4cef-bea1-b6f1d33d7298",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/10/6a/62/5eb900f41a2e256157c5f9a54319ef281349945e.png"
+                },
+                "xhdpi": {
+                    "uid": "96d191d6-550c-4151-8364-9e506ad7ded2",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/59/dc/0d/e99e47a740519081382d7eb615306a384d60c57d.png"
+                }
+            },
             "children": [
                 {
-                    "source": "category/tree?root_id=185"
+                    "name": null,
+                    "char": null,
+                    "style": null,
+                    "styleHover": null,
+                    "source": {
+                        "type": "category-tree",
+                        "id": 185,
+                        "uid": "c9c2dc8d-1ee5-4355-a0c1-898f219eb892"
+                    },
+                    "medias": [ ],
+                    "children": [ ]
                 }
             ]
         },
         {
             "name": "Сделай сам",
             "char": "F",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=224",
+            "style": null,
+            "styleHover": null,
+            "source": {
+                "type": "category-get",
+                "id": 224,
+                "uid": "0e80c81b-31c9-4519-bd10-e6a556fe000c"
+            },
+            "medias": {
+                "mdpi": {
+                    "uid": "83dcd069-921d-4287-a52d-919a957cef62",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/e9/29/b0/240f85d5bcd63513f805f077d44cd34a798eb980.png"
+                },
+                "hdpi": {
+                    "uid": "190fad80-ba24-4a33-a35e-f5f454bf1159",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/87/65/30/faedb57144e691b3a7590e79671190edca950f89.png"
+                },
+                "xhdpi": {
+                    "uid": "d9522513-b7c9-449b-971b-7758ec28fc84",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/9d/c3/94/49ac1e490be8a28d7c177c65136bfe144a44780f.png"
+                }
+            },
             "children": [
                 {
-                    "source": "category/tree?root_id=224"
+                    "name": null,
+                    "char": null,
+                    "style": null,
+                    "styleHover": null,
+                    "source": {
+                        "type": "category-tree",
+                        "id": 224,
+                        "uid": "0e80c81b-31c9-4519-bd10-e6a556fe000c"
+                    },
+                    "medias": [ ],
+                    "children": [ ]
                 }
             ]
         },
         {
             "name": "Зоотовары",
             "char": "E",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=1438",
-            "children": [
-                {
-                    "source": "category/tree?root_id=1438"
+            "style": null,
+            "styleHover": null,
+            "source": {
+                "type": "category-get",
+                "id": 1438,
+                "uid": "b933de12-5037-46db-95a4-370779bb4ee2"
+            },
+            "medias": {
+                "mdpi": {
+                    "uid": "46569c76-2cd2-4468-b3df-c56af4a5b2cf",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/0d/0d/73/c0889f674b55d915a4cedabdfa0ec124f503210b.png"
+                },
+                "hdpi": {
+                    "uid": "16271bbd-1181-4e8a-b445-c8627042299a",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/25/8f/06/afc58735715512e2d467cc644bc3084ce54417f6.png"
+                },
+                "xhdpi": {
+                    "uid": "4c6175ab-188d-4d66-8ed2-cbe3f3f976fd",
+                    "content_type": "image/png",
+                    "url": "http://scms.enter.ru/uploads/media/66/d6/cf/5bc0dca44c55da65860f53fdf2d58de31ea87608.png"
                 }
-            ]
-        },
-        {
-            "name": "Спорт и отдых",
-            "char": "I",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=647",
-            "children": [
-                {
-                    "source": "category/tree?root_id=647"
-                }
-            ]
-        },
-        {
-            "name": "Авто",
-            "char": "M",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=225",
-            "children": [
-                {
-                    "source": "category/tree?root_id=225"
-                }
-            ]
-        },
-        {
-            "name": "Сад и огород",
-            "char": "K",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=311",
-            "children": [
-                {
-                    "source": "category/tree?root_id=311"
-                }
-            ]
-        },
-        {
-            "name": "Снова в школу",
-            "style": "",
-            "image": "http://content.enter.ru/wp-content/uploads/2014/08/btc2014.png",
-            "styleHover": "",
-            "link": "/slices/bts2014",
-            "source": "slice/get?token=bts2014",
-            "children": [
-            ]
-        },
-        {
-            "name": "TCHIBO SHOP",
-            "char": "",
-            "style": "",
-            "image": "http://content.enter.ru/wp-content/uploads/2014/06/TCH_Logo.png",
-            "styleHover": "",
-            "source": "category/get?id=4506",
-            "children": [
-                {
-                    "source": "category/tree?root_id=4506"
-                }
-            ]
-        },
-        {
-            "disabled": true,
-            "name": "Ликвидация!",
-            "style": "",
-            "image": "http://content.enter.ru/wp-content/uploads/2013/07/icon_Liquidation2.gif",
-            "styleHover": "background: url('http://content.enter.ru/wp-content/uploads/2013/07/l_hover.png') no-repeat 0px 0px;",
-            "link": "/slices/likvidatsiya",
-            "children": [
-            ]
+            },
+            "children": [ ]
         }
     ]
+
 }
