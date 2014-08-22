@@ -24,7 +24,7 @@ namespace EnterModel {
             if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
             if (array_key_exists('media_image', $data)) $this->image = (string)$data['media_image'];
-            if (array_key_exists('url', $data)) $this->url = (string)$data['url'];
+            if (array_key_exists('url', $data)) $this->url = $data['url'] ? (string)$data['url'] : null;
             if (isset($data['item_list'][0])) {
                 foreach ($data['item_list'] as $item) {
                     $this->items[] = new Model\Promo\Item($item);
