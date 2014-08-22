@@ -20,7 +20,7 @@ return function(EnterMobileApplication\Config $config) {
 
     $config->region->cookieName = null; // TODO: убрать из настроек mobile-application
 
-    $config->coreService->clientId = 'mobile-application'; // переопределяется из http.request
+    $config->coreService->clientId = 'mobile'; // переопределяется из http.request
 
     // TODO: убрать из настроек mobile-application
     //$config->mustacheRenderer;
