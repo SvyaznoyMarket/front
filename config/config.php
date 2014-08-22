@@ -40,7 +40,7 @@ return function(\EnterAggregator\Config $config) {
     $config->curl->queryChunkSize = 50;
     $config->curl->logResponse = false;
     $config->curl->timeout = 90;
-    $config->curl->retryTimeout = 0.5;
+    $config->curl->retryTimeout = 0.4;
     $config->curl->retryCount = 2;
 
     $config->coreService->url = 'http://api.enter.ru/';
@@ -48,15 +48,18 @@ return function(\EnterAggregator\Config $config) {
     $config->coreService->clientId = 'site';
     $config->coreService->debug = false;
 
+    $config->scmsService->url = 'http://scms.enter.ru/';
+    $config->scmsService->timeout = 1.2;
+
     $config->cmsService->url = 'http://cms.enter.ru/';
-    $config->cmsService->timeout = 1;
+    $config->cmsService->timeout = 0.8;
 
     $config->adminService->enabled = true;
     $config->adminService->url = 'http://admin.enter.ru/';
     $config->adminService->timeout = 2;
 
     $config->reviewService->url = 'http://scms.enter.ru/reviews/';
-    $config->reviewService->timeout = 2;
+    $config->reviewService->timeout = 1.2;
 
     $config->contentService->url = 'http://content.enter.ru/';
 

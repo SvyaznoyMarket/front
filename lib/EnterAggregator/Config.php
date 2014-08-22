@@ -39,6 +39,8 @@ namespace EnterAggregator {
         public $coreService;
         /** @var Config\CmsService */
         public $cmsService;
+        /** @var Config\ScmsService */
+        public $scmsService;
         /** @var Config\AdminService */
         public $adminService;
         /** @var Config\ReviewService */
@@ -89,6 +91,7 @@ namespace EnterAggregator {
 
             $this->coreService = new Config\CoreService();
             $this->cmsService = new Config\CmsService();
+            $this->scmsService = new Config\ScmsService();
             $this->adminService = new Config\AdminService();
             $this->reviewService = new Config\ReviewService();
             $this->contentService = new Config\ContentService();
@@ -236,6 +239,9 @@ namespace EnterAggregator\Config {
     }
 
     class CmsService extends CurlService {
+    }
+
+    class ScmsService extends CurlService {
     }
 
     class AdminService extends CurlService {
