@@ -16,9 +16,17 @@ namespace EnterAggregator\Controller\Order {
     class Create {
         use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
 
+        /**
+         * @param $regionId
+         * @param Model\Cart\Split $split
+         * @param Model\Order\Meta[] $metas
+         * @return Response
+         * @throws \Exception
+         */
         public function execute(
             $regionId,
-            Model\Cart\Split $split
+            Model\Cart\Split $split,
+            array $metas = []
         ) {
             $config = $this->getConfig();
             $logger = $this->getLogger();
@@ -30,7 +38,7 @@ namespace EnterAggregator\Controller\Order {
             $response = new Response();
 
             // создание заказа
-            $createOrderQuery = new Query\Order\CreatePacketBySplit($split);
+            $createOrderQuery = new Query\Order\CreatePacketBySplit($split, $metas);
             if (!$createOrderQuery) {
                 throw new \Exception('Не удалось создать запрос на создание заказа');
             }

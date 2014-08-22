@@ -14,7 +14,11 @@ class CreatePacketBySplit extends Query {
     /** @var array */
     protected $result;
 
-    public function __construct(Model\Cart\Split $split) {
+    /**
+     * @param Model\Cart\Split $split
+     * @param Model\Order\Meta[] $metas
+     */
+    public function __construct(Model\Cart\Split $split, array $metas = []) {
         $this->url = new Url();
         $this->url->path = 'v2/order/create-packet2';
 
@@ -85,6 +89,11 @@ class CreatePacketBySplit extends Query {
                     'id'       => $product->id,
                     'quantity' => $product->quantity,
                 ];
+            }
+
+            // meta
+            foreach ($metas as $meta) {
+                $orderData['meta_data'][$meta->key] = $meta->value;
             }
 
             $data[] = $orderData;

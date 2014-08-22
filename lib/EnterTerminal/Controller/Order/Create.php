@@ -80,9 +80,20 @@ namespace EnterTerminal\Controller\Order {
             $split->region = $shop->region;
             $split->clientIp = $request->getClientIp();
 
+            // order meta
+            $metas = [];
+            if ($request->data['send_sms']) {
+                $meta = new Model\Order\Meta();
+                $meta->key = 'send_sms';
+                $meta->value = 1;
+
+                $metas[] = $meta;
+            }
+
             $controllerResponse = (new \EnterAggregator\Controller\Order\Create())->execute(
                 $shop->regionId,
-                $split
+                $split,
+                $metas
             );
 
             $response->orders = $controllerResponse->orders;

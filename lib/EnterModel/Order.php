@@ -72,6 +72,8 @@ class Order {
     public $paymentMethods = [];
     /** @var Model\Shop|null */
     public $shop;
+    /** @var Model\Order\Meta[] */
+    public $meta = [];
 
     /**
      * @param array $data
@@ -125,6 +127,16 @@ class Order {
             if (isset($data['address_number'])) $this->address->number = (string)$data['address_number'];
             if (isset($data['address_apartment'])) $this->address->apartment = (string)$data['address_apartment'];
             if (isset($data['address_floor'])) $this->address->floor = (string)$data['address_floor'];
+        }
+
+        if (isset($data['meta_data']) && is_array($data['meta_data'])) {
+            foreach ($data['meta_data'] as $k => $v) {
+                $meta = new Model\Order\Meta();
+                $meta->key = (string)$k;
+                $meta->value = $v;
+
+                $this->meta[] = $meta;
+            }
         }
     }
 }
