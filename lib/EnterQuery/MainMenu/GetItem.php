@@ -4,17 +4,18 @@ namespace EnterQuery\MainMenu;
 
 use Enter\Curl\Query;
 use EnterQuery\CmsQueryTrait;
+use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 
 class GetItem extends Query {
-    use CmsQueryTrait;
+    use ScmsQueryTrait;
 
-    /** @var array */
+    /** @var array|null */
     protected $result;
 
     public function __construct() {
         $this->url = new Url();
-        $this->url->path = 'v2/main-menu.json';
+        $this->url->path = 'seo/main-menu';
 
         $this->init();
     }
@@ -25,6 +26,6 @@ class GetItem extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data['items'][0]) ? $data : ['items' => []];
+        $this->result = isset($data['item'][0]) ? $data : null;
     }
 }

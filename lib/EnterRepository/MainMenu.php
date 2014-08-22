@@ -56,34 +56,38 @@ class MainMenu {
 
                 $element = null;
 
-                $source = (!empty($elementItem['source']) && is_scalar($elementItem['source'])) ? trim((string)$elementItem['source'], '/') : null;
+                $source = !empty($elementItem['source']['type']) ? ($elementItem['source'] + ['type' => null, 'id' => null]) : null;
                 if ($source) {
-                    $params = [];
-                    parse_str(parse_url($source, PHP_URL_QUERY), $params);
+                    $id = $source['id'];
 
-                    if ((0 === strpos($source, 'category/get')) && !empty($params['id']) && isset($categoryItemsById[$params['id']])) {
+                    if (('category-get' == $source['type']) && !empty($id)) {
+                        $categoryItem = isset($categoryItemsById[$id]) ? $categoryItemsById[$id] : null;
+
                         $element = new Model\MainMenu\Element($elementItem);
                         $element->type = 'category';
-                        $element->id = (string)$categoryItemsById[$params['id']]['id'];
+                        $element->id = (string)$categoryItem['id'];
                         if (!$element->name) {
-                            $element->name = (string)$categoryItemsById[$params['id']]['name'];
+                            $element->name = (string)$categoryItem['name'];
                         }
-                        $element->url = rtrim((string)$categoryItemsById[$params['id']]['link'], '/');
-                    } else if ((0 === strpos($source, 'category/tree')) && !empty($params['root_id']) && isset($categoryItemsById[$params['root_id']])) {
+                        $element->url = rtrim((string)$categoryItem['link'], '/');
+                    } else if (('category-tree' == $source['type']) && !empty($id)) {
                         $elementItems = [];
                         $categoryItem = null;
-                        foreach ($categoryItemsById[$params['root_id']]['children'] as $categoryItem) {
+                        foreach (isset($categoryItemsById[$id]['children'][0]) ? $categoryItemsById[$id]['children'] : [] as $categoryItem) {
                             $elementItems[] = [
-                                'source' => 'category/get?id=' . $categoryItem['id'],
+                                'source' => [
+                                    'type' => 'category-get',
+                                    'id'   => $categoryItem['id'],
+                                ],
                             ];
                         }
                         unset($categoryItem);
 
                         $walkByMenuElementItem($elementItems, $parentElement);
-                    } else if (0 === strpos($source, 'slice/get') && !empty($params['token'])) {
+                    } else if (('slice-get' == $source['type']) && !empty($id)) {
                         $element = new Model\MainMenu\Element($elementItem);
                         $element->type = 'slice';
-                        $element->id = (string)$params['token'];
+                        $element->id = $id;
                     }
                 } else {
                     $element = new Model\MainMenu\Element($elementItem);
@@ -107,7 +111,7 @@ class MainMenu {
                 }
             }
         };
-        $walkByMenuElementItem($menuData['items']);
+        $walkByMenuElementItem($menuData['item']);
 
         //die(json_encode($menu->elements, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 
