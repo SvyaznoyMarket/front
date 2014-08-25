@@ -39,7 +39,7 @@ namespace EnterTerminal\Controller {
             }
 
             // запрос дерева категорий для меню
-            $categoryListQuery = new Query\Product\Category\GetTreeList($shop->regionId, 3);
+            $categoryListQuery = new Query\Product\Category\GetTreeList($shop->regionId, 1);
             $curl->prepare($categoryListQuery);
 
             // запрос меню
