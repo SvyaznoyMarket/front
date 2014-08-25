@@ -51,6 +51,8 @@ class Product {
     public $price;
     /** @var int */
     public $oldPrice;
+    /** @var Model\Product\Label[] */
+    public $labels = [];
     /** @var Model\Product\Media */
     public $media;
     /** @var Model\Product\Rating|null */
@@ -122,6 +124,12 @@ class Product {
             foreach ($data['media'] as $mediaItem) {
                 if (empty($mediaItem['id']) || $mediaItem['type_id'] != 1) continue;
                 $this->media->photos[] = new Model\Product\Media\Photo($mediaItem);
+            }
+        }
+
+        if (isset($data['label'][0])) {
+            foreach ($data['label'] as $labelItem) {
+                $this->labels[] = new Model\Product\Label($labelItem);
             }
         }
 
