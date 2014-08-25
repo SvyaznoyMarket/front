@@ -68,13 +68,15 @@ class Cart {
      * @return Model\Cart\Product[]
      */
     public function getProductObjectListByHttpRequest(Http\Request $request) {
+        $productData = (array)(is_array($request->query['products']) ? $request->query['products'] : $request->data['products']);
+
         $products = [];
-        foreach ((array)$request->query['products'] as $product) {
-            if (!isset($product['id'])) continue;
+        foreach ($productData as $productItem) {
+            if (!isset($productItem['id'])) continue;
 
             $cartProduct = new Model\Cart\Product();
-            $cartProduct->id = (string)$product['id'];
-            $cartProduct->quantity = isset($product['quantity']) ? (int)$product['quantity'] : 0;
+            $cartProduct->id = (string)$productItem['id'];
+            $cartProduct->quantity = isset($productItem['quantity']) ? (int)$productItem['quantity'] : 0;
 
             $products[] = $cartProduct;
         }

@@ -31,6 +31,7 @@ class ProductSpinner {
      * @param bool $hasBuyButton
      * @param string|null $buttonId
      * @param bool $updateState
+     * @param string|null $checkUrl
      * @return Partial\Cart\ProductSpinner
      */
     public function getObject(
@@ -38,7 +39,8 @@ class ProductSpinner {
         \EnterModel\Cart\Product $cartProduct = null,
         $hasBuyButton = true,
         $buttonId = null,
-        $updateState = true
+        $updateState = true,
+        $checkUrl = null
     ) {
         if ($product->relation && (bool)$product->relation->kits) {
             return null;
@@ -65,6 +67,7 @@ class ProductSpinner {
                 'quantity'    => $cartProduct->quantity,
                 'minQuantity' => $updateState ? 1 : 0,
             ],
+            'checkUrl' => $checkUrl,
         ]);
 
         if ($hasBuyButton) {

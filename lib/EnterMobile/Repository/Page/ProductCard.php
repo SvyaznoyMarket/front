@@ -269,7 +269,8 @@ class ProductCard {
                     new \EnterModel\Cart\Product(['quantity' => $kitProductModel->kitCount]),
                     true,
                     Repository\Partial\Cart\ProductButton::getId($productModel->id, false),
-                    false
+                    false,
+                    $router->getUrlByRoute(new Routing\Product\QuantityAvailabilityList())
                 );
 
                 $page->content->product->kitBlock->products[] = $kit;

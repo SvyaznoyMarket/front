@@ -91,17 +91,19 @@ define(
                 }
             },
 
-            changeProductQuantity = function(e, product, quantity) {
+            changeProductQuantity = function(e, product, quantity, checkUrl) {
                 e.stopPropagation();
 
                 var idSelector = $(e.target),
                     $el = $(idSelector),
                     dataValue = $el.data('value'),
                     $widget = $($el.data('widgetSelector')),
-                    timer = parseInt($widget.data('timer'))
+                    timer = parseInt($widget.data('timer')),
+                    checkUrl = checkUrl || null
                 ;
 
                 console.info('changeProductQuantity', {'$el' : $el, '$widget': $widget, 'product': product, 'quantity': quantity});
+
 
                 if (('on' == $el.data('autoUpdate')) && _.isFinite(timer) && (timer > 0)) {
                     try {
@@ -149,7 +151,7 @@ define(
 
                 var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
                 if (product) {
-                    $target.trigger('changeProductQuantityData', [dataValue.product, product.quantity + 1]);
+                    $target.trigger('changeProductQuantityData', [dataValue.product, product.quantity + 1, dataValue.checkUrl]);
                     $widget.trigger('renderValue', [product]);
                 } else {
                     console.error('Товар не получен', product);
@@ -173,7 +175,7 @@ define(
 
                 var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
                 if (product) {
-                    $target.trigger('changeProductQuantityData', [dataValue.product, product.quantity - 1]);
+                    $target.trigger('changeProductQuantityData', [dataValue.product, product.quantity - 1, dataValue.checkUrl]);
                     $widget.trigger('renderValue', [product]);
                 } else {
                     console.error('Товар не получен', product);
@@ -198,7 +200,7 @@ define(
                 if ('' != value) {
                     var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
                     if (product) {
-                        $target.trigger('changeProductQuantityData', [dataValue.product, parseInt(value)]);
+                        $target.trigger('changeProductQuantityData', [dataValue.product, parseInt(value), dataValue.checkUrl]);
                     }
 
                     $widget.trigger('renderValue', [product]);

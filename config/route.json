@@ -67,6 +67,11 @@
         "name": "Список товаров",
         "pattern": "/ajax/product-list"
     },
+    "Product\\QuantityAvailabilityList": {
+        "name": "Доступность товара",
+        "pattern": "/ajax/product-quantity",
+        "method": ["POST"]
+    },
 
     "ProductSlice\\GetCategory": {
         "name": "Срез товаров по категории",
