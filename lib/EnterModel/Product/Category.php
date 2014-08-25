@@ -35,18 +35,28 @@ class Category {
     public $parent;
     /** @var Model\Product\Category[] */
     public $ascendants = [];
+    /** @var Model\Product\Category\Media */
+    public $media;
 
     /**
      * @param array $data
      */
     public function __construct(array $data = []) {
+        $this->media = new Model\Product\Category\Media();
+
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('parent_id', $data)) $this->parentId = $data['parent_id'] ? (string)$data['parent_id'] : null;
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
         if (array_key_exists('link', $data)) $this->link = rtrim((string)$data['link'], '/');
         $this->path = trim(preg_replace('/^\/catalog\//' , '', $this->link), '/');
-        if (array_key_exists('media_image', $data)) $this->image = (string)$data['media_image'];
+        if (array_key_exists('media_image', $data)) {
+            $this->image = (string)$data['media_image'];
+            $this->media->photos[] = new Model\Product\Category\Media\Photo([
+                'id'     => $this->id,
+                'source' => $this->image,
+            ]);
+        }
         if (array_key_exists('level', $data)) $this->level = (int)$data['level'];
         if (array_key_exists('has_children', $data)) $this->hasChildren = (bool)$data['has_children'];
         if (!empty($data['redirect']['link'])) $this->redirectLink = (string)$data['redirect']['link'];
