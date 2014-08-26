@@ -104,6 +104,7 @@ require(
         'jquery.touchwipe',
         'module/analytics.google',
         'module/util',
+        'module/jira',
         'module/navigation',
         'module/region',
         'module/search',
