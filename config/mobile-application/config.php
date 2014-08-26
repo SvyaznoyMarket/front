@@ -14,7 +14,7 @@ return function(EnterMobileApplication\Config $config) {
     $config->logger->fileAppender->file = realpath($config->dir . '/../logs') . '/mobile-application.log';
     $config->logger->fileAppender->enabled = true;
 
-    $config->session->name = 'clientId';
+    $config->session->name = 'token';
     $config->session->cookieLifetime = 15552000;
     $config->session->cookieDomain = null;
 
