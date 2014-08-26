@@ -2731,7 +2731,12 @@ body.noScroll {
 }
 .footerCopy__link {
   float: right;
-  color: #ffffff;
+  color: #c7c7c7;
+  text-decoration: none;
+}
+.footerCopy__link:hover {
+  color: #c7c7c7;
+  text-decoration: underline;
 }
 /* ==========================================================================
    Подвал сайта .footer .socLink .publicInfoList .publicInfoText .footerCopy
