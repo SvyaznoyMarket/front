@@ -100,20 +100,21 @@ define(
                     $widget = $($el.data('widgetSelector')),
                     timer = parseInt($widget.data('timer')),
                     checkUrl = checkUrl || null,
-                    handle = function(quantity) {
-                        if (!_.isFinite(quantity) || (quantity < product.minQuantity) || (quantity > 999)) {
-                            var error = {code: 'invalid', message: 'Неверное количество товара'};
+                    handle = function(quantity, error) {
+                        if (error || !_.isFinite(quantity) || (quantity < product.minQuantity) || (quantity > 999)) {
+                            var error = error || {code: 'invalid', message: 'Неверное количество товара'};
 
                             console.info('changeProductQuantityData:js-buyButton', error, quantity, $el);
 
-                            if (callback) callback(product, error);
+                            if (callback) callback(error);
+                            return false;
                         }
 
                         if (dataValue.product[product.id]) {
                             dataValue.product[product.id].quantity = quantity;
                         }
 
-                        if (callback) callback(product);
+                        if (callback) callback();
                     }
                 ;
 
@@ -129,7 +130,7 @@ define(
                         if (result.success) {
                             handle(quantity);
                         } else {
-                            handle(product.quantity);
+                            handle(product.quantity, {code: 'invalid', message: 'Невозможно установить такое количество'});
                         }
                     });
                 } else {
@@ -174,8 +175,12 @@ define(
                         dataValue.product,
                         product.quantity + 1,
                         dataValue.checkUrl,
-                        function() {
+                        function(error) {
                             $widget.trigger('renderValue', [product]);
+                            if (error) {
+                                // FIXME
+                                $widget.find('.js-buySpinner-inc').css({opacity: 0.5});
+                            }
                         }
                     ]);
                 } else {
@@ -206,6 +211,8 @@ define(
                         dataValue.checkUrl,
                         function() {
                             $widget.trigger('renderValue', [product]);
+                            // FIXME
+                            $widget.find('.js-buySpinner-inc').css({opacity: 1});
                         }
                     ]);
                 } else {
@@ -237,6 +244,8 @@ define(
                             dataValue.checkUrl,
                             function() {
                                 $widget.trigger('renderValue', [product]);
+                                // FIXME
+                                $widget.find('.js-buySpinner-inc').css({opacity: 1});
                             }
                         ]);
                     }
