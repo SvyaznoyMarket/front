@@ -91,7 +91,7 @@ define(
                 }
             },
 
-            changeProductQuantity = function(e, product, quantity, checkUrl) {
+            changeProductQuantity = function(e, product, quantity, checkUrl, callback) {
                 e.stopPropagation();
 
                 var idSelector = $(e.target),
@@ -99,34 +99,53 @@ define(
                     dataValue = $el.data('value'),
                     $widget = $($el.data('widgetSelector')),
                     timer = parseInt($widget.data('timer')),
-                    checkUrl = checkUrl || null
+                    checkUrl = checkUrl || null,
+                    handle = function(quantity) {
+                        if (!_.isFinite(quantity) || (quantity < product.minQuantity) || (quantity > 999)) {
+                            var error = {code: 'invalid', message: 'Неверное количество товара'};
+
+                            console.info('changeProductQuantityData:js-buyButton', error, quantity, $el);
+
+                            if (callback) callback(product, error);
+                        }
+
+                        if (dataValue.product[product.id]) {
+                            dataValue.product[product.id].quantity = quantity;
+                        }
+
+                        if (callback) callback(product);
+                    }
                 ;
 
-                console.info('changeProductQuantity', {'$el' : $el, '$widget': $widget, 'product': product, 'quantity': quantity});
+                console.info('changeProductQuantity', {'$el' : $el, '$widget': $widget, 'product': product, 'quantity': quantity, 'checkUrl': checkUrl});
 
 
-                if (('on' == $el.data('autoUpdate')) && _.isFinite(timer) && (timer > 0)) {
-                    try {
-                        clearTimeout(timer);
-                    } catch (error) {
-                        console.warn(error);
+                if (checkUrl) {
+                    $.post(checkUrl, {
+                        products: [
+                            { id: product.id, quantity: quantity }
+                        ]
+                    }).done(function(result) {
+                        if (result.success) {
+                            handle(quantity);
+                        } else {
+                            handle(product.quantity);
+                        }
+                    });
+                } else {
+                    if (('on' == $el.data('autoUpdate')) && _.isFinite(timer) && (timer > 0)) {
+                        try {
+                            clearTimeout(timer);
+                        } catch (error) {
+                            console.warn(error);
+                        }
+
+                        timer = setTimeout(function() { addProductToCart(e); }, 600);
+
+                        $widget.data('timer', timer);
                     }
 
-                    timer = setTimeout(function() { addProductToCart(e); }, 600);
-
-                    $widget.data('timer', timer);
-                }
-
-                if (!_.isFinite(quantity) || (quantity < product.minQuantity) || (quantity > 999)) {
-                    var error = {code: 'invalid', message: 'Неверное количество товара'};
-
-                    console.info('changeProductQuantityData:js-buyButton', error, quantity, $el);
-
-                    return error;
-                }
-
-                if (dataValue.product[product.id]) {
-                    dataValue.product[product.id].quantity = quantity;
+                    handle(quantity);
                 }
 
                 // FIXME: осторожно, гкод
@@ -151,8 +170,14 @@ define(
 
                 var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
                 if (product) {
-                    $target.trigger('changeProductQuantityData', [dataValue.product, product.quantity + 1, dataValue.checkUrl]);
-                    $widget.trigger('renderValue', [product]);
+                    $target.trigger('changeProductQuantityData', [
+                        dataValue.product,
+                        product.quantity + 1,
+                        dataValue.checkUrl,
+                        function() {
+                            $widget.trigger('renderValue', [product]);
+                        }
+                    ]);
                 } else {
                     console.error('Товар не получен', product);
                 }
@@ -175,8 +200,14 @@ define(
 
                 var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
                 if (product) {
-                    $target.trigger('changeProductQuantityData', [dataValue.product, product.quantity - 1, dataValue.checkUrl]);
-                    $widget.trigger('renderValue', [product]);
+                    $target.trigger('changeProductQuantityData', [
+                        dataValue.product,
+                        product.quantity - 1,
+                        dataValue.checkUrl,
+                        function() {
+                            $widget.trigger('renderValue', [product]);
+                        }
+                    ]);
                 } else {
                     console.error('Товар не получен', product);
                 }
@@ -197,13 +228,18 @@ define(
                 console.info('changeSpinnerValue', { '$el': $el, '$target': $target, '$widget': $widget});
 
                 var value = $el.val();
+                var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
                 if ('' != value) {
-                    var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
                     if (product) {
-                        $target.trigger('changeProductQuantityData', [dataValue.product, parseInt(value), dataValue.checkUrl]);
+                        $target.trigger('changeProductQuantityData', [
+                            dataValue.product,
+                            parseInt(value),
+                            dataValue.checkUrl,
+                            function() {
+                                $widget.trigger('renderValue', [product]);
+                            }
+                        ]);
                     }
-
-                    $widget.trigger('renderValue', [product]);
                 }
             },
 
