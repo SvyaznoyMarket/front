@@ -4,10 +4,11 @@ namespace EnterRepository;
 
 use Enter\Curl\Query;
 use EnterAggregator\ConfigTrait;
+use EnterAggregator\RouterTrait;
 use EnterModel as Model;
 
 class MainMenu {
-    use ConfigTrait;
+    use ConfigTrait, RouterTrait;
 
     /**
      * @param Query $menuListQuery
@@ -84,10 +85,10 @@ class MainMenu {
                         unset($categoryItem);
 
                         $walkByMenuElementItem($elementItems, $parentElement);
-                    } else if (('slice-get' == $source['type']) && !empty($id)) {
+                    } else if (('slice' == $source['type']) && !empty($source['url'])) {
                         $element = new Model\MainMenu\Element($elementItem);
                         $element->type = 'slice';
-                        $element->id = $id;
+                        $element->url = '/slices/' . $source['url']; // FIXME
                     }
                 } else {
                     $element = new Model\MainMenu\Element($elementItem);
