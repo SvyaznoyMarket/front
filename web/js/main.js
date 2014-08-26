@@ -111,7 +111,8 @@ require(
         'module/widget',      // виджеты
         'module/user.common', // инфо о пользователе
         'module/cart.common', // кнопка купить, спиннер
-        'module/product.catalog.common'
+        'module/product.catalog.common',
+		'module/siteVersionSwitcher'
     ],
     function(require, config) {
         $.cookie.defaults.path = '/';
