@@ -88,6 +88,7 @@ class MainMenu {
                     } else if (('slice' == $source['type']) && !empty($source['url'])) {
                         $element = new Model\MainMenu\Element($elementItem);
                         $element->type = 'slice';
+                        $element->id = $source['url'];
                         $element->url = '/slices/' . $source['url']; // FIXME
                     }
                 } else {
