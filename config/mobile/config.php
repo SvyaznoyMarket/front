@@ -6,6 +6,7 @@ return function(\EnterMobile\Config $config) {
     $handler($config);
 
     $config->hostname = 'enter.ru';
+    $config->fullHost = 'www.enter.ru';
 
     $config->logger->fileAppender->enabled = true;
     $config->logger->fileAppender->file = realpath($config->dir . '/../logs') . '/mobile.log';
@@ -21,4 +22,7 @@ return function(\EnterMobile\Config $config) {
     $config->product->itemsInSlider = 60;
 
     $config->productReview->itemsInCard = 7;
+
+    $config->siteVersionSwitcher->cookieName = 'mobile';
+    $config->siteVersionSwitcher->cookieLifetime = 20 * 365 * 24 * 60 * 60;
 };

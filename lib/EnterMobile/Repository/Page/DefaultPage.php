@@ -32,6 +32,7 @@ class DefaultPage {
         // заголовок
         $page->title = 'Enter - все товары для жизни по интернет ценам!';
 
+        $page->fullHost = $this->getConfig()->fullHost;
         $page->dataDebug = $config->debugLevel ? 'true' : '';
         $page->dataVersion = date('ymd');
         $page->dataModule = 'default';
@@ -41,15 +42,19 @@ class DefaultPage {
             'requestId' => $this->getRequestId(),
             'debug'     => $config->debugLevel,
             'env'       => $config->environment,
-            'cookie'     => [
+            'cookie'    => [
                 'domain'   => $config->session->cookieDomain,
                 'lifetime' => $config->session->cookieLifetime,
             ],
             'user'      => [
                 'infoUrl'    => $router->getUrlByRoute(new Routing\User\Get()),
             ],
-            'credit'     => [
+            'credit'    => [
                 'cookieName' => $config->credit->cookieName,
+            ],
+            'siteVersionSwitcher' => [
+                'cookieName' => $config->siteVersionSwitcher->cookieName,
+                'cookieLifetime' => $config->siteVersionSwitcher->cookieLifetime,
             ],
         ]);
 

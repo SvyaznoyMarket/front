@@ -6,6 +6,8 @@ namespace EnterMobile\Model\Page {
 
     class DefaultPage extends HtmlPage {
         /** @var string */
+        public $fullHost;
+        /** @var string */
         public $dataDebug;
         /** @var string */
         public $dataVersion;
