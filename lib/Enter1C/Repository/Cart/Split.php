@@ -138,6 +138,7 @@ class Split {
                     'possible_intervals' => [],
                     'possible_days' => [],
                     'possible_payment_methods' => [],
+                    'possible_point_ids' => [],
                     'possible_points' => [],
                     'comment' => $order->comment,
                 ],
@@ -205,6 +206,10 @@ class Split {
 
             foreach ($order->possiblePaymentMethodIds as $id) {
                 $orderItem['order']['possible_payment_methods'][] = ['payment_method' => $id];
+            }
+
+            foreach ($order->possiblePointIds as $id) {
+                $orderItem['order']['possible_point_ids'][] = ['id' => $id];
             }
 
             foreach ($order->groupedPossiblePointIds as $groupToken => $pointIds) {
@@ -483,6 +488,8 @@ class Split {
 
                     $order['possible_payment_methods'] = $items;
                 }
+
+                $this->correctXmlArray($order['possible_point_ids']);
 
                 if (isset($order['possible_points']) && is_array($order['possible_points'])) {
                     $items = [];

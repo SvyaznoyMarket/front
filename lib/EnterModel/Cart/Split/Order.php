@@ -30,6 +30,8 @@ class Order {
     /** @var array */
     public $possiblePaymentMethodIds = [];
     /** @var array */
+    public $possiblePointIds = [];
+    /** @var array */
     public $groupedPossiblePointIds = [];
     /** @var string|null */
     public $comment;
@@ -98,6 +100,12 @@ class Order {
         if (isset($data['possible_payment_methods']) && is_array($data['possible_payment_methods'])) {
             foreach ($data['possible_payment_methods'] as $id) {
                 $this->possiblePaymentMethodIds[] = (string)$id;
+            }
+        }
+
+        if (isset($data['possible_point_ids']) && is_array($data['possible_point_ids'])) {
+            foreach ($data['possible_point_ids'] as $id) {
+                $this->possiblePointIds[] = (string)$id;
             }
         }
 
