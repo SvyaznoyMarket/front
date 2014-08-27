@@ -66,23 +66,31 @@ namespace EnterTerminal\Controller {
                 throw new \Exception('Не удалось получить бизнес правила');
             }
 
+            $response->businessRules = $this->filterBusinessRules($businessRules, $response->info['client_id']);
+
+            return new Http\JsonResponse($response);
+        }
+
+        private function filterBusinessRules($businessRules, $clientId) {
             foreach ($businessRules as $key => $businessRule) {
                 if (isset($businessRule['filter'])) {
-                    if (isset($businessRule['filter']['api_clients']['alias']) && !preg_match('/^' . $businessRule['filter']['api_clients']['alias'] . '$/i', $response->info['client_id'])) {
-                        unset($businessRules[$key]);
-                    }
+                    if (isset($businessRule['filter']['api_clients']) && is_array($businessRule['filter']['api_clients'])) {
+                        foreach ($businessRule['filter']['api_clients'] as $filter) {
+                            if (isset($filter['alias']) && !preg_match('/^(?:' . $filter['alias'] . ')$/i', $clientId)) {
+                                unset($businessRules[$key]);
+                            }
 
-                    if (isset($businessRule['filter']['api_clients']['alias_type']) && $businessRule['filter']['api_clients']['alias_type'] !== 'terminal') {
-                        unset($businessRules[$key]);
+                            if (isset($filter['alias_type']) && $filter['alias_type'] !== 'terminal') {
+                                unset($businessRules[$key]);
+                            }
+                        }
                     }
 
                     unset($businessRules[$key]['filter']);
                 }
             }
 
-            $response->businessRules = array_values($businessRules);
-
-            return new Http\JsonResponse($response);
+            return array_values($businessRules);
         }
     }
 }
