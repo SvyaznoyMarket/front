@@ -58,6 +58,7 @@ namespace EnterTerminal\Controller {
             $response->content = $item['content'];
             $response->content = $this->processContentLinks($response->content, $curl, $shop->regionId);
             $response->content = $this->removeExternalScripts($response->content);
+            $response->content = preg_replace('/<iframe(?:\s[^>]*)?>.*?<\/iframe>/is', '', $response->content); // https://jira.enter.ru/browse/TERMINALS-862
             $response->title = isset($item['title']) ? $item['title'] : null;
 
             return new Http\JsonResponse($response);
