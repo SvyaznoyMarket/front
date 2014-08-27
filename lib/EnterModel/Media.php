@@ -25,7 +25,7 @@ namespace EnterModel {
             if (array_key_exists('tags', $data)) $this->tags = (array)$data['tags'];
             if (isset($data['sources'][0])) {
                 foreach ($data['sources'] as $sourceItem) {
-                    if ('image' == $this->type && in_array('mobile-site', $this->tags)) {
+                    if ('image' == $this->type) {
                         $this->sources[] = new Model\Media\ImageSource($sourceItem);
                     }
                 }
@@ -45,5 +45,11 @@ namespace EnterModel\Media {
         public $width;
         /** @var int */
         public $height;
+
+        public function __construct(array $data = []) {
+            if (array_key_exists('url', $data)) $this->url = (string)$data['url'];
+            if (array_key_exists('width', $data)) $this->width = (string)$data['width'];
+            if (array_key_exists('height', $data)) $this->height = (string)$data['height'];
+        }
     }
 }

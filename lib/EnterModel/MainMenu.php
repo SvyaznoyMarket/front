@@ -22,8 +22,11 @@ namespace EnterModel {
 
 namespace EnterModel\MainMenu {
     use EnterModel as Model;
+    use EnterAggregator\ConfigTrait; // FIXME!!!
 
     class Element {
+        use ConfigTrait;
+
         /** @var string */
         public $type;
         /** @var string */
@@ -57,6 +60,8 @@ namespace EnterModel\MainMenu {
          * @param array $data
          */
         public function __construct(array $data = []) {
+            $applicationName = $this->getConfig()->applicationName;
+
             if (isset($data['type'])) $this->type = (string)$data['type'];
             if (isset($data['id'])) $this->id = (string)$data['id'];
             if (isset($data['name'])) $this->name = (string)$data['name'];
@@ -68,14 +73,19 @@ namespace EnterModel\MainMenu {
             if (isset($data['classHover'])) $this->classHover = (string)$data['classHover'];
             if (isset($data['medias']) && is_array($data['medias'])) {
                 foreach ($data['medias'] as $i => $mediaItem) {
-                    $this->media[$i] = new Model\Media($mediaItem);
+                    $media = new Model\Media($mediaItem);
+                    if (!in_array($applicationName, $media->tags)) continue;
+
+                    $this->media[$i] = $media;
                 }
             }
             if (empty($this->char) && (bool)$this->media) {
                 foreach ($this->media as $media) {
                     if ('image' == $media->type) {
                         /** @var Model\Media\ImageSource|null $source */
-                        $source = reset($media->sources);
+                        if ($source = reset($media->sources)) {
+                            $this->image = $source->url;
+                        }
                     }
                 }
             }
