@@ -50,7 +50,7 @@ namespace EnterModel\MainMenu {
         public $children = [];
         /** @var bool */
         public $hasChildren;
-        /** @var array */
+        /** @var Model\Media[] */
         public $media = [];
 
         /**
@@ -68,28 +68,17 @@ namespace EnterModel\MainMenu {
             if (isset($data['classHover'])) $this->classHover = (string)$data['classHover'];
             if (isset($data['medias']) && is_array($data['medias'])) {
                 foreach ($data['medias'] as $i => $mediaItem) {
-                    $this->media[$i] = new Model\MainMenu\Element\Media($mediaItem);
+                    $this->media[$i] = new Model\Media($mediaItem);
                 }
             }
             if (empty($this->char) && (bool)$this->media) {
-                /** @var Model\MainMenu\Element\Media|null $media */
-                $media = reset($this->media);
-                $this->image = $media ? $media->url : null;
+                foreach ($this->media as $media) {
+                    if ('image' == $media->type) {
+                        /** @var Model\Media\ImageSource|null $source */
+                        $source = reset($media->sources);
+                    }
+                }
             }
-        }
-    }
-}
-
-namespace EnterModel\MainMenu\Element {
-    class Media {
-        /** @var string */
-        public $url;
-        /** @var string */
-        public $contentType;
-
-        public function __construct(array $data = []) {
-            if (isset($data['url'])) $this->url = (string)$data['url'];
-            if (isset($data['content_type'])) $this->contentType = (string)$data['content_type'];
         }
     }
 }
