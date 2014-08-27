@@ -90,6 +90,10 @@ namespace EnterTerminal\Controller\Order {
                 $metas[] = $meta;
             }
 
+            if (!empty($request->data['user_info']['sms_code'])) {
+                $split->user->smsCode = (string)$request->data['user_info']['sms_code'];
+            }
+
             $controllerResponse = (new \EnterAggregator\Controller\Order\Create())->execute(
                 $shop->regionId,
                 $split,

@@ -14,6 +14,8 @@ class User {
     public $address;
     /** @var string|null */
     public $bonusCardNumber;
+    /** @var string|null */
+    public $smsCode;
 
     public function __construct($data = []) {
         if (isset($data['phone'])) {
