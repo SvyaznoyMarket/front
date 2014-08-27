@@ -67,7 +67,7 @@ namespace EnterTerminal\Controller\Cart\Split {
 
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
-                $shop->regionId,
+                new Model\Region(['id' => $shop->regionId]),
                 $shop,
                 null,
                 $splitData,

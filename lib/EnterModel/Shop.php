@@ -8,6 +8,8 @@ class Shop {
     /** @var string */
     public $id;
     /** @var string */
+    public $ui;
+    /** @var string */
     public $token;
     /** @var string */
     public $name;
@@ -43,6 +45,7 @@ class Shop {
      */
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+        if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
         if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('geo_id', $data)) $this->regionId = (string)$data['geo_id'];

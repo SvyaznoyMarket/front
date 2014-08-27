@@ -56,7 +56,7 @@ namespace EnterTerminal\Controller\Cart {
 
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
-                $shop->regionId,
+                new Model\Region(['id' => $shop->regionId]),
                 $shop
             );
             $splitQuery->setTimeout($config->coreService->timeout * 2);

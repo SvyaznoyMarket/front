@@ -8,6 +8,8 @@ class PaymentMethod {
     /** @var string */
     public $id;
     /** @var string */
+    public $ui;
+    /** @var string */
     public $name;
     /** @var string */
     public $description;
@@ -27,6 +29,7 @@ class PaymentMethod {
      */
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+        if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('description', $data)) $this->description = (string)$data['description'];
         if (array_key_exists('is_credit', $data)) $this->isCredit = (bool)$data['is_credit'];
