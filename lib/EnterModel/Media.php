@@ -36,6 +36,15 @@ namespace EnterModel {
 
 namespace EnterModel\Media {
     abstract class Source {
+        /** @var string */
+        public $type;
+
+        /**
+         * @param array $data
+         */
+        public function __construct(array $data = []) {
+            if (array_key_exists('type', $data)) $this->type = (string)$data['type'];
+        }
     }
 
     class ImageSource extends Source {
@@ -46,7 +55,12 @@ namespace EnterModel\Media {
         /** @var int */
         public $height;
 
+        /**
+         * @param array $data
+         */
         public function __construct(array $data = []) {
+            parent::__construct($data);
+
             if (array_key_exists('url', $data)) $this->url = (string)$data['url'];
             if (array_key_exists('width', $data)) $this->width = (string)$data['width'];
             if (array_key_exists('height', $data)) $this->height = (string)$data['height'];
