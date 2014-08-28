@@ -2,21 +2,31 @@
     "default-desc": {
         "token": "default",
         "name": "Автоматически",
-        "direction": "desc"
+        "direction": "desc",
+        "tags": ["mobile-app", "mobile-site"]
+    },
+    "shop-desc": {
+        "token": "in_shop",
+        "name": "Автоматически",
+        "direction": "desc",
+        "tags": ["terminal"]
     },
     "hits-desc": {
         "token": "hits",
         "name": "Хиты продаж",
-        "direction": "desc"
+        "direction": "desc",
+        "tags": ["mobile-app", "mobile-site", "terminal"]
     },
     "price-asc": {
         "token": "price",
         "name": "По цене &#8595;",
-        "direction": "asc"
+        "direction": "asc",
+        "tags": ["mobile-app", "mobile-site", "terminal"]
     },
     "price-desc": {
         "token": "price",
         "name": "По цене &#8593;",
-        "direction": "desc"
+        "direction": "desc",
+        "tags": ["mobile-app", "mobile-site", "terminal"]
     }
 }
