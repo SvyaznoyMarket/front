@@ -26,14 +26,6 @@
             "productId": "[\\w\\d-_]+"
         }
     },
-    "ProductKit\\Get": {
-        "name": "Состав товара",
-        "pattern": "/product-kit/{productPath}",
-        "require": {
-            "productPath": "[\\w\\d-_]+/{1}[\\w\\d-_]+"
-
-        }
-    },
     "ProductCatalog\\GetSlice": {
         "name": "Срез товаров в каталоге товаров",
         "pattern": "/catalog/slice/{sliceToken}",
