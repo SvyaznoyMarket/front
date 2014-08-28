@@ -19,9 +19,9 @@ class Order {
     const STATUS_CANCELED = 100;
 
     const PAYMENT_STATUS_NOT_PAID = 1;  // не оплачен
-    const PAYMENT_STATUS_TRANSFER = 4;  // начало оплаты
-    const PAYMENT_STATUS_ADVANCE = 3;   // частично оплачен
     const PAYMENT_STATUS_PAID = 2;      // оплачен
+    const PAYMENT_STATUS_ADVANCE = 3;   // частично оплачен
+    const PAYMENT_STATUS_TRANSFER = 4;  // начало оплаты
     const PAYMENT_STATUS_CANCELED = 5;  // отмена оплаты
 
     /** @var string */
@@ -64,6 +64,8 @@ class Order {
     public $subwayId;
     /** @var string */
     public $paymentMethodId;
+    /** @var string|null */
+    public $paymentStatusId;
     /** @var string */
     public $paymentUrl;
     /** @var Model\Order\Delivery[] */
@@ -111,6 +113,7 @@ class Order {
         if (array_key_exists('discount_sum', $data)) $this->discountSum = $data['discount_sum'];
         if (array_key_exists('subway_id', $data)) $this->subwayId = (string)$data['subway_id'];
         if (array_key_exists('payment_id', $data)) $this->paymentMethodId = (string)$data['payment_id'];
+        if (array_key_exists('payment_status_id', $data)) $this->paymentStatusId = $data['payment_status_id']? (string)$data['payment_status_id'] : null;
         if (array_key_exists('payment_url', $data)) $this->paymentUrl = (string)$data['payment_url'];
         if (isset($data['delivery'][0]['delivery_id'])) {
             foreach ($data['delivery'] as $deliveryItem) {
