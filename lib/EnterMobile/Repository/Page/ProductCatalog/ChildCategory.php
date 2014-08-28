@@ -32,11 +32,11 @@ class ChildCategory {
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
 
         // заголовок
-        $page->title = $request->category->name;
+        $page->title = $request->category->name . ' - Enter';
 
         $page->dataModule = 'product.catalog';
 
-        $page->content->title = $request->category->name  . ' - Enter';
+        $page->content->title = $request->category->name;
 
         // хлебные крошки
         $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
