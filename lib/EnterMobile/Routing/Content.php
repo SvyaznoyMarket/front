@@ -6,7 +6,7 @@ use EnterMobile\Routing\Route;
 
 class Content extends Route {
     /**
-     * @param $id
+     * @param string $contentToken
      */
     public function __construct($contentToken) {
         $this->action = ['Content', 'execute'];

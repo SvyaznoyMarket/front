@@ -13,7 +13,8 @@ class GetItemByToken extends Query {
     protected $result;
 
     /**
-     * @param $token
+     * @param string $token
+     * @param bool $showSidebar
      */
     public function __construct($token, $showSidebar = true) {
         $this->url = new Url();
