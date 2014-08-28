@@ -36,7 +36,7 @@ class ChildCategory {
 
         $page->dataModule = 'product.catalog';
 
-        $page->content->title = $request->category->name;
+        $page->content->title = $request->category->name  . ' - Enter';
 
         // хлебные крошки
         $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
