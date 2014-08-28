@@ -22,6 +22,8 @@ class RootCategory {
 
         $config = $this->getConfig();
 
+        $page->title = $request->category->name;
+
         $page->dataModule = 'product.catalog';
 
         $page->content->title = $request->category->name;

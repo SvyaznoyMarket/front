@@ -33,6 +33,9 @@ class Search {
 
         $currentRoute = new Routing\Search\Index($request->searchPhrase);
 
+        // заголовок
+        $page->title = 'Поиск ' . $request->searchPhrase . ' - Enter';
+
         $page->dataModule = 'product.catalog';
 
         $page->content->title = (bool)$request->products ? 'Нашли ' . '"' . $request->searchPhrase . '"' : '';
@@ -40,7 +43,7 @@ class Search {
         // хлебные крошки
         $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
         $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
-        $breadcrumb->name = 'Поиск ' . '"' . $request->searchPhrase . "'";
+        $breadcrumb->name = 'Поиск ' . '"' . $request->searchPhrase . '"';
         $breadcrumb->url = $router->getUrlByRoute($currentRoute);
         $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
 

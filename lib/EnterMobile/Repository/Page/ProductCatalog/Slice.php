@@ -32,6 +32,9 @@ class Slice {
         $productCardRepository = new Repository\Partial\ProductCard();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
 
+        // заголовок
+        $page->title = $request->slice->name . ' - Enter';
+
         $page->dataModule = 'product.catalog';
 
         // хлебные крошки

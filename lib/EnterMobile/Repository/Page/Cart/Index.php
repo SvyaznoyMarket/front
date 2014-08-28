@@ -33,6 +33,9 @@ class Index {
 
         $templateDir = $config->mustacheRenderer->templateDir;
 
+        // заголовок
+        $page->title = 'Корзина - Enter';
+
         $page->dataModule = 'cart';
 
         // ga

@@ -40,6 +40,9 @@ class ProductCard {
 
         $productModel = $request->product;
 
+        // заголовок
+        $page->title = $productModel->name . ' - Enter';
+
         $page->dataModule = 'product.card';
 
         // хлебные крошки

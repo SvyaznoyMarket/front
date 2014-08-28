@@ -15,9 +15,10 @@ class Content {
     use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait;
 
     /**
-     * @param \EnterMobile\Model\Page\Content $page
+     * @param Model\Page\Content $page
+     * @param Content\Request $request
      */
-    public function buildObjectByRequest(\EnterMobile\Model\Page\Content $page, Content\Request $request) {
+    public function buildObjectByRequest(Model\Page\Content $page, Content\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
         $page->title = $request->title;
@@ -25,11 +26,14 @@ class Content {
 
         // TODO сделать настройки для партнёрских скриптов
         // partner
-//        try {
-//            $page->partners = (new Repository\Partial\Partner())->getListForIndex($request);
-//        } catch (\Exception $e) {
-//            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
-//        }
+
+        /*
+        try {
+            $page->partners = (new Repository\Partial\Partner())->getListForIndex($request);
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
+        }
+        */
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }

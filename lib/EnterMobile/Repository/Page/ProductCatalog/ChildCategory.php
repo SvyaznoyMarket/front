@@ -31,7 +31,12 @@ class ChildCategory {
         $productCardRepository = new Repository\Partial\ProductCard();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
 
+        // заголовок
+        $page->title = $request->category->name;
+
         $page->dataModule = 'product.catalog';
+
+        $page->content->title = $request->category->name;
 
         // хлебные крошки
         $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
