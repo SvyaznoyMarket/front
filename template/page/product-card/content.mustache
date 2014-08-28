@@ -182,12 +182,9 @@
 
                 <!-- каунтер -->
                 <div class="lineKitItem_r lineKitItem_foot lineKitItem-l">
-                    <div class="counter counter-mini clearfix">
-                        <button class="js-buySpinner-dec counter__btn counter__btn-plus">-</button>
-                        <input type="text" value="{{quantity}}" class="js-buySpinner-value counter__input">
-                        <button class="js-buySpinner-inc counter__btn counter__btn-minus">+</button>
-                        <span class="counter__num">шт.</span>
-                    </div>
+                    {{#cartSpinner}}
+                        {{>partial/cart/spinner}}
+                    {{/cartSpinner}}
                     
                     <!-- цена за все -->
                     <!--
