@@ -5036,7 +5036,7 @@ body.noScroll {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa200', endColorstr='#f79200', GradientType=0);
 }
 .float100 {
-  float: right;
+  float: none;
 }
 .column215 {
   position: relative;
@@ -5054,13 +5054,16 @@ body.noScroll {
 .column685 {
   position: relative;
   z-index: 1;
-  width: 685px;
+  width: 100%;
 }
 .leftmenu li {
   padding: 0 0 10px 16px;
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAYdEVYdENyZWF0aW9uIFRpbWUAMTguMTAuMjAxMr1uZVsAAAB7SURBVDiN7dMhC0MhAMTx/5vRYrKbXjcJfnG7CCa76XWTxSgurQ7mY2k7uPrjyh1rLe7mcVv4MSSEsGKMC3j1c0RrzRiDWuv+EmstQgiu66L3vocAeO8ByDnvIyklAJxze0gphTknxhiUUntIaw0pJed5vl17/L/zHeQJ1BspiCSppVYAAAAASUVORK5CYII=) no-repeat 0 0;
   font-size: 14px;
   line-height: 18px;
+}
+.allpromo {
+  padding: 20px 10px 0;
 }
 .chooseBox {
   margin: 45px 0 40px !important;
