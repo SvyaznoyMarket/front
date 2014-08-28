@@ -23,7 +23,7 @@ class RecommendedList {
      */
     public function buildObjectByRequest(Page $page, RecommendedList\Request $request) {
         $router = $this->getRouter();
-        $viewHelper = $this->getTemplateHelper();
+        $templateHelper = $this->getTemplateHelper();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $productCardRepository = new Repository\Partial\ProductCard();
         $productSliderRepository = new Repository\Partial\ProductSlider();
@@ -39,7 +39,7 @@ class RecommendedList {
             if (!$productModel) continue;
 
             $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
-            $productCard->dataGa = $viewHelper->json([
+            $productCard->dataGa = $templateHelper->json([
                 'm_recommended' => ['send', 'event', 'm_recommended', $productModel->article],
             ]);
 

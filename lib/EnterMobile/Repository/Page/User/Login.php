@@ -24,9 +24,6 @@ class Login {
 
         $config = $this->getConfig();
         $router = $this->getRouter();
-        $viewHelper = $this->getTemplateHelper();
-
-        $templateDir = $config->mustacheRenderer->templateDir;
 
         $page->dataModule = 'user.login';
 

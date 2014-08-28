@@ -20,7 +20,7 @@ class Partner {
      */
     public function getDefaultList(Repository\Page\DefaultPage\Request $request) {
         $config = $this->getConfig()->partner->service;
-        $viewHelper = $this->getTemplateHelper();
+        $templateHelper = $this->getTemplateHelper();
 
         $dataAction = 'default';
 
@@ -40,7 +40,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'google-retargeting';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json($this->getGoogleRetargetingDataValue());
+            $partner->dataValue = $templateHelper->json($this->getGoogleRetargetingDataValue());
 
             $partners[] = $partner;
         }
@@ -50,7 +50,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'cityads';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json([]);
+            $partner->dataValue = $templateHelper->json([]);
 
             $partners[] = $partner;
         }
@@ -66,7 +66,7 @@ class Partner {
      */
     public function getListForIndex(Repository\Page\Index\Request $request) {
         $config = $this->getConfig()->partner->service;
-        $viewHelper = $this->getTemplateHelper();
+        $templateHelper = $this->getTemplateHelper();
 
         $dataAction = 'index';
 
@@ -77,7 +77,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'actionpay';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json([
+            $partner->dataValue = $templateHelper->json([
                 'pageType' => 1,
             ]);
 
@@ -92,7 +92,7 @@ class Partner {
 
             $dataValue = $this->getGoogleRetargetingDataValue();
             $dataValue['tagParams'] = array_merge($dataValue['tagParams'], ['pagetype' => 'homepage']);
-            $partner->dataValue = $viewHelper->json($dataValue);
+            $partner->dataValue = $templateHelper->json($dataValue);
 
             $partners[] = $partner;
         }
@@ -102,7 +102,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'cityads';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json([]);
+            $partner->dataValue = $templateHelper->json([]);
 
             $partners[] = $partner;
         }
@@ -118,7 +118,7 @@ class Partner {
      */
     public function getListForProductCatalog(Repository\Page\ProductCatalog\RootCategory\Request $request) {
         $config = $this->getConfig()->partner->service;
-        $viewHelper = $this->getTemplateHelper();
+        $templateHelper = $this->getTemplateHelper();
 
         $category = $request->category;
         $products = $request instanceof Repository\Page\ProductCatalog\ChildCategory\Request ? $request->products : [];
@@ -131,7 +131,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'actionpay';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json([
+            $partner->dataValue = $templateHelper->json([
                 'pageType'         => 3,
                 'currentCategory'  => $category ? ['id' => $category->id, 'name' => $category->name] : null,
                 'parentCategories' => ($category && $category->parent)
@@ -151,7 +151,7 @@ class Partner {
                 $partner = new Partial\Partner();
                 $partner->id = 'criteo';
                 $partner->dataAction = $dataAction;
-                $partner->dataValue = $viewHelper->json(array_merge($this->getCriteoDataValue(), [
+                $partner->dataValue = $templateHelper->json(array_merge($this->getCriteoDataValue(), [
                     [
                         'event' => 'viewList',
                         'item'  => array_values(array_map(function(\EnterModel\Product $product) { return $product->id; }, $products)),
@@ -167,7 +167,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'sociomantic';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json([
+            $partner->dataValue = $templateHelper->json([
                 'category' => $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge($category->ascendants, [$category])) : [],
             ]);
             $partners[] = $partner;
@@ -181,7 +181,7 @@ class Partner {
 
             $dataValue = $this->getGoogleRetargetingDataValue();
             $dataValue['tagParams'] = array_merge($dataValue['tagParams'], ['pagetype' => 'category', 'pcat' => $category ? $category->token : null]);
-            $partner->dataValue = $viewHelper->json($dataValue);
+            $partner->dataValue = $templateHelper->json($dataValue);
 
             $partners[] = $partner;
         }
@@ -191,7 +191,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'cityads';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json([]);
+            $partner->dataValue = $templateHelper->json([]);
 
             $partners[] = $partner;
         }
@@ -207,7 +207,7 @@ class Partner {
      */
     public function getListForSearch(Repository\Page\Search\Request $request) {
         $config = $this->getConfig()->partner->service;
-        $viewHelper = $this->getTemplateHelper();
+        $templateHelper = $this->getTemplateHelper();
 
         $products = $request->products;
         $dataAction = 'search';
@@ -221,7 +221,7 @@ class Partner {
                 $partner = new Partial\Partner();
                 $partner->id = 'criteo';
                 $partner->dataAction = $dataAction;
-                $partner->dataValue = $viewHelper->json(array_merge($this->getCriteoDataValue(), [
+                $partner->dataValue = $templateHelper->json(array_merge($this->getCriteoDataValue(), [
                     [
                         'event' => 'viewList',
                         'item'  => array_values(array_map(function(\EnterModel\Product $product) { return $product->id; }, $products)),
@@ -239,7 +239,7 @@ class Partner {
             $partner->dataAction = $dataAction;
 
             $dataValue = $this->getGoogleRetargetingDataValue();
-            $partner->dataValue = $viewHelper->json($dataValue);
+            $partner->dataValue = $templateHelper->json($dataValue);
 
             $partners[] = $partner;
         }
@@ -249,7 +249,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'cityads';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json([]);
+            $partner->dataValue = $templateHelper->json([]);
 
             $partners[] = $partner;
         }
@@ -265,7 +265,7 @@ class Partner {
      */
     public function getListForProductCard(Repository\Page\ProductCard\Request $request) {
         $config = $this->getConfig()->partner->service;
-        $viewHelper = $this->getTemplateHelper();
+        $templateHelper = $this->getTemplateHelper();
 
         $product = $request->product;
         $category = $request->product->category;
@@ -278,7 +278,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'actionpay';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json([
+            $partner->dataValue = $templateHelper->json([
                 'pageType'         => 2,
                 'currentProduct'   => ['id' => $product->id, 'name' => $product->name, 'price' => $product->price],
                 'currentCategory'  => $category ? ['id' => $category->id, 'name' => $category->name] : null,
@@ -297,7 +297,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'criteo';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json(array_merge($this->getCriteoDataValue(), [
+            $partner->dataValue = $templateHelper->json(array_merge($this->getCriteoDataValue(), [
                 [
                     'event'   => 'viewItem',
                     'account' => $product->id,
@@ -319,7 +319,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'sociomantic';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json([
+            $partner->dataValue = $templateHelper->json([
                 'product'  => [
                     'amount'      => $product->oldPrice ?: $product->price,
                     'brand'       => $product->brand ? $product->brand->name : null,
@@ -353,7 +353,7 @@ class Partner {
                 'pcat'     => ($category) ? $category->token : '',
                 'pvalue'   => $product->price,
             ]);
-            $partner->dataValue = $viewHelper->json($dataValue);
+            $partner->dataValue = $templateHelper->json($dataValue);
 
             $partners[] = $partner;
         }
@@ -363,7 +363,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'cityads';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json([
+            $partner->dataValue = $templateHelper->json([
                 'page'    => 'product',
                 'product' => ['id' => $product->id],
             ]);
@@ -382,7 +382,7 @@ class Partner {
      */
     public function getListForCart(Repository\Page\Cart\Index\Request $request) {
         $config = $this->getConfig()->partner->service;
-        $viewHelper = $this->getTemplateHelper();
+        $templateHelper = $this->getTemplateHelper();
 
         $cart = $request->cart;
         $productsById = $request->productsById;
@@ -395,7 +395,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'actionpay';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json([
+            $partner->dataValue = $templateHelper->json([
                 'pageType' => 4,
             ]);
 
@@ -407,7 +407,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'criteo';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json(array_merge($this->getCriteoDataValue(), [
+            $partner->dataValue = $templateHelper->json(array_merge($this->getCriteoDataValue(), [
                 [
                     'event' => 'viewBasket',
                     'item'  => array_values(array_map(function(\EnterModel\Cart\Product $product) { return [
@@ -426,7 +426,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'sociomantic';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json([
+            $partner->dataValue = $templateHelper->json([
                 'cartProduct' => array_values(array_map(function(\EnterModel\Cart\Product $cartProduct) use (&$productsById, &$request) {
                     $product = isset($productsById[$cartProduct->id]) ? $productsById[$cartProduct->id] : null;
 
@@ -459,7 +459,7 @@ class Partner {
                 $tagParams['pcat'][] = $product->category ? $product->category->token : '';
             }
             $dataValue['tagParams'] = array_merge($dataValue['tagParams'], $tagParams);
-            $partner->dataValue = $viewHelper->json($dataValue);
+            $partner->dataValue = $templateHelper->json($dataValue);
 
             $partners[] = $partner;
         }
@@ -476,7 +476,7 @@ class Partner {
             $partner = new Partial\Partner();
             $partner->id = 'cityads';
             $partner->dataAction = $dataAction;
-            $partner->dataValue = $viewHelper->json([
+            $partner->dataValue = $templateHelper->json([
                 'page'            => 'cart',
                 'productId'       => implode(',', $productIds),
                 'productQuantity' => implode(',', $productQuantities),

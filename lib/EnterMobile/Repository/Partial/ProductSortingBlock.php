@@ -29,7 +29,7 @@ class ProductSortingBlock {
     ) {
         $router = $this->getRouter();
         $urlHelper = $this->getUrlHelper();
-        $viewHelper = $this->getTemplateHelper();
+        $templateHelper = $this->getTemplateHelper();
 
         $block = new Partial\SortingBlock();
         $block->widgetId = 'id-productSorting';
@@ -41,7 +41,7 @@ class ProductSortingBlock {
 
             $sorting = new Partial\SortingBlock\Sorting();
             $sorting->name = $sortingModel->name;
-            $sorting->dataValue = $viewHelper->json($urlParams);
+            $sorting->dataValue = $templateHelper->json($urlParams);
             if ($route && $httpRequest) {
                 $sorting->url = $router->getUrlByRoute($route, $urlHelper->replace($route, $httpRequest, $urlParams));
             }
@@ -54,7 +54,7 @@ class ProductSortingBlock {
             }
 
             // ga
-            $sorting->dataGa = $viewHelper->json([
+            $sorting->dataGa = $templateHelper->json([
                 'm_sort_button' => ['send', 'event', 'm_sort_button', $sorting->name],
             ]);
 

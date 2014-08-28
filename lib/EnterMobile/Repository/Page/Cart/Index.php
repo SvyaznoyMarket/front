@@ -25,13 +25,11 @@ class Index {
 
         $config = $this->getConfig();
         $router = $this->getRouter();
-        $viewHelper = $this->getTemplateHelper();
+        $templateHelper = $this->getTemplateHelper();
 
         $productCardRepository = new Repository\Partial\Cart\ProductCard();
         $productSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
         $productDeleteButtonRepository = new Repository\Partial\Cart\ProductDeleteButton();
-
-        $templateDir = $config->mustacheRenderer->templateDir;
 
         // заголовок
         $page->title = 'Корзина - Enter';
@@ -39,7 +37,7 @@ class Index {
         $page->dataModule = 'cart';
 
         // ga
-        $page->content->orderDataGa = $viewHelper->json(['m_checkout' => ['send', 'event', 'm_checkout', 'cart']]);
+        $page->content->orderDataGa = $templateHelper->json(['m_checkout' => ['send', 'event', 'm_checkout', 'cart']]);
 
         if (count($request->cart)) {
             $page->content->cart = (new Repository\Partial\Cart())->getObject($request->cart, $request->productsById);
@@ -72,7 +70,7 @@ class Index {
         }
 
         // шаблоны mustache
-        foreach ([
+        (new Repository\Template())->setListForPage($page, [
             [
                 'id'   => 'tpl-cart-productSum',
                 'name' => 'partial/cart/productSum',
@@ -85,17 +83,7 @@ class Index {
                 'id'   => 'tpl-cart-bar',
                 'name' => 'partial/cart/bar',
             ],
-        ] as $templateItem) {
-            try {
-                $template = new Model\Page\DefaultPage\Template();
-                $template->id = $templateItem['id'];
-                $template->content = file_get_contents($templateDir . '/' . $templateItem['name'] . '.mustache');
-
-                $page->templates[] = $template;
-            } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['template']]);
-            }
-        }
+        ]);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }

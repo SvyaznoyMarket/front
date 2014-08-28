@@ -24,9 +24,7 @@ class Index {
 
         $config = $this->getConfig();
         $router = $this->getRouter();
-        $viewHelper = $this->getTemplateHelper();
-
-        $templateDir = $config->mustacheRenderer->templateDir;
+        $templateHelper = $this->getTemplateHelper();
 
         $page->dataModule = 'index';
 
@@ -47,13 +45,13 @@ class Index {
 
             $promoData[] = $promoItem;
         }
-        $page->content->promoDataValue = $viewHelper->json($promoData);
+        $page->content->promoDataValue = $templateHelper->json($promoData);
 
         // ga
-        $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$viewHelper) {
+        $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$templateHelper) {
             /** @var \EnterModel\MainMenu\Element[] $menuElements */
             foreach ($menuElements as $menuElement) {
-                $menuElement->dataGa = $viewHelper->json([
+                $menuElement->dataGa = $templateHelper->json([
                     'm_main_category' => ['send', 'event', 'm_main_category', $menuElement->name],
                 ]);
                 /*
@@ -73,19 +71,7 @@ class Index {
         }
 
         // шаблоны mustache
-        foreach ([
-
-        ] as $templateItem) {
-            try {
-                $template = new Model\Page\DefaultPage\Template();
-                $template->id = $templateItem['id'];
-                $template->content = file_get_contents($templateDir . '/' . $templateItem['name'] . '.mustache');
-
-                $page->templates[] = $template;
-            } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['template']]);
-            }
-        }
+        // ...
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }

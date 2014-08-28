@@ -17,14 +17,12 @@ class DefaultPage {
 
     /**
      * @param Page $page
-     * @param \EnterMobile\Repository\Page\DefaultPage\Request $request
+     * @param Repository\Page\DefaultPage\Request $request
      */
     public function buildObjectByRequest(Page $page, DefaultPage\Request $request) {
         $config = $this->getConfig();
-        $viewHelper = $this->getTemplateHelper();
+        $templateHelper = $this->getTemplateHelper();
         $router = $this->getRouter();
-
-        $templateDir = $config->mustacheRenderer->templateDir;
 
         // стили
         $page->styles[] = '/css/global.css';
@@ -38,7 +36,7 @@ class DefaultPage {
         $page->dataModule = 'default';
 
         // body[data-value]
-        $page->dataConfig = $viewHelper->json([
+        $page->dataConfig = $templateHelper->json([
             'requestId' => $this->getRequestId(),
             'debug'     => $config->debugLevel,
             'env'       => $config->environment,
@@ -87,7 +85,7 @@ class DefaultPage {
             $region = new Page\RegionBlock\Region();
             $region->name = $regionItem['name'];
             $region->url = $router->getUrlByRoute(new Routing\Region\SetById($regionItem['id']));
-            $region->dataGa = $viewHelper->json([
+            $region->dataGa = $templateHelper->json([
                 'm_city_changed' => ['send', 'event', 'm_city_changed', $regionItem['name']],
             ]);
 
@@ -103,10 +101,10 @@ class DefaultPage {
         $page->userBlock->cart->url = $router->getUrlByRoute(new Routing\Cart\Index());
 
         // ga
-        $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$viewHelper) {
+        $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$templateHelper) {
             /** @var \EnterModel\MainMenu\Element[] $menuElements */
             foreach ($menuElements as $menuElement) {
-                $menuElement->dataGa = $viewHelper->json([
+                $menuElement->dataGa = $templateHelper->json([
                     'm_sidebar_category_click' => ['send', 'event', 'm_sidebar_category_click', $menuElement->name],
                 ]);
                 if ((bool)$menuElement->children) {
@@ -124,7 +122,7 @@ class DefaultPage {
         }
 
         // шаблоны mustache
-        foreach ([
+        (new Repository\Template())->setListForPage($page, [
             [
                 'id'   => 'tpl-product-buyButton',
                 'name' => 'partial/cart/button',
@@ -137,16 +135,6 @@ class DefaultPage {
                 'id'   => 'tpl-user',
                 'name' => 'partial/user',
             ],
-        ] as $templateItem) {
-            try {
-                $template = new Model\Page\DefaultPage\Template();
-                $template->id = $templateItem['id'];
-                $template->content = file_get_contents($templateDir . '/' . $templateItem['name'] . '.mustache');
-
-                $page->templates[] = $template;
-            } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['template']]);
-            }
-        }
+        ]);
     }
 }

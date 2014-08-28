@@ -25,7 +25,7 @@ class ProductFilter {
         array $requestFilterModels = [],
         $isOpened = false
     ) {
-        $viewHelper = $this->getTemplateHelper();
+        $templateHelper = $this->getTemplateHelper();
 
         $filters = [];
 
@@ -83,7 +83,7 @@ class ProductFilter {
 
                 // максимальное и минимальное значения для слайдера
                 if (in_array($filterModel->typeId, [\EnterModel\Product\Filter::TYPE_SLIDER, \EnterModel\Product\Filter::TYPE_NUMBER])) {
-                    $filter->dataValue = $viewHelper->json([
+                    $filter->dataValue = $templateHelper->json([
                         'min'  => $filterModel->min,
                         'max'  => $filterModel->max,
                         'step' => $filterModel->step,

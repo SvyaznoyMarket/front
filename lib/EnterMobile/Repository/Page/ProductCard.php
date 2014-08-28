@@ -26,11 +26,9 @@ class ProductCard {
 
         $config = $this->getConfig();
         $router = $this->getRouter();
-        $viewHelper = $this->getTemplateHelper();
         $dateHelper = $this->getDateHelper();
         $translateHelper = $this->getTranslateHelper();
 
-        $templateDir = $config->mustacheRenderer->templateDir;
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $cartProductReserveButtonRepository = new Repository\Partial\Cart\ProductReserveButton();
         $cartSpinnerRepository = new Repository\Partial\Cart\ProductSpinner();
@@ -399,7 +397,7 @@ class ProductCard {
         }
 
         // шаблоны mustache
-        foreach ([
+        (new Repository\Template())->setListForPage($page, [
             [
                 'id'       => 'tpl-product-slider',
                 'name'     => 'partial/product-slider/default',
@@ -416,24 +414,7 @@ class ProductCard {
                     //'partial/cart/quickButton',
                 ],
             ],
-        ] as $templateItem) {
-            try {
-                $template = new Model\Page\DefaultPage\Template();
-                $template->id = $templateItem['id'];
-                $template->content = file_get_contents($templateDir . '/' . $templateItem['name'] . '.mustache');
-
-                $partialData = [];
-                foreach ($templateItem['partials'] as $partial) {
-                    $partialData[$partial] = file_get_contents($templateDir . '/' . $partial . '.mustache');
-                }
-
-                $template->dataPartial = $viewHelper->json($partialData);
-
-                $page->templates[] = $template;
-            } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['template']]);
-            }
-        }
+        ]);
 
         // direct credit
         if ($request->hasCredit) {

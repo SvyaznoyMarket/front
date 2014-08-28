@@ -25,9 +25,7 @@ class Index {
 
         $config = $this->getConfig();
         $router = $this->getRouter();
-        $viewHelper = $this->getTemplateHelper();
-
-        $templateDir = $config->mustacheRenderer->templateDir;
+        $templateHelper = $this->getTemplateHelper();
 
         $productCardRepository = new Repository\Partial\ProductCard();
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
@@ -65,8 +63,8 @@ class Index {
                 }
                 $dataValue[$requestFilter->name] = $requestFilter->value;
             }
-            $page->content->productBlock->dataValue = $viewHelper->json($dataValue);
-            $page->content->productBlock->dataReset = $viewHelper->json($dataReset);
+            $page->content->productBlock->dataValue = $templateHelper->json($dataValue);
+            $page->content->productBlock->dataReset = $templateHelper->json($dataReset);
 
             foreach ($request->products as $productModel) {
                 $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
@@ -92,7 +90,7 @@ class Index {
                 $page->content->filterBlock->actionBlock->shownProductCount = sprintf('Показать (%s)', $request->count > 999 ? '&infin;' : $request->count);
 
                 if ($request->category) {
-                    $page->content->filterBlock->dataGa = $viewHelper->json([
+                    $page->content->filterBlock->dataGa = $templateHelper->json([
                         'm_cat_params' => ['send', 'event', 'm_cat_params', $request->category->name],
                     ]);
                 }
@@ -117,7 +115,7 @@ class Index {
         }
 
         // шаблоны mustache
-        foreach ([
+        (new Repository\Template())->setListForPage($page, [
             [
                 'id'   => 'tpl-productList-moreLink',
                 'name' => 'partial/product-list/moreLink',
@@ -134,17 +132,7 @@ class Index {
                 'id'   => 'tpl-productFilter-action',
                 'name' => 'partial/product-list/filterAction',
             ],
-        ] as $templateItem) {
-            try {
-                $template = new Model\Page\DefaultPage\Template();
-                $template->id = $templateItem['id'];
-                $template->content = file_get_contents($templateDir . '/' . $templateItem['name'] . '.mustache');
-
-                $page->templates[] = $template;
-            } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['template']]);
-            }
-        }
+        ]);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
