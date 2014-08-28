@@ -43,15 +43,12 @@ class ProductCard {
         $page->dataModule = 'product.card';
 
         // хлебные крошки
-        if ($categoryModel = $productModel->category) {
-            $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
+        $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
+        $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
+        $breadcrumb->name = $productModel->name;
+        $breadcrumb->url = $productModel->link;
 
-            $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
-            $breadcrumb->name = $categoryModel->name;
-            $breadcrumb->url = $categoryModel->link;
-
-            $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
-        }
+        $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
 
         // содержание
         $page->content->product->name = $productModel->webName;
