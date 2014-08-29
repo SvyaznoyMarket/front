@@ -75,19 +75,6 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($mainMenuQuery);
             }
 
-            // запрос доставки товара
-            $deliveryListQuery = null;
-            if ($response->product->isBuyable) {
-                $cartProducts = [];
-                $cartProducts[] = new Model\Cart\Product(['id' => $response->product->id, 'quantity' => 1]);
-                foreach ($response->product->kit as $kit) {
-                    $cartProducts[] = new Model\Cart\Product(['id' => $kit->id, 'quantity' => $kit->count]);
-                }
-
-                $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList($cartProducts, $response->region->id);
-                $curl->prepare($deliveryListQuery);
-            }
-
             // запрос отзывов товара
             $reviewListQuery = null;
             if ($config->productReview->enabled) {
@@ -108,6 +95,7 @@ namespace EnterAggregator\Controller {
 
             // запрос наборов
             $kitListQuery = null;
+            $kits = $response->product->kit;
             if ((bool)$response->product->kit) {
                 $kitIds = array_map(function(Model\Product\Kit $kit) {
                     return $kit->id;
@@ -124,10 +112,27 @@ namespace EnterAggregator\Controller {
                     $kitIds = array_merge($kitIds, (array)$response->product->line->productIds);
                 }
 
-                $kitIds = array_unique($kitIds);
+                // дополнительные товары из других наборов для расчета доставки
+                $kitIds = array_values(array_unique($kitIds));
+                foreach (array_diff($kitIds, array_map(function(Model\Product\Kit $kit) { return $kit->id; }, $response->product->kit)) as $kitId) {
+                    $kits[] = new Model\Product\Kit(['id' => $kitId]);
+                }
 
                 $kitListQuery = new Query\Product\GetListByIdList($kitIds, $response->region->id);
                 $curl->prepare($kitListQuery);
+            }
+
+            // запрос доставки товара
+            $deliveryListQuery = null;
+            if ($response->product->isBuyable) {
+                $cartProducts = [];
+                $cartProducts[] = new Model\Cart\Product(['id' => $response->product->id, 'quantity' => 1]);
+                foreach ($kits as $kit) {
+                    $cartProducts[] = new Model\Cart\Product(['id' => $kit->id, 'quantity' => $kit->count ?: 1]);
+                }
+
+                $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList($cartProducts, $response->region->id);
+                $curl->prepare($deliveryListQuery);
             }
 
             // запрос списка рейтингов товаров
