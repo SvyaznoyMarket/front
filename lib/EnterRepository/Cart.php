@@ -38,26 +38,28 @@ class Cart {
 
     /**
      * @param Http\Request $request
-     * @return Model\Cart\Product|null
+     * @return Model\Cart\Product[]
      */
     public function getProductListByHttpRequest(Http\Request $request) {
         $cartProducts = [];
 
         foreach ((array)$request->data['product'] as $productItem) {
             $productItem = array_merge([
-                'id'       => null,
-                'quantity' => null,
-                'parentId' => null,
+                'id'         => null,
+                'quantity'   => null,
+                'parentId'   => null,
             ], (array)$productItem);
+            if (!$productItem['id']) continue;
 
-            if ($productItem['id']) {
-                $cartProduct = new Model\Cart\Product();
-                $cartProduct->id = (string)$productItem['id'];
-                $cartProduct->quantity = (int)$productItem['quantity'];
-                $cartProduct->parentId = (string)$productItem['parentId'];
+            $cartProduct = new Model\Cart\Product();
+            $cartProduct->id = (string)$productItem['id'];
+            $cartProduct->quantity = (int)$productItem['quantity'];
+            $cartProduct->parentId = (string)$productItem['parentId'];
+            $cartProduct->quantitySign = (isset($productItem['quantitySign']) && in_array($productItem['quantitySign'], ['-', '+']))
+                ? (string)$productItem['quantitySign']
+                : null; // FIXME
 
-                $cartProducts[] = $cartProduct;
-            }
+            $cartProducts[] = $cartProduct;
         }
 
         return $cartProducts;

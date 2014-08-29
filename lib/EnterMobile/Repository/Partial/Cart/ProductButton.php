@@ -96,13 +96,15 @@ class ProductButton {
      * @param \EnterModel\Cart\Product[] $cartProductsById
      * @param string $parentId
      * @param bool $updateState
+     * @param string|null $quantitySign + или -
      * @return Partial\Cart\ProductButton
      */
     public function getListObject(
         array $products,
         array $cartProductsById = [],
         $parentId,
-        $updateState = true
+        $updateState = true,
+        $quantitySign = null
     ) {
         $button = new Partial\Cart\ProductButton();
 
@@ -113,13 +115,14 @@ class ProductButton {
             $cartProduct = isset($cartProductsById[$product->id]) ? $cartProductsById[$product->id] : null;
 
             $dataValue['product'][$product->id] = [
-                'id'       => $product->id,
-                'name'     => $product->name,
-                'token'    => $product->token,
-                'price'    => $product->price,
-                'url'      => $product->link,
-                'quantity' => $cartProduct ? $cartProduct->quantity : 1,
-                'parentId' => $parentId,
+                'id'           => $product->id,
+                'name'         => $product->name,
+                'token'        => $product->token,
+                'price'        => $product->price,
+                'url'          => $product->link,
+                'quantity'     => $cartProduct ? $cartProduct->quantity : 1,
+                'parentId'     => $parentId,
+                'quantitySign' => $quantitySign,
             ];
         }
 

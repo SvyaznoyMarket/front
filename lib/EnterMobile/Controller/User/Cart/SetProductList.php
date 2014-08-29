@@ -36,6 +36,15 @@ class SetProductList {
 
         // добавление товаров в корзину
         foreach ($cartProducts as $cartProduct) {
+            // если у товара есть знак количества (+|-) ...
+            if (isset($cartProduct->quantitySign)) {
+                /** @var \EnterModel\Cart\Product|null $existsCartProduct */
+                $existsCartProduct = isset($cart->product[$cartProduct->id]) ? $cart->product[$cartProduct->id] : null;
+                if ($existsCartProduct) {
+                    $cartProduct->quantity = $existsCartProduct->quantity + (int)($cartProduct->quantitySign . $cartProduct->quantity);
+                }
+            }
+
             $cartRepository->setProductForObject($cart, $cartProduct);
         }
 

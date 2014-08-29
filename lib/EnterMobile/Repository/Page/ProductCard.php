@@ -280,7 +280,8 @@ class ProductCard {
                 array_reverse($productModel->relation->kits),
                 $cartProductsById,
                 $productModel->id,
-                false
+                false,
+                '+' // quantitySign
             );
         }
 
