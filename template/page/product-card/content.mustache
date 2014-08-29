@@ -28,7 +28,7 @@
 
     {{#product.kitBlock}}
     <!-- редактировать комплектацию -->
-    <div class="contentBox960 lineKitPopup js-kit-wrap">
+    <div class="id-productKit-content contentBox960 lineKitPopup js-kit-wrap">
         <div class="backLn js-kit-close">Назад</div>
 
         <div class="lineKitImg"><img src="{{product.mainPhoto.url}}"></div>
@@ -108,11 +108,11 @@
                 </div>
 
                 <!-- цена на все -->
-                <!--
                 <div class="lineKitItem_cell lineKitItem_cell-price ta-r">
+                    <!--
                     {{shownSum}}&nbsp;<span class="rubl">p</span>
+                    -->
                 </div>
-                -->
             </div>
             <!--/ элемент набора -->
             {{/products}}
@@ -198,10 +198,11 @@
         <!--/ мобильная версия -->
 
         <div class="lineKitFooter clearfix">
-            <input type="checkbox" id="defaultSet" class="customInput customInput-checkbox" checked="checked">
+            <input type="checkbox" id="defaultSet" class="js-productKit-reset customInput customInput-checkbox" checked="checked" data-value="{{&resetDataValue}}" data-spinner-selector=".id-productKit-content .js-buySpinner-value" />
             <label for="defaultSet" class="customLabel">Базовый комплект</label>
 
             <div class="lineKitFooter_summ fl-r">
+                &nbsp;
                 <!--
                 {{shownQuantity}}: {{shownSum}} <span class="rubl">p</span>
                 -->

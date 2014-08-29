@@ -115,6 +115,9 @@ define(
                         }
 
                         if (callback) callback();
+
+                        // FIXME
+                        $('.js-productKit-reset').prop('checked', false);
                     }
                 ;
 
