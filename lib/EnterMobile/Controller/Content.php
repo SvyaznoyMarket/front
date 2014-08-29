@@ -54,6 +54,7 @@ class Content {
             return (new \EnterMobile\Controller\Error\NotFound())->execute($request);
 
         $contentItem = $contentItemQuery->getResult();
+        $contentItem['content'] = preg_replace('/http:\/\/www.enter.ru/i', '', $contentItem['content']);
 
         $pageRequest = new \EnterMobile\Repository\Page\Content\Request();
         $pageRequest->title = $contentItem['title'];
