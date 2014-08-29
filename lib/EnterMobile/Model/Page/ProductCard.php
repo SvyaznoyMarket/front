@@ -155,6 +155,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product {
         public $cartButton;
         /** @var bool */
         public $isLocked;
+        /** @var string */
+        public $resetDataValue;
     }
 
     class ReviewBlock {
@@ -252,6 +254,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product\KitBlock {
         public $unit;
         /** @var Partial\Cart\ProductSpinner|null */
         public $cartSpinner;
+        /** @var bool */
+        public $isHidden;
     }
 }
 

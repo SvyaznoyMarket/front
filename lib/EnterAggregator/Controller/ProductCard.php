@@ -170,6 +170,10 @@ namespace EnterAggregator\Controller {
                 // оптимизация
                 $item['media'] = [reset($item['media'])];
             }) : [];
+            foreach ($kitProductsById as $kitProduct) {
+                $kitProduct->kitCount = 0;
+            }
+
             foreach ($response->product->kit as $kit) {
                 /** @var Model\Product|null $kiProduct */
                 $kiProduct = isset($kitProductsById[$kit->id]) ? $kitProductsById[$kit->id] : null;

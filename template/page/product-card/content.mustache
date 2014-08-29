@@ -198,14 +198,14 @@
         <!--/ мобильная версия -->
 
         <div class="lineKitFooter clearfix">
-            <!--
             <input type="checkbox" id="defaultSet" class="customInput customInput-checkbox" checked="checked">
             <label for="defaultSet" class="customLabel">Базовый комплект</label>
-            -->
 
-            <!--
-            <div class="lineKitFooter_summ fl-r">{{shownQuantity}}: {{shownSum}} <span class="rubl">p</span></div>
-            -->
+            <div class="lineKitFooter_summ fl-r">
+                <!--
+                {{shownQuantity}}: {{shownSum}} <span class="rubl">p</span>
+                -->
+            </div>
 
             {{#cartButton}}
                 {{>partial/cart/button}}
@@ -461,6 +461,7 @@
                             </div>
 
                             {{#products}}
+                                {{^isHidden}}
                                 <!-- элемент набора -->
                                 <div class="lineKitItem clearfix">
 
@@ -518,6 +519,7 @@
                                     <div class="lineKitItem_cell ta-r">{{quantity}} шт.</div>
                                 </div>
                                 <!--/ элемент набора -->
+                                {{/isHidden}}
                             {{/products}}
                         </div>
                         <!--/ планшетная версия -->
@@ -525,6 +527,7 @@
                         <!-- мобильная версия -->
                         <div class="lineKit lineKit-mobile">
                         {{#products}}
+                            {{^isHidden}}
                             <!-- элемент набора -->
                             <div class="lineKitItem clearfix">
                                 <div class="lineKitItem_name">
@@ -584,6 +587,7 @@
                                 <div class="lineKitItem_r lineKitItem-l">{{quantity}} шт.</div>
                             </div>
                             <!--/ элемент набора -->
+                            {{/isHidden}}
                         {{/products}}
                         </div>
                         <!--/ мобильная версия -->

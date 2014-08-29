@@ -15,7 +15,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, DateHelperTrait, TranslateHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, DateHelperTrait, TranslateHelperTrait;
 
     /**
      * @param Page $page
@@ -221,10 +221,6 @@ class ProductCard {
             $count = 0;
             $sum = 0;
             foreach ($productModel->relation->kits as $kitProductModel) {
-                if (!isset($kitProductModel->kitCount)) {
-                    $kitProductModel->kitCount = 0;
-                }
-
                 $cartProductsById[$kitProductModel->id] = new \EnterModel\Cart\Product([
                     'id'       => $kitProductModel->id,
                     'quantity' => $kitProductModel->kitCount,
@@ -275,6 +271,8 @@ class ProductCard {
                     $router->getUrlByRoute(new Routing\Product\QuantityAvailabilityList())
                 );
 
+                $kit->isHidden = !$kitProductModel->kitCount;
+
                 $page->content->product->kitBlock->products[] = $kit;
             }
 
@@ -287,6 +285,7 @@ class ProductCard {
                 false,
                 '+' // quantitySign
             );
+            $page->content->product->kitBlock->resetDataValue = $page->content->product->kitBlock->cartButton->dataValue;
         }
 
         // аксессуары товара
