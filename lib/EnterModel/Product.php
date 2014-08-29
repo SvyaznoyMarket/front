@@ -59,6 +59,8 @@ class Product {
     public $rating;
     /** @var Model\Product\ProductModel|null */
     public $model;
+    /** @var Model\Product\Line|null */
+    public $line;
     /** @var Model\Product\NearestDelivery[] */
     public $nearestDeliveries = [];
     /** @var string[] */
@@ -147,6 +149,7 @@ class Product {
         }
 
         if (isset($data['model']['property'][0])) $this->model = new Model\Product\ProductModel($data['model']);
+        if (isset($data['line']['id'])) $this->line = new Model\Product\Line($data['line']);
         if (isset($data['accessories'][0])) $this->accessoryIds = $data['accessories'];
         if (isset($data['related'][0])) $this->relatedIds = $data['related'];
     }

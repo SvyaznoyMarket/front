@@ -221,6 +221,10 @@ class ProductCard {
             $count = 0;
             $sum = 0;
             foreach ($productModel->relation->kits as $kitProductModel) {
+                if (!isset($kitProductModel->kitCount)) {
+                    $kitProductModel->kitCount = 0;
+                }
+
                 $cartProductsById[$kitProductModel->id] = new \EnterModel\Cart\Product([
                     'id'       => $kitProductModel->id,
                     'quantity' => $kitProductModel->kitCount,

@@ -109,9 +109,24 @@ namespace EnterAggregator\Controller {
             // запрос наборов
             $kitListQuery = null;
             if ((bool)$response->product->kit) {
-                $kitListQuery = new Query\Product\GetListByIdList(array_map(function(Model\Product\Kit $kit) {
+                $kitIds = array_map(function(Model\Product\Kit $kit) {
                     return $kit->id;
-                }, $response->product->kit), $response->region->id);
+                }, $response->product->kit);
+
+                // наборы из линиии
+                if ($response->product->line) {
+                    $lineItemQuery = new Query\Product\Line\GetItemByToken($response->product->line->token, $response->region->id);
+                    $curl->prepare($lineItemQuery)->execute();
+                    if ($line = (new Repository\Product\Line())->getObjectByQuery($lineItemQuery)) {
+                        $response->product->line = $line;
+                    }
+
+                    $kitIds = array_merge($kitIds, (array)$response->product->line->productIds);
+                }
+
+                $kitIds = array_unique($kitIds);
+
+                $kitListQuery = new Query\Product\GetListByIdList($kitIds, $response->region->id);
                 $curl->prepare($kitListQuery);
             }
 
