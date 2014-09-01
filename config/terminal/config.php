@@ -23,6 +23,9 @@ return function(EnterTerminal\Config $config) {
     $config->region->cookieName = null;
 
     $config->coreService->clientId = 'terminal'; // переопределяется из http.request
+    $config->coreService->timeout = 4;
+
+    $config->infoService->timeout = 4;
 
     // TODO: убрать из настроек терминала
     //$config->mustacheRenderer;

@@ -199,7 +199,7 @@ class Client {
                     if ($tryAvailable && null !== $retryTimeout) {
                         $ready = curl_multi_select($this->multiConnection, $timeout);
                     } else {
-                        $ready = curl_multi_select($this->multiConnection, 30);
+                        $ready = curl_multi_select($this->multiConnection, $timeout);
                     }
 
                     if (0 === $ready) {
@@ -284,6 +284,8 @@ class Client {
         if ($query->getTimeout()) {
             curl_setopt($connection, CURLOPT_NOSIGNAL, true);
             curl_setopt($connection, CURLOPT_TIMEOUT_MS, $query->getTimeout() * 1000);
+        } else {
+            if ($this->logger) $this->logger->push(['type' => 'error', 'message' => 'Не установлен timeout', 'sender' => __FILE__ . ' ' .  __LINE__, 'query' => $query, 'tag' => ['curl']]);
         }
 
         if ($query->getAuth()) {
