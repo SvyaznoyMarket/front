@@ -60,6 +60,12 @@ namespace EnterMobileApplication\Controller\User {
                 if ($config->debugLevel) $this->getDebugContainer()->error = $e;
 
                 switch ($e->getCode()) {
+                    case 684: case 689:
+                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Неправильный email', 'field' => 'username'];
+                        break;
+                    case 686: case 690:
+                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Неправильный телефон', 'field' => 'username'];
+                        break;
                     case 613:
                         $response->errors[] = ['code' => $e->getCode(), 'message' => 'Неверный пароль', 'field' => 'password'];
                         break;

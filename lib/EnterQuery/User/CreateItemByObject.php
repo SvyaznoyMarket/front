@@ -21,10 +21,14 @@ class CreateItemByObject extends Query {
         $this->url->path = 'v2/user/create';
         $this->data = [
             'first_name' => $user->firstName,
-            'email'      => $user->email,
-            'mobile'     => $user->phone,
             'geo_id'     => $user->regionId,
         ];
+        if ($user->email) {
+            $this->data['email'] = $user->email;
+        }
+        if ($user->phone) {
+            $this->data['mobile'] = $user->phone;
+        }
 
         $this->init();
     }
@@ -35,6 +39,6 @@ class CreateItemByObject extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data['id']) ? $data : null;
+        $this->result = (isset($data['id']) || isset($data['uid'])) ? $data : null;
     }
 }
