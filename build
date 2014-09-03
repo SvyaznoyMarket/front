@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cp ./data/git/hooks/post-checkout ./.git/hooks/
