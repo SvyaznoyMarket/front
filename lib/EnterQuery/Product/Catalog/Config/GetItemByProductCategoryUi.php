@@ -3,12 +3,12 @@
 namespace EnterQuery\Product\Catalog\Config;
 
 use Enter\Curl\Query;
-use EnterQuery\CmsQueryTrait;
+use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
-class GetItemByProductCategoryObject extends Query {
-    use CmsQueryTrait;
+class GetItemByProductCategoryUi extends Query {
+    use ScmsQueryTrait;
 
     /** @var array|null */
     protected $result;
@@ -17,17 +17,13 @@ class GetItemByProductCategoryObject extends Query {
      * @param Model\Product\Category[] $categories
      * @param Model\Product|null $product
      */
-    public function __construct(array $categories, Model\Product $product = null) {
-        $tokens = [];
-        foreach ($categories as $category) {
-            $tokens[] = $category->token;
-        }
-        if ($product) {
-            $tokens[] = $product->token;
-        }
-
+    public function __construct($categoryUi, $regionId) {
         $this->url = new Url();
-        $this->url->path = 'v1/catalog/' . implode('/', $tokens) . '.json';
+        $this->url->path = 'category/get';
+        $this->url->query = [
+            'uid' => $categoryUi,
+            'geo_id' => $regionId,
+        ];
 
         $this->init();
     }

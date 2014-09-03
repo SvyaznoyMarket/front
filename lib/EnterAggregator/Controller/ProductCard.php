@@ -145,7 +145,7 @@ namespace EnterAggregator\Controller {
             // запрос настроек каталога
             $catalogConfigQuery = null;
             if ($response->product->category) {
-                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($response->product->category->ascendants, [$response->product->category]), $response->product);
+                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($response->product->category->ui, $regionId);
                 $curl->prepare($catalogConfigQuery);
             }
 

@@ -91,7 +91,7 @@ class RootCategory {
         $curl->prepare($mainMenuQuery);
 
         // запрос настроек каталога
-        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($category->ascendants, [$category]));
+        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($category->ui, $regionId);
         $curl->prepare($catalogConfigQuery);
 
         $curl->execute();

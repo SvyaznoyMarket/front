@@ -14,17 +14,17 @@ namespace EnterModel\Product\Catalog {
         public $sortings = [];
 
         public function __construct(array $data = []) {
-            if (isset($data['bannerPlaceholder']) && is_array($data['bannerPlaceholder'])) $this->bannerPlaceholder = new Config\BannerPlaceholder($data['bannerPlaceholder']);
-            if (isset($data['promo_style']) && is_array($data['promo_style'])) $this->promoStyle = new Config\PromoStyle($data['promo_style']);
-            if (isset($data['listing_style'])) $this->listingStyle = (string)$data['listing_style'];
-            if (isset($data['accessory_category_token'][0])) {
-                foreach (array_unique($data['accessory_category_token']) as $accessoryCategoryToken) {
+            if (isset($data['properties']['bannerPlaceholder']) && is_array($data['properties']['bannerPlaceholder'])) $this->bannerPlaceholder = new Config\BannerPlaceholder($data['properties']['bannerPlaceholder']);
+            if (isset($data['properties']['appearance']['default']['promo_style']) && is_array($data['properties']['appearance']['default']['promo_style'])) $this->promoStyle = new Config\PromoStyle($data['properties']['appearance']['default']['promo_style']);
+            if (isset($data['properties']['appearance']['default']['listing_style'])) $this->listingStyle = (string)$data['properties']['appearance']['default']['listing_style'];
+            if (isset($data['properties']['products']['accessory_category_token'][0])) {
+                foreach (array_unique($data['properties']['products']['accessory_category_token']) as $accessoryCategoryToken) {
                     if (!is_scalar($accessoryCategoryToken)) continue;
                     $this->accessoryCategoryTokens[] = trim((string)$accessoryCategoryToken);
                 }
             }
-            if (isset($data['sort']) && is_array($data['sort'])) {
-                foreach ($data['sort'] as $sortingName => $sortingItem) {
+            if (isset($data['properties']['sort']['json']) && is_array($data['properties']['sort']['json'])) {
+                foreach ($data['properties']['sort']['json'] as $sortingName => $sortingItem) {
                     if (!$sortingName) continue;
 
                     $this->sortings[$sortingName] = $sortingItem;
