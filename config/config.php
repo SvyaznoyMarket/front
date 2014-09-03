@@ -39,7 +39,7 @@ return function(\EnterAggregator\Config $config) {
 
     $config->curl->queryChunkSize = 50;
     $config->curl->logResponse = false;
-    $config->curl->timeout = 90;
+    $config->curl->timeout = 30;
     $config->curl->retryTimeout = 0.4;
     $config->curl->retryCount = 2;
 
@@ -62,6 +62,7 @@ return function(\EnterAggregator\Config $config) {
     $config->reviewService->timeout = 1.2;
 
     $config->contentService->url = 'http://content.enter.ru/';
+    $config->contentService->timeout = 1.8;
 
     $config->infoService->url = 'http://info.ent3.ru/';
     $config->infoService->timeout = 5;
