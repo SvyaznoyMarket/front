@@ -4,6 +4,7 @@ namespace EnterMobileApplication\Controller\User {
 
     use Enter\Http;
     use EnterMobileApplication\ConfigTrait;
+    use EnterAggregator\LoggerTrait;
     use EnterAggregator\CurlTrait;
     use EnterAggregator\SessionTrait;
     use EnterAggregator\DebugContainerTrait;
@@ -13,7 +14,7 @@ namespace EnterMobileApplication\Controller\User {
     use EnterMobileApplication\Controller\User\Auth\Response;
 
     class Auth {
-        use ConfigTrait, CurlTrait, SessionTrait, DebugContainerTrait;
+        use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait, DebugContainerTrait;
 
         /**
          * @param Http\Request $request
@@ -69,6 +70,8 @@ namespace EnterMobileApplication\Controller\User {
                         $response->errors[] = ['code' => $e->getCode(), 'message' => 'Произошла ошибка. Возможно неверно указаны логин или пароль', 'field' => null];
                 }
             }
+
+            if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
 
             return new Http\JsonResponse($response, (bool)$response->errors ? Http\Response::STATUS_BAD_REQUEST : Http\Response::STATUS_OK);
         }
