@@ -227,8 +227,6 @@ namespace EnterAggregator\Config {
         public $password;
         /** @var float */
         public $timeout;
-        /** @var float */
-        public $hugeTimeout;
 
         public function __construct() {}
     }

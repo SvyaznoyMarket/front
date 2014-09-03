@@ -53,7 +53,7 @@ class Register {
             $user->phone = preg_replace('/[^\d]/', '', $user->phone);
 
             $createItemQuery = new Query\User\CreateItemByObject($user);
-            $createItemQuery->setTimeout($config->coreService->hugeTimeout);
+            $createItemQuery->setTimeout(2 * $config->coreService->timeout);
             $curl->query($createItemQuery);
 
             $result = $createItemQuery->getResult();

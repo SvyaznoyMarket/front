@@ -45,7 +45,7 @@ class Auth {
                 ? new Query\User\GetTokenByEmail($form->username, $form->password)
                 : new Query\User\GetTokenByPhone($form->username, $form->password)
             ;
-            $tokenQuery->setTimeout($config->coreService->hugeTimeout);
+            $tokenQuery->setTimeout(2 * $config->coreService->timeout);
             $curl->query($tokenQuery);
 
             $token = $tokenQuery->getResult();
