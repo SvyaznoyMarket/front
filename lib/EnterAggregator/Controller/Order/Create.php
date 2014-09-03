@@ -20,13 +20,15 @@ namespace EnterAggregator\Controller\Order {
          * @param $regionId
          * @param Model\Cart\Split $split
          * @param Model\Order\Meta[] $metas
-         * @return Response
+         * @param $isReceiveSms
          * @throws \Exception
+         * @return Response
          */
         public function execute(
             $regionId,
             Model\Cart\Split $split,
-            array $metas = []
+            array $metas = [],
+            $isReceiveSms = false
         ) {
             $config = $this->getConfig();
             $logger = $this->getLogger();

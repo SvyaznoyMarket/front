@@ -17,8 +17,9 @@ class CreatePacketBySplit extends Query {
     /**
      * @param Model\Cart\Split $split
      * @param Model\Order\Meta[] $metas
+     * @param bool $isReceiveSms
      */
-    public function __construct(Model\Cart\Split $split, array $metas = []) {
+    public function __construct(Model\Cart\Split $split, array $metas = [], $isReceiveSms = false) {
         $this->url = new Url();
         $this->url->path = 'v2/order/create-packet2';
 
@@ -70,6 +71,10 @@ class CreatePacketBySplit extends Query {
 
             if ($user->smsCode) {
                 $orderData['sms_code'] = $user->smsCode;
+            }
+
+            if ($isReceiveSms) {
+                $orderData['is_receive_sms'] = 1;
             }
 
             $orderData['subway_id'] = null; // FIXME!!!
