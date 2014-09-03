@@ -60,13 +60,13 @@ namespace EnterMobileApplication\Controller\User {
 
                 switch ($e->getCode()) {
                     case 613:
-                        $response->errors['password'] = ['code' => $e->getCode(), 'message' => 'Неверный пароль'];
+                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Неверный пароль', 'field' => 'password'];
                         break;
                     case 614:
-                        $response->errors['username'] = ['code' => $e->getCode(), 'message' => 'Пользователь не найден'];
+                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Пользователь не найден', 'field' => 'username'];
                         break;
                     default:
-                        $response->errors['global'] = ['code' => $e->getCode(), 'message' => 'Произошла ошибка. Возможно неверно указаны логин или пароль'];
+                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Произошла ошибка. Возможно неверно указаны логин или пароль', 'field' => null];
                 }
             }
 
