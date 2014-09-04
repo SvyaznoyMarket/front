@@ -49,6 +49,7 @@ class SetProductList {
             }
         }
 
+        // агрегирующий контроллер
         $controllerResponse = (new \EnterAggregator\Controller\Cart\SetProductList())->execute(
             $regionId,
             $session,
