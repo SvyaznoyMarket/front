@@ -14,6 +14,7 @@ namespace EnterMobileApplication\Controller\User {
     use EnterMobileApplication\Controller\User\Register\Response;
 
     class Register {
+        use ErrorTrait;
         use ConfigTrait, CurlTrait, SessionTrait, DebugContainerTrait;
 
         /**
@@ -73,31 +74,7 @@ namespace EnterMobileApplication\Controller\User {
             } catch (\Exception $e) {
                 if ($config->debugLevel) $this->getDebugContainer()->error = $e;
 
-                switch ($e->getCode()) {
-                    case 684:
-                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Такой email уже занят', 'field' => 'email'];
-                        break;
-                    case 689:
-                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Неправильный email', 'field' => 'email'];
-                        break;
-                    case 686:
-                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Такой номер уже занят', 'field' => 'phone'];
-                        break;
-                    case 690:
-                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Неправильный телефон', 'field' => 'phone'];
-                        break;
-                    case 613:
-                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Неверный пароль', 'field' => 'password'];
-                        break;
-                    case 614:
-                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Пользователь не найден', 'field' => 'username'];
-                        break;
-                    case 609:
-                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Не удалось создать пользователя', 'field' => null];
-                        break;
-                    default:
-                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Произошла ошибка. Возможно неверно указаны логин или пароль', 'field' => null];
-                }
+                $response->errors = $this->getErrorsByException($e);
             }
 
             return new Http\JsonResponse($response, (bool)$response->errors ? Http\Response::STATUS_BAD_REQUEST : Http\Response::STATUS_OK);
