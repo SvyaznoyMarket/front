@@ -1,89 +1,120 @@
 <div class="content">
     <div class="contentBox960 logCnt">
+        <div data-state="default" class="authBox state_default">
+	        <div class="authWrap">
+				<form method="post" action="" data-state="default" class="authForm authForm_login js-authForm">
+				    <fieldset class="authForm_fld authForm_fld-scrll">
+				        <!-- секция входа -->
+				        <div class="authForm_inn">
+				            <div class="authForm_t legend">Вход в Enter</div>
 
-        <h1 class="pageTitle">{{title}}</h1>
+				            <input type="text" placeholder="Email или телефон" value="" name="" class="authForm_it textfield">
 
-        {{>partial/message}}
+				            <div class="authForm_hint">
+				                <input type="password" placeholder="Пароль" value="" name="" class="authForm_it textfield">
 
-        {{#authForm}}
-		<form action="{{url}}" method="post" class="formReg">
-			<fieldset class="formReg_field">
-				<legend class="js-authTab formReg_title legend" data-content-selector="#id-authContent" data-url-hash="auth">Мои логин и пароль</legend>
+				                <span class="authForm_hint_tx authForm_resetLink js-link">забыли?</span>
+				            </div>
 
-				<div id="id-authContent" class="formReg_fields"{{#isHidden}} style="display: none;"{{/isHidden}}>
-					<label for="" class="formReg_fieldname labeltext">E-mail или мобильный телефон:</label>
-					<input type="text" name="username" class="formReg_textfield textfield{{#errors.username}} fieldError{{/errors.username}}" value="{{username}}" />
-					{{#errors.username}}<span class="errorText">{{errors.username}}</span>{{/errors.username}}
+				            <input type="submit" value="Войти" name="" class="authForm_is btnsubmit">
 
-					<label for="" class="formReg_fieldname labeltext fl-l">Пароль:</label>
-					<a class="js-authTab fl-r orangeText borderBs" href="#" data-content-selector="#id-forgotContent" data-url-hash="forgot">Забыли пароль?</a>
-					<input type="password" name="password" class="formReg_textfield textfield{{#errors.password}} fieldError{{/errors.password}}" />
-                    {{#errors.password}}<span class="errorText">{{errors.password}}</span>{{/errors.password}}
+				            <div class="authForm_socn">
+				                Войти через
 
-                    <input type="hidden" name="redirect_to" value="{{redirectUrl}}" />
+				                <ul class="authForm_socn_lst">
+				                    <li class="authForm_socn_i">
+				                        <a href="/login-facebook" class="authForm_socn_lk authForm_socn_lk-fb">Войти через FB</a>
+				                    </li>
+				                    
+				                    <li class="authForm_socn_i">
+				                        <a href="/login-vkontakte" class="authForm_socn_lk authForm_socn_lk-vk">Войти через VK</a>
+				                    </li>
+				                </ul>
+				            </div>
+				        </div>
+				        <!--/ секция входа -->
+				    </fieldset>
+				</form>     
 
-					<input type="submit" class="formReg_btn btnsubmit" value="Войти" />
-				</div>
-			</fieldset>
-        </form>
-        {{/authForm}}
+				<form method="post" action="" class="authForm authForm_register js-registerForm">
+				    <fieldset class="authForm_fld authForm_fld-scrll">
+				        <!-- секция регистрации -->
+				        <div class="authForm_inn">
+				            <div class="authForm_t legend">Регистрация</div>
 
-        {{#resetForm}}
-            <form action="{{url}}" method="post" class="formReg">
-                <fieldset class="formReg_field">
-                    <div id="id-forgotContent" class="formReg_fields"{{#isHidden}} style="display: none;"{{/isHidden}}>
-                        <label for="" class="formReg_fieldname labeltext">E-mail или мобильный телефон:</label>
-                        <a class="js-authTab fl-r orangeText borderBs" href="#" data-content-selector="#id-authContent" data-url-hash="auth">Войти</a>
-                        <input type="text" name="username" class="formReg_textfield textfield{{#errors.username}} fieldError{{/errors.username}}" value="{{username}}" />
-                        {{#errors.username}}<span class="errorText">{{errors.username}}</span>{{/errors.username}}
+				            <!--<input type="hidden" name="register[global]" disabled="disabled">-->
 
-                        <input type="hidden" name="redirect_to" value="{{redirectUrl}}" />
+				            <!-- показываем при удачной регистрации, authForm_regbox скрываем -->
+				            <div class="js-message authForm_regcomplt"></div>
+				            <!--/ показываем при удачной регистрации, authForm_regbox скрываем -->
 
-                        <input type="submit" class="formReg_btn btnsubmit" value="Восстановить" />
-                    </div>
-                </fieldset>
-            </form>
-        {{/resetForm}}
+				            <div class="authForm_regbox">
+				                <label class="authForm_lbl">Как к вам обращаться?</label>
 
-        {{#registerForm}}
-        <form action="{{url}}" method="post" class="formReg">
-			<fieldset class="formReg_field">
-				<legend class="js-authTab formReg_title legend borderBd" data-content-selector="#id-registerContent" data-url-hash="register">Я новый пользователь</legend>
+				                <input type="text" placeholder="Имя" value="" name="register[first_name]" class="authForm_it textfield">
 
-				<div id="id-registerContent" class="formReg_fields"{{#isHidden}} style="display: none;"{{/isHidden}}>
-					<label for="" class="formReg_fieldname labeltext">Ваше имя:</label>
-					<input type="text" name="name" class="formReg_textfield textfield{{#errors.name}} fieldError{{/errors.name}}" value="{{name}}" />
-                    {{#errors.name}}<span class="errorText">{{errors.name}}</span>{{/errors.name}}
+				                <input type="text" placeholder="Email" value="" name="register[email]" class="authForm_it textfield">
 
-					<div id="id-authLoginContent-email" class="js-authLoginContent clearfix" {{#errors.phone}}style="display: none;"{{/errors.phone}}>
-	                    <label for="" class="formReg_fieldname labeltext fl-l">Ваш e-mail:</label>
-	                    <span class="js-authLoginLink fl-r lightGreyText borderBd" data-content-selector="#id-authLoginContent-phone">У меня нет e-mail</span>
-	                    <input type="text" name="email" class="formReg_textfield textfield{{#errors.email}} fieldError{{/errors.email}}" value="{{email}}" />
-                        {{#errors.email}}<span class="errorText">{{errors.email}}</span>{{/errors.email}}
-                    </div>
+				                <input type="text" placeholder="Телефон" value="" name="register[phone]" class="authForm_it textfield">
 
-                    <div id="id-authLoginContent-phone" class="js-authLoginContent clearfix" {{^errors.phone}}style="display: none;"{{/errors.phone}}>
-	                    <label for="" class="formReg_fieldname labeltext fl-l">Ваш мобильный телефон:</label>
-	                    <span class="js-authLoginLink fl-r lightGreyText borderBd" data-content-selector="#id-authLoginContent-email">Ввести e-mail</span>
-	                    <input type="text" name="phone" class="formReg_textfield js-phone-mask textfield{{#errors.phone}} fieldError{{/errors.phone}}" value="{{phone}}" />
-                        {{#errors.phone}}<span class="errorText">{{errors.phone}}</span>{{/errors.phone}}
-	                </div>
+				                <div class="authForm_sbscr">
+				                    <input type="checkbox" checked="checked" id="subscribe" name="subscribe" class="customInput customInput-defcheck jsCustomRadio">
+				                    <label for="subscribe" class="customLabel">Подписаться на рассылку,<br> получить скидку 300 рублей </label>
+				                </div>
 
-					<div class="formReg_subscribe fl-l">
-						<input class="customInput customInput-bigCheck" type="checkbox" name="subscribe" id="subscribe" checked />
-						<label class="customLabel" for="subscribe">Хочу знать об интересных предложениях</label>
-					</div>
+				                <input type="submit" value="Регистрация" name="" class="authForm_is btnsubmit">
 
-                    <input type="hidden" name="redirect_to" value="{{redirectUrl}}" />
+				                <p class="authForm_accept">Нажимая кнопку «Регистрация», я подтверждаю<br> свое согласие с <a href="/terms">Условиями продажи...</a></p>
 
-					<input type="submit" class="formReg_btn btnsubmit mb20" value="Регистрация" />
+				                <div class="authForm_socn">
+				                    Войти через
 
-					<p class="clear">Нажимая кнопку «Регистрация», я подтверждаю свое согласие с <a class="borderBs" href="/terms">Условиями продажи...</a></p>
-				</div>
-			</fieldset>
-		</form>
-        {{/registerForm}}
+				                    <ul class="authForm_socn_lst">
+				                        <li class="authForm_socn_i">
+				                        	<a href="/login-facebook" class="authForm_socn_lk authForm_socn_lk-fb">Войти через FB</a>
+				                        </li>
+				                        
+				                        <li class="authForm_socn_i">
+				                            <a href="/login-vkontakte" class="authForm_socn_lk authForm_socn_lk-vk">Войти через VK</a>
+				                        </li>
+				                    </ul>
+				                </div>
+				            </div>
+				        </div>
+				        <!--/ секция регистрации -->
+				    </fieldset>
+				</form>        
+			</div>
+        
+			<form method="post" action="" class="authForm authForm_reset js-resetForm">
+			    <!-- секция восстановления пароля -->
+			    <fieldset class="authForm_fld">
+			        <legend class="authForm_t legend">Восстановление пароля</legend>
 
+			        <!-- показываем при удачном восстановлении пароля, authForm_regbox скрываем -->
+			        <div class="js-message authForm_regcomplt"></div>
+			        <!--/ показываем при удачном восстановлении пароля, authForm_regbox скрываем -->
+
+			        <div class="authForm_regbox">
+			            <input type="text" placeholder="Email или телефон" value="" name="forgot[login]" class="authForm_it textfield">
+
+			            <input type="submit" value="Отправить" name="" class="authForm_is btnsubmit">
+			        </div>
+			    </fieldset>
+			    <!--/ секция восстановления пароля -->
+			</form>
+
+	        <!-- показываем этот текст в окне входа на сайт -->
+	        <div class="authAct">
+	            <span data-value="{&quot;target&quot;:&quot;#auth-block&quot;,&quot;state&quot;:&quot;register&quot;}" class="borderBd authForm_registerLink js-link">Регистрация</span>
+	            <span data-value="{&quot;target&quot;:&quot;#auth-block&quot;,&quot;state&quot;:&quot;default&quot;}" class="borderBd authForm_authLink js-link">Войти</span>
+	        </div>
+
+	        <!-- показываем этот текст в окне регистрации -->
+	        <!-- div class="authAct"><span class="borderBd">Вход в Enter</span></div-->
+
+	        <!-- показываем этот текст в окне восстановления пароля -->
+	        <!-- <div class="authAct">Вспомнили? <span class="borderBd">Вход в Enter</span></div> -->
+    	</div>
     </div>
 </div>
-
