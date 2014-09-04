@@ -5,6 +5,8 @@ namespace EnterModel\Cart;
 class Product {
     /** @var string */
     public $id;
+    /** @var string */
+    public $ui;
     /** @var int */
     public $quantity;
     /** @var int */
@@ -13,6 +15,8 @@ class Product {
     public $sum;
     /** @var string */
     public $parentId;
+    /** @var string */
+    public $addedAt;
 
     /**
      * @param array $data
@@ -23,5 +27,6 @@ class Product {
         if (array_key_exists('quantity', $data)) $this->quantity = (int)$data['quantity'];
         if (array_key_exists('price', $data)) $this->price = (int)$data['price'];
         if (array_key_exists('sum', $data)) $this->sum = (float)$data['sum'];
+        if (array_key_exists('added', $data)) $this->addedAt = (string)$data['added'];
     }
 }

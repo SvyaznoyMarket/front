@@ -25,6 +25,9 @@ class SetProductList {
         $session = $this->getSession();
         $cartRepository = new \EnterRepository\Cart();
 
+        // ид региона
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
+
         // корзина из сессии
         $cart = $cartRepository->getObjectByHttpSession($session);
 
@@ -44,15 +47,17 @@ class SetProductList {
                     $cartProduct->quantity = $existsCartProduct->quantity + (int)($cartProduct->quantitySign . $cartProduct->quantity);
                 }
             }
-
-            $cartRepository->setProductForObject($cart, $cartProduct);
         }
 
-        // сохранение корзины в сессию
-        $cartRepository->saveObjectToHttpSession($session, $cart);
+        $controllerResponse = (new \EnterAggregator\Controller\Cart\SetProductList())->execute(
+            $regionId,
+            $session,
+            $cart,
+            $cartProducts
+        );
 
-        // ид региона
-        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
+        $cart = $controllerResponse->cart;
+        $productsById = $controllerResponse->productsById;
 
         // токен пользователя
         $userToken = (new \EnterRepository\User)->getTokenByHttpRequest($request);
@@ -60,38 +65,13 @@ class SetProductList {
         // запрос пользователя
         $userItemQuery = $userToken ? new Query\User\GetItemByToken($userToken) : null;
         if ($userItemQuery) {
-            $curl->prepare($userItemQuery);
-        }
-
-        // запрос корзины
-        $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
-        $curl->prepare($cartItemQuery);
-
-        // запрос товаров
-        $productsById = [];
-        foreach ($cart->product as $cartProduct) {
-            $productsById[$cartProduct->id] = null;
-        }
-
-        $productListQuery = null;
-        if ((bool)$productsById) {
-            $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $regionId);
-            $curl->prepare($productListQuery);
-        }
-
-        $curl->execute();
-
-        // корзина из ядра
-        $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
-
-        // товары
-        if ($productListQuery) {
-            $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+            $curl->prepare($userItemQuery)->execute();
         }
 
         // пользователь
         $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
 
+        // страница
         $page = new Page();
 
         foreach ($cart->product as $cartProduct) {
