@@ -8,6 +8,8 @@ class Product {
     /** @var string */
     public $id;
     /** @var string */
+    public $ui;
+    /** @var string */
     public $article;
     /** @var string */
     public $barcode;
@@ -82,6 +84,7 @@ class Product {
         $this->relation = new Model\Product\Relation();
 
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+        if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
         if (array_key_exists('article', $data)) $this->article = (string)$data['article'];
         if (array_key_exists('bar_code', $data)) $this->barcode = (string)$data['bar_code'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
