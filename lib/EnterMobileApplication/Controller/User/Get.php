@@ -51,7 +51,7 @@ namespace EnterMobileApplication\Controller\User {
 
             if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
 
-            return new Http\JsonResponse($response, (bool)$response->errors ? Http\Response::STATUS_BAD_REQUEST : Http\Response::STATUS_OK);
+            return new Http\JsonResponse($response);
         }
     }
 }
@@ -64,7 +64,5 @@ namespace EnterMobileApplication\Controller\User\Get {
         public $token;
         /** @var Model\User|null */
         public $user;
-        /** @var string[] */
-        public $errors = [];
     }
 }
