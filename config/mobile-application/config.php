@@ -17,7 +17,6 @@ return function(EnterMobileApplication\Config $config) {
     $config->logger->fileAppender->enabled = true;
 
     $config->session->name = 'token';
-    $config->session->cookieLifetime = 15552000;
     $config->session->cookieDomain = null;
 
     $config->region->cookieName = null; // TODO: убрать из настроек mobile-application

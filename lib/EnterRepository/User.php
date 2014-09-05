@@ -5,10 +5,11 @@ namespace EnterRepository;
 use Enter\Http;
 use Enter\Curl\Query;
 use EnterAggregator\ConfigTrait;
+use EnterAggregator\LoggerTrait;
 use EnterModel as Model;
 
 class User {
-    use ConfigTrait;
+    use ConfigTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request
@@ -68,8 +69,12 @@ class User {
     public function getObjectByQuery(Query $query) {
         $user = null;
 
-        if ($item = $query->getResult()) {
-            $user = new Model\User($item);
+        try {
+            if ($item = $query->getResult()) {
+                $user = new Model\User($item);
+            }
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
 
         return $user;

@@ -17,7 +17,6 @@ return function(Enter1C\Config $config) {
     $config->logger->fileAppender->enabled = true;
 
     $config->session->name = 'clientId';
-    $config->session->cookieLifetime = 15552000;
     $config->session->cookieDomain = null;
 
     $config->region->cookieName = null;
