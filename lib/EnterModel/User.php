@@ -37,16 +37,16 @@ class User {
      */
     public function __construct(array $data = []) {
         if (!empty($data['id'])) $this->id = (string)$data['id'];
-        if (!empty($data['first_name'])) $this->firstName = $data['first_name'];
-        if (!empty($data['last_name'])) $this->lastName = $data['last_name'];
-        if (!empty($data['middle_name'])) $this->middleName = $data['middle_name'];
-        if (!empty($data['sex'])) $this->sex = $data['sex'];
+        if (!empty($data['first_name'])) $this->firstName = (string)$data['first_name'];
+        if (!empty($data['last_name'])) $this->lastName = (string)$data['last_name'];
+        if (!empty($data['middle_name'])) $this->middleName = (string)$data['middle_name'];
+        if (!empty($data['sex'])) $this->sex = (int)$data['sex'];
         if (!empty($data['email'])) $this->email = (string)$data['email'];
         if (!empty($data['mobile'])) $this->phone = (string)$data['mobile'];
         if (!empty($data['phone'])) $this->homePhone = (string)$data['phone'];
         if (!empty($data['geo_id'])) $this->regionId = (string)$data['geo_id'];
         if (!empty($data['birthday'])) $this->birthday = (string)$data['birthday'];
-        if (!empty($data['occupation'])) $this->occupation = $data['occupation'];
+        if (!empty($data['occupation'])) $this->occupation = (string)$data['occupation'];
         if (!empty($data['svyaznoy_club_card_number'])) $this->svyaznoyClubCardNumber = (string)$data['svyaznoy_club_card_number'];
 
         if (isset($data['geo']['id'])) $this->region = new Model\Region($data['geo']);
