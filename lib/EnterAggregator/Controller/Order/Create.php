@@ -77,7 +77,7 @@ namespace EnterAggregator\Controller\Order {
                 }
 
                 if ($orderToken) {
-                    $orderItemQuery = new Query\Order\GetItemByToken($orderToken);
+                    $orderItemQuery = new Query\Order\GetItemByAccessToken($orderToken);
                 } else {
                     $orderItemQuery = new Query\Order\GetItemByNumber($orderNumber, $split->user->phone);
                 }

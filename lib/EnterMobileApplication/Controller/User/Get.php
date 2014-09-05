@@ -14,7 +14,6 @@ namespace EnterMobileApplication\Controller\User {
     use EnterMobileApplication\Controller\User\Get\Response;
 
     class Get {
-        use ErrorTrait;
         use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait, DebugContainerTrait;
 
         /**
@@ -40,6 +39,7 @@ namespace EnterMobileApplication\Controller\User {
                 $curl->prepare($userItemQuery);
 
                 $curl->execute();
+
                 $response->user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
                 if ($response->user) {
                     $response->token = $token;

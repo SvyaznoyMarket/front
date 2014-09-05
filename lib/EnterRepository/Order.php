@@ -46,6 +46,22 @@ class Order {
     }
 
     /**
+     * @param \Enter\Curl\Query $query
+     * @return Model\Order[]
+     */
+    public function getObjectListByQuery(\Enter\Curl\Query $query) {
+        $orders = [];
+
+        foreach ($query->getResult() as $item) {
+            if (!isset($item['number'])) continue;
+
+            $orders[] = new Model\Order($item);
+        }
+
+        return $orders;
+    }
+
+    /**
      * @param Model\Order[] $orders
      */
     public function setDeliveryTypeForObjectList(array $orders) {

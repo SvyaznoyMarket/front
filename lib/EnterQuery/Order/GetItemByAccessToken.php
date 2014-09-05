@@ -7,20 +7,20 @@ use EnterQuery\CoreQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
-class GetItemByToken extends Query {
+class GetItemByAccessToken extends Query {
     use CoreQueryTrait;
 
     /** @var array|null */
     protected $result;
 
     /**
-     * @param string $token
+     * @param string $accessToken
      */
-    public function __construct($token) {
+    public function __construct($accessToken) {
         $this->url = new Url();
         $this->url->path = 'v2/order/get-by-token';
         $this->url->query = [
-            'token' => $token,
+            'token' => $accessToken,
         ];
 
         $this->init();
