@@ -23,6 +23,8 @@ namespace EnterMobile\Model\Page {
         public $googleTagManager;
         /** @var DefaultPage\YandexMetrika|null|bool */
         public $yandexMetrika;
+        /** @var DefaultPage\MailRu|null|bool */
+        public $mailRu;
         /** @var DefaultPage\RegionBlock */
         public $regionBlock;
         /** @var DefaultPage\MainMenu */
@@ -63,6 +65,17 @@ namespace EnterMobile\Model\Page\DefaultPage {
     class YandexMetrika {
         /** @var int */
         public $id;
+    }
+
+    class MailRu {
+        /** @var int */
+        public $id;
+        /** @var array */
+        public $productIds;
+        /** @var string */
+        public $pageType;
+        /** @var string */
+        public $price;
     }
 
     /**

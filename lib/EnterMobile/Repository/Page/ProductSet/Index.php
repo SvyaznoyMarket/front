@@ -134,6 +134,16 @@ class Index {
             ],
         ]);
 
+        if (is_object($page->mailRu)) {
+            $productIds = [];
+            foreach ($request->products as $product) {
+                $productIds[] = $product->id;
+            }
+
+            $page->mailRu->productIds = json_encode($productIds);
+            $page->mailRu->pageType = 'product_set';
+        }
+
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }
