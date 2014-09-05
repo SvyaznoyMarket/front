@@ -11,17 +11,14 @@ trait ErrorTrait {
         $errors = [];
 
         switch ($e->getCode()) {
-            case 684:
-                $errors[] = ['code' => $e->getCode(), 'message' => 'Неправильный email', 'field' => 'email'];
+            case 601:
+                $errors[] = ['code' => $e->getCode(), 'message' => 'Некорректный логин', 'field' => 'username'];
                 break;
-            case 689:
-                $errors[] = ['code' => $e->getCode(), 'message' => 'Такой email уже занят', 'field' => 'email'];
+            case 604:
+                $errors[] = ['code' => $e->getCode(), 'message' => 'Пользователь не найден', 'field' => 'username'];
                 break;
-            case 686:
-                $errors[] = ['code' => $e->getCode(), 'message' => 'Неправильный телефон', 'field' => 'phone'];
-                break;
-            case 690:
-                $errors[] = ['code' => $e->getCode(), 'message' => 'Такой номер уже занят', 'field' => 'phone'];
+            case 609:
+                $errors[] = ['code' => $e->getCode(), 'message' => 'Не удалось создать пользователя', 'field' => null];
                 break;
             case 613:
                 $errors[] = ['code' => $e->getCode(), 'message' => 'Неверный пароль', 'field' => 'password'];
@@ -29,8 +26,17 @@ trait ErrorTrait {
             case 614:
                 $errors[] = ['code' => $e->getCode(), 'message' => 'Пользователь не найден', 'field' => 'username'];
                 break;
-            case 609:
-                $errors[] = ['code' => $e->getCode(), 'message' => 'Не удалось создать пользователя', 'field' => null];
+            case 684:
+                $errors[] = ['code' => $e->getCode(), 'message' => 'Неправильный email', 'field' => 'email'];
+                break;
+            case 686:
+                $errors[] = ['code' => $e->getCode(), 'message' => 'Неправильный телефон', 'field' => 'phone'];
+                break;
+            case 689:
+                $errors[] = ['code' => $e->getCode(), 'message' => 'Такой email уже занят', 'field' => 'email'];
+                break;
+            case 690:
+                $errors[] = ['code' => $e->getCode(), 'message' => 'Такой номер уже занят', 'field' => 'phone'];
                 break;
             default:
                 $errors[] = ['code' => $e->getCode(), 'message' => 'Произошла ошибка. Возможно неверно указаны логин или пароль', 'field' => null];

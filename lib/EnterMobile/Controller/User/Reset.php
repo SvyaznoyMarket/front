@@ -45,7 +45,7 @@ class Reset {
                     ? new Query\User\ResetPasswordByEmail($form->username)
                     : new Query\User\ResetPasswordByPhone($form->username)
             ;
-            //$resetQuery->setTimeout($config->coreService->hugeTimeout);
+            $resetQuery->setTimeout(2 * $config->coreService->timeout);
             $curl->query($resetQuery);
 
             $result = $resetQuery->getResult();
