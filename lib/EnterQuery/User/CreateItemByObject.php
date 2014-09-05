@@ -39,6 +39,6 @@ class CreateItemByObject extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = (isset($data['id']) || isset($data['uid'])) ? $data : null;
+        $this->result = (isset($data['id']) || isset($data['ui'])) ? $data : null;
     }
 }

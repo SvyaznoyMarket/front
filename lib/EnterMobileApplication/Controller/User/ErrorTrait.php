@@ -39,7 +39,7 @@ trait ErrorTrait {
                 $errors[] = ['code' => $e->getCode(), 'message' => 'Такой номер уже занят', 'field' => 'phone'];
                 break;
             default:
-                $errors[] = ['code' => $e->getCode(), 'message' => 'Произошла ошибка. Возможно неверно указаны логин или пароль', 'field' => null];
+                $errors[] = ['code' => $e->getCode(), 'message' => 'Произошла ошибка', 'field' => null];
         }
 
         return $errors;
