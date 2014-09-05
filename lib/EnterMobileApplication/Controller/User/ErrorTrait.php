@@ -12,16 +12,16 @@ trait ErrorTrait {
 
         switch ($e->getCode()) {
             case 684:
-                $errors[] = ['code' => $e->getCode(), 'message' => 'Такой email уже занят', 'field' => 'email'];
-                break;
-            case 689:
                 $errors[] = ['code' => $e->getCode(), 'message' => 'Неправильный email', 'field' => 'email'];
                 break;
+            case 689:
+                $errors[] = ['code' => $e->getCode(), 'message' => 'Такой email уже занят', 'field' => 'email'];
+                break;
             case 686:
-                $errors[] = ['code' => $e->getCode(), 'message' => 'Такой номер уже занят', 'field' => 'phone'];
+                $errors[] = ['code' => $e->getCode(), 'message' => 'Неправильный телефон', 'field' => 'phone'];
                 break;
             case 690:
-                $errors[] = ['code' => $e->getCode(), 'message' => 'Неправильный телефон', 'field' => 'phone'];
+                $errors[] = ['code' => $e->getCode(), 'message' => 'Такой номер уже занят', 'field' => 'phone'];
                 break;
             case 613:
                 $errors[] = ['code' => $e->getCode(), 'message' => 'Неверный пароль', 'field' => 'password'];
