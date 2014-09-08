@@ -20,7 +20,8 @@ class GetList extends Query {
         $this->url = new Url();
         $this->url->path = 'v2/promo/get';
         $this->url->query = [
-            'geo_id' => $regionId,
+            'geo_id'    => $regionId,
+            'client_id' => 'site', // FIXME, please FIME!!!
         ];
 
         $this->init();
