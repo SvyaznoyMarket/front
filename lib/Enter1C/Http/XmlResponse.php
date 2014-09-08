@@ -14,7 +14,7 @@ class XmlResponse extends Http\Response {
 
         $this->data = new \ArrayObject((array)$data ? : []);
 
-        $this->headers['Content-Type'] = 'text/xml';
+        $this->headers['Content-Type'] = 'text/xml; charset=' . ($this->charset ?: 'UTF-8');
     }
 
     /**

@@ -11,7 +11,7 @@ class JsonResponse extends Response {
 
         $this->data = new \ArrayObject($data ?: []);
 
-        $this->headers['Content-Type'] = 'application/json; charset=' . ($this->charset ?: 'utf8');
+        $this->headers['Content-Type'] = 'application/json; charset=' . ($this->charset ?: 'UTF-8');
     }
 
     /**

@@ -182,6 +182,10 @@ class Response {
         // status
         header(sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText), true, $this->statusCode);
 
+        if (!isset($this->headers['Content-Type'])) {
+            $this->headers['Content-Type'] = 'text/html; charset=' . ($this->charset ?: 'UTF-8');
+        }
+
         // headers
         foreach ($this->headers as $name => $value) {
             header($name . ': ' . $value, false, $this->statusCode);
