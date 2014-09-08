@@ -27,10 +27,10 @@ class UpdateItemByObject extends Query {
 
         $data = [];
         if ($newUser->email !== $oldUser->email) {
-            //$data['email'] = $newUser->email;
+            $data['email'] = $newUser->email;
         }
         if ($newUser->phone !== $oldUser->phone) {
-            //$data['mobile'] = $newUser->phone;
+            $data['mobile'] = $newUser->phone;
         }
         if ($newUser->firstName !== $oldUser->firstName) {
             $data['first_name'] = $newUser->firstName;

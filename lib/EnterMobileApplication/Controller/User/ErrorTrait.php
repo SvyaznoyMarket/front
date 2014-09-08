@@ -33,10 +33,10 @@ trait ErrorTrait {
                 $errors[] = ['code' => $e->getCode(), 'message' => 'Неправильный телефон', 'field' => 'phone'];
                 break;
             case 689:
-                $errors[] = ['code' => $e->getCode(), 'message' => 'Такой email уже занят', 'field' => 'email'];
+                $errors[] = ['code' => $e->getCode(), 'message' => 'Такой email уже зарегистрирован', 'field' => 'email'];
                 break;
             case 690:
-                $errors[] = ['code' => $e->getCode(), 'message' => 'Такой номер уже занят', 'field' => 'phone'];
+                $errors[] = ['code' => $e->getCode(), 'message' => 'Такой номер уже зарегистрирован', 'field' => 'phone'];
                 break;
             default:
                 $errors[] = ['code' => $e->getCode(), 'message' => 'Произошла ошибка', 'field' => null];
