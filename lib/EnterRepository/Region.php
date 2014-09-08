@@ -51,4 +51,20 @@ class Region {
 
         return $region;
     }
+
+    /**
+     * @param Query $query
+     * @return Model\Region[]
+     */
+    public function getObjectListByQuery(Query $query) {
+        $regions = [];
+
+        foreach ($query->getResult() as $item) {
+            if (empty($item['id'])) continue;
+
+            $regions[] = new Model\Region($item);
+        }
+
+        return $regions;
+    }
 }
