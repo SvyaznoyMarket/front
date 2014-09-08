@@ -427,6 +427,12 @@ class ProductCard {
             ]);
         }
 
+        if (is_object($page->mailRu)) {
+            $page->mailRu->productIds = json_encode([$request->product->id]);
+            $page->mailRu->pageType = 'product';
+            $page->mailRu->price = $request->product->price;
+        }
+
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }

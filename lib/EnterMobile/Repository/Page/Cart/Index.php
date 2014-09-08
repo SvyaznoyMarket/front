@@ -85,6 +85,17 @@ class Index {
             ],
         ]);
 
+        if (is_object($page->mailRu)) {
+            $productIds = [];
+            foreach ($request->cartProducts as $product) {
+                $productIds[] = $product->id;
+            }
+
+            $page->mailRu->productIds = json_encode($productIds);
+            $page->mailRu->pageType = 'cart';
+            $page->mailRu->price = $request->cart->sum;
+        }
+
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }

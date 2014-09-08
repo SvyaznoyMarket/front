@@ -31,6 +31,8 @@ namespace EnterAggregator {
         public $googleTagManager;
         /** @var Config\YandexMetrika */
         public $yandexMetrika;
+        /** @var Config\MailRu */
+        public $mailRu;
         /** @var Config\Credit */
         public $credit;
         /** @var Config\Partner */
@@ -84,6 +86,7 @@ namespace EnterAggregator {
             $this->googleAnalitics = new Config\GoogleAnalytics();
             $this->googleTagManager = new Config\GoogleTagManager();
             $this->yandexMetrika = new Config\YandexMetrika();
+            $this->mailRu = new Config\MailRu();
 
             $this->region = new Config\Region();
             $this->credit = new Config\Credit();
@@ -173,6 +176,13 @@ namespace EnterAggregator\Config {
     }
 
     class YandexMetrika extends CurlService {
+        /** @var bool */
+        public $enabled;
+        /** @var int */
+        public $id;
+    }
+
+    class MailRu extends CurlService {
         /** @var bool */
         public $enabled;
         /** @var int */

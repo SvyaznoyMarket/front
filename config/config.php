@@ -77,6 +77,9 @@ return function(\EnterAggregator\Config $config) {
     $config->yandexMetrika->enabled = true;
     $config->yandexMetrika->id = 10503055;
 
+    $config->mailRu->enabled = true;
+    $config->mailRu->id = 2553999;
+
     $config->mustacheRenderer->dir = $config->dir . '/vendor/mustache';
     $config->mustacheRenderer->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache';
     $config->mustacheRenderer->templateClassPrefix = preg_replace('/[^\w]/', '_', $config->hostname . '_v2' . '-');

@@ -80,6 +80,15 @@ class DefaultPage {
             $page->yandexMetrika->id = $config->yandexMetrika->id;
         }
 
+        $page->mailRu = false;
+        if ($config->mailRu->enabled) {
+            $page->mailRu = new Page\MailRu();
+            $page->mailRu->id = $config->mailRu->id;
+            $page->mailRu->productIds = '[]';
+            $page->mailRu->pageType = 'other';
+            $page->mailRu->price = '';
+        }
+
         // регион
         $page->regionBlock->regionName = $request->region->name;
         $page->regionBlock->setUrl = $router->getUrlByRoute(new Routing\Region\SetByName());
