@@ -141,6 +141,18 @@ namespace EnterAggregator\Controller {
                 }
             }
 
+            // запрос настроек каталога
+            $catalogConfigQuery = null;
+            if ($response->category) {
+                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($response->category->ui, $regionId);
+                $curl->prepare($catalogConfigQuery);
+            }
+
+            $curl->execute();
+
+            // настройки каталога
+            $response->catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
+
             // запрос листинга идентификаторов товаров
             $productIdPagerQuery = null;
             if (
@@ -155,7 +167,8 @@ namespace EnterAggregator\Controller {
                     $response->sorting,
                     $response->region->id,
                     ($pageNum - 1) * $limit,
-                    $limit
+                    $limit,
+                    $response->catalogConfig
                 );
                 $curl->prepare($productIdPagerQuery);
             }
@@ -218,13 +231,6 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($mainMenuQuery);
             }
 
-            // запрос настроек каталога
-            $catalogConfigQuery = null;
-            if ($response->category) {
-                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($response->category->ui, $regionId);
-                $curl->prepare($catalogConfigQuery);
-            }
-
             // запрос списка рейтингов товаров
             $ratingListQuery = null;
             if ($config->productReview->enabled && $response->productIdPager && (bool)$response->productIdPager->ids) {
@@ -253,9 +259,6 @@ namespace EnterAggregator\Controller {
             if ($mainMenuQuery && $categoryListQuery) {
                 $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
             }
-
-            // настройки каталога
-            $response->catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
 
             // список рейтингов товаров
             if ($ratingListQuery) {

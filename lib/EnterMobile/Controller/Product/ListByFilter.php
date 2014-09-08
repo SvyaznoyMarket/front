@@ -47,6 +47,19 @@ class ListByFilter {
             $sorting = reset($sortings);
         }
 
+        $catalogConfigQuery = null;
+        if ($request->query['category']) {
+            $categoryQuery = new Query\Product\Category\GetItemById($request->query['category'], $regionId);
+            $curl->prepare($categoryQuery);
+            $curl->execute();
+
+            $category = (new \EnterRepository\Product\Category())->getObjectByQuery($categoryQuery);
+            if ($category) {
+                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($category->ui, $regionId);
+                $curl->prepare($catalogConfigQuery);
+            }
+        }
+
         // запрос региона
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
@@ -98,7 +111,8 @@ class ListByFilter {
             $sorting,
             $region->id,
             ($pageNum - 1) * $limit,
-            $limit
+            $limit,
+            $catalogConfigQuery ? (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null
         );
         $curl->prepare($productIdPagerQuery);
 
