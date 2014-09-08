@@ -198,7 +198,9 @@ define(
 
         $body
             .on('click dblclick', '.js-productList-more', loadMoreProducts)
-            .on('click', '.js-productFilter-set', setFilter)
+            .on('click', 'input[type="radio"].js-productFilter-set', setFilter)
+            .on('change', 'input[type="checkbox"].js-productFilter-set', setFilter)
+            .on('change', 'input[type="text"].js-productFilter-set', setFilter)
             .on('click', '.js-productFilter-delete', deleteFilter)
             .on('click', '.js-productFilter-clear', clearFilter)
             .on('click', '.js-productFilter-sort', setSorting)
