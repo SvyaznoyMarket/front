@@ -7,24 +7,34 @@ define(
     ) {
         var $body = $('body'),
             $listContainer = $('.js-productList-container'), // FIXME: хардкод
-
+            previousCheckedElements = {},
             setFilter = function(e) {
                 e.stopPropagation();
 
                 var $el = $(e.target),
-                    dataValue = $listContainer.data('value')
+                    dataValue = $listContainer.data('value'),
+                    elName = $el.attr('name')
                 ;
 
                 console.info('setFilter', $el);
 
-                if ($el.is(':radio, :checkbox')) {
-                    if ($el.is(':checked')) {
-                        dataValue[$el.attr('name')] = $el.val();
+                if ($el.is(':radio')) {
+                    if ($el.is(':checked') && previousCheckedElements[elName] !== $el[0]) {
+                        dataValue[elName] = $el.val();
+                        previousCheckedElements[elName] = $el[0];
                     } else {
-                        delete dataValue[$el.attr('name')];
+                        delete dataValue[elName];
+                        $el.removeAttr('checked');
+                        previousCheckedElements[elName] = null;
+                    }
+                } else if ($el.is(':checkbox')) {
+                    if ($el.is(':checked')) {
+                        dataValue[elName] = $el.val();
+                    } else {
+                        delete dataValue[elName];
                     }
                 } else if ($el.is(':text')) {
-                    dataValue[$el.attr('name')] = $el.val();
+                    dataValue[elName] = $el.val();
                 }
 
                 dataValue.page = 1;
@@ -51,7 +61,10 @@ define(
 
                     var $filter = $('.js-productFilter-set').filter('[name="' + currentName + '"]');
                     if ($filter.length) {
-                        if ($filter.is(':radio, :checkbox')) {
+                        if ($filter.is(':radio')) {
+                            $filter.removeAttr('checked');
+                            previousCheckedElements[$filter.attr('name')] = null;
+                        } else if ($filter.is(':checkbox')) {
                             $filter.removeAttr('checked');
                         } else if ($filter.is(':text')) {
                             $filter.val($filter.data('value'));
@@ -89,6 +102,10 @@ define(
                         $el.val($el.data('value'));
                         $el.trigger('change');
                     }
+                });
+
+                _.each(previousCheckedElements, function(value, name) {
+                    previousCheckedElements[name] = null;
                 });
 
                 dataValue.page = 1;
@@ -181,7 +198,7 @@ define(
 
         $body
             .on('click dblclick', '.js-productList-more', loadMoreProducts)
-            .on('change', '.js-productFilter-set', setFilter)
+            .on('click', '.js-productFilter-set', setFilter)
             .on('click', '.js-productFilter-delete', deleteFilter)
             .on('click', '.js-productFilter-clear', clearFilter)
             .on('click', '.js-productFilter-sort', setSorting)
