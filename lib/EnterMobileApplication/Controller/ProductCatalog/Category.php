@@ -117,6 +117,7 @@ class Category {
                 'name'         => $category->name,
                 'image'        => $category->image,
                 'productCount' => $category->productCount,
+                'hasChildren'  => $category->hasChildren,
             ],
             'productCount' => $idPager->count,
             'products'     => [],
