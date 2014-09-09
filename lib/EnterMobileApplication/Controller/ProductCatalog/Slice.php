@@ -116,7 +116,10 @@ class Slice {
 
         // ответ
         $response = [
-            'slice'        => $slice,
+            'slice'        => [
+                'token' => $slice->token,
+                'name'  => $slice->name,
+            ],
             'category'     => $controllerResponse->category ? [
                 'id'           => $controllerResponse->category->id,
                 'name'         => $controllerResponse->category->name,
