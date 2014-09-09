@@ -122,6 +122,7 @@ class Slice {
                 'name'         => $controllerResponse->category->name,
                 'image'        => $controllerResponse->category->image,
                 'productCount' => $controllerResponse->category->productCount,
+                'hasChildren'  => $controllerResponse->category->hasChildren,
             ] : null,
             'categories'   => array_map(function(Model\Product\Category $category) {
                 return [
@@ -129,6 +130,7 @@ class Slice {
                     'name'         => $category->name,
                     'image'        => $category->image,
                     'productCount' => $category->productCount,
+                    'hasChildren'  => $category->hasChildren,
                 ];
             }, $categories),
         ];

@@ -151,9 +151,10 @@ class Category {
 
         $walkByCategory = function(\EnterModel\Product\Category $category) use (&$walkByCategory, &$maxLevel) {
             $response = [
-                'id'       => $category->id,
-                'name'     => $category->name,
-                'image'    => $category->image,
+                'id'          => $category->id,
+                'name'        => $category->name,
+                'image'       => $category->image,
+                'hasChildren' => $category->hasChildren,
             ];
 
             if (($category->level < $maxLevel) && $category->children) {
