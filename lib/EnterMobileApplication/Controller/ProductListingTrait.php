@@ -67,6 +67,8 @@ trait ProductListingTrait {
                 'min'        => $filter->min,
                 'max'        => $filter->max,
                 'unit'       => $filter->unit,
+                'isSelected' => isset($filter->isSelected) ? $filter->isSelected : false,
+                'value'      => isset($filter->value) ? $filter->value : null,
                 'option'     => array_map(function(Model\Product\Filter\Option $option) {
                     return [
                         'id'       => $option->id,
