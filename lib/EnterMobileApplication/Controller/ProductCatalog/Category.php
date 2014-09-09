@@ -9,6 +9,8 @@ use EnterQuery as Query;
 use EnterModel as Model;
 
 class Category {
+    use Controller\ProductListingTrait;
+
     /**
      * @param Http\Request $request
      * @throws \Exception
@@ -76,6 +78,7 @@ class Category {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
         }
 
+        // ответ
         if ($controllerResponse->productIdPager) {
             $response = $this->getResponseForLeafCategory(
                 $controllerResponse->category,
@@ -115,75 +118,20 @@ class Category {
                 'image'        => $category->image,
                 'productCount' => $category->productCount,
             ],
-            'products'     => [],
             'productCount' => $idPager->count,
+            'products'     => [],
             'filters'      => [],
             'sortings'     => [],
         ];
 
         // товары
-        foreach ($products as $product) {
-            $response['products'][] = [
-                'id'                   => $product->id,
-                'article'              => $product->article,
-                'webName'              => $product->webName,
-                'namePrefix'           => $product->namePrefix,
-                'name'                 => $product->name,
-                'isBuyable'            => $product->isBuyable,
-                'isInShopOnly'         => $product->isInShopOnly,
-                'isInShopStockOnly'    => $product->isInShopStockOnly,
-                'isInShopShowroomOnly' => $product->isInShopShowroomOnly,
-                'brand'                => $product->brand ? [
-                    'id'   => $product->brand->id,
-                    'name' => $product->brand->name,
-                ] : null,
-                'price'                => $product->price,
-                'oldPrice'             => $product->oldPrice,
-                'labels'               => array_map(function(Model\Product\Label $label) {
-                    return [
-                        'id'    => $label->id,
-                        'name'  => $label->name,
-                        'image' => $label->image,
-                    ];
-                }, $product->labels),
-                'media'                => $product->media,
-                'rating'               => $product->rating ? [
-                    'score'       => $product->rating->score,
-                    'starScore'   => $product->rating->starScore,
-                    'reviewCount' => $product->rating->reviewCount,
-                ] : null,
-            ];
-        }
+        $response['products'] = $this->getProductList($products);
 
         // фильтры
-        foreach ($filters as $filter) {
-            $response['filters'][] = [
-                'token'      => $filter->token,
-                'isSlider'   => in_array($filter->typeId, [3, 6]),
-                'isMultiple' => $filter->isMultiple,
-                'min'        => $filter->min,
-                'max'        => $filter->max,
-                'unit'       => $filter->unit,
-                'option'     => array_map(function(Model\Product\Filter\Option $option) {
-                    return [
-                        'id'       => $option->id,
-                        'token'    => $option->token,
-                        'name'     => $option->name,
-                        'quantity' => $option->quantity,
-                        'image'    => $option->image,
-                    ];
-                }, $filter->option),
-            ];
-        }
+        $response['filters'] = $this->getFilterList($filters);
 
         // сортировка
-        foreach ($sortings as $sorting) {
-            $response['sortings'][] = [
-                'token'     => $sorting->token,
-                'name'      => $sorting->name,
-                'direction' => $sorting->direction,
-            ];
-        }
+        $response['sortings'] = $this->getSortingList($sortings);
 
         return $response;
     }
