@@ -69,11 +69,11 @@ class Product {
         }
 
         if (isset($data['quantity'])) {
-            $this->quantity = (string)$data['quantity'];
+            $this->quantity = (int)$data['quantity'];
         }
 
         if (isset($data['stock'])) {
-            $this->stockQuantity = (string)$data['stock'];
+            $this->stockQuantity = (int)$data['stock'];
         }
     }
 }
