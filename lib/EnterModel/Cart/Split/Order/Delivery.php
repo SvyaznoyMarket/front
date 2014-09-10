@@ -7,7 +7,7 @@ class Delivery {
     public $methodToken;
     /** @var string|null */
     public $modeId;
-    /** @var string|null */
+    /** @var int|null */
     public $date;
     /** @var string|null */
     public $price;
@@ -32,7 +32,7 @@ class Delivery {
         }
 
         if (isset($data['date'])) {
-            $this->date = (string)$data['date'];
+            $this->date = (int)$data['date'];
         }
 
         if (isset($data['price'])) {

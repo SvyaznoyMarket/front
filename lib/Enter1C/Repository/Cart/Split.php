@@ -208,10 +208,6 @@ class Split {
                 $orderItem['order']['possible_payment_methods'][] = ['payment_method' => $id];
             }
 
-            foreach ($order->possiblePointIds as $id) {
-                $orderItem['order']['possible_point_ids'][] = ['id' => $id];
-            }
-
             foreach ($order->groupedPossiblePointIds as $groupToken => $pointIds) {
                 foreach ($pointIds as $id) {
                     $orderItem['order']['possible_points'][$groupToken][] = $id;

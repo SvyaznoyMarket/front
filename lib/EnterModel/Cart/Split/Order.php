@@ -103,12 +103,6 @@ class Order {
             }
         }
 
-        if (isset($data['possible_point_ids']) && is_array($data['possible_point_ids'])) {
-            foreach ($data['possible_point_ids'] as $id) {
-                $this->possiblePointIds[] = (string)$id;
-            }
-        }
-
         if (isset($data['possible_points']) && is_array($data['possible_points'])) {
             foreach ($data['possible_points'] as $token => $ids) {
                 if (is_array($ids)) {
