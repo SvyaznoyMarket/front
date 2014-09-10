@@ -10,16 +10,8 @@ class Point {
     public $ui;
 
     public function __construct($data = []) {
-        if (isset($data['token'])) {
-            $this->groupToken = (string)$data['token'];
-        }
-
-        if (isset($data['id'])) {
-            $this->id = (string)$data['id'];
-        }
-
-        if (isset($data['ui'])) {
-            $this->ui = (string)$data['ui'];
-        }
+        $this->groupToken = $data['token'] ? (string)$data['token'] : null;
+        $this->id = $data['id'] ? (string)$data['id'] : null;
+        $this->ui = $data['ui'] ? (string)$data['ui'] : null;
     }
 }

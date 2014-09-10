@@ -12,20 +12,9 @@ class PaymentMethod {
     public $description;
 
     public function __construct($data = []) {
-        if (isset($data['id'])) {
-            $this->id = (string)$data['id'];
-        }
-
-        if (isset($data['ui'])) {
-            $this->ui = (string)$data['ui'];
-        }
-
-        if (isset($data['name'])) {
-            $this->name = (string)$data['name'];
-        }
-
-        if (isset($data['description'])) {
-            $this->description = (string)$data['description'];
-        }
+        $this->id = $data['id'] ? (string)$data['id'] : null;
+        $this->ui = $data['ui'] ? (string)$data['ui'] : null;
+        $this->name = $data['name'] ? (string)$data['name'] : null;
+        $this->description = $data['description'] ? (string)$data['description'] : null;
     }
 }

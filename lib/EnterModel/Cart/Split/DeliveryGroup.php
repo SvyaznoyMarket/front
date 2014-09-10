@@ -8,12 +8,7 @@ class DeliveryGroup {
     public $name;
 
     public function __construct($data = []) {
-        if (isset($data['id'])) {
-            $this->id = (string)$data['id'];
-        }
-
-        if (isset($data['name'])) {
-            $this->name = (string)$data['name'];
-        }
+        $this->id = $data['id'] ? (string)$data['id'] : null;
+        $this->name = $data['name'] ? (string)$data['name'] : null;
     }
 }

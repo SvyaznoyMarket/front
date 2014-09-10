@@ -15,22 +15,11 @@ class PointGroup {
     public $points = [];
 
     public function __construct($data = []) {
-        if (isset($data['token'])) {
-            $this->token = (string)$data['token'];
-        }
-
-        if (isset($data['action_name'])) {
-            $this->actionName = (string)$data['action_name'];
-        }
-
-        if (isset($data['block_name'])) {
-            $this->blockName = (string)$data['block_name'];
-        }
-
-        if (isset($data['list']) && is_array($data['list'])) {
-            foreach ($data['list'] as $item) {
-                $this->points[] = new Point($item);
-            }
+        $this->token = $data['token'] ? (string)$data['token'] : null;
+        $this->actionName = $data['action_name'] ? (string)$data['action_name'] : null;
+        $this->blockName = $data['block_name'] ? (string)$data['block_name'] : null;
+        foreach ($data['list'] as $item) {
+            $this->points[] = new Point($item);
         }
     }
 }

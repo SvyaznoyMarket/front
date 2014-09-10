@@ -8,12 +8,7 @@ class Interval {
     public $to;
 
     public function __construct($data = []) {
-        if (isset($data['from'])) {
-            $this->from = (string)$data['from'];
-        }
-
-        if (isset($data['to'])) {
-            $this->to = (string)$data['to'];
-        }
+        $this->from = $data['from'] ? (string)$data['from'] : null;
+        $this->to = $data['to'] ? (string)$data['to'] : null;
     }
 }
