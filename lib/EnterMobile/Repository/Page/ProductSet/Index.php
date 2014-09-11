@@ -135,12 +135,6 @@ class Index {
         ]);
 
         if (is_object($page->mailRu)) {
-            $productIds = [];
-            foreach ($request->products as $product) {
-                $productIds[] = $product->id;
-            }
-
-            $page->mailRu->productIds = json_encode($productIds);
             $page->mailRu->pageType = 'product_set';
         }
 
