@@ -18,7 +18,7 @@ class User {
     public $smsCode;
 
     public function __construct($data = []) {
-        if (isset($data['phone'])) {
+        if ($data['phone']) {
             $this->phone = trim((string)$data['phone']);
             $this->phone = preg_replace('/^\+7/', '8', $this->phone);
             $this->phone = preg_replace('/[^\d]/', '', $this->phone);
@@ -27,24 +27,10 @@ class User {
             }
         }
 
-        if (isset($data['last_name'])) {
-            $this->lastName = (string)$data['last_name'];
-        }
-
-        if (isset($data['first_name'])) {
-            $this->firstName = (string)$data['first_name'];
-        }
-
-        if (isset($data['email'])) {
-            $this->email = (string)$data['email'];
-        }
-
-        if (isset($data['address'])) {
-            $this->address = new User\Address($data['address']);
-        }
-
-        if (isset($data['bonus_card_number'])) {
-            $this->bonusCardNumber = (string)$data['bonus_card_number'];
-        }
+        $this->lastName = $data['last_name'] ? (string)$data['last_name'] : null;
+        $this->firstName = $data['first_name'] ? (string)$data['first_name'] : null;
+        $this->email = $data['email'] ? (string)$data['email'] : null;
+        $this->address = $data['address'] ? new User\Address($data['address']) : null;
+        $this->bonusCardNumber = $data['bonus_card_number'] ? (string)$data['bonus_card_number'] : null;
     }
 }

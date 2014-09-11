@@ -18,32 +18,12 @@ class Address {
     public $kladrId;
 
     public function __construct($data = []) {
-        if (isset($data['street'])) {
-            $this->street = (string)$data['street'];
-        }
-
-        if (isset($data['building'])) {
-            $this->building = (string)$data['building'];
-        }
-
-        if (isset($data['number'])) {
-            $this->number = (string)$data['number'];
-        }
-
-        if (isset($data['apartment'])) {
-            $this->apartment = (string)$data['apartment'];
-        }
-
-        if (isset($data['floor'])) {
-            $this->floor = (string)$data['floor'];
-        }
-
-        if (isset($data['metro_station'])) {
-            $this->subwayName = (string)$data['metro_station'];
-        }
-
-        if (isset($data['kladr_id'])) {
-            $this->kladrId = (string)$data['kladr_id'];
-        }
+        $this->street = $data['street'] ? (string)$data['street'] : null;
+        $this->building = $data['building'] ? (string)$data['building'] : null;
+        $this->number = $data['number'] ? (string)$data['number'] : null;
+        $this->apartment = $data['apartment'] ? (string)$data['apartment'] : null;
+        $this->floor = (string)$data['floor'];
+        $this->subwayName = (string)$data['metro_station'];
+        $this->kladrId = (string)$data['kladr_id'];
     }
 }

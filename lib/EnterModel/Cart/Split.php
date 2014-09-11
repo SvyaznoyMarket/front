@@ -26,44 +26,29 @@ class Split {
     public $errors = [];
 
     public function __construct($data = []) {
-        if (isset($data['delivery_groups']) && is_array($data['delivery_groups'])) {
-            foreach ($data['delivery_groups'] as $item) {
-                $this->deliveryGroups[] = new Split\DeliveryGroup($item);
-            }
+        foreach ($data['delivery_groups'] as $item) {
+            $this->deliveryGroups[] = new Split\DeliveryGroup($item);
         }
 
-        if (isset($data['delivery_methods']) && is_array($data['delivery_methods'])) {
-            foreach ($data['delivery_methods'] as $item) {
-                $this->deliveryMethods[] = new Split\DeliveryMethod($item);
-            }
+        foreach ($data['delivery_methods'] as $item) {
+            $this->deliveryMethods[] = new Split\DeliveryMethod($item);
         }
 
-        if (isset($data['payment_methods']) && is_array($data['payment_methods'])) {
-            foreach ($data['payment_methods'] as $item) {
-                $this->paymentMethods[] = new Split\PaymentMethod($item);
-            }
+        foreach ($data['payment_methods'] as $item) {
+            $this->paymentMethods[] = new Split\PaymentMethod($item);
         }
 
-        if (isset($data['points']) && is_array($data['points'])) {
-            foreach ($data['points'] as $token => $item) {
-                $item['token'] = $token;
-                $this->pointGroups[] = new Split\PointGroup($item);
-            }
+        foreach ($data['points'] as $token => $item) {
+            $item['token'] = $token;
+            $this->pointGroups[] = new Split\PointGroup($item);
         }
 
-        if (isset($data['orders']) && is_array($data['orders'])) {
-            foreach ($data['orders'] as $item) {
-                $this->orders[] = new Split\Order($item);
-            }
+        foreach ($data['orders'] as $item) {
+            $this->orders[] = new Split\Order($item);
         }
 
-        if (isset($data['user_info'])) {
-            $this->user = new Split\User($data['user_info']);
-        }
-
-        if (isset($data['total_cost'])) {
-            $this->sum = (string)$data['total_cost'];
-        }
+        $this->user = $data['user_info'] ? new Split\User($data['user_info']) : null;
+        $this->sum = (string)$data['total_cost'];
 
         if (isset($data['errors']) && is_array($data['errors'])) {
             foreach ($data['errors'] as $item) {

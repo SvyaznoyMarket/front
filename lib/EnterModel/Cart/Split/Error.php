@@ -8,12 +8,7 @@ class Error {
     public $message;
 
     public function __construct($data = []) {
-        if (isset($data['code'])) {
-            $this->code = (int)$data['code'];
-        }
-
-        if (isset($data['message'])) {
-            $this->message = (string)$data['message'];
-        }
+        $this->code = (int)$data['code'];
+        $this->message = (string)$data['message'];
     }
 }

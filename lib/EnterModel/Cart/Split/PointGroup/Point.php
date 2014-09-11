@@ -7,23 +7,23 @@ use EnterModel;
 
 class Point {
     /** @var string|null */
-    public $id = [];
+    public $id;
     /** @var string|null */
-    public $ui = [];
+    public $ui;
     /** @var string|null */
-    public $number = [];
+    public $number;
     /** @var string|null */
-    public $name = [];
+    public $name;
     /** @var string|null */
-    public $address = [];
+    public $address;
     /** @var string|null */
-    public $house = [];
+    public $house;
     /** @var string|null */
-    public $regTime = [];
-    /** @var string|null */
-    public $latitude = [];
-    /** @var string|null */
-    public $longitude = [];
+    public $regTime;
+    /** @var float|null */
+    public $latitude;
+    /** @var float|null */
+    public $longitude;
     /** @var Model\Subway[] */
     public $subway = [];
 
@@ -57,11 +57,11 @@ class Point {
         }
 
         if (isset($data['latitude'])) {
-            $this->latitude = (string)$data['latitude'];
+            $this->latitude = (float)$data['latitude'];
         }
 
         if (isset($data['longitude'])) {
-            $this->longitude = (string)$data['longitude'];
+            $this->longitude = (float)$data['longitude'];
         }
 
         if (isset($data['subway']) && is_array($data['subway'])) {

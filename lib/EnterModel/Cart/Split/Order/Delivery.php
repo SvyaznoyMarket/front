@@ -7,7 +7,7 @@ class Delivery {
     public $methodToken;
     /** @var string|null */
     public $modeId;
-    /** @var string|null */
+    /** @var int|null */
     public $date;
     /** @var string|null */
     public $price;
@@ -23,40 +23,14 @@ class Delivery {
     public $typeUi;
 
     public function __construct($data = []) {
-        if (isset($data['delivery_method_token'])) {
-            $this->methodToken = (string)$data['delivery_method_token'];
-        }
-
-        if (isset($data['mode_id'])) {
-            $this->modeId = (string)$data['mode_id'];
-        }
-
-        if (isset($data['date'])) {
-            $this->date = (string)$data['date'];
-        }
-
-        if (isset($data['price'])) {
-            $this->price = (string)$data['price'];
-        }
-
-        if (isset($data['interval'])) {
-            $this->interval = new Model\Cart\Split\Interval($data['interval']);
-        }
-
-        if (isset($data['point'])) {
-            $this->point = new Delivery\Point($data['point']);
-        }
-
-        if (isset($data['use_user_address'])) {
-            $this->useUserAddress = (bool)$data['use_user_address'];
-        }
-
-        if (isset($data['type_id'])) {
-            $this->typeId = (string)$data['type_id'];
-        }
-
-        if (isset($data['type_ui'])) {
-            $this->typeUi = (string)$data['type_ui'];
-        }
+        $this->methodToken = $data['delivery_method_token'] ? (string)$data['delivery_method_token'] : null;
+        $this->modeId = $data['mode_id'] ? (string)$data['mode_id'] : null;
+        $this->date = (int)$data['date'];
+        $this->price = $data['price'] ? (string)$data['price'] : null;
+        $this->interval = $data['interval'] ? new Model\Cart\Split\Interval($data['interval']) : null;
+        $this->point = $data['point'] ? new Delivery\Point($data['point']) : null;
+        $this->useUserAddress = (bool)$data['use_user_address'];
+        $this->typeId = !empty($data['type_id']) ? (string)$data['type_id'] : null; // FIXME
+        $this->typeUi = !empty($data['type_ui']) ? (string)$data['type_ui'] : null; // FIXME
     }
 }
