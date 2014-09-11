@@ -11,8 +11,6 @@ class AuthForm {
     public $password;
     /** @var string[] */
     public $errors = [];
-    /** @var bool */
-    public $isHidden = false;
 
     /**
      * @param array $data

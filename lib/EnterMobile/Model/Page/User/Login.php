@@ -22,9 +22,11 @@ namespace EnterMobile\Model\Page\User\Login {
     class Content extends Page\DefaultPage\Content {
         /** @var \EnterModel\Message[] */
         public $messages = [];
-        /** @var \EnterMobile\Model\Form\User\AuthForm */
+        /** @var string */
+        public $formState;
+        /** @var \EnterMobile\Model\Form\User\AuthForm|null */
         public $authForm;
-        /** @var \EnterMobile\Model\Form\User\ResetForm */
+        /** @var \EnterMobile\Model\Form\User\ResetForm|null */
         public $resetForm;
         /** @var \EnterMobile\Model\Form\User\RegisterForm|null */
         public $registerForm;

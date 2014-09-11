@@ -1,20 +1,27 @@
 <div class="content">
     <div class="contentBox960 logCnt">
-        <div data-state="default" class="authBox state_default">
+        <div data-state="{{formState}}" class="js-authContainer authBox state_{{formState}}">
 	        <div class="authWrap">
-				<form method="post" action="" data-state="default" class="authForm authForm_login js-authForm">
+                {{>partial/message}}
+
+                {{#authForm}}
+				    <form method="post" action="{{url}}" class="authForm authForm_login js-authForm">
 				    <fieldset class="authForm_fld authForm_fld-scrll">
 				        <!-- секция входа -->
 				        <div class="authForm_inn">
 				            <div class="authForm_t legend">Вход в Enter</div>
 
-				            <input type="text" placeholder="Email или телефон" value="" name="" class="authForm_it textfield">
+				            <input type="text" placeholder="Email или телефон" value="{{username}}" name="username" class="authForm_it textfield{{#errors.username}} fieldError{{/errors.username}}">
+                            {{#errors.username}}<span class="errorText">{{errors.username}}</span>{{/errors.username}}
 
 				            <div class="authForm_hint">
-				                <input type="password" placeholder="Пароль" value="" name="" class="authForm_it textfield">
+				                <input type="password" placeholder="Пароль" value="" name="password" class="authForm_it textfield{{#errors.password}} fieldError{{/errors.password}}">
+                                {{#errors.password}}<span class="errorText">{{errors.password}}</span>{{/errors.password}}
 
-				                <span class="authForm_hint_tx authForm_resetLink js-link">забыли?</span>
+				                <span data-state="reset" class="authForm_hint_tx authForm_resetLink js-link">забыли?</span>
 				            </div>
+
+                            <input type="hidden" name="redirect_to" value="{{redirectUrl}}" />
 
 				            <input type="submit" value="Войти" name="" class="authForm_is btnsubmit">
 
@@ -34,9 +41,11 @@
 				        </div>
 				        <!--/ секция входа -->
 				    </fieldset>
-				</form>     
+				</form>
+                {{/authForm}}
 
-				<form method="post" action="" class="authForm authForm_register js-registerForm">
+                {{#registerForm}}
+				    <form method="post" action="{{url}}" class="authForm authForm_register js-registerForm">
 				    <fieldset class="authForm_fld authForm_fld-scrll">
 				        <!-- секция регистрации -->
 				        <div class="authForm_inn">
@@ -51,16 +60,21 @@
 				            <div class="authForm_regbox">
 				                <label class="authForm_lbl">Как к вам обращаться?</label>
 
-				                <input type="text" placeholder="Имя" value="" name="register[first_name]" class="authForm_it textfield">
+				                <input type="text" placeholder="Имя" value="{{name}}" name="name" class="authForm_it textfield{{#errors.name}} fieldError{{/errors.name}}">
+                                {{#errors.name}}<span class="errorText">{{errors.name}}</span>{{/errors.name}}
 
-				                <input type="text" placeholder="Email" value="" name="register[email]" class="authForm_it textfield">
+				                <input type="text" placeholder="Email" value="{{email}}" name="email" class="authForm_it textfield{{#errors.email}} fieldError{{/errors.email}}">
+                                {{#errors.email}}<span class="errorText">{{errors.email}}</span>{{/errors.email}}
 
-				                <input type="text" placeholder="Телефон" value="" name="register[phone]" class="authForm_it textfield">
+				                <input type="text" placeholder="Телефон" value="{{phone}}" name="phone" class="js-phone-mask authForm_it textfield{{#errors.phone}} fieldError{{/errors.phone}}">
+                                {{#errors.phone}}<span class="errorText">{{errors.phone}}</span>{{/errors.phone}}
 
 				                <div class="authForm_sbscr">
 				                    <input type="checkbox" checked="checked" id="subscribe" name="subscribe" class="customInput customInput-defcheck jsCustomRadio">
 				                    <label for="subscribe" class="customLabel">Подписаться на рассылку,<br> получить скидку 300 рублей </label>
 				                </div>
+
+                                <input type="hidden" name="redirect_to" value="{{redirectUrl}}" />
 
 				                <input type="submit" value="Регистрация" name="" class="authForm_is btnsubmit">
 
@@ -83,10 +97,12 @@
 				        </div>
 				        <!--/ секция регистрации -->
 				    </fieldset>
-				</form>        
+				</form>
+                {{/registerForm}}
 			</div>
-        
-			<form method="post" action="" class="authForm authForm_reset js-resetForm">
+
+            {{#resetForm}}
+			    <form method="post" action="{{url}}" class="authForm authForm_reset js-resetForm">
 			    <!-- секция восстановления пароля -->
 			    <fieldset class="authForm_fld">
 			        <legend class="authForm_t legend">Восстановление пароля</legend>
@@ -96,18 +112,22 @@
 			        <!--/ показываем при удачном восстановлении пароля, authForm_regbox скрываем -->
 
 			        <div class="authForm_regbox">
-			            <input type="text" placeholder="Email или телефон" value="" name="forgot[login]" class="authForm_it textfield">
+			            <input type="text" placeholder="Email или телефон" value="{{username}}" name="username" class="authForm_it textfield{{#errors.username}} fieldError{{/errors.username}}">
+                        {{#errors.username}}<span class="errorText">{{errors.username}}</span>{{/errors.username}}
+
+                        <input type="hidden" name="redirect_to" value="{{redirectUrl}}" />
 
 			            <input type="submit" value="Отправить" name="" class="authForm_is btnsubmit">
 			        </div>
 			    </fieldset>
 			    <!--/ секция восстановления пароля -->
 			</form>
+            {{/resetForm}}
 
 	        <!-- показываем этот текст в окне входа на сайт -->
 	        <div class="authAct">
-	            <span data-value="{&quot;target&quot;:&quot;#auth-block&quot;,&quot;state&quot;:&quot;register&quot;}" class="borderBd authForm_registerLink js-link">Регистрация</span>
-	            <span data-value="{&quot;target&quot;:&quot;#auth-block&quot;,&quot;state&quot;:&quot;default&quot;}" class="borderBd authForm_authLink js-link">Войти</span>
+	            <span data-state="register" class="borderBd authForm_registerLink js-link">Регистрация</span>
+	            <span data-state="default" class="borderBd authForm_authLink js-link">Войти</span>
 	        </div>
 
 	        <!-- показываем этот текст в окне регистрации -->

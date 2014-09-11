@@ -9,9 +9,6 @@ class ResetForm {
     public $username;
     /** @var string[] */
     public $errors = [];
-    /** @var bool */
-    public $isHidden;
-
 
     /**
      * @param array $data

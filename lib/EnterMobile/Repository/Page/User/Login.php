@@ -46,17 +46,11 @@ class Login {
         $page->content->registerForm->errors = (bool)$request->registerFormErrors ? $request->registerFormErrors : false;
 
         if ((bool)$request->registerFormErrors) {
-            $page->content->registerForm->isHidden = false;
-            $page->content->authForm->isHidden = true;
-            $page->content->resetForm->isHidden = true;
+            $page->content->formState = 'register';
         } else if ((bool)$request->resetFormErrors) {
-            $page->content->resetForm->isHidden = false;
-            $page->content->registerForm->isHidden = true;
-            $page->content->authForm->isHidden = true;
+            $page->content->formState = 'reset';
         } else {
-            $page->content->authForm->isHidden = false;
-            $page->content->registerForm->isHidden = true;
-            $page->content->resetForm->isHidden = true;
+            $page->content->formState = 'default';
         }
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
