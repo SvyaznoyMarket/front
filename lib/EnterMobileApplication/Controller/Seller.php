@@ -1,10 +1,11 @@
 <?php
 
-namespace EnterTerminal\Controller;
+namespace EnterMobileApplication\Controller;
 
 use Enter\Http;
 use EnterAggregator\CurlTrait;
 use EnterQuery as Query;
+use EnterModel as Model;
 
 class Seller {
     use CurlTrait;
@@ -19,14 +20,17 @@ class Seller {
 
         $sellerUi = is_string($request->query['ui']) ? $request->query['ui'] : null;
 
-        $query = $sellerUi ? new Query\Seller\GetItemByUi($sellerUi) : new Query\Seller\GetList();
-        $curl->prepare($query)->execute();
+        $response = [
+            'seller' => null,
+        ];
 
-        $result = $query->getResult();
-        if ($sellerUi && $result) {
-            $result = [$result]; // TODO вынести в отдельный контроллер
+        $itemQuery = new Query\Seller\GetItemByUi($sellerUi);
+        $curl->prepare($itemQuery)->execute();
+
+        if ($item = $itemQuery->getResult()) {
+            $response['seller'] = new Model\Seller($item);
         }
 
-        return new Http\JsonResponse($result);
+        return new Http\JsonResponse($response);
     }
 }
