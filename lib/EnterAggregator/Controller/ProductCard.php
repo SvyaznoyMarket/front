@@ -142,6 +142,10 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($ratingListQuery);
             }
 
+            // запрос трастфакторов товара
+            $descriptionItemQuery = new Query\Product\GetDescriptionItemByUi($response->product->ui);
+            $curl->prepare($descriptionItemQuery);
+
             // запрос настроек каталога
             $catalogConfigQuery = null;
             if ($response->product->category) {
@@ -233,6 +237,9 @@ namespace EnterAggregator\Controller {
             if ($ratingListQuery) {
                 $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
             }
+
+            // трастфакторы товара
+            $productRepository->setDescriptionForObjectByQuery($response->product, $descriptionItemQuery);
 
             // категории аксессуаров
             $response->accessoryCategories = (new Repository\Product\Category())->getIndexedObjectListByProductListAndTokenList($response->product->relation->accessories, $response->catalogConfig ? $response->catalogConfig->accessoryCategoryTokens : []);

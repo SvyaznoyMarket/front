@@ -75,6 +75,8 @@ class Product {
     public $kit = [];
     /** @var Model\Product\Review[] */
     public $reviews = [];
+    /** @var Model\Product\Trustfactor[] */
+    public $trustfactors = [];
 
     /**
      * @param array $data

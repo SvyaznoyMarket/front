@@ -268,4 +268,22 @@ class Product {
             $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
     }
+
+    /**
+     * @param Model\Product $product
+     * @param Query $descriptionItemQuery
+     */
+    public function setDescriptionForObjectByQuery($product, Query $descriptionItemQuery) {
+        try {
+            if ($descriptionItem = $descriptionItemQuery->getResult()) {
+                foreach ($descriptionItem['trustfactors'] as $trustfactorItem) {
+                    if (!isset($trustfactorItem['uid'])) continue;
+
+                    $product->trustfactors[] = new Model\Product\Trustfactor($trustfactorItem);
+                }
+            }
+        } catch (\Exception $e) {
+            $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
+        }
+    }
 }
