@@ -73,7 +73,7 @@ class Reset {
                 default:
                     $messageRepository->setObjectListToHttpSesion('messages', [
                         new \EnterModel\Message([
-                            'name' => 'Произошла ошибка. Возможно неверно указан логин',
+                            'name' => 'Ошибка. Неверно указан логин',
                             'type' => \EnterModel\Message::TYPE_ERROR
                         ]),
                     ], $session);

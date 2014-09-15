@@ -74,7 +74,7 @@ class Auth {
                 default:
                     $messageRepository->setObjectListToHttpSesion('messages', [
                         new \EnterModel\Message([
-                            'name' => 'Произошла ошибка. Возможно неверно указаны логин или пароль',
+                            'name' => 'Ошибка. Неверно указаны логин или пароль',
                             'type' => \EnterModel\Message::TYPE_ERROR
                         ]),
                     ], $session);
