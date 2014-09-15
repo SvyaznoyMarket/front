@@ -22,6 +22,9 @@ class ShopList {
             'regions' => [],
         ];
 
+        // ид региона
+        $filteredRegionId = is_scalar($request->query['regionId']) ? (string)$request->query['regionId'] : null;
+
         $regionListQuery = new Query\Region\GetMainList();
         $curl->prepare($regionListQuery);
 
@@ -34,6 +37,8 @@ class ShopList {
         $regionDataById = [];
         foreach ($regionListQuery->getResult() as $regionItem) {
             $regionId = (string)$regionItem['id'];
+
+            if ($filteredRegionId && ($regionId !== $filteredRegionId)) continue;
 
             $regionItem = [
                 'id'    => $regionId,
