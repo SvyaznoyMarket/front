@@ -8,19 +8,27 @@ namespace EnterMobile {
         public $fullHost;
         /** @var Config\SiteVersionSwitcher */
         public $siteVersionSwitcher;
+        /** @var Config\RedirectManager */
+        public $redirectManager;
 
         public function __construct() {
             parent::__construct();
             $this->siteVersionSwitcher = new Config\SiteVersionSwitcher();
+            $this->redirectManager = new Config\RedirectManager();
         }
     }
 }
 
 namespace EnterMobile\Config {
     class SiteVersionSwitcher {
-        /** @var string */
+        /** @var string|null */
         public $cookieName;
-        /** @var int */
+        /** @var int|null */
         public $cookieLifetime;
+    }
+
+    class RedirectManager {
+        /** @var bool|null */
+        public $enabled;
     }
 }
