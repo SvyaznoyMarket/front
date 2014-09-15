@@ -61,6 +61,7 @@ trait ProductListingTrait {
 
         foreach ($filters as $filter) {
             $result[] = [
+                'name'       => $filter->name,
                 'token'      => $filter->token,
                 'isSlider'   => in_array($filter->typeId, [3, 6]),
                 'isMultiple' => $filter->isMultiple,
