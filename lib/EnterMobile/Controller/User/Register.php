@@ -88,7 +88,7 @@ class Register {
                 default:
                     $messageRepository->setObjectListToHttpSesion('messages', [
                         new \EnterModel\Message([
-                            'name' => 'Произошла ошибка. Возможно неверно указаны данные',
+                            'name' => 'Ошибка. Неверно указаны данные',
                             'type' => \EnterModel\Message::TYPE_ERROR
                         ]),
                     ], $session);

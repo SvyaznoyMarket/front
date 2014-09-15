@@ -820,16 +820,24 @@ textarea[contenteditable] {
   border-color: #ff0000;
 }
 .errorText {
-  position: absolute;
-  right: 10px;
-  margin-top: -42px;
+  background: #ffffff;
   color: #ff0000;
   font-size: 12px;
+  left: 10px;
+  line-height: 1;
+  margin-top: -62px;
+  padding: 0 2px;
+  position: absolute;
 }
 .txEvnt {
   display: block;
-  margin: 0 0 10px;
   font-size: 14px;
+  left: 10px;
+  line-height: 1.1;
+  margin: 0 0 10px;
+  position: absolute;
+  top: 3px;
+  width: 300px;
 }
 .txEvnt-err {
   color: #ec434f;
@@ -4836,6 +4844,7 @@ body.noScroll {
   -o-transition: all all 0.2s ease ease-out;
   transition: all all 0.2s ease ease-out;
   margin-bottom: 20px;
+  position: relative;
 }
 .authForm {
   margin: 0 20px 0;
@@ -4843,6 +4852,9 @@ body.noScroll {
   -moz-transition: all all 0.2s ease ease-out;
   -o-transition: all all 0.2s ease ease-out;
   transition: all all 0.2s ease ease-out;
+}
+.authForm_regbox {
+  position: relative;
 }
 .authForm_reset .authForm_fld {
   margin: 0 0 20px;
@@ -4885,7 +4897,7 @@ body.noScroll {
 }
 .authForm_lbl {
   color: #7d7d7d;
-  margin: 0 0 2px;
+  margin: 0 0 6px;
   display: block;
 }
 .authForm_sbscr {
