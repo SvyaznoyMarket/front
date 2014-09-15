@@ -39,5 +39,9 @@ $error = null;
 // shutdown handler, send response
 (new \EnterMobile\Action\RegisterShutdown())->execute($request, $response, $error, $startAt);
 
+(new \EnterMobile\Controller\RedirectManager())->execute($request, $response);
+
 // response
-(new \EnterMobile\Action\HandleResponse())->execute($request, $response);
+if (!$response) {
+    (new \EnterMobile\Action\HandleResponse())->execute($request, $response);
+}

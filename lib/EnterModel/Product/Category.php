@@ -25,8 +25,6 @@ class Category {
     public $level;
     /** @var bool */
     public $hasChildren;
-    /** @var string */
-    public $redirectLink;
     /** @var Model\Product\Category[] */
     public $children = [];
     /** @var int */
@@ -62,7 +60,6 @@ class Category {
         }
         if (array_key_exists('level', $data)) $this->level = (int)$data['level'];
         if (array_key_exists('has_children', $data)) $this->hasChildren = (bool)$data['has_children'];
-        if (!empty($data['redirect']['link'])) $this->redirectLink = (string)$data['redirect']['link'];
         if (array_key_exists('product_count', $data)) $this->productCount = (int)$data['product_count'];
         if (array_key_exists('product_count_global', $data)) $this->productGlobalCount = (int)$data['product_count_global'];
         if (isset($data['children']) && is_array($data['children'])) {
