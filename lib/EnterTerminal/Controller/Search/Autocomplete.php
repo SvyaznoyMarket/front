@@ -22,25 +22,17 @@ namespace EnterTerminal\Controller\Search {
         public function execute(Http\Request $request) {
             $curl = $this->getCurl();
 
-            // ид магазина
-            $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request);
-
-            // запрос магазина
-            $query = new Query\Shop\GetItemById($shopId);
-            $curl->prepare($query);
-            $curl->execute();
-
-            // магазин
-            $shop = (new \EnterTerminal\Repository\Shop())->getObjectByQuery($query);
-            if (!$shop) {
-                throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
+            // ид региона
+            $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+            if (!$regionId) {
+                throw new \Exception('Не передан параметр regionId');
             }
 
             $searchRepository = new \EnterRepository\Search();
             $searchPhrase = $searchRepository->getPhraseByHttpRequest($request);
 
             // запрос autocomplete
-            $query = new Query\Search\GetAutocompleteResultByPhrase($searchPhrase, $shop->regionId);
+            $query = new Query\Search\GetAutocompleteResultByPhrase($searchPhrase, $regionId);
             $curl->prepare($query);
             $curl->execute();
 

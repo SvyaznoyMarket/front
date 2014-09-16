@@ -24,8 +24,11 @@ namespace EnterTerminal\Controller\ProductCatalog {
             $curl = $this->getCurl();
             $filterRepository = new \EnterTerminal\Repository\Product\Filter();
 
-            // ид магазина
-            $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
+            // ид региона
+            $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+            if (!$regionId) {
+                throw new \Exception('Не передан параметр regionId');
+            }
 
             // ид среза товаров
             $sliceToken = trim((string)$request->query['sliceId']);
@@ -53,21 +56,11 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 $sorting->direction = trim((string)$request->query['sort']['direction']);
             }
 
-            // запрос магазина
-            $shopItemQuery = new Query\Shop\GetItemById($shopId);
-            $curl->prepare($shopItemQuery);
-
             // запрос среза
             $sliceItemQuery = new Query\Product\Slice\GetItemByToken($sliceToken);
             $curl->prepare($sliceItemQuery);
 
             $curl->execute();
-
-            // магазин
-            $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
-            if (!$shop) {
-                throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
-            }
 
             // срез
             $slice = (new \EnterRepository\Product\Slice())->getObjectByQuery($sliceItemQuery);
@@ -86,7 +79,7 @@ namespace EnterTerminal\Controller\ProductCatalog {
             $context->parentCategory = true;
             $context->branchCategory = false;
             $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
-                $shop->regionId,
+                $regionId,
                 $categoryId ? ['id' => $categoryId] : [], // критерий получения категории товара
                 $pageNum, // номер страницы
                 $limit, // лимит

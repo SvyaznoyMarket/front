@@ -25,19 +25,10 @@ namespace EnterTerminal\Controller {
             $curl = $this->getCurl();
             $compareRepository = new \EnterRepository\Compare();
 
-            // ид магазина
-            $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
-
-            // запрос магазина
-            $shopItemQuery = new Query\Shop\GetItemById($shopId);
-            $curl->prepare($shopItemQuery);
-
-            $curl->execute();
-
-            // магазин
-            $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
-            if (!$shop) {
-                throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
+            // ид региона
+            $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+            if (!$regionId) {
+                throw new \Exception('Не передан параметр regionId');
             }
 
             // сравнение из сессии
@@ -50,7 +41,7 @@ namespace EnterTerminal\Controller {
 
             $productListQuery = null;
             if ((bool)$productsById) {
-                $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $shop->regionId);
+                $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $regionId);
                 $curl->prepare($productListQuery);
             }
 

@@ -24,6 +24,12 @@ class DeleteProduct {
         $session = $this->getSession();
         $compareRepository = new \EnterRepository\Compare();
 
+        // ид региона
+        $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+        if (!$regionId) {
+            throw new \Exception('Не передан параметр regionId');
+        }
+
         // сравнение из сессии
         $compare = $compareRepository->getObjectByHttpSession($session);
 
@@ -36,22 +42,7 @@ class DeleteProduct {
         // добавление товара к сравнению
         $compareRepository->deleteProductForObject($compare, $compareProduct);
 
-        // ид магазина
-        $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
-
-        // запрос магазина
-        $shopItemQuery = new Query\Shop\GetItemById($shopId);
-        $curl->prepare($shopItemQuery);
-
-        $curl->execute();
-
-        // магазин
-        $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
-        if (!$shop) {
-            throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
-        }
-
-        $productItemQuery = new Query\Product\GetItemById($compareProduct->id, $shop->regionId);
+        $productItemQuery = new Query\Product\GetItemById($compareProduct->id, $regionId);
         $curl->prepare($productItemQuery);
 
         $curl->execute();

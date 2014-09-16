@@ -71,6 +71,11 @@ namespace EnterTerminal\Controller {
             return new Http\JsonResponse($response);
         }
 
+        /**
+         * @param $businessRules
+         * @param $clientId
+         * @return array
+         */
         private function filterBusinessRules($businessRules, $clientId) {
             foreach ($businessRules as $key => $businessRule) {
                 if (isset($businessRule['filter'])) {

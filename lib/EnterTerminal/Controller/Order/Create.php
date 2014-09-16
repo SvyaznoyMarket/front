@@ -9,6 +9,7 @@ namespace EnterTerminal\Controller\Order {
     use EnterAggregator\SessionTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
+    use EnterTerminal\Repository;
     use EnterTerminal\Controller;
     use EnterTerminal\Controller\Order\Create\Response;
 
@@ -34,19 +35,22 @@ namespace EnterTerminal\Controller\Order {
             // данные пользователя
             $userData = (array)$request->data['user_info'];
 
-            // ид магазина
-            $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
+            // ид региона
+            $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+            if (!$regionId) {
+                throw new \Exception('Не передан параметр regionId');
+            }
 
-            // запрос магазина
-            $shopItemQuery = new Query\Shop\GetItemById($shopId);
-            $curl->prepare($shopItemQuery);
+            // запрос региона
+            $regionItemQuery = new Query\Region\GetItemById($regionId);
+            $curl->prepare($regionItemQuery);
 
             $curl->execute();
 
-            // магазин
-            $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
-            if (!$shop) {
-                throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
+            // регион
+            $region = (new Repository\Region())->getObjectByQuery($regionItemQuery);
+            if (!$region) {
+                throw new \Exception(sprintf('Регион #%s не найден', $regionId));
             }
 
             $splitData = (array)$session->get($config->order->splitSessionKey);
@@ -77,7 +81,7 @@ namespace EnterTerminal\Controller\Order {
             }
 
             // дополнительные свойства разбиения
-            $split->region = $shop->region;
+            $split->region = $region;
             $split->clientIp = $request->getClientIp();
 
             // meta
@@ -99,7 +103,7 @@ namespace EnterTerminal\Controller\Order {
             }
 
             $controllerResponse = (new \EnterAggregator\Controller\Order\Create())->execute(
-                $shop->regionId,
+                $region->id,
                 $split,
                 $metas,
                 $isReceiveSms

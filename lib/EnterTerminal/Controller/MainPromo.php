@@ -25,23 +25,26 @@ namespace EnterTerminal\Controller {
 
             $promoRepository = new \EnterRepository\Promo();
 
-            // ид магазина
-            $shopId = (new Repository\Shop())->getIdByHttpRequest($request);
+            // ид региона
+            $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+            if (!$regionId) {
+                throw new \Exception('Не передан параметр regionId');
+            }
 
-            // запрос магазина
-            $shopItemQuery = new Query\Shop\GetItemById($shopId);
-            $curl->prepare($shopItemQuery);
+            // запрос региона
+            $regionItemQuery = new Query\Region\GetItemById($regionId);
+            $curl->prepare($regionItemQuery);
 
             $curl->execute();
 
-            // магазин
-            $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
-            if (!$shop) {
-                throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
+            // регион
+            $region = (new Repository\Region())->getObjectByQuery($regionItemQuery);
+            if (!$region) {
+                throw new \Exception(sprintf('Регион #%s не найден', $regionId));
             }
 
             // запрос баннеров
-            $promoListQuery = new Query\Promo\GetList($shop->regionId);
+            $promoListQuery = new Query\Promo\GetList($region->id);
             $curl->prepare($promoListQuery);
 
             $curl->execute();
@@ -51,8 +54,7 @@ namespace EnterTerminal\Controller {
 
             // ответ
             $response = new Response();
-            $response->region = $shop->region;
-            $response->shop = $shop;
+            $response->region = $region;
             $response->promos = $promos;
 
             return new Http\JsonResponse($response);
@@ -66,8 +68,6 @@ namespace EnterTerminal\Controller\MainPromo {
     class Response {
         /** @var Model\Region */
         public $region;
-        /** @var Model\Shop */
-        public $shop;
         /** @var \EnterModel\Promo[] */
         public $promos = [];
     }

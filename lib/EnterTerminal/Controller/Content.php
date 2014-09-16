@@ -23,19 +23,10 @@ namespace EnterTerminal\Controller {
         public function execute(Http\Request $request) {
             $curl = $this->getCurl();
 
-            // ид магазина
-            $shopId = (new Repository\Shop())->getIdByHttpRequest($request);
-
-            // запрос магазина
-            $shopItemQuery = new Query\Shop\GetItemById($shopId);
-            $curl->prepare($shopItemQuery);
-
-            $curl->execute();
-
-            // магазин
-            $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
-            if (!$shop) {
-                throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
+            // ид региона
+            $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+            if (!$regionId) {
+                throw new \Exception('Не передан параметр regionId');
             }
 
             $contentToken = $request->query['contentToken'];
@@ -56,7 +47,7 @@ namespace EnterTerminal\Controller {
             // ответ
             $response = new Response();
             $response->content = $item['content'];
-            $response->content = $this->processContentLinks($response->content, $curl, $shop->regionId);
+            $response->content = $this->processContentLinks($response->content, $curl, $regionId);
             $response->content = $this->removeExternalScripts($response->content);
             $response->content = preg_replace('/<iframe(?:\s[^>]*)?>.*?<\/iframe>/is', '', $response->content); // https://jira.enter.ru/browse/TERMINALS-862
             $response->title = isset($item['title']) ? $item['title'] : null;

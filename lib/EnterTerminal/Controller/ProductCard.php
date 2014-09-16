@@ -21,8 +21,11 @@ namespace EnterTerminal\Controller {
         public function execute(Http\Request $request) {
             $curl = $this->getCurl();
 
-            // ид магазина
-            $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
+            // ид региона
+            $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+            if (!$regionId) {
+                throw new \Exception('Не передан параметр regionId');
+            }
 
             // ид товара
             $productId = trim((string)$request->query['productId']);
@@ -30,21 +33,13 @@ namespace EnterTerminal\Controller {
                 throw new \Exception('Не указан параметр productId');
             }
 
-            // запрос магазина
-            $shopItemQuery = new Query\Shop\GetItemById($shopId);
-            $curl->prepare($shopItemQuery);
-
-            $curl->execute();
-
-            // магазин
-            $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
-            if (!$shop) {
-                throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
-            }
-
             $context = new Context();
             $context->mainMenu = false;
-            $controllerResponse = (new \EnterAggregator\Controller\ProductCard())->execute($shop->regionId, ['id' => $productId], $context);
+            $controllerResponse = (new \EnterAggregator\Controller\ProductCard())->execute(
+                $regionId,
+                ['id' => $productId],
+                $context
+            );
             // товар
             if (!$controllerResponse->product) {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Товар #%s не найден', $productId));

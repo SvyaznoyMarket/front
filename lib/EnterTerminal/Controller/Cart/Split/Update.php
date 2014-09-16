@@ -54,14 +54,15 @@ namespace EnterTerminal\Controller\Cart\Split {
             $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
 
             // запрос магазина
-            $shopItemQuery = new Query\Shop\GetItemById($shopId);
-            $curl->prepare($shopItemQuery);
-
-            $curl->execute();
+            $shopItemQuery = null;
+            if ($shopId) {
+                $shopItemQuery = new Query\Shop\GetItemById($shopId);
+                $curl->prepare($shopItemQuery)->execute();
+            }
 
             // магазин
-            $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
-            if (!$shop) {
+            $shop = $shopItemQuery ? (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery) : null;
+            if ($shopId && !$shop) {
                 throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
             }
 

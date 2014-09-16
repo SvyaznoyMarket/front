@@ -24,8 +24,11 @@ namespace EnterTerminal\Controller {
             $productRepository = new \EnterRepository\Product();
             $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME
 
-            // ид магазина
-            $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
+            // ид региона
+            $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+            if (!$regionId) {
+                throw new \Exception('Не передан параметр regionId');
+            }
 
             // поисковая строка
             $searchPhrase = (new \EnterRepository\Search())->getPhraseByHttpRequest($request, 'phrase');
@@ -50,18 +53,6 @@ namespace EnterTerminal\Controller {
                 $sorting->direction = trim((string)$request->query['sort']['direction']);
             }
 
-            // запрос магазина
-            $shopItemQuery = new Query\Shop\GetItemById($shopId);
-            $curl->prepare($shopItemQuery);
-
-            $curl->execute();
-
-            // магазин
-            $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
-            if (!$shop) {
-                throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
-            }
-
             // фильтры в http-запросе
             $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
             $filterData = $filterRepository->dumpRequestObjectList($requestFilters);
@@ -69,11 +60,11 @@ namespace EnterTerminal\Controller {
             $requestFilters[] = $filterRepository->getRequestObjectBySearchPhrase($searchPhrase);
 
             // запрос фильтров
-            $filterListQuery = new Query\Product\Filter\GetListBySearchPhrase($searchPhrase, $shop->regionId);
+            $filterListQuery = new Query\Product\Filter\GetListBySearchPhrase($searchPhrase, $regionId);
             $curl->prepare($filterListQuery);
 
             // запрос результатов поиска
-            $searchResultQuery = new Query\Search\GetItemByPhrase($searchPhrase, $filterData, $sorting, $shop->regionId, ($pageNum - 1) * $limit, $limit);
+            $searchResultQuery = new Query\Search\GetItemByPhrase($searchPhrase, $filterData, $sorting, $regionId, ($pageNum - 1) * $limit, $limit);
             $curl->prepare($searchResultQuery);
 
             $curl->execute();
@@ -91,7 +82,7 @@ namespace EnterTerminal\Controller {
                 (bool)$searchResult->categories
                 ? new Query\Product\Category\GetListByIdList(
                     array_map(function(Model\SearchResult\Category $category) { return $category->id; }, $searchResult->categories),
-                    $shop->regionId
+                    $regionId
                 )
                 : null;
             if ($categoryListQuery) {
@@ -120,7 +111,7 @@ namespace EnterTerminal\Controller {
             // запрос списка товаров
             $productListQuery = null;
             if ((bool)$searchResult->productIds) {
-                $productListQuery = new Query\Product\GetListByIdList($searchResult->productIds, $shop->regionId);
+                $productListQuery = new Query\Product\GetListByIdList($searchResult->productIds, $regionId);
                 $curl->prepare($productListQuery);
             }
 
