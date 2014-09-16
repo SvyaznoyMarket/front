@@ -41,9 +41,7 @@ namespace EnterAggregator\Controller\Order {
 
             // создание заказа
             $createOrderQuery = new Query\Order\CreatePacketBySplit($split, $metas);
-            if (!$createOrderQuery) {
-                throw new \Exception('Не удалось создать запрос на создание заказа');
-            }
+            $createOrderQuery->setTimeout(90);
 
             $curl->query($createOrderQuery);
 
