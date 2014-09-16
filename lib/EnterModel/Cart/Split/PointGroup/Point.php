@@ -19,7 +19,7 @@ class Point {
     /** @var string|null */
     public $house;
     /** @var string|null */
-    public $regTime;
+    public $workingTime;
     /** @var float|null */
     public $latitude;
     /** @var float|null */
@@ -27,6 +27,9 @@ class Point {
     /** @var Model\Subway[] */
     public $subway = [];
 
+    /**
+     * @param array $data
+     */
     public function __construct($data = []) {
         if (isset($data['id'])) {
             $this->id = (string)$data['id'];
@@ -53,7 +56,7 @@ class Point {
         }
 
         if (isset($data['regtime'])) {
-            $this->regTime = (string)$data['regtime'];
+            $this->workingTime = (string)$data['regtime'];
         }
 
         if (isset($data['latitude'])) {
@@ -70,4 +73,32 @@ class Point {
             }
         }
     }
+
+    /**
+     * @return array
+     */
+    public function dump() {
+        return [
+            'id'        => $this->id,
+            'ui'        => $this->ui,
+            'number'    => $this->number,
+            'name'      => $this->name,
+            'address'   => $this->address,
+            'house'     => $this->house,
+            'regtime'   => $this->workingTime,
+            'latitude'  => $this->latitude,
+            'longitude' => $this->longitude,
+            'subway'    => $this->subway ? array_map(function(Model\Subway $subway) {
+                return [
+                    'ui'   => $subway->ui,
+                    'name' => $subway->name,
+                    'line' => $subway->line ? [
+                        'name'  => $subway->line->name,
+                        'color' => $subway->line->color,
+                    ] : null,
+                ];
+            }, $this->subway) : null,
+        ];
+    }
+
 }

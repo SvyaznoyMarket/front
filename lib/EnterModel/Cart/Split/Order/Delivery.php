@@ -22,6 +22,9 @@ class Delivery {
     /** @var string|null */
     public $typeUi;
 
+    /**
+     * @param array $data
+     */
     public function __construct($data = []) {
         $this->methodToken = $data['delivery_method_token'] ? (string)$data['delivery_method_token'] : null;
         $this->modeId = $data['mode_id'] ? (string)$data['mode_id'] : null;
@@ -32,5 +35,22 @@ class Delivery {
         $this->useUserAddress = (bool)$data['use_user_address'];
         $this->typeId = !empty($data['type_id']) ? (string)$data['type_id'] : null; // FIXME
         $this->typeUi = !empty($data['type_ui']) ? (string)$data['type_ui'] : null; // FIXME
+    }
+
+    /**
+     * @return array
+     */
+    public function dump() {
+        return [
+            'delivery_method_token' => $this->methodToken,
+            'mode_id'               => $this->modeId,
+            'date'                  => $this->date,
+            'price'                 => $this->price,
+            'interval'              => $this->interval ? $this->interval->dump() : null,
+            'point'                 => $this->point ? $this->point->dump() : null,
+            'use_user_address'      => $this->useUserAddress,
+            'type_id'               => $this->typeId,
+            'type_ui'               => $this->typeUi,
+        ];
     }
 }

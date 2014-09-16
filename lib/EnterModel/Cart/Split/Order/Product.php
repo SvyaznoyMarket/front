@@ -27,6 +27,9 @@ class Product {
     /** @var string|null */
     public $stockQuantity;
 
+    /**
+     * @param array $data
+     */
     public function __construct($data = []) {
         $this->id = $data['id'] ? (string)$data['id'] : null;
         $this->ui = $data['ui'] ? (string)$data['ui'] : null;
@@ -40,5 +43,25 @@ class Product {
         $this->sum = $data['sum'] ? (string)$data['sum'] : null;
         $this->quantity = (int)$data['quantity'];
         $this->stockQuantity = (int)$data['stock'];
+    }
+
+    /**
+     * @return array
+     */
+    public function dump() {
+        return [
+            'id'             => $this->id,
+            'ui'             => $this->ui,
+            'name'           => $this->name,
+            'prefix'         => $this->namePrefix,
+            'name_web'       => $this->webName,
+            'url'            => $this->url,
+            'image'          => $this->image,
+            'price'          => $this->price,
+            'original_price' => $this->originalPrice,
+            'sum'            => $this->sum,
+            'quantity'       => $this->quantity,
+            'stock'          => $this->stockQuantity,
+        ];
     }
 }

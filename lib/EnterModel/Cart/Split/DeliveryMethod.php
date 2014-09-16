@@ -17,6 +17,9 @@ class DeliveryMethod {
     /** @var string|null */
     public $description;
 
+    /**
+     * @param array $data
+     */
     public function __construct($data = []) {
         $this->token = $data['token'] ? (string)$data['token'] : null;
         $this->typeId = $data['type_id'] ? (string)$data['type_id'] : null;
@@ -26,4 +29,20 @@ class DeliveryMethod {
         $this->groupId = $data['group_id'] ? (string)$data['group_id'] : null;
         $this->description = $data['description'] ? (string)$data['description'] : null;
     }
+
+    /**
+     * @return array
+     */
+    public function dump() {
+        return [
+            'token'       => $this->token,
+            'type_id'     => $this->typeId,
+            'type_ui'     => $this->typeUi,
+            'name'        => $this->name,
+            'point_token' => $this->pointToken,
+            'group_id'    => $this->groupId,
+            'description' => $this->description,
+        ];
+    }
+
 }

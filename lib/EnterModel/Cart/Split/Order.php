@@ -36,6 +36,9 @@ class Order {
     /** @var string|null */
     public $comment;
 
+    /**
+     * @param array $data
+     */
     public function __construct($data = []) {
         $this->blockName = $data['block_name'] ? (string)$data['block_name'] : null;
         $this->seller = $data['seller'] ? new Order\Seller($data['seller']) : null;
@@ -74,5 +77,28 @@ class Order {
             }
         }
         $this->comment = $data['comment'] ? (string)$data['comment'] : null;
+    }
+
+    /**
+     * @return array
+     */
+    public function dump() {
+        return [
+            'block_name'               => $this->blockName,
+            'seller'                   => $this->seller ? $this->seller->dump() : null,
+            'products'                 => array_map(function(Order\Product $product) { return $product->dump(); }, $this->products),
+            'discounts'                => array_map(function(Order\Discount $discount) { return $discount->dump(); }, $this->discounts),
+            'actions'                  => array_map(function(Order\Action $action) { return $action->dump(); }, $this->actions),
+            'delivery'                 => $this->delivery ? $this->delivery->dump() : null,
+            'total_cost'               => $this->sum,
+            'total_original_cost'      => $this->originalSum,
+            'payment_method_id'        => $this->paymentMethodId ? (int)$this->paymentMethodId : null,
+            'possible_deliveries'      => $this->possibleDeliveryMethodTokens,
+            'possible_intervals'       => array_map(function(Model\Cart\Split\Interval $interval) { return $interval->dump(); }, $this->possibleIntervals),
+            'possible_days'            => $this->possibleDays,
+            'possible_payment_methods' => $this->possiblePaymentMethodIds,
+            'possible_points'          => $this->groupedPossiblePointIds,
+            'comment'                  => $this->comment,
+        ];
     }
 }

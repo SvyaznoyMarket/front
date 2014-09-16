@@ -17,6 +17,9 @@ class Address {
     /** @var string|null */
     public $kladrId;
 
+    /**
+     * @param array $data
+     */
     public function __construct($data = []) {
         $this->street = $data['street'] ? (string)$data['street'] : null;
         $this->building = $data['building'] ? (string)$data['building'] : null;
@@ -25,5 +28,20 @@ class Address {
         $this->floor = (string)$data['floor'];
         $this->subwayName = (string)$data['metro_station'];
         $this->kladrId = (string)$data['kladr_id'];
+    }
+
+    /**
+     * @return array
+     */
+    public function dump() {
+        return [
+            'street'        => $this->street,
+            'building'      => $this->building,
+            'number'        => $this->number,
+            'apartment'     => $this->apartment,
+            'floor'         => $this->floor,
+            'metro_station' => $this->subwayName,
+            'kladr_id'      => $this->kladrId,
+        ];
     }
 }

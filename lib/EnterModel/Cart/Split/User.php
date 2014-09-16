@@ -17,6 +17,9 @@ class User {
     /** @var string|null */
     public $smsCode;
 
+    /**
+     * @param array $data
+     */
     public function __construct($data = []) {
         if ($data['phone']) {
             $this->phone = trim((string)$data['phone']);
@@ -32,5 +35,19 @@ class User {
         $this->email = $data['email'] ? (string)$data['email'] : null;
         $this->address = $data['address'] ? new User\Address($data['address']) : null;
         $this->bonusCardNumber = $data['bonus_card_number'] ? (string)$data['bonus_card_number'] : null;
+    }
+
+    /**
+     * @return array
+     */
+    public function dump() {
+        return [
+            'phone'             => $this->phone,
+            'last_name'         => $this->lastName,
+            'first_name'        => $this->firstName,
+            'email'             => $this->email,
+            'address'           => $this->address ? $this->address->dump() : null,
+            'bonus_card_number' => $this->bonusCardNumber,
+        ];
     }
 }

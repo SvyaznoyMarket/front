@@ -13,6 +13,9 @@ class Action {
     /** @var string|null */
     public $number;
 
+    /**
+     * @param array $data
+     */
     public function __construct($data = []) {
         if (isset($data['uid'])) {
             $this->ui = (string)$data['uid'];
@@ -33,5 +36,18 @@ class Action {
         if (isset($data['number'])) {
             $this->number = (string)$data['number'];
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function dump() {
+        return [
+            'uid'      => $this->ui,
+            'name'     => $this->name,
+            'discount' => $this->discount,
+            'type'     => $this->type,
+            'number'   => $this->number,
+        ];
     }
 }

@@ -25,6 +25,9 @@ class Split {
     /** @var Model\Cart\Split\Error[] */
     public $errors = [];
 
+    /**
+     * @param array $data
+     */
     public function __construct($data = []) {
         foreach ($data['delivery_groups'] as $item) {
             $this->deliveryGroups[] = new Split\DeliveryGroup($item);
@@ -55,5 +58,21 @@ class Split {
                 $this->errors[] = new Split\Error($item);
             }
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function dump() {
+        return [
+            'delivery_groups'  => array_map(function(Split\DeliveryGroup $deliveryGroup) { return $deliveryGroup->dump(); }, $this->deliveryGroups),
+            'delivery_methods' => array_map(function(Split\DeliveryMethod $deliveryMethod) { return $deliveryMethod->dump(); }, $this->deliveryMethods),
+            'payment_methods'  => array_map(function(Split\PaymentMethod $paymentMethod) { return $paymentMethod->dump(); }, $this->paymentMethods),
+            'points'           => array_map(function(Split\PointGroup $pointGroup) { return $pointGroup->dump(); }, $this->pointGroups),
+            'orders'           => array_map(function(Split\Order $product) { return $product->dump(); }, $this->orders),
+            'user_info'        => $this->user ? $this->user->dump() : null,
+            'total_cost'       => $this->sum,
+            'errors'           => array_map(function(Model\Cart\Split\Error $error) { return $error->dump(); }, $this->errors),
+        ];
     }
 }
