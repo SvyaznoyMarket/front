@@ -60,8 +60,10 @@ class ShopList {
             if (!$regionId || !isset($regionDataById[$regionId])) continue;
 
             $shopItem = [
-                'id'   => (string)$shopItem['id'],
-                'name' => (string)$shopItem['name'],
+                'id'      => (string)$shopItem['id'],
+                'address' => (string)$shopItem['address'],
+                'regime'  => (string)$shopItem['working_time'],
+                'type'    => 'shop',
             ];
 
             $regionDataById[$regionId]['shops'][] = $shopItem;

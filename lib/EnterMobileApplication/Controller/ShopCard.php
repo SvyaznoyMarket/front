@@ -35,6 +35,10 @@ namespace EnterMobileApplication\Controller {
             // магазин
             $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
 
+            if ($shop) {
+                $shop->description = strip_tags($shop->description);
+            }
+
             // ответ
             $response = new Response();
             $response->shop = $shop;
