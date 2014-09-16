@@ -67,6 +67,10 @@ class MainMenu {
                         $element = new Model\MainMenu\Element($elementItem);
                         $element->type = 'category';
                         $element->id = (string)$categoryItem['id'];
+                        if (!$element->id && isset($elementItem['source']['id'])) {
+                            $element->id = (string)$elementItem['source']['id'];
+                        }
+
                         if (!$element->name) {
                             $element->name = (string)$categoryItem['name'];
                         }
