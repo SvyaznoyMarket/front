@@ -64,10 +64,11 @@ namespace EnterAggregator\Controller\Order {
 
             /** @var \Enter\Curl\Query[] $orderItemQueries */
             $orderItemQueries = [];
-            /** @var \Enter\Curl\Query[] $paymentMethodListQueriesByOrderNumber */
-            $paymentMethodListQueriesByOrderNumber = [];
+            /** @var \Enter\Curl\Query[] $paymentMethodListQueriesByOrderNumberErp */
+            $paymentMethodListQueriesByOrderNumberErp = [];
             foreach ($orderData as $orderItem) {
                 $orderNumber = !empty($orderItem['number']) ? (string)$orderItem['number'] : null;
+                $orderNumberErp = !empty($orderItem['number_erp']) ? (string)$orderItem['number_erp'] : null;
                 $orderToken = !empty($orderItem['access_token']) ? (string)$orderItem['access_token'] : null;
                 if (!$orderNumber) {
                     $logger->push(['type' => 'error', 'error' => 'Не получен номер заказа', 'order' => $orderItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
@@ -82,9 +83,9 @@ namespace EnterAggregator\Controller\Order {
                 $curl->prepare($orderItemQuery);
                 $orderItemQueries[] = $orderItemQuery;
 
-                $paymentMethodListQuery = new Query\PaymentMethod\GetListByOrderNumber($orderNumber, $regionId);
+                $paymentMethodListQuery = new Query\PaymentMethod\GetListByOrderNumberErp($orderNumberErp, $regionId);
                 $curl->prepare($paymentMethodListQuery);
-                $paymentMethodListQueriesByOrderNumber[$orderNumber] = $paymentMethodListQuery;
+                $paymentMethodListQueriesByOrderNumberErp[$orderNumberErp] = $paymentMethodListQuery;
             }
 
             $curl->execute();
@@ -142,8 +143,8 @@ namespace EnterAggregator\Controller\Order {
 
             // возможные методы оплат
             $paymentMethodsByOrderNumber = [];
-            foreach ($paymentMethodListQueriesByOrderNumber as $orderNumber => $paymentMethodListQuery) {
-                $paymentMethodsByOrderNumber[$orderNumber] = $paymentMethodRepository->getIndexedObjectListByQuery($paymentMethodListQuery);
+            foreach ($paymentMethodListQueriesByOrderNumberErp as $orderNumberErp => $paymentMethodListQuery) {
+                $paymentMethodsByOrderNumber[$orderNumberErp] = $paymentMethodRepository->getIndexedObjectListByQuery($paymentMethodListQuery);
             }
 
             // доставка
