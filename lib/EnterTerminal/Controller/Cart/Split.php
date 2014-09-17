@@ -30,6 +30,12 @@ namespace EnterTerminal\Controller\Cart {
             // ответ
             $response = new Response();
 
+            // ид региона
+            $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+            if (!$regionId) {
+                throw new \Exception('Не передан параметр regionId');
+            }
+
             if (empty($request->data['cart']['products'][0]['id'])) {
                 throw new \Exception('Не передан параметр cart.products[0].id');
             }
@@ -57,7 +63,7 @@ namespace EnterTerminal\Controller\Cart {
 
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
-                new Model\Region(['id' => $shop->regionId]),
+                new Model\Region(['id' => $regionId]),
                 $shop
             );
             $splitQuery->setTimeout($config->coreService->timeout * 2);
