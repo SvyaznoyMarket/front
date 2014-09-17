@@ -30,6 +30,12 @@ namespace EnterTerminal\Controller\Cart\Split {
             // ответ
             $response = new Response();
 
+            // ид региона
+            $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+            if (!$regionId) {
+                throw new \Exception('Не передан параметр regionId');
+            }
+
             $change = (array)$request->data['change'];
             if (!$change) {
                 throw new \Exception('Пустой параметр change');
@@ -68,7 +74,7 @@ namespace EnterTerminal\Controller\Cart\Split {
 
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
-                new Model\Region(['id' => $shop->regionId]),
+                new Model\Region(['id' => $regionId]),
                 $shop,
                 null,
                 $splitData,
