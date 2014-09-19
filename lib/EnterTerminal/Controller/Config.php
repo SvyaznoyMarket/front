@@ -41,20 +41,24 @@ namespace EnterTerminal\Controller {
 
             $shopId = $response->info['shop_id'];
 
-            $shopQuery = new Query\Shop\GetItemById($shopId);
-            $curl->prepare($shopQuery);
+            if ($shopId != null) {
+                $shopQuery = new Query\Shop\GetItemById($shopId);
+                $curl->prepare($shopQuery);
+            }
 
             $businessRulesQuery = new Query\BusinessRule\GetList();
             $curl->prepare($businessRulesQuery);
 
             $curl->execute();
 
-            $shop = (new \EnterTerminal\Repository\Shop())->getObjectByQuery($shopQuery);
-            if (!$shop) {
-                throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
-            }
+            if ($shopId != null) {
+                $shop = (new \EnterTerminal\Repository\Shop())->getObjectByQuery($shopQuery);
+                if (!$shop) {
+                    throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
+                }
 
-            $response->shop = $shop;
+                $response->shop = $shop;
+            }
 
             try {
                 $businessRules = $businessRulesQuery->getResult();

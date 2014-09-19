@@ -26,7 +26,6 @@ class GetInfoByUi extends Query {
      * @param $response
      */
     public function callback($response) {
-        $data = $this->parse($response);
-        $this->result = isset($data['shop_id']) ? $data : null;
+        $this->result = $this->parse($response);
     }
 }
