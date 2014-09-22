@@ -45,6 +45,13 @@ class Login {
         $page->content->registerForm->url = $router->getUrlByRoute(new Routing\User\Register());
         $page->content->registerForm->errors = (bool)$request->registerFormErrors ? $request->registerFormErrors : false;
 
+        $page->content->facebookLoginUrl = '/login-facebook?' . http_build_query([
+            'redirect_to' => $request->redirectUrl,
+        ]);
+        $page->content->vkontakteLoginUrl = '/login-vkontakte?' . http_build_query([
+            'redirect_to' => $request->redirectUrl,
+        ]);
+
         if ((bool)$request->registerFormErrors) {
             $page->content->formState = 'register';
         } else if ((bool)$request->resetFormErrors) {

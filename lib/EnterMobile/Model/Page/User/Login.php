@@ -32,6 +32,10 @@ namespace EnterMobile\Model\Page\User\Login {
         public $registerForm;
         /** @var string */
         public $redirectUrl;
+        /** @var string */
+        public $facebookLoginUrl;
+        /** @var string */
+        public $vkontakteLoginUrl;
 
         public function __construct() {
             parent::__construct();
