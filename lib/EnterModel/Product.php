@@ -91,7 +91,7 @@ class Product {
         if (array_key_exists('bar_code', $data)) $this->barcode = (string)$data['bar_code'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('prefix', $data)) $this->namePrefix = (string)$data['prefix'];
-        if (array_key_exists('name_web', $data)) $this->webName = $data['name_web'] ? (string)$data['name_web'] : $this->name;
+        if (array_key_exists('name_web', $data)) $this->webName = $data['name_web'] ? (string)$data['name_web'] : null;
         if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
         if (array_key_exists('link', $data)) $this->link = rtrim((string)$data['link'], '/');
         if (array_key_exists('description', $data)) $this->description = (string)$data['description'];
