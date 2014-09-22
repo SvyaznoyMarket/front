@@ -78,7 +78,7 @@ namespace EnterAggregator\Controller {
             // запрос отзывов товара
             $reviewListQuery = null;
             if ($config->productReview->enabled) {
-                $reviewListQuery = new Query\Product\Review\GetListByProductId($response->product->id, 0, $config->productReview->itemsInCard);
+                $reviewListQuery = new Query\Product\Review\GetListByProductId($response->product->id, 1, $config->productReview->itemsInCard);
                 $curl->prepare($reviewListQuery);
             }
 

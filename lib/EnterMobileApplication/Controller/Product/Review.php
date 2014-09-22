@@ -1,12 +1,12 @@
 <?php
 
-namespace EnterTerminal\Controller\Product {
+namespace EnterMobileApplication\Controller\Product {
 
     use Enter\Http;
     use EnterAggregator\ConfigTrait;
     use EnterAggregator\CurlTrait;
     use EnterQuery as Query;
-    use EnterTerminal\Controller\Product\Review\Response;
+    use EnterMobileApplication\Controller\Product\Review\Response;
 
     class Review {
         use ConfigTrait, CurlTrait;
@@ -25,14 +25,27 @@ namespace EnterTerminal\Controller\Product {
                 throw new \Exception('Не указан параметр productId');
             }
 
+            $page = (int)$request->query['page'];
+            if (!$page) {
+                throw new \Exception('Не указан параметр page');
+            }
+
+            $limit = (int)$request->query['limit'];
+            if (!$limit) {
+                throw new \Exception('Не указан параметр limit');
+            }
+
+            // ответ
             $response = new Response();
 
+            // подготовка отзывов
             $reviewListQuery = new Query\Product\Review\GetListByProductId(
                 $productId,
-                (int)$request->query['page'],
-                (int)$request->query['limit'] ?: $config->productReview->itemsInCard
+                $page,
+                $limit
             );
             $curl->prepare($reviewListQuery);
+
             $curl->execute();
 
             // отзывы
@@ -54,7 +67,7 @@ namespace EnterTerminal\Controller\Product {
     }
 }
 
-namespace EnterTerminal\Controller\Product\Review {
+namespace EnterMobileApplication\Controller\Product\Review {
     use EnterModel as Model;
 
     class Response {

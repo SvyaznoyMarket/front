@@ -12,12 +12,17 @@ class GetListByProductId extends Query {
     /** @var array */
     protected $result;
 
+    /**
+     * @param $productId
+     * @param $pageNum Начиная с единицы
+     * @param $itemsPerPage
+     */
     public function __construct($productId, $pageNum, $itemsPerPage) {
         $this->url = new Url();
         $this->url->path = 'list';
         $this->url->query = [
             'product_id'   => $productId,
-            'current_page' => $pageNum,
+            'current_page' => $pageNum - 1,
             'page_size'    => $itemsPerPage,
             //'type'         => 'user',
         ];
