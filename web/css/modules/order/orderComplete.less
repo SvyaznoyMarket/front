@@ -1,0 +1,60 @@
+/*---------Оформление заказа 3.0 -> строка перехода к следующему шагу .orderCompl ----------*/
+
+/* 
+    orderCompl
+        orderCompl_l
+        orderCompl_btn
+*/
+
+.orderCompl {
+	padding: 10px;
+	clear: both;
+
+	background: rgba(252, 171, 47, 0.2);
+
+	&_l {
+//		float: left;
+
+		width: 685px;
+		margin: 0;
+
+		font-size: 14px;
+
+		&-ln {
+		    margin: 2px 0 0;
+			padding: 8px 0 0 15px;
+			display: inline-block;
+			vertical-align: top;
+		} 
+	}
+
+	&_btn {
+		min-width: 220px;
+		height: 40px;
+        margin: 0 auto;
+        display: block;
+
+		font-size: 20px;
+		font-weight: bold;
+		line-height: 32px;
+	}
+
+    &_continue_link {
+        font-size: 20px;
+        text-decoration: underline;
+        padding: 10px 0;
+        display: block;
+    }
+
+    &_final {
+       background: #f7f7f7;
+    }
+}
+
+.orderComplSumm {
+	margin: 40px 0 0;
+	padding: 10px 10px 10px 25px;
+
+	border-top: 1px solid @typGray;
+	//background: @lightgreyBg;
+}

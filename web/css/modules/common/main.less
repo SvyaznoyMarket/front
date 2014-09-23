@@ -205,8 +205,11 @@ textarea[contenteditable] {
     float: right;
 }
 
-// цвета шрифтов
+.crsr-p {
+    cursor: pointer;
+}
 
+// цвета шрифтов
 .orangeText {
     color: @submitBg;
 }
@@ -457,6 +460,11 @@ textarea[contenteditable] {
     border: 1px solid @inputBorder;
 
     line-height: 35px;
+
+    &-err {
+        border-color: @redErr;
+        border-width: 3px;
+    }
 }
 
 .btnsubmit {
@@ -520,4 +528,54 @@ textarea[contenteditable] {
     &-complt {
         color: #0bb010;
     }
+}
+
+// кастомный селект 
+.customSel {
+    .inline-block();
+    .rounded(4px);
+    position: relative;
+
+    height: 33px;
+    padding: 0 20px 0 5px;
+
+    cursor: pointer;
+    vertical-align: top;
+
+    border: 1px solid @lightGrey1;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAYElEQVQIHWMMDw/fysDw34sBAzBuYwKKFQLxLzQ5EL+QacWKFbeYmBgnIkuC+GBxkCAnJ3czkHoBVfACymcAGcswd+7cz0xMzBUgNogG8UFshv///8MwI9Bxk4B8RpgYAKNoKpNJevrLAAAAAElFTkSuQmCC) no-repeat 95% 50% @white;
+
+    font-size: 14px;
+
+    &_def {
+        line-height: 33px;
+    }
+
+    &_lst {
+        //display: none;
+        width: 100%;
+    }
+
+    &_i {
+        padding: 4px 5px;
+
+        cursor: pointer;
+
+        border-bottom: 1px solid @lightGrey1;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}
+
+.errtx {
+    bottom: -7px;
+    color: @redErr;
+    display: block;
+    font-size: 12px;
+    margin: 0;
+    position: absolute;
+    white-space: nowrap;
+    word-wrap: normal;
 }
