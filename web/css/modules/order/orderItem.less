@@ -1,0 +1,102 @@
+/*---------Оформление заказа 3.0 ----------*/
+
+/* 
+    orderCol
+        orderCol_cnt
+        orderCol_t
+        orderCol_lk
+        orderCol_img
+        orderCol_n
+        orderCol_data		-summ | -count | -sale | -del
+*/
+
+.orderCol {
+
+	&_cnt {
+		margin: 0 5px;
+		padding: 10px 5px 0;
+		border-bottom: 1px solid @typLightGray;
+
+		&-last {
+			border-bottom: none;
+		}
+	}
+
+	&_lk {
+		float: left;
+		width: 70px;
+	}
+
+	&_img {
+		display: block;
+
+		width: 70px;
+	}
+
+	&_descr {
+		padding-left: 80px;
+	}
+
+	&_n {
+		vertical-align: top;
+		line-height: 1.2;
+		display: block;
+
+		font-size: 14px;
+	}
+
+	&_data {
+		.inline-block();
+
+		line-height: 24px;
+		margin-top: 10px;
+		margin-left: 10px;
+
+		color: @darkGrey4;
+
+		font-size: 16px;
+
+		&-summ {
+
+		}
+
+		&-count {
+			float: right;
+		}
+
+		&-sale {
+			color: @firmRed;
+		}
+
+		&-del {
+			color: @black;
+			border-bottom: 1px dotted;
+            cursor: pointer;
+
+			font-size: 14px;
+		}
+
+		&-price {
+			float: right;
+			color: @black;
+			padding-left: 40px;
+		}
+	}
+
+	&_t {
+		padding: 5px 7px;
+
+		border-top: 1px solid @typGray;
+		background: @lightGrey6;
+
+		font-size: 14px;
+		font-weight: bold;
+	}
+
+	&_b {
+		padding: 10px 7px;
+
+		border-top: 1px solid @typGray;
+		background: @lightGrey6;
+	}
+}
