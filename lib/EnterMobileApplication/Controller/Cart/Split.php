@@ -30,8 +30,18 @@ namespace EnterMobileApplication\Controller\Cart {
             // ответ
             $response = new Response();
 
+            // данные о корзине
             if (empty($request->data['cart']['products'][0]['id'])) {
                 throw new \Exception('Не передан параметр cart.products[0].id');
+            }
+
+            // изменения
+            $changeData = $request->data['change'] ?: null;
+
+            // предыдущее разбиение
+            $previousSplitData = null;
+            if ($changeData) {
+                $previousSplitData = $session->get($config->order->splitSessionKey);
             }
 
             $cart = new Model\Cart();
@@ -56,7 +66,11 @@ namespace EnterMobileApplication\Controller\Cart {
 
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
-                new Model\Region(['id' => $region->id])
+                new Model\Region(['id' => $region->id]),
+                null,
+                null,
+                (array)$previousSplitData,
+                $changeData ? $this->dumpChange($changeData, $previousSplitData) : []
             );
             $splitQuery->setTimeout($config->coreService->timeout * 2);
             $curl->prepare($splitQuery);
@@ -64,25 +78,60 @@ namespace EnterMobileApplication\Controller\Cart {
             $curl->execute();
 
             // разбиение
-            $splitData = [];
             try {
                 $splitData = $splitQuery->getResult();
+
+                // добавление данных о корзине
+                $splitData['cart'] = [
+                    'product_list' => array_map(function(Model\Cart\Product $product) { return ['id' => $product->id, 'quantity' => $product->quantity]; }, $cart->product),
+                ];
+
+                // сохранение в сессии
+                $session->set($config->order->splitSessionKey, $splitData);
+
+                $response->split = new Model\Cart\Split($splitData);
             } catch (Query\CoreQueryException $e) {
                 $response->errors = $orderRepository->getErrorList($e);
             }
 
-            // добавление данных о корзине
-            $splitData['cart'] = [
-                'product_list' => array_map(function(Model\Cart\Product $product) { return ['id' => $product->id, 'quantity' => $product->quantity]; }, $cart->product),
-            ];
-
-            // сохранение в сессии
-            $session->set($config->order->splitSessionKey, $splitData);
-
-            $response->split = new Model\Cart\Split($splitData);
-
             // response
             return new Http\JsonResponse($response);
+        }
+
+        private function dumpChange($changeData, $previousSplitData) {
+            $dump = [];
+
+            if (!empty($changeData['orders']) && is_array($changeData['orders'])) {
+                foreach ($changeData['orders'] as $orderItem) {
+                    $blockName = isset($orderItem['blockName']) ? $orderItem['blockName'] : null;
+
+                    if (!$blockName || !isset($previousSplitData['orders'][$blockName])) {
+                        $this->getLogger()->push(['type' => 'warn', 'message' => 'Передан несуществующий блок заказа']);
+                        continue;
+                    }
+
+                    $dump['orders'][$blockName] = $previousSplitData['orders'][$blockName];
+
+                    // метод доставки
+                    if (isset($orderItem['delivery']['methodToken'])) {
+                        $dump['orders'][$blockName]['delivery'] = [
+                            'delivery_method_token' => $orderItem['delivery']['methodToken'],
+                        ];
+                    }
+
+                    // точка доставки
+                    if (isset($orderItem['delivery']['point']['id']) && isset($orderItem['delivery']['point']['groupToken'])) {
+                        $dump['orders'][$blockName]['delivery']['point'] = [
+                            'id'    => $orderItem['delivery']['point']['id'],
+                            'token' => $orderItem['delivery']['point']['groupToken'],
+
+                        ];
+                    }
+                }
+            }
+            //die(var_dump($dump));
+
+            return $dump;
         }
     }
 }
