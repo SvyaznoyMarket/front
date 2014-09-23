@@ -173,6 +173,11 @@
         "pattern": "/search"
     },
 
+    "Compare\\Index": {
+        "name": "Сравнение товаров",
+        "pattern": "/compare"
+    },
+
     "ProductSet\\Index": {
         "name": "Сеты товаров",
         "pattern": "/products/set/{productBarcodes}"
