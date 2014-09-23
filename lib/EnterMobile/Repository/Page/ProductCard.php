@@ -352,7 +352,14 @@ class ProductCard {
             // значения свойств, индексированные по ид
             $propertyValuesById = [];
             foreach ($productModel->properties as $propertyModel) {
-                $propertyValuesById[$propertyModel->id] = $propertyModel->value;
+                if ($propertyModel->isMultiple) {
+                    $propertyValuesById[$propertyModel->id] = [];
+                    foreach ($propertyModel->options as $option) {
+                        $propertyValuesById[$propertyModel->id][] = $option->value;
+                    }
+                } else {
+                    $propertyValuesById[$propertyModel->id] = [$propertyModel->value];
+                }
             }
 
             foreach ([
@@ -368,7 +375,7 @@ class ProductCard {
                     $property->isImage = $propertyModel->isImage;
                     foreach ($propertyModel->options as $optionModel) {
                         $option = new Page\Content\Product\ModelBlock\Property\Option();
-                        $option->isActive = isset($propertyValuesById[$propertyModel->id]) && ($propertyValuesById[$propertyModel->id] == $optionModel->value);
+                        $option->isActive = isset($propertyValuesById[$propertyModel->id]) && in_array($optionModel->value, $propertyValuesById[$propertyModel->id], true);
                         $option->url = $optionModel->product ? $optionModel->product->link : null;
                         $option->shownValue = $optionModel->value;
                         $option->unit = $propertyModel->unit;
