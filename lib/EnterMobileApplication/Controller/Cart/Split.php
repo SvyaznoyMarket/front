@@ -101,6 +101,7 @@ namespace EnterMobileApplication\Controller\Cart {
         private function dumpChange($changeData, $previousSplitData) {
             $dump = [];
 
+            // заказ
             if (!empty($changeData['orders']) && is_array($changeData['orders'])) {
                 foreach ($changeData['orders'] as $orderItem) {
                     $blockName = isset($orderItem['blockName']) ? $orderItem['blockName'] : null;
@@ -156,6 +157,50 @@ namespace EnterMobileApplication\Controller\Cart {
                             $productItem['quantity'] = $quantitiesByProductId[$productItem['id']];
                         }
                         unset($productItem);
+                    }
+                }
+            }
+
+            // инфо пользователя
+            if (!empty($changeData['user'])) {
+                $dump['user_info'] = $previousSplitData['user_info'];
+
+                if (array_key_exists('phone', $changeData['user'])) {
+                    $dump['user_info']['phone'] = $changeData['user']['phone'];
+                }
+                if (array_key_exists('lastName', $changeData['user'])) {
+                    $dump['user_info']['last_name'] = $changeData['user']['lastName'];
+                }
+                if (array_key_exists('firstName', $changeData['user'])) {
+                    $dump['user_info']['first_name'] = $changeData['user']['firstName'];
+                }
+                if (array_key_exists('email', $changeData['user'])) {
+                    $dump['user_info']['email'] = $changeData['user']['email'];
+                }
+                if (array_key_exists('bonusCardNumber', $changeData['user'])) {
+                    $dump['user_info']['bonus_card_number'] = $changeData['user']['bonusCardNumber'];
+                }
+                if (array_key_exists('address', $changeData['user'])) {
+                    if (array_key_exists('street', $changeData['user']['address'])) {
+                        $dump['user_info']['address']['street'] = $changeData['user']['address']['street'];
+                    }
+                    if (array_key_exists('building', $changeData['user']['address'])) {
+                        $dump['user_info']['address']['building'] = $changeData['user']['address']['building'];
+                    }
+                    if (array_key_exists('number', $changeData['user']['address'])) {
+                        $dump['user_info']['address']['number'] = $changeData['user']['address']['number'];
+                    }
+                    if (array_key_exists('apartment', $changeData['user']['address'])) {
+                        $dump['user_info']['address']['apartment'] = $changeData['user']['address']['apartment'];
+                    }
+                    if (array_key_exists('floor', $changeData['user']['address'])) {
+                        $dump['user_info']['address']['floor'] = $changeData['user']['address']['floor'];
+                    }
+                    if (array_key_exists('subwayName', $changeData['user']['address'])) {
+                        $dump['user_info']['address']['metro_station'] = $changeData['user']['address']['subwayName'];
+                    }
+                    if (array_key_exists('kladrId', $changeData['user']['address'])) {
+                        $dump['user_info']['address']['kladr_id'] = $changeData['user']['address']['kladrId'];
                     }
                 }
             }
