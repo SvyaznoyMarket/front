@@ -38,7 +38,7 @@ define(
                 }
 
                 dataValue.page = 1;
-                loadProducts(e, {clear: true});
+                loadProducts({clear: true});
             },
 
             deleteFilter = function(e) {
@@ -73,7 +73,7 @@ define(
                     }
 
                     dataValue.page = 1;
-                    loadProducts(e, {clear: true});
+                    loadProducts({clear: true});
 
                     e.preventDefault();
                 }
@@ -109,7 +109,7 @@ define(
                 });
 
                 dataValue.page = 1;
-                loadProducts(e, {clear: true});
+                loadProducts({clear: true});
 
                 e.preventDefault();
             },
@@ -130,7 +130,7 @@ define(
                     });
 
                     dataValue.page = 1;
-                    loadProducts(e, {clear: true});
+                    loadProducts({clear: true});
 
                     e.preventDefault();
                 }
@@ -141,12 +141,12 @@ define(
 
                 console.info('loadMoreProducts', e);
 
-                loadProducts(e, {clear: false});
+                loadProducts({clear: false});
 
                 e.preventDefault();
             },
 
-            loadProducts = function(e, options) {
+            loadProducts = function(options) {
                 var $moreLink = $('.js-productList-more'),
                     //$container = $($el.data('containerSelector')),
                     url = $listContainer.data('url'),
@@ -192,6 +192,27 @@ define(
 
                     $moreLink.data('disabled', true);
                 }
+            },
+            restoreFilter = function() {
+                var dataValue = $listContainer.data('value');
+
+                $('.js-filter, .js-params').each(function() {
+                    $(':radio, :checkbox, :text', this).each(function() {
+                        var $el = $(this),
+                            elName = $el.attr('name');
+
+                        if ($el.is(':radio, :checkbox')) {
+                            if ($el.is(':checked')) {
+                                dataValue[elName] = $el.val();
+                            }
+                        } else if ($el.is(':text')) {
+                            dataValue[elName] = $el.val();
+                        }
+                    });
+                });
+
+                dataValue.page = 1;
+                loadProducts({clear: true});
             }
         ;
 
@@ -203,6 +224,8 @@ define(
             .on('change', 'input[type="text"].js-productFilter-set', setFilter)
             .on('click', '.js-productFilter-delete', deleteFilter)
             .on('click', '.js-productFilter-clear', clearFilter)
-            .on('click', '.js-productFilter-sort', setSorting)
+            .on('click', '.js-productFilter-sort', setSorting);
+
+        restoreFilter();
     }
 );
