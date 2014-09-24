@@ -39,14 +39,6 @@ class GetItem extends Query {
             $this->url->query['geo_ui'] = $region->ui;
         }
 
-        $this->data = [
-            'cart' => [
-                'product_list' => array_values(array_map(function(Model\Cart\Product $cartProduct) {
-                    return array_merge(['quantity' => $cartProduct->quantity], $cartProduct->id ? ['id' => $cartProduct->id] : ['ui' => $cartProduct->ui]);
-                }, $cart->product)),
-            ],
-        ];
-
         if ($shop) {
             if ($shop->id != null) {
                 $this->data['shop_id'] = $shop->id;
@@ -66,6 +58,14 @@ class GetItem extends Query {
         if ($previousSplit && $change) {
             $this->data['previous_split'] = $previousSplit;
             $this->data['changes'] = $change;
+        } else {
+            $this->data = [
+                'cart' => [
+                    'product_list' => array_values(array_map(function(Model\Cart\Product $cartProduct) {
+                        return array_merge(['quantity' => $cartProduct->quantity], $cartProduct->id ? ['id' => $cartProduct->id] : ['ui' => $cartProduct->ui]);
+                    }, $cart->product)),
+                ],
+            ];
         }
 
         $this->init();

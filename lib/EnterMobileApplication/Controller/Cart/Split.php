@@ -30,13 +30,13 @@ namespace EnterMobileApplication\Controller\Cart {
             // ответ
             $response = new Response();
 
+            // изменения
+            $changeData = $request->data['change'] ?: null;
+
             // данные о корзине
             if (empty($request->data['cart']['products'][0]['id'])) {
                 throw new \Exception('Не передан параметр cart.products[0].id');
             }
-
-            // изменения
-            $changeData = $request->data['change'] ?: null;
 
             // предыдущее разбиение
             $previousSplitData = null;
@@ -110,7 +110,9 @@ namespace EnterMobileApplication\Controller\Cart {
                         continue;
                     }
 
-                    $dump['orders'][$blockName] = $previousSplitData['orders'][$blockName];
+                    $dump['orders'][$blockName] = $previousSplitData['orders'][$blockName] + [
+                        'products' => [],
+                    ];
 
                     // метод получения
                     if (isset($orderItem['delivery']['methodToken'])) {
@@ -137,9 +139,26 @@ namespace EnterMobileApplication\Controller\Cart {
                     if (isset($orderItem['delivery']['interval'])) {
                         $dump['orders'][$blockName]['delivery']['interval'] = $orderItem['delivery']['interval'];
                     }
+
+                    // количество товаров
+                    if (isset($orderItem['products'][0])) {
+                        $quantitiesByProductId = [];
+                        foreach ($orderItem['products'] as $productItem) {
+                            if (empty($productItem['id']) || !isset($productItem['quantity'])) continue;
+
+                            $quantitiesByProductId[$productItem['id']] = (int)$productItem['quantity'];
+                        }
+
+                        $productItem = null;
+                        foreach ($dump['orders'][$blockName]['products'] as &$productItem) {
+                            if (!isset($productItem['id']) || !isset($quantitiesByProductId[$productItem['id']])) continue;
+
+                            $productItem['quantity'] = $quantitiesByProductId[$productItem['id']];
+                        }
+                        unset($productItem);
+                    }
                 }
             }
-            //die(var_dump($dump));
 
             return $dump;
         }
