@@ -75,6 +75,8 @@ namespace EnterAggregator {
         public $promo;
         /** @var Config\DirecCredit */
         public $directCredit;
+        /** @var Config\ProductLabel */
+        public $productLabel;
 
         public function __construct() {
             $this->logger = new Config\Logger();
@@ -114,6 +116,7 @@ namespace EnterAggregator {
             $this->promo = new Config\Promo();
 
             $this->directCredit = new Config\DirecCredit();
+            $this->productLabel = new Config\ProductLabel();
         }
     }
 }
@@ -351,6 +354,11 @@ namespace EnterAggregator\Config {
         public $minPrice;
         /** @var string */
         public $partnerId;
+    }
+
+    class ProductLabel {
+        /** @var array */
+        public $urlPaths = [];
     }
 }
 

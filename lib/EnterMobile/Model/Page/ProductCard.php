@@ -92,6 +92,10 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
         public $moreModelBlock;
         /** @var Partial\DirectCredit|null */
         public $credit;
+        /** @var \EnterModel\Brand|null */
+        public $brand;
+        /** @var \EnterModel\Product\Label[] */
+        public $labels = [];
 
         public function __construct() {}
     }

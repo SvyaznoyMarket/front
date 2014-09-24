@@ -21,4 +21,6 @@ class Request {
     public $products = [];
     /** @var int */
     public $count;
+    /** @var \EnterModel\Product\Category|null */
+    public $category;
 }
