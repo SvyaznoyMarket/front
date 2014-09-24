@@ -106,26 +106,36 @@ namespace EnterMobileApplication\Controller\Cart {
                     $blockName = isset($orderItem['blockName']) ? $orderItem['blockName'] : null;
 
                     if (!$blockName || !isset($previousSplitData['orders'][$blockName])) {
-                        $this->getLogger()->push(['type' => 'warn', 'message' => 'Передан несуществующий блок заказа']);
+                        $this->getLogger()->push(['type' => 'warn', 'message' => 'Передан несуществующий блок заказа', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
                         continue;
                     }
 
                     $dump['orders'][$blockName] = $previousSplitData['orders'][$blockName];
 
-                    // метод доставки
+                    // метод получения
                     if (isset($orderItem['delivery']['methodToken'])) {
                         $dump['orders'][$blockName]['delivery'] = [
                             'delivery_method_token' => $orderItem['delivery']['methodToken'],
                         ];
                     }
 
-                    // точка доставки
+                    // точка получения
                     if (isset($orderItem['delivery']['point']['id']) && isset($orderItem['delivery']['point']['groupToken'])) {
                         $dump['orders'][$blockName]['delivery']['point'] = [
                             'id'    => $orderItem['delivery']['point']['id'],
                             'token' => $orderItem['delivery']['point']['groupToken'],
 
                         ];
+                    }
+
+                    // дата получения
+                    if (isset($orderItem['delivery']['date'])) {
+                        $dump['orders'][$blockName]['delivery']['date'] = $orderItem['delivery']['date'];
+                    }
+
+                    // интервал
+                    if (isset($orderItem['delivery']['interval'])) {
+                        $dump['orders'][$blockName]['delivery']['interval'] = $orderItem['delivery']['interval'];
                     }
                 }
             }
