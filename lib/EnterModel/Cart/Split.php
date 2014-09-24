@@ -41,7 +41,7 @@ class Split {
             $this->paymentMethods[] = new Split\PaymentMethod($item);
         }
 
-        foreach ($data['points'] as $token => $item) {
+        foreach ((array)$data['points'] as $token => $item) { // FIXME
             $item['token'] = $token;
             $this->pointGroups[] = new Split\PointGroup($item);
         }
