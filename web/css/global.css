@@ -4359,6 +4359,11 @@ body.noScroll {
     margin: 0;
   }
 }
+.noProducts {
+  font-size: 1.3em;
+  margin: 5em 0 3em 0;
+  text-align: center;
+}
 /** блок с параметрами фильтра .params .paramsList **/
 /* ==========================================================================
    Каталог -> блок с параметрами фильтра .params .paramsList
@@ -5911,8 +5916,7 @@ body.noScroll {
     background: #f7f7f7;
   }
   .orderComplSumm {
-    width: 925px;
-    margin: 40px 0 0 -10px;
+    margin: 40px 0 0;
     padding: 10px 10px 10px 25px;
     border-top: 1px solid #a6a6a6;
   }
