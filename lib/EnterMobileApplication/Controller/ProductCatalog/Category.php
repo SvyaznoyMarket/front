@@ -112,18 +112,34 @@ class Category {
         array $sortings
     ) {
         $response = [
-            'category'     => [
-                'id'           => $category->id,
-                'name'         => $category->name,
-                'image'        => $category->image,
-                'productCount' => $category->productCount,
-                'hasChildren'  => $category->hasChildren,
-            ],
+            'category'     => null,
             'productCount' => $idPager->count,
             'products'     => [],
             'filters'      => [],
             'sortings'     => [],
         ];
+
+        $maxLevel = $category->level + 1;
+        $walkByCategory = function(\EnterModel\Product\Category $category) use (&$walkByCategory, &$maxLevel) {
+            $response = [
+                'id'          => $category->id,
+                'name'        => $category->name,
+                'image'       => $category->image,
+                'hasChildren' => $category->hasChildren,
+            ];
+
+            if (($category->level < $maxLevel) && $category->children) {
+                $response['children'] = [];
+                foreach ($category->children as $child) {
+                    $response['children'][] = $walkByCategory($child);
+                }
+            }
+
+            return $response;
+        };
+
+        // категория
+        $response['category'] = $walkByCategory($category);
 
         // товары
         $response['products'] = $this->getProductList($products);
@@ -149,7 +165,6 @@ class Category {
         ];
 
         $maxLevel = $category->level + 1;
-
         $walkByCategory = function(\EnterModel\Product\Category $category) use (&$walkByCategory, &$maxLevel) {
             $response = [
                 'id'          => $category->id,
