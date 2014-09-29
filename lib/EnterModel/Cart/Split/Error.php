@@ -21,8 +21,10 @@ class Error {
             switch ($this->code) {
                 case 708:
                     $this->detail = [
-                        'productId'            => @$detailItem['product_id'] ?: null,
-                        'productUi'            => @$detailItem['product_ui'] ?: null,
+                        'product'              => [
+                            'id' => @$detailItem['product_id'] ?: null,
+                            'ui' => @$detailItem['product_ui'] ?: null,
+                        ],
                         'maxAvailableQuantity' => @$detailItem['max_available_quantity'] ? (int)$detailItem['max_available_quantity'] : 0,
                         'requestedQuantity'    => @$detailItem['requested_amount'] ? (int)$detailItem['requested_amount'] : 0,
                         'blockName'            => @$detailItem['block_name'] ?: null,

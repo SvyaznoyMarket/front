@@ -90,6 +90,46 @@ namespace EnterMobileApplication\Controller\Cart {
                 $session->set($config->order->splitSessionKey, $splitData);
 
                 $response->split = new Model\Cart\Split($splitData);
+
+                // обогащение данными о товарах
+                /** @var Model\Product[] $productsById */
+                $productsById = [];
+                foreach ($response->split->errors as $error) {
+                    $productId = !empty($error->detail['product']['id']) ? $error->detail['product']['id'] : null;
+                    if (!$productId) continue;
+
+                    $productsById[$productId] = null;
+                }
+                if ((bool)$productsById) {
+                    $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id);
+                    $curl->prepare($productListQuery)->execute();
+
+                    try {
+                        foreach ($productListQuery->getResult() as $productItem) {
+                            $productId = @$productItem['id'] ? (string)$productItem['id'] : null;
+                            if (!$productId) continue;
+
+                            $productsById[$productId] = new Model\Product($productItem);
+                        }
+
+                        foreach ($response->split->errors as $error) {
+                            $productId = !empty($error->detail['product']['id']) ? $error->detail['product']['id'] : null;
+                            /** @var Model\Product|null $product */
+                            $product = ($productId && isset($productsById[$productId])) ? $productsById[$productId] : null;
+
+                            if (!$product) continue;
+
+                            $error->detail['product'] += [
+                                'name'    => $product->name,
+                                'webName' => $product->webName,
+                            ];
+                        }
+                    } catch (\Exception $e) {
+                        $this->getLogger()->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                    }
+                }
+
+
             } catch (Query\CoreQueryException $e) {
                 $response->errors = $orderRepository->getErrorList($e);
             }
@@ -98,6 +138,11 @@ namespace EnterMobileApplication\Controller\Cart {
             return new Http\JsonResponse($response);
         }
 
+        /**
+         * @param $changeData
+         * @param $previousSplitData
+         * @return array
+         */
         private function dumpChange($changeData, $previousSplitData) {
             $dump = [];
 
