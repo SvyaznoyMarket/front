@@ -100,7 +100,7 @@ namespace EnterAggregator\Controller {
                 $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
                 if (!$response->category) {
                     // костыль для ядра
-                    $categoryUi = isset($categoryAdminItemQuery->getResult()['ui']) ? $categoryAdminItemQuery->getResult()['ui'] : null;
+                    $categoryUi = ($categoryAdminItemQuery && isset($categoryAdminItemQuery->getResult()['ui'])) ? $categoryAdminItemQuery->getResult()['ui'] : null;
                     $categoryItemQuery = $categoryUi ? new Query\Product\Category\GetItemByUi($categoryUi, $response->region->id) : null;
 
                     if ($categoryItemQuery) {

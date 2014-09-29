@@ -60,7 +60,7 @@ class Category {
         $context->mainMenu = false;
         $context->parentCategory = false;
         $context->branchCategory = false;
-        $context->productOnlyForLeafCategory = true;
+        $context->productOnlyForLeafCategory = false;
         $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
             $regionId,
             ['id' => $categoryId], // критерий получения категории товара
