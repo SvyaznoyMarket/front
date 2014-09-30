@@ -62,11 +62,11 @@ namespace EnterMobileApplication\Controller\Cart {
             $curl->execute();
 
             // регион
-            $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+            $response->region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
-                new Model\Region(['id' => $region->id]),
+                new Model\Region(['id' => $response->region->id]),
                 null,
                 null,
                 (array)$previousSplitData,
@@ -101,7 +101,7 @@ namespace EnterMobileApplication\Controller\Cart {
                     $productsById[$productId] = null;
                 }
                 if ((bool)$productsById) {
-                    $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id);
+                    $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $response->region->id);
                     $curl->prepare($productListQuery)->execute();
 
                     try {
