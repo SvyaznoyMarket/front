@@ -1,17 +1,17 @@
 <?php
 
-namespace EnterTerminal\Controller\Order {
+namespace EnterMobileApplication\Controller\Order {
 
     use Enter\Http;
-    use EnterTerminal\ConfigTrait;
+    use EnterMobileApplication\ConfigTrait;
     use EnterAggregator\CurlTrait;
     use EnterAggregator\LoggerTrait;
     use EnterAggregator\SessionTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
-    use EnterTerminal\Repository;
-    use EnterTerminal\Controller;
-    use EnterTerminal\Controller\Order\Create\Response;
+    use EnterMobileApplication\Repository;
+    use EnterMobileApplication\Controller;
+    use EnterMobileApplication\Controller\Order\Create\Response;
 
     class Create {
         use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
@@ -31,10 +31,10 @@ namespace EnterTerminal\Controller\Order {
             $response = new Response();
 
             // данные пользователя
-            $userData = (array)$request->data['user_info'];
+            $userData = (array)(isset($request->data['user']) ? $request->data['user'] : []);
 
             // ид региона
-            $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+            $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request);
             if (!$regionId) {
                 throw new \Exception('Не передан параметр regionId');
             }
@@ -67,7 +67,7 @@ namespace EnterTerminal\Controller\Order {
             }
 
             // слияние данных о пользователе
-            $splitData['user_info'] = array_merge($splitData['user_info'], $userData);
+            $splitData['user'] = array_merge((array)(isset($splitData['user']) ? $splitData['user'] : []), $userData);
 
             $split = null;
             try {
@@ -85,26 +85,10 @@ namespace EnterTerminal\Controller\Order {
             // meta
             $metas = [];
 
-            // отправлять смс?
-            $isReceiveSms = false;
-            if ((bool)$request->data['send_sms']) {
-                $isReceiveSms = 1;
-
-                $meta = new Model\Order\Meta();
-                $meta->key = 'send_sms';
-                $meta->value = 1;
-                $metas[] = $meta;
-            }
-
-            if (!empty($request->data['user_info']['sms_code'])) {
-                $split->user->smsCode = (string)$request->data['user_info']['sms_code'];
-            }
-
             $controllerResponse = (new \EnterAggregator\Controller\Order\Create())->execute(
                 $region->id,
                 $split,
-                $metas,
-                $isReceiveSms
+                $metas
             );
 
             $response->orders = $controllerResponse->orders;
@@ -118,7 +102,7 @@ namespace EnterTerminal\Controller\Order {
     }
 }
 
-namespace EnterTerminal\Controller\Order\Create {
+namespace EnterMobileApplication\Controller\Order\Create {
     use EnterModel as Model;
 
     class Response {
