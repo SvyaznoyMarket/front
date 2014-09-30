@@ -64,6 +64,9 @@ class ShopList {
                 'address' => (string)$shopItem['address'],
                 'regime'  => (string)$shopItem['working_time'],
                 'type'    => 'shop',
+                'subway'  => @$shopItem['subway'][0] ? array_map(function($item) {
+                    return ['name' => @$item['name'], 'line' => @$item['line']];
+                }, $shopItem['subway']) : [],
             ];
 
             $regionDataById[$regionId]['shops'][] = $shopItem;
