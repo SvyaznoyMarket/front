@@ -30,6 +30,8 @@ class Order {
     public $typeId;
     /** @var int */
     public $statusId;
+    /** @var Model\Order\Status|null */
+    public $status;
     /** @var string */
     public $number;
     /** @var string */
@@ -66,6 +68,8 @@ class Order {
     public $paymentMethodId;
     /** @var string|null */
     public $paymentStatusId;
+    /** @var Model\Order\PaymentStatus|null */
+    public $paymentStatus;
     /** @var string */
     public $paymentUrl;
     /** @var Model\Order\Delivery[] */
@@ -84,6 +88,7 @@ class Order {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('type_id', $data)) $this->typeId = (int)$data['type_id'];
         if (array_key_exists('status_id', $data)) $this->statusId = (int)$data['status_id'];
+        if ($this->statusId) $this->status = new Model\Order\Status(['id' => $this->statusId]);
         if (array_key_exists('number', $data)) $this->number = (string)$data['number'];
         if (array_key_exists('number_erp', $data)) $this->numberErp = (string)$data['number_erp'];
         if (array_key_exists('access_token', $data)) $this->token = $data['access_token'] ? (string)$data['access_token'] : null;
@@ -114,6 +119,7 @@ class Order {
         if (array_key_exists('subway_id', $data)) $this->subwayId = (string)$data['subway_id'];
         if (array_key_exists('payment_id', $data)) $this->paymentMethodId = (string)$data['payment_id'];
         if (array_key_exists('payment_status_id', $data)) $this->paymentStatusId = $data['payment_status_id']? (string)$data['payment_status_id'] : null;
+        if ($this->paymentStatusId) $this->paymentStatus = new Model\Order\PaymentStatus(['id' => $this->paymentStatusId]);
         if (array_key_exists('payment_url', $data)) $this->paymentUrl = (string)$data['payment_url'];
         if (isset($data['delivery'][0]['delivery_id'])) {
             foreach ($data['delivery'] as $deliveryItem) {
