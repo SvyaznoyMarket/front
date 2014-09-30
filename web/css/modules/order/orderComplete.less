@@ -13,30 +13,30 @@
 	background: rgba(252, 171, 47, 0.2);
 
 	&_l {
-//		float: left;
-
-		width: 685px;
 		margin: 0;
 
 		font-size: 14px;
 
 		&-ln {
-		    margin: 2px 0 0;
-			padding: 8px 0 0 15px;
-			display: inline-block;
-			vertical-align: top;
+			padding: 0 220px 0 15px;
+			font-weight: bold;
+    		line-height: 1.1;
 		} 
 	}
 
 	&_btn {
-		min-width: 220px;
-		height: 40px;
+		min-width: 210px;
+		height: 36px;
         margin: 0 auto;
         display: block;
 
 		font-size: 20px;
 		font-weight: bold;
 		line-height: 32px;
+
+		&_mt {
+			margin-top: 3px;
+		}
 	}
 
     &_continue_link {
@@ -49,6 +49,10 @@
     &_final {
        background: #f7f7f7;
     }
+
+    .orderCheck-str {
+    	background-position: 0 7px;
+    }
 }
 
 .orderComplSumm {
@@ -56,5 +60,6 @@
 	padding: 10px 10px 10px 25px;
 
 	border-top: 1px solid @typGray;
-	//background: @lightgreyBg;
+	border-bottom: 1px solid @typGray;
+	background: @lightGrey5;
 }
