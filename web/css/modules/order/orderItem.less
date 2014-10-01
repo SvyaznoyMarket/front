@@ -13,13 +13,11 @@
 .orderCol {
 
 	&_cnt {
-		padding: 10px 5px 5px;
+		padding: 5px 0;
 		border-bottom: 1px solid @typLightGray;
-		display: block;
 
 		&:last-child {
 			border-bottom: none;
-			padding-bottom: 0;
 		}
 
 		&:first-child {
@@ -33,31 +31,44 @@
 	}
 
 	&_b {
-		padding: 10px 7px;
-
-		border-bottom: 1px solid @typGray;
-		background: @lightGrey6;
-	}
-
-	&_bw {
-		padding: 10px 7px;
-
-		border-bottom: 1px solid @typGray;
-		background: @white;
-	}
-
-	&_t {
-		line-height: 1;
-    	padding: 5px 7px;
+		padding: 10px 10px;
 
 		border-bottom: 1px solid @typGray;
 		background: @lightGrey6;
 
-		font-weight: bold;
+		&-wht {
+			background: @white;
+		}
+
+		&-t {
+			line-height: 1;
+			padding: 3px 10px 4px;
+			font-weight: bold;
+		}
+
+		&-np {
+			padding: 0;
+		}
+
+		&-confrm {
+		
+			.orderCol_mode,
+			.orderCol_mode_i-act {
+				background: @lightGrey6;
+			}
+
+			.orderCol_mode_i-act {
+				background: @white;
+				border-bottom: 1px solid @white;
+			}
+
+			.orderCol_inn {
+				background: @white;
+			}
+		}
 	}
 
 	&_lk {
-		float: left;
 		width: 70px;
 	}
 
@@ -65,10 +76,6 @@
 		display: block;
 
 		width: 70px;
-	}
-
-	&_descr {
-		padding-left: 80px;
 	}
 
 	&_n {
@@ -83,7 +90,6 @@
 		.inline-block();
 
 		margin-top: 10px;
-		margin-left: 10px;
 
 		color: @darkGrey4;
 
@@ -112,7 +118,7 @@
 		&-price {
 			float: right;
 			color: @black;
-			padding-left: 40px;
+			padding-left: 60px;
 		}
 	}
 
@@ -167,7 +173,22 @@
 	.shopLst {
 	    max-height: 200px;
 	    overflow: auto;
-	    margin: -1px 0 0;
 	    position: relative;
+
+	    &_i {
+	    	border-bottom: 1px solid @lightGrey1;
+    		border-top: medium none;
+
+    		&:last-child {
+    			border-bottom: none;
+    		}
+	    }
+
+	    &_addrs {
+
+	    	&_tm {
+				display: table;
+	    	}
+	    }
 	}
 }

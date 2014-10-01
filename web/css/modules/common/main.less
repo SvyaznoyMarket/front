@@ -579,3 +579,23 @@ textarea[contenteditable] {
     white-space: nowrap;
     word-wrap: normal;
 }
+
+.table {
+    display: table;
+    width: 100%;
+    box-sizing: border-box;
+
+    &_cell {
+        display: table-cell;
+        vertical-align: middle;
+        padding-right: 10px;
+
+        &:last-child {
+            padding-right: 0;
+        }
+
+        &-w100 {
+            width: 100%;
+        }
+    }
+}

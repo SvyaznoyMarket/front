@@ -1,100 +1,84 @@
 .orderCol {
 
-	&_deliv {
+	&_mode {
+		font-size: 12px;
+		margin: -1px 0 0;
+		padding: 0;
+		border-bottom: 1px solid @typGray;
+		background: @lightGrey6;
 
-		&_hd {
-			font-size: 12px;
-			margin: -1px 0 0;
-			padding: 0;
+		&_i {
+			padding: 10px 0;
+			float: left;
+			list-style-type: none;
+			.box-sizing();
+			width: 170px;
+			text-align: center;
+			margin-bottom: -1px;
+
+			cursor: pointer;
+			
+			border-top: 1px solid @typGray;
 			border-bottom: 1px solid @typGray;
+			border-right: 1px solid @typGray;
 			background: @lightGrey6;
 
-			&_i {
-				padding: 10px 0;
-				float: left;
-				list-style-type: none;
-				.box-sizing();
-				width: 170px;
-				text-align: center;
-				margin-bottom: -1px;
+			&-act {
+				cursor: default;
+				background: #FEEED4;
 
-				cursor: pointer;
-				
-				border-top: 1px solid @typGray;
-				border-bottom: 1px solid @typGray;
-				border-right: 1px solid @typGray;
-				background: @lightGrey6;
-
-				&-act {
-					cursor: default;
-					background: #FEEED4;
-
-					border-bottom: 1px solid #FEEED4;
-					font-weight: bold;
-				}
-			}
-
-	        &_i_span_inactive {
-	            border-bottom: 1px dotted @typGray;
-	            padding-bottom: 3px;
-	        }
-
-		}
-
-		&_opt {
-			background: rgba(252, 171, 41, 0.2);
-			padding: 10px 0 0;
-			border-bottom: 1px solid @typGray;
-
-			&_btn {
-				text-align: center;
-			}
-
-			&_i {
-				width: 31%;
-				font-weight: normal;
-				height: 35px;
-				margin: 0 0.5% 10px;
-				line-height: 33px;
+				border-bottom: 1px solid #FEEED4;
+				font-weight: bold;
 			}
 		}
 
-		&_slb {
+        &_i_span_inactive {
+            border-bottom: 1px dotted @typGray;
+            padding-bottom: 3px;
+        }
 
-			&_h {
-				border-top: 1px solid @lightGrey1;
-				border-bottom: 1px solid @lightGrey1;
-				background: @lightGrey6;
-				padding: 7px;
-			}
+	}
 
-			&_cnsl {
-				margin: 2px 0 0;
-				cursor: pointer;
-				float: right;
-				border-bottom: 1px dotted;
-			}
+	&_opt {
+		background: #feeed4;
+		padding: 10px 0 0;
 
-			&_t {
-				float: left;
-			}
+		&_t {
+			margin: 0 0 5px;
+			font-weight: bold;
 		}
 
-		&-confrm {
-			
-			.orderCol_deliv_hd,
-			.orderCol_deliv_hd_i-act {
-				background: @lightGrey6;
-			}
+		&_btn {
+			text-align: center;
+		}
 
-			.orderCol_deliv_hd_i-act {
-				background: @white;
-				border-bottom: 1px solid @white;
-			}
+		&_i {
+			width: 31%;
+			font-weight: normal;
+			height: 35px;
+			margin: 0 0.5% 10px;
+			line-height: 33px;
+		}
+	}
 
-			.orderCol_inn {
-				background: @white;
-			}
+	&_slb {
+
+		&_h {
+			border-top: 1px solid @lightGrey1;
+			border-bottom: 1px solid @lightGrey1;
+			background: @lightGrey6;
+			padding: 7px;
+		}
+
+		&_cnsl {
+			margin: 2px 0 0;
+			cursor: pointer;
+			float: right;
+			border-bottom: 1px dotted;
+		}
+
+		&_t {
+			float: left;
 		}
 	}
 }
