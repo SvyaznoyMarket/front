@@ -129,6 +129,12 @@ namespace EnterMobileApplication\Controller\Cart {
                     }
                 }
 
+                // type fix
+                foreach ($response->split->orders as $order) {
+                    if (!(bool)$order->groupedPossiblePointIds) {
+                        $order->groupedPossiblePointIds = null;
+                    }
+                }
 
             } catch (Query\CoreQueryException $e) {
                 $response->errors = $orderRepository->getErrorList($e);
