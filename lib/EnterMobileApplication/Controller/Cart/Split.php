@@ -135,6 +135,7 @@ namespace EnterMobileApplication\Controller\Cart {
                         $order->groupedPossiblePointIds = null;
                     }
                 }
+                unset($response->split->region);
 
             } catch (Query\CoreQueryException $e) {
                 $response->errors = $orderRepository->getErrorList($e);
