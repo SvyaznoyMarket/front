@@ -72,7 +72,7 @@ namespace EnterMobileApplication\Controller\Cart {
                 (array)$previousSplitData,
                 $changeData ? $this->dumpChange($changeData, $previousSplitData) : []
             );
-            $splitQuery->setTimeout($config->coreService->timeout * 2);
+            $splitQuery->setTimeout($config->coreService->timeout * 4);
             $curl->prepare($splitQuery);
 
             $curl->execute();
@@ -269,5 +269,7 @@ namespace EnterMobileApplication\Controller\Cart\Split {
         public $errors = [];
         /** @var array */
         public $split;
+        /** @var Model\Region|null */
+        public $region;
     }
 }
