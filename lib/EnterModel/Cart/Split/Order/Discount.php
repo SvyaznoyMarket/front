@@ -21,7 +21,7 @@ class Discount {
         $this->name = $data['name'] ? (string)$data['name'] : null;
         $this->discount = $data['discount'] ? (string)$data['discount'] : null;
         $this->type = $data['type'] ? (string)$data['type'] : null;
-        $this->number = $data['number'] ? (string)$data['number'] : null;
+        $this->number = isset($data['number']) ? (string)$data['number'] : null;
     }
 
     /**
