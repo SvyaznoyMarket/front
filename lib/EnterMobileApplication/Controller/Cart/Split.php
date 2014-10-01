@@ -62,11 +62,11 @@ namespace EnterMobileApplication\Controller\Cart {
             $curl->execute();
 
             // регион
-            $response->region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+            $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
-                new Model\Region(['id' => $response->region->id]),
+                new Model\Region(['id' => $region->id]),
                 null,
                 null,
                 (array)$previousSplitData,
@@ -90,6 +90,7 @@ namespace EnterMobileApplication\Controller\Cart {
                 $session->set($config->order->splitSessionKey, $splitData);
 
                 $response->split = new Model\Cart\Split($splitData);
+                $response->split->region = $region;
 
                 // обогащение данными о товарах
                 /** @var Model\Product[] $productsById */
@@ -101,7 +102,7 @@ namespace EnterMobileApplication\Controller\Cart {
                     $productsById[$productId] = null;
                 }
                 if ((bool)$productsById) {
-                    $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $response->region->id);
+                    $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id);
                     $curl->prepare($productListQuery)->execute();
 
                     try {
@@ -135,7 +136,6 @@ namespace EnterMobileApplication\Controller\Cart {
                         $order->groupedPossiblePointIds = null;
                     }
                 }
-                unset($response->split->region);
 
             } catch (Query\CoreQueryException $e) {
                 $response->errors = $orderRepository->getErrorList($e);
@@ -270,7 +270,5 @@ namespace EnterMobileApplication\Controller\Cart\Split {
         public $errors = [];
         /** @var array */
         public $split;
-        /** @var Model\Region|null */
-        public $region;
-    }
+     }
 }
