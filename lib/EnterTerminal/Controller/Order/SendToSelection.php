@@ -3,11 +3,12 @@
 namespace EnterTerminal\Controller\Order;
 
 use Enter\Http;
+use EnterTerminal\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterQuery as Query;
 
 class SendToSelection {
-    use CurlTrait;
+    use ConfigTrait, CurlTrait;
 
     /**
      * @param Http\Request $request
@@ -15,6 +16,7 @@ class SendToSelection {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
         $curl = $this->getCurl();
 
         if (!is_scalar($request->query['orderNumber'])) {
@@ -26,8 +28,8 @@ class SendToSelection {
         }
 
         $contentItemQuery = new Query\Order\SendToSelection($request->query['orderNumber'], $request->query['shopId']);
-        $curl->prepare($contentItemQuery);
-        $curl->execute();
+        $contentItemQuery->setTimeout(10 * $config->coreService->timeout);
+        $curl->prepare($contentItemQuery)->execute();
 
         if ($contentItemQuery->getError()) {
             $response = new Http\JsonResponse();
