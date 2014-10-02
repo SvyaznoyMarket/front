@@ -160,10 +160,14 @@
 			color: @firmRed;
 		}
 
-		&-del {
+		&-dlt {
 			color: @black;
-			border-bottom: 1px dotted;
             cursor: pointer;
+            display: block;
+		    font-size: 14px;
+		    margin-left: auto;
+		    margin-right: auto;
+		    text-align: center;
 
 			font-size: 14px;
 		}
@@ -172,6 +176,11 @@
 			float: right;
 			color: @black;
 			padding-left: 60px;
+		}
+
+		&-sale {
+			float: right;
+			color: #e8303c;
 		}
 	}
 
@@ -258,12 +267,6 @@
 				font-weight: bold;
 			}
 		}
-
-        &_i_span_inactive {
-            border-bottom: 1px dotted @typGray;
-            padding-bottom: 3px;
-        }
-
 	}
 
 	&_opt {

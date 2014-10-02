@@ -1,35 +1,63 @@
-.orderLnSet {
-	margin: 0 0 10px;
-}
-
 .orderLn {
-	padding: 10px;
+	margin: 0 0 20px;	
 
-	border-bottom: 1px solid @typGray;
+	border-width: 1px 1px 1px 5px;
+	border-color: @typGray;
+	border-style: solid;
 
-	&:first-child {
-		border-top: 1px solid @typGray;
+	&_mgnr {
+		margin-right: 15px;
 	}
 
-	.summT {
-		.inline-block();
+	&_b {
+		padding: 10px 10px;
+		background: @lightGrey6;
+
+		&-bg {
+			background: #feeed4;
+		}
+
+		&-wht {
+			background: @white;
+		}
 	}
 
-	.summP {
-		.inline-block();
-		width: 90px;
+	&_col2 {
+		line-height: 1.2;
 
-		text-align: right;
+		&_l {
+			width: 48%;
+			float: left;
+		}
+
+		&_r {
+			width: 48%;
+			float: right;
+			position: relative;
+		}
+
+		&-r {
+
+			.orderCol_col2_l {
+				text-align: right;
+				font-size: 16px;
+				line-height: 33px;
+			}
+		}
 	}
 
-	.payT {
-		margin-bottom: 5px;
-
+	&_f {
 		font-size: 16px;
-	}
 
-	.payBtn {
-		cursor: pointer;
+		&_t {
+			.inline-block();
+		}
+
+		&_tx {
+			.inline-block();
+			text-align: right;
+			width: 90px;
+		}
 	}
 
 	&_box {
@@ -128,22 +156,15 @@
 	}
 
 	&_btn {
-    	padding: 5px 15px;
-
-		line-height: 1.3 !important;
+    	line-height: 1.3;
+    	padding: 3px 10px 5px;
 	}
 
 	&_lst {
-		//color: @lightgrey-5;
-
-		font-size: 14px;
-
-		&_i {
-			padding: 1px 0;
-		}
+		color: #474747;
 
 		&_lk {
-			//color: @lightgrey-5;
+			color: #474747;
 			border-bottom: 1px dotted;
 		}
 	}

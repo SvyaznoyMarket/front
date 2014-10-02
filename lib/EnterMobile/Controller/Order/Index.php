@@ -69,7 +69,7 @@ class Index {
         $renderer->setPartials([
             'content' => 'page/order/content',
         ]);
-        $content = $renderer->render('layout/default', $page);
+        $content = $renderer->render('layout/simple', $page);
 
         // http-ответ
         $response = new Http\Response($content);
