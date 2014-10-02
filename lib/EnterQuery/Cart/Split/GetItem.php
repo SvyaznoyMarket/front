@@ -59,12 +59,10 @@ class GetItem extends Query {
             $this->data['previous_split'] = $previousSplit;
             $this->data['changes'] = $change;
         } else {
-            $this->data = [
-                'cart' => [
-                    'product_list' => array_values(array_map(function(Model\Cart\Product $cartProduct) {
-                        return array_merge(['quantity' => $cartProduct->quantity], $cartProduct->id ? ['id' => $cartProduct->id] : ['ui' => $cartProduct->ui]);
-                    }, $cart->product)),
-                ],
+            $this->data['cart'] = [
+                'product_list' => array_values(array_map(function(Model\Cart\Product $cartProduct) {
+                    return array_merge(['quantity' => $cartProduct->quantity], $cartProduct->id ? ['id' => $cartProduct->id] : ['ui' => $cartProduct->ui]);
+                }, $cart->product)),
             ];
         }
 
