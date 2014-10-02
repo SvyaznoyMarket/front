@@ -220,7 +220,7 @@ namespace EnterAggregator\Controller {
 
                 if ((bool)$cartProducts) {
                     $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList($cartProducts, $response->region->id);
-                    $curl->prepare($deliveryListQuery);
+                    //$curl->prepare($deliveryListQuery);
                 }
             }
 
