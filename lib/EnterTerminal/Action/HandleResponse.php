@@ -3,13 +3,14 @@
 namespace EnterTerminal\Action;
 
 use Enter\Http;
+use EnterTerminal\ConfigTrait;
 use EnterAggregator\RequestIdTrait;
 use EnterAggregator\LoggerTrait;
-use EnterTerminal\ConfigTrait;
+use EnterAggregator\SessionTrait;
 use EnterTerminal\Action;
 
 class HandleResponse {
-    use RequestIdTrait, ConfigTrait, LoggerTrait;
+    use RequestIdTrait, ConfigTrait, LoggerTrait, SessionTrait;
 
     /**
      * @param \Enter\Http\Request $request
@@ -43,6 +44,15 @@ class HandleResponse {
 
             // response
             $response = call_user_func($controllerCall, $request);
+        }
+
+        // log session
+        // FIXME: осторожно, опасный код
+        if (isset($GLOBALS['enter.http.session'])) {
+            $logger->push(['session' => [
+                'id'    => $this->getSession()->getId(),
+                'value' => $this->getSession()->all(),
+            ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
         }
     }
 }

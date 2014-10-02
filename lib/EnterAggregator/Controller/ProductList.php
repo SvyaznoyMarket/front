@@ -212,7 +212,7 @@ namespace EnterAggregator\Controller {
 
             // запрос доставки товаров
             $deliveryListQuery = null;
-            if ($response->productIdPager && (bool)$response->productIdPager->ids) {
+            if (false && $response->productIdPager && (bool)$response->productIdPager->ids) {
                 $cartProducts = [];
                 foreach ($response->productIdPager->ids as $productId) {
                     $cartProducts[] = new Model\Cart\Product(['id' => $productId, 'quantity' => 1]);
@@ -220,7 +220,7 @@ namespace EnterAggregator\Controller {
 
                 if ((bool)$cartProducts) {
                     $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList($cartProducts, $response->region->id);
-                    $curl->prepare($deliveryListQuery);
+                    //$curl->prepare($deliveryListQuery);
                 }
             }
 

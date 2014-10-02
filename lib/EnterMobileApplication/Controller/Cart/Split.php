@@ -193,6 +193,11 @@ namespace EnterMobileApplication\Controller\Cart {
                         $dump['orders'][$blockName]['delivery']['interval'] = $orderItem['delivery']['interval'];
                     }
 
+                    // комментарий
+                    if (array_key_exists('comment', $orderItem)) {
+                        $dump['orders'][$blockName]['comment'] = $orderItem['comment'];
+                    }
+
                     // количество товаров
                     if (isset($orderItem['products'][0])) {
                         $quantitiesByProductId = [];
