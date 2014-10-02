@@ -5,6 +5,8 @@ class Seller {
     /** @var string|null */
     public $id;
     /** @var string|null */
+    public $ui;
+    /** @var string|null */
     public $name;
     /** @var string|null */
     public $offer;
@@ -14,6 +16,7 @@ class Seller {
      */
     public function __construct($data = []) {
         $this->id = $data['id'] ? (string)$data['id'] : null;
+        $this->ui = $data['ui'] ? (string)$data['ui'] : null;
         $this->name = $data['name'] ? (string)$data['name'] : null;
         $this->offer = !empty($data['offer']) ? (string)$data['offer'] : null;
     }
@@ -24,6 +27,7 @@ class Seller {
     public function dump() {
         return [
             'id'    => $this->id,
+            'ui'    => $this->ui,
             'name'  => $this->name,
             'offer' => $this->offer,
         ];
