@@ -72,24 +72,24 @@ namespace EnterMobileApplication\Controller\Order {
             $split = null;
             try {
                 $split = new Model\Cart\Split($splitData);
+
+                // дополнительные свойства разбиения
+                $split->region = $region;
+                $split->clientIp = $request->getClientIp();
+
+                // meta
+                $metas = [];
+
+                $controllerResponse = (new \EnterAggregator\Controller\Order\Create())->execute(
+                    $region->id,
+                    $split,
+                    $metas
+                );
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical', 'order']]);
 
-                throw new \Exception('Неверные данные для разбиения корзины. ' . $e->getMessage());
+                throw new \Exception($e->getMessage());
             }
-
-            // дополнительные свойства разбиения
-            $split->region = $region;
-            $split->clientIp = $request->getClientIp();
-
-            // meta
-            $metas = [];
-
-            $controllerResponse = (new \EnterAggregator\Controller\Order\Create())->execute(
-                $region->id,
-                $split,
-                $metas
-            );
 
             $response->orders = $controllerResponse->orders;
             $response->cart = $cart;
