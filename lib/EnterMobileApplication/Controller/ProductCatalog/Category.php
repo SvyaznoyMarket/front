@@ -4,11 +4,14 @@ namespace EnterMobileApplication\Controller\ProductCatalog;
 
 use Enter\Http;
 use EnterAggregator\Model\Context;
+use EnterMobileApplication\ConfigTrait;
+use EnterAggregator\CurlTrait;
 use EnterMobileApplication\Controller;
 use EnterQuery as Query;
 use EnterModel as Model;
 
 class Category {
+    use ConfigTrait, CurlTrait;
     use Controller\ProductListingTrait;
 
     /**
@@ -17,6 +20,8 @@ class Category {
      * @return Http\Response
      */
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
+        $curl = $this->getCurl();
         $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME!!!
 
         // ид региона
@@ -75,6 +80,15 @@ class Category {
 
         // категория
         if (!$controllerResponse->category) {
+            if ($config->region->defaultId != $regionId) {
+                $categoryItemQuery = new Query\Product\Category\GetItemById($categoryId, $config->region->defaultId);
+                $curl->prepare($categoryItemQuery)->execute();
+
+                if ($categoryItemQuery->getResult()) {
+                    return (new Controller\Error\NotFoundInRegion())->execute($request, 'Нет товаров в вашем регионе');
+                }
+            }
+
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
         }
 
