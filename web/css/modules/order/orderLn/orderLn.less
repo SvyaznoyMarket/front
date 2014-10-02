@@ -1,9 +1,13 @@
 .orderLn {
-	margin: 0 0 20px;
+	margin: 0 0 20px;	
 
 	border-width: 1px 1px 1px 5px;
 	border-color: @typGray;
 	border-style: solid;
+
+	&_mgnr {
+		margin-right: 15px;
+	}
 
 	&_b {
 		padding: 10px 10px;
@@ -15,6 +19,30 @@
 
 		&-wht {
 			background: @white;
+		}
+	}
+
+	&_col2 {
+		line-height: 1.2;
+
+		&_l {
+			width: 48%;
+			float: left;
+		}
+
+		&_r {
+			width: 48%;
+			float: right;
+			position: relative;
+		}
+
+		&-r {
+
+			.orderCol_col2_l {
+				text-align: right;
+				font-size: 16px;
+				line-height: 33px;
+			}
 		}
 	}
 
@@ -91,6 +119,21 @@
 			text-align: right;
 
 			font-size: 16px;
+		}
+
+		&-bg {
+			.rounded(4px);
+			width: 200px;
+			padding: 5px 5px 10px;
+
+			text-align: center;
+
+			background: rgba(252, 171, 47, 0.2);
+
+			&-grey {
+				//background: @lightgreyBg;
+				padding: 5px;
+			}
 		}
 
 		&-pay {

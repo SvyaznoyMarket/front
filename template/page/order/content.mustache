@@ -55,10 +55,10 @@
 	                            <span class="bonusCnt_tx">Связной Клуб</span>
 	                        </div>
 
-	                        <div class="bonusCnt_i">
+	                        {{! <div class="bonusCnt_i">
 	                            <img class="bonusCnt_img" src="/css/modules/order/img/sBank.png" alt="" />
 	                            <span class="bonusCnt_tx">Спасибо от Сбербанка</span>
-	                        </div>
+	                        </div> }}
 	                    </div>
 
 	                    <div class="bonusCnt_it clearfix" style="display: block;">
@@ -71,7 +71,7 @@
 	                            <div class="bonusCnt_descr">Номер карты «Связной-Клуб» расположен на обороте, под штрихкодом.</div>
 	                        </div>
 
-	                        <img class="bonusCnt_it_img" src="/css/modules/order/img/sClubBig.jpg" alt="" />
+	                        <img class="bonusCnt_it_img" src="/css/modules/order/img/sClubBig.png" alt="" />
 	                    </div>
 	                </div>
 	            </fieldset>
@@ -89,11 +89,11 @@
 	        <p class="orderInf">Товары будут оформлены как  <strong class="mdb">3 отдельных заказа</strong></p>
 
 	        <div class="orderInf clearfix">
-	            <div>Ваш регион: <strong>Москва</strong></div>
+	            <div class="orderInf_tx">Ваш регион: <strong>Москва</strong></div>
 
-	            <div class="fl-l">От региона зависят доступные способы получения и оплаты заказов.</div>
+	            <div class="orderInf_l">От региона зависят доступные способы получения и оплаты заказов.</div>
 
-	            <button class="btn1 fl-r">Изменить регион</button>
+	            <button class="orderInf_r btn1">Изменить регион</button>
 	        </div>
 
 	        <!-- блок разбиения заказа -->
@@ -589,8 +589,9 @@
 		                        Минимальная сумма заказа 6999 руб
 		                    </div>
 
-		                    <span class="orderCol_data orderCol_data-price">-5 200 <span class="rubl">p</span></span>
-		                    <span class="orderCol_data orderCol_data-count">удалить</span>
+		                    <span class="orderCol_data orderCol_data-sale">-5 200 <span class="rubl">p</span></span>
+
+		                    <span class="orderCol_data orderCol_data-dlt"><span class="borderBd">удалить</span></span>
 	                    </div>
 	                </div>
 
@@ -605,8 +606,9 @@
 		                        5000 руб
 		                    </div>
 
-		                    <span class="orderCol_data orderCol_data-price">-5 200 <span class="rubl">p</span></span>
-		                    <span class="orderCol_data orderCol_data-count">удалить</span>
+		                    <span class="orderCol_data orderCol_data-sale">-5 200 <span class="rubl">p</span></span>
+
+		                    <span class="orderCol_data orderCol_data-dlt"><span class="borderBd">удалить</span></span>
 	                    </div>
 	                </div>
                 </div>
@@ -865,192 +867,183 @@
 	    <section class="orderCnt" style="display: none;">
 	        <h1 class="orderCnt_t">Ваши заказы</h1>
 
-	        <div class="orderLnSet">
-	            <div class="orderLn clearfix">
-	                <div class="orderLn_l">
-	                    <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="">COXD-305176</a></div>
-	                    
-	                    <ul class="orderLn_lst">
-	                        <li class="orderLn_lst_i">Бумажный конструктор 3 шт.</li>
-	                        <li class="orderLn_lst_i">Батарейки AAAA 18 шт.</li>
-	                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
-	                    </ul>
-	                </div>
+            <div class="orderLn clearfix">
+                <div class="orderLn_b">
+	                <strong class="l orderLn_mgnr">Заказ</strong>
+	                <a href="" class="orderLn_mgnr">COXD-305176</a>
+                </div>
 
-	                <div class="orderLn_c"></div>
+                <div class="orderLn_b orderLn_b-bg">
+                	<div class="orderLn_col2 orderLn_col2-r clearfix">
+                		<div class="orderLn_col2_l">Покупка в кредит</div>
+                	
+						<div class="orderLn_col2_r">
+							<a href="" class="btn1"><strong>Заполнить заявку</strong></a>
+						</div>
+					</div>
+                </div>
+                
+                <div class="orderLn_b orderLn_b-wht">    
+                	<div class="orderLn_col2 orderLn_col2 clearfix">
+                		<div class="orderLn_col2_l">
+							<ul class="orderLn_lst">
+		                        <li class="orderLn_lst_i">Бумажный конструктор 3 шт.</li>
+		                        <li class="orderLn_lst_i">Батарейки AAAA 18 шт.</li>
+		                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
+		                    </ul>
+                		</div>
+                	
+						<div class="orderLn_col2_r">
+							<div>Доставка 11 июл. 2014 9:00…18:00</div>
+							<div>Оплата при получении: наличные, банковская карта</div>
+						</div>
+					</div>
+                </div>
 
-	                <div class="orderLn_r">
-	                    <div class="orderLn_row orderLn_row-summ">
-	                        <span class="summT">Сумма заказа:</span>
-	                        <span class="summP">42 740 <span class="rubl">p</span></span>
-	                    </div>
+                <div class="orderLn_b orderLn_f">
+                    <span class="orderLn_f_t">Сумма заказа:</span>
+                    <span class="orderLn_f_tx">42 740 <span class="rubl">p</span></span>
+                </div>
+            </div> 
 
-	                    <div class="orderLn_row orderLn_row-bg">
-	                        <div class="payT">Покупка в кредит</div>
+            <div class="orderLn clearfix">
+                <div class="orderLn_b">
+	                <strong class="l orderLn_mgnr">Заказ</strong>
+	                <a href="" class="orderLn_mgnr">COXD-305176</a>
+                </div>
 
-	                        <a href="" class="btnLightGrey"><strong>Заполнить заявку</strong></a>
-	                    </div>
-	                </div>
-	            </div> 
+                <div class="orderLn_b orderLn_b-bg">
+                	<div class="orderLn_col2 orderLn_col2-r clearfix">
+                		<div class="orderLn_col2_l">Требуется предоплата</div>
+                	
+						<div class="orderLn_col2_r">
+							<a href="" class="orderLn_btn btn1">
+                                <strong class="btn5">Оплатить онлайн</strong><br/>
+                                <img width="25" src="/css/modules/order/img/master.png" alt="" />
+                                <img width="25" src="/css/modules/order/img/Visa.png" alt="" />
+                                <img width="43" src="/css/modules/order/img/paypal.png" alt="" />
+                                <img width="16" src="/css/modules/order/img/psb.png" alt="" />
+                            </a>
 
-	            <div class="orderLn clearfix">
-	                <div class="orderLn_l">
-	                    <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="">COXD-305176</a></div>
-	                    
-	                    <ul class="orderLn_lst">
-	                        <li class="orderLn_lst_i">Бумажный конструктор 3 шт.</li>
-	                        <li class="orderLn_lst_i">Батарейки AAAA 18 шт.</li>
-	                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
-	                    </ul>
-	                </div>
+                            <div class="popupFl popupFl_pay">
+                            	<div class="popupFl_clsr"></div>
+								<div class="popupFl_pay_h">Оплатить онлайн</div>
 
-	                <div class="orderLn_c">
-	                    <div>Самовывоз 11 июл. 2014 9:00…18:00</div>
-	                    <div>Оплата при получении: наличные, банковская карта</div>
-	                </div>
+								<ul class="popupFl_pay_lst">
+									<li class="popupFl_pay_lst_i">
+										<input type="radio" id="pay1" name="paynow" class="customInput customInput-defradio" checked>
+										<label class="customLabel" for="pay1"><span class="customLabel_tx">Банковская карта</span> <img src="/css/modules/order/img/mcard.png" height="23" alt=""> <img src="/css/modules/order/img/visa2.png" alt=""></label>
+										<p class="popupFl_pay_lst_desc">А также Maestro, Diners Club, JCB.<br/>Без комиссии.</p>
+									</li>
 
-	                <div class="orderLn_r">
-	                    <div class="orderLn_row orderLn_row-summ">
-	                        <span class="summT">Сумма заказа:</span>
-	                        <span class="summP">42 740 <span class="rubl">p</span></span>
-	                    </div>
+									<li class="popupFl_pay_lst_i">
+										<input type="radio" id="pay2" name="paynow" class="customInput customInput-defradio">
+										<label class="customLabel" for="pay2"><span class="customLabel_tx">Платёжная система</span> <img src="/css/modules/order/img/payPal2.png" height="23" alt=""></label>
+									</li>
 
-	                    <div class="orderLn_row orderLn_row-bg">
-	                        <div class="payT">Требуется предоплата</div>
-	                        
-	                        <div class="orderLn_box">
-	                            <a href="" class="orderLn_btn btnLightGrey">
-	                                <strong class="btn4">Оплатить онлайн</strong><br/>
-	                                <img width="25" src="/css/modules/order/img/master.png" alt="" />
-	                                <img width="25" src="/css/modules/order/img/Visa.png" alt="" />
-	                                <img width="43" src="/css/modules/order/img/paypal.png" alt="" />
-	                                <img width="16" src="/css/modules/order/img/psb.png" alt="" />
-	                            </a>
-	                            <ul style="display: none;" class="customSel_lst popupFl">
-	                                <li class="customSel_i">
-	                                    <strong>PayPal</strong><br/>
-	                                    Вы можете оплатить ваш заказ прямо сейчас с помощью PayPal.
-	                                </li>
+									<li class="popupFl_pay_lst_i">
+										<input type="radio" id="pay3" name="paynow" class="customInput customInput-defradio">
+										<label class="customLabel" for="pay3"><span class="customLabel_tx">Интернет-банк</span> <img src="/css/modules/order/img/psb2.png" height="23" alt=""></label>
+										<p class="popupFl_pay_lst_desc">Только для клиентов Промсвязьбанка.</p>
+									</li>
+								</ul>
 
-	                                <li class="customSel_i">
-	                                    <strong>Онлайн оплата</strong><br/>
-	                                    Вы можете оплатить ваш заказ прямо сейчас. К оплате принимаются банковские карты платежных систем Visa, MasterCard, Diners Club, JCB. Услуга бесплатная, никаких дополнительных процентов вы не платите.
-	                                </li>
+								<p class="popupFl_pay_desc">Вы будете автоматически перемещены на сайт платежной системы.</p>
 
-	                                <li class="customSel_i">
-	                                    <strong>Выставить электронный счёт в личный кабинет Промсвязьбанка</strong><br/>
-	                                    Вы можете оплатить Ваш заказ путём выставления счёта в Ваш личный кабинет. Данная услуга доступна только для клиентов Промсвязьбанка.
-	                                </li>
-	                            </ul>
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>  
+								<a href="" class="popupFl_pay_btn btnsubmit">Оплатить</a>
+							</div>
+						</div>
+					</div>
+                </div>
+                
+                <div class="orderLn_b orderLn_b-wht">    
+                	<div class="orderLn_col2 orderLn_col2 clearfix">
+                		<div class="orderLn_col2_l">
+							<ul class="orderLn_lst">
+		                        <li class="orderLn_lst_i">Бумажный конструктор 3 шт.</li>
+		                        <li class="orderLn_lst_i">Батарейки AAAA 18 шт.</li>
+		                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
+		                    </ul>
+                		</div>
+                	
+						<div class="orderLn_col2_r">
+							<div>Доставка 11 июл. 2014 9:00…18:00</div>
+							<div>Оплата при получении: наличные, банковская карта</div>
+						</div>
+					</div>
+                </div>
 
-	            <div class="orderLn clearfix">
-	                <div class="orderLn_l">
-	                    <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="">COXD-305176</a></div>
-	                    
-	                    <ul class="orderLn_lst">
-	                        <li class="orderLn_lst_i">Бумажный конструктор 3 шт.</li>
-	                        <li class="orderLn_lst_i">Батарейки AAAA 18 шт.</li>
-	                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
-	                    </ul>
-	                </div>
+                <div class="orderLn_b orderLn_f">
+                    <span class="orderLn_f_t">Сумма заказа:</span>
+                    <span class="orderLn_f_tx">42 740 <span class="rubl">p</span></span>
+                </div>
+            </div> 
 
-	                <div class="orderLn_c">
-	                    <div>Самовывоз 11 июл. 2014 9:00…18:00</div>
-	                    <div>Оплата при получении: наличные, банковская карта</div>
-	                </div>
+            <div class="orderLn clearfix">
+                <div class="orderLn_b">
+	                <strong class="l orderLn_mgnr">Заказ</strong>
+	                <a href="" class="orderLn_mgnr">COXD-305176</a>
+	                <strong class="l">оформлен</strong>
+                </div>
+                
+                <div class="orderLn_b orderLn_b-wht">    
+                	<div class="orderLn_col2 orderLn_col2 clearfix">
+                		<div class="orderLn_col2_l">
+							<ul class="orderLn_lst">
+		                        <li class="orderLn_lst_i">Бумажный конструктор 3 шт.</li>
+		                        <li class="orderLn_lst_i">Батарейки AAAA 18 шт.</li>
+		                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
+		                    </ul>
+                		</div>
+                	
+						<div class="orderLn_col2_r">
+							<div>Доставка 11 июл. 2014 9:00…18:00</div>
+							<div>Оплата при получении: наличные, банковская карта</div>
+						</div>
+					</div>
+                </div>
 
-	                <div class="orderLn_r">
-	                    <div class="orderLn_row orderLn_row-summ">
-	                        <span class="summT">Сумма заказа:</span>
-	                        <span class="summP">42 740 <span class="rubl">p</span></span>
-	                    </div>
-	                    
-	                    <div class="orderLn_box orderLn_box-pay">
-	                        <div class="orderLn_row orderLn_row-pay">
-	                            <div class="payT">Можно <span class="payBtn btn4"><span class="brb-dt">оплатить онлайн</span></span></div>
+                <div class="orderLn_b orderLn_f">
+                    <span class="orderLn_f_t">Сумма заказа:</span>
+                    <span class="orderLn_f_tx">42 740 <span class="rubl">p</span></span>
+                </div>
 
-	                            <img width="25" src="/css/modules/order/img/master.png" alt="" />
-	                            <img width="25" src="/css/modules/order/img/Visa.png" alt="" />
-	                            <img width="43" src="/css/modules/order/img/paypal.png" alt="" />
-	                            <img width="16" src="/css/modules/order/img/psb.png" alt="" />
-	                        </div>
+                <div class="orderLn_b">
+					<a href="" class="btn5 orderLn_mgnr"><span class="borderBd">Оплатить онлайн</span></a>
+                    <img width="25" src="/css/modules/order/img/master.png" alt="" />
+                    <img width="25" src="/css/modules/order/img/Visa.png" alt="" />
+                    <img width="43" src="/css/modules/order/img/paypal.png" alt="" />
+                    <img width="16" src="/css/modules/order/img/psb.png" alt="" />
 
-	                        <ul style="display: none;" class="customSel_lst popupFl">
-	                            <li class="customSel_i">
-	                                <strong>PayPal</strong><br/>
-	                                Вы можете оплатить ваш заказ прямо сейчас с помощью PayPal.
-	                            </li>
+                    <div class="popupFl popupFl_pay popupFl_pay-c">
+                    	<div class="popupFl_clsr"></div>
+						<div class="popupFl_pay_h">Оплатить онлайн</div>
 
-	                            <li class="customSel_i">
-	                                <strong>Онлайн оплата</strong><br/>
-	                                Вы можете оплатить ваш заказ прямо сейчас. К оплате принимаются банковские карты платежных систем Visa, MasterCard, Diners Club, JCB. Услуга бесплатная, никаких дополнительных процентов вы не платите.
-	                            </li>
+						<ul class="popupFl_pay_lst">
+							<li class="popupFl_pay_lst_i">
+								<input type="radio" id="pay1" name="paynow" class="customInput customInput-defradio" checked>
+								<label class="customLabel" for="pay1"><span class="customLabel_tx">Банковская карта</span> <img src="/css/modules/order/img/mcard.png" height="23" alt=""> <img src="/css/modules/order/img/visa2.png" alt=""></label>
+								<p class="popupFl_pay_lst_desc">А также Maestro, Diners Club, JCB.<br/>Без комиссии.</p>
+							</li>
 
-	                            <li class="customSel_i">
-	                                <strong>Выставить электронный счёт в личный кабинет Промсвязьбанка</strong><br/>
-	                                Вы можете оплатить Ваш заказ путём выставления счёта в Ваш личный кабинет. Данная услуга доступна только для клиентов Промсвязьбанка.
-	                            </li>
-	                        </ul>
-	                    </div>
-	                </div>
-	            </div>  
+							<li class="popupFl_pay_lst_i">
+								<input type="radio" id="pay2" name="paynow" class="customInput customInput-defradio">
+								<label class="customLabel" for="pay2"><span class="customLabel_tx">Платёжная система</span> <img src="/css/modules/order/img/payPal2.png" height="23" alt=""></label>
+							</li>
 
-	            <div class="orderLn clearfix">
-	                <div class="orderLn_l">
-	                    <div class="orderLn_row orderLn_row-t"><strong>Заказ</strong> <a href="">COXD-305176</a></div>
-	                    
-	                    <ul class="orderLn_lst">
-	                        <li class="orderLn_lst_i">Бумажный конструктор 3 шт.</li>
-	                        <li class="orderLn_lst_i">Батарейки AAAA 18 шт.</li>
-	                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
-	                    </ul>
-	                </div>
+							<li class="popupFl_pay_lst_i">
+								<input type="radio" id="pay3" name="paynow" class="customInput customInput-defradio">
+								<label class="customLabel" for="pay3"><span class="customLabel_tx">Интернет-банк</span> <img src="/css/modules/order/img/psb2.png" height="23" alt=""></label>
+								<p class="popupFl_pay_lst_desc">Только для клиентов Промсвязьбанка.</p>
+							</li>
+						</ul>
 
-	                <div class="orderLn_c">
-	                    <div>Самовывоз 11 июл. 2014 9:00…18:00</div>
-	                    <div>Оплата при получении: наличные, банковская карта</div>
-	                </div>
+						<p class="popupFl_pay_desc">Вы будете автоматически перемещены на сайт платежной системы.</p>
 
-	                <div class="orderLn_r">
-	                    <div class="orderLn_row orderLn_row-summ">
-	                        <span class="summT">Сумма заказа:</span>
-	                        <span class="summP">42 740 <span class="rubl">p</span></span>
-	                    </div>
-
-	                    <div class="orderLn_box orderLn_box-pay">
-	                        <div class="orderLn_row orderLn_row-pay">
-	                            <div class="payT">Можно <span class="payBtn btn4"><span class="brb-dt">оплатить онлайн</span></span></div>
-
-	                            <img width="25" src="/css/modules/order/img/master.png" alt="" />
-	                            <img width="25" src="/css/modules/order/img/Visa.png" alt="" />
-	                            <img width="43" src="/css/modules/order/img/paypal.png" alt="" />
-	                            <img width="16" src="/css/modules/order/img/psb.png" alt="" />
-	                        </div>
-
-	                        <ul style="display: none;" class="customSel_lst popupFl">
-	                            <li class="customSel_i">
-	                                <strong>PayPal</strong><br/>
-	                                Вы можете оплатить ваш заказ прямо сейчас с помощью PayPal.
-	                            </li>
-
-	                            <li class="customSel_i">
-	                                <strong>Онлайн оплата</strong><br/>
-	                                Вы можете оплатить ваш заказ прямо сейчас. К оплате принимаются банковские карты платежных систем Visa, MasterCard, Diners Club, JCB. Услуга бесплатная, никаких дополнительных процентов вы не платите.
-	                            </li>
-
-	                            <li class="customSel_i">
-	                                <strong>Выставить электронный счёт в личный кабинет Промсвязьбанка</strong><br/>
-	                                Вы можете оплатить Ваш заказ путём выставления счёта в Ваш личный кабинет. Данная услуга доступна только для клиентов Промсвязьбанка.
-	                            </li>
-	                        </ul>
-	                    </div>
-	                </div>
-	            </div>   
-	        </div>
+						<a href="" class="popupFl_pay_btn btnsubmit">Оплатить</a>
+					</div>
+                </div>
+            </div>  
 
 	        <div class="orderCompl clearfix">
 	            <button class="orderCompl_btn m-auto btnsubmit">Продолжить покупки</button>
