@@ -108,7 +108,7 @@ class Split {
                     'seller' => isset($order->seller) ? [
                         'id' => $order->seller->id,
                         'name' => $order->seller->name,
-                        'offer' => $order->seller->offer,
+                        'offer' => $order->seller->offerUrl,
                     ] : null,
                     'products' => [],
                     'discounts' => [],

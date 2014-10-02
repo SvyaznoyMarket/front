@@ -9,7 +9,7 @@ class Seller {
     /** @var string|null */
     public $name;
     /** @var string|null */
-    public $offer;
+    public $offerUrl;
 
     /**
      * @param array $data
@@ -18,7 +18,7 @@ class Seller {
         $this->id = $data['id'] ? (string)$data['id'] : null;
         $this->ui = $data['ui'] ? (string)$data['ui'] : null;
         $this->name = $data['name'] ? (string)$data['name'] : null;
-        $this->offer = !empty($data['offer']) ? (string)$data['offer'] : null;
+        $this->offerUrl = !empty($data['offer']) ? (string)$data['offer'] : null;
     }
 
     /**
@@ -29,7 +29,7 @@ class Seller {
             'id'    => $this->id,
             'ui'    => $this->ui,
             'name'  => $this->name,
-            'offer' => $this->offer,
+            'offer' => $this->offerUrl,
         ];
     }
 }
