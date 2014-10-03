@@ -4,6 +4,7 @@ namespace EnterAggregator\Controller {
 
     use EnterAggregator\ConfigTrait;
     use EnterAggregator\CurlTrait;
+    use EnterAggregator\LoggerTrait;
     use EnterAggregator\Model\Context;
     use EnterModel;
     use EnterModel\Product\RequestFilter;
@@ -14,7 +15,7 @@ namespace EnterAggregator\Controller {
     use EnterRepository;
 
     class ProductList {
-        use ConfigTrait, CurlTrait;
+        use ConfigTrait, CurlTrait, LoggerTrait;
 
         /**
          * @param string $regionId
@@ -144,6 +145,9 @@ namespace EnterAggregator\Controller {
             // запрос настроек каталога
             $catalogConfigQuery = null;
             if ($response->category) {
+                if (!$response->category->ui) { // TODO: временное журналирование
+                    $this->getLogger()->push(['type' => 'error', 'message' => 'Категория без ui', 'category' => $response->category, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+                }
                 $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($response->category->ui, $regionId);
                 $curl->prepare($catalogConfigQuery);
             }

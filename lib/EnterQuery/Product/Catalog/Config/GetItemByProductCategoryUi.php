@@ -14,14 +14,14 @@ class GetItemByProductCategoryUi extends Query {
     protected $result;
 
     /**
-     * @param Model\Product\Category[] $categories
-     * @param Model\Product|null $product
+     * @param $categoryUi
+     * @param $regionId
      */
     public function __construct($categoryUi, $regionId) {
         $this->url = new Url();
         $this->url->path = 'category/get';
         $this->url->query = [
-            'uid' => $categoryUi,
+            'uid'    => $categoryUi,
             'geo_id' => $regionId,
         ];
 
