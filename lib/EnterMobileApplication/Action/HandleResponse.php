@@ -29,21 +29,30 @@ class HandleResponse {
             'server' => $request->server,
         ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
 
-        if (!$response) {
-            // controller call
-            $controllerCall = (new Action\MatchRoute())->execute($request);
+        try {
+            if (!$response) {
+                // controller call
+                $controllerCall = (new Action\MatchRoute())->execute($request);
 
-            // response
-            $response = call_user_func($controllerCall, $request);
+                // response
+                $response = call_user_func($controllerCall, $request);
+            }
+        } catch (\Exception $e) {
+            $logger->push(['request' => [
+                'session' => isset($GLOBALS['enter.http.session']) ? [
+                    'id'    => $this->getSession()->getId(),
+                    'value' => $this->getSession()->all(),
+                ] : null,
+            ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
+
+            throw $e;
         }
 
-        // log session
-        // FIXME: осторожно, опасный код
-        if (isset($GLOBALS['enter.http.session'])) {
-            $logger->push(['session' => [
+        $logger->push(['request' => [
+            'session' => isset($GLOBALS['enter.http.session']) ? [
                 'id'    => $this->getSession()->getId(),
                 'value' => $this->getSession()->all(),
-            ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
-        }
+            ] : null,
+        ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
     }
 }
