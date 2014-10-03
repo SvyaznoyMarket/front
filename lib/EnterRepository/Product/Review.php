@@ -14,7 +14,7 @@ class Review {
         $reviews = [];
 
         try {
-            foreach ($query->getResult() as $item) {
+            foreach ($query->getResult()['review_list'] as $item) {
                 $reviews[] = new Model\Product\Review($item);
             }
         } catch (\Exception $e) {
@@ -22,5 +22,21 @@ class Review {
         }
 
         return $reviews;
+    }
+
+    /**
+     * @param Query $query
+     * @return int
+     */
+    public function countObjectListByQuery(Query $query) {
+        $count = 0;
+
+        try {
+            $count = $query->getResult()['num_reviews'];
+        } catch (\Exception $e) {
+            //trigger_error($e, E_USER_ERROR);
+        }
+
+        return $count;
     }
 }

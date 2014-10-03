@@ -19,6 +19,7 @@ namespace EnterMobileApplication\Controller\Product {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
+            $reviewRepository = new \EnterRepository\Product\Review();
 
             $productId = trim((string)$request->query['productId']);
             if (!$productId) {
@@ -49,7 +50,7 @@ namespace EnterMobileApplication\Controller\Product {
             $curl->execute();
 
             // отзывы
-            foreach ((new \EnterRepository\Product\Review())->getObjectListByQuery($reviewListQuery) as $review) {
+            foreach ($reviewRepository->getObjectListByQuery($reviewListQuery) as $review) {
                 $response->reviews[] = [
                     'score'     => $review->score,
                     'starScore' => $review->starScore,
@@ -62,6 +63,8 @@ namespace EnterMobileApplication\Controller\Product {
                 ];
             }
 
+            $response->reviewCount = $reviewRepository->countObjectListByQuery($reviewListQuery);
+
             return new Http\JsonResponse($response);
         }
     }
@@ -73,5 +76,7 @@ namespace EnterMobileApplication\Controller\Product\Review {
     class Response {
         /** @var Model\Product\Review[] */
         public $reviews = [];
+        /** @var int */
+        public $reviewCount;
     }
 }

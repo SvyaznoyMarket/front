@@ -36,6 +36,6 @@ class GetListByProductId extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data['review_list'][0]['product_id']) ? $data['review_list'] : [];
+        $this->result = isset($data['review_list']) ? $data : [];
     }
 }
