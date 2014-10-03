@@ -58,10 +58,14 @@
 	}
 
 	&_b {
-		padding: 10px 10px;
+		padding: 10px;
 
 		border-bottom: 1px solid @typGray;
 		background: @lightGrey6;
+
+		&_inn {
+			padding: 10px;
+		}
 
 		&-wht {
 			background: @white;
@@ -285,9 +289,8 @@
 		&_i {
 			width: 31%;
 			font-weight: normal;
-			height: 35px;
 			margin: 0 0.5% 10px;
-			line-height: 33px;
+			box-sizing: border-box;
 		}
 	}
 
@@ -413,4 +416,13 @@
 	    	}
 	    }
 	}
+}
+
+.js-order-box,
+.js-delivery-type {
+	display: none;
+}
+
+.box-show {
+	display: block;
 }

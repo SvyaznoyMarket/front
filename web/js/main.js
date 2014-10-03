@@ -112,6 +112,7 @@ require(
         'module/widget',      // виджеты
         'module/user.common', // инфо о пользователе
         'module/cart.common', // кнопка купить, спиннер
+        'module/order.common',
         'module/product.catalog.common',
 		'module/siteVersionSwitcher'
     ],

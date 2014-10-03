@@ -65,7 +65,7 @@ define(
 			/*
 			 * Слайдинг табов
 			 */
-			tabsSlide = function tabsSlide( event, inx ) {
+			tabsSlide = function tabsSlide( event ) {
 					
 				event.preventDefault();
 					
@@ -78,7 +78,7 @@ define(
 				}
 				else {
 					posLeft = tabWrapWidth * tabLinkId;
-				}
+				};
 				
 				$('html,body').animate({
 					scrollTop: $self.offset().top - $('.header').outerHeight()}, 400, 

@@ -5586,9 +5586,12 @@ body.noScroll {
   overflow: auto;
 }
 .orderCol_b {
-  padding: 10px 10px;
+  padding: 10px;
   border-bottom: 1px solid #a6a6a6;
   background: #f7f7f7;
+}
+.orderCol_b_inn {
+  padding: 10px;
 }
 .orderCol_b-wht {
   background: #ffffff;
@@ -5774,9 +5777,8 @@ body.noScroll {
 .orderCol_opt_i {
   width: 31%;
   font-weight: normal;
-  height: 35px;
   margin: 0 0.5% 10px;
-  line-height: 33px;
+  box-sizing: border-box;
 }
 .orderCol_slb_h {
   border-top: 1px solid #c7c7c7;
@@ -5883,6 +5885,13 @@ body.noScroll {
 }
 .orderCol .shopLst_addrs_tm {
   display: table;
+}
+.js-order-box,
+.js-delivery-type {
+  display: none;
+}
+.box-show {
+  display: block;
 }
 /*---------Оформление заказа 3.0 ----------*/
 /* 
@@ -6026,7 +6035,6 @@ body.noScroll {
   cursor: pointer;
 }
 .orderComment_fld {
-  display: block;
   height: 120px;
   resize: none;
   width: 100%;
