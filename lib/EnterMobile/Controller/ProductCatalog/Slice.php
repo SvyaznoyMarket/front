@@ -80,10 +80,6 @@ class Slice {
         if ($categoryToken && !$controllerResponse->category) {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));
         }
-        if ($controllerResponse->category && $controllerResponse->category->redirectLink) {
-            // TODO
-            //return (new Controller\Redirect())->execute($controllerResponse->category->redirectLink . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), Http\Response::STATUS_MOVED_PERMANENTLY);
-        }
 
         // базовые фильтры
         $baseRequestFilters[] = (new Repository\Product\Filter())->getSliceRequestObjectBySlice($slice);

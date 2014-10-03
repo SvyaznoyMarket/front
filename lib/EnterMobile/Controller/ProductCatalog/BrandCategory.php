@@ -78,9 +78,6 @@ class BrandCategory {
         if (!$controllerResponse->category) {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));
         }
-        if ($controllerResponse->category->redirectLink) {
-            return (new Controller\Redirect())->execute($controllerResponse->category->redirectLink . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), Http\Response::STATUS_MOVED_PERMANENTLY);
-        }
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\ChildCategory\Request();

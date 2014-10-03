@@ -27,4 +27,6 @@ return function(\EnterMobile\Config $config) {
 
     $config->siteVersionSwitcher->cookieName = 'mobile';
     $config->siteVersionSwitcher->cookieLifetime = 20 * 365 * 24 * 60 * 60;
+
+    $config->redirectManager->enabled = true;
 };
