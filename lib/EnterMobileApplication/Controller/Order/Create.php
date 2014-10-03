@@ -93,7 +93,6 @@ namespace EnterMobileApplication\Controller\Order {
 
             $response->orders = $controllerResponse->orders;
             $response->cart = $cart;
-            $response->split = $splitData;
             $response->errors = $controllerResponse->errors;
 
             // response
@@ -112,7 +111,5 @@ namespace EnterMobileApplication\Controller\Order\Create {
         public $orders = [];
         /** @var Model\Cart */
         public $cart;
-        /** @var array */
-        public $split;
     }
 }
