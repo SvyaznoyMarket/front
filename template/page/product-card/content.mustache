@@ -367,7 +367,7 @@
                                 <div class="prodBuy_b_t">{{shownCount}}</div>
 
                                 <div class="prodBuy_b_f" style="display: block;">
-                                    <span class="delivrB_btn btn1 js-popup-middle-link">Забрать сегодня</span>
+                                    <strong class="delivrB_btn btn1 js-popup-middle-link">Забрать сегодня</strong>
                                 </div>
                             </div>
                             {{/hasOnlyOne}}
@@ -696,15 +696,18 @@
                 {{#states}}
                 <li class="table3Col_row">
                     <span class="table3Col_col">
-                        <div class="shopLst_addrs"{{#subway.color}} style="background: {{subway.color}};"{{/subway.color}}>
-                            <span class="shopLst_addrs_tx">
-                                {{#subway}}<span class="shopLst_addrs_row1">м. {{name}},</span>{{/subway}}
-                                <a class="shopLst_addrs_row2" href="{{url}}" target="_blank">{{address}}&nbsp;</a>
-                                <span class="shopLst_addrs_row3">{{regime}}</span>
-                            </span>
-                        </div>
+                        {{#subway}}
+                            <div class="shopLst_mtr">
+                                <span {{#subway.color}} style="background: {{subway.color}};"{{/subway.color}} class="shopLst_bul"></span> 
+                                м.{{name}},
+                            </div>
+                        {{/subway}}
+
+                        <a class="shopLst_addr" href="{{url}}" target="_blank">{{address}}&nbsp;</a>
                     </span>
+
                     <span class="table3Col_col table3Col_col-hdn">{{regime}}</span>
+                    
                     <span class="table3Col_col table3Col_col-r">
                         {{#cartButton}}
                             {{>partial/cart/button}}
