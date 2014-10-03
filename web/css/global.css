@@ -1074,6 +1074,7 @@ body.noScroll {
   padding: 10px 0;
   color: #ffffff;
   background: #000000;
+  border-bottom: 1px solid #858585;
 }
 /* Иконка меню */
 .headerLeftAside {
@@ -3446,6 +3447,7 @@ body.noScroll {
   zoom: 1;
   min-height: 72px;
   font-size: 20px;
+  padding-right: 25px;
   *display: inline;
 }
 .cartItem_col-desc .name_cat {

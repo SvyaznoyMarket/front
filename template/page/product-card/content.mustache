@@ -344,13 +344,14 @@
                                 </div>
 
                                 <div class="prodBuy_b_l">
-                                    <div class="shopLst_addrs"{{#subway.color}} style="background: {{subway.color}};"{{/subway.color}}>
-                                        <span class="shopLst_addrs_tx">
-                                            {{#subway}}<span class="shopLst_addrs_row1">м. {{subway.name}},</span>{{/subway}}
-                                            <a href="" class="shopLst_addrs_row2">{{address}}&nbsp;</a>
-                                            <span class="shopLst_addrs_row3">{{regime}}</span>
-                                        </span>
-                                    </div>
+                                    {{#subway}}
+                                        <div class="shopLst_mtr">
+                                            <span {{#subway.color}} style="background: {{subway.color}};"{{/subway.color}} class="shopLst_bul"></span> 
+                                            м.{{name}},
+                                        </div>
+                                    {{/subway}}
+
+                                    <a class="shopLst_addr" href="{{url}}" target="_blank">{{address}}&nbsp;</a>
                                 </div>
 
                                 <div class="prodBuy_b_f">
