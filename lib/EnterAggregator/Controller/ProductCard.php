@@ -75,13 +75,6 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($mainMenuQuery);
             }
 
-            // запрос отзывов товара
-            $reviewListQuery = null;
-            if ($config->productReview->enabled) {
-                $reviewListQuery = new Query\Product\Review\GetListByProductId($response->product->id, 1, $config->productReview->itemsInCard);
-                $curl->prepare($reviewListQuery);
-            }
-
             // запрос видео товара
             $videoListQuery = new Query\Product\Media\Video\GetListByProductId($response->product->id);
             $curl->prepare($videoListQuery);
@@ -165,9 +158,6 @@ namespace EnterAggregator\Controller {
             if ($mainMenuQuery) {
                 $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
             }
-
-            // отзывы товара
-            $response->product->reviews = $reviewListQuery ? (new Repository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
 
             // видео товара
             $productRepository->setVideoForObjectByQuery($response->product, $videoListQuery);

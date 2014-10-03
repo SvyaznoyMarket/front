@@ -14,6 +14,7 @@ class HandleResponse {
     /**
      * @param \Enter\Http\Request $request
      * @param Http\Response|null $response
+     * @throws \Exception
      */
     public function execute(Http\Request $request, Http\Response &$response = null) {
         $config = $this->getConfig();
@@ -27,34 +28,43 @@ class HandleResponse {
             'server'  => $request->server,
         ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
 
-        // проверка редиректа
-        $response = (new Action\CheckRedirect())->execute($request);
-        // запуск контроллера
-        if (!$response) {
-            // controller call
-            $controllerCall = (new Action\MatchRoute())->execute($request);
+        try {
+            // проверка редиректа
+            $response = (new Action\CheckRedirect())->execute($request);
+            // запуск контроллера
+            if (!$response) {
+                // controller call
+                $controllerCall = (new Action\MatchRoute())->execute($request);
 
-            // response
-            $response = call_user_func($controllerCall, $request);
-        }
-
-        // партнерские куки
-        if ($response) {
-            try {
-                (new Action\CheckPartner())->execute($request, $response);
-            } catch (\Exception $e) {
-                $logger->push(['type' => 'error', 'sender' => __FILE__ . ' ' .  __LINE__, 'error'  => $e, 'tag' => ['partner']]);
+                // response
+                $response = call_user_func($controllerCall, $request);
             }
+
+            // партнерские куки
+            if ($response) {
+                try {
+                    (new Action\CheckPartner())->execute($request, $response);
+                } catch (\Exception $e) {
+                    $logger->push(['type' => 'error', 'sender' => __FILE__ . ' ' .  __LINE__, 'error'  => $e, 'tag' => ['partner']]);
+                }
+            }
+        } catch (\Exception $e) {
+            $logger->push(['request' => [
+                'session' => isset($GLOBALS['enter.http.session']) ? [
+                    'id'    => $this->getSession()->getId(),
+                    'value' => $this->getSession()->all(),
+                ] : null,
+            ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
+
+            throw $e;
         }
 
-        // log session
-        // FIXME: осторожно, опасный код
-        if (isset($GLOBALS['enter.http.session'])) {
-            $logger->push(['session' => [
+        $logger->push(['request' => [
+            'session' => isset($GLOBALS['enter.http.session']) ? [
                 'id'    => $this->getSession()->getId(),
                 'value' => $this->getSession()->all(),
-            ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
-        }
+            ] : null,
+        ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
 
         // debug cookie
         try {

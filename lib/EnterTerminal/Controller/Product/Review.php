@@ -19,6 +19,7 @@ namespace EnterTerminal\Controller\Product {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
+            $reviewRepository = new \EnterRepository\Product\Review();
 
             $productId = trim((string)$request->query['productId']);
             if (!$productId) {
@@ -33,10 +34,11 @@ namespace EnterTerminal\Controller\Product {
                 (int)$request->query['limit'] ?: $config->productReview->itemsInCard
             );
             $curl->prepare($reviewListQuery);
+
             $curl->execute();
 
             // отзывы
-            foreach ((new \EnterRepository\Product\Review())->getObjectListByQuery($reviewListQuery) as $review) {
+            foreach ($reviewRepository->getObjectListByQuery($reviewListQuery) as $review) {
                 $response->reviews[] = [
                     'score'     => $review->score,
                     'starScore' => $review->starScore,
@@ -49,6 +51,8 @@ namespace EnterTerminal\Controller\Product {
                 ];
             }
 
+            $response->reviewCount = $reviewRepository->countObjectListByQuery($reviewListQuery);
+
             return new Http\JsonResponse($response);
         }
     }
@@ -60,5 +64,7 @@ namespace EnterTerminal\Controller\Product\Review {
     class Response {
         /** @var Model\Product\Review[] */
         public $reviews = [];
+        /** @var int */
+        public $reviewCount;
     }
 }
