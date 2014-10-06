@@ -27,7 +27,12 @@ namespace EnterTerminal\Controller {
 
             $curl->execute();
 
-            return new Http\JsonResponse($statusQuery->getResult());
+            $result = (array)$statusQuery->getResult();
+            if (!(bool)$result) {
+                throw new \Exception('Неверный ответ');
+            }
+
+            return new Http\JsonResponse($result);
         }
     }
 }
