@@ -25,8 +25,8 @@ namespace EnterTerminal\Controller {
             } else {
                 throw new \Exception('Необходимо задать параметр ip или ui');
             }
-
             $curl->prepare($infoQuery);
+
             $curl->execute();
 
             // ответ
