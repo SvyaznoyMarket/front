@@ -22,7 +22,7 @@ namespace EnterTerminal\Controller {
                 throw new \Exception('Не передан параметр ui');
             }
 
-            $statusQuery = new Query\Terminal\SetStatusByUi($ui, (array)$request->data);
+            $statusQuery = new Query\Terminal\SetStatusByUi($ui, (array)$request->data->all());
             $curl->prepare($statusQuery);
 
             $curl->execute();
