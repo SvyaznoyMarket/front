@@ -70,7 +70,7 @@ class Split {
                         'name' => $point->name,
                         'address' => $point->address,
                         'house' => $point->house,
-                        'regtime' => $point->workingTime,
+                        'regtime' => $point->regime,
                         'latitude' => $point->latitude,
                         'longitude' => $point->longitude,
                         'subway' => [],

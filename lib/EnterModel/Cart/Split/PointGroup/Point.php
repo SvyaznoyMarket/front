@@ -19,7 +19,7 @@ class Point {
     /** @var string|null */
     public $house;
     /** @var string|null */
-    public $workingTime;
+    public $regime;
     /** @var float|null */
     public $latitude;
     /** @var float|null */
@@ -56,7 +56,7 @@ class Point {
         }
 
         if (isset($data['regtime'])) {
-            $this->workingTime = (string)$data['regtime'];
+            $this->regime = (string)$data['regtime'];
         }
 
         if (isset($data['latitude'])) {
@@ -85,7 +85,7 @@ class Point {
             'name'      => $this->name,
             'address'   => $this->address,
             'house'     => $this->house,
-            'regtime'   => $this->workingTime,
+            'regtime'   => $this->regime,
             'latitude'  => $this->latitude,
             'longitude' => $this->longitude,
             'subway'    => $this->subway ? array_map(function(Model\Subway $subway) {
