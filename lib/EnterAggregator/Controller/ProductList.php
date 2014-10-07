@@ -224,7 +224,7 @@ namespace EnterAggregator\Controller {
 
                 if ((bool)$cartProducts) {
                     $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList($cartProducts, $response->region->id);
-                    //$curl->prepare($deliveryListQuery);
+                    //$curl->prepare($deliveryListQuery); // TODO: удалить вообще - тормозит
                 }
             }
 
@@ -272,6 +272,41 @@ namespace EnterAggregator\Controller {
             // список видео для товаров
             if ($videoGroupedListQuery) {
                 $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
+            }
+
+            // список магазинов, в которых есть товар
+            if ($context->shopState) {
+                $shopIds = [];
+                foreach ($productsById as $product) {
+                    foreach ($product->stock as $stock) {
+                        if (!$stock->shopId) continue;
+
+                        $shopIds[] = $stock->shopId;
+                    }
+                }
+                if ((bool)$shopIds) {
+                    $shopListQuery = new Query\Shop\GetListByIdList($shopIds);
+                    $curl->prepare($shopListQuery);
+
+                    $curl->execute();
+
+                    foreach ($productsById as $product) {
+                        $shopStatesByShopId = [];
+                        foreach ($product->stock as $stock) {
+                            if ($stock->shopId && (($stock->showroomQuantity + $stock->quantity) > 0)) {
+                                $shopState = new Model\Product\ShopState();
+                                $shopState->quantity = $stock->quantity;
+                                $shopState->showroomQuantity = $stock->showroomQuantity;
+                                $shopState->isInShowroomOnly = !$shopState->quantity && ($shopState->showroomQuantity > 0);
+
+                                $shopStatesByShopId[$stock->shopId] = $shopState;
+                            }
+                        }
+                        if ((bool)$shopStatesByShopId) {
+                            $productRepository->setShopStateForObjectListByQuery([$product->id => $product], $shopStatesByShopId, $shopListQuery);
+                        }
+                    }
+                }
             }
 
             $response->products = array_values($productsById);

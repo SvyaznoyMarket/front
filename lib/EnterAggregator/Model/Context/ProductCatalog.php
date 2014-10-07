@@ -23,4 +23,10 @@ class ProductCatalog extends Context {
      * @var bool
      */
     public $productOnlyForLeafCategory = false;
+    /**
+     * Загружать остатки товаров по магазинам
+     *
+     * @var bool
+     */
+    public $shopState = false;
 }

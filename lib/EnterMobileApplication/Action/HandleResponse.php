@@ -30,6 +30,15 @@ class HandleResponse {
         ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
 
         try {
+            if ($request) {
+                $config->clientId = is_scalar($request->query['clientId']) ? $request->query['clientId'] : null;
+                if (!$config->clientId) {
+                    //throw new \Exception('Не указан параметр clientId'); FIXME
+                }
+
+                $config->coreService->clientId = $config->clientId;
+            }
+
             if (!$response) {
                 // controller call
                 $controllerCall = (new Action\MatchRoute())->execute($request);
