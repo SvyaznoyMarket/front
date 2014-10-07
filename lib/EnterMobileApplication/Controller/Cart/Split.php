@@ -30,6 +30,9 @@ namespace EnterMobileApplication\Controller\Cart {
             // ответ
             $response = new Response();
 
+            // ид магазина
+            $shopId = is_scalar($request->query['shopId']) ? (string)$request->query['shopId'] : null;
+
             // изменения
             $changeData = $request->data['change'] ?: null;
 
@@ -59,15 +62,29 @@ namespace EnterMobileApplication\Controller\Cart {
             $regionQuery = new Query\Region\GetItemById($regionId);
             $curl->prepare($regionQuery);
 
+            // запрос магазина
+            $shopItemQuery = null;
+            if ($shopId) {
+                $shopItemQuery = new Query\Shop\GetItemById($shopId);
+                $curl->prepare($shopItemQuery)->execute();
+            }
+
             $curl->execute();
 
             // регион
             $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
+            // магазин
+            $shop = $shopItemQuery ? (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery) : null;
+            if ($shopId && !$shop) {
+                $this->getLogger()->push(['type' => 'warn', 'message' => 'Магазин не найден', 'shopId' => $shopId, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+            }
+
+            // запрос на разбиение корзины
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
-                new Model\Region(['id' => $region->id]),
-                null,
+                $region,
+                $shop,
                 null,
                 (array)$previousSplitData,
                 $changeData ? $this->dumpChange($changeData, $previousSplitData) : []

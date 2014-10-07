@@ -58,9 +58,10 @@ namespace EnterTerminal\Controller\Cart {
             // магазин
             $shop = $shopItemQuery ? (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery) : null;
             if ($shopId && !$shop) {
-                throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
+                $this->getLogger()->push(['type' => 'warn', 'message' => 'Магазин не найден', 'shopId' => $shopId, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
             }
 
+            // запрос на разбиение корзины
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
                 new Model\Region(['id' => $regionId]),
