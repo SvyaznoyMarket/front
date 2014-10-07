@@ -9,6 +9,7 @@ namespace EnterMobileApplication\Controller\User {
     use EnterAggregator\SessionTrait;
     use EnterAggregator\DebugContainerTrait;
     use EnterQuery as Query;
+    use EnterModel as Model;
     use EnterMobileApplication\Controller;
     use EnterMobileApplication\Repository;
     use EnterMobileApplication\Controller\User\OrderList\Response;
@@ -39,7 +40,17 @@ namespace EnterMobileApplication\Controller\User {
 
                 $curl->execute();
 
-                $orders = (new \EnterRepository\Order())->getObjectListByQuery($orderListQuery);
+                //$orders = (new \EnterRepository\Order())->getObjectListByQuery($orderListQuery);
+                $orders = [];
+                try {
+                    foreach (array_slice((array)$orderListQuery->getResult(), 0, 20) as $item) {
+                        if (!isset($item['number'])) continue;
+
+                        $orders[] = new Model\Order($item);
+                    }
+                } catch (\Exception $e) {
+                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+                }
 
                 // магазин
                 $shopsById = [];
