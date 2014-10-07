@@ -36,6 +36,8 @@ class Product {
     /** @var bool */
     public $isInShopShowroomOnly;
     /** @var bool */
+    public $isInWarehouse;
+    /** @var bool */
     public $isKitLocked;
     /** @var Model\Product\Category|null */
     public $category;
@@ -163,13 +165,15 @@ class Product {
      * @param array $stockData
      */
     protected function calculateState(array $stockData) {
-        $inStore = false;
+        $this->isInWarehouse = false;
+        $inWarehouse = false;
         $inShowroom = false;
         $inShop = false;
 
         foreach ($stockData as $stockItem) {
             if ($stockItem['store_id'] && $stockItem['quantity']) { // есть на центральном складе
-                $inStore = true;
+                $inWarehouse = true;
+                $this->isInWarehouse = true;
             }
             if ($stockItem['shop_id'] && $stockItem['quantity']) { // есть на складе магазина
                 $inShop = true;
@@ -179,8 +183,8 @@ class Product {
             }
         }
 
-        $this->isInShopOnly = !$inStore && ($inShop || $inShowroom); // не на центральном складе, на складе магазина или на витрине магазина
-        $this->isInShopStockOnly = !$inStore && $inShop && !$inShowroom; // не на центральном складе, на складе магазина, не на витрине магазина
-        $this->isInShopShowroomOnly = !$inStore && !$inShop && $inShowroom; // не на центральном складе, не на складе магазина, на витрине магазина
+        $this->isInShopOnly = !$inWarehouse && ($inShop || $inShowroom); // не на центральном складе, на складе магазина или на витрине магазина
+        $this->isInShopStockOnly = !$inWarehouse && $inShop && !$inShowroom; // не на центральном складе, на складе магазина, не на витрине магазина
+        $this->isInShopShowroomOnly = !$inWarehouse && !$inShop && $inShowroom; // не на центральном складе, не на складе магазина, на витрине магазина
     }
 }
