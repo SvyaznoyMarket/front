@@ -17,10 +17,10 @@ class Discount {
      * @param array $data
      */
     public function __construct($data = []) {
-        $this->ui = $data['uid'] ? (string)$data['uid'] : null;
-        $this->name = $data['name'] ? (string)$data['name'] : null;
-        $this->discount = $data['discount'] ? (string)$data['discount'] : null;
-        $this->type = $data['type'] ? (string)$data['type'] : null;
+        $this->ui = isset($data['uid']) ? (string)$data['uid'] : null;
+        $this->name = isset($data['name']) ? (string)$data['name'] : null;
+        $this->discount = isset($data['discount']) ? (string)$data['discount'] : null;
+        $this->type = isset($data['type']) ? (string)$data['type'] : null;
         $this->number = isset($data['number']) ? (string)$data['number'] : null;
     }
 

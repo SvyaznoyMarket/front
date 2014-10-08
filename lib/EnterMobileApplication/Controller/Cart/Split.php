@@ -181,7 +181,8 @@ namespace EnterMobileApplication\Controller\Cart {
                     }
 
                     $dump['orders'][$blockName] = $previousSplitData['orders'][$blockName] + [
-                        'products' => [],
+                        'products'  => [],
+                        'discounts' => [],
                     ];
 
                     // метод получения
@@ -219,18 +220,52 @@ namespace EnterMobileApplication\Controller\Cart {
                     if (isset($orderItem['products'][0])) {
                         $quantitiesByProductId = [];
                         foreach ($orderItem['products'] as $productItem) {
-                            if (empty($productItem['id']) || !isset($productItem['quantity'])) continue;
+                            if (empty($productItem['id']) || !isset($productItem['quantity'])) {
+                                $this->getLogger()->push(['type' => 'warn', 'message' => 'Не указан ид или не найден товар', 'product' => $productItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                                continue;
+                            }
 
                             $quantitiesByProductId[$productItem['id']] = (int)$productItem['quantity'];
                         }
 
                         $productItem = null;
                         foreach ($dump['orders'][$blockName]['products'] as &$productItem) {
-                            if (!isset($productItem['id']) || !isset($quantitiesByProductId[$productItem['id']])) continue;
+                            if (!isset($productItem['id']) || !isset($quantitiesByProductId[$productItem['id']])) {
+                                $this->getLogger()->push(['type' => 'warn', 'message' => 'Не указан ид или не найден товар', 'product' => $productItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                                continue;
+                            }
 
                             $productItem['quantity'] = $quantitiesByProductId[$productItem['id']];
                         }
                         unset($productItem);
+                    }
+
+                    // скидки
+                    if (isset($orderItem['discounts'][0])) {
+                        $discountItem = null;
+                        foreach ($orderItem['discounts'] as $discountItem) {
+                            if (empty($discountItem['number'])) {
+                                $this->getLogger()->push(['type' => 'warn', 'message' => 'Не передан номер купона', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                                continue;
+                            }
+
+                            if (isset($discountItem['delete']) && $discountItem['delete']) { // удаление купона
+                                $isDeleted = false;
+                                // поиск существующей скидки
+                                foreach ($dump['orders'][$blockName]['discounts'] as $i => $existsDiscountItem) {
+                                    if ($existsDiscountItem['number'] == $discountItem['number']) {
+                                        // удаление найденной скидки
+                                        unset($dump['orders'][$blockName]['discounts'][$i]);
+                                    }
+                                }
+                                if (!$isDeleted) {
+                                    $this->getLogger()->push(['type' => 'warn', 'message' => 'Купон не найден', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                                }
+                            } else { // добавление купона
+                                $dump['orders'][$blockName]['discounts'][] = ['number' => $discountItem['number'], 'name' => null, 'type' => null, 'discount' => null];
+                            }
+                        }
+                        unset($discountItem);
                     }
                 }
             }

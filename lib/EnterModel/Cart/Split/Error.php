@@ -30,6 +30,52 @@ class Error {
                         'blockName'            => @$detailItem['block_name'] ?: null,
                     ];
                     $this->message = $this->detail['maxAvailableQuantity'] ? sprintf('Доступно только %d шт', $this->detail['maxAvailableQuantity']) : 'Товар закончился';
+                    break;
+                case 404:
+                    $this->detail = [
+                        'discount'  => [
+                            'number' => @$detailItem['coupon_number'] ? (string)$detailItem['coupon_number'] : null,
+                        ],
+                        'blockName' => @$detailItem['block_name'] ?: null,
+                    ];
+                    $this->message = 'Такой купон не существует';
+                    break;
+                case 1022:
+                    $this->detail = [
+                        'discount'  => [
+                            'number' => @$detailItem['coupon_number'] ? (string)$detailItem['coupon_number'] : null,
+                        ],
+                        'blockName' => @$detailItem['block_name'] ?: null,
+                    ];
+                    $this->message = 'Срок действия купона истек';
+                    break;
+                case 1021:
+                    $this->detail = [
+                        'discount'  => [
+                            'number' => @$detailItem['coupon_number'] ? (string)$detailItem['coupon_number'] : null,
+                        ],
+                        'blockName' => @$detailItem['block_name'] ?: null,
+                    ];
+                    $this->message = 'Срок действия купона еще не наступил';
+                    break;
+                case 1000:
+                    $this->detail = [
+                        'discount'  => [
+                            'number' => @$detailItem['coupon_number'] ? (string)$detailItem['coupon_number'] : null,
+                        ],
+                        'blockName' => @$detailItem['block_name'] ?: null,
+                    ];
+                    $this->message = 'К купону не привязана акция';
+                    break;
+                case 1001:
+                    $this->detail = [
+                        'discount'  => [
+                            'number' => @$detailItem['coupon_number'] ? (string)$detailItem['coupon_number'] : null,
+                        ],
+                        'blockName' => @$detailItem['block_name'] ?: null,
+                    ];
+                    $this->message = 'Купон не может быть применен к этому заказу';
+                    break;
             }
         }
     }
