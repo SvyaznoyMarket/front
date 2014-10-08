@@ -21,8 +21,8 @@ class GetListByOrderNumberErp extends Query {
         $this->url = new Url();
         $this->url->path = 'v2/payment-method/get-for-order';
         $this->url->query = [
-            'geo_id' => $regionId,
-            'number' => $numberErp,
+            'geo_id'     => $regionId,
+            'number_erp' => $numberErp,
         ];
 
         $this->init();
