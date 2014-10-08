@@ -32,11 +32,9 @@ class HandleResponse {
         try {
             if ($request) {
                 $config->clientId = is_scalar($request->query['clientId']) ? $request->query['clientId'] : null;
-                if (!$config->clientId) {
-                    //throw new \Exception('Не указан параметр clientId'); FIXME
+                if ($config->clientId) {
+                    $config->coreService->clientId = $config->clientId;
                 }
-
-                $config->coreService->clientId = $config->clientId;
             }
 
             if (!$response) {
