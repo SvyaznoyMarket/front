@@ -47,7 +47,7 @@ class DirectCredit {
 
         $directCredit->widgetId = 'id-creditPayment';
         $directCredit->dataValue = $this->getTemplateHelper()->json([
-            'partnerId' => $this->getConfig()->directCredit->partnerId,
+            'partnerId' => $this->getConfig()->credit->directCredit->partnerId,
             'product'   => $productData,
         ]);
         $directCredit->isHidden = $cartModel ? !(new \EnterRepository\DirectCredit())->isEnabledForCart($cartModel) : false; // FIXME

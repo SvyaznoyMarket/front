@@ -13,6 +13,16 @@ abstract class Query implements \JsonSerializable {
      */
     protected $data = [];
     /**
+     * Массив заголовков запроса
+     * @var array
+     */
+    protected $headers = [];
+    /**
+     * Функция, которая будет применена к POST-данным
+     * @var callable|null
+     */
+    protected $dataEncoder;
+    /**
      * Строка вида user:password
      * @var string
      */
@@ -44,7 +54,7 @@ abstract class Query implements \JsonSerializable {
     /** @var string */
     protected $response;
     /** @var array */
-    protected $headers = [];
+    protected $responseHeaders = [];
     /** @var array */
     protected $info = [];
     /** @var float */
@@ -65,7 +75,7 @@ abstract class Query implements \JsonSerializable {
             'startAt' => $this->startAt,
             'endAt'   => $this->endAt,
             'info'    => $this->info,
-            'header'  => $this->headers,
+            'header'  => $this->responseHeaders,
         ];
         if ($this->error instanceof \Exception) {
             $return['error'] = ['code' => $this->error->getCode(), 'message' => $this->error->getMessage()];
@@ -146,6 +156,39 @@ abstract class Query implements \JsonSerializable {
      */
     public function getData() {
         return $this->data;
+    }
+
+    /**
+     * @param array $headers
+     */
+    public function setHeaders($headers) {
+        $this->headers = $headers;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeaders() {
+        return $this->headers;
+    }
+
+    /**
+     * @param callable|null $dataEncoder
+     * @throws \InvalidArgumentException
+     */
+    public function setDataEncoder($dataEncoder) {
+        if (is_callable($dataEncoder)) {
+            throw new \InvalidArgumentException('Неверный encoder данных');
+        }
+
+        $this->dataEncoder = $dataEncoder;
+    }
+
+    /**
+     * @return callable|null
+     */
+    public function getDataEncoder() {
+        return $this->dataEncoder;
     }
 
     /**
@@ -252,17 +295,17 @@ abstract class Query implements \JsonSerializable {
     }
 
     /**
-     * @param array $headers
+     * @param array $responseHeaders
      */
-    public function setHeaders(array $headers) {
-        $this->headers = $headers;
+    public function setResponseHeaders(array $responseHeaders) {
+        $this->responseHeaders = $responseHeaders;
     }
 
     /**
      * @return array
      */
-    public function getHeaders() {
-        return $this->headers;
+    public function getResponseHeaders() {
+        return $this->responseHeaders;
     }
 
     /**

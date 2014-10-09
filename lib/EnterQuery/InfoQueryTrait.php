@@ -8,6 +8,7 @@ use Enter\Util;
 
 /**
  * @property Url $url
+ * @property callable|null $dataEncoder
  * @property int $timeout
  * @property \Exception|null $error
  * @property string $response
@@ -18,6 +19,7 @@ trait InfoQueryTrait {
     protected function init() {
         $config = $this->getConfig()->infoService;
 
+        $this->dataEncoder = 'json_encode';
         $this->url->prefix = $config->url;
         $this->timeout = $config->timeout;
     }

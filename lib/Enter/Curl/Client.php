@@ -70,7 +70,7 @@ class Client {
 
             $headers = [];
             $this->parseResponse($connection, $response, $headers);
-            $query->setHeaders($headers);
+            $query->setResponseHeaders($headers);
 
             curl_close($connection);
 
@@ -161,7 +161,7 @@ class Client {
 
                         $headers = [];
                         $this->parseResponse($connection, $response, $headers);
-                        $this->queries[$queryId]->setHeaders($headers);
+                        $this->queries[$queryId]->setResponseHeaders($headers);
 
                         // TODO: отложенный запуск обработчиков
                         $this->queries[$queryId]->callback($response);
@@ -269,7 +269,10 @@ class Client {
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($connection, CURLOPT_URL, $query->getUrl());
-        if ((bool)$this->config->httpheader) {
+
+        if ((bool)$query->getHeaders()) {
+            curl_setopt($connection, CURLOPT_HTTPHEADER, $query->getHeaders());
+        } else if ((bool)$this->config->httpheader) {
             curl_setopt($connection, CURLOPT_HTTPHEADER, $this->config->httpheader);
         }
         if ($this->config->encoding) {
@@ -289,11 +292,15 @@ class Client {
 
         if ((bool)$query->getData()) {
             curl_setopt($connection, CURLOPT_POST, true);
-            curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($query->getData()));
+            curl_setopt($connection, CURLOPT_POSTFIELDS, $query->getDataEncoder() ? call_user_func($query->getDataEncoder(), $query->getData()) : $query->getData());
         }
 
         if ($this->config->referer) {
             curl_setopt($connection, CURLOPT_REFERER, $this->config->referer);
+        }
+
+        if ($this->config->debug) {
+            curl_setopt($connection, CURLINFO_HEADER_OUT, true);
         }
 
         $query->setId((string)$connection);

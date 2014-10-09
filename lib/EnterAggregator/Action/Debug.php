@@ -103,7 +103,7 @@ class Debug {
                 $query->time = round(($curlQuery->getEndAt() - $curlQuery->getStartAt()), 3) * 1000;
 
                 $headers = [];
-                foreach ($curlQuery->getHeaders() as $key => $value) {
+                foreach ($curlQuery->getResponseHeaders() as $key => $value) {
                     if (empty($value)) continue;
 
                     $headers[$key] = $value;
@@ -111,10 +111,10 @@ class Debug {
 
                 $info = $curlQuery->getInfo();
                 $info = [
-                    'code'         => $info['http_code'],
-                    'url'          => $info['url'],
-                    'data'         => (bool)$curlQuery->getData() ? $curlQuery->getData() : null,
-                    'header'       => $headers,
+                    'code'           => $info['http_code'],
+                    'url'            => $info['url'],
+                    'data'           => (bool)$curlQuery->getData() ? $curlQuery->getData() : null,
+                    'header'         => $headers,
                     //'content_type' => $info['content_type'],
                     'time' => [
                         'total'         => $info['total_time'],
@@ -124,14 +124,15 @@ class Debug {
                         'starttransfer' => $info['starttransfer_time'],
                         'redirect'      => $info['redirect_time'],
                     ],
-                    'size' => [
+                    'size'           => [
                         'upload'   => $info['size_upload'],
                         'download' => $info['size_download'],
                     ],
-                    'speed' => [
+                    'speed'          => [
                         'download' => $info['speed_download'],
                         'upload'   => $info['speed_upload'],
                     ],
+                    'request_header' => @$info['request_header'],
                 ];
 
                 if ($config->curl->logResponse) {

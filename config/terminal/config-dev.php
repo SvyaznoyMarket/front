@@ -6,4 +6,5 @@ return function(EnterTerminal\Config $config) {
     $handler($config);
 
     // dev config
+    $config->credit->kupivkredit->url = 'https://kupivkredit-test-fe.tcsbank.ru/';
 };

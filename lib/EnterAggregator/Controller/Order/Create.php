@@ -181,8 +181,8 @@ namespace EnterAggregator\Controller\Order {
                 $logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
             }
 
-
             $response->orders = $orders;
+            $response->productsById = $productsById;
 
             return $response;
         }
@@ -195,7 +195,9 @@ namespace EnterAggregator\Controller\Order\Create {
     class Response {
         /** @var array[] */
         public $errors = [];
-        /** @var array */
+        /** @var Model\Order[] */
         public $orders = [];
+        /** @var Model\Product[] */
+        public $productsById;
     }
 }

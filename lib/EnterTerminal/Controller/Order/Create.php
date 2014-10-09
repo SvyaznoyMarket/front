@@ -112,6 +112,42 @@ namespace EnterTerminal\Controller\Order {
             $response->split = $splitData;
             $response->errors = $controllerResponse->errors;
 
+            // kupivkredit
+            try {
+                if (!$split->user) {
+                    throw new \Exception('Нет данных пользователя');
+                }
+
+                $orderPutQueries = [];
+                foreach ($response->orders as $order) {
+                    $hasCredit = false;
+                    foreach ($order->paymentMethods as $paymentMethod) {
+                        if ($paymentMethod->isCredit) {
+                            $hasCredit = true;
+                            break;
+                        }
+                    }
+
+                    if ($hasCredit) {
+                        $user = new Model\User();
+                        $user->firstName = $split->user->firstName;
+                        $user->lastName = $split->user->lastName;
+                        $user->email = $split->user->email;
+                        $user->phone = $split->user->phone;
+
+                        $orderPutQuery = (new Query\Kupivkredit\PutOrder($order, $user, $controllerResponse->productsById));
+                        $curl->prepare($orderPutQuery);
+                        $orderPutQueries[] = $orderPutQuery;
+                    }
+                }
+
+                if ((bool)$orderPutQueries) {
+                    $curl->execute();
+                }
+            } catch(\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical', 'order', 'credit']]);
+            }
+
             // response
             return new Http\JsonResponse($response, (bool)$response->errors ? Http\Response::STATUS_BAD_REQUEST : Http\Response::STATUS_OK);
         }
@@ -122,9 +158,9 @@ namespace EnterTerminal\Controller\Order\Create {
     use EnterModel as Model;
 
     class Response {
-        /** @var Model\Order[] */
-        public $errors = [];
         /** @var array */
+        public $errors = [];
+        /** @var Model\Order[] */
         public $orders = [];
         /** @var Model\Cart */
         public $cart;

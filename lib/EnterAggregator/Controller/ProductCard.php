@@ -236,7 +236,7 @@ namespace EnterAggregator\Controller {
 
             // доступность кредита
             $response->hasCredit =
-                ($config->directCredit->enabled && $response->product->isBuyable && ($response->product->price >= $config->directCredit->minPrice)) // TODO: удалить часть условия после готовности CORE-2035
+                ($config->credit->directCredit->enabled && $response->product->isBuyable && ($response->product->price >= $config->credit->directCredit->minPrice)) // TODO: удалить часть условия после готовности CORE-2035
                 ? (new Repository\PaymentGroup())->checkCreditObjectByListQuery($paymentGroupListQuery)
                 : false;
 

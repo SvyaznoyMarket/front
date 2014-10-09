@@ -10,6 +10,7 @@ use Enter\Util;
 /**
  * @property Url $url
  * @property array $data
+ * @property callable|null $dataEncoder
  * @property int $timeout
  * @property string $auth
  * @property \Exception|null $error
@@ -21,6 +22,7 @@ trait AdminQueryTrait {
     protected function init() {
         $config = $this->getConfig()->adminService;
 
+        $this->dataEncoder = 'json_encode';
         $this->url->prefix = $config->url;
         $this->timeout = $config->timeout;
         if ($config->user && $config->password) {

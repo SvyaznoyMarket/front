@@ -9,6 +9,7 @@ use Enter\Util;
 /**
  * @property Url $url
  * @property array $data
+ * @property callable|null $dataEncoder
  * @property int $timeout
  * @property \Exception|null $error
  * @property string $response
@@ -19,6 +20,7 @@ trait ScmsQueryTrait {
     protected function init() {
         $config = $this->getConfig()->scmsService;
 
+        $this->dataEncoder = 'json_encode';
         $this->url->prefix = $config->url;
         $this->timeout = $config->timeout;
     }

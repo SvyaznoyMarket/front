@@ -28,6 +28,6 @@ class DirectCredit {
     public function isEnabledForCart(Model\Cart $cart) {
         $config = $this->getConfig();
 
-        return $config->directCredit->enabled && ($cart->sum >= $config->directCredit->minPrice);
+        return $config->credit->directCredit->enabled && ($cart->sum >= $config->credit->directCredit->minPrice);
     }
 }

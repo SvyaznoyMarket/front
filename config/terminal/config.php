@@ -33,4 +33,6 @@ return function(EnterTerminal\Config $config) {
     $config->product->itemsInSlider = 60;
 
     $config->productReview->itemsInCard = 7;
+
+    $config->credit->kupivkredit->channel = 'terminal';
 };

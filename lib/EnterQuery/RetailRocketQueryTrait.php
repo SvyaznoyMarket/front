@@ -9,6 +9,7 @@ use Enter\Util;
 /**
  * @property RetailRocketUrl $url
  * @property array $data
+ * @property callable|null $dataEncoder
  * @property int $timeout
  * @property string $auth
  * @property \Exception|null $error
@@ -20,6 +21,7 @@ trait RetailRocketQueryTrait {
     protected function init() {
         $config = $this->getConfig()->retailRocketService;
 
+        $this->dataEncoder = 'json_encode';
         $this->url->prefix = $config->url;
         $this->url->account = $config->account;
         $this->timeout = $config->timeout;

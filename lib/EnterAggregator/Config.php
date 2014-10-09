@@ -73,8 +73,6 @@ namespace EnterAggregator {
         public $search;
         /** @var Config\Promo */
         public $promo;
-        /** @var Config\DirecCredit */
-        public $directCredit;
 
         public function __construct() {
             $this->logger = new Config\Logger();
@@ -112,8 +110,6 @@ namespace EnterAggregator {
             $this->productCategoryPhoto = new Config\ProductCategoryPhoto();
             $this->search = new Config\Search();
             $this->promo = new Config\Promo();
-
-            $this->directCredit = new Config\DirecCredit();
         }
     }
 }
@@ -199,6 +195,15 @@ namespace EnterAggregator\Config {
     class Credit {
         /** @var string */
         public $cookieName;
+        /** @var Credit\DirecCredit  */
+        public $directCredit;
+        /** @var Credit\Kupivkredit */
+        public $kupivkredit;
+
+        public function __construct() {
+            $this->directCredit = new Credit\DirecCredit();
+            $this->kupivkredit = new Credit\Kupivkredit();
+        }
     }
     class Partner {
         /** @var string */
@@ -344,14 +349,6 @@ namespace EnterAggregator\Config {
         public $urlPaths = [];
     }
 
-    class DirecCredit {
-        /** @var bool */
-        public $enabled;
-        /** @var int */
-        public $minPrice;
-        /** @var string */
-        public $partnerId;
-    }
 }
 
 namespace EnterAggregator\Config\Logger {
@@ -407,4 +404,28 @@ namespace EnterAggregator\Config\Partner\Service {
     class GoogleRetargeting extends PartnerConfig {}
 
     class Cityads extends PartnerConfig {}
+}
+
+namespace EnterAggregator\Config\Credit {
+    use EnterAggregator\Config\CurlService;
+
+    class DirecCredit {
+        /** @var bool */
+        public $enabled;
+        /** @var int */
+        public $minPrice;
+        /** @var string */
+        public $partnerId;
+    }
+
+    class Kupivkredit extends CurlService {
+        /** @var bool */
+        public $enabled;
+        /** @var string */
+        public $partnerId;
+        /** @var string */
+        public $secretPhrase;
+        /** @var string */
+        public $channel;
+    }
 }

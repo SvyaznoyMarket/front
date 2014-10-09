@@ -95,6 +95,7 @@ class Service {
             $config->httpheader = ['X-Request-Id: ' . $this->getRequestId(), 'Expect:'];
             $config->retryTimeout = $applicationConfig->curl->retryTimeout;
             $config->retryCount = $applicationConfig->curl->retryCount;
+            $config->debug = $applicationConfig->debugLevel > 0;
 
             $instance = new Curl\Client($config);
             $instance->setLogger($this->getLogger());
