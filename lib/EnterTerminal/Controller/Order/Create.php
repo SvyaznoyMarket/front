@@ -118,6 +118,7 @@ namespace EnterTerminal\Controller\Order {
                     throw new \Exception('Нет данных пользователя');
                 }
 
+                /** @var \Enter\Curl\Query[] $orderPutQueries */
                 $orderPutQueries = [];
                 foreach ($response->orders as $order) {
                     $hasCredit = false;
@@ -143,6 +144,12 @@ namespace EnterTerminal\Controller\Order {
 
                 if ((bool)$orderPutQueries) {
                     $curl->execute();
+
+                    foreach ($orderPutQueries as $orderPutQuery) {
+                        try {
+                            $orderPutQuery->getResult();
+                        } catch (\Exception $e) {}
+                    }
                 }
             } catch(\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical', 'order', 'credit']]);

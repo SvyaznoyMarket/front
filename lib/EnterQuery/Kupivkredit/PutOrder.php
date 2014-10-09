@@ -51,7 +51,7 @@ class PutOrder extends Query {
         foreach ($order->product as $orderProduct) {
             $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : null;
             if (!$product) {
-                $this->getLogger()->push(['type' => 'error', 'message' => 'Товар не найден', 'product.id' => $orderProduct->id, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
+                $this->getLogger()->push(['type' => 'error', 'message' => 'Товар не найден', 'product.id' => $orderProduct->id, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['kupivkredit']]);
                 continue;
             }
 
@@ -113,6 +113,12 @@ class PutOrder extends Query {
         $data = null;
         try {
             $data = Util\Json::toArray($response);
+
+            if (!isset($data['status']) || ('success' != $data['status'])) {
+                $this->getLogger()->push(['type' => 'error', 'data' => $data, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['kupivkredit']]);
+
+                throw new \Exception('Заявка не подтверждена');
+            }
         } catch (\Exception $e) {
             $this->error = $e;
         }
