@@ -1,9 +1,10 @@
 define(
-    ['jquery'],
+    ['jquery', 'jquery.popup'],
     function ($) {
     	console.log('order.common!');
 
-    	var orderWrap = $('.js-order-box'),
+    	var $body = $('body'),
+    		orderWrap = $('.js-order-box'),
     		orderClsr = $('.js-order-box-closer'),
     		orderBtn = $('.js-order-btn'),
     		deliveryType = $('.js-delivery-type-name'),
@@ -27,6 +28,19 @@ define(
 			$self.closest('.js-order-box').removeClass('box-show');
 		},
 
+		showPopupBox = function (e) {
+            e.stopPropagation();
+
+            console.log('showPopup');
+
+            $('.js-popup-box').enterPopup({
+            	popupCSS : {'max-width' : 300},
+            	closeSelector: ".popupFl_clsr"
+            });
+
+            e.preventDefault();
+        },
+
 		changeDeliveryType = function changeDeliveryType() {
 			var $self = $(this),
 				typeId = $self.attr('data-type');
@@ -41,4 +55,6 @@ define(
 		orderBtn.on('click', orderBoxSwitch);
 		orderClsr.on('click', orderBoxClose);
 		deliveryType.on('click', changeDeliveryType);
+
+		$body.on('click', '.js-popup-link', showPopupBox);
 }); 
