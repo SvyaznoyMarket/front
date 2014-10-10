@@ -123,9 +123,9 @@ class Order {
         if (array_key_exists('payment_status_id', $data)) $this->paymentStatusId = $data['payment_status_id']? (string)$data['payment_status_id'] : null;
         if ($this->paymentStatusId) $this->paymentStatus = new Model\Order\PaymentStatus(['id' => $this->paymentStatusId]);
         if (array_key_exists('payment_url', $data)) $this->paymentUrl = (string)$data['payment_url'];
-        if (isset($data['delivery'][0]['delivery_id'])) {
+        if (isset($data['delivery'][0])) {
             foreach ($data['delivery'] as $deliveryItem) {
-                if (empty($deliveryItem['delivery_id'])) continue;
+                if (empty($deliveryItem['delivery_type_id'])) continue;
 
                 $this->deliveries[] = new Model\Order\Delivery($deliveryItem);
             }

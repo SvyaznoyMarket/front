@@ -67,25 +67,25 @@ namespace EnterAggregator\Controller\Order {
             /** @var \Enter\Curl\Query[] $paymentMethodListQueriesByOrderNumberErp */
             $paymentMethodListQueriesByOrderNumberErp = [];
             foreach ($orderData as $orderItem) {
-                $orderNumber = !empty($orderItem['number']) ? (string)$orderItem['number'] : null;
-                $orderNumberErp = !empty($orderItem['number_erp']) ? (string)$orderItem['number_erp'] : null;
-                $orderToken = !empty($orderItem['access_token']) ? (string)$orderItem['access_token'] : null;
-                if (!$orderNumber) {
-                    $logger->push(['type' => 'error', 'error' => 'Не получен номер заказа', 'order' => $orderItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
+                $number = !empty($orderItem['number']) ? (string)$orderItem['number'] : null;
+                $numberErp = !empty($orderItem['number_erp']) ? (string)$orderItem['number_erp'] : null;
+                $accessToken = !empty($orderItem['access_token']) ? (string)$orderItem['access_token'] : null;
+
+                if ($accessToken) {
+                    $orderItemQuery = new Query\Order\GetItemByAccessToken($accessToken);
+                } else if ($number) {
+                    $orderItemQuery = new Query\Order\GetItemByNumber($number, $split->user->phone);
+                } else {
+                    $logger->push(['type' => 'error', 'error' => 'Не получен номер или токен заказа', 'order' => $orderItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
                     continue;
                 }
 
-                if ($orderToken) {
-                    $orderItemQuery = new Query\Order\GetItemByAccessToken($orderToken);
-                } else {
-                    $orderItemQuery = new Query\Order\GetItemByNumber($orderNumber, $split->user->phone);
-                }
                 $curl->prepare($orderItemQuery);
                 $orderItemQueries[] = $orderItemQuery;
 
-                $paymentMethodListQuery = new Query\PaymentMethod\GetListByOrderNumberErp($orderNumberErp, $regionId);
+                $paymentMethodListQuery = new Query\PaymentMethod\GetListByOrderNumberErp($numberErp, $regionId);
                 $curl->prepare($paymentMethodListQuery);
-                $paymentMethodListQueriesByOrderNumberErp[$orderNumberErp] = $paymentMethodListQuery;
+                $paymentMethodListQueriesByOrderNumberErp[$numberErp] = $paymentMethodListQuery;
             }
 
             $curl->execute();
@@ -143,8 +143,8 @@ namespace EnterAggregator\Controller\Order {
 
             // возможные методы оплат
             $paymentMethodsByOrderNumber = [];
-            foreach ($paymentMethodListQueriesByOrderNumberErp as $orderNumberErp => $paymentMethodListQuery) {
-                $paymentMethodsByOrderNumber[$orderNumberErp] = $paymentMethodRepository->getIndexedObjectListByQuery($paymentMethodListQuery);
+            foreach ($paymentMethodListQueriesByOrderNumberErp as $numberErp => $paymentMethodListQuery) {
+                $paymentMethodsByOrderNumber[$numberErp] = $paymentMethodRepository->getIndexedObjectListByQuery($paymentMethodListQuery);
             }
 
             // доставка
