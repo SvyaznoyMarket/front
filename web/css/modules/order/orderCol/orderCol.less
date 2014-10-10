@@ -257,8 +257,9 @@
 		background: @lightGrey6;
 
 		&_i {
-			padding: 10px 0;
-			float: left;
+			display: table-cell;
+			vertical-align: middle;
+			height: 40px;
 			list-style-type: none;
 			.box-sizing();
 			width: 170px;
@@ -268,16 +269,25 @@
 			cursor: pointer;
 			
 			border-top: 1px solid @typGray;
-			border-bottom: 1px solid @typGray;
 			border-right: 1px solid @typGray;
 			background: @lightGrey6;
+			position: relative;
 
 			&-act {
 				cursor: default;
 				background: #FEEED4;
-
-				border-bottom: 1px solid #FEEED4;
+				
 				font-weight: bold;
+
+				.orderCol_mode_i_brdr {
+					border-bottom: 1px solid #FEEED4;
+					position: absolute;
+					display: block;
+					width: 100%;
+					height: 1px;
+					left: 0;
+					bottom: -1px;
+				}
 			}
 		}
 	}

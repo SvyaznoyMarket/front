@@ -522,6 +522,9 @@ textarea[contenteditable] {
  * For IE 6/7 only
  * Include this rule to trigger hasLayout and contain floats.
  */
+.s {
+  font-size: 12px;
+}
 .m {
   font-size: 14px;
 }
@@ -5758,8 +5761,9 @@ body.noScroll {
   background: #f7f7f7;
 }
 .orderCol_mode_i {
-  padding: 10px 0;
-  float: left;
+  display: table-cell;
+  vertical-align: middle;
+  height: 40px;
   list-style-type: none;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -5770,15 +5774,23 @@ body.noScroll {
   margin-bottom: -1px;
   cursor: pointer;
   border-top: 1px solid #a6a6a6;
-  border-bottom: 1px solid #a6a6a6;
   border-right: 1px solid #a6a6a6;
   background: #f7f7f7;
+  position: relative;
 }
 .orderCol_mode_i-act {
   cursor: default;
   background: #FEEED4;
-  border-bottom: 1px solid #FEEED4;
   font-weight: bold;
+}
+.orderCol_mode_i-act .orderCol_mode_i_brdr {
+  border-bottom: 1px solid #FEEED4;
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 1px;
+  left: 0;
+  bottom: -1px;
 }
 .orderCol_opt {
   background: #feeed4;
