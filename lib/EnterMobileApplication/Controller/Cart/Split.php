@@ -216,6 +216,11 @@ namespace EnterMobileApplication\Controller\Cart {
                         $dump['orders'][$blockName]['comment'] = $orderItem['comment'];
                     }
 
+                    // способ оплаты
+                    if (array_key_exists('paymentMethodId', $orderItem)) {
+                        $dump['orders'][$blockName]['payment_method_id'] = $orderItem['paymentMethodId'];
+                    }
+
                     // количество товаров
                     if (isset($orderItem['products'][0])) {
                         $quantitiesByProductId = [];
