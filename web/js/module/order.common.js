@@ -28,10 +28,8 @@ define(
 			$self.closest('.js-order-box').removeClass('box-show');
 		},
 
-		showPopupBox = function (e) {
+		showPopupBox = function showPopupBox(e) {
             e.stopPropagation();
-
-            console.log('showPopup');
 
             $('.js-popup-box').enterPopup({
             	popupCSS : {'max-width' : 300},
@@ -39,6 +37,16 @@ define(
             });
 
             e.preventDefault();
+        },
+
+
+		showPopupBoxCelendar = function showPopupBoxCelendar(e) {
+            e.stopPropagation();
+
+            $('.js-popup-box-celendar').enterPopup({
+            	popupCSS : {'max-width' : 308},
+            	closeSelector: ".popupFl_clsr"
+            });
         },
 
 		changeDeliveryType = function changeDeliveryType() {
@@ -57,4 +65,5 @@ define(
 		deliveryType.on('click', changeDeliveryType);
 
 		$body.on('click', '.js-popup-link', showPopupBox);
+		$body.on('click', '.js-popup-box-celendar-link', showPopupBoxCelendar);
 }); 

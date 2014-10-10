@@ -20,6 +20,10 @@
 		&-wht {
 			background: @white;
 		}
+
+		img {
+			margin: 0 2px;
+		}
 	}
 
 	&_col2 {
@@ -27,13 +31,15 @@
 
 		&_l {
 			width: 48%;
-			float: left;
+			.inline-block();
+			vertical-align: middle;
+			margin-right: 3%;
 		}
 
 		&_r {
 			width: 48%;
-			float: right;
-			position: relative;
+			.inline-block();
+			vertical-align: middle;
 		}
 
 		&-r {

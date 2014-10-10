@@ -6319,17 +6319,26 @@ body.noScroll {
 .orderLn_b-wht {
   background: #ffffff;
 }
+.orderLn_b img {
+  margin: 0 2px;
+}
 .orderLn_col2 {
   line-height: 1.2;
 }
 .orderLn_col2_l {
   width: 48%;
-  float: left;
+  display: inline-block;
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
+  margin-right: 3%;
 }
 .orderLn_col2_r {
   width: 48%;
-  float: right;
-  position: relative;
+  display: inline-block;
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
 }
 .orderLn_col2-r .orderCol_col2_l {
   text-align: right;
@@ -6437,13 +6446,13 @@ body.noScroll {
     line-height: 1.2;
   }
   .orderLn_col2_l {
+    display: block;
     width: auto;
-    float: none;
     margin: 0 0 5px;
   }
   .orderLn_col2_r {
+    display: block;
     width: auto;
-    float: none;
   }
   .orderLn_col2-r {
     text-align: center;
@@ -6604,8 +6613,8 @@ body.noScroll {
   background-position: 0 50%;
 }
 .celedr {
-  width: 308px;
   padding: 10px 0 0;
+  width: 308px;
   font-size: 16px;
 }
 .celedr_t {
@@ -6616,6 +6625,7 @@ body.noScroll {
 }
 .celedr_tb {
   width: 100%;
+  border-top: 1px solid #e0e0e0;
   font-size: 16px;
 }
 .celedr_row {
@@ -6625,6 +6635,7 @@ body.noScroll {
   height: 30px;
   margin-bottom: 0;
   color: #878787;
+  background: #f6f6f6;
   line-height: 30px;
 }
 .celedr_col {
@@ -6633,6 +6644,7 @@ body.noScroll {
   height: 41px;
   cursor: pointer;
   text-align: center;
+  border-bottom: 1px solid #e0e0e0;
   line-height: 41px;
 }
 .celedr_col:first-child {
@@ -6640,11 +6652,16 @@ body.noScroll {
 }
 .celedr_col:active,
 .celedr_col:focus {
+  background: #f99b1c;
   color: #ffffff;
+}
+.celedr_col-disbl {
+  color: #e0e0e0;
 }
 .celedr_col-disbl:active,
 .celedr_col-disbl:focus {
   background: #ffffff;
+  color: #e0e0e0;
 }
 .celedr_month {
   float: left;
@@ -6652,6 +6669,8 @@ body.noScroll {
   height: 25px;
   text-align: center;
   color: #878787;
+  border-bottom: 1px solid #e0e0e0;
+  background: #f6f6f6;
   line-height: 25px;
 }
 .celedr_f {
