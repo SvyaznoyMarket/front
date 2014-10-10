@@ -15,7 +15,7 @@
 
 <div class="content">
     <div class="contentBox640">
-	    <section class="orderCnt" style="display: none;">
+	    <section class="orderCnt">
 	        <h1 class="orderCnt_t">Оформление заказа</h1>
 
 	        <form class="orderU" action="" method="" accept-charset="utf-8">
@@ -78,7 +78,7 @@
 	        </form>
 
 	        <div class="orderCompl clearfix">
-	            <button class="orderCompl_btn btnsubmit">Далее ➜</button>
+	            <button class="orderCompl_btn btnsubmit">Далее</button>
 	        </div>
 	    </section>
 
@@ -574,7 +574,7 @@
 	        </div>
 	    </section>
 
-	    <section class="orderCnt" style="display: none;">
+	    <section class="orderCnt">
 	        <h1 class="orderCnt_t">Ваши заказы</h1>
 
             <div class="orderLn clearfix">
@@ -627,41 +627,13 @@
                 		<div class="orderLn_col2_l">Требуется предоплата</div>
                 	
 						<div class="orderLn_col2_r">
-							<a href="" class="orderLn_btn btn1">
+							<a href="" class="orderLn_btn btn1 js-popup-link">
                                 <strong class="btn5">Оплатить онлайн</strong><br/>
                                 <img width="25" src="/css/modules/order/img/master.png" alt="" />
                                 <img width="25" src="/css/modules/order/img/Visa.png" alt="" />
                                 <img width="43" src="/css/modules/order/img/paypal.png" alt="" />
                                 <img width="16" src="/css/modules/order/img/psb.png" alt="" />
                             </a>
-
-                            <div class="popupFl popupFl_pay">
-                            	<div class="popupFl_clsr"></div>
-								<div class="popupFl_pay_h">Оплатить онлайн</div>
-
-								<ul class="popupFl_pay_lst">
-									<li class="popupFl_pay_lst_i">
-										<input type="radio" id="pay1" name="paynow" class="customInput customInput-defradio" checked>
-										<label class="customLabel" for="pay1"><span class="customLabel_tx">Банковская карта</span> <img src="/css/modules/order/img/mcard.png" height="23" alt=""> <img src="/css/modules/order/img/visa2.png" alt=""></label>
-										<p class="popupFl_pay_lst_desc">А также Maestro, Diners Club, JCB.<br/>Без комиссии.</p>
-									</li>
-
-									<li class="popupFl_pay_lst_i">
-										<input type="radio" id="pay2" name="paynow" class="customInput customInput-defradio">
-										<label class="customLabel" for="pay2"><span class="customLabel_tx">Платёжная система</span> <img src="/css/modules/order/img/payPal2.png" height="23" alt=""></label>
-									</li>
-
-									<li class="popupFl_pay_lst_i">
-										<input type="radio" id="pay3" name="paynow" class="customInput customInput-defradio">
-										<label class="customLabel" for="pay3"><span class="customLabel_tx">Интернет-банк</span> <img src="/css/modules/order/img/psb2.png" height="23" alt=""></label>
-										<p class="popupFl_pay_lst_desc">Только для клиентов Промсвязьбанка.</p>
-									</li>
-								</ul>
-
-								<p class="popupFl_pay_desc">Вы будете автоматически перемещены на сайт платежной системы.</p>
-
-								<a href="" class="popupFl_pay_btn btnsubmit">Оплатить</a>
-							</div>
 						</div>
 					</div>
                 </div>
@@ -719,39 +691,11 @@
                 </div>
 
                 <div class="orderLn_b">
-					<a href="" class="btn5 orderLn_mgnr"><span class="borderBd">Оплатить онлайн</span></a>
+					<a href="" class="btn5 orderLn_mgnr js-popup-link"><span class="borderBd">Оплатить онлайн</span></a>
                     <img width="25" src="/css/modules/order/img/master.png" alt="" />
                     <img width="25" src="/css/modules/order/img/Visa.png" alt="" />
                     <img width="43" src="/css/modules/order/img/paypal.png" alt="" />
                     <img width="16" src="/css/modules/order/img/psb.png" alt="" />
-
-                    <div class="popupFl popupFl_pay popupFl_pay-c">
-                    	<div class="popupFl_clsr"></div>
-						<div class="popupFl_pay_h">Оплатить онлайн</div>
-
-						<ul class="popupFl_pay_lst">
-							<li class="popupFl_pay_lst_i">
-								<input type="radio" id="pay1" name="paynow" class="customInput customInput-defradio" checked>
-								<label class="customLabel" for="pay1"><span class="customLabel_tx">Банковская карта</span> <img src="/css/modules/order/img/mcard.png" height="23" alt=""> <img src="/css/modules/order/img/visa2.png" alt=""></label>
-								<p class="popupFl_pay_lst_desc">А также Maestro, Diners Club, JCB.<br/>Без комиссии.</p>
-							</li>
-
-							<li class="popupFl_pay_lst_i">
-								<input type="radio" id="pay2" name="paynow" class="customInput customInput-defradio">
-								<label class="customLabel" for="pay2"><span class="customLabel_tx">Платёжная система</span> <img src="/css/modules/order/img/payPal2.png" height="23" alt=""></label>
-							</li>
-
-							<li class="popupFl_pay_lst_i">
-								<input type="radio" id="pay3" name="paynow" class="customInput customInput-defradio">
-								<label class="customLabel" for="pay3"><span class="customLabel_tx">Интернет-банк</span> <img src="/css/modules/order/img/psb2.png" height="23" alt=""></label>
-								<p class="popupFl_pay_lst_desc">Только для клиентов Промсвязьбанка.</p>
-							</li>
-						</ul>
-
-						<p class="popupFl_pay_desc">Вы будете автоматически перемещены на сайт платежной системы.</p>
-
-						<a href="" class="popupFl_pay_btn btnsubmit">Оплатить</a>
-					</div>
                 </div>
             </div>  
 
@@ -760,4 +704,35 @@
 	        </div>
 	    </section>
 	</div>
+</div>
+
+<div class="popupBox popupFl popupFl_pay js-popup-box">
+	<div class="popupFl_clsr"></div>
+	<div class="popupFl_pay_h">
+		Оплатить онлайн без комиссии
+		<div><strong>Заказ</strong> COXD-305176 </div>
+	</div>
+
+	<ul class="popupFl_pay_lst">
+		<li class="popupFl_pay_lst_i">
+			<input type="radio" id="pay1" name="paynow" class="customInput customInput-defradio" checked>
+			<label class="customLabel" for="pay1"><span class="customLabel_tx">Банковская карта</span> <img src="/css/modules/order/img/mcard.png" height="23" alt=""> <img src="/css/modules/order/img/visa2.png" alt=""></label>
+			<p class="popupFl_pay_lst_desc">А также Maestro, Diners Club, JCB.</p>
+		</li>
+
+		<li class="popupFl_pay_lst_i">
+			<input type="radio" id="pay2" name="paynow" class="customInput customInput-defradio">
+			<label class="customLabel" for="pay2"><span class="customLabel_tx">Платёжная система</span> <img src="/css/modules/order/img/payPal2.png" height="23" alt=""></label>
+		</li>
+
+		<li class="popupFl_pay_lst_i">
+			<input type="radio" id="pay3" name="paynow" class="customInput customInput-defradio">
+			<label class="customLabel" for="pay3"><span class="customLabel_tx">Интернет-банк</span> <img src="/css/modules/order/img/psb2.png" height="23" alt=""></label>
+			<p class="popupFl_pay_lst_desc">Только для клиентов Промсвязьбанка.</p>
+		</li>
+	</ul>
+
+	<p class="popupFl_pay_desc">Вы будете автоматически перемещены на сайт платежной системы.</p>
+
+	<a href="" class="popupFl_pay_btn btnsubmit">Оплатить</a>
 </div>
