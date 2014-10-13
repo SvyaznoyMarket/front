@@ -77,7 +77,7 @@ class Debug {
                         'message' => $queryError->getMessage(),
                         //'file'    => $queryError->getFile(),
                         //'line'    => $queryError->getLine(),
-                    ];
+                    ] + ($queryError instanceof \EnterQuery\CoreQueryException ? ['detail' => $queryError->getDetail()] : []);
                 }
 
                 $info = $curlQuery->getInfo();
