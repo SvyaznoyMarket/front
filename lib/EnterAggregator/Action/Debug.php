@@ -145,8 +145,8 @@ class Debug {
                 $info['error'] = $curlQuery->getError() ? [
                     'code'    => $curlQuery->getError()->getCode(),
                     'message' => $curlQuery->getError()->getMessage(),
-                    'file'    => $curlQuery->getError()->getFile(),
-                    'line'    => $curlQuery->getError()->getLine(),
+                    //'file'    => $curlQuery->getError()->getFile(),
+                    //'line'    => $curlQuery->getError()->getLine(),
                 ] : null;
 
                 $query->info = json_encode($info, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);

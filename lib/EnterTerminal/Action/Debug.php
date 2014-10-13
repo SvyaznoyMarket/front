@@ -75,8 +75,8 @@ class Debug {
                     $query->error = [
                         'code'    => $queryError->getCode(),
                         'message' => $queryError->getMessage(),
-                        'file'    => $queryError->getFile(),
-                        'line'    => $queryError->getLine(),
+                        //'file'    => $queryError->getFile(),
+                        //'line'    => $queryError->getLine(),
                     ];
                 }
 
@@ -87,6 +87,8 @@ class Debug {
                 if ((bool)$curlQuery->getData()) {
                     $query->data = $curlQuery->getData();
                 }
+                $query->startAt = $curlQuery->getStartAt();
+                $query->endAt = $curlQuery->getEndAt();
                 $query->call = $curlQuery->getCall();
                 $query->time = round(($curlQuery->getEndAt() - $curlQuery->getStartAt()), 3) * 1000;
                 $query->timeout = $curlQuery->getTimeout();
