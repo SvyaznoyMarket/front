@@ -36,6 +36,7 @@ class Sorting {
 
             $sorting = new Model\Product\Sorting();
             $sorting->name = $item['name'];
+            $sorting->shortName = @$item['shortName'];
             $sorting->token = $item['token'];
             $sorting->direction = $item['direction'];
 
