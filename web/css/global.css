@@ -5951,6 +5951,10 @@ body.noScroll {
   .orderCol_hd_l {
     line-height: 1;
   }
+  .orderCol_mode {
+    display: table;
+    width: 100%;
+  }
   .orderCol_mode_i {
     width: 50%;
     border-left: 1px solid #a6a6a6;
