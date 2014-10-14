@@ -77,6 +77,13 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
             }
 
+            // fix типов
+            foreach ($controllerResponse->filters as $filter) {
+                if (isset($filter->value) && is_array($filter->value)) {
+                    $filter->value = array_values($filter->value);
+                }
+            }
+
             // ответ
             $response = new Response();
             $response->category = $controllerResponse->category;

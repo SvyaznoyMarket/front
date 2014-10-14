@@ -30,8 +30,6 @@ class Order {
     /** @var array */
     public $possiblePaymentMethodIds = [];
     /** @var array */
-    public $possiblePointIds = [];
-    /** @var array */
     public $groupedPossiblePointIds = [];
     /** @var string|null */
     public $comment;
