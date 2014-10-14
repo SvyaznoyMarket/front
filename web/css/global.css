@@ -4461,6 +4461,11 @@ body.noScroll {
     margin: 0;
   }
 }
+.noProducts {
+  font-size: 1.3em;
+  margin: 5em 0 3em 0;
+  text-align: center;
+}
 /** блок с параметрами фильтра .params .paramsList **/
 /* ==========================================================================
    Каталог -> блок с параметрами фильтра .params .paramsList

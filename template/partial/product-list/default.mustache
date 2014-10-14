@@ -4,6 +4,11 @@
         {{>partial/product-card/default}}
     {{/products}}
 </div>
+
+{{^products}}
+    {{>partial/product-list/noProducts}}
+{{/products}}
+
 <!--/ листинг товаров  -->
 
 {{#moreLink}}
