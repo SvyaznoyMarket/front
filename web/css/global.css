@@ -1706,6 +1706,7 @@ body.noScroll {
    Карточка товара -> описание товара .prodDescr .prodHd .prodBuy
    ========================================================================== */
 .prodDescr {
+  position: relative;
   margin: 0 0 40px;
 }
 .prodDescr_l {
@@ -1715,6 +1716,17 @@ body.noScroll {
 .prodDescr_r {
   float: right;
   width: 58.51063%;
+}
+.prodDescr .sticker {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+}
+.prodDescr .sticker.right {
+  right: 0;
+}
+.prodDescr .sticker.left {
+  left: 0;
 }
 /* Шапка карточки товара - название товара, артикул и отзывы */
 .prodHd {
@@ -3941,6 +3953,17 @@ body.noScroll {
   height: 1px;
   content: "";
   background: #E1E1E1;
+}
+.catalogList_item .sticker {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+}
+.catalogList_item .sticker.right {
+  right: 10px;
+}
+.catalogList_item .sticker.left {
+  left: 10px;
 }
 .catalogList .name {
   display: inline-block;

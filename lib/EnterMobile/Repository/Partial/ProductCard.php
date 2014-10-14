@@ -22,7 +22,8 @@ class ProductCard {
      */
     public function getObject(
         \EnterModel\Product $product,
-        Partial\Cart\ProductButton $cartButton = null
+        Partial\Cart\ProductButton $cartButton = null,
+        \EnterModel\Product\Category $category = null
     ) {
         $card = new Partial\ProductCard();
 
@@ -48,6 +49,13 @@ class ProductCard {
 
             $card->rating = $rating;
         }
+
+        // Не показываем этикетку бренда в списке товаров категории tchibo
+        if (!$category || !$category->ascendants || 'tchibo' !== $category->ascendants[0]->token) {
+            $card->brand = $product->brand;
+        }
+
+        $card->labels = $product->labels;
 
         return $card;
     }

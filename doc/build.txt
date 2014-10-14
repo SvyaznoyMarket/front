@@ -1,1 +1,1 @@
-cd web/js && r.js -o build.js && cd ..
+grunt less && cd web/js && r.js -o build.js && cd ../..

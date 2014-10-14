@@ -89,7 +89,7 @@ class ChildCategory {
             $page->content->productBlock->dataReset = $templateHelper->json($dataReset);
 
             foreach ($request->products as $productModel) {
-                $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
+                $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel), $request->category);
 
                 $page->content->productBlock->products[] = $productCard;
             }

@@ -295,6 +295,8 @@ namespace EnterAggregator\Controller {
 
             $response->products = array_values($productsById);
 
+            $productRepository->setLabelImageUrlPathForObjectList($productsById, 0);
+
             // удаление фильтров
             foreach ($response->filters as $i => $filter) {
                 foreach ($response->baseRequestFilters as $requestFilter) {

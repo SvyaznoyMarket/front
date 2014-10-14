@@ -48,6 +48,7 @@ class ListByFilter {
         }
 
         $catalogConfigQuery = null;
+        $category = null;
         if ($request->query['category']) {
             $categoryQuery = new Query\Product\Category\GetItemById($request->query['category'], $regionId);
             $curl->prepare($categoryQuery);
@@ -116,7 +117,13 @@ class ListByFilter {
         );
         $curl->prepare($productIdPagerQuery);
 
+        // запрос предка категории
+        $branchCategoryItemQuery = new Query\Product\Category\GetBranchItemByCategoryObject($category, $region->id);
+        $curl->prepare($branchCategoryItemQuery);
+
         $curl->execute();
+
+        (new \EnterRepository\Product\Category())->setBranchForObjectByQuery($category, $branchCategoryItemQuery);
 
         // фильтры
         $filters = $filterListQuery ? $filterRepository->getObjectListByQuery($filterListQuery) : [];
@@ -155,6 +162,8 @@ class ListByFilter {
         // список видео для товаров
         $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
 
+        $productRepository->setLabelImageUrlPathForObjectList($productsById, 0);
+
         // удаление фильтров
         foreach ($filters as $i => $filter) {
             foreach ($baseRequestFilters as $requestFilter) {
@@ -174,6 +183,7 @@ class ListByFilter {
         $pageRequest->sortings = $sortings;
         $pageRequest->products = $productsById;
         $pageRequest->count = $productIdPager->count;
+        $pageRequest->category = $category;
 
         // страница
         $page = new Page();

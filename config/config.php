@@ -126,6 +126,11 @@ return function(\EnterAggregator\Config $config) {
         2 => '/4/1/920x320/',
     ];
 
+    $config->productLabel->urlPaths = [
+        0 => '/7/1/66x23/',
+        1 => '/7/1/124x38/',
+    ];
+
     $config->credit->directCredit->enabled = true;
     $config->credit->directCredit->minPrice = 3000;
     $config->credit->directCredit->partnerId = '4427';
@@ -135,4 +140,6 @@ return function(\EnterAggregator\Config $config) {
     $config->credit->kupivkredit->secretPhrase = '321ewq';
     $config->credit->kupivkredit->url = 'https://kupivkredit-test-fe.tcsbank.ru/';
     $config->credit->kupivkredit->timeout = 2;
+    
+    
 };

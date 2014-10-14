@@ -61,6 +61,8 @@ namespace EnterAggregator\Controller {
                 return $response;
             }
 
+            $productRepository->setLabelImageUrlPathForObjectList([$response->product], 1);
+
             // запрос дерева категорий для меню
             $categoryListQuery = null;
             if ($context->mainMenu) {

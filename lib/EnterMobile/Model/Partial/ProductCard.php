@@ -29,4 +29,8 @@ class ProductCard {
     public $rating;
     /** @var string */
     public $dataGa;
+    /** @var \EnterModel\Brand|null */
+    public $brand;
+    /** @var \EnterModel\Product\Label[] */
+    public $labels = [];
 }
