@@ -11,6 +11,10 @@ use EnterQuery as Query;
 class RedirectManager {
     use ConfigTrait, CurlTrait, LoggerTrait;
 
+    /**
+     * @param Http\Request $request
+     * @param Http\Response $response
+     */
     public function execute(Http\Request $request, Http\Response &$response = null) {
         if (!$this->getConfig()->redirectManager->enabled) {
             return;
@@ -57,6 +61,8 @@ class RedirectManager {
         if (false === strpos($redirectUrl, '?') && $request->getQueryString()) {
             $redirectUrl .= '?' . $request->getQueryString();
         }
+
+        $redirectUrl = $request->getSchemeAndHttpHost() . $redirectUrl;
 
         $response = (new \EnterMobile\Controller\Redirect())->execute($redirectUrl, 301);
     }
