@@ -18,6 +18,7 @@ class ProductCard {
     /**
      * @param \EnterModel\Product $product
      * @param Partial\Cart\ProductButton|null $cartButton
+     * @param \EnterModel\Product\Category $category
      * @return Partial\ProductCard
      */
     public function getObject(
