@@ -54,7 +54,6 @@ return function(\EnterAggregator\Config $config) {
     $config->cmsService->url = 'http://cms.enter.ru/';
     $config->cmsService->timeout = 0.8;
 
-    $config->adminService->enabled = true;
     $config->adminService->url = 'http://admin.enter.ru/';
     $config->adminService->timeout = 2;
 

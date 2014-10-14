@@ -45,26 +45,10 @@ class RootCategory {
         $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryToken, $region->id);
         $curl->prepare($categoryItemQuery);
 
-        $categoryAdminItemQuery = null;
-        if ($config->adminService->enabled) {
-            $categoryAdminItemQuery = new Query\Product\Category\GetAdminItemByToken($categoryToken, $region->id);
-            $curl->prepare($categoryAdminItemQuery);
-        }
-
         $curl->execute();
 
         // категория
-        $category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
-        if (!$category) {
-            // костыль для ядра
-            $categoryUi = isset($categoryAdminItemQuery->getResult()['ui']) ? $categoryAdminItemQuery->getResult()['ui'] : null;
-            $categoryItemQuery = $categoryUi ? new Query\Product\Category\GetItemByUi($categoryUi, $region->id) : null;
-
-            if ($categoryItemQuery) {
-                $curl->prepare($categoryItemQuery)->execute();
-                $category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
-            }
-        }
+        $category = $productCategoryRepository->getObjectByQuery($categoryItemQuery);
 
         if (!$category) {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));

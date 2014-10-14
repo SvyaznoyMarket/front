@@ -88,27 +88,11 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($categoryItemQuery);
             }
 
-            $categoryAdminItemQuery = null;
-            if (!empty($categoryCriteria['token']) && $config->adminService->enabled) {
-                $categoryAdminItemQuery = new Query\Product\Category\GetAdminItemByToken($categoryCriteria['token'], $response->region->id);
-                $curl->prepare($categoryAdminItemQuery);
-            }
-
             $curl->execute();
 
             // категория
             if ($categoryItemQuery) {
-                $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
-                if (!$response->category) {
-                    // костыль для ядра
-                    $categoryUi = ($categoryAdminItemQuery && isset($categoryAdminItemQuery->getResult()['ui'])) ? $categoryAdminItemQuery->getResult()['ui'] : null;
-                    $categoryItemQuery = $categoryUi ? new Query\Product\Category\GetItemByUi($categoryUi, $response->region->id) : null;
-
-                    if ($categoryItemQuery) {
-                        $curl->prepare($categoryItemQuery)->execute();
-                        $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery, $categoryAdminItemQuery);
-                    }
-                }
+                $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery);
             }
 
             // базовые фильтры

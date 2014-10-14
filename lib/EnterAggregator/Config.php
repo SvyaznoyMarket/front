@@ -260,8 +260,6 @@ namespace EnterAggregator\Config {
     }
 
     class AdminService extends CurlService {
-        /** @var bool */
-        public $enabled;
     }
 
     class ReviewService extends CurlService {

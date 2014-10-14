@@ -74,24 +74,13 @@ class Category {
     }
 
     /**
-     * @param Query $coreQuery
-     * @param Query $adminQuery
+     * @param Query $query
      * @return Model\Product\Category
      */
-    public function getObjectByQuery(Query $coreQuery, Query $adminQuery = null) {
+    public function getObjectByQuery(Query $query) {
         $category = null;
 
-        if ($item = $coreQuery->getResult()) {
-            if ($adminQuery) {
-                try {
-                    $adminItem = $adminQuery->getResult();
-
-                    $item = array_merge($item, $adminItem ?: []);
-                } catch (\Exception $e) {
-                    trigger_error($e, E_USER_ERROR);
-                }
-            }
-
+        if ($item = $query->getResult()) {
             $category = new Model\Product\Category($item);
         }
 
