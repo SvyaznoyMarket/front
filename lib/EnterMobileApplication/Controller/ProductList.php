@@ -69,8 +69,8 @@ class ProductList {
         }
 
         // запрос списка видео для товаров
-        $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($productIds);
-        $curl->prepare($videoGroupedListQuery);
+        $descriptionListQuery = new Query\Product\GetDescriptionListByUiList($productIds);
+        $curl->prepare($descriptionListQuery);
 
         $curl->execute();
 
@@ -82,8 +82,8 @@ class ProductList {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
 
-        // список видео для товаров
-        $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
+        // список медиа для товаров
+        $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
         // ответ
         $response = [

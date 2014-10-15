@@ -77,10 +77,6 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($mainMenuQuery);
             }
 
-            // запрос видео товара
-            $videoListQuery = new Query\Product\Media\Video\GetListByProductId($response->product->id);
-            $curl->prepare($videoListQuery);
-
             // запрос аксессуаров товара
             $accessoryListQuery = null;
             if ((bool)$response->product->accessoryIds) {
@@ -162,9 +158,11 @@ namespace EnterAggregator\Controller {
             }
 
             // видео товара
-            $productRepository->setVideoForObjectByQuery($response->product, $videoListQuery);
+            //$productRepository->setVideoForObjectByQuery($response->product, $descriptionItemQuery);
             // 3d фото товара (maybe3d)
-            $productRepository->setPhoto3dForObjectByQuery($response->product, $videoListQuery);
+            //$productRepository->setPhoto3dForObjectByQuery($response->product, $descriptionItemQuery);
+            // медиа товара
+            $productRepository->setMediaForObjectByQuery($response->product, $descriptionItemQuery);
 
             // наборы
             $kitProductsById = $kitListQuery ? $productRepository->getIndexedObjectListByQueryList([$kitListQuery], function(&$item) {

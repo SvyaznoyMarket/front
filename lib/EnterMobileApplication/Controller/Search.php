@@ -141,8 +141,8 @@ class Search {
         }
 
         // запрос списка видео для товаров
-        $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($searchResult->productIds);
-        $curl->prepare($videoGroupedListQuery);
+        $descriptionListQuery = new Query\Product\GetDescriptionListByUiList($searchResult->productIds);
+        $curl->prepare($descriptionListQuery);
 
         $curl->execute();
 
@@ -154,8 +154,8 @@ class Search {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
 
-        // список видео для товаров
-        $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
+        // список медиа для товаров
+        $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
         // ответ
         $response = [

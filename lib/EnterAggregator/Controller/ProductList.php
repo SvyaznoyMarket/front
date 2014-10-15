@@ -226,11 +226,11 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($ratingListQuery);
             }
 
-            // запрос списка видео для товаров
-            $videoGroupedListQuery = null;
+            // запрос списка медиа для товаров
+            $descriptionListQuery = null;
             if ($response->productIdPager && (bool)$response->productIdPager->ids) {
-                $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($response->productIdPager->ids);
-                $curl->prepare($videoGroupedListQuery);
+                $descriptionListQuery = new Query\Product\GetDescriptionListByUiList($response->productIdPager->ids);
+                $curl->prepare($descriptionListQuery);
             }
 
             $curl->execute();
@@ -253,9 +253,9 @@ namespace EnterAggregator\Controller {
                 $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
             }
 
-            // список видео для товаров
-            if ($videoGroupedListQuery) {
-                $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
+            // список медиа для товаров
+            if ($descriptionListQuery) {
+                $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
             }
 
             // список магазинов, в которых есть товар

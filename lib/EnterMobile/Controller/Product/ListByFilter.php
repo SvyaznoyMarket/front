@@ -146,8 +146,8 @@ class ListByFilter {
         }
 
         // запрос списка видео для товаров
-        $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($productIdPager->ids);
-        $curl->prepare($videoGroupedListQuery);
+        $descriptionListQuery = new Query\Product\GetDescriptionListByUiList($productIdPager->ids);
+        $curl->prepare($descriptionListQuery);
 
         $curl->execute();
 
@@ -159,8 +159,8 @@ class ListByFilter {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
 
-        // список видео для товаров
-        $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
+        // список медиа для товаров
+        $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
         $productRepository->setLabelImageUrlPathForObjectList($productsById, 0);
 

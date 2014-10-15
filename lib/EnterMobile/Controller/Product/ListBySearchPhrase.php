@@ -94,8 +94,8 @@ class ListBySearchPhrase {
         }
 
         // запрос списка видео для товаров
-        $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($searchResult->productIds);
-        $curl->prepare($videoGroupedListQuery);
+        $descriptionListQuery = new Query\Product\GetDescriptionListByUiList($searchResult->productIds);
+        $curl->prepare($descriptionListQuery);
 
         $curl->execute();
 
@@ -107,8 +107,8 @@ class ListBySearchPhrase {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
 
-        // список видео для товаров
-        $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
+        // список медиа для товаров
+        $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Product\ListByFilter\Request();
