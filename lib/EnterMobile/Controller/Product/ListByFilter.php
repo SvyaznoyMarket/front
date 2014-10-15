@@ -162,8 +162,6 @@ class ListByFilter {
         // список видео для товаров
         $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
 
-        $productRepository->setLabelImageUrlPathForObjectList($productsById, 0);
-
         // удаление фильтров
         foreach ($filters as $i => $filter) {
             foreach ($baseRequestFilters as $requestFilter) {
