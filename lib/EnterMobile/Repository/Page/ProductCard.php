@@ -62,6 +62,11 @@ class ProductCard {
         $page->content->product->shownOldPrice = $productModel->oldPrice ? number_format((float)$productModel->oldPrice, 0, ',', ' ') : null;
         $page->content->product->cartButtonBlock = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($productModel);
         $page->content->product->brand = $productModel->brand;
+
+        // шильдики
+        foreach ($productModel->labels as $label) {
+            $label->imageUrl = (string)(new Routing\Product\Label\Get($label->id, $label->image, 1)); // FIXME
+        }
         $page->content->product->labels = $productModel->labels;
 
         // доставка товара
