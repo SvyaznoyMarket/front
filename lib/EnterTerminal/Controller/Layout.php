@@ -29,6 +29,8 @@ namespace EnterTerminal\Controller {
                 throw new \Exception('Не передан параметр regionId');
             }
 
+            $shopUi = is_scalar($request->query['shopUi']) ? (string)$request->query['shopUi'] : null;
+
             // запрос региона
             $regionItemQuery = new Query\Region\GetItemById($regionId);
             $curl->prepare($regionItemQuery);
@@ -46,7 +48,7 @@ namespace EnterTerminal\Controller {
             $curl->prepare($categoryListQuery);
 
             // запрос меню
-            $mainMenuQuery = new Query\MainMenu\GetItem();
+            $mainMenuQuery = new Query\MainMenu\GetItem($shopUi);
             $curl->prepare($mainMenuQuery);
 
             $curl->execute();

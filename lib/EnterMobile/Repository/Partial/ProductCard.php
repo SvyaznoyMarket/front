@@ -56,6 +56,10 @@ class ProductCard {
             $card->brand = $product->brand;
         }
 
+        // шильдики
+        foreach ($product->labels as $label) {
+            $label->imageUrl = (string)(new Routing\Product\Label\Get($label->id, $label->image, 0)); // FIXME
+        }
         $card->labels = $product->labels;
 
         return $card;

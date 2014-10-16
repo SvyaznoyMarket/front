@@ -162,8 +162,6 @@ class ListByFilter {
         // список медиа для товаров
         $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
-        $productRepository->setLabelImageUrlPathForObjectList($productsById, 0);
-
         // удаление фильтров
         foreach ($filters as $i => $filter) {
             foreach ($baseRequestFilters as $requestFilter) {

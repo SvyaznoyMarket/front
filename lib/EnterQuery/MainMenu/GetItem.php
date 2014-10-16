@@ -13,9 +13,15 @@ class GetItem extends Query {
     /** @var array|null */
     protected $result;
 
-    public function __construct() {
+    /**
+     * @param string|null $shopUi
+     */
+    public function __construct($shopUi = null) {
         $this->url = new Url();
         $this->url->path = 'seo/main-menu';
+        if ($shopUi) {
+            $this->url->query['shop_ui'] = $shopUi;
+        }
 
         $this->init();
     }

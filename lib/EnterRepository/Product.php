@@ -150,19 +150,6 @@ class Product {
         // TODO
     }
 
-    /**
-     * @param array $products
-     * @param $imageUrlPathNumber
-     */
-    public function setLabelImageUrlPathForObjectList(array $products, $imageUrlPathNumber) {
-        $config = $this->getConfig();
-
-        foreach ($products as $product) {
-            foreach ($product->labels as $label) {
-                $label->image = $config->mediaHosts[rand(0, count($config->mediaHosts) - 1)] . $config->productLabel->urlPaths[$imageUrlPathNumber] . $label->image;
-            }
-        }
-    }
 
     /**
      * @param Model\Product[] $productsById

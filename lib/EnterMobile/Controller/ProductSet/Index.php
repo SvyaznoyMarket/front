@@ -80,8 +80,6 @@ class Index {
         // товары
         $products = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
 
-        (new \EnterRepository\Product())->setLabelImageUrlPathForObjectList($products, 0);
-
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductSet\Index\Request();
         $pageRequest->httpRequest = $request;

@@ -130,8 +130,6 @@ class Index {
         // список товаров
         $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
 
-        $productRepository->setLabelImageUrlPathForObjectList($productsById, 0);
-
         // меню
         $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
 
