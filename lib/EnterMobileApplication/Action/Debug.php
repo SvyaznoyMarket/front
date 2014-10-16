@@ -75,8 +75,9 @@ class Debug {
                     $query->error = [
                         'code'    => $queryError->getCode(),
                         'message' => $queryError->getMessage(),
-                        'file'    => $queryError->getFile(),
-                        'line'    => $queryError->getLine(),
+                        //'file'    => $queryError->getFile(),
+                        //'line'    => $queryError->getLine(),
+                        'trace'   => $queryError->getTraceAsString(),
                     ];
                 }
 
@@ -89,6 +90,7 @@ class Debug {
                 }
                 $query->call = $curlQuery->getCall();
                 $query->time = round(($curlQuery->getEndAt() - $curlQuery->getStartAt()), 3) * 1000;
+                $query->timeout = $curlQuery->getTimeout();
 
                 $page->queries[] = $query;
 
