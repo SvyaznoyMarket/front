@@ -25,8 +25,12 @@ namespace EnterMobileApplication\Controller\Region {
             $response = new Response();
 
             $ip = is_scalar($request->query['ip']) ? trim((string)$request->query['ip']) : null;
-            if (!$ip) {
-                throw new \Exception('Не передан ip');
+
+            $latitude = is_scalar($request->query['latitude']) ? trim((string)$request->query['latitude']) : null;
+            $longitude = is_scalar($request->query['longitude']) ? trim((string)$request->query['longitude']) : null;
+
+            if (!$ip && (!$latitude || !$longitude)) {
+                throw new \Exception('Не передан ip или параметры latitude и longitude');
             }
 
             $limit = (int)$request->query['limit'] ?: 10;
@@ -34,7 +38,7 @@ namespace EnterMobileApplication\Controller\Region {
                 $limit = 100;
             }
 
-            $regionListQuery = new Query\Region\GetListByIp($ip);
+            $regionListQuery = $ip ? new Query\Region\GetListByIp($ip) : new Query\Region\GetListByCoordinates($latitude, $longitude);
             $regionListQuery->setTimeout($config->coreService->timeout * 1.5);
             $curl->prepare($regionListQuery)->execute();
 
