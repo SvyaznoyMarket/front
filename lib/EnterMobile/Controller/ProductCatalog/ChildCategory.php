@@ -71,7 +71,7 @@ class ChildCategory {
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
         $pageRequest->pageNum = $pageNum;
         $pageRequest->limit = $limit;
-        $pageRequest->count = $controllerResponse->productIdPager->count; // TODO: передавать productIdPager
+        $pageRequest->count = $controllerResponse->productUiPager->count; // TODO: передавать productUiPager
         $pageRequest->requestFilters = $controllerResponse->requestFilters;
         $pageRequest->baseRequestFilters = $controllerResponse->baseRequestFilters;
         $pageRequest->filters = $controllerResponse->filters;

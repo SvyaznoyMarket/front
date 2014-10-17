@@ -148,8 +148,8 @@ class Slice {
                 ];
             }, $categories),
         ];
-        if ($controllerResponse->productIdPager) {
-            $response['productCount'] = $controllerResponse->productIdPager->count;
+        if ($controllerResponse->productUiPager) {
+            $response['productCount'] = $controllerResponse->productUiPager->count;
             $response['products'] = $this->getProductList($controllerResponse->products);
             $response['filters'] = $this->getFilterList($controllerResponse->filters);
             $response['sortings'] = $this->getSortingList($controllerResponse->sortings);

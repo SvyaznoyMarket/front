@@ -113,7 +113,7 @@ class Slice {
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
         $pageRequest->pageNum = $pageNum;
         $pageRequest->limit = $limit;
-        $pageRequest->count = $controllerResponse->productIdPager->count; // TODO: передавать productIdPager
+        $pageRequest->count = $controllerResponse->productUiPager->count; // TODO: передавать productUiPager
         $pageRequest->slice = $slice;
         $pageRequest->requestFilters = $requestFilters;
         $pageRequest->baseRequestFilters = $baseRequestFilters;

@@ -118,7 +118,7 @@ namespace EnterTerminal\Controller\ProductCatalog {
             $response->categories = $categories;
             $response->catalogConfig = $controllerResponse->catalogConfig;
             $response->products = $controllerResponse->products;
-            $response->productCount = $controllerResponse->productIdPager->count;
+            $response->productCount = $controllerResponse->productUiPager->count;
             $response->filters = $controllerResponse->filters;
             $response->sortings = $controllerResponse->sortings;
 
