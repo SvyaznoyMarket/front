@@ -124,8 +124,8 @@ namespace EnterTerminal\Controller {
             }
 
             // запрос списка видео для товаров
-            $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($searchResult->productIds);
-            $curl->prepare($videoGroupedListQuery);
+            $descriptionListQuery = new Query\Product\GetDescriptionListByUiList($searchResult->productIds);
+            $curl->prepare($descriptionListQuery);
 
             $curl->execute();
 
@@ -137,8 +137,8 @@ namespace EnterTerminal\Controller {
                 $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
             }
 
-            // список видео для товаров
-            $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
+            // список медиа для товаров
+            $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
             // список магазинов, в которых есть товар
             try {

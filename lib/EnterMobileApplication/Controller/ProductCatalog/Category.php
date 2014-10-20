@@ -93,10 +93,10 @@ class Category {
         }
 
         // ответ
-        if ($controllerResponse->productIdPager) {
+        if ($controllerResponse->productUiPager) {
             $response = $this->getResponseForLeafCategory(
                 $controllerResponse->category,
-                $controllerResponse->productIdPager,
+                $controllerResponse->productUiPager,
                 $controllerResponse->products,
                 $controllerResponse->filters,
                 $controllerResponse->sortings
@@ -112,7 +112,7 @@ class Category {
 
     /**
      * @param Model\Product\Category $category
-     * @param Model\Product\IdPager $idPager
+     * @param Model\Product\UiPager $uiPager
      * @param Model\Product[] $products
      * @param Model\Product\Filter[] $filters
      * @param Model\Product\Sorting[] $sortings
@@ -120,14 +120,14 @@ class Category {
      */
     private function getResponseForLeafCategory(
         Model\Product\Category $category,
-        Model\Product\IdPager $idPager,
+        Model\Product\UiPager $uiPager,
         array $products,
         array $filters,
         array $sortings
     ) {
         $response = [
             'category'     => null,
-            'productCount' => $idPager->count,
+            'productCount' => $uiPager->count,
             'products'     => [],
             'filters'      => [],
             'sortings'     => [],

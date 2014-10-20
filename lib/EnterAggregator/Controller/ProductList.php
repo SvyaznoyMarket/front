@@ -129,9 +129,6 @@ namespace EnterAggregator\Controller {
             // запрос настроек каталога
             $catalogConfigQuery = null;
             if ($response->category) {
-                if (!$response->category->ui) { // TODO: временное журналирование
-                    $this->getLogger()->push(['type' => 'error', 'message' => 'Категория без ui', 'category' => $response->category, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
-                }
                 $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($response->category->ui, $regionId);
                 $curl->prepare($catalogConfigQuery);
             }
@@ -142,12 +139,12 @@ namespace EnterAggregator\Controller {
             $response->catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
 
             // запрос листинга идентификаторов товаров
-            $productIdPagerQuery = null;
+            $productUiPagerQuery = null;
             if (
                 !$context->productOnlyForLeafCategory
                 || ($context->productOnlyForLeafCategory && $response->category && !$response->category->hasChildren)
             ) {
-                $productIdPagerQuery = new Query\Product\GetIdPager(
+                $productUiPagerQuery = new Query\Product\GetUiPager(
                     array_merge(
                         $filterRepository->dumpRequestObjectList($response->requestFilters),
                         $filterRepository->dumpRequestObjectList($response->baseRequestFilters)
@@ -158,7 +155,7 @@ namespace EnterAggregator\Controller {
                     $limit,
                     $response->catalogConfig
                 );
-                $curl->prepare($productIdPagerQuery);
+                $curl->prepare($productUiPagerQuery);
             }
 
             // запрос дерева категорий для меню
@@ -189,21 +186,21 @@ namespace EnterAggregator\Controller {
             }
 
             // листинг идентификаторов товаров
-            $response->productIdPager = $productIdPagerQuery ? (new Repository\Product\IdPager())->getObjectByQuery($productIdPagerQuery) : null;
+            $response->productUiPager = $productUiPagerQuery ? (new Repository\Product\UiPager())->getObjectByQuery($productUiPagerQuery) : null;
 
             // запрос списка товаров
             $productListQuery = null;
-            if ($response->productIdPager && (bool)$response->productIdPager->ids) {
-                $productListQuery = new Query\Product\GetListByIdList($response->productIdPager->ids, $response->region->id);
+            if ($response->productUiPager && (bool)$response->productUiPager->uis) {
+                $productListQuery = new Query\Product\GetListByUiList($response->productUiPager->uis, $response->region->id);
                 $curl->prepare($productListQuery);
             }
 
             // запрос доставки товаров
             $deliveryListQuery = null;
-            if (false && $response->productIdPager && (bool)$response->productIdPager->ids) {
+            if (false && $response->productUiPager && (bool)$response->productUiPager->uis) {
                 $cartProducts = [];
-                foreach ($response->productIdPager->ids as $productId) {
-                    $cartProducts[] = new Model\Cart\Product(['id' => $productId, 'quantity' => 1]);
+                foreach ($response->productUiPager->uis as $productUi) {
+                    $cartProducts[] = new Model\Cart\Product(['ui' => $productUi, 'quantity' => 1]);
                 }
 
                 if ((bool)$cartProducts) {
@@ -221,16 +218,16 @@ namespace EnterAggregator\Controller {
 
             // запрос списка рейтингов товаров
             $ratingListQuery = null;
-            if ($config->productReview->enabled && $response->productIdPager && (bool)$response->productIdPager->ids) {
-                $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($response->productIdPager->ids);
+            if ($config->productReview->enabled && $response->productUiPager && (bool)$response->productUiPager->uis) {
+                $ratingListQuery = new Query\Product\Rating\GetListByProductUiList($response->productUiPager->uis);
                 $curl->prepare($ratingListQuery);
             }
 
-            // запрос списка видео для товаров
-            $videoGroupedListQuery = null;
-            if ($response->productIdPager && (bool)$response->productIdPager->ids) {
-                $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($response->productIdPager->ids);
-                $curl->prepare($videoGroupedListQuery);
+            // запрос списка медиа для товаров
+            $descriptionListQuery = null;
+            if ($response->productUiPager && (bool)$response->productUiPager->uis) {
+                //$descriptionListQuery = new Query\Product\GetDescriptionListByUiList($response->productUiPager->uis); // TODO: не реализовано на scms
+                //$curl->prepare($descriptionListQuery);
             }
 
             $curl->execute();
@@ -253,9 +250,9 @@ namespace EnterAggregator\Controller {
                 $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
             }
 
-            // список видео для товаров
-            if ($videoGroupedListQuery) {
-                $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
+            // список медиа для товаров
+            if ($descriptionListQuery) {
+                $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
             }
 
             // список магазинов, в которых есть товар
@@ -333,7 +330,7 @@ namespace EnterAggregator\Controller\ProductList {
         public $requestFilters = [];
         /** @var Model\Product[] */
         public $products = [];
-        /** @var Model\Product\IdPager|null */
-        public $productIdPager;
+        /** @var Model\Product\UiPager|null */
+        public $productUiPager;
     }
 }

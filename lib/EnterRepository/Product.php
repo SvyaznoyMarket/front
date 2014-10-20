@@ -83,6 +83,15 @@ class Product {
      * @param Model\Product $product
      * @param Query $videoListQuery
      */
+    public function setMediaForObjectByQuery(Model\Product $product, Query $videoListQuery) {
+        // TODO
+    }
+
+    /**
+     * @deprecated
+     * @param Model\Product $product
+     * @param Query $videoListQuery
+     */
     public function setVideoForObjectByQuery(Model\Product $product, Query $videoListQuery) {
         try {
             foreach ($videoListQuery->getResult() as $videoItem) {
@@ -97,6 +106,7 @@ class Product {
     }
 
     /**
+     * @deprecated
      * @param Model\Product $product
      * @param Query $photo3dListQuery
      */
@@ -116,6 +126,7 @@ class Product {
     }
 
     /**
+     * @deprecated
      * @param Model\Product[] $productsById
      * @param Query $videoGroupedListQuery
      */
@@ -130,6 +141,15 @@ class Product {
             $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
     }
+
+    /**
+     * @param array $productsById
+     * @param Query $descriptionListQuery
+     */
+    public function setMediaForObjectListByQuery(array $productsById, Query $descriptionListQuery) {
+        // TODO
+    }
+
 
     /**
      * @param Model\Product[] $productsById

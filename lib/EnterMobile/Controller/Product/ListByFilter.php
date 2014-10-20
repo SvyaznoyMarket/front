@@ -107,7 +107,7 @@ class ListByFilter {
         }
 
         // запрос листинга идентификаторов товаров
-        $productIdPagerQuery = new Query\Product\GetIdPager(
+        $productUiPagerQuery = new Query\Product\GetIdPager(
             $filterRepository->dumpRequestObjectList($requestFilters),
             $sorting,
             $region->id,
@@ -115,7 +115,7 @@ class ListByFilter {
             $limit,
             $catalogConfigQuery ? (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null
         );
-        $curl->prepare($productIdPagerQuery);
+        $curl->prepare($productUiPagerQuery);
 
         // запрос предка категории
         $branchCategoryItemQuery = null;
@@ -134,25 +134,25 @@ class ListByFilter {
         $filters = $filterListQuery ? $filterRepository->getObjectListByQuery($filterListQuery) : [];
 
         // листинг идентификаторов товаров
-        $productIdPager = (new \EnterRepository\Product\IdPager())->getObjectByQuery($productIdPagerQuery);
+        $productUiPager = (new \EnterRepository\Product\UiPager())->getObjectByQuery($productUiPagerQuery);
 
         // запрос списка товаров
         $productListQuery = null;
-        if ((bool)$productIdPager->ids) {
-            $productListQuery = new Query\Product\GetListByIdList($productIdPager->ids, $region->id);
+        if ((bool)$productUiPager->uis) {
+            $productListQuery = new Query\Product\GetListByUiList($productUiPager->uis, $region->id);
             $curl->prepare($productListQuery);
         }
 
         // запрос списка рейтингов товаров
         $ratingListQuery = null;
-        if ($config->productReview->enabled && (bool)$productIdPager->ids) {
-            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($productIdPager->ids);
+        if ($config->productReview->enabled && (bool)$productUiPager->uis) {
+            $ratingListQuery = new Query\Product\Rating\GetListByProductUiList($productUiPager->uis);
             $curl->prepare($ratingListQuery);
         }
 
         // запрос списка видео для товаров
-        $videoGroupedListQuery = new Query\Product\Media\Video\GetGroupedListByProductIdList($productIdPager->ids);
-        $curl->prepare($videoGroupedListQuery);
+        $descriptionListQuery = new Query\Product\GetDescriptionListByUiList($productUiPager->uis);
+        $curl->prepare($descriptionListQuery);
 
         $curl->execute();
 
@@ -164,8 +164,8 @@ class ListByFilter {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
 
-        // список видео для товаров
-        $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
+        // список медиа для товаров
+        $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
         // удаление фильтров
         foreach ($filters as $i => $filter) {
@@ -185,7 +185,7 @@ class ListByFilter {
         $pageRequest->sorting = $sorting;
         $pageRequest->sortings = $sortings;
         $pageRequest->products = $productsById;
-        $pageRequest->count = $productIdPager->count;
+        $pageRequest->count = $productUiPager->count;
         $pageRequest->category = $category;
 
         // страница

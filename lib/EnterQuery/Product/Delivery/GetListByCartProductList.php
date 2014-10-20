@@ -24,7 +24,7 @@ class GetListByCartProductList extends Query {
             $this->url->query['geo_id'] = $regionId;
         }
         $this->data['product_list'] = array_map(function(Model\Cart\Product $cartProduct) {
-            return ['id' => $cartProduct->id, 'quantity' => $cartProduct->quantity];
+            return ['id' => $cartProduct->id, 'quantity' => $cartProduct->quantity]; // TODO: поддержка ui
         }, $cartProducts);
 
         $this->init();
