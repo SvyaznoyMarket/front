@@ -140,6 +140,7 @@ namespace EnterTerminal\Controller {
             // список медиа для товаров
             $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
+            // список магазинов, в которых есть товар
             try {
                 $shopIds = [];
                 foreach ($productsById as $product) {
