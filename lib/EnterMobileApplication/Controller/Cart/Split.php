@@ -249,6 +249,8 @@ namespace EnterMobileApplication\Controller\Cart {
                     if (isset($orderItem['discounts'][0])) {
                         $discountItem = null;
                         foreach ($orderItem['discounts'] as $discountItem) {
+                            $this->getLogger()->push(['message' => 'Применение купона', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+
                             if (empty($discountItem['number'])) {
                                 $this->getLogger()->push(['type' => 'warn', 'message' => 'Не передан номер купона', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
                                 continue;

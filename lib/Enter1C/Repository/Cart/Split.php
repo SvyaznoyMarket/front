@@ -176,15 +176,7 @@ class Split {
             }
 
             foreach ($order->actions as $action) {
-                $orderItem['order']['actions'][] = [
-                    'action' => [
-                        'ui' => $action->ui,
-                        'name' => $action->name,
-                        'discount' => $action->discount,
-                        'type' => $action->type,
-                        'number' => $action->number,
-                    ],
-                ];
+                $orderItem['order']['actions'][] = $action;
             }
 
             foreach ($order->possibleDeliveryMethodTokens as $token) {

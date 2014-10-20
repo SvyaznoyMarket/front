@@ -118,12 +118,17 @@ class ListByFilter {
         $curl->prepare($productUiPagerQuery);
 
         // запрос предка категории
-        $branchCategoryItemQuery = new Query\Product\Category\GetBranchItemByCategoryObject($category, $region->id);
-        $curl->prepare($branchCategoryItemQuery);
+        $branchCategoryItemQuery = null;
+        if ($category) {
+            $branchCategoryItemQuery = new Query\Product\Category\GetBranchItemByCategoryObject($category, $region->id);
+            $curl->prepare($branchCategoryItemQuery);
+        }
 
         $curl->execute();
 
-        (new \EnterRepository\Product\Category())->setBranchForObjectByQuery($category, $branchCategoryItemQuery);
+        if ($branchCategoryItemQuery) {
+            (new \EnterRepository\Product\Category())->setBranchForObjectByQuery($category, $branchCategoryItemQuery);
+        }
 
         // фильтры
         $filters = $filterListQuery ? $filterRepository->getObjectListByQuery($filterListQuery) : [];
