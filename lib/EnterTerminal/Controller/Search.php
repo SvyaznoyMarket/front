@@ -140,6 +140,7 @@ namespace EnterTerminal\Controller {
             // список видео для товаров
             $productRepository->setVideoForObjectListByQuery($productsById, $videoGroupedListQuery);
 
+            // список магазинов, в которых есть товар
             try {
                 $shopIds = [];
                 foreach ($productsById as $product) {

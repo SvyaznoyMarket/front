@@ -23,6 +23,7 @@ namespace EnterTerminal\Controller {
             $config = $this->getConfig();
             $session = $this->getSession();
             $curl = $this->getCurl();
+            $productRepository = new \EnterRepository\Product();
             $compareRepository = new \EnterRepository\Compare();
 
             // ид региона
@@ -48,10 +49,47 @@ namespace EnterTerminal\Controller {
             $curl->execute();
 
             if ($productListQuery) {
-                $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery], function(&$item) {
+                $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery], function(&$item) {
                     // оптимизация
                     $item['media'] = [reset($item['media'])];
                 });
+            }
+
+            // список магазинов, в которых есть товар
+            try {
+                $shopIds = [];
+                foreach ($productsById as $product) {
+                    foreach ($product->stock as $stock) {
+                        if (!$stock->shopId) continue;
+
+                        $shopIds[] = $stock->shopId;
+                    }
+                }
+                if ((bool)$shopIds) {
+                    $shopListQuery = new Query\Shop\GetListByIdList($shopIds);
+                    $curl->prepare($shopListQuery);
+
+                    $curl->execute();
+
+                    foreach ($productsById as $product) {
+                        $shopStatesByShopId = [];
+                        foreach ($product->stock as $stock) {
+                            if ($stock->shopId && (($stock->showroomQuantity + $stock->quantity) > 0)) {
+                                $shopState = new Model\Product\ShopState();
+                                $shopState->quantity = $stock->quantity;
+                                $shopState->showroomQuantity = $stock->showroomQuantity;
+                                $shopState->isInShowroomOnly = !$shopState->quantity && ($shopState->showroomQuantity > 0);
+
+                                $shopStatesByShopId[$stock->shopId] = $shopState;
+                            }
+                        }
+                        if ((bool)$shopStatesByShopId) {
+                            $productRepository->setShopStateForObjectListByQuery([$product->id => $product], $shopStatesByShopId, $shopListQuery);
+                        }
+                    }
+                }
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
             }
 
             // сравнение свойств товара
