@@ -226,8 +226,8 @@ namespace EnterAggregator\Controller {
             // запрос списка медиа для товаров
             $descriptionListQuery = null;
             if ($response->productUiPager && (bool)$response->productUiPager->uis) {
-                $descriptionListQuery = new Query\Product\GetDescriptionListByUiList($response->productUiPager->uis);
-                $curl->prepare($descriptionListQuery);
+                //$descriptionListQuery = new Query\Product\GetDescriptionListByUiList($response->productUiPager->uis); // TODO: не реализовано на scms
+                //$curl->prepare($descriptionListQuery);
             }
 
             $curl->execute();
