@@ -11,7 +11,7 @@ class Order {
     public $products = [];
     /** @var Order\Discount[] */
     public $discounts = [];
-    /** @var Order\Action[] */
+    /** @var array */
     public $actions = [];
     /** @var Order\Delivery|null */
     public $delivery;
@@ -49,9 +49,7 @@ class Order {
             $this->discounts[] = new Order\Discount($item);
         }
 
-        foreach ($data['actions'] as $item) {
-            $this->actions[] = new Order\Action($item);
-        }
+        $this->actions = (array)$data['actions'];
 
         $this->delivery = $data['delivery'] ? new Order\Delivery($data['delivery']) : null;
         $this->sum = $data['total_cost'] ? (string)$data['total_cost'] : null;
@@ -86,7 +84,7 @@ class Order {
             'seller'                   => $this->seller ? $this->seller->dump() : null,
             'products'                 => array_map(function(Order\Product $product) { return $product->dump(); }, $this->products),
             'discounts'                => array_map(function(Order\Discount $discount) { return $discount->dump(); }, $this->discounts),
-            'actions'                  => array_map(function(Order\Action $action) { return $action->dump(); }, $this->actions),
+            'actions'                  => $this->actions,
             'delivery'                 => $this->delivery ? $this->delivery->dump() : null,
             'total_cost'               => $this->sum,
             'total_original_cost'      => $this->originalSum,

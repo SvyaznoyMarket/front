@@ -96,6 +96,11 @@ class CreatePacketBySplit extends Query {
                 ];
             }
 
+            // action
+            if ((bool)$order->actions) {
+                $orderData['action'] = $order->actions;
+            }
+
             // meta
             foreach ($metas as $meta) {
                 $orderData['meta_data'][$meta->key] = $meta->value;
