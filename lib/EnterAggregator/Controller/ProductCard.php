@@ -180,6 +180,11 @@ namespace EnterAggregator\Controller {
             }
             $response->product->relation->kits = array_values($kitProductsById);
 
+            // аксессуары
+            if ($accessoryListQuery) {
+                $productRepository->setAccessoryRelationForObjectListByQuery([$response->product->id => $response->product], $accessoryListQuery);
+            }
+
             // группированные товары
             $productsById = [];
             foreach (array_merge([$response->product], $response->product->relation->accessories, $kitProductsById) as $iProduct) {
@@ -192,34 +197,46 @@ namespace EnterAggregator\Controller {
                 $productRepository->setDeliveryForObjectListByQuery($productsById, $deliveryListQuery);
             }
 
+            // категории аксессуаров
+            $response->accessoryCategories = (new Repository\Product\Category())->getIndexedObjectListByProductListAndTokenList($response->product->relation->accessories, $response->catalogConfig ? $response->catalogConfig->accessoryCategoryTokens : []);
+
             // список магазинов, в которых есть товар
-            $shopStatesByShopId = [];
-            foreach ($response->product->stock as $stock) {
-                if ($stock->shopId && (($stock->showroomQuantity + $stock->quantity) > 0)) {
-                    $shopState = new Model\Product\ShopState();
-                    $shopState->quantity = $stock->quantity;
-                    $shopState->showroomQuantity = $stock->showroomQuantity;
-                    $shopState->isInShowroomOnly = !$shopState->quantity && ($shopState->showroomQuantity > 0);
+            if (true) {
+                $shopIds = [];
+                foreach ($productsById as $product) {
+                    foreach ($product->stock as $stock) {
+                        if (!$stock->shopId) continue;
 
-                    $shopStatesByShopId[$stock->shopId] = $shopState;
+                        $shopIds[] = $stock->shopId;
+                    }
                 }
-            }
-            if ((bool)$shopStatesByShopId) {
-                $shopListQuery = new Query\Shop\GetListByIdList(array_keys($shopStatesByShopId));
-                $curl->prepare($shopListQuery);
+                if ((bool)$shopIds) {
+                    $shopListQuery = new Query\Shop\GetListByIdList($shopIds);
+                    $curl->prepare($shopListQuery);
 
-                $curl->execute();
+                    $curl->execute();
 
-                $productRepository->setShopStateForObjectListByQuery([$response->product->id => $response->product], $shopStatesByShopId, $shopListQuery);
+                    foreach ($productsById as $product) {
+                        $shopStatesByShopId = [];
+                        foreach ($product->stock as $stock) {
+                            if ($stock->shopId && (($stock->showroomQuantity + $stock->quantity) > 0)) {
+                                $shopState = new Model\Product\ShopState();
+                                $shopState->quantity = $stock->quantity;
+                                $shopState->showroomQuantity = $stock->showroomQuantity;
+                                $shopState->isInShowroomOnly = !$shopState->quantity && ($shopState->showroomQuantity > 0);
+
+                                $shopStatesByShopId[$stock->shopId] = $shopState;
+                            }
+                        }
+                        if ((bool)$shopStatesByShopId) {
+                            $productRepository->setShopStateForObjectListByQuery([$product->id => $product], $shopStatesByShopId, $shopListQuery);
+                        }
+                    }
+                }
             }
 
             // настройки каталога
             $response->catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
-
-            // аксессуары
-            if ($accessoryListQuery) {
-                $productRepository->setAccessoryRelationForObjectListByQuery([$response->product->id => $response->product], $accessoryListQuery);
-            }
 
             // список рейтингов товаров
             if ($ratingListQuery) {
@@ -228,9 +245,6 @@ namespace EnterAggregator\Controller {
 
             // трастфакторы товара
             $productRepository->setDescriptionForObjectByQuery($response->product, $descriptionItemQuery);
-
-            // категории аксессуаров
-            $response->accessoryCategories = (new Repository\Product\Category())->getIndexedObjectListByProductListAndTokenList($response->product->relation->accessories, $response->catalogConfig ? $response->catalogConfig->accessoryCategoryTokens : []);
 
             // доступность кредита
             $response->hasCredit =
