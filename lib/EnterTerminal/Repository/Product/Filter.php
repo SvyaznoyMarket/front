@@ -56,7 +56,7 @@ class Filter extends BaseRepository {
         }
 
         foreach ($filterData as $key => $filter) {
-            if ('f-segment' === $key) {
+            if ('segment' === $key) {
                 $return[] = ['segment', 4, $filter['value']];
             } else if (isset($filter['value']['from']) || isset($filter['value']['to'])) {
                 $return[] = [$key, 2, isset($filter['value']['from']) ? $filter['value']['from'] : null, isset($filter['value']['to']) ? $filter['value']['to'] : null];

@@ -169,6 +169,8 @@ class Filter extends BaseRepository {
                 $return[] = [$key, 2, isset($filter['value']['from']) ? $filter['value']['from'] : null, isset($filter['value']['to']) ? $filter['value']['to'] : null];
             } else if ('q' == $key) {
                 $return[] = ['text', 3, reset($filter['value'])];
+            } else if ('f-segment' == $key) {
+                $return[] = ['segment', 4, reset($filter['value'])];
             } else {
                 $return[] = [$key, 1, $filter['value']];
             }

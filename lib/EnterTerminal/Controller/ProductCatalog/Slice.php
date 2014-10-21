@@ -69,7 +69,7 @@ namespace EnterTerminal\Controller\ProductCatalog {
             }
 
             // фильтры в http-запросе и настройках среза
-            $baseRequestFilters = $filterRepository->getRequestObjectListByHttpRequest(new Http\Request(['filter' => $slice->filters]));
+            $baseRequestFilters = (new \EnterMobile\Repository\Product\Filter())->getRequestObjectListByHttpRequest(new Http\Request($slice->filters)); // FIXME !!!
 
             // фильтры в запросе
             $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
