@@ -107,7 +107,7 @@ class ListByFilter {
         }
 
         // запрос листинга идентификаторов товаров
-        $productUiPagerQuery = new Query\Product\GetIdPager(
+        $productUiPagerQuery = new Query\Product\GetUiPager(
             $filterRepository->dumpRequestObjectList($requestFilters),
             $sorting,
             $region->id,
@@ -151,8 +151,8 @@ class ListByFilter {
         }
 
         // запрос списка видео для товаров
-        $descriptionListQuery = new Query\Product\GetDescriptionListByUiList($productUiPager->uis);
-        $curl->prepare($descriptionListQuery);
+        //$descriptionListQuery = new Query\Product\GetDescriptionListByUiList($productUiPager->uis);
+        //$curl->prepare($descriptionListQuery);
 
         $curl->execute();
 
@@ -165,7 +165,7 @@ class ListByFilter {
         }
 
         // список медиа для товаров
-        $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
+        //$productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
         // удаление фильтров
         foreach ($filters as $i => $filter) {
