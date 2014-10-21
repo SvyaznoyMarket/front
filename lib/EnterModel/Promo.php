@@ -53,6 +53,19 @@ namespace EnterModel {
             }
             else if (isset($this->items[0]->contentToken)) {
                 $this->type = 'Content';
+
+                // FIXME
+                try {
+                    if (preg_match('/[a-z0-9._-]+\/slices\/(\w+)/', $this->url, $matches)) {
+                        if (!empty($matches[1])) {
+                            $item = new Model\Promo\Item();
+                            $item->sliceId = (string)$matches[1];
+
+                            $this->type = 'ProductCatalog/Slice';
+                            $this->items = [$item];
+                        }
+                    }
+                } catch (\Exception $e) {}
             }
         }
     }
@@ -73,9 +86,10 @@ namespace EnterModel\Promo {
         /** @var string */
         public $productId;
         /** @var string */
-        //public $serviceId;
+        public $sliceId;
         /** @var string */
         public $productCategoryId;
+        /** @var string */
         public $contentToken;
 
         /**
