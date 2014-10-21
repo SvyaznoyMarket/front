@@ -300,6 +300,7 @@ namespace EnterAggregator\Controller {
                     }
                 }
             }
+            $response->filters = array_values($response->filters);
 
             return $response;
         }
