@@ -28,13 +28,15 @@ class ProductButton {
     /**
      * @param \EnterModel\Product $product
      * @param \EnterModel\Cart\Product|null $cartProduct
+     * @param bool $allowInShopOnly Позволять отображать кнопку для товаров, которые доступны только в магазине
      * @return Partial\Cart\ProductButton
      */
     public function getObject(
         \EnterModel\Product $product,
-        \EnterModel\Cart\Product $cartProduct = null
+        \EnterModel\Cart\Product $cartProduct = null,
+        $allowInShopOnly = false
     ) {
-        if ($product->isInShopOnly) {
+        if (!$allowInShopOnly && $product->isInShopOnly) {
             return null;
         }
 
@@ -78,6 +80,11 @@ class ProductButton {
             $button->url = '/cart'; // TODO: route
             $button->dataUrl = '';
             $button->isInCart = true;
+        } else if ($product->isInShopOnly) {
+            $button->isInShopOnly = true;
+            $button->text = 'Резерв';
+            $button->url = $this->router->getUrlByRoute(new Routing\Order\Quick\Index(), ['product' => ['id' => $product->id, 'quantity' => 1]]);
+            $button->isQuick = true;
         } else {
             if (!$product->isBuyable) {
                 $button->url = '#';
