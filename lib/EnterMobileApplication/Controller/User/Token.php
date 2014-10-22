@@ -21,10 +21,6 @@ namespace EnterMobileApplication\Controller\User {
             $config = $this->getConfig();
             $session = $this->getSession();
 
-            if (!$request->query['clientId']) {
-                throw new \Exception('Не передан clientId');
-            }
-
             $token = $session->get($config->userToken->authName);
             if (!$token) {
                 // TODO: вынести в репозиторий
