@@ -62,7 +62,14 @@ namespace EnterTerminal\Controller {
                 foreach ($matches as $key => $match) {
                     $path = $this->getPathFromHrefAttributeValue($match[1][0]);
 
-                    if (0 === strpos($path, '/catalog/')) {
+                    if (preg_match('/\/catalog\/slice\/([\w\d-_]+)/', $path)) { // /catalog/slice/{sliceToken}
+                        // Для данного вида слайсов запросов к ядру не требуется
+                    } else if (preg_match('/\/slices\/([\w\d-_]+)\/([\w\d-_]+)/', $path, $sliceMatches)) { //  /slices/{sliceToken}/{categoryToken}
+                        $matches[$key]['query'] = new Query\Product\Category\GetItemByToken($sliceMatches[2], $regionId);
+                        $curl->prepare($matches[$key]['query']);
+                    } else if (preg_match('/\/slices\/([\w\d-_]+)/', $path)) { //   /slices/{sliceToken}
+                        // Для данного вида слайсов запросов к ядру не требуется
+                    } else if (0 === strpos($path, '/catalog/')) {
                         $matches[$key]['query'] = new Query\Product\Category\GetItemByToken($contentRepository->getTokenByPath($path), $regionId);
                         $curl->prepare($matches[$key]['query']);
                     }
@@ -82,15 +89,27 @@ namespace EnterTerminal\Controller {
                     $path = $this->getPathFromHrefAttributeValue($match[1][0]);
                     $newAttributes = null;
 
-                    if (0 === strpos($path, '/catalog/')) {
+                    if (preg_match('/\/catalog\/slice\/([\w\d-_]+)/', $path, $sliceMatches)) { // /catalog/slice/{sliceToken}
+                        $newAttributes = ' data-type="ProductCatalog/Slice" data-slice-token="' . $this->getTemplateHelper()->escape($sliceMatches[1]) . '"';
+                    } else if (preg_match('/\/slices\/([\w\d-_]+)\/([\w\d-_]+)/', $path, $sliceMatches)) { //  /slices/{sliceToken}/{categoryToken}
+                        $newAttributes = ' data-type="ProductCatalog/Slice" data-slice-token="' . $this->getTemplateHelper()->escape($sliceMatches[1]) . '"';
                         $category = $categoryRepository->getObjectByQuery($match['query']);
-                        if (null !== $category)
+                        if (null !== $category) {
+                            $newAttributes .= ' data-category-id="' . $this->getTemplateHelper()->escape($category->id) . '"';
+                        }
+                    } else if (preg_match('/\/slices\/([\w\d-_]+)/', $path, $sliceMatches)) { //   /slices/{sliceToken}
+                        $newAttributes = ' data-type="ProductCatalog/Slice" data-slice-token="' . $this->getTemplateHelper()->escape($sliceMatches[1]) . '"';
+                    } else if (0 === strpos($path, '/catalog/')) {
+                        $category = $categoryRepository->getObjectByQuery($match['query']);
+                        if (null !== $category) {
                             $newAttributes = ' data-type="ProductCatalog/Category" data-category-id="' . $this->getTemplateHelper()->escape($category->id) . '"';
+                        }
                     }
                     else if (0 === strpos($path, '/product/')) {
                         $product = $productRepository->getObjectByQuery($match['query']);
-                        if (null !== $product)
+                        if (null !== $product) {
                             $newAttributes = ' data-type="ProductCard" data-product-id="' . $this->getTemplateHelper()->escape($product->id) . '"';
+                        }
                     }
                     else if (0 === strpos($path, '/')) {
                         $newAttributes = ' data-type="Content" data-content-token="' . $contentRepository->getTokenByPath($path) . '"';
