@@ -27,6 +27,8 @@ namespace EnterModel {
                 foreach ($data['sources'] as $sourceItem) {
                     if ('image' == $this->type) {
                         $this->sources[] = new Model\Media\ImageSource($sourceItem);
+                    } else if ('svg' == $this->type) {
+                        $this->sources[] = new Model\Media\SvgSource($sourceItem);
                     }
                 }
             }
@@ -64,6 +66,20 @@ namespace EnterModel\Media {
             if (array_key_exists('url', $data)) $this->url = (string)$data['url'];
             if (array_key_exists('width', $data)) $this->width = (string)$data['width'];
             if (array_key_exists('height', $data)) $this->height = (string)$data['height'];
+        }
+    }
+
+    class SvgSource extends Source {
+        /** @var string */
+        public $url;
+
+        /**
+         * @param array $data
+         */
+        public function __construct(array $data = []) {
+            parent::__construct($data);
+
+            if (array_key_exists('url', $data)) $this->url = (string)$data['url'];
         }
     }
 }
