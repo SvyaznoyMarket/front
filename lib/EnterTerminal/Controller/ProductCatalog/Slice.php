@@ -79,6 +79,7 @@ namespace EnterTerminal\Controller\ProductCatalog {
             $context->parentCategory = true;
             $context->branchCategory = false;
             $context->shopState = true;
+            $context->isSlice = true;
             $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
                 $regionId,
                 $categoryId ? ['id' => $categoryId] : [], // критерий получения категории товара

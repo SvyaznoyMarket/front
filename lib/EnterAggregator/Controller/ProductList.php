@@ -138,6 +138,18 @@ namespace EnterAggregator\Controller {
             // настройки каталога
             $response->catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
 
+            // FIXME
+            if ($context->isSlice) {
+                $response->catalogConfig = new Model\Product\Catalog\Config();
+                $response->catalogConfig->sortings = [
+                    'dynamic' => [
+                        'statisticView'     => 300,
+                        'statisticPurchase' => 1,
+                        'score'             => 0,
+                    ],
+                ];
+            }
+
             // запрос листинга идентификаторов товаров
             $productUiPagerQuery = null;
             if (

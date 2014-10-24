@@ -29,4 +29,10 @@ class ProductCatalog extends Context {
      * @var bool
      */
     public $shopState = false;
+    /**
+     * Это срез товаров? // FIXME костыль
+     *
+     * @var bool
+     */
+    public $isSlice = false;
 }
