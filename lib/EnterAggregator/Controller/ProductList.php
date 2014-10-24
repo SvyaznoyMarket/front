@@ -142,6 +142,7 @@ namespace EnterAggregator\Controller {
             if ($context->isSlice) {
                 $response->catalogConfig = new Model\Product\Catalog\Config();
                 $response->catalogConfig->sortings = [
+                    'in_shop' => 'desc',
                     'dynamic' => [
                         'statisticView'     => 300,
                         'statisticPurchase' => 1,
