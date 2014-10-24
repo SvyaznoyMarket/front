@@ -3,7 +3,7 @@
 namespace EnterMobileApplication\Controller {
 
     use Enter\Http;
-    use EnterAggregator\Model\Context;
+    use EnterAggregator\Model\Context\ProductCard as Context;
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterMobileApplication\Controller;

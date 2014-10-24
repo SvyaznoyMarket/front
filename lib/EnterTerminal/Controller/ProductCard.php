@@ -3,7 +3,7 @@
 namespace EnterTerminal\Controller {
 
     use Enter\Http;
-    use EnterAggregator\Model\Context;
+    use EnterAggregator\Model\Context\ProductCard as Context;
     use EnterAggregator\CurlTrait;
     use EnterQuery as Query;
     use EnterModel as Model;

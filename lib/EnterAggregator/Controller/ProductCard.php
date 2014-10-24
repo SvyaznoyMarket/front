@@ -3,7 +3,7 @@
 namespace EnterAggregator\Controller {
     use EnterAggregator\ConfigTrait;
     use EnterAggregator\CurlTrait;
-    use EnterAggregator\Model\Context;
+    use EnterAggregator\Model\Context\ProductCard as Context;
     use EnterQuery as Query;
     use EnterRepository as Repository;
     use EnterModel as Model;
@@ -14,7 +14,7 @@ namespace EnterAggregator\Controller {
         /**
          * @param string $regionId
          * @param array $productCriteria Критерий получения товара: ['id' => 1] или ['token' => 'hp4530s']
-         * @param \EnterAggregator\Model\Context $context
+         * @param Context $context
          * @throws \Exception
          * @return ProductCard\Response
          */
@@ -73,6 +73,15 @@ namespace EnterAggregator\Controller {
             if ($context->mainMenu) {
                 $mainMenuQuery = new Query\MainMenu\GetItem();
                 $curl->prepare($mainMenuQuery);
+            }
+
+            // запрос отзывов товара
+            $reviewListQuery = null;
+            if ($config->productReview->enabled && $context->review) {
+                if ($config->productReview->enabled) {
+                    $reviewListQuery = new Query\Product\Review\GetListByProductId($response->product->id, 1, $config->productReview->itemsInCard);
+                    $curl->prepare($reviewListQuery);
+                }
             }
 
             // запрос аксессуаров товара
@@ -154,6 +163,9 @@ namespace EnterAggregator\Controller {
             if ($mainMenuQuery) {
                 $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
             }
+
+            // отзывы товара
+            $response->product->reviews = $reviewListQuery ? (new Repository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
 
             // видео товара
             //$productRepository->setVideoForObjectByQuery($response->product, $descriptionItemQuery);

@@ -6,7 +6,7 @@ use Enter\Http;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterAggregator\DebugContainerTrait;
-use EnterAggregator\Model\Context;
+use EnterAggregator\Model\Context\ProductCard as Context;
 use EnterMobile\Controller;
 use EnterMobile\Repository;
 use EnterQuery as Query;
@@ -32,6 +32,7 @@ class ProductCard {
 
         $context = new Context();
         $context->mainMenu = true;
+        $context->review = true;
         $controllerResponse = (new \EnterAggregator\Controller\ProductCard())->execute(
             $regionId,
             ['token' => $productToken],
