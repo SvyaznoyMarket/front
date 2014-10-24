@@ -148,6 +148,9 @@ namespace EnterAggregator\Controller {
                         'score'             => 0,
                     ],
                 ];
+
+                $sorting = clone $response->sorting;
+                $sorting->token = 'default';
             }
 
             // запрос листинга идентификаторов товаров
@@ -161,7 +164,7 @@ namespace EnterAggregator\Controller {
                         $filterRepository->dumpRequestObjectList($response->requestFilters),
                         $filterRepository->dumpRequestObjectList($response->baseRequestFilters)
                     ),
-                    $response->sorting,
+                    $sorting,
                     $response->region->id,
                     ($pageNum - 1) * $limit,
                     $limit,
