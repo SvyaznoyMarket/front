@@ -139,7 +139,7 @@ namespace EnterAggregator\Controller {
             $response->catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
 
             // FIXME
-            if ($context->isSlice) {
+            if ($context->isSlice && !$sorting) {
                 $response->catalogConfig = new Model\Product\Catalog\Config();
                 $response->catalogConfig->sortings = [
                     'in_shop' => 'desc',
