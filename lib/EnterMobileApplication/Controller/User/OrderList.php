@@ -36,6 +36,7 @@ namespace EnterMobileApplication\Controller\User {
 
             try {
                 $orderListQuery = new Query\Order\GetListByUserToken($token);
+                $orderListQuery->setTimeout(4 * $config->coreService->timeout);
                 $curl->prepare($orderListQuery);
 
                 $curl->execute();
