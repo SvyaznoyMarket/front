@@ -148,6 +148,8 @@ namespace EnterAggregator\Controller {
 
                 $sorting = clone $response->sorting;
                 $sorting->token = 'default';
+            } else {
+                $sorting = $response->sorting;
             }
 
             // запрос листинга идентификаторов товаров
