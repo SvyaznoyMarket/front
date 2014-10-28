@@ -141,8 +141,8 @@ class Search {
         }
 
         // запрос списка видео для товаров
-        $descriptionListQuery = new Query\Product\GetDescriptionListByUiList($searchResult->productIds);
-        $curl->prepare($descriptionListQuery);
+        //$descriptionListQuery = new Query\Product\GetDescriptionListByUiList($searchResult->productIds);
+        //$curl->prepare($descriptionListQuery);
 
         $curl->execute();
 
@@ -155,7 +155,7 @@ class Search {
         }
 
         // список медиа для товаров
-        $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
+        //$productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
         // ответ
         $response = [

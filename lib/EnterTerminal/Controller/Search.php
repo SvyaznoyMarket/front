@@ -124,8 +124,8 @@ namespace EnterTerminal\Controller {
             }
 
             // запрос списка видео для товаров
-            $descriptionListQuery = new Query\Product\GetDescriptionListByUiList($searchResult->productIds);
-            $curl->prepare($descriptionListQuery);
+            //$descriptionListQuery = new Query\Product\GetDescriptionListByUiList($searchResult->productIds);
+            //$curl->prepare($descriptionListQuery);
 
             $curl->execute();
 
@@ -138,7 +138,7 @@ namespace EnterTerminal\Controller {
             }
 
             // список медиа для товаров
-            $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
+            //$productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
             // список магазинов, в которых есть товар
             try {

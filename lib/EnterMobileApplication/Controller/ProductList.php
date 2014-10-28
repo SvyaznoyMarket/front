@@ -69,8 +69,8 @@ class ProductList {
         }
 
         // запрос списка видео для товаров
-        $descriptionListQuery = new Query\Product\GetDescriptionListByUiList($productIds);
-        $curl->prepare($descriptionListQuery);
+        //$descriptionListQuery = new Query\Product\GetDescriptionListByUiList($productIds);
+        //$curl->prepare($descriptionListQuery);
 
         $curl->execute();
 
@@ -83,7 +83,7 @@ class ProductList {
         }
 
         // список медиа для товаров
-        $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
+        //$productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
         // ответ
         $response = [

@@ -122,8 +122,8 @@ class Index {
         }
 
         // запрос списка видео для товаров
-        $descriptionListQuery = new Query\Product\GetDescriptionListByUiList($searchResult->productIds);
-        $curl->prepare($descriptionListQuery);
+        //$descriptionListQuery = new Query\Product\GetDescriptionListByUiList($searchResult->productIds);
+        //$curl->prepare($descriptionListQuery);
 
         $curl->execute();
 
@@ -139,7 +139,7 @@ class Index {
         }
 
         // список медиа для товаров
-        $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
+        //$productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Search\Request();
