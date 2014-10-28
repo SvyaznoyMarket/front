@@ -73,8 +73,10 @@ namespace EnterAggregator\Controller\Order {
 
                 if ($accessToken) {
                     $orderItemQuery = new Query\Order\GetItemByAccessToken($accessToken);
+                    $orderItemQuery->setTimeout(5 * $config->coreService->timeout);
                 } else if ($number) {
                     $orderItemQuery = new Query\Order\GetItemByNumber($number, $split->user->phone);
+                    $orderItemQuery->setTimeout(5 * $config->coreService->timeout);
                 } else {
                     $logger->push(['type' => 'error', 'error' => 'Не получен номер или токен заказа', 'order' => $orderItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
                     continue;
@@ -84,6 +86,7 @@ namespace EnterAggregator\Controller\Order {
                 $orderItemQueries[] = $orderItemQuery;
 
                 $paymentMethodListQuery = new Query\PaymentMethod\GetListByOrderNumberErp($numberErp, $regionId);
+                $paymentMethodListQuery->setTimeout(4 * $config->coreService->timeout);
                 $curl->prepare($paymentMethodListQuery);
                 $paymentMethodListQueriesByOrderNumberErp[$numberErp] = $paymentMethodListQuery;
             }
