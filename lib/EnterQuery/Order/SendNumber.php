@@ -20,7 +20,7 @@ class SendNumber extends Query {
      */
     public function __construct($orderNumber, $notificationType, $phone = null, $token = null) {
         $this->url = new Url();
-        $this->url->path = 'order/send-number';
+        $this->url->path = 'v2/order/send-number';
         $this->url->query = [
             'order_number'      => $orderNumber,
             'notification_type' => $notificationType,
