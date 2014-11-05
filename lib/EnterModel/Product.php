@@ -103,7 +103,10 @@ class Product {
         if (array_key_exists('is_kit_locked', $data)) $this->isKitLocked = (bool)$data['is_kit_locked'];
 
         $this->isBuyable = isset($data['state']['is_buyable']) && (bool)$data['state']['is_buyable'];
-        $this->calculateState(isset($data['stock'][0]) ? $data['stock'] : []);
+        $this->calculateState(
+            isset($data['stock'][0]) ? $data['stock'] : [],
+            isset($data['partners_offer'][0]) ? $data['partners_offer'] : []
+        );
 
         if (isset($data['category'][0])) {
             $categoryItem = (array)array_pop($data['category']);
@@ -163,8 +166,9 @@ class Product {
 
     /**
      * @param array $stockData
+     * @param array $partnerData
      */
-    protected function calculateState(array $stockData) {
+    protected function calculateState(array $stockData, array $partnerData) {
         $this->isInWarehouse = false;
         $inWarehouse = false;
         $inShowroom = false;
@@ -180,6 +184,17 @@ class Product {
             }
             if ($stockItem['shop_id'] && $stockItem['quantity_showroom']) { // есть на витрине магазина
                 $inShowroom = true;
+            }
+        }
+
+        // TERMINALS-947
+        foreach ($partnerData as $partnerItem) {
+            $partnerItem += ['stock' => []];
+            foreach ((array)$partnerItem['stock'] as $stockItem) {
+                if (!empty($stockItem['quantity'])) {
+                    $this->isInWarehouse = true;
+                    break;
+                }
             }
         }
 
