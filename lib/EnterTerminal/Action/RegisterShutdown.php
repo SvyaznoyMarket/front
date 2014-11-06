@@ -37,7 +37,7 @@ class RegisterShutdown {
                     'line'    => isset($lastError['line']) ? $lastError['line'] : null,
                 ];
 
-                $this->getLogger()->push(['type' => 'error', 'error' => $lastError, 'tag' => ['critical']]);
+                $this->getLogger()->push(['type' => 'error', 'error' => $lastError, 'tag' => ['fatal']]);
             }
 
             if ($error) {

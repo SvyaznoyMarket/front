@@ -186,7 +186,7 @@ class Service {
             try {
                 $instance->start();
             } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['critical', 'session']]);
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['fatal', 'session']]);
             }
 
             $GLOBALS[$key] = $instance;

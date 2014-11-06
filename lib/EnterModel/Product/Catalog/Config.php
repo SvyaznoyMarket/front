@@ -2,6 +2,14 @@
 
 namespace EnterModel\Product\Catalog {
     class Config {
+        /** @var string */
+        public $ui;
+        /** @var string */
+        public $link;
+        /** @var string */
+        public $name;
+        /** @var int */
+        public $level;
         /** @var Config\BannerPlaceholder */
         public $bannerPlaceholder;
         /** @var Config\PromoStyle */
@@ -14,6 +22,11 @@ namespace EnterModel\Product\Catalog {
         public $sortings = [];
 
         public function __construct(array $data = []) {
+            if (isset($data['uid'])) $this->ui = (string)$data['uid'];
+            if (isset($data['url'])) $this->link = (string)$data['url'];
+            if (isset($data['name'])) $this->name = (string)$data['name'];
+            if (isset($data['level'])) $this->level = (int)$data['level'];
+
             if (isset($data['properties']['bannerPlaceholder']) && is_array($data['properties']['bannerPlaceholder'])) $this->bannerPlaceholder = new Config\BannerPlaceholder($data['properties']['bannerPlaceholder']);
             if (isset($data['properties']['appearance']['default']['promo_style']) && is_array($data['properties']['appearance']['default']['promo_style'])) $this->promoStyle = new Config\PromoStyle($data['properties']['appearance']['default']['promo_style']);
             if (isset($data['properties']['appearance']['default']['listing_style'])) $this->listingStyle = (string)$data['properties']['appearance']['default']['listing_style'];

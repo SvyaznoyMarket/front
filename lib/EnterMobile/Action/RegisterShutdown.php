@@ -28,7 +28,7 @@ class RegisterShutdown {
             $lastError = error_get_last();
             if ($lastError && (error_reporting() & $lastError['type'])) {
                 $response = (new Controller\Error\InternalServerError())->execute($request);
-                $this->getLogger()->push(['type' => 'error', 'error' => $lastError, 'tag' => ['critical']]);
+                $this->getLogger()->push(['type' => 'error', 'error' => $lastError, 'tag' => ['fatal']]);
             }
 
             if ($error) {

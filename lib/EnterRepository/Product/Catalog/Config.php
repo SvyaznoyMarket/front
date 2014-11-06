@@ -25,7 +25,7 @@ class Config {
             }
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
-            trigger_error($e, E_USER_ERROR);
+            //trigger_error($e, E_USER_ERROR);
         }
 
         return $object;

@@ -71,14 +71,45 @@ namespace EnterAggregator\Controller {
             $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
             // запрос категории
+            $catalogConfigQuery = null;
             $categoryItemQuery = null;
             if (!empty($categoryCriteria['id'])) {
                 //$categoryItemQuery = new Query\Product\Category\GetItemById($categoryCriteria['id'], $response->region->id);
                 $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryCriteria['id'], $response->region->id, null, $filterRepository->dumpRequestObjectList($baseRequestFilters));
+            } else if (!empty($categoryCriteria['link'])) {
+                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryLink($categoryCriteria['link'], $regionId);
+                $curl->prepare($catalogConfigQuery);
+
+                $curl->execute();
+
+                $response->catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
+                if (!empty($response->catalogConfig->ui)) {
+                    $categoryItemQuery = new Query\Product\Category\GetItemByUi($response->catalogConfig->ui, $response->region->id);
+                } else {
+                    $this->getLogger()->push(['type' => 'error', 'message' => ['Не получен ui для категории'], 'category.criteria' => $categoryCriteria, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'critical']]);
+
+                    // FIXME: убрать, это запасной вариант
+                    if (!empty($categoryCriteria['token'])) {
+                        $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'], $response->region->id);
+                    }
+                }
             } else if (!empty($categoryCriteria['token'])) {
-                $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'], $response->region->id);
+                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryToken($categoryCriteria['token'], $regionId);
+                $curl->prepare($catalogConfigQuery);
+
+                $curl->execute();
+
+                $response->catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
+                if (!empty($response->catalogConfig->ui)) {
+                    $categoryItemQuery = new Query\Product\Category\GetItemByUi($response->catalogConfig->ui, $response->region->id);
+                } else {
+                    $this->getLogger()->push(['type' => 'error', 'message' => ['Не получен ui для категории'], 'category.criteria' => $categoryCriteria, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'critical']]);
+
+                    // FIXME: убрать, это запасной вариант
+                    $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'], $response->region->id);
+                }
             } else if (!empty($categoryCriteria['ui'])) {
-                //$categoryItemQuery = new Query\Product\Category\GetItemByUi($categoryCriteria['ui'], $response->region->id);
+                $categoryItemQuery = new Query\Product\Category\GetItemByUi($categoryCriteria['ui'], $response->region->id);
             }
             if ((bool)$categoryCriteria && !$categoryItemQuery) {
                 throw new \Exception('Неверный критерий для получения категории товара');
@@ -93,6 +124,9 @@ namespace EnterAggregator\Controller {
             // категория
             if ($categoryItemQuery) {
                 $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery);
+                if (!$response->category) {
+                    $this->getLogger()->push(['type' => 'error', 'message' => ['Не получена категория'], 'category.criteria' => $categoryCriteria, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+                }
             }
 
             // базовые фильтры
@@ -128,7 +162,7 @@ namespace EnterAggregator\Controller {
 
             // запрос настроек каталога
             $catalogConfigQuery = null;
-            if ($response->category) {
+            if (!$response->catalogConfig && $response->category) { // если еще не загружен, то загрузить
                 $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($response->category->ui, $regionId);
                 $curl->prepare($catalogConfigQuery);
             }
@@ -136,7 +170,9 @@ namespace EnterAggregator\Controller {
             $curl->execute();
 
             // настройки каталога
-            $response->catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
+            if (!$response->catalogConfig) { // если еще не загружен, то загрузить
+                $response->catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
+            }
 
             // FIXME
             if ($context->isSlice && !$sorting) {

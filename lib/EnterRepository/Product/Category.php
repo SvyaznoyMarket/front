@@ -28,6 +28,14 @@ class Category {
     }
 
     /**
+     * @param Http\Request $request
+     * @return string
+     */
+    public function getLinkByHttpRequest(Http\Request $request) {
+        return '/catalog/' . $request->query['categoryPath'];
+    }
+
+    /**
      * Возвращает список категорий без дочерних узлов
      *
      * @param Query $query
