@@ -1,5 +1,3 @@
-// Счётчик CityAds отключён, т.к. из-за обращений к rtrgt.com, которые производятся данным счётчиком, наш сайт был забанен на google.adwords.
-/*
 define(
     [
         'require', 'jquery', 'underscore', 'module/config'
@@ -29,4 +27,4 @@ define(
             handle: handle
         }
     }
-);*/
+);
