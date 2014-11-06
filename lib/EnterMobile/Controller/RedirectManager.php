@@ -40,7 +40,8 @@ class RedirectManager {
             return;
         }
 
-        $redirectUrl = trim($query->getResult()['to_url']);
+        $result = (array)$query->getResult() + ['to_url' => null];
+        $redirectUrl = trim($result['to_url']);
 
         if (!$redirectUrl) {
             return;
