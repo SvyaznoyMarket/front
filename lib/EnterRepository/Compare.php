@@ -136,7 +136,7 @@ class Compare {
             if (!$product) continue;
 
             // FIXME
-            $product->compareGroupId = $product->category ? $product->category->id : null;
+            $product->compareGroupId = $product->typeId;
 
             foreach ($productsById as $productToCompare) {
                 if ($product->id == $productToCompare->id) continue;
@@ -158,12 +158,12 @@ class Compare {
             $product = isset($productsById[$comparedProduct->id]) ? $productsById[$comparedProduct->id] : null;
             if (!$product) continue;
 
-            $groupId = $product->category ? $product->category->id : null;
+            $groupId = $product->typeId;
             if (!$groupId || isset($groupsById[$groupId])) continue;
 
             $group = new Model\Compare\Group();
             $group->id = $groupId;
-            $group->name = $product->category->name;
+            $group->name = $product->category ? $product->category->name : null;
 
             $groupsById[$groupId] = $group;
         }
