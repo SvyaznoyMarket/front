@@ -142,6 +142,11 @@ namespace EnterAggregator\Controller\Product {
             }
             unset($ids, $chunkedIds);
 
+            // сортировка по наличию
+            $productRepository->sortByStockStatus($alsoBoughtIdList, $productsById);
+            $productRepository->sortByStockStatus($similarIdList, $productsById);
+            $productRepository->sortByStockStatus($alsoViewedIdList, $productsById);
+
 
             $response->product = $product;
             $response->productsById = $productsById;

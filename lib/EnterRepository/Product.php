@@ -306,4 +306,36 @@ class Product {
             $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
     }
+
+    /**
+     * @param string[] $productIds
+     * @param Model\Product[] $productsById
+     * @param bool $randomize
+     */
+    public function sortByStockStatus(array &$productIds, array $productsById, $randomize = true) {
+        try {
+            usort($productIds, function($aId, $bId) use (&$productsById, &$randomize) {
+                /** @var \EnterModel\Product|null $a */
+                $a = isset($productsById[$aId]) ? $productsById[$aId] : null;
+                /** @var \EnterModel\Product|null $b */
+                $b = isset($productsById[$bId]) ? $productsById[$bId] : null;
+
+                if (!$a || !$b) {
+                    return ($b ? 1 : -1) - ($a ? 1 : -1);
+                }
+
+                if ($b->isBuyable != $a->isBuyable) {
+                    return ($b->isBuyable ? 1 : -1) - ($a->isBuyable ? 1 : -1); // сначала те, которые можно купить
+                } else if ($b->isInShopOnly != $a->isInShopOnly) {
+                    return ($b->isInShopOnly ? -1 : 1) - ($a->isInShopOnly ? -1 : 1); // потом те, которые можно зарезервировать
+                } else if ($b->isInShopShowroomOnly != $a->isInShopShowroomOnly) {// потом те, которые есть на витрине
+                    return ($b->isInShopShowroomOnly ? -1 : 1) - ($a->isInShopShowroomOnly ? -1 : 1);
+                } else {
+                    return $randomize ? (int)rand(-1, 1) : 0;
+                }
+            });
+        } catch (\Exception $e) {
+            $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
+        }
+    }
 }
