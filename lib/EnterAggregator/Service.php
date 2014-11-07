@@ -246,4 +246,37 @@ class Service {
 
         return $instance;
     }
+
+    /**
+     * @param Config $config
+     * @return Config|\StdClass
+     */
+    protected function loadConfigFromJsonFile(Config $config) {
+        if ($config->editable && $config->cacheDir) {
+            $configPath = $config->cacheDir . '/config.json';
+            $configFile = basename($configPath);
+
+            $path = '';
+            foreach (explode('/', trim($configPath, '/')) as $dir) {
+                $path .= '/' . $dir;
+                if ($configFile == $dir) {
+                    if (is_readable($configPath)) {
+                        if ($data = json_decode(file_get_contents($configPath))) {
+                            $config = $data;
+                        }
+                    } else {
+                        file_put_contents($configPath, json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+                    }
+                } else {
+                    if (!is_dir($path)) {
+                        mkdir($path);
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        }
+
+        return $config;
+    }
 }

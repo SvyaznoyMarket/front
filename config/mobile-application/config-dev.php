@@ -6,4 +6,5 @@ return function(EnterMobileApplication\Config $config) {
     $handler($config);
 
     // dev config
+    $config->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/' . $config->hostname;
 };

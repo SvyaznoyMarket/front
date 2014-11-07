@@ -3,6 +3,5 @@
 /nbproject
 *.nblh~
 config-local.php
-/config/terminal/config-local.php
 /node_modules
 /version

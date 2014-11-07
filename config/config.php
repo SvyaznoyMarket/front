@@ -7,6 +7,8 @@ return function(\EnterAggregator\Config $config) {
 
     $config->debugLevel = 0;
 
+    $config->editable = false; // важно!
+
     $config->session->name = 'enter';
     $config->session->cookieLifetime = 2592000; // 30 дней
     $config->session->cookieDomain = '.enter.ru';

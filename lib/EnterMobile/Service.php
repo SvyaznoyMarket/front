@@ -16,6 +16,10 @@ class Service extends BaseService {
         if (!$instance) {
             $instance = new Config();
             call_user_func_array($this->configHandler, [$instance]);
+
+            if ($instance->editable && $instance->cacheDir) {
+                $instance = $this->loadConfigFromJsonFile($instance);
+            }
         }
 
         return $instance;

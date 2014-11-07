@@ -6,8 +6,8 @@ return function(\EnterMobile\Config $config) {
     $handler($config);
 
     // dev config
+    $config->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/' . $config->hostname;
     $config->mustacheRenderer->checkEscape = true;
-
     $config->debugLevel = 1;
 
     //$config->googleAnalitics->enabled = false;

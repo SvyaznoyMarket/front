@@ -7,12 +7,19 @@ namespace EnterAggregator {
         /** @var string */
         public $dir;
         /** @var string */
+        public $cacheDir;
+        /** @var string */
         public $environment;
         /**
          * Уровень отладки: 0 - нет, 1 - по умолчанию, 2 - подробно
          * @var int
          */
         public $debugLevel;
+        /**
+         * Возможность редактировать конфигурацию и загружать ее из json-файла
+         * @var bool
+         */
+        public $editable;
         /** @var string */
         public $hostname;
         /** @var Config\Logger */

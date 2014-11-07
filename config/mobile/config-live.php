@@ -7,4 +7,6 @@ return function(\EnterMobile\Config $config) {
 
     // live config
     $config->debugLevel = 0;
+    $config->editable = false; // важно!
+    $config->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/' . $config->hostname;
 };

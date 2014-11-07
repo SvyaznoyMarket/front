@@ -6,4 +6,6 @@ return function(Enter1C\Config $config) {
     $handler($config);
 
     // live config
+
+    $config->editable = false; // важно!
 };
