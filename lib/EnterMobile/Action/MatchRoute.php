@@ -19,6 +19,7 @@ class MatchRoute {
      */
     public function execute(Http\Request $request) {
         $router = $this->getRouter();
+        $logger = $this->getLogger();
 
         $callable = null;
 
@@ -30,6 +31,12 @@ class MatchRoute {
                 'action'     => $route->action,
                 'parameters' => $route->parameters,
             ];
+
+            $logger->push(['route' => [
+                'name'       => get_class($route),
+                'action'     => $route->action,
+                'parameters' => $route->parameters,
+            ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['route']]);
 
             if (isset($route->action[0])) {
                 $controllerClass = '\\EnterMobile\\Controller\\' . $route->action[0]; // TODO: перенести в настройки
