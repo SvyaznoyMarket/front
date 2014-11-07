@@ -48,8 +48,7 @@ class RedirectManager {
         }
 
         if (0 !== strpos($redirectUrl, '/')) {
-            $logger = $this->getLogger();
-            $logger->push([
+            $this->getLogger()->push([
                 'type' => 'warn',
                 'error' => sprintf('Неправильный редирект %s -> %s', $url, $redirectUrl),
                 'sender' => __FILE__ . ' ' .  __LINE__,
@@ -63,8 +62,14 @@ class RedirectManager {
             $redirectUrl .= '?' . $request->getQueryString();
         }
 
+        $statusCode = Http\Response::STATUS_MOVED_PERMANENTLY;
         $redirectUrl = $request->getSchemeAndHttpHost() . $redirectUrl;
 
-        $response = (new \EnterMobile\Controller\Redirect())->execute($redirectUrl, 301);
+        $this->getLogger()->push(['redirect' => [
+            'url'   => $redirectUrl,
+            'code'  => $statusCode,
+        ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
+
+        $response = (new \EnterMobile\Controller\Redirect())->execute($redirectUrl, $statusCode);
     }
 }
