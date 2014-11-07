@@ -52,6 +52,6 @@ class NotFound {
             ':8080' => '', //FIXME: костыль для nginx-а
         ]) . $request->getRequestUri();
 
-        return (new Controller\Redirect())->execute($url, 302);
+        return (new \EnterAggregator\Controller\Redirect())->execute($url, 302);
     }
 }

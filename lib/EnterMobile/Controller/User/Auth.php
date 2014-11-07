@@ -32,7 +32,7 @@ class Auth {
         // редирект
         $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Index()));
         // http-ответ
-        $response = (new Controller\Redirect())->execute($redirectUrl, 302);
+        $response = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
 
         $form = new Form\User\AuthForm();
         $form->username = trim((string)$request->data['username']);
@@ -85,7 +85,7 @@ class Auth {
                 'username' => $form->username,
             ]);
 
-            return (new Controller\Redirect())->execute($router->getUrlByRoute(new Routing\User\Login(), ['redirect_to' => $redirectUrl]), 302);
+            return (new \EnterAggregator\Controller\Redirect())->execute($router->getUrlByRoute(new Routing\User\Login(), ['redirect_to' => $redirectUrl]), 302);
             //return (new Controller\User\Login())->execute($request);
         }
 

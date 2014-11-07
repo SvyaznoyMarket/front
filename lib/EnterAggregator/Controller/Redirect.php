@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterMobile\Controller;
+namespace EnterAggregator\Controller;
 
 use Enter\Http;
 use EnterMobile\ConfigTrait;

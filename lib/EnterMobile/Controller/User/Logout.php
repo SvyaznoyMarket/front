@@ -30,7 +30,7 @@ class Logout {
             $redirectUrl = $router->getUrlByRoute(new Routing\User\Login());
         }
         // http-ответ
-        $response = (new Controller\Redirect())->execute($redirectUrl, 302);
+        $response = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
         // сброс cookie
         (new \EnterRepository\User())->setTokenToHttpResponse(null, $response);
 

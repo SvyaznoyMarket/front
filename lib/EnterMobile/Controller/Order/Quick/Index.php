@@ -49,6 +49,6 @@ class Index {
             $url .= (false === strpos($url, '?') ? '?' : '&') . http_build_query(['shopId' => $request->query['shopId']]);
         }
 
-        return (new Controller\Redirect())->execute($url, 302);
+        return (new \EnterAggregator\Controller\Redirect())->execute($url, 302);
     }
 }

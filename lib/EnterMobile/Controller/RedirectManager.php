@@ -70,6 +70,6 @@ class RedirectManager {
             'code'  => $statusCode,
         ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
 
-        $response = (new \EnterMobile\Controller\Redirect())->execute($redirectUrl, $statusCode);
+        $response = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, $statusCode);
     }
 }

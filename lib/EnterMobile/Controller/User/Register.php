@@ -34,7 +34,7 @@ class Register {
         //$redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Login()));
         $redirectUrl = $router->getUrlByRoute(new Routing\User\Login());
         // http-ответ
-        $response = (new Controller\Redirect())->execute($redirectUrl, 302);
+        $response = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
 
         $form = new Form\User\RegisterForm();
         $form->name = trim((string)$request->data['name']);
@@ -101,7 +101,7 @@ class Register {
                 'phone' => $form->phone,
             ]);
 
-            return (new Controller\Redirect())->execute($router->getUrlByRoute(new Routing\User\Login(), ['redirect_to' => $redirectUrl]), 302);
+            return (new \EnterAggregator\Controller\Redirect())->execute($router->getUrlByRoute(new Routing\User\Login(), ['redirect_to' => $redirectUrl]), 302);
             //return (new Controller\User\Login())->execute($request);
         }
 

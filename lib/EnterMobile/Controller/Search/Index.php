@@ -36,7 +36,7 @@ class Index {
         // поисковая строка
         $searchPhrase = (new \EnterRepository\Search())->getPhraseByHttpRequest($request);
         if (!$searchPhrase) {
-            return (new Controller\Redirect())->execute($request->server['HTTP_REFERER'] ?: $this->getRouter()->getUrlByRoute(new Routing\Index()), 302);
+            return (new \EnterAggregator\Controller\Redirect())->execute($request->server['HTTP_REFERER'] ?: $this->getRouter()->getUrlByRoute(new Routing\Index()), 302);
         }
 
         // номер страницы
@@ -87,7 +87,7 @@ class Index {
         } catch (\Exception $e) {
             $logger->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['region']]);
 
-            return (new Controller\Redirect())->execute($request->server['HTTP_REFERER'] ?: $this->getRouter()->getUrlByRoute(new Routing\Index()), 302);
+            return (new \EnterAggregator\Controller\Redirect())->execute($request->server['HTTP_REFERER'] ?: $this->getRouter()->getUrlByRoute(new Routing\Index()), 302);
         }
 
         // фильтры

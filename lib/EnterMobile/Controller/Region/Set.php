@@ -31,7 +31,7 @@ class Set {
         $keyword = trim((string)$request->query['q']);
 
         // response
-        $response = (new Controller\Redirect())->execute($request->server['HTTP_REFERER'] ?: $this->getRouter()->getUrlByRoute(new Routing\Index()), 302);
+        $response = (new \EnterAggregator\Controller\Redirect())->execute($request->server['HTTP_REFERER'] ?: $this->getRouter()->getUrlByRoute(new Routing\Index()), 302);
 
         if (!$regionId && (mb_strlen($keyword) >= 3)) {
             $regionListQuery = new Query\Region\GetListByKeyword($keyword);

@@ -48,7 +48,7 @@ class Redirect {
         // баннеры
         $promo = $promoRepository->getObjectByIdAndQuery($promoId, $promoListQuery);
         if (!$promo) {
-            return (new Controller\Redirect())->execute($router->getUrlByRoute(new Routing\Index()), 500);
+            return (new \EnterAggregator\Controller\Redirect())->execute($router->getUrlByRoute(new Routing\Index()), 500);
         }
         //die(var_dump($promo));
 
@@ -130,6 +130,6 @@ class Redirect {
             }
         }
 
-        return (new Controller\Redirect())->execute($url, 302);
+        return (new \EnterAggregator\Controller\Redirect())->execute($url, 302);
     }
 }

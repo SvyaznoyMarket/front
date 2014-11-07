@@ -43,7 +43,7 @@ class BrandCategory {
 
         $brand = (new \EnterRepository\Brand())->getObjectByQuery($brandQuery);
         if (!$brand) {
-            return (new Controller\Redirect())->execute($this->getRouter()->getUrlByRoute(new Routing\ProductCatalog\GetChildCategory($request->query['categoryPath'])), 302);
+            return (new \EnterAggregator\Controller\Redirect())->execute($this->getRouter()->getUrlByRoute(new Routing\ProductCatalog\GetChildCategory($request->query['categoryPath'])), 302);
         }
 
         // номер страницы

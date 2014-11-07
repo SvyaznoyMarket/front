@@ -42,7 +42,7 @@ class ProductCard {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Товар @%s не найден', $productToken));
         }
         if ($controllerResponse->product->link !== $request->getPathInfo()) {
-            return (new Controller\Redirect())->execute($controllerResponse->product->link . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), Http\Response::STATUS_MOVED_PERMANENTLY);
+            return (new \EnterAggregator\Controller\Redirect())->execute($controllerResponse->product->link . ((bool)$request->getQueryString() ? ('?' . $request->getQueryString()) : ''), Http\Response::STATUS_MOVED_PERMANENTLY);
         }
 
         // запрос для получения страницы
