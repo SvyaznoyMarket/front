@@ -20,8 +20,10 @@ class HandleConfig {
         if ($config->debugLevel) {
             $config->logger->fileAppender->file = str_replace('.log', '-debug.log', $config->logger->fileAppender->file);
         }
-        if (2 == $config->debugLevel) {
+        if ($config->debugLevel >= 2) {
             $config->curl->logResponse = true;
+        }
+        if ($config->debugLevel >= 3) {
             $config->coreService->debug = true;
         }
 
