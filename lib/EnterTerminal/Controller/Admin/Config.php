@@ -22,6 +22,7 @@ class Config {
         foreach ([
             'coreService',
             'scmsService',
+            'infoService',
             'curl',
         ] as $key) {
             $configData[$key] = $config->{$key};
@@ -34,7 +35,7 @@ class Config {
                 'field'  => [
                     'config' => [
                         'name'  => 'form[config]',
-                        'value' => json_encode($configData, JSON_PRETTY_PRINT |JSON_UNESCAPED_UNICODE),
+                        'value' => json_encode($configData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE),
                     ],
                 ],
             ],
