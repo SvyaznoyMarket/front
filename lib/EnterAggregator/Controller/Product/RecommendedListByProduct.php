@@ -8,21 +8,27 @@ namespace EnterAggregator\Controller\Product {
     use EnterAggregator\LoggerTrait;
     use EnterRepository as Repository;
     use EnterQuery as Query;
-    use EnterMobile\Model;
+    use EnterModel as Model;
     use EnterAggregator\Model\Context\Product\RecommendedList as Context;
 
-    class RecommendedList {
+    class RecommendedListByProduct {
         use ConfigTrait, LoggerTrait, CurlTrait;
 
+        /**
+         * @param string $regionId
+         * @param string[] $productIds
+         * @param Context $context
+         * @return RecommendedList\Response
+         */
         public function execute(
             $regionId,
-            $productId,
+            array $productIds,
             Context $context
         ) {
             $logger = $this->getLogger();
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            $productRepository = new \EnterRepository\Product();
+            $productRepository = new Repository\Product();
 
             // response
             $response = new RecommendedList\Response();
@@ -43,27 +49,38 @@ namespace EnterAggregator\Controller\Product {
             $curl->execute();
 
             // регион
-            $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+            $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
             // запрос товара
-            $productItemQuery = new Query\Product\GetItemById($productId, $region->id);
-            $curl->prepare($productItemQuery);
+            $productListQuery = new Query\Product\GetListByIdList($productIds, $region->id);
+            $curl->prepare($productListQuery);
 
             $curl->execute();
 
+            // товары
+            $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
             // товар
-            $product = $productRepository->getObjectByQuery($productItemQuery);
+            /** @var Model\Product|null $product */
+            $product = reset($productsById) ?: null;
+
+            if (!$product) {
+                return $response;
+            }
 
             // запрос идетификаторов товаров "с этим товаром также покупают"
             $crossSellItemToItemsListQuery = null;
             if ($context->alsoBought) {
-                $crossSellItemToItemsListQuery = new Query\Product\Relation\CrossSellItemToItems\GetIdListByProductId($product->id);
+                $crossSellItemToItemsListQuery =
+                    $product
+                    ? new Query\Product\Relation\CrossSellItemToItems\GetIdListByProductId($product->id)
+                    : new Query\Product\Relation\CrossSellItemToItems\GetIdListByProductIdList(array_keys($productsById))
+                ;
                 $curl->prepare($crossSellItemToItemsListQuery);
             }
 
             // запрос идетификаторов товаров "похожие товары"
             $upSellItemToItemsListQuery = null;
-            if ($context->similarIdList) {
+            if ($context->similar) {
                 $upSellItemToItemsListQuery = new Query\Product\Relation\UpSellItemToItems\GetIdListByProductId($product->id);
                 $curl->prepare($upSellItemToItemsListQuery);
             }
@@ -78,7 +95,10 @@ namespace EnterAggregator\Controller\Product {
             $curl->execute();
 
             // идетификаторы товаров "с этим товаром также покупают"
-            $alsoBoughtIdList = $product->relatedIds;
+            $alsoBoughtIdList = [];
+            foreach ($productsById as $iProduct) {
+                $alsoBoughtIdList = array_merge($alsoBoughtIdList, (array)$iProduct->relatedIds);
+            }
             try {
                 $alsoBoughtIdList = array_unique(array_merge(
                     $alsoBoughtIdList,
@@ -105,11 +125,11 @@ namespace EnterAggregator\Controller\Product {
             }
 
             // список всех идентификаторов товаров
-            $productIds = array_unique(array_merge($alsoBoughtIdList, $similarIdList, $alsoViewedIdList));
+            $recommendedIds = array_unique(array_merge($alsoBoughtIdList, $similarIdList, $alsoViewedIdList));
 
             // запрос списка товаров
             $productListQueries = [];
-            foreach (array_chunk($productIds, $config->curl->queryChunkSize) as $idsInChunk) {
+            foreach (array_chunk($recommendedIds, $config->curl->queryChunkSize) as $idsInChunk) {
                 $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id);
                 $curl->prepare($productListQuery);
 
@@ -119,15 +139,15 @@ namespace EnterAggregator\Controller\Product {
             $curl->execute();
 
             // товары
-            $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
+            $recommendedProductsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
 
-            foreach ($alsoBoughtIdList as $i => $productId) {
+            foreach ($alsoBoughtIdList as $i => $alsoBoughtId) {
                 // SITE-2818 из списка товаров "с этим товаром также покупают" убираем товары, которые есть только в магазинах
-                /** @var \EnterModel\Product|null $product */
-                $product = isset($productsById[$productId]) ? $productsById[$productId] : null;
-                if (!$product) continue;
+                /** @var \EnterModel\Product|null $productsById */
+                $iProduct = isset($recommendedProductsById[$alsoBoughtId]) ? $recommendedProductsById[$alsoBoughtId] : null;
+                if (!$iProduct) continue;
 
-                if ($product->isInShopOnly || !$product->isBuyable) {
+                if ($iProduct->isInShopOnly || !$iProduct->isBuyable) {
                     unset($alsoBoughtIdList[$i]);
                 }
             }
@@ -136,20 +156,20 @@ namespace EnterAggregator\Controller\Product {
             $ids = [];
             foreach ($chunkedIds as &$ids) {
                 // удаляем ид товаров, которых нет в массиве $productsById
-                $ids = array_intersect($ids, array_keys($productsById));
+                $ids = array_intersect($ids, array_keys($recommendedProductsById));
                 // применяем лимит
                 $ids = array_slice($ids, 0, $config->product->itemsInSlider);
             }
             unset($ids, $chunkedIds);
 
             // сортировка по наличию
-            $productRepository->sortByStockStatus($alsoBoughtIdList, $productsById);
-            $productRepository->sortByStockStatus($similarIdList, $productsById);
-            $productRepository->sortByStockStatus($alsoViewedIdList, $productsById);
+            $productRepository->sortByStockStatus($alsoBoughtIdList, $recommendedProductsById);
+            $productRepository->sortByStockStatus($similarIdList, $recommendedProductsById);
+            $productRepository->sortByStockStatus($alsoViewedIdList, $recommendedProductsById);
 
 
-            $response->product = $product;
             $response->productsById = $productsById;
+            $response->recommendedProductsById = $recommendedProductsById;
             $response->alsoBoughtIdList = $alsoBoughtIdList;
             $response->similarIdList = $similarIdList;
             $response->alsoViewedIdList = $alsoViewedIdList;
@@ -165,10 +185,10 @@ namespace EnterAggregator\Controller\Product\RecommendedList {
     class Response {
         /** @var Model\Region|null */
         public $region;
-        /** @var Model\Product|null */
-        public $product;
         /** @var Model\Product[] */
         public $productsById;
+        /** @var Model\Product[] */
+        public $recommendedProductsById;
         /** @var string[] */
         public $alsoBoughtIdList = [];
         /** @var string[] */

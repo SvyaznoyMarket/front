@@ -10,7 +10,7 @@ class RecommendedList extends Context {
      *
      * @var bool
      */
-    public $similarIdList = false;
+    public $similar = false;
     /**
      * Также покупают
      *

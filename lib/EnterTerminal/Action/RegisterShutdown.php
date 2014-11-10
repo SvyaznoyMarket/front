@@ -22,9 +22,6 @@ class RegisterShutdown {
                 $response = new Http\JsonResponse();
             }
 
-            // logger
-            (new \EnterAggregator\Action\DumpLogger())->execute();
-
             $lastError = error_get_last();
             if ($lastError && (error_reporting() & $lastError['type'])) {
                 //$response = (new Controller\Error\InternalServerError())->execute($request);
@@ -45,6 +42,9 @@ class RegisterShutdown {
                 //$response->data['error'] = ['code' => 500, 'message' => $error->getMessage()];
                 $this->getLogger()->push(['type' => 'error', 'error' => $error, 'tag' => ['critical']]);
             }
+
+            // logger
+            (new \EnterAggregator\Action\DumpLogger())->execute();
 
             $endAt = microtime(true);
 

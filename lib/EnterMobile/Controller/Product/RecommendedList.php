@@ -24,16 +24,16 @@ class RecommendedList {
 
         $context = new Context();
         $context->alsoBought = true;
-        $controllerResponse = (new \EnterAggregator\Controller\Product\RecommendedList())->execute(
+        $controllerResponse = (new \EnterAggregator\Controller\Product\RecommendedListByProduct())->execute(
             $regionId,
-            $productId,
+            [$productId],
             $context
         );
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Product\RecommendedList\Request();
-        $pageRequest->product = $controllerResponse->product;
-        $pageRequest->productsById = $controllerResponse->productsById;
+        $pageRequest->product = reset($controllerResponse->productsById);
+        $pageRequest->recommendedProductsById = $controllerResponse->recommendedProductsById;
         $pageRequest->alsoBoughtIdList = $controllerResponse->alsoBoughtIdList;
         $pageRequest->alsoViewedIdList = $controllerResponse->alsoViewedIdList;
         $pageRequest->similarIdList = $controllerResponse->similarIdList;

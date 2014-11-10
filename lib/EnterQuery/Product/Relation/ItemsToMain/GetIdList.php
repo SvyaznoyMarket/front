@@ -7,7 +7,7 @@ use EnterQuery\RetailRocketQueryTrait;
 use EnterQuery\RetailRocketUrl;
 use EnterModel as Model;
 
-class GetIdListByProductId extends Query {
+class GetIdList extends Query {
     use RetailRocketQueryTrait;
 
     /** @var array */

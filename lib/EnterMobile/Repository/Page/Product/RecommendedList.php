@@ -35,7 +35,7 @@ class RecommendedList {
         $slider->hasCategories = false;
         foreach ($request->alsoBoughtIdList as $productId) {
             /** @var \EnterModel\Product|null $productModel */
-            $productModel = !empty($request->productsById[$productId]) ? $request->productsById[$productId] : null;
+            $productModel = !empty($request->recommendedProductsById[$productId]) ? $request->recommendedProductsById[$productId] : null;
             if (!$productModel) continue;
 
             $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
@@ -53,7 +53,7 @@ class RecommendedList {
         $slider->hasCategories = false;
         foreach ($request->alsoViewedIdList as $productId) {
             /** @var \EnterModel\Product|null $productModel */
-            $productModel = !empty($request->productsById[$productId]) ? $request->productsById[$productId] : null;
+            $productModel = !empty($request->recommendedProductsById[$productId]) ? $request->recommendedProductsById[$productId] : null;
             if (!$productModel) continue;
 
             $slider->productCards[] = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
@@ -66,7 +66,7 @@ class RecommendedList {
         $slider->hasCategories = false;
         foreach ($request->similarIdList as $productId) {
             /** @var \EnterModel\Product|null $productModel */
-            $productModel = !empty($request->productsById[$productId]) ? $request->productsById[$productId] : null;
+            $productModel = !empty($request->recommendedProductsById[$productId]) ? $request->recommendedProductsById[$productId] : null;
             if (!$productModel) continue;
 
             $slider->productCards[] = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
