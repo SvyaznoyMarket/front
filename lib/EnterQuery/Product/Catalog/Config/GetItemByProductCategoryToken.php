@@ -19,7 +19,7 @@ class GetItemByProductCategoryToken extends Query {
      */
     public function __construct($categoryToken, $regionId) {
         $this->url = new Url();
-        $this->url->path = 'category/get';
+        $this->url->path = 'category/get/v1';
         $this->url->query = [
             'slug'   => $categoryToken,
             'geo_id' => $regionId,
