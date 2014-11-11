@@ -11,11 +11,6 @@
         },
         "cookie": ["prx", "click_id", "aip"]
     },
-    "myragon": {
-        "match": {
-            "utm_source": "myragon"
-        }
-    },
     "yandex_market": {
         "match": {
             "utm_source": "yandexmarket",
@@ -84,6 +79,16 @@
         "match": {
             "utm_source": "imarker",
             "utm_medium": "cpo"
+        }
+    },
+    "revolver": {
+        "match": {
+            "utm_source": "revolver"
+        }
+    },
+    "blackfridaysale": {
+        "match": {
+            "utm_source": "blackfridaysale"
         }
     }
 }
