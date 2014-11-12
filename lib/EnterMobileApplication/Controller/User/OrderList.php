@@ -44,7 +44,7 @@ namespace EnterMobileApplication\Controller\User {
                 //$orders = (new \EnterRepository\Order())->getObjectListByQuery($orderListQuery);
                 $orders = [];
                 try {
-                    foreach (array_slice(array_reverse((array)$orderListQuery->getResult()), 0, 20) as $item) {
+                    foreach ((array)$orderListQuery->getResult() as $item) {
                         if (!isset($item['number'])) continue;
 
                         $orders[] = new Model\Order($item);
