@@ -52,8 +52,10 @@ namespace EnterTerminal\Controller\Cart {
             $shopItemQuery = null;
             if ($shopId) {
                 $shopItemQuery = new Query\Shop\GetItemById($shopId);
-                $curl->prepare($shopItemQuery)->execute();
+                $curl->prepare($shopItemQuery);
             }
+
+            $curl->execute();
 
             // магазин
             $shop = $shopItemQuery ? (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery) : null;
@@ -61,16 +63,28 @@ namespace EnterTerminal\Controller\Cart {
                 $this->getLogger()->push(['type' => 'warn', 'message' => 'Магазин не найден', 'shopId' => $shopId, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
             }
 
+            // запрос региона
+            $regionItemQuery = new Query\Region\GetItemById($regionId);
+            $curl->prepare($regionItemQuery);
+
             // запрос на разбиение корзины
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
                 new Model\Region(['id' => $regionId]),
                 $shop
             );
-            $splitQuery->setTimeout($config->coreService->timeout * 2);
+            $splitQuery->setTimeout($config->coreService->timeout * 3);
             $curl->prepare($splitQuery);
 
             $curl->execute();
+
+            // регион
+            $region = null;
+            try {
+                $region = (new \EnterRepository\Region())->getObjectByQuery($regionItemQuery);
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['critical', 'cart.split', 'controller']]);
+            }
 
             // разбиение
             $splitData = [];
@@ -84,6 +98,11 @@ namespace EnterTerminal\Controller\Cart {
             $splitData['cart'] = [
                 'product_list' => array_map(function(Model\Cart\Product $product) { return ['id' => $product->id, 'quantity' => $product->quantity]; }, $cart->product),
             ];
+
+            // добавление региона
+            if ($region) {
+                $splitData['region'] = $region;
+            }
 
             // сохранение в сессии
             $session->set($config->order->splitSessionKey, $splitData);

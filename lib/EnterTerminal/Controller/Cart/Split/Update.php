@@ -63,8 +63,10 @@ namespace EnterTerminal\Controller\Cart\Split {
             $shopItemQuery = null;
             if ($shopId) {
                 $shopItemQuery = new Query\Shop\GetItemById($shopId);
-                $curl->prepare($shopItemQuery)->execute();
+                $curl->prepare($shopItemQuery);
             }
+
+            $curl->execute();
 
             // магазин
             $shop = $shopItemQuery ? (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery) : null;
@@ -72,6 +74,11 @@ namespace EnterTerminal\Controller\Cart\Split {
                 throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
             }
 
+            // запрос региона
+            $regionItemQuery = new Query\Region\GetItemById($regionId);
+            $curl->prepare($regionItemQuery);
+
+            // запрос на разбиение корзины
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
                 new Model\Region(['id' => $regionId]),
@@ -80,10 +87,18 @@ namespace EnterTerminal\Controller\Cart\Split {
                 $splitData,
                 $change
             );
-            $splitQuery->setTimeout($config->coreService->timeout * 2);
+            $splitQuery->setTimeout($config->coreService->timeout * 3);
             $curl->prepare($splitQuery);
 
             $curl->execute();
+
+            // регион
+            $region = null;
+            try {
+                $region = (new \EnterRepository\Region())->getObjectByQuery($regionItemQuery);
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['critical', 'cart.split', 'controller']]);
+            }
 
             // разбиение
             $splitData = [];
