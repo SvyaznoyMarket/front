@@ -71,7 +71,7 @@ class Slice {
         }
 
         // фильтры в http-запросе и настройках среза
-        $baseRequestFilters = $filterRepository->getRequestObjectListByHttpRequest(new Http\Request($slice->filters));
+        $baseRequestFilters = (new \EnterMobile\Repository\Product\Filter())->getRequestObjectListByHttpRequest(new Http\Request($slice->filters)); // FIXME !!!
 
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
 
