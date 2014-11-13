@@ -49,8 +49,8 @@ class RegisterShutdown {
             $endAt = microtime(true);
 
             // debug info
-            //(new \EnterAggregator\Action\Debug())->execute($request, $response, $error, $startAt, $endAt);
-            (new Action\Debug())->execute($request, $response, $error, $startAt, $endAt);
+            (new \EnterAggregator\Action\Debug())->execute($request, $response, $error, $startAt, $endAt);
+            //(new Action\Debug())->execute($request, $response, $error, $startAt, $endAt);
 
             // send response
             $response->send();
