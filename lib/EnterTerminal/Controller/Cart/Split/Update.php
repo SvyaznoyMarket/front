@@ -113,6 +113,11 @@ namespace EnterTerminal\Controller\Cart\Split {
                 'product_list' => array_map(function(Model\Cart\Product $product) { return ['id' => $product->id, 'quantity' => $product->quantity]; }, $cart->product),
             ];
 
+            // добавление региона
+            if ($region) {
+                $response->region = $region;
+            }
+
             // сохранение в сессии
             $session->set($config->order->splitSessionKey, $splitData);
 
@@ -132,5 +137,7 @@ namespace EnterTerminal\Controller\Cart\Split\Update {
         public $errors = [];
         /** @var array */
         public $split;
+        /** @var Model\Region|null */
+        public $region;
     }
 }

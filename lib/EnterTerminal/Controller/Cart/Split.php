@@ -101,7 +101,7 @@ namespace EnterTerminal\Controller\Cart {
 
             // добавление региона
             if ($region) {
-                $splitData['region'] = $region;
+                $response->region = $region;
             }
 
             // сохранение в сессии
@@ -123,5 +123,7 @@ namespace EnterTerminal\Controller\Cart\Split {
         public $errors = [];
         /** @var array */
         public $split;
+        /** @var Model\Region|null */
+        public $region;
     }
 }
