@@ -29,6 +29,7 @@ class Cart {
         $cart->shownQuantity = $cart->quantity . ' ' . $this->getTranslateHelper()->numberChoice($cart->quantity, ['товар', 'товара', 'товаров']);
 
         $cart->credit = (new Repository\Partial\DirectCredit())->getObject($productModels, $cartModel);
+        $cart->credit->isHidden = true;
 
         return $cart;
     }

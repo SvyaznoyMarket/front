@@ -52,6 +52,6 @@ namespace EnterTerminal\Controller\Region\SameDeliveryList {
 
     class Response {
         /** @var Model\Region[] */
-        public $regions;
+        public $regions = [];
     }
 }
