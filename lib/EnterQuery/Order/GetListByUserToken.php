@@ -18,7 +18,7 @@ class GetListByUserToken extends Query {
      */
     public function __construct($token) {
         $this->url = new Url();
-        $this->url->path = 'v2/order/get';
+        $this->url->path = 'v2/order/get-limited';
         $this->url->query = [
             'token' => $token,
         ];
