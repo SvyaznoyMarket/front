@@ -32,6 +32,6 @@ class GetListByUserToken extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]['number']) ? $data : [];
+        $this->result = isset($data['orders']) ? $data : [];
     }
 }

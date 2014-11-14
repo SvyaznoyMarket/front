@@ -36,7 +36,7 @@ namespace EnterMobileApplication\Controller\User {
 
             try {
                 $orderListQuery = new Query\Order\GetListByUserToken($token);
-                $orderListQuery->setTimeout(4 * $config->coreService->timeout);
+                $orderListQuery->setTimeout(6 * $config->coreService->timeout);
                 $curl->prepare($orderListQuery);
 
                 $curl->execute();
@@ -44,7 +44,9 @@ namespace EnterMobileApplication\Controller\User {
                 //$orders = (new \EnterRepository\Order())->getObjectListByQuery($orderListQuery);
                 $orders = [];
                 try {
-                    foreach ((array)$orderListQuery->getResult() as $item) {
+                    $result = (array)$orderListQuery->getResult() + ['orders' => [], 'total' => null];
+
+                    foreach ($result['orders'] as $item) {
                         if (!isset($item['number'])) continue;
 
                         $orders[] = new Model\Order($item);
