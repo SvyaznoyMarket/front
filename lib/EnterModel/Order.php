@@ -150,6 +150,10 @@ class Order {
                 $meta->key = (string)$k;
                 $meta->value = $v;
 
+                if (!$this->token && ('access_token' == $meta->key)) {
+                    $this->token = is_array($meta->value) ? reset($meta->value) : $meta->value; // FIXME: костыль для ядра
+                }
+
                 $this->meta[] = $meta;
             }
         }
