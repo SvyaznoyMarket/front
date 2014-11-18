@@ -121,10 +121,6 @@ class Slice {
             }
         }
 
-        if (count($categories) <= 1) {
-            $categories = [];
-        }
-
         // ответ
         $response = [
             'slice'        => [
