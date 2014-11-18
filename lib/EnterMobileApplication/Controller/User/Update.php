@@ -26,7 +26,7 @@ namespace EnterMobileApplication\Controller\User {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            $session = $this->getSession();
+            //$session = $this->getSession();
 
             // ответ
             $response = new Response();
@@ -74,6 +74,9 @@ namespace EnterMobileApplication\Controller\User {
                     }
                     if (isset($request->data['homePhone'])) {
                         $newUser->homePhone = $request->data['homePhone'] ? trim((string)$request->data['homePhone']) : null;
+                    }
+                    if (isset($request->data['svyaznoyClubCardNumber'])) {
+                        $newUser->svyaznoyClubCardNumber = $request->data['svyaznoyClubCardNumber'] ? trim((string)$request->data['svyaznoyClubCardNumber']) : null;
                     }
 
                     $updateQuery = new Query\User\UpdateItemByObject($token, $user, $newUser);

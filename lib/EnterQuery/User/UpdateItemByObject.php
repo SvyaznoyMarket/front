@@ -53,6 +53,9 @@ class UpdateItemByObject extends Query {
         if ($newUser->homePhone !== $oldUser->homePhone) {
             $data['phone'] = $newUser->homePhone;
         }
+        if ($newUser->svyaznoyClubCardNumber !== $oldUser->svyaznoyClubCardNumber) {
+            $data['bonus_card'][] = $newUser->svyaznoyClubCardNumber;
+        }
 
         $this->data = $data;
 
