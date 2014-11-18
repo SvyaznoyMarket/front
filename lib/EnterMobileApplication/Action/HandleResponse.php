@@ -52,7 +52,15 @@ class HandleResponse {
                 ] : null,
             ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
 
-            throw $e;
+            if (in_array($e->getCode(), [
+                Http\Response::STATUS_UNAUTHORIZED,
+            ])) {
+                $response = new Http\JsonResponse([
+                    'error' => ['code' => $e->getCode(), 'message' => $e->getMessage()],
+                ], $e->getCode());
+            } else {
+                throw $e;
+            }
         }
 
         $logger->push(['request' => [
