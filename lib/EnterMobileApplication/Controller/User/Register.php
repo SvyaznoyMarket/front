@@ -25,7 +25,7 @@ namespace EnterMobileApplication\Controller\User {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            $session = $this->getSession();
+            //$session = $this->getSession();
 
             // ответ
             $response = new Response();
@@ -35,6 +35,8 @@ namespace EnterMobileApplication\Controller\User {
             if (!$regionId) {
                 throw new \Exception('Не указан параметр regionId');
             }
+
+            $willBeSubscribed = (bool)$request->data['subscribe'];
 
             // запрос региона
             $regionQuery = new Query\Region\GetItemById($regionId);
@@ -57,11 +59,12 @@ namespace EnterMobileApplication\Controller\User {
                 $user->regionId = $region->id;
                 $user->firstName = $firstName;
                 $user->email = $email;
+
                 $user->phone = $phone;
                 $user->phone = preg_replace('/^\+7/', '8', $user->phone);
                 $user->phone = preg_replace('/[^\d]/', '', $user->phone);
 
-                $query = new Query\User\CreateItemByObject($user);
+                $query = new Query\User\CreateItemByObject($user, $willBeSubscribed);
                 $query->setTimeout($config->coreService->timeout * 2);
                 $curl->query($query);
 

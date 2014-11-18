@@ -15,8 +15,9 @@ class CreateItemByObject extends Query {
 
     /**
      * @param Model\User $user
+     * @param bool $willBeSubscribed
      */
-    public function __construct(Model\User $user) {
+    public function __construct(Model\User $user, $willBeSubscribed = null) {
         $this->url = new Url();
         $this->url->path = 'v2/user/create';
         $this->data = [
@@ -25,9 +26,17 @@ class CreateItemByObject extends Query {
         ];
         if ($user->email) {
             $this->data['email'] = $user->email;
+            // подписка по email
+            if ($willBeSubscribed) {
+                $this->data['is_subscribe'] = true;
+            }
         }
         if ($user->phone) {
             $this->data['mobile'] = $user->phone;
+            // подписка по sms
+            if ($willBeSubscribed) {
+                $this->data['is_sms_subscribe'] = true;
+            }
         }
 
         $this->init();
