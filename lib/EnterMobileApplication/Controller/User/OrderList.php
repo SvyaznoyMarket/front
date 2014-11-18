@@ -55,7 +55,7 @@ namespace EnterMobileApplication\Controller\User {
                     $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
                 }
 
-                // магазин
+                // магазины
                 $shopsById = [];
                 foreach ($orders as $order) {
                     if (!$order->shopId) continue;
