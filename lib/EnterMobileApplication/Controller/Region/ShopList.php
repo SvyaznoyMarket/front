@@ -60,11 +60,13 @@ class ShopList {
             if (!$regionId || !isset($regionDataById[$regionId])) continue;
 
             $shopItem = [
-                'id'      => (string)$shopItem['id'],
-                'address' => (string)$shopItem['address'],
-                'regime'  => (string)$shopItem['working_time'],
-                'type'    => 'shop',
-                'subway'  => @$shopItem['subway'][0] ? array_map(function($item) {
+                'id'        => (string)@$shopItem['id'],
+                'address'   => (string)@$shopItem['address'],
+                'longitude' => (float)@$shopItem['coord_long'] ?: null,
+                'latitude'  => (float)@$shopItem['coord_lat'] ?: null,
+                'regime'    => (string)@$shopItem['working_time'],
+                'type'      => 'shop',
+                'subway'    => @$shopItem['subway'][0] ? array_map(function($item) {
                     return ['name' => @$item['name'], 'line' => @$item['line']];
                 }, $shopItem['subway']) : [],
             ];
