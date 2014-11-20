@@ -79,6 +79,7 @@ class Cart {
             $cartProduct = new Model\Cart\Product();
             $cartProduct->id = (string)$productItem['id'];
             $cartProduct->quantity = isset($productItem['quantity']) ? (int)$productItem['quantity'] : 0;
+            $cartProduct->sender = isset($productItem['sender']['name']) ? (array)$productItem['sender'] : null;
 
             $products[] = $cartProduct;
         }

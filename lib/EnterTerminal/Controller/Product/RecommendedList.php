@@ -50,6 +50,10 @@ namespace EnterTerminal\Controller\Product {
                 $product = isset($controllerResponse->recommendedProductsById[$iProductId]) ? $controllerResponse->recommendedProductsById[$iProductId] : null;
                 if (!$product) continue;
 
+                $product->sender = [
+                    'name' => 'retailrocket',
+                ];
+
                 $response->recommendedProducts['alsoBought'][] = $product;
             }
 
@@ -58,6 +62,10 @@ namespace EnterTerminal\Controller\Product {
                 $product = isset($controllerResponse->recommendedProductsById[$iProductId]) ? $controllerResponse->recommendedProductsById[$iProductId] : null;
                 if (!$product) continue;
 
+                $product->sender = [
+                    'name' => 'retailrocket',
+                ];
+
                 $response->recommendedProducts['alsoViewed'][] = $product;
             }
 
@@ -65,6 +73,10 @@ namespace EnterTerminal\Controller\Product {
                 /** @var Model\Product|null $product */
                 $product = isset($controllerResponse->recommendedProductsById[$iProductId]) ? $controllerResponse->recommendedProductsById[$iProductId] : null;
                 if (!$product) continue;
+
+                $product->sender = [
+                    'name' => 'retailrocket',
+                ];
 
                 $response->recommendedProducts['similar'][] = $product;
             }

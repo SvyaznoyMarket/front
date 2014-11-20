@@ -17,6 +17,8 @@ class Product {
     public $parentId;
     /** @var string */
     public $addedAt;
+    /** @var array */
+    public $sender = [];
 
     /**
      * @param array $data
@@ -28,5 +30,6 @@ class Product {
         if (array_key_exists('price', $data)) $this->price = (int)$data['price'];
         if (array_key_exists('sum', $data)) $this->sum = (float)$data['sum'];
         if (array_key_exists('added', $data)) $this->addedAt = (string)$data['added'];
+        if (array_key_exists('sender', $data)) $this->sender = (array)$data['sender'];
     }
 }
