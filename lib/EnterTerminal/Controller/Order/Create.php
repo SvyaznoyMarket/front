@@ -85,6 +85,30 @@ namespace EnterTerminal\Controller\Order {
             // meta
             $metas = [];
 
+            try {
+                // запрос товаров
+                $productListQuery = new Query\Product\GetListByIdList(array_map(function(Model\Cart\Product $cartProduct) { return $cartProduct->id; }, $cart->product), $config->region->defaultId);
+                $curl->prepare($productListQuery);
+
+                $curl->execute();
+
+                $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList($productListQuery);
+
+                // установка sender-а
+                foreach ($cart->product as $cartProduct) {
+                    $product = isset($productsById[$cartProduct->id]) ? $productsById[$cartProduct->id] : null;
+                    if (!$product) continue;
+
+                    if (!empty($cartProduct->sender['name'])) {
+                        $meta = new Model\Order\Meta();
+                        $meta->key = 'product.' . $product->ui . '.' . 'sender';
+                        $meta->value = $cartProduct->sender['name'];
+                    }
+                }
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical', 'order']]);
+            }
+
             // отправлять смс?
             $isReceiveSms = false;
             if ((bool)$request->data['send_sms']) {

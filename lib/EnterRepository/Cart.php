@@ -165,6 +165,10 @@ class Cart {
                 $cartItem['parentId'] = $cartProduct->parentId;
             }
 
+            if (!empty($cartProduct->sender['name'])) {
+                $cartItem['sender'] = $cartProduct->sender;
+            }
+
             if (!isset($cartData['product'][$cartProduct->id]['added'])) {
                 $cartItem['added'] = date('c');
             } else {
