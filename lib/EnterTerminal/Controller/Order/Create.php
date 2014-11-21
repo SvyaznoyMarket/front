@@ -103,6 +103,7 @@ namespace EnterTerminal\Controller\Order {
                         $meta = new Model\Order\Meta();
                         $meta->key = 'product.' . $product->ui . '.' . 'sender';
                         $meta->value = $cartProduct->sender['name'];
+                        $metas[] = $meta;
                     }
                 }
             } catch (\Exception $e) {
