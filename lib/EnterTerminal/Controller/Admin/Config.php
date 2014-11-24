@@ -29,7 +29,7 @@ class Config {
         }
 
         $page = [
-            'title' => $config->applicationName,
+            'title' => $config->hostname,
             'updateForm'  => [
                 'action' => '/Admin/Config/Update',
                 'field'  => [
