@@ -26,6 +26,8 @@ class Product {
     public $quantity;
     /** @var string|null */
     public $stockQuantity;
+    /** @var array */
+    public $sender;
 
     /**
      * @param array $data
@@ -43,6 +45,7 @@ class Product {
         $this->sum = $data['sum'] ? (string)$data['sum'] : null;
         $this->quantity = (int)$data['quantity'];
         $this->stockQuantity = (int)$data['stock'];
+        $this->sender = (array)$data['sender'];
     }
 
     /**

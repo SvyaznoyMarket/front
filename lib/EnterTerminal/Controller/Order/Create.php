@@ -95,15 +95,17 @@ namespace EnterTerminal\Controller\Order {
                 $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList($productListQuery);
 
                 // установка sender-а
-                foreach ($cart->product as $cartProduct) {
-                    $product = isset($productsById[$cartProduct->id]) ? $productsById[$cartProduct->id] : null;
-                    if (!$product) continue;
+                foreach ($split->orders as $splitedOrder) {
+                    foreach ($splitedOrder->products as $orderProduct) {
+                        $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : null;
+                        if (!$product) continue;
 
-                    if (!empty($cartProduct->sender['name'])) {
-                        $meta = new Model\Order\Meta();
-                        $meta->key = 'product.' . $product->ui . '.' . 'sender';
-                        $meta->value = $cartProduct->sender['name'];
-                        $metas[] = $meta;
+                        if (!empty($orderProduct->sender['name'])) {
+                            $meta = new Model\Order\Meta();
+                            $meta->key = 'product.' . $product->ui . '.' . 'sender';
+                            $meta->value = $orderProduct->sender['name'];
+                            $metas[] = $meta;
+                        }
                     }
                 }
             } catch (\Exception $e) {
