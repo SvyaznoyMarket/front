@@ -65,6 +65,7 @@ class Product {
             'sum'            => $this->sum,
             'quantity'       => $this->quantity,
             'stock'          => $this->stockQuantity,
+            'sender'         => $this->sender,
         ];
     }
 }
