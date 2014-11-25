@@ -92,7 +92,7 @@ namespace EnterTerminal\Controller\Order {
 
                 $curl->execute();
 
-                $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList($productListQuery);
+                $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
 
                 // установка sender-а
                 foreach ($split->orders as $splitedOrder) {
