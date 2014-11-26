@@ -61,7 +61,11 @@ class GetItem extends Query {
         } else {
             $this->data['cart'] = [
                 'product_list' => array_values(array_map(function(Model\Cart\Product $cartProduct) {
-                    return array_merge(['quantity' => $cartProduct->quantity], $cartProduct->id ? ['id' => $cartProduct->id] : ['ui' => $cartProduct->ui]);
+                    return array_merge(
+                        ['quantity' => $cartProduct->quantity],
+                        $cartProduct->id ? ['id' => $cartProduct->id] : ['ui' => $cartProduct->ui],
+                        (bool)$cartProduct->sender ? ['meta_data' => ['sender' => $cartProduct->sender]] : []
+                    );
                 }, $cart->product)),
             ];
         }
