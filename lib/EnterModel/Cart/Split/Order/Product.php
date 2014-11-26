@@ -45,7 +45,7 @@ class Product {
         $this->sum = $data['sum'] ? (string)$data['sum'] : null;
         $this->quantity = (int)$data['quantity'];
         $this->stockQuantity = (int)$data['stock'];
-        $this->sender = (array)$data['sender'];
+        $this->sender = isset($data['meta_data']['sender']['name']) ? $data['meta_data']['sender'] : null;
     }
 
     /**
@@ -65,7 +65,7 @@ class Product {
             'sum'            => $this->sum,
             'quantity'       => $this->quantity,
             'stock'          => $this->stockQuantity,
-            'sender'         => $this->sender,
+            'meta_data'      => $this->sender ? ['sender' => $this->sender] : [],
         ];
     }
 }
