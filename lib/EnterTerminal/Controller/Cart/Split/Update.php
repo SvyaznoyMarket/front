@@ -110,10 +110,9 @@ namespace EnterTerminal\Controller\Cart\Split {
 
             // добавление данных о корзине
             $splitData['cart'] = [
-                'product_list' => array_map(function(Model\Cart\Product $cartProduct) { return [
-                    'id'        => $cartProduct->id,
-                    'quantity'  => $cartProduct->quantity,
-                    'meta_data' => $cartProduct->sender ? ['sender' => $cartProduct->sender] : [],
+                'product_list' => array_map(function(Model\Cart\Product $product) { return [
+                    'id'       => $product->id,
+                    'quantity' => $product->quantity,
                 ]; }, $cart->product),
             ];
 

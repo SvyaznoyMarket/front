@@ -99,7 +99,6 @@ namespace EnterTerminal\Controller\Cart {
                 'product_list' => array_map(function(Model\Cart\Product $cartProduct) { return [
                     'id'        => $cartProduct->id,
                     'quantity'  => $cartProduct->quantity,
-                    'meta_data' => $cartProduct->sender ? ['sender' => $cartProduct->sender] : [],
                 ]; }, $cart->product),
             ];
 
