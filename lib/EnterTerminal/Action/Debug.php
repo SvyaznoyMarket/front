@@ -31,9 +31,8 @@ class Debug {
 
         $page = new \StdClass();
 
-        $page->times = [
-            'total' => ['value' => round($endAt - $startAt, 3), 'unit' => 'ms'],
-        ];
+        $page->startAt = $startAt;
+        $page->endAt = $endAt;
 
         // request id
         $page->requestId = $this->getRequestId();
