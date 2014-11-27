@@ -90,13 +90,12 @@ class Debug {
                 if ((bool)$curlQuery->getData()) {
                     $query->data = $curlQuery->getData();
                 }
+                $query->path = ltrim(parse_url((string)$curlQuery->getUrl(), PHP_URL_PATH), '/');
                 $query->startAt = $curlQuery->getStartAt();
                 $query->endAt = $curlQuery->getEndAt();
                 $query->call = $curlQuery->getCall();
                 $query->time = round(($curlQuery->getEndAt() - $curlQuery->getStartAt()), 3) * 1000;
                 $query->timeout = $curlQuery->getTimeout();
-                $query->startAt = $curlQuery->getStartAt();
-                $query->endAt = $curlQuery->getEndAt();
 
                 $page->queries[] = $query;
 
