@@ -4,9 +4,9 @@ namespace EnterModel {
     use EnterModel as Model;
 
     class Promo {
-        /** @var int */
+        /** @var string */
         public $id;
-        /** @var int */
+        /** @var string */
         public $type;
         /** @var string */
         public $name;
