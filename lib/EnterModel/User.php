@@ -27,6 +27,8 @@ class User {
     public $birthday;
     /** @var string|null */
     public $svyaznoyClubCardNumber;
+    /** @var bool */
+    public $isEnterprizeMember;
     /** @var string */
     public $regionId;
     /** @var Model\Region|null */
@@ -48,6 +50,7 @@ class User {
         if (!empty($data['birthday'])) $this->birthday = (string)$data['birthday'];
         if (!empty($data['occupation'])) $this->occupation = (string)$data['occupation'];
         if (!empty($data['svyaznoy_club_card_number'])) $this->svyaznoyClubCardNumber = (string)$data['svyaznoy_club_card_number'];
+        if (!empty($data['is_enter_prize_member'])) $this->isEnterprizeMember = (bool)$data['is_enter_prize_member'];
 
         if (isset($data['geo']['id'])) $this->region = new Model\Region($data['geo']);
     }
