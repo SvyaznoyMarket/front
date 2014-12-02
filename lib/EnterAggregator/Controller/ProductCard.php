@@ -122,7 +122,7 @@ namespace EnterAggregator\Controller {
 
             // запрос доставки товара
             $deliveryListQuery = null;
-            if ($context->delivery && $response->product->isBuyable) {
+            if (($context->delivery || (bool)$response->product->kit) && $response->product->isBuyable) {
                 $cartProducts = [];
                 $cartProducts[] = new Model\Cart\Product(['id' => $response->product->id, 'quantity' => 1]);
                 foreach ($kits as $kit) {
