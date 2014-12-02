@@ -1,27 +1,29 @@
 <?php
 
-namespace EnterQuery\Enterprize\CouponSeries;
+namespace EnterQuery\Coupon\Series;
 
 use Enter\Curl\Query;
 use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 
-class GetItemByUi extends Query {
+class GetList extends Query {
     use ScmsQueryTrait;
 
-    /** @var array|null */
+    /** @var array */
     protected $result;
 
     /**
-     * @param $ui
+     * @param $memberType
      */
-    public function __construct($ui) {
+    public function __construct($memberType) {
         $this->url = new Url();
         $this->url->path = 'v2/coupon/get';
 
-        $this->url->query = [
-            'uid' => $ui,
-        ];
+        if ($memberType) {
+            $this->url->query = [
+                'member_type' => $memberType,
+            ];
+        }
 
         $this->init();
     }
@@ -32,6 +34,6 @@ class GetItemByUi extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]['uid']) ? $data[0] : null;
+        $this->result = isset($data[0]['uid']) ? $data : [];
     }
 }

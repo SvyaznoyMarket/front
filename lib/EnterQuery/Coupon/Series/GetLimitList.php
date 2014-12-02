@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterQuery\Enterprize\CouponSeries;
+namespace EnterQuery\Coupon\Series;
 
 use Enter\Curl\Query;
 use EnterQuery\CoreQueryTrait;
