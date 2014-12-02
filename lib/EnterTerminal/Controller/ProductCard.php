@@ -35,6 +35,7 @@ namespace EnterTerminal\Controller {
 
             $context = new Context();
             $context->mainMenu = false;
+            $context->delivery = false; // TERMINALS-971
             $controllerResponse = (new \EnterAggregator\Controller\ProductCard())->execute(
                 $regionId,
                 ['id' => $productId],

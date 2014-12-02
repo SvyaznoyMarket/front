@@ -11,4 +11,10 @@ class ProductCard extends Context {
      * @var bool
      */
     public $review = false;
+    /**
+     * Загружать доставку
+     *
+     * @var bool
+     */
+    public $delivery = true;
 }
