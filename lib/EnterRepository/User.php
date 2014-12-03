@@ -64,6 +64,7 @@ class User {
 
     /**
      * @param Query $query
+     * @throws \Exception
      * @return Model\User|null
      */
     public function getObjectByQuery(Query $query) {
@@ -75,6 +76,10 @@ class User {
             }
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
+
+            if (402 == $e->getCode()) {
+                throw new \Exception('Пользователь не авторизован', 401);
+            }
         }
 
         return $user;
