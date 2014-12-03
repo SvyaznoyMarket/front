@@ -32,7 +32,6 @@ namespace EnterMobileApplication\Controller\User {
             if (!$token) {
                 throw new \Exception('Не указан token');
             }
-            $response->token = $token;
 
             $userItemQuery = new Query\User\GetItemByToken($token);
             $curl->prepare($userItemQuery);
@@ -40,12 +39,16 @@ namespace EnterMobileApplication\Controller\User {
             $curl->execute();
 
             $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
+            if ($user) {
+                $response->token = $token;
+            }
 
             // список купонов
             $couponListQuery = new Query\Coupon\GetListByUserToken($token);
             $couponListQuery->setTimeout(3 * $config->coreService->timeout);
             $curl->prepare($couponListQuery);
 
+            // список серий купонов
             $seriesListQuery = new Query\Coupon\Series\GetList($user->isEnterprizeMember ? '1' : null);
             $seriesListQuery->setTimeout(3 * $config->coreService->timeout);
             $curl->prepare($seriesListQuery);
