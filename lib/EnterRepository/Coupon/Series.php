@@ -25,7 +25,7 @@ class Series {
                 if (!is_string($ui)) {
                     throw new \Exception('Значение ui должно быть типа string');
                 }
-                if (!is_integer($limit)) {
+                if (!is_integer($limit) && (null !== $limit)) {
                     throw new \Exception('Значение limit должно быть типа integer');
                 }
 
@@ -39,7 +39,9 @@ class Series {
 
                 $series = new Model\Coupon\Series($item);
 
-                if (isset($limitsByUi[$series->id]) && ($limitsByUi[$series->id] < 0)) continue;
+                if (isset($limitsByUi[$series->id])) {
+                    $series->limit = $limitsByUi[$series->id];
+                }
 
                 $seriesList[] = $series;
             }

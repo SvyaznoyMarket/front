@@ -25,6 +25,6 @@ class GetLimitList extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = (isset($data['detail']) && is_array(isset($data['detail']))) ? $data['detail'] : [];
+        $this->result = (isset($data['detail']) && is_array($data['detail'])) ? $data['detail'] : [];
     }
 }

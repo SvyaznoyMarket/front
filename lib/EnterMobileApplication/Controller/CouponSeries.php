@@ -6,14 +6,13 @@ namespace EnterMobileApplication\Controller {
     use EnterMobileApplication\ConfigTrait;
     use EnterAggregator\LoggerTrait;
     use EnterAggregator\CurlTrait;
-    use EnterAggregator\SessionTrait;
     use EnterAggregator\DebugContainerTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterMobileApplication\Controller\CouponList\Response;
 
     class CouponSeries {
-        use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait, DebugContainerTrait;
+        use ConfigTrait, LoggerTrait, CurlTrait, DebugContainerTrait;
 
         /**
          * @param Http\Request $request
@@ -23,18 +22,73 @@ namespace EnterMobileApplication\Controller {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            //$session = $this->getSession();
 
             // ответ
             $response = new Response();
 
+            $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
+
+            // запрос пользователя
+            $userItemQuery = null;
+            if ($token) {
+                $userItemQuery = new Query\User\GetItemByToken($token);
+                $curl->prepare($userItemQuery);
+
+                $curl->execute();
+            }
+
+            // получение пользователя
+            $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
+            if ($user) {
+                $response->token = $token;
+            }
+
+            // список купонов
+            $couponListQuery = null;
+            if ($token) {
+                $couponListQuery = new Query\Coupon\GetListByUserToken($token);
+                $couponListQuery->setTimeout(3 * $config->coreService->timeout);
+                $curl->prepare($couponListQuery);
+            }
+
+            // список лимитов серий купонов
+            $seriesLimitListQuery = new Query\Coupon\Series\GetLimitList();
+            $seriesLimitListQuery->setTimeout(3 * $config->coreService->timeout);
+            $curl->prepare($seriesLimitListQuery);
+
+            // список серий купонов
             $seriesListQuery = new Query\Coupon\Series\GetList(null);
             $seriesListQuery->setTimeout(3 * $config->coreService->timeout);
             $curl->prepare($seriesListQuery);
 
             $curl->execute();
 
-            $response->couponSeries = (new \EnterRepository\Coupon\Series())->getObjectListByQuery($seriesListQuery);
+            $usedSeriesIds = []; // ид серий купонов
+            if ($couponListQuery) {
+                foreach ($couponListQuery->getResult() as $couponItem) {
+                    if (empty($couponItem['number'])) continue;
+
+                    $coupon = new Model\Coupon($couponItem); // TODO: вынести в репозиторий
+                    $usedSeriesIds[] = $coupon->seriesId;
+                }
+            }
+
+            $response->couponSeries = array_values(
+                array_filter(
+                    (new \EnterRepository\Coupon\Series())->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery),
+                    function(Model\Coupon\Series $series) use (&$usedSeriesIds, $user) {
+                        return true // только те серии купонов, ...
+                            && !in_array($series->id, $usedSeriesIds) // ... которые не были получены ранее
+                            && $series->limit > 0 // ... у которых не исчерпан лимит
+                            && ($series->isForNotMember || $series->isForNotMember) // ... которые хотя бы для участника ИЛИ неучастника // TODO: кажись, лишнее условие
+                            && (
+                                (!$user && $series->isForNotMember) // ... которые для неучастников ИЛИ ...
+                                || ($user && $user->isEnterprizeMember && $series->isForMember) // ... которые для участников
+                            )
+                        ;
+                    }
+                )
+            );
 
             if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
 
@@ -47,6 +101,8 @@ namespace EnterMobileApplication\Controller\CouponList {
     use EnterModel as Model;
 
     class Response {
+        /** @var string|null */
+        public $token;
         /** @var Model\Coupon\Series[] */
         public $couponSeries = [];
     }

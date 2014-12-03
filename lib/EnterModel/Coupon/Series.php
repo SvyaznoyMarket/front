@@ -19,6 +19,12 @@ namespace EnterModel\Coupon {
         public $minOrderSum;
         /** @var Series\Segment|null */
         public $productSegment;
+        /** @var int */
+        public $limit;
+        /** @var bool */
+        public $isForMember;
+        /** @var bool */
+        public $isForNotMember;
 
         /**
          * @param array $data
@@ -43,6 +49,9 @@ namespace EnterModel\Coupon {
             $this->productSegment->url = @$data['segment_url'] ? (string)$data['segment_url'] : null;
             $this->productSegment->imageUrl = @$data['segment_image_url'] ? (string)$data['segment_image_url'] : null;
             $this->productSegment->description = @$data['segment_description'] ? str_replace('\\r\\n', '', strip_tags((string)$data['segment_description'])) : null;
+
+            $this->isForMember = (bool)@$data['is_for_member'];
+            $this->isForNotMember = (bool)@$data['is_for_not_member'];
         }
     }
 }
