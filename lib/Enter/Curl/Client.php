@@ -118,6 +118,8 @@ class Client {
             $absoluteTimeout = microtime(true);
 
             foreach ($this->queries as $query) {
+                if ($query->getStartAt()) continue;
+
                 $query->setStartAt($absoluteTimeout);
             }
 

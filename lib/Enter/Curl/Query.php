@@ -32,8 +32,8 @@ abstract class Query implements \JsonSerializable {
     /** @var \Exception|null */
     protected $error;
     /**
-     * Таймаут, мс
-     * @var int|null
+     * Таймаут, с
+     * @var float|null
      */
     protected $timeout;
     /**
@@ -247,17 +247,17 @@ abstract class Query implements \JsonSerializable {
     }
 
     /**
-     * @param int|null $timeout
+     * @param float|null $timeout
      * @return $this
      */
     public function setTimeout($timeout) {
-        $this->timeout = $timeout ? (int)$timeout : null;
+        $this->timeout = $timeout ? (float)$timeout : null;
 
         return $this;
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getTimeout() {
         return $this->timeout;

@@ -40,15 +40,6 @@ namespace EnterAggregator\Controller\Product {
             $curl->execute();
 
             // регион
-            $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
-
-            // запрос региона
-            $regionQuery = new Query\Region\GetItemById($regionId);
-            $curl->prepare($regionQuery);
-
-            $curl->execute();
-
-            // регион
             $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
             // запрос товара
@@ -75,6 +66,7 @@ namespace EnterAggregator\Controller\Product {
                     ? new Query\Product\Relation\CrossSellItemToItems\GetIdListByProductId($product->id)
                     : new Query\Product\Relation\CrossSellItemToItems\GetIdListByProductIdList(array_keys($productsById))
                 ;
+                $crossSellItemToItemsListQuery->setTimeout(1.5 * $config->retailRocketService->timeout);
                 $curl->prepare($crossSellItemToItemsListQuery);
             }
 
@@ -82,6 +74,7 @@ namespace EnterAggregator\Controller\Product {
             $upSellItemToItemsListQuery = null;
             if ($context->similar) {
                 $upSellItemToItemsListQuery = new Query\Product\Relation\UpSellItemToItems\GetIdListByProductId($product->id);
+                $upSellItemToItemsListQuery->setTimeout(1.5 * $config->retailRocketService->timeout);
                 $curl->prepare($upSellItemToItemsListQuery);
             }
 
@@ -89,6 +82,7 @@ namespace EnterAggregator\Controller\Product {
             $itemToItemsListQuery = null;
             if ($context->alsoViewed) {
                 $itemToItemsListQuery = new Query\Product\Relation\ItemToItems\GetIdListByProductId($product->id);
+                $itemToItemsListQuery->setTimeout(1.5 * $config->retailRocketService->timeout);
                 $curl->prepare($itemToItemsListQuery);
             }
 
@@ -131,6 +125,7 @@ namespace EnterAggregator\Controller\Product {
             $productListQueries = [];
             foreach (array_chunk($recommendedIds, $config->curl->queryChunkSize) as $idsInChunk) {
                 $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id);
+                $productListQuery->setTimeout(1.5 * $config->coreService->timeout);
                 $curl->prepare($productListQuery);
 
                 $productListQueries[] = $productListQuery;
@@ -158,16 +153,52 @@ namespace EnterAggregator\Controller\Product {
                 // удаляем ид товаров, которых нет в массиве $productsById
                 $ids = array_intersect($ids, array_keys($recommendedProductsById));
                 // применяем лимит
-                $ids = array_slice($ids, 0, $config->product->itemsInSlider);
+                //$ids = array_slice($ids, 0, $config->product->itemsInSlider);
+                $ids = array_slice($ids, 0, 20);
             }
             unset($ids, $chunkedIds);
 
+            // список магазинов, в которых есть товар
+            $shopIds = [];
+            foreach ($recommendedProductsById as $product) {
+                foreach ($product->stock as $stock) {
+                    if (!$stock->shopId) continue;
+
+                    $shopIds[] = $stock->shopId;
+                }
+            }
+            if ((bool)$shopIds) {
+                $shopListQuery = new Query\Shop\GetListByIdList($shopIds);
+                $curl->prepare($shopListQuery);
+
+                $curl->execute();
+
+                foreach ($recommendedProductsById as $product) {
+                    $shopStatesByShopId = [];
+                    foreach ($product->stock as $stock) {
+                        if ($stock->shopId && (($stock->showroomQuantity + $stock->quantity) > 0)) {
+                            $shopState = new Model\Product\ShopState();
+                            $shopState->quantity = $stock->quantity;
+                            $shopState->showroomQuantity = $stock->showroomQuantity;
+                            $shopState->isInShowroomOnly = !$shopState->quantity && ($shopState->showroomQuantity > 0);
+
+                            $shopStatesByShopId[$stock->shopId] = $shopState;
+                        }
+                    }
+                    if ((bool)$shopStatesByShopId) {
+                        $productRepository->setShopStateForObjectListByQuery([$product->id => $product], $shopStatesByShopId, $shopListQuery);
+                    }
+                }
+            }
+
             // сортировка по наличию
-            //$productRepository->sortByStockStatus($alsoBoughtIdList, $recommendedProductsById);
-            //$productRepository->sortByStockStatus($similarIdList, $recommendedProductsById);
-            //$productRepository->sortByStockStatus($alsoViewedIdList, $recommendedProductsById);
+            /*
+            $productRepository->sortByStockStatus($alsoBoughtIdList, $recommendedProductsById);
+            $productRepository->sortByStockStatus($similarIdList, $recommendedProductsById);
+            $productRepository->sortByStockStatus($alsoViewedIdList, $recommendedProductsById);
+            */
 
-
+            // ответ
             $response->productsById = $productsById;
             $response->recommendedProductsById = $recommendedProductsById;
             $response->alsoBoughtIdList = $alsoBoughtIdList;

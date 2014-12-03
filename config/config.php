@@ -39,7 +39,7 @@ return function(\EnterAggregator\Config $config) {
     // cityads
     $config->partner->service->cityads->enabled = true;
 
-    $config->curl->queryChunkSize = 50;
+    $config->curl->queryChunkSize = 30;
     $config->curl->logResponse = false;
     $config->curl->timeout = 30;
     $config->curl->retryTimeout = 0.4;

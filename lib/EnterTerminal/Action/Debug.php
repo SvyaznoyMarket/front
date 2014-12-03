@@ -94,7 +94,7 @@ class Debug {
                 $query->startAt = $curlQuery->getStartAt();
                 $query->endAt = $curlQuery->getEndAt();
                 $query->call = $curlQuery->getCall();
-                $query->time = round(($curlQuery->getEndAt() - $curlQuery->getStartAt()), 3) * 1000;
+                $query->time = round(($curlQuery->getEndAt() - $curlQuery->getStartAt()), 3);
                 $query->timeout = $curlQuery->getTimeout();
 
                 $page->queries[] = $query;

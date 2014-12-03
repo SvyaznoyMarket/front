@@ -213,36 +213,34 @@ namespace EnterAggregator\Controller {
             $response->accessoryCategories = (new Repository\Product\Category())->getIndexedObjectListByProductListAndTokenList($response->product->relation->accessories, $response->catalogConfig ? $response->catalogConfig->accessoryCategoryTokens : []);
 
             // список магазинов, в которых есть товар
-            if (true) {
-                $shopIds = [];
-                foreach ($productsById as $product) {
-                    foreach ($product->stock as $stock) {
-                        if (!$stock->shopId) continue;
+            $shopIds = [];
+            foreach ($productsById as $product) {
+                foreach ($product->stock as $stock) {
+                    if (!$stock->shopId) continue;
 
-                        $shopIds[] = $stock->shopId;
-                    }
+                    $shopIds[] = $stock->shopId;
                 }
-                if ((bool)$shopIds) {
-                    $shopListQuery = new Query\Shop\GetListByIdList($shopIds);
-                    $curl->prepare($shopListQuery);
+            }
+            if ((bool)$shopIds) {
+                $shopListQuery = new Query\Shop\GetListByIdList($shopIds);
+                $curl->prepare($shopListQuery);
 
-                    $curl->execute();
+                $curl->execute();
 
-                    foreach ($productsById as $product) {
-                        $shopStatesByShopId = [];
-                        foreach ($product->stock as $stock) {
-                            if ($stock->shopId && (($stock->showroomQuantity + $stock->quantity) > 0)) {
-                                $shopState = new Model\Product\ShopState();
-                                $shopState->quantity = $stock->quantity;
-                                $shopState->showroomQuantity = $stock->showroomQuantity;
-                                $shopState->isInShowroomOnly = !$shopState->quantity && ($shopState->showroomQuantity > 0);
+                foreach ($productsById as $product) {
+                    $shopStatesByShopId = [];
+                    foreach ($product->stock as $stock) {
+                        if ($stock->shopId && (($stock->showroomQuantity + $stock->quantity) > 0)) {
+                            $shopState = new Model\Product\ShopState();
+                            $shopState->quantity = $stock->quantity;
+                            $shopState->showroomQuantity = $stock->showroomQuantity;
+                            $shopState->isInShowroomOnly = !$shopState->quantity && ($shopState->showroomQuantity > 0);
 
-                                $shopStatesByShopId[$stock->shopId] = $shopState;
-                            }
+                            $shopStatesByShopId[$stock->shopId] = $shopState;
                         }
-                        if ((bool)$shopStatesByShopId) {
-                            $productRepository->setShopStateForObjectListByQuery([$product->id => $product], $shopStatesByShopId, $shopListQuery);
-                        }
+                    }
+                    if ((bool)$shopStatesByShopId) {
+                        $productRepository->setShopStateForObjectListByQuery([$product->id => $product], $shopStatesByShopId, $shopListQuery);
                     }
                 }
             }
