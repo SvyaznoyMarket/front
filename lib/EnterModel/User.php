@@ -8,6 +8,8 @@ class User {
     /** @var string */
     public $id;
     /** @var string */
+    public $ui;
+    /** @var string */
     public $firstName;
     /** @var string */
     public $lastName;
@@ -39,6 +41,7 @@ class User {
      */
     public function __construct(array $data = []) {
         if (!empty($data['id'])) $this->id = (string)$data['id'];
+        if (!empty($data['ui'])) $this->ui = (string)$data['ui'];
         if (!empty($data['first_name'])) $this->firstName = (string)$data['first_name'];
         if (!empty($data['last_name'])) $this->lastName = (string)$data['last_name'];
         if (!empty($data['middle_name'])) $this->middleName = (string)$data['middle_name'];

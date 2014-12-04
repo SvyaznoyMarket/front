@@ -53,6 +53,12 @@ return function(\EnterAggregator\Config $config) {
     $config->scmsService->url = 'http://scms.enter.ru/';
     $config->scmsService->timeout = 1.2;
 
+    $config->crmService->url = 'http://crm.enter.ru/';
+    $config->crmService->timeout = 5;
+    $config->crmService->clientId = 'site';
+    $config->crmService->debug = false;
+
+
     $config->cmsService->url = 'http://cms.enter.ru/';
     $config->cmsService->timeout = 0.8;
 
