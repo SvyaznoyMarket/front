@@ -27,6 +27,7 @@ namespace EnterMobileApplication\Controller {
             $response = new Response();
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
+            $couponSeriesId = is_scalar($request->query['id']) ? (string)$request->query['id'] : null;
 
             // запрос пользователя
             $userItemQuery = null;
@@ -57,9 +58,15 @@ namespace EnterMobileApplication\Controller {
             $curl->prepare($seriesLimitListQuery);
 
             // список серий купонов
-            $seriesListQuery = new Query\Coupon\Series\GetList(null);
-            $seriesListQuery->setTimeout(3 * $config->coreService->timeout);
-            $curl->prepare($seriesListQuery);
+            if ($couponSeriesId) {
+                $seriesListQuery = new Query\Coupon\Series\GetListByUi($couponSeriesId);
+                $seriesListQuery->setTimeout(3 * $config->coreService->timeout);
+                $curl->prepare($seriesListQuery);
+            } else {
+                $seriesListQuery = new Query\Coupon\Series\GetList(null);
+                $seriesListQuery->setTimeout(3 * $config->coreService->timeout);
+                $curl->prepare($seriesListQuery);
+            }
 
             $curl->execute();
 
