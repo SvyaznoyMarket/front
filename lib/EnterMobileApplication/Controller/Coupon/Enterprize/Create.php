@@ -38,15 +38,6 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
             $couponSeries = new Model\Coupon\Series();
             $couponSeries->id = $couponSeriesId;
 
-            $phone = $request->data['phone'];
-            if (!$phone) {
-                throw new \Exception('Не указан phone');
-            }
-            $email = $request->data['email'];
-            if (!$email) {
-                throw new \Exception('Не указан email');
-            }
-
             // запрос пользователя
             $userItemQuery = new Query\User\GetItemByToken($token);
             $curl->prepare($userItemQuery);
@@ -60,11 +51,7 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
             }
             $response->token = $token;
 
-            $enterprizeUser = clone $user;
-            $enterprizeUser->phone = $phone;
-            $enterprizeUser->email = $email;
-
-            $createQuery = new Query\Coupon\Enterprize\Create($token, $enterprizeUser, $couponSeries);
+            $createQuery = new Query\Coupon\Enterprize\Create($token, $user, $couponSeries);
             $createQuery->setTimeout(3 * $config->coreService->timeout);
 
             $curl->query($createQuery);
