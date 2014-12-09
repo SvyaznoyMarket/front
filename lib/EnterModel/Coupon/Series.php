@@ -45,13 +45,13 @@ namespace EnterModel\Coupon {
             if (!empty($data['min_order_sum'])) $this->minOrderSum = (string)$data['min_order_sum'];
 
             $this->productSegment = new Series\Segment();
-            $this->productSegment->name = @$data['segment'] ? (string)$data['segment'] : null;
-            $this->productSegment->url = @$data['segment_url'] ? (string)$data['segment_url'] : null;
-            $this->productSegment->imageUrl = @$data['segment_image_url'] ? (string)$data['segment_image_url'] : null;
-            $this->productSegment->description = @$data['segment_description'] ? str_replace('\\r\\n', '', strip_tags((string)$data['segment_description'])) : null;
+            if (array_key_exists('segment', $data)) $this->productSegment->name = (string)$data['segment'];
+            if (array_key_exists('segment_url', $data)) $this->productSegment->url = (string)$data['segment_url'];
+            if (array_key_exists('segment_image_url', $data)) $this->productSegment->imageUrl = (string)$data['segment_image_url'];
+            if (array_key_exists('segment_description', $data)) $this->productSegment->description = str_replace('\\r\\n', '', strip_tags((string)$data['segment_description']));
 
-            $this->isForMember = (bool)@$data['is_for_member'];
-            $this->isForNotMember = (bool)@$data['is_for_not_member'];
+            if (array_key_exists('is_for_member', $data)) $this->isForMember = (bool)$data['is_for_member'];
+            if (array_key_exists('is_for_not_member', $data)) $this->isForNotMember = (bool)$data['is_for_not_member'];
         }
     }
 }
