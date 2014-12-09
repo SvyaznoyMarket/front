@@ -2,7 +2,11 @@
 
 namespace EnterAggregator\Action;
 
+use EnterAggregator\LoggerTrait;
+
 class HandleError {
+    use LoggerTrait;
+
     /**
      * @param $error
      */
@@ -21,8 +25,9 @@ class HandleError {
             ];
 
             switch ($level) {
-                case E_USER_ERROR:
+                case E_USER_ERROR: case E_NOTICE:
                     $error = new \ErrorException($message, 0, $level, $file, $line);
+
                     return true;
             }
 
