@@ -6,11 +6,12 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
     use EnterMobileApplication\ConfigTrait;
     use EnterAggregator\CurlTrait;
     use EnterAggregator\LoggerTrait;
+    use EnterMobileApplication\Controller;
     use EnterQuery as Query;
     use EnterModel as Model;
-    use EnterMobileApplication\Controller\Coupon\Enterprize\Create\Response;
+    use EnterMobileApplication\Controller\Coupon\Enterprize\Register\Response;
 
-    class Create {
+    class Register {
         use ConfigTrait, LoggerTrait, CurlTrait;
 
         /**
@@ -31,7 +32,7 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
             }
 
             $couponSeriesId = is_scalar($request->query['couponSeriesId']) ? (string)$request->query['couponSeriesId'] : null;
-            if (!$token) {
+            if (!$couponSeriesId) {
                 throw new \Exception('Не указан couponSeriesId');
             }
 
@@ -58,19 +59,23 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
             if (!$user) {
                 throw new \Exception('Пользователь не авторизован', Http\Response::STATUS_UNAUTHORIZED); // FIXME
             }
-            $response->token = $token;
+            //$response->token = $token;
 
             $enterprizeUser = clone $user;
             $enterprizeUser->phone = $phone;
             $enterprizeUser->email = $email;
 
-            $createQuery = new Query\Coupon\Enterprize\Create($token, $enterprizeUser, $couponSeries);
-            $createQuery->setTimeout(3 * $config->coreService->timeout);
+            $registerQuery = new Query\Coupon\Enterprize\Register($token, $enterprizeUser, $couponSeries);
+            $registerQuery->setTimeout(3 * $config->coreService->timeout);
 
-            $curl->query($createQuery);
+            $curl->query($registerQuery);
 
             try {
-                $result = $createQuery->getResult();
+                $registerResult = $registerQuery->getResult();
+
+                $response->isPhoneConfirmed = (bool)@$registerResult['mobile_confirmed'];
+                $response->isEmailConfirmed = (bool)@$registerResult['email_confirmed'];
+                $response->token = (string)@$registerResult['token'];
             } catch (\EnterQuery\CoreQueryException $e) {
                 $detail = $e->getDetail();
 
@@ -82,6 +87,14 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
                     } else {
                         $response->errors[] = ['code' => $e->getCode(), 'message' => $e->getMessage(), 'field' => null];
                     }
+                } else if (409 == $e->getCode()) {
+                    $error = ['code' => $e->getCode(), 'message' => 'Уже зарегистрирован в ENTER PRIZE', 'field' => null];
+                    if (isset($detail['mobile_in_enter_prize']) && $detail['mobile_in_enter_prize']) {
+                        $error['field'] = 'phone';
+                    } elseif (isset($detail['email_in_enter_prize']) && $detail['email_in_enter_prize']) {
+                        $error['field'] = 'email';
+                    }
+                    $response->errors[] = $error;
                 } else if (600 == $e->getCode()) {
                     foreach ($detail as $fieldName => $errors) {
                         foreach ((array)$errors as $errorType => $errorMessage) {
@@ -111,16 +124,26 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
                 }
             }
 
+            if ($response->isPhoneConfirmed && $response->isEmailConfirmed) { // если телефон и email подтверждены
+                return (new Controller\Coupon\Enterprize\Create())->execute($request);
+            } else if ($response->isPhoneConfirmed) { // если подтвержден только телефон
+                // TODO
+            }
+
             // response
             return new Http\JsonResponse($response);
         }
     }
 }
 
-namespace EnterMobileApplication\Controller\Coupon\Enterprize\Create {
+namespace EnterMobileApplication\Controller\Coupon\Enterprize\Register {
     use EnterModel as Model;
 
     class Response {
+        /** @var bool */
+        public $isPhoneConfirmed;
+        /** @var bool */
+        public $isEmailConfirmed;
         /** @var string|null */
         public $token;
          /** @var array[] */
