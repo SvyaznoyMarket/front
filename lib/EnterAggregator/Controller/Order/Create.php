@@ -82,8 +82,8 @@ namespace EnterAggregator\Controller\Order {
                     continue;
                 }
 
-                $curl->prepare($orderItemQuery);
-                $orderItemQueries[] = $orderItemQuery;
+                //$curl->prepare($orderItemQuery); // Не дергаем order/get, т.к. проблемы с онным на ядре
+                //$orderItemQueries[] = $orderItemQuery;
 
                 $paymentMethodListQuery = new Query\PaymentMethod\GetListByOrderNumberErp($numberErp, $regionId);
                 $paymentMethodListQuery->setTimeout(4 * $config->coreService->timeout);
@@ -95,15 +95,23 @@ namespace EnterAggregator\Controller\Order {
 
             /** @var Model\Order[] $orders */
             $orders = [];
-            foreach ($orderItemQueries as $i => $orderItemQuery) {
-                try {
-                    $order = $orderRepository->getObjectByQuery($orderItemQuery);
+            if ((bool)$orderItemQueries) {
+                foreach ($orderItemQueries as $i => $orderItemQuery) {
+                    try {
+                        $order = $orderRepository->getObjectByQuery($orderItemQuery);
 
-                    $orders[] = $order;
-                } catch (\Exception $e) {
-                    $logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
+                        $orders[] = $order;
+                    } catch (\Exception $e) {
+                        $logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
 
-                    $orders[] = new Model\Order($orderData[$i]);
+                        $orders[] = new Model\Order($orderData[$i]);
+                    }
+                }
+            } else {
+                foreach ($orderData as $orderItem) {
+                    if (!isset($orderItem['number'])) continue;
+
+                    $orders[] = new Model\Order($orderItem);
                 }
             }
 
