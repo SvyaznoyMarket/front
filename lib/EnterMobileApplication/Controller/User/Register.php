@@ -89,7 +89,7 @@ namespace EnterMobileApplication\Controller\User\Register {
     class Response {
         /** @var string */
         public $token;
-        /** @var string[] */
+        /** @var array[] */
         public $errors = [];
     }
 }
