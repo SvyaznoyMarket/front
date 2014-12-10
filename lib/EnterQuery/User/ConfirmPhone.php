@@ -1,13 +1,13 @@
 <?php
 
-namespace EnterQuery\Coupon\Enterprize;
+namespace EnterQuery\User;
 
 use Enter\Curl\Query;
 use EnterQuery\CoreQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
-class ConfirmEmail extends Query {
+class ConfirmPhone extends Query {
     use CoreQueryTrait;
 
     /** @var array|null */
@@ -15,20 +15,18 @@ class ConfirmEmail extends Query {
 
     /**
      * @param string $userToken
-     * @param string $email
-     * @param string $promoToken
+     * @param string $phone
      * @param string|null $code
      */
-    public function __construct($userToken, $email, $promoToken, $code = null) {
+    public function __construct($userToken, $phone, $code = null) {
         $this->url = new Url();
-        $this->url->path = 'v2/confirm/email';
+        $this->url->path = 'v2/confirm/mobile';
 
         $this->url->query = [
             'token' => $userToken,
         ];
         $this->data = [
-            'email'    => $email,
-            'template' => $promoToken,
+            'mobile' => $phone,
         ];
 
         if ($code) {

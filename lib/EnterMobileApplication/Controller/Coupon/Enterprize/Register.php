@@ -125,9 +125,11 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
             }
 
             if ($response->isPhoneConfirmed && $response->isEmailConfirmed) { // если телефон и email подтверждены
-                return (new Controller\Coupon\Enterprize\Create())->execute($request);
+                //return (new Controller\Coupon\Enterprize\Create())->execute($request);
             } else if ($response->isPhoneConfirmed) { // если подтвержден только телефон
-                // TODO
+                //return (new Controller\User\ConfirmEmail())->execute($request);
+            } else if ($response->isEmailConfirmed) {
+                //return (new Controller\User\ConfirmPhone())->execute($request);
             }
 
             // response
