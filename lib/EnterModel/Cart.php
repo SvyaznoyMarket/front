@@ -28,6 +28,11 @@ class Cart implements \Countable {
      * @return int
      */
     public function count() {
-        return count($this->product);
+        $count = 0;
+        foreach ($this->product as $cartProduct) {
+            $count += $cartProduct->quantity;
+        }
+
+        return $count;
     }
 }
