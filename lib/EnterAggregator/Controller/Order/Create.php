@@ -117,7 +117,7 @@ namespace EnterAggregator\Controller\Order {
 
             $orderProductsById = [];
             foreach ($orders as $order) {
-                foreach ($order->product as $orderProduct) {
+                foreach ((array)$order->product as $orderProduct) {
                     $orderProductsById[$orderProduct->id] = $orderProduct;
                 }
             }
@@ -140,7 +140,7 @@ namespace EnterAggregator\Controller\Order {
 
             // товары
             foreach ($orders as $order) {
-                foreach ($order->product as $i => $orderProduct) {
+                foreach ((array)$order->product as $i => $orderProduct) {
                     $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : null;
                     if (!$product) continue;
 
