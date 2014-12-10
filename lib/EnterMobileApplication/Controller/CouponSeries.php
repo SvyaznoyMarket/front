@@ -83,9 +83,9 @@ namespace EnterMobileApplication\Controller {
             $response->couponSeries = array_values(
                 array_filter(
                     (new \EnterRepository\Coupon\Series())->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery),
-                    function(Model\Coupon\Series $series) use (&$usedSeriesIds, $user) {
+                    function(Model\Coupon\Series $series) use (&$usedSeriesIds, $user, &$couponSeriesId) {
                         return true // только те серии купонов, ...
-                            //&& !in_array($series->id, $usedSeriesIds) // ... которые не были получены ранее
+                            && ($couponSeriesId || (!$couponSeriesId && !in_array($series->id, $usedSeriesIds))) // ... которые не были получены ранее
                             && $series->limit > 0 // ... у которых не исчерпан лимит
                             && ($series->isForNotMember || $series->isForNotMember) // ... которые хотя бы для участника ИЛИ неучастника // TODO: кажись, лишнее условие
                             && (
