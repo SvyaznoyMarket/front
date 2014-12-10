@@ -76,11 +76,11 @@ namespace EnterMobileApplication\Controller\User {
                 } else if (403 == $e->getCode()) {
                     $response->errors[] = ['code' => $e->getCode(), 'message' => $e->getMessage(), 'field' => 'code']; // Повторная отправка не разрешена
                 } else if (409 == $e->getCode()) {
-                    $response->errors[] = ['code' => $e->getCode(), 'message' => $e->getMessage(), 'field' => 'phone']; // Этот phone уже подтвержден
+                    $response->errors[] = ['code' => $e->getCode(), 'message' => $e->getMessage(), 'field' => 'phone']; // Этот телефон уже подтвержден
                 } else if (410 == $e->getCode()) {
                     $response->errors[] = ['code' => $e->getCode(), 'message' => $e->getMessage(), 'field' => 'code']; // Лимит попыток исчерпан | Код просрочен
                 } else if (600 == $e->getCode()) {
-                    $response->errors[] = ['code' => $e->getCode(), 'message' => $e->getMessage(), 'field' => 'phone']; // Некорректно введен phone
+                    $response->errors[] = ['code' => $e->getCode(), 'message' => 'Некорректный номер телефона', 'field' => 'phone']; // Некорректно введен телефон
                 } else {
                     throw $e;
                 }

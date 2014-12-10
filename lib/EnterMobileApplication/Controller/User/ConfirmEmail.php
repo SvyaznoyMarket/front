@@ -85,7 +85,7 @@ namespace EnterMobileApplication\Controller\User {
                 } else if (410 == $e->getCode()) {
                     $response->errors[] = ['code' => $e->getCode(), 'message' => $e->getMessage(), 'field' => 'code']; // Лимит попыток исчерпан | Код просрочен
                 } else if (600 == $e->getCode()) {
-                    $response->errors[] = ['code' => $e->getCode(), 'message' => $e->getMessage(), 'field' => 'email']; // Некорректно введен email
+                    $response->errors[] = ['code' => $e->getCode(), 'message' => 'Некорректный email', 'field' => 'email']; // Некорректно введен email
                 } else {
                     throw $e;
                 }
