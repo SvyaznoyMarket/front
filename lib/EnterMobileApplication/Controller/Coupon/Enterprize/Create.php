@@ -52,7 +52,7 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
             $response->token = $token;
 
             $createQuery = new Query\Coupon\Enterprize\Create($token, $user, $couponSeries);
-            $createQuery->setTimeout(3 * $config->coreService->timeout);
+            $createQuery->setTimeout(10 * $config->coreService->timeout);
 
             $curl->query($createQuery);
 

@@ -51,7 +51,7 @@ namespace EnterMobileApplication\Controller\User {
             $response->token = $token;
 
             $confirmQuery = new Query\User\ConfirmPhone($token, $phone, $code);
-            $confirmQuery->setTimeout(4 * $config->coreService->timeout);
+            $confirmQuery->setTimeout(10 * $config->coreService->timeout);
 
             $curl->query($confirmQuery);
 

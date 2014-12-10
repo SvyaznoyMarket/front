@@ -66,7 +66,7 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
             $enterprizeUser->email = $email;
 
             $registerQuery = new Query\Coupon\Enterprize\Register($token, $enterprizeUser, $couponSeries);
-            $registerQuery->setTimeout(3 * $config->coreService->timeout);
+            $registerQuery->setTimeout(10 * $config->coreService->timeout);
 
             $curl->query($registerQuery);
 

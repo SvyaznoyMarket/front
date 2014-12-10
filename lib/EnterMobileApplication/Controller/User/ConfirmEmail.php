@@ -56,7 +56,7 @@ namespace EnterMobileApplication\Controller\User {
             $response->token = $token;
 
             $confirmQuery = new Query\User\ConfirmEmail($token, $email, $code, $promoToken);
-            $confirmQuery->setTimeout(4 * $config->coreService->timeout);
+            $confirmQuery->setTimeout(10 * $config->coreService->timeout);
 
             $curl->query($confirmQuery);
 
