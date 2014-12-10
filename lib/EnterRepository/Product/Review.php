@@ -14,7 +14,9 @@ class Review {
         $reviews = [];
 
         try {
-            foreach ($query->getResult()['review_list'] as $item) {
+            $result = (array)$query->getResult() + ['review_list' => null];
+
+            foreach ((array)$result['review_list'] as $item) {
                 $reviews[] = new Model\Product\Review($item);
             }
         } catch (\Exception $e) {
@@ -32,7 +34,8 @@ class Review {
         $count = 0;
 
         try {
-            $count = $query->getResult()['num_reviews'];
+            $result = $query->getResult();
+            $count = isset($result['num_reviews']) ? $result['num_reviews'] : null;
         } catch (\Exception $e) {
             //trigger_error($e, E_USER_ERROR);
         }
