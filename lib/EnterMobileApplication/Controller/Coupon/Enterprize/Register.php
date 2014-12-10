@@ -47,6 +47,10 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
             if (!$email) {
                 throw new \Exception('Не указан email');
             }
+            $firstName = $request->data['firstName'];
+            if (!$firstName) {
+                throw new \Exception('Не указан firstName');
+            }
 
             // запрос пользователя
             $userItemQuery = new Query\User\GetItemByToken($token);
@@ -64,6 +68,7 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
             $enterprizeUser = clone $user;
             $enterprizeUser->phone = $phone;
             $enterprizeUser->email = $email;
+            $enterprizeUser->firstName = $firstName;
 
             $registerQuery = new Query\Coupon\Enterprize\Register($token, $enterprizeUser, $couponSeries);
             $registerQuery->setTimeout(10 * $config->coreService->timeout);
@@ -100,7 +105,7 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
                         foreach ((array)$errors as $errorType => $errorMessage) {
                             switch ($fieldName) {
                                 case 'name':
-                                    $response->errors[] = ['code' => $e->getCode(), 'message' => ('isEmpty' === $errorType) ? 'Не заполнено имя' : 'Некорректно введено имя', 'field' => 'name'];
+                                    $response->errors[] = ['code' => $e->getCode(), 'message' => ('isEmpty' === $errorType) ? 'Не заполнено имя' : 'Некорректно введено имя', 'field' => 'firstName'];
                                     break;
                                 case 'mobile':
                                     $response->errors[] = ['code' => $e->getCode(), 'message' => ('isEmpty' === $errorType) ? 'Не заполнен номер телефона' : 'Некорректно введен номер телефона', 'field' => 'phone'];
