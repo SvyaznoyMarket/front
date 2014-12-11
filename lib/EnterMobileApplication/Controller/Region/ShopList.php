@@ -66,7 +66,7 @@ class ShopList {
                 'latitude'  => (float)@$shopItem['coord_lat'] ?: null,
                 'regime'    => (string)@$shopItem['working_time'],
                 'type'      => 'shop',
-                'subway'    => @$shopItem['subway'][0] ? array_map(function($item) {
+                'subway'    => isset($shopItem['subway'][0]) ? array_map(function($item) {
                     return ['name' => @$item['name'], 'line' => @$item['line']];
                 }, $shopItem['subway']) : [],
             ];
