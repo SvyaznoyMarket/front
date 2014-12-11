@@ -69,10 +69,14 @@ class Product {
         $products = [];
 
         foreach ($queries as $query) {
-            foreach ($query->getResult() as $item) {
-                $parser($item);
+            try {
+                foreach ($query->getResult() as $item) {
+                    $parser($item);
 
-                $products[(string)$item['id']] = new Model\Product($item);
+                    $products[(string)$item['id']] = new Model\Product($item);
+                }
+            } catch (\Exception $e) {
+                trigger_error($e, E_USER_ERROR);
             }
         }
 

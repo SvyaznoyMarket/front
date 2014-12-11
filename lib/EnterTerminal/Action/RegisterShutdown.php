@@ -39,7 +39,7 @@ class RegisterShutdown {
 
             if ($error) {
                 //$response->statusCode = Http\Response::STATUS_INTERNAL_SERVER_ERROR;
-                //$response->data['error'] = ['code' => 500, 'message' => $error->getMessage()];
+                //$response->data['error'] = ['code' => 406, 'message' => $error->getMessage()];
                 $this->getLogger()->push(['type' => 'error', 'error' => $error, 'tag' => ['critical']]);
             }
 
