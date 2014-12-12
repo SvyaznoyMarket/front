@@ -9,7 +9,7 @@ return function(EnterTerminal\Config $config) {
     ini_set('session.use_only_cookies', false);
     ini_set('session.use_trans_sid', true);
 
-    $config->applicationName = 'terminal';
+    $config->applicationName = 'app-terminal';
 
     $config->hostname = 't.enter.ru';
 

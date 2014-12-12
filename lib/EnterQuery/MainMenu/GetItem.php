@@ -15,12 +15,20 @@ class GetItem extends Query {
 
     /**
      * @param string|null $shopUi
+     * @param array|null $tags
      */
-    public function __construct($shopUi = null) {
+    public function __construct($shopUi = null, array $tags = null) {
         $this->url = new Url();
         $this->url->path = 'seo/main-menu';
         if ($shopUi) {
             $this->url->query['shop_ui'] = $shopUi;
+        }
+        if ((null === $tags) && $this->getConfig()->applicationName) {
+            $tags = [$this->getConfig()->applicationName];
+        }
+
+        if ((bool)$tags) {
+            $this->url->query['tags'] = array_filter($tags, function($tag) { return is_string($tag); });
         }
 
         $this->init();

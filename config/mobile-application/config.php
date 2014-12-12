@@ -9,7 +9,7 @@ return function(EnterMobileApplication\Config $config) {
     ini_set('session.use_only_cookies', false);
     ini_set('session.use_trans_sid', true);
 
-    $config->applicationName = 'mobile-app';
+    $config->applicationName = 'app-mobile';
 
     $config->hostname = 'mapi.enter.ru';
 
