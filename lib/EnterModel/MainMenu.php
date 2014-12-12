@@ -72,11 +72,11 @@ namespace EnterModel\MainMenu {
             if (isset($data['class'])) $this->class = (string)$data['class'];
             if (isset($data['classHover'])) $this->classHover = (string)$data['classHover'];
             if (isset($data['medias']) && is_array($data['medias'])) {
-                foreach ($data['medias'] as $i => $mediaItem) {
+                foreach ($data['medias'] as $mediaItem) {
                     $media = new Model\Media($mediaItem);
                     if (isset($media->tags[0]) && !(bool)array_intersect($applicationTags, $media->tags)) continue;
 
-                    $this->media[$i] = $media;
+                    $this->media[] = $media;
                 }
             }
             if (empty($this->char) && (bool)$this->media) {
