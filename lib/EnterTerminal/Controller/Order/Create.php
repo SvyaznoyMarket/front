@@ -182,6 +182,8 @@ namespace EnterTerminal\Controller\Order {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical', 'order', 'credit']]);
             }
 
+            if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
+
             // response
             return new Http\JsonResponse($response, (bool)$response->errors ? Http\Response::STATUS_BAD_REQUEST : Http\Response::STATUS_OK);
         }
