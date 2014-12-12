@@ -51,7 +51,7 @@ return function(\EnterAggregator\Config $config) {
     $config->coreService->debug = false;
 
     $config->scmsService->url = 'http://scms.enter.ru/';
-    $config->scmsService->timeout = 1.2;
+    $config->scmsService->timeout = 5;
 
     $config->crmService->url = 'http://crm.enter.ru/';
     $config->crmService->timeout = 5;
@@ -60,23 +60,23 @@ return function(\EnterAggregator\Config $config) {
 
 
     $config->cmsService->url = 'http://cms.enter.ru/';
-    $config->cmsService->timeout = 0.8;
+    $config->cmsService->timeout = 5;
 
     $config->adminService->url = 'http://admin.enter.ru/';
     $config->adminService->timeout = 2;
 
     $config->reviewService->url = 'http://scms.enter.ru/reviews/';
-    $config->reviewService->timeout = 1.2;
+    $config->reviewService->timeout = 2;
 
     $config->contentService->url = 'http://content.enter.ru/';
-    $config->contentService->timeout = 1.8;
+    $config->contentService->timeout = 2;
 
     $config->infoService->url = 'http://info.ent3.ru/';
-    $config->infoService->timeout = 5;
+    $config->infoService->timeout = 8;
 
     $config->retailRocketService->account = '519c7f3c0d422d0fe0ee9775';
     $config->retailRocketService->url = 'http://api.retailrocket.ru/api/';
-    $config->retailRocketService->timeout = 0.5;
+    $config->retailRocketService->timeout = 1;
 
     $config->googleTagManager->enabled = true;
     $config->googleTagManager->id = 'GTM-P65PBR';
