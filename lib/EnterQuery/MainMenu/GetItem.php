@@ -24,7 +24,7 @@ class GetItem extends Query {
             $this->url->query['shop_ui'] = $shopUi;
         }
         if ((null === $tags) && $this->getConfig()->applicationName) {
-            $tags = [$this->getConfig()->applicationName];
+            //$tags = [$this->getConfig()->applicationName];
         }
 
         if ((bool)$tags) {
