@@ -5,7 +5,7 @@ return function(\EnterMobile\Config $config) {
     $handler = include __DIR__ . '/../config.php';
     $handler($config);
 
-    $config->applicationName = 'site-mobile';
+    $config->applicationTags = ['site-mobile', 'mobile-site'];
 
     $config->hostname = 'enter.ru';
     $config->fullHost = 'www.enter.ru';

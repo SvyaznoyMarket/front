@@ -23,8 +23,8 @@ class GetItem extends Query {
         if ($shopUi) {
             $this->url->query['shop_ui'] = $shopUi;
         }
-        if ((null === $tags) && $this->getConfig()->applicationName) {
-            //$tags = [$this->getConfig()->applicationName];
+        if ((null === $tags) && isset($this->getConfig()->applicationTags[0])) {
+            $tags = $this->getConfig()->applicationTags;
         }
 
         if ((bool)$tags) {

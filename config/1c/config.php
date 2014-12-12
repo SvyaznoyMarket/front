@@ -9,7 +9,7 @@ return function(Enter1C\Config $config) {
     ini_set('session.use_only_cookies', false);
     ini_set('session.use_trans_sid', true);
 
-    $config->applicationName = '1capi';
+    $config->applicationTags = ['1capi'];
 
     $config->hostname = '1c.enter.ru';
 

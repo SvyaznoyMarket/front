@@ -15,13 +15,13 @@ class Sorting {
      * @return Model\Product\Sorting[]
      */
     public function getObjectList() {
-        $applicationName = $this->getConfig()->applicationName;
+        $applicationTags = (array)$this->getConfig()->applicationTags;
 
         $sortings = [];
 
         $data = Util\Json::toArray(file_get_contents($this->getConfig()->dir . '/data/cms/v2/catalog/sorting.json'));
         foreach ($data as $item) {
-            if (isset($item['tags'][0]) && !in_array($applicationName, $item['tags'])) continue;
+            if (isset($item['tags'][0]) && !(bool)array_intersect($applicationTags, $item['tags'])) continue;
 
             $item = array_merge([
                 'token'     => null,

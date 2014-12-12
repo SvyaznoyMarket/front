@@ -60,7 +60,7 @@ namespace EnterModel\MainMenu {
          * @param array $data
          */
         public function __construct(array $data = []) {
-            $applicationName = $this->getConfig()->applicationName;
+            $applicationTags = $this->getConfig()->applicationTags;
 
             if (isset($data['type'])) $this->type = (string)$data['type'];
             if (isset($data['id'])) $this->id = (string)$data['id'];
@@ -74,7 +74,7 @@ namespace EnterModel\MainMenu {
             if (isset($data['medias']) && is_array($data['medias'])) {
                 foreach ($data['medias'] as $i => $mediaItem) {
                     $media = new Model\Media($mediaItem);
-                    if (!in_array($applicationName, $media->tags)) continue;
+                    if (!(bool)array_intersect($applicationTags, $media->tags)) continue;
 
                     $this->media[$i] = $media;
                 }
