@@ -61,6 +61,7 @@ namespace EnterTerminal\Controller {
             $response = new Response();
 
             $response->sum = $cart->sum;
+            $response->quantity = count($cart);
 
             foreach (array_reverse($cart->product) as $cartProduct) {
                 $product = !empty($productsById[$cartProduct->id])
@@ -87,6 +88,8 @@ namespace EnterTerminal\Controller\Cart {
     class Response {
         /** @var float */
         public $sum;
+        /** @var int */
+        public $quantity;
         /** @var Model\Product[] */
         public $products = [];
     }
