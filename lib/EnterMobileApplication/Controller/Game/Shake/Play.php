@@ -74,19 +74,22 @@ namespace EnterMobileApplication\Controller\Game\Shake {
 
             $curl->execute(null, 1); // 1 попытка
 
-            $playResult = (array)$playQuery->getResult() + [
-                'state'  => null,
-                'result' => [],
-            ];
-
-            $response->state = $playResult['state'] ? (string)$playResult['state'] : null;
-            if (('win' === $response->state) && !empty($playResult['result']['prizes']['coupon'])) {
-                $response->prize = [
-                    'type'         => $playResult['result']['prizes']['type'],
-                    'couponNumber' => $playResult['result']['prizes']['coupon'],
+            try {
+                $playResult = (array)$playQuery->getResult() + [
+                    'state'  => null,
+                    'result' => [],
                 ];
-            }
 
+                $response->state = $playResult['state'] ? (string)$playResult['state'] : null;
+                if (('win' === $response->state) && !empty($playResult['result']['prizes']['coupon'])) {
+                    $response->prize = [
+                        'type'         => $playResult['result']['prizes']['type'],
+                        'couponNumber' => $playResult['result']['prizes']['coupon'],
+                    ];
+                }
+            } catch (\EnterQuery\CoreQueryException $e) {
+                $response->errors[] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
+            }
 
             // response
             return new Http\JsonResponse($response);
@@ -104,5 +107,7 @@ namespace EnterMobileApplication\Controller\Game\Shake\Play {
         public $state;
         /** @var array|null */
         public $prize;
+        /** @var string[] */
+        public $errors = [];
     }
 }
