@@ -343,38 +343,6 @@
                     {{! о доставке }}
                     <div class="prodBuy_r">
                         {{#product.shopStateBlock}}
-                            {{#hasOnlyOne}}
-                            <div class="prodBuy_b clearfix">
-                                <div class="prodBuy_b_t">Есть в магазине</div>
-
-                                {{#states}}
-                                <div class="prodBuy_b_r">
-                                    {{#cartButton}}
-                                        {{>partial/cart/button}}
-                                    {{/cartButton}}
-                                </div>
-
-                                <div class="prodBuy_b_l">
-                                    {{#subway}}
-                                        <div class="shopLst_mtr">
-                                            <span {{#subway.color}} style="background: {{subway.color}};"{{/subway.color}} class="shopLst_bul"></span> 
-                                            м.{{name}},
-                                        </div>
-                                    {{/subway}}
-
-                                    <a class="shopLst_addr" href="{{url}}" target="_blank">{{address}}&nbsp;</a>
-                                </div>
-
-                                <div class="prodBuy_b_f">
-                                    {{#cartButton}}
-                                        {{>partial/cart/button}}
-                                    {{/cartButton}}
-                                </div>
-                                {{/states}}
-                            </div>
-                            {{/hasOnlyOne}}
-
-                            {{^hasOnlyOne}}
                             <div class="prodBuy_b ta-c">
                                 <div class="prodBuy_b_t">{{shownCount}}</div>
 
@@ -382,7 +350,6 @@
                                     <strong class="delivrB_btn btn1 js-popup-middle-link">Забрать сегодня</strong>
                                 </div>
                             </div>
-                            {{/hasOnlyOne}}
                         {{/product.shopStateBlock}}
 
                         {{#product.deliveryBlock}}

@@ -61,9 +61,9 @@ class ProductReserveButton {
 
         $button->id = self::getId($product->id);
         $button->widgetId = self::getWidgetId($product->id);
-        $button->text = 'Резерв';
+        $button->text = 'Купить';
         $button->isDisabled = false;
-        $button->isInShopOnly = true;
+        $button->isInShopOnly = false; // SITE-4895
         $button->isInCart = false;
         $button->isQuick = true;
 

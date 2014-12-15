@@ -135,7 +135,7 @@ class ProductCard {
                 $page->content->product->shopStateBlock = false;
             } else {
                 $page->content->product->shopStateBlock->shownCount = 'Есть в ' . $stateCount . ' ' . $translateHelper->numberChoice($stateCount, ['магазине', 'магазинах', 'магазинах']);
-                $page->content->product->shopStateBlock->hasOnlyOne = 1 === $stateCount;
+                //$page->content->product->shopStateBlock->hasOnlyOne = 1 === $stateCount;
             }
         }
 
