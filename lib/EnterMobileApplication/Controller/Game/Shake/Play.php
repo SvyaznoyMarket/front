@@ -88,7 +88,20 @@ namespace EnterMobileApplication\Controller\Game\Shake {
                     ];
                 }
             } catch (\EnterQuery\CoreQueryException $e) {
-                $response->errors[] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
+                switch ($e->getCode()) {
+                    case 301:
+                        throw new \Exception('Необходимо авторизоваться', Http\Response::STATUS_UNAUTHORIZED);
+                        break;
+                    case 311: case 312:
+                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Выши попытки израсходованы. Приходите завтра.'];
+                        break;
+                    case 612:
+                        $response->errors[] = ['code' => $e->getCode(), 'message' => 'Вам нужно быть участником программы Enter Prize'];
+                        break;
+                    default:
+                        $response->errors[] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
+                        break;
+                }
             }
 
             // response
