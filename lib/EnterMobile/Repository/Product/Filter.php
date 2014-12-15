@@ -24,7 +24,9 @@ class Filter extends BaseRepository {
                 || (0 === strpos($key, 'tag-'))
                 || (in_array($key, ['shop', 'category', 'slice']))
             ) {
-                if (is_scalar($value)) {
+                if (null === $value) continue;
+
+                if (!is_array($value)) {
                     $value = [$value];
                 }
 
