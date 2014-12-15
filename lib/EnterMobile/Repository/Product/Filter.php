@@ -20,22 +20,25 @@ class Filter extends BaseRepository {
 
         foreach ($request->query as $key => $value) {
             if (
-                is_scalar($value)
-                && (
-                    (0 === strpos($key, 'f-'))
-                    || (0 === strpos($key, 'tag-'))
-                    || (in_array($key, ['shop', 'category', 'slice']))
-                )
+                (0 === strpos($key, 'f-'))
+                || (0 === strpos($key, 'tag-'))
+                || (in_array($key, ['shop', 'category', 'slice']))
             ) {
-                $filter = new Model\Product\RequestFilter();
-                $filter->name = $key;
-                $filter->value = $value;
+                if (is_scalar($value)) {
+                    $value = [$value];
+                }
 
-                $keyParts = array_pad(explode('-', $key), 3, null);
-                $filter->token = $keyParts[1] ?: $keyParts[0];
-                $filter->optionToken = $keyParts[2];
+                foreach ($value as $iValue) {
+                    $filter = new Model\Product\RequestFilter();
+                    $filter->name = $key;
+                    $filter->value = $iValue;
 
-                $filters[] = $filter;
+                    $keyParts = array_pad(explode('-', $key), 3, null);
+                    $filter->token = $keyParts[1] ?: $keyParts[0];
+                    $filter->optionToken = $keyParts[2];
+
+                    $filters[] = $filter;
+                }
             }
         }
 
