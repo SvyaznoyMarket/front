@@ -49,13 +49,29 @@ namespace EnterModel\Coupon {
             if (!empty($data['min_order_sum'])) $this->minOrderSum = (string)$data['min_order_sum'];
 
             $this->productSegment = new Series\Segment();
-            if (array_key_exists('segment', $data)) $this->productSegment->name = (string)$data['segment'];
+            if (array_key_exists('segment', $data)) $this->productSegment->name = $this->clearValue($data['segment']);
             if (array_key_exists('segment_url', $data)) $this->productSegment->url = (string)$data['segment_url'];
             if (array_key_exists('segment_image_url', $data)) $this->productSegment->imageUrl = (string)$data['segment_image_url'];
-            if (array_key_exists('segment_description', $data)) $this->productSegment->description = str_replace('\\r\\n', '', strip_tags((string)$data['segment_description']));
+            if (array_key_exists('segment_description', $data)) $this->productSegment->description = $this->clearValue($data['segment_description']);
 
             if (array_key_exists('is_for_member', $data)) $this->isForMember = (bool)$data['is_for_member'];
             if (array_key_exists('is_for_not_member', $data)) $this->isForNotMember = (bool)$data['is_for_not_member'];
+        }
+
+        /**
+         * @param $value
+         * @return string
+         */
+        private function clearValue($value) {
+            return preg_replace(
+                '#^\\r\\n|\\r\\n$#',
+                '',
+                html_entity_decode(
+                    strip_tags(
+                        (string)$value
+                    )
+                )
+            );
         }
     }
 }
