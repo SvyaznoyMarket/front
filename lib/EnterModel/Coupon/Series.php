@@ -33,7 +33,11 @@ namespace EnterModel\Coupon {
             if (array_key_exists('uid', $data)) $this->id = (string)$data['uid'];
             if (!empty($data['value'])) {
                 $isCurrency = @$data['is_currency'];
-                $this->discount = (string)$data['value'] . ($isCurrency ? '' : '%');
+                if (!$isCurrency) {
+                    $this->discount = (string)((float)$data['value']) . '%';
+                } else {
+                    $this->discount = (string)$data['value'];
+                }
             }
             try {
                 if (!empty($data['start_date'])) $this->startAt = date('c', strtotime((string)$data['start_date']));
