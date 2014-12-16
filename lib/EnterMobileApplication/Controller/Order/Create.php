@@ -95,6 +95,9 @@ namespace EnterMobileApplication\Controller\Order {
             $response->cart = $cart;
             $response->errors = $controllerResponse->errors;
 
+            // debug
+            if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
+
             // response
             return new Http\JsonResponse($response, (bool)$response->errors ? Http\Response::STATUS_BAD_REQUEST : Http\Response::STATUS_OK);
         }
