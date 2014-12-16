@@ -80,38 +80,43 @@ class SetProductList {
             if (!$product) continue;
 
             // кнопка купить
-            $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
-            $page->widgets['.' . $widget->widgetId] = $widget;
+            if ($widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct)) {
+                $page->widgets['.' . $widget->widgetId] = $widget;
+            }
 
             // кнопка купить для родительского товара
-            if ($cartProduct->parentId) {
-                $widget = (new Repository\Partial\Cart\ProductButton())->getObject(
+            if ($cartProduct->parentId && $widget = (new Repository\Partial\Cart\ProductButton())->getObject(
                     new \EnterModel\Product(['id' => $cartProduct->parentId]),
                     new \EnterModel\Cart\Product(['id' => $cartProduct->parentId, 'quantity' => 1])
-                );
+            )) {
                 $page->widgets['.' . $widget->widgetId] = $widget;
             }
 
             // спиннер
-            $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject(
+            if ($widget = (new Repository\Partial\Cart\ProductSpinner())->getObject(
                 $product,
                 $cartProduct,
                 false
-            );
-            $page->widgets['.' . $widget->widgetId] = $widget;
+            )) {
+                $page->widgets['.' . $widget->widgetId] = $widget;
+            }
 
             // пользователь, корзина
-            $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);
-            $page->widgets['.' . $widget->widgetId] = $widget;
+            if ($widget = (new Repository\Partial\UserBlock())->getObject($cart, $user)) {
+                $page->widgets['.' . $widget->widgetId] = $widget;
+            }
 
-            $widget = (new Repository\Partial\Cart\ProductSum())->getObject($cartProduct);
-            $page->widgets['.' . $widget->widgetId] = $widget;
+            if ($widget = (new Repository\Partial\Cart\ProductSum())->getObject($cartProduct)) {
+                $page->widgets['.' . $widget->widgetId] = $widget;
+            }
 
-            $widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById));
-            $page->widgets['.' . $widget->widgetId] = $widget;
+            if ($widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById))) {
+                $page->widgets['.' . $widget->widgetId] = $widget;
+            }
 
-            $widget = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, $cartProduct);
-            $page->widgets['.' . $widget->widgetId] = $widget;
+            if ($widget = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, $cartProduct)) {
+                $page->widgets['.' . $widget->widgetId] = $widget;
+            }
         }
 
         // response
