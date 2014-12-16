@@ -99,27 +99,29 @@ class Get {
             $pageCartProduct->quantity = $cartProduct->quantity;
             $page->cart->products[] = $pageCartProduct;
 
-            $widget = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, $cartProduct);
-            $page->widgets['.' . $widget->widgetId] = $widget;
-
-            $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
-            $page->widgets['.' . $widget->widgetId] = $widget;
-
-            // кнопка купить для родительского товара
-            if ($cartProduct->parentId) {
-                $widget = (new Repository\Partial\Cart\ProductButton())->getObject(
-                    new \EnterModel\Product(['id' => $cartProduct->parentId]),
-                    new \EnterModel\Cart\Product(['id' => $cartProduct->parentId, 'quantity' => 1])
-                );
+            if ($widget = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, $cartProduct)) {
                 $page->widgets['.' . $widget->widgetId] = $widget;
             }
 
-            $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject(
+            if ($widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct)) {
+                $page->widgets['.' . $widget->widgetId] = $widget;
+            }
+
+            // кнопка купить для родительского товара
+            if ($cartProduct->parentId && $widget = (new Repository\Partial\Cart\ProductButton())->getObject(
+                    new \EnterModel\Product(['id' => $cartProduct->parentId]),
+                    new \EnterModel\Cart\Product(['id' => $cartProduct->parentId, 'quantity' => 1])
+            )) {
+                $page->widgets['.' . $widget->widgetId] = $widget;
+            }
+
+            if ($widget = (new Repository\Partial\Cart\ProductSpinner())->getObject(
                 $product,
                 $cartProduct,
                 false
-            );
-            $page->widgets['.' . $widget->widgetId] = $widget;
+            )) {
+                $page->widgets['.' . $widget->widgetId] = $widget;
+            }
         }
 
         $response = new Http\JsonResponse([
