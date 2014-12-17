@@ -40,34 +40,37 @@ namespace EnterMobileApplication\Controller\Game\Shake {
 
             $curl->execute();
 
-            $sessionData = (array)$session->get($sessionKey) + ['state' => null, 'ui' => null];
+            $sessionData = array_merge(['state' => null, 'user' => null], (array)$session->get($sessionKey));
             $isInitialized = !empty($sessionData['state']);
 
             // получение пользователя
             if ($token && ($user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery))) {
                 $response->token = $token;
-                $sessionData['ui'] = $user->ui;
+                $sessionData['user']['ui'] = $user->ui;
                 //throw new \Exception('Пользователь не авторизован', Http\Response::STATUS_UNAUTHORIZED);
             }
 
             // если не инициализирован
             if (!$isInitialized) {
-                $initQuery = new Query\Game\Bandit\InitByUserUi($sessionData['ui']);
+                $initQuery = new Query\Game\Bandit\InitByUserUi($sessionData['user']['ui']);
                 $initQuery->setTimeout(10 * $config->crmService->timeout);
 
                 $curl->prepare($initQuery);
 
                 $curl->execute(null, 1); // 1 попытка
 
-                $initResult = (array)$initQuery->getResult() + ['state' => null];
+                $initResult = (array)$initQuery->getResult() + ['state' => null, 'user' => null];
                 if ('init' != $initResult['state']) {
                     throw new \Exception('Не удалось начать игру');
+                }
+                if (empty($initResult['user']['ui'])) {
+                    throw new \Exception('Не получен идентификатор пользователя');
                 }
 
                 $session->set($sessionKey, $initResult);
             }
 
-            $playQuery = new Query\Game\Bandit\PlayByUserUi($sessionData['ui']);
+            $playQuery = new Query\Game\Bandit\PlayByUserUi($sessionData['user']['ui']);
             $playQuery->setTimeout(5 * $config->crmService->timeout);
 
             $curl->prepare($playQuery);
