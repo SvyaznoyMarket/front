@@ -35,24 +35,26 @@ namespace EnterMobileApplication\Controller\Game\Shake {
             }
 
             // запрос пользователя
-            $userItemQuery = new Query\User\GetItemByToken($token);
-            $curl->prepare($userItemQuery);
-
-            $curl->execute();
+            $userItemQuery = $token ? new Query\User\GetItemByToken($token) : null;
+            if ($userItemQuery) {
+                $curl->prepare($userItemQuery)->execute();
+            }
 
             $sessionData = array_merge(['state' => null, 'user' => null], (array)$session->get($sessionKey));
             $isInitialized = !empty($sessionData['state']);
 
             // получение пользователя
-            if ($token && ($user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery))) {
+            $user = null;
+            if ($userItemQuery) {
+                $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
                 $response->token = $token;
-                $sessionData['user']['ui'] = $user->ui;
+                $sessionData['user']['uid'] = $user->ui;
                 //throw new \Exception('Пользователь не авторизован', Http\Response::STATUS_UNAUTHORIZED);
             }
 
             // если не инициализирован
             if (!$isInitialized) {
-                $initQuery = new Query\Game\Bandit\InitByUserUi($sessionData['user']['ui']);
+                $initQuery = new Query\Game\Bandit\InitByUserUi($sessionData['user']['uid']);
                 $initQuery->setTimeout(10 * $config->crmService->timeout);
 
                 $curl->prepare($initQuery);
@@ -63,14 +65,16 @@ namespace EnterMobileApplication\Controller\Game\Shake {
                 if ('init' != $initResult['state']) {
                     throw new \Exception('Не удалось начать игру');
                 }
-                if (empty($initResult['user']['ui'])) {
+                if (empty($initResult['user']['uid'])) {
                     throw new \Exception('Не получен идентификатор пользователя');
                 }
 
-                $session->set($sessionKey, $initResult);
+                $sessionData = $initResult;
+
+                $session->set($sessionKey, $sessionData);
             }
 
-            $playQuery = new Query\Game\Bandit\PlayByUserUi($sessionData['user']['ui']);
+            $playQuery = new Query\Game\Bandit\PlayByUserUi($sessionData['user']['uid']);
             $playQuery->setTimeout(5 * $config->crmService->timeout);
 
             $curl->prepare($playQuery);
