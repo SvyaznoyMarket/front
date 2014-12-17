@@ -31,7 +31,7 @@ namespace EnterMobileApplication\Controller\Game\Shake {
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
             if (!$token) {
-                throw new \Exception('Не указан token');
+                //throw new \Exception('Не указан token');
             }
 
             // запрос пользователя
@@ -44,7 +44,7 @@ namespace EnterMobileApplication\Controller\Game\Shake {
             $isInitialized = !empty($sessionData['state']);
 
             // получение пользователя
-            if ($user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery)) {
+            if ($token && ($user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery))) {
                 $response->token = $token;
                 $sessionData['ui'] = $user->ui;
                 //throw new \Exception('Пользователь не авторизован', Http\Response::STATUS_UNAUTHORIZED);
