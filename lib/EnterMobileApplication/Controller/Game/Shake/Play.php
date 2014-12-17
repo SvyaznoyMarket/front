@@ -40,19 +40,19 @@ namespace EnterMobileApplication\Controller\Game\Shake {
 
             $curl->execute();
 
-            // получение пользователя
-            $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
-            if (!$user) {
-                throw new \Exception('Пользователь не авторизован', Http\Response::STATUS_UNAUTHORIZED); // FIXME
-            }
-            $response->token = $token;
-
-            $sessionData = (array)$session->get($sessionKey) + ['state' => null];
+            $sessionData = (array)$session->get($sessionKey) + ['state' => null, 'ui' => null];
             $isInitialized = !empty($sessionData['state']);
+
+            // получение пользователя
+            if ($user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery)) {
+                $response->token = $token;
+                $sessionData['ui'] = $user->ui;
+                //throw new \Exception('Пользователь не авторизован', Http\Response::STATUS_UNAUTHORIZED);
+            }
 
             // если не инициализирован
             if (!$isInitialized) {
-                $initQuery = new Query\Game\Bandit\InitByUserUi($user->ui);
+                $initQuery = new Query\Game\Bandit\InitByUserUi($sessionData['ui']);
                 $initQuery->setTimeout(10 * $config->crmService->timeout);
 
                 $curl->prepare($initQuery);
@@ -67,7 +67,7 @@ namespace EnterMobileApplication\Controller\Game\Shake {
                 $session->set($sessionKey, $initResult);
             }
 
-            $playQuery = new Query\Game\Bandit\PlayByUserUi($user->ui);
+            $playQuery = new Query\Game\Bandit\PlayByUserUi($sessionData['ui']);
             $playQuery->setTimeout(5 * $config->crmService->timeout);
 
             $curl->prepare($playQuery);
@@ -82,9 +82,30 @@ namespace EnterMobileApplication\Controller\Game\Shake {
 
                 $response->state = $playResult['state'] ? (string)$playResult['state'] : null;
                 if (('win' === $response->state) && !empty($playResult['result']['prizes']['coupon'])) {
+                    $couponSeriesId = $playResult['result']['prizes']['coupon'];
+
+                    $seriesListQuery = new Query\Coupon\Series\GetListByUi($couponSeriesId);
+                    $seriesListQuery->setTimeout(3 * $config->coreService->timeout);
+                    $curl->prepare($seriesListQuery);
+
+                    $seriesLimitListQuery = new Query\Coupon\Series\GetLimitList();
+                    $seriesLimitListQuery->setTimeout(3 * $config->coreService->timeout);
+                    $curl->prepare($seriesLimitListQuery);
+
+                    $curl->execute();
+
+                    $couponSeriesList = (new \EnterRepository\Coupon\Series())->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery);
+
+                    if (isset($couponSeriesList[0])) {
+                        $couponSeries = $couponSeriesList[0];
+                    } else {
+                        $couponSeries = new Model\Coupon\Series();
+                        $couponSeries->id = $couponSeriesId;
+                    }
+
                     $response->prize = [
                         'type'         => $playResult['result']['prizes']['type'],
-                        'couponNumber' => $playResult['result']['prizes']['coupon'],
+                        'couponSeries' => $couponSeries,
                     ];
                 }
             } catch (\EnterQuery\CoreQueryException $e) {
