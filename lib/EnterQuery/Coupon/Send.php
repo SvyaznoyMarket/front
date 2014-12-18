@@ -7,7 +7,7 @@ use EnterQuery\CoreQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
-class Create extends Query {
+class Send extends Query {
     use CoreQueryTrait;
 
     /** @var array|null */

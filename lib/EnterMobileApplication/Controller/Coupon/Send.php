@@ -8,9 +8,9 @@ namespace EnterMobileApplication\Controller\Coupon {
     use EnterAggregator\LoggerTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
-    use EnterMobileApplication\Controller\Coupon\Create\Response;
+    use EnterMobileApplication\Controller\Coupon\Send\Response;
 
-    class Create {
+    class Send {
         use ConfigTrait, LoggerTrait, CurlTrait;
 
         /**
@@ -64,13 +64,13 @@ namespace EnterMobileApplication\Controller\Coupon {
                 throw new \Exception('Не указаны телефон или email', 400);
             }
 
-            $createQuery = new Query\Coupon\Create($couponSeries, $user, $promoToken);
-            $createQuery->setTimeout(10 * $config->coreService->timeout);
+            $sendQuery = new Query\Coupon\Send($couponSeries, $user, $promoToken);
+            $sendQuery->setTimeout(10 * $config->coreService->timeout);
 
-            $curl->query($createQuery);
+            $curl->query($sendQuery);
 
             try {
-                $result = $createQuery->getResult();
+                $result = $sendQuery->getResult();
             } catch (\EnterQuery\CoreQueryException $e) {
                 $detail = $e->getDetail();
 
@@ -106,7 +106,7 @@ namespace EnterMobileApplication\Controller\Coupon {
     }
 }
 
-namespace EnterMobileApplication\Controller\Coupon\Create {
+namespace EnterMobileApplication\Controller\Coupon\Send {
     use EnterModel as Model;
 
     class Response {
