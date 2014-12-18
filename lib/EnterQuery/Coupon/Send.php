@@ -13,13 +13,20 @@ class Send extends Query {
     /** @var array|null */
     protected $result;
 
-    public function __construct(Model\Coupon\Series $couponSeries, Model\User $user, $promoToken = null) {
+    /**
+     * @param string $transactionId
+     * @param Model\Coupon\Series $couponSeries
+     * @param Model\User $user
+     * @param null $promoToken
+     */
+    public function __construct($transactionId, Model\Coupon\Series $couponSeries, Model\User $user, $promoToken = null) {
         $this->url = new Url();
         $this->url->path = 'v2/coupon/send';
 
         $this->url->query = [];
         $this->data = [
-            'guid' => $couponSeries->id,
+            'guid'        => $couponSeries->id,
+            'request_uid' => $transactionId,
         ];
         if ($promoToken) {
             $this->data['promo'] = $promoToken;
@@ -29,9 +36,6 @@ class Send extends Query {
         }
         if ($user->phone) {
             $this->data['mobile'] = $user->phone;
-        }
-        if ($user->ui) {
-            $this->data['request_uid'] = $user->ui;
         }
 
         $this->init();

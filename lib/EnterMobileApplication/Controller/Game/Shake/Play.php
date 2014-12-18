@@ -6,13 +6,12 @@ namespace EnterMobileApplication\Controller\Game\Shake {
     use EnterMobileApplication\ConfigTrait;
     use EnterAggregator\CurlTrait;
     use EnterAggregator\LoggerTrait;
-    use EnterAggregator\SessionTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterMobileApplication\Controller\Game\Shake\Play\Response;
 
     class Play {
-        use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
+        use ConfigTrait, LoggerTrait, CurlTrait;
 
         /**
          * @param Http\Request $request
@@ -21,10 +20,7 @@ namespace EnterMobileApplication\Controller\Game\Shake {
          */
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
-            $session = $this->getSession();
             $curl = $this->getCurl();
-
-            $sessionKey = 'game/shake';
 
             // ответ
             $response = new Response();
@@ -34,14 +30,13 @@ namespace EnterMobileApplication\Controller\Game\Shake {
                 throw new \Exception('Не указан token');
             }
 
+            $response->transactionId = is_scalar($request->query['transactionId']) ? (string)$request->query['transactionId'] : null;
+
             // запрос пользователя
             $userItemQuery = new Query\User\GetItemByToken($token);
             $curl->prepare($userItemQuery);
 
             $curl->execute();
-
-            $sessionData = array_merge(['state' => null, 'user' => null], (array)$session->get($sessionKey));
-            $isInitialized = !empty($sessionData['state']);
 
             // получение пользователя
             $user = null;
@@ -50,14 +45,13 @@ namespace EnterMobileApplication\Controller\Game\Shake {
             } catch (\Exception $e) {}
             if ($user) {
                 $response->token = $token;
-                $sessionData['user']['uid'] = $user->ui;
             } else {
-                $sessionData['user']['uid'] = $token;
+                $user = new Model\User();
             }
 
             // если не инициализирован
-            if (!$isInitialized) {
-                $initQuery = new Query\Game\Bandit\InitByUserUi($sessionData['user']['uid']);
+            if (!$response->transactionId) {
+                $initQuery = new Query\Game\Bandit\InitByUserUi($user->ui);
                 $initQuery->setTimeout(10 * $config->crmService->timeout);
 
                 $curl->prepare($initQuery);
@@ -71,13 +65,10 @@ namespace EnterMobileApplication\Controller\Game\Shake {
                 if (empty($initResult['user']['uid'])) {
                     throw new \Exception('Не получен идентификатор пользователя');
                 }
-
-                $sessionData = $initResult;
-
-                $session->set($sessionKey, $sessionData);
+                $response->transactionId = $initResult['user']['uid'];
             }
 
-            $playQuery = new Query\Game\Bandit\PlayByUserUi($sessionData['user']['uid']);
+            $playQuery = new Query\Game\Bandit\PlayByUserUi($response->transactionId);
             $playQuery->setTimeout(5 * $config->crmService->timeout);
 
             $curl->prepare($playQuery);
@@ -145,6 +136,8 @@ namespace EnterMobileApplication\Controller\Game\Shake\Play {
     use EnterModel as Model;
 
     class Response {
+        /** @var string */
+        public $transactionId;
         /** @var string|null */
         public $token;
         /** @var string */

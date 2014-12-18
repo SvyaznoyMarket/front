@@ -27,7 +27,12 @@ namespace EnterMobileApplication\Controller\Coupon {
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
             if (!$token) {
-                throw new \Exception('Не указан token');
+                throw new \Exception('Не указан token', 400);
+            }
+
+            $response->transactionId = is_scalar($request->query['transactionId']) ? (string)$request->query['transactionId'] : null;
+            if (!$response->transactionId) {
+                throw new \Exception('Не указан transactionId', 400);
             }
 
             $couponSeriesId = is_scalar($request->query['couponSeriesId']) ? (string)$request->query['couponSeriesId'] : null;
@@ -56,11 +61,9 @@ namespace EnterMobileApplication\Controller\Coupon {
                 $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
             } catch (\Exception $e) {}
 
-            if ($user) {
-                $response->token = $token;
-            } else {
+            $response->token = $token;
+            if (!$user) {
                 $user = new Model\User();
-                $user->ui = $token;
                 $user->email = $email;
                 $user->phone = $phone;
             }
@@ -69,7 +72,7 @@ namespace EnterMobileApplication\Controller\Coupon {
                 throw new \Exception('Не указаны телефон или email', 400);
             }
 
-            $sendQuery = new Query\Coupon\Send($couponSeries, $user, $promoToken);
+            $sendQuery = new Query\Coupon\Send($response->transactionId, $couponSeries, $user, $promoToken);
             $sendQuery->setTimeout(10 * $config->coreService->timeout);
 
             $curl->query($sendQuery);
@@ -115,6 +118,8 @@ namespace EnterMobileApplication\Controller\Coupon\Send {
     use EnterModel as Model;
 
     class Response {
+        /** @var string */
+        public $transactionId;
         /** @var string|null */
         public $token;
          /** @var array[] */

@@ -18,9 +18,10 @@ class InitByUserUi extends Query {
     public function __construct($userUi) {
         $this->url = new Url();
         $this->url->path = 'game/bandit/init';
-        $this->url->query = [
-            'uid' => $userUi,
-        ];
+
+        if ($userUi) {
+            $this->url->query['uid'] = $userUi;
+        }
 
         $this->init();
     }
