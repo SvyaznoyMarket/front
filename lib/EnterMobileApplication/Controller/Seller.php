@@ -19,6 +19,9 @@ class Seller {
         $curl = $this->getCurl();
 
         $sellerUi = is_string($request->query['ui']) ? $request->query['ui'] : null;
+        if (!$sellerUi) {
+            throw new \Exception('Не передан sellerUi', Http\Response::STATUS_BAD_REQUEST);
+        }
 
         $response = [
             'seller' => null,

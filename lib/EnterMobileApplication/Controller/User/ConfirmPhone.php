@@ -27,12 +27,12 @@ namespace EnterMobileApplication\Controller\User {
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
             if (!$token) {
-                throw new \Exception('Не указан token');
+                throw new \Exception('Не указан token', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $phone = is_scalar($request->data['phone']) ? (string)$request->data['phone'] : null;
             if (!$phone) {
-                throw new \Exception('Не указан phone');
+                throw new \Exception('Не указан phone', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $code = is_scalar($request->data['code']) ? (string)$request->data['code'] : null;

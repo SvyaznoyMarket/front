@@ -27,13 +27,13 @@ class Category {
         // ид региона
         $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
         if (!$regionId) {
-            throw new \Exception('Не указан параметр regionId');
+            throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
         }
 
         // ид категории
         $categoryId = trim((string)$request->query['categoryId']);
         if (!$categoryId) {
-            throw new \Exception('Не указан параметр categoryId');
+            throw new \Exception('Не указан параметр categoryId', Http\Response::STATUS_BAD_REQUEST);
         }
 
         // номер страницы
@@ -42,10 +42,10 @@ class Category {
         // количество товаров на страницу
         $limit = (int)$request->query['limit'];
         if ($limit < 1) {
-            throw new \Exception('limit не должен быть меньше 1');
+            throw new \Exception('limit не должен быть меньше 1', Http\Response::STATUS_BAD_REQUEST);
         }
         if ($limit > 40) {
-            throw new \Exception('limit не должен быть больше 40');
+            throw new \Exception('limit не должен быть больше 40', Http\Response::STATUS_BAD_REQUEST);
         }
 
         // сортировка

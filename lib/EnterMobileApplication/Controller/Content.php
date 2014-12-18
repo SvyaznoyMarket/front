@@ -26,7 +26,7 @@ namespace EnterMobileApplication\Controller {
             // ид региона
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
             if (!$regionId) {
-                throw new \Exception('Не указан параметр regionId');
+                throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // запрос региона
@@ -40,7 +40,7 @@ namespace EnterMobileApplication\Controller {
 
             $contentToken = $request->query['contentId'];
             if (!$contentToken) {
-                throw new \Exception('Не передан contentToken');
+                throw new \Exception('Не передан contentToken', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $contentItemQuery = new Query\Content\GetItemByToken($contentToken);

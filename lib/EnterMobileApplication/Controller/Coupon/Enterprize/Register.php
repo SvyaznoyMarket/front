@@ -28,12 +28,12 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
             if (!$token) {
-                throw new \Exception('Не указан token');
+                throw new \Exception('Не указан token', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $couponSeriesId = is_scalar($request->query['couponSeriesId']) ? (string)$request->query['couponSeriesId'] : null;
             if (!$couponSeriesId) {
-                throw new \Exception('Не указан couponSeriesId');
+                throw new \Exception('Не указан couponSeriesId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $couponSeries = new Model\Coupon\Series();
@@ -41,15 +41,15 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
 
             $phone = $request->data['phone'];
             if (!$phone) {
-                throw new \Exception('Не указан phone');
+                throw new \Exception('Не указан phone', Http\Response::STATUS_BAD_REQUEST);
             }
             $email = $request->data['email'];
             if (!$email) {
-                throw new \Exception('Не указан email');
+                throw new \Exception('Не указан email', Http\Response::STATUS_BAD_REQUEST);
             }
             $firstName = $request->data['firstName'];
             if (!$firstName) {
-                throw new \Exception('Не указан firstName');
+                throw new \Exception('Не указан firstName', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // запрос пользователя

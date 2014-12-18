@@ -32,15 +32,15 @@ namespace EnterMobileApplication\Controller\User {
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
             if (!$token) {
-                throw new \Exception('Не указан token');
+                throw new \Exception('Не указан token', Http\Response::STATUS_BAD_REQUEST);
             }
             $password = is_scalar($request->data['password']) ? trim((string)$request->data['password']) : null;
             if (!$password) {
-                throw new \Exception('Не передан password');
+                throw new \Exception('Не передан password', Http\Response::STATUS_BAD_REQUEST);
             }
             $newPassword = is_scalar($request->data['newPassword']) ? trim((string)$request->data['newPassword']) : null;
             if (!$newPassword) {
-                throw new \Exception('Не передан newPassword');
+                throw new \Exception('Не передан newPassword', Http\Response::STATUS_BAD_REQUEST);
             }
 
             try {

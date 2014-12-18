@@ -36,7 +36,7 @@ namespace EnterMobileApplication\Controller\Order {
             // ид региона
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request);
             if (!$regionId) {
-                throw new \Exception('Не передан параметр regionId');
+                throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // запрос региона

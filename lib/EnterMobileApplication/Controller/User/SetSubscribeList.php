@@ -30,13 +30,13 @@ namespace EnterMobileApplication\Controller\User {
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
             if (!$token) {
-                throw new \Exception('Не указан token');
+                throw new \Exception('Не указан token', Http\Response::STATUS_BAD_REQUEST);
             }
             $response->token = $token;
 
             $subscribeData = (array)$request->data['subscribes'];
             if (!(bool)$subscribeData) {
-                throw new \Exception('Не указано свойство subscribes', 400);
+                throw new \Exception('Не указано свойство subscribes', Http\Response::STATUS_BAD_REQUEST);
             }
 
             /** @var Model\Subscribe[] $subscribes */
@@ -46,25 +46,25 @@ namespace EnterMobileApplication\Controller\User {
 
                 // channelId
                 if (!array_key_exists('channelId', $subscribeItem)) {
-                    throw new \Exception(sprintf('Не указано свойство channelId у %s-й подписки', $i + 1), 400);
+                    throw new \Exception(sprintf('Не указано свойство channelId у %s-й подписки', $i + 1), Http\Response::STATUS_BAD_REQUEST);
                 }
                 $subscribe->channelId = (string)$subscribeItem['channelId'];
 
                 // type
                 if (!array_key_exists('type', $subscribeItem)) {
-                    throw new \Exception(sprintf('Не указано свойство type у %s-й подписки', $i + 1), 400);
+                    throw new \Exception(sprintf('Не указано свойство type у %s-й подписки', $i + 1), Http\Response::STATUS_BAD_REQUEST);
                 }
                 $subscribe->type = (string)$subscribeItem['type'];
 
                 // email
                 if (('email' == $subscribe->type) && !array_key_exists('email', $subscribeItem)) {
-                    throw new \Exception(sprintf('Не указано свойство email у %s-й подписки', $i + 1), 400);
+                    throw new \Exception(sprintf('Не указано свойство email у %s-й подписки', $i + 1), Http\Response::STATUS_BAD_REQUEST);
                 }
                 $subscribe->email = (string)$subscribeItem['email'];
 
                 // isConfirmed
                 if (!array_key_exists('isConfirmed', $subscribeItem)) {
-                    throw new \Exception(sprintf('Не указано свойство isConfirmed у %s-й подписки', $i + 1), 400);
+                    throw new \Exception(sprintf('Не указано свойство isConfirmed у %s-й подписки', $i + 1), Http\Response::STATUS_BAD_REQUEST);
                 }
                 $subscribe->isConfirmed = (bool)$subscribeItem['isConfirmed'];
 

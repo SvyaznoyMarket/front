@@ -27,7 +27,7 @@ namespace EnterMobileApplication\Controller {
             // ид региона
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
             if (!$regionId) {
-                throw new \Exception('Не указан параметр regionId');
+                throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // запрос региона

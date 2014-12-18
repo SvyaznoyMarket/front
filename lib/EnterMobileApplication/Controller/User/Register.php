@@ -33,7 +33,7 @@ namespace EnterMobileApplication\Controller\User {
             // ид региона
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
             if (!$regionId) {
-                throw new \Exception('Не указан параметр regionId');
+                throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $willBeSubscribed = (bool)$request->data['subscribe'];
@@ -51,7 +51,7 @@ namespace EnterMobileApplication\Controller\User {
             $phone = is_scalar($request->data['phone']) ? trim((string)$request->data['phone']) : null;
             $email = is_scalar($request->data['email']) ? trim((string)$request->data['email']) : null;
             if (!$email && !$phone) {
-                throw new \Exception('Не передан email или phone');
+                throw new \Exception('Не передан email или phone', Http\Response::STATUS_BAD_REQUEST);
             }
 
             try {

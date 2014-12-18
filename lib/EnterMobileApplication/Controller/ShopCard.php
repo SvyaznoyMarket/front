@@ -23,7 +23,7 @@ namespace EnterMobileApplication\Controller {
 
             $shopId = trim((string)$request->query['shopId']);
             if (!$shopId) {
-                throw new \Exception('Не указан параметр shopId');
+                throw new \Exception('Не указан параметр shopId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // запрос магазина

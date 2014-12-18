@@ -27,17 +27,17 @@ namespace EnterMobileApplication\Controller\User {
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
             if (!$token) {
-                throw new \Exception('Не указан token');
+                throw new \Exception('Не указан token', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $email = is_scalar($request->data['email']) ? (string)$request->data['email'] : null;
             if (!$email) {
-                throw new \Exception('Не указан email');
+                throw new \Exception('Не указан email', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $promoToken = is_scalar($request->data['promoToken']) ? (string)$request->data['promoToken'] : null;
             if (!$promoToken) {
-                throw new \Exception('Не указан promoToken');
+                throw new \Exception('Не указан promoToken', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $code = is_scalar($request->data['code']) ? (string)$request->data['code'] : null;

@@ -24,7 +24,7 @@ class SetProductList {
         // товара для корзины
         $cartProducts = $cartRepository->getProductObjectListByHttpRequest($request);
         if (!$cartProducts) {
-            throw new \Exception('Товары не получены');
+            throw new \Exception('Товары не получены', Http\Response::STATUS_BAD_REQUEST);
         }
 
         // добавление товара в корзину

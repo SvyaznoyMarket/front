@@ -23,17 +23,17 @@ namespace EnterMobileApplication\Controller\Product {
 
             $productId = trim((string)$request->query['productId']);
             if (!$productId) {
-                throw new \Exception('Не указан параметр productId');
+                throw new \Exception('Не указан параметр productId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $page = (int)$request->query['page'];
             if (!$page) {
-                throw new \Exception('Не указан параметр page');
+                throw new \Exception('Не указан параметр page', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $limit = (int)$request->query['limit'];
             if (!$limit) {
-                throw new \Exception('Не указан параметр limit');
+                throw new \Exception('Не указан параметр limit', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // ответ

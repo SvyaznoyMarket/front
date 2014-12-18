@@ -29,7 +29,7 @@ namespace EnterMobileApplication\Controller\User {
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
             if (!$token) {
-                throw new \Exception('Не указан token');
+                throw new \Exception('Не указан token', Http\Response::STATUS_BAD_REQUEST);
             }
             $response->token = $token;
 

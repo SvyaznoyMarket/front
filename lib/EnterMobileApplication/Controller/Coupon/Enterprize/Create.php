@@ -27,12 +27,12 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
             if (!$token) {
-                throw new \Exception('Не указан token');
+                throw new \Exception('Не указан token', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $couponSeriesId = is_scalar($request->query['couponSeriesId']) ? (string)$request->query['couponSeriesId'] : null;
             if (!$token) {
-                throw new \Exception('Не указан couponSeriesId');
+                throw new \Exception('Не указан couponSeriesId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $couponSeries = new Model\Coupon\Series();

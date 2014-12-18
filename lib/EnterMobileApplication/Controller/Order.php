@@ -27,6 +27,9 @@ namespace EnterMobileApplication\Controller {
 
             // токен для получения заказа
             $accessToken = is_string($request->query['accessToken']) ? $request->query['accessToken'] : null;
+            if (!$accessToken) {
+                throw new \Exception('Не передан accessToken', Http\Response::STATUS_BAD_REQUEST);
+            }
 
             // запрос заказа
             $itemQuery = new Query\Order\GetItemByAccessToken($accessToken);

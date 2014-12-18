@@ -19,13 +19,13 @@ namespace EnterMobileApplication\Controller {
             // ид региона
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
             if (!$regionId) {
-                throw new \Exception('Не указан параметр regionId');
+                throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // ид товара
             $productId = trim((string)$request->query['productId']);
             if (!$productId) {
-                throw new \Exception('Не указан параметр productId');
+                throw new \Exception('Не указан параметр productId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $context = new Context();

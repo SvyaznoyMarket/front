@@ -30,7 +30,7 @@ namespace EnterMobileApplication\Controller\Region {
             $longitude = is_scalar($request->query['longitude']) ? trim((string)$request->query['longitude']) : null;
 
             if (!$ip && (!$latitude || !$longitude)) {
-                throw new \Exception('Не передан ip или параметры latitude и longitude');
+                throw new \Exception('Не передан ip или параметры latitude и longitude', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $limit = (int)$request->query['limit'] ?: 10;

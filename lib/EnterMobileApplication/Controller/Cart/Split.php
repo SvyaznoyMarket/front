@@ -38,7 +38,7 @@ namespace EnterMobileApplication\Controller\Cart {
 
             // данные о корзине
             if (empty($request->data['cart']['products'][0]['id'])) {
-                throw new \Exception('Не передан параметр cart.products[0].id');
+                throw new \Exception('Не передан параметр cart.products[0].id', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // предыдущее разбиение
@@ -55,7 +55,7 @@ namespace EnterMobileApplication\Controller\Cart {
             // ид региона
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
             if (!$regionId) {
-                throw new \Exception('Не указан параметр regionId');
+                throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // запрос региона

@@ -26,7 +26,7 @@ class ProductList {
         // ид региона
         $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
         if (!$regionId) {
-            throw new \Exception('Не указан параметр regionId');
+            throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
         }
 
         // список айдишников
@@ -37,7 +37,7 @@ class ProductList {
             }
         }
         if (!(bool)$productIds) {
-            throw new \Exception('Не передан productIds');
+            throw new \Exception('Не передан productIds', Http\Response::STATUS_BAD_REQUEST);
         }
 
         // запрос региона

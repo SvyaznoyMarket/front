@@ -27,23 +27,23 @@ namespace EnterMobileApplication\Controller\Coupon {
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
             if (!$token) {
-                throw new \Exception('Не указан token', 400);
+                throw new \Exception('Не указан token', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $response->transactionId = is_scalar($request->query['transactionId']) ? (string)$request->query['transactionId'] : null;
             if (!$response->transactionId) {
-                throw new \Exception('Не указан transactionId', 400);
+                throw new \Exception('Не указан transactionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $couponSeriesId = is_scalar($request->query['couponSeriesId']) ? (string)$request->query['couponSeriesId'] : null;
             if (!$couponSeriesId) {
-                throw new \Exception('Не указан couponSeriesId', 400);
+                throw new \Exception('Не указан couponSeriesId', Http\Response::STATUS_BAD_REQUEST);
             }
             $phone = $request->data['phone'];
             $email = $request->data['email'];
             $promoToken = is_scalar($request->data['promoToken']) ? (string)$request->data['promoToken'] : null;
             if (!$promoToken) {
-                throw new \Exception('Не указан promoToken', 400);
+                throw new \Exception('Не указан promoToken', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $couponSeries = new Model\Coupon\Series();
@@ -69,7 +69,7 @@ namespace EnterMobileApplication\Controller\Coupon {
             }
 
             if (!$user->email && !$user->phone) {
-                throw new \Exception('Не указаны телефон или email', 400);
+                throw new \Exception('Не указаны телефон или email', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $sendQuery = new Query\Coupon\Send($response->transactionId, $couponSeries, $user, $promoToken);

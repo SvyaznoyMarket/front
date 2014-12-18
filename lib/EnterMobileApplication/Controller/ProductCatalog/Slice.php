@@ -27,13 +27,13 @@ class Slice {
         // ид региона
         $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
         if (!$regionId) {
-            throw new \Exception('Не указан параметр regionId');
+            throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
         }
 
         // токен среза
         $sliceToken = trim((string)$request->query['sliceId']);
         if (!$sliceToken) {
-            throw new \Exception('Не указан параметр sliceId');
+            throw new \Exception('Не указан параметр sliceId', Http\Response::STATUS_BAD_REQUEST);
         }
 
         // ид категории
@@ -44,10 +44,10 @@ class Slice {
 
         $limit = (int)$request->query['limit'];
         if ($limit < 1) {
-            throw new \Exception('limit не должен быть меньше 1');
+            throw new \Exception('limit не должен быть меньше 1', Http\Response::STATUS_BAD_REQUEST);
         }
         if ($limit > 40) {
-            throw new \Exception('limit не должен быть больше 40');
+            throw new \Exception('limit не должен быть больше 40', Http\Response::STATUS_BAD_REQUEST);
         }
 
         // сортировка

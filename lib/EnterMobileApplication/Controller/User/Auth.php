@@ -32,12 +32,12 @@ namespace EnterMobileApplication\Controller\User {
 
             $username = is_scalar($request->data['username']) ? trim((string)$request->data['username']) : null;
             if (!$username) {
-                throw new \Exception('Не передан username');
+                throw new \Exception('Не передан username', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $password = is_scalar($request->data['password']) ? trim((string)$request->data['password']) : null;
             if (!$password) {
-                throw new \Exception('Не передан password');
+                throw new \Exception('Не передан password', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $isEmailAuth = strpos($username, '@');

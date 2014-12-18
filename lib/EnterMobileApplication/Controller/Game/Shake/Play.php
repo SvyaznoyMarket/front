@@ -27,7 +27,7 @@ namespace EnterMobileApplication\Controller\Game\Shake {
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
             if (!$token) {
-                throw new \Exception('Не указан token');
+                throw new \Exception('Не указан token', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $response->transactionId = is_scalar($request->query['transactionId']) ? (string)$request->query['transactionId'] : null;
