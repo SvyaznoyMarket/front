@@ -27,7 +27,7 @@ namespace EnterMobileApplication\Controller\Coupon {
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
             if (!$token) {
-                //throw new \Exception('Не указан token');
+                throw new \Exception('Не указан token');
             }
 
             $couponSeriesId = is_scalar($request->query['couponSeriesId']) ? (string)$request->query['couponSeriesId'] : null;
@@ -56,6 +56,7 @@ namespace EnterMobileApplication\Controller\Coupon {
                 $response->token = $token;
             } else {
                 $user = new Model\User();
+                $user->ui = $token;
                 $user->email = $email;
                 $user->phone = $phone;
             }
