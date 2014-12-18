@@ -31,7 +31,7 @@ class Send extends Query {
             $this->data['mobile'] = $user->phone;
         }
         if ($user->ui) {
-            $this->data['user_uid'] = $user->ui;
+            $this->data['request_uid'] = $user->ui;
         }
 
         $this->init();
