@@ -84,7 +84,8 @@ namespace EnterMobileApplication\Controller\Coupon {
 
                 if (600 == $e->getCode()) {
                     foreach ($detail as $fieldName => $errors) {
-                        foreach ((array)$errors as $errorType => $errorMessage) {
+                        $errors = is_array($errors) ? [key($errors) => reset($errors)] : [];
+                        foreach ($errors as $errorType => $errorMessage) {
                             switch ($fieldName) {
                                 case 'name':
                                     $response->errors[] = ['code' => $e->getCode(), 'message' => ('isEmpty' === $errorType) ? 'Не заполнено имя' : 'Некорректно введено имя', 'field' => 'name'];
