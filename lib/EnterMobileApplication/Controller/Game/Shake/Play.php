@@ -35,21 +35,24 @@ namespace EnterMobileApplication\Controller\Game\Shake {
             }
 
             // запрос пользователя
-            $userItemQuery = $token ? new Query\User\GetItemByToken($token) : null;
-            if ($userItemQuery) {
-                $curl->prepare($userItemQuery)->execute();
-            }
+            $userItemQuery = new Query\User\GetItemByToken($token);
+            $curl->prepare($userItemQuery);
 
-            $sessionData = array_merge(['state' => null, 'user' => ['uid' => $token]], (array)$session->get($sessionKey));
+            $curl->execute();
+
+            $sessionData = array_merge(['state' => null, 'user' => null], (array)$session->get($sessionKey));
             $isInitialized = !empty($sessionData['state']);
 
             // получение пользователя
             $user = null;
-            if ($userItemQuery) {
+            try {
                 $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
+            } catch (\Exception $e) {}
+            if ($user) {
                 $response->token = $token;
                 $sessionData['user']['uid'] = $user->ui;
-                //throw new \Exception('Пользователь не авторизован', Http\Response::STATUS_UNAUTHORIZED);
+            } else {
+                $sessionData['user']['uid'] = $token;
             }
 
             // если не инициализирован
