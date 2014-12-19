@@ -33,12 +33,12 @@ namespace EnterTerminal\Controller\Cart\Split {
             // ид региона
             $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
             if (!$regionId) {
-                throw new \Exception('Не передан параметр regionId');
+                throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $change = (array)$request->data['change'];
             if (!$change) {
-                throw new \Exception('Пустой параметр change');
+                throw new \Exception('Пустой параметр change', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $splitData = (array)$session->get($config->order->splitSessionKey);

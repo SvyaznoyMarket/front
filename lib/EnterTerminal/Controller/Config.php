@@ -4,6 +4,7 @@ namespace EnterTerminal\Controller {
 
     use Enter\Http;
     use EnterAggregator\CurlTrait;
+    use EnterTerminal\Controller;
     use EnterQuery as Query;
     use EnterTerminal\Controller\Config\Response;
 
@@ -23,7 +24,7 @@ namespace EnterTerminal\Controller {
             } else if (is_string($request->query['ui'])) {
                 $infoQuery = new Query\Terminal\GetInfoByUi($request->query['ui']);
             } else {
-                throw new \Exception('Необходимо задать параметр ip или ui');
+                throw new \Exception('Необходимо задать параметр ip или ui', Http\Response::STATUS_BAD_REQUEST);
             }
             $curl->prepare($infoQuery);
 
@@ -41,6 +42,7 @@ namespace EnterTerminal\Controller {
 
             $shopId = $response->info['shop_id'];
 
+            $shopQuery = null;
             if ($shopId != null) {
                 $shopQuery = new Query\Shop\GetItemById($shopId);
                 $curl->prepare($shopQuery);
@@ -54,7 +56,7 @@ namespace EnterTerminal\Controller {
             if ($shopId != null) {
                 $shop = (new \EnterTerminal\Repository\Shop())->getObjectByQuery($shopQuery);
                 if (!$shop) {
-                    throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
+                    return (new Controller\Error\NotFound())->execute($request, sprintf('Магазин #%s не найден', $shopId));
                 }
 
                 $response->shop = $shop;

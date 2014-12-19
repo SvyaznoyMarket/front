@@ -26,12 +26,12 @@ namespace EnterTerminal\Controller {
             // ид региона
             $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
             if (!$regionId) {
-                throw new \Exception('Не передан параметр regionId');
+                throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $contentToken = $request->query['contentToken'];
             if (!$contentToken) {
-                throw new \Exception('Не передан contentToken');
+                throw new \Exception('Не передан contentToken', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $contentItemQuery = new Query\Content\GetItemByToken($contentToken);

@@ -19,7 +19,7 @@ namespace EnterTerminal\Controller {
 
             $ui = $request->query['ui'];
             if (!$ui) {
-                throw new \Exception('Не передан параметр ui');
+                throw new \Exception('Не передан параметр ui', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $statusQuery = new Query\Terminal\SetStatusByUi($ui, (array)$request->data->all());

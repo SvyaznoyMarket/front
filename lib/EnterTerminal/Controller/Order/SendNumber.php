@@ -21,7 +21,7 @@ class SendNumber {
 
         $orderNumber = is_scalar($request->query['orderNumber']) ? $request->query['orderNumber'] : null;
         if (!$orderNumber) {
-            throw new \Exception('Параметр orderNumber должен быть строкой');
+            throw new \Exception('Параметр orderNumber должен быть строкой', Http\Response::STATUS_BAD_REQUEST);
         }
 
         $notificationType = is_scalar($request->query['notificationType']) ? $request->query['notificationType'] : null;

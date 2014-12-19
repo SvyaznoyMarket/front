@@ -5,6 +5,7 @@ namespace EnterTerminal\Controller {
     use Enter\Http;
     use EnterTerminal\ConfigTrait;
     use EnterAggregator\CurlTrait;
+    use EnterTerminal\Controller;
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterTerminal\Controller\ShopCard\Response;
@@ -23,7 +24,7 @@ namespace EnterTerminal\Controller {
 
             $shopId = trim((string)$request->query['shopId']);
             if (!$shopId) {
-                throw new \Exception('Не указан параметр shopId');
+                throw new \Exception('Не указан параметр shopId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // запрос магазина
@@ -34,10 +35,11 @@ namespace EnterTerminal\Controller {
 
             // магазин
             $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
-
-            if ($shop) {
-                $shop->description = strip_tags($shop->description);
+            if (!$shop) {
+                return (new Controller\Error\NotFound())->execute($request, sprintf('Магазин #%s не найден', $shopId));
             }
+
+            $shop->description = strip_tags($shop->description);
 
             // ответ
             $response = new Response();

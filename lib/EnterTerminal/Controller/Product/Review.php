@@ -23,7 +23,7 @@ namespace EnterTerminal\Controller\Product {
 
             $productId = trim((string)$request->query['productId']);
             if (!$productId) {
-                throw new \Exception('Не указан параметр productId');
+                throw new \Exception('Не указан параметр productId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $response = new Response();

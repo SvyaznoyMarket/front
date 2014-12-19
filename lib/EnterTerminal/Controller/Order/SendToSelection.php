@@ -20,11 +20,11 @@ class SendToSelection {
         $curl = $this->getCurl();
 
         if (!is_scalar($request->query['orderNumber'])) {
-            throw new \Exception('Параметр orderNumber должен быть строкой');
+            throw new \Exception('Параметр orderNumber должен быть строкой', Http\Response::STATUS_BAD_REQUEST);
         }
 
         if (!is_scalar($request->query['shopId'])) {
-            throw new \Exception('Параметр shopId должен быть строкой');
+            throw new \Exception('Параметр shopId должен быть строкой', Http\Response::STATUS_BAD_REQUEST);
         }
 
         $contentItemQuery = new Query\Order\SendToSelection($request->query['orderNumber'], $request->query['shopId']);

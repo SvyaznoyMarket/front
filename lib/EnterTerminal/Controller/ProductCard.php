@@ -24,13 +24,13 @@ namespace EnterTerminal\Controller {
             // ид региона
             $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
             if (!$regionId) {
-                throw new \Exception('Не передан параметр regionId');
+                throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // ид товара
             $productId = trim((string)$request->query['productId']);
             if (!$productId) {
-                throw new \Exception('Не указан параметр productId');
+                throw new \Exception('Не указан параметр productId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $context = new Context();

@@ -27,13 +27,13 @@ namespace EnterTerminal\Controller\ProductCatalog {
             // ид региона
             $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
             if (!$regionId) {
-                throw new \Exception('Не передан параметр regionId');
+                throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // ид среза товаров
             $sliceToken = trim((string)$request->query['sliceId']);
             if (!$sliceToken) {
-                throw new \Exception('Не указан параметр sliceId');
+                throw new \Exception('Не указан параметр sliceId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // ид категории

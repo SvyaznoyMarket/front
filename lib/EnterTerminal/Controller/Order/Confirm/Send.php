@@ -20,7 +20,7 @@ class Send {
         $curl = $this->getCurl();
 
         if (!is_scalar($request->query['phone'])) {
-            throw new \Exception('Параметр phone должен быть строкой');
+            throw new \Exception('Параметр phone должен быть строкой', Http\Response::STATUS_BAD_REQUEST);
         }
 
         $contentItemQuery = new Query\Order\Confirm\Send($request->query['phone']);

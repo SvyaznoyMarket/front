@@ -27,7 +27,7 @@ class DeleteProduct {
         // ид региона
         $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
         if (!$regionId) {
-            throw new \Exception('Не передан параметр regionId');
+            throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
         }
 
         // сравнение из сессии
@@ -36,7 +36,7 @@ class DeleteProduct {
         // товара для сравнения
         $compareProduct = $compareRepository->getProductObjectByHttpRequest($request);
         if (!$compareProduct) {
-            throw new \Exception('Товар не получен');
+            throw new \Exception('Товар не получен', Http\Response::STATUS_BAD_REQUEST);
         }
 
         // добавление товара к сравнению

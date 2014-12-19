@@ -27,13 +27,13 @@ namespace EnterTerminal\Controller\ProductCatalog {
             // ид региона
             $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
             if (!$regionId) {
-                throw new \Exception('Не передан параметр regionId');
+                throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // ид категории
             $categoryId = trim((string)$request->query['categoryId']);
             if (!$categoryId) {
-                throw new \Exception('Не указан параметр categoryId');
+                throw new \Exception('Не указан параметр categoryId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // номер страницы

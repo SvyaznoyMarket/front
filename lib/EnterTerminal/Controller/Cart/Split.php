@@ -33,11 +33,11 @@ namespace EnterTerminal\Controller\Cart {
             // ид региона
             $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
             if (!$regionId) {
-                throw new \Exception('Не передан параметр regionId');
+                throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             if (empty($request->data['cart']['products'][0]['id'])) {
-                throw new \Exception('Не передан параметр cart.products[0].id');
+                throw new \Exception('Не передан параметр cart.products[0].id', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $cart = new Model\Cart();

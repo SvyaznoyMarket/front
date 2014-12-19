@@ -28,13 +28,13 @@ namespace EnterTerminal\Controller {
             // ид региона
             $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
             if (!$regionId) {
-                throw new \Exception('Не передан параметр regionId');
+                throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // поисковая строка
             $searchPhrase = (new \EnterRepository\Search())->getPhraseByHttpRequest($request, 'phrase');
             if (!$searchPhrase) {
-                throw new \Exception('Не передана поисковая фраза');
+                throw new \Exception('Не передана поисковая фраза', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // номер страницы

@@ -28,7 +28,7 @@ namespace EnterTerminal\Controller {
             // ид региона
             $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
             if (!$regionId) {
-                throw new \Exception('Не передан параметр regionId');
+                throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // запрос региона
@@ -40,7 +40,7 @@ namespace EnterTerminal\Controller {
             // регион
             $region = (new Repository\Region())->getObjectByQuery($regionItemQuery);
             if (!$region) {
-                throw new \Exception(sprintf('Регион #%s не найден', $regionId));
+                return (new Controller\Error\NotFound())->execute($request, sprintf('Регион #%s не найден', $regionId));
             }
 
             // запрос баннеров

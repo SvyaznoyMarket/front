@@ -24,6 +24,10 @@ namespace EnterTerminal\Controller\Region {
             $response = new Response();
 
             $keyword = trim((string)$request->query['q']);
+            if (!$keyword) {
+                throw new \Exception('Не передан параметр q', Http\Response::STATUS_BAD_REQUEST);
+            }
+
             $limit = (int)$request->query['limit'] ?: 10;
             if ($limit > 100) {
                 $limit = 100;

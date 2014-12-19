@@ -18,11 +18,11 @@ class Send {
         $curl = $this->getCurl();
 
         if (!is_string($request->query['phone'])) {
-            throw new \Exception('Параметр phone должен быть строкой');
+            throw new \Exception('Параметр phone должен быть строкой', Http\Response::STATUS_BAD_REQUEST);
         }
 
         if (!is_string($request->query['message'])) {
-            throw new \Exception('Параметр message должен быть строкой');
+            throw new \Exception('Параметр message должен быть строкой', Http\Response::STATUS_BAD_REQUEST);
         }
 
         $query = new Query\Sms\Send(
