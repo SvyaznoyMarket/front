@@ -27,15 +27,11 @@ class Send extends Query {
         $this->data = [
             'guid'        => $couponSeries->id,
             'request_uid' => $transactionId,
+            'email'       => $user->email,
+            'mobile'      => $user->phone,
         ];
         if ($promoToken) {
             $this->data['promo'] = $promoToken;
-        }
-        if ($user->email) {
-            $this->data['email'] = $user->email;
-        }
-        if ($user->phone) {
-            $this->data['mobile'] = $user->phone;
         }
 
         $this->init();
