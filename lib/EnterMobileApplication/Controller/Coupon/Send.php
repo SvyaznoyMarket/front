@@ -50,15 +50,15 @@ namespace EnterMobileApplication\Controller\Coupon {
             $couponSeries->id = $couponSeriesId;
 
             // запрос пользователя
-            $userItemQuery = new Query\User\GetItemByToken($token);
-            $curl->prepare($userItemQuery);
-
-            $curl->execute();
+            $userItemQuery = (0 !== strpos($token, 'anonymous-')) ? new Query\User\GetItemByToken($token) : null;
+            if ($userItemQuery) {
+                $curl->prepare($userItemQuery)->execute();
+            }
 
             // получение пользователя
             $user = null;
             try {
-                $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
+                $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
             } catch (\Exception $e) {}
 
             $response->token = $token;
