@@ -32,10 +32,11 @@ namespace EnterMobileApplication\Controller {
             // запрос пользователя
             $userItemQuery = null;
             if ($token) {
-                $userItemQuery = new Query\User\GetItemByToken($token);
-                $curl->prepare($userItemQuery);
+                $userItemQuery = (0 !== strpos($token, 'anonymous-')) ? new Query\User\GetItemByToken($token) : null;
 
-                $curl->execute();
+                if ($userItemQuery) {
+                    $curl->prepare($userItemQuery)->execute();
+                }
             }
 
             // получение пользователя
@@ -48,23 +49,23 @@ namespace EnterMobileApplication\Controller {
             $couponListQuery = null;
             if ($token) {
                 $couponListQuery = new Query\Coupon\GetListByUserToken($token);
-                $couponListQuery->setTimeout(3 * $config->coreService->timeout);
+                $couponListQuery->setTimeout(5 * $config->coreService->timeout);
                 $curl->prepare($couponListQuery);
             }
 
             // список лимитов серий купонов
             $seriesLimitListQuery = new Query\Coupon\Series\GetLimitList();
-            $seriesLimitListQuery->setTimeout(3 * $config->coreService->timeout);
+            $seriesLimitListQuery->setTimeout(5 * $config->coreService->timeout);
             $curl->prepare($seriesLimitListQuery);
 
             // список серий купонов
             if ($couponSeriesId) {
                 $seriesListQuery = new Query\Coupon\Series\GetListByUi($couponSeriesId);
-                $seriesListQuery->setTimeout(3 * $config->coreService->timeout);
+                $seriesListQuery->setTimeout(5 * $config->coreService->timeout);
                 $curl->prepare($seriesListQuery);
             } else {
                 $seriesListQuery = new Query\Coupon\Series\GetList(null);
-                $seriesListQuery->setTimeout(3 * $config->coreService->timeout);
+                $seriesListQuery->setTimeout(5 * $config->coreService->timeout);
                 $curl->prepare($seriesListQuery);
             }
 
@@ -72,11 +73,17 @@ namespace EnterMobileApplication\Controller {
 
             $usedSeriesIds = []; // ид серий купонов
             if ($couponListQuery) {
-                foreach ($couponListQuery->getResult() as $couponItem) {
-                    if (empty($couponItem['number'])) continue;
+                try {
+                    foreach ($couponListQuery->getResult() as $couponItem) {
+                        if (empty($couponItem['number'])) continue;
 
-                    $coupon = new Model\Coupon($couponItem); // TODO: вынести в репозиторий
-                    $usedSeriesIds[] = $coupon->seriesId;
+                        $coupon = new Model\Coupon($couponItem); // TODO: вынести в репозиторий
+                        $usedSeriesIds[] = $coupon->seriesId;
+                    }
+                } catch (\Exception $e) {
+                    if (402 == $e->getCode()) {
+                        throw new \Exception('Пользователь не авторизован', 401);
+                    }
                 }
             }
 
