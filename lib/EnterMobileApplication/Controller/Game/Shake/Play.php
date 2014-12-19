@@ -126,6 +126,9 @@ namespace EnterMobileApplication\Controller\Game\Shake {
                 }
             }
 
+            // debug
+            if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
+
             // response
             return new Http\JsonResponse($response);
         }
