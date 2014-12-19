@@ -25,7 +25,13 @@ class HandleError {
             ];
 
             switch ($level) {
-                case E_USER_ERROR: case E_NOTICE:
+                case E_USER_ERROR:
+                case E_WARNING:
+                case E_NOTICE:
+                case E_DEPRECATED:
+                case E_USER_DEPRECATED:
+                case E_USER_WARNING:
+                case E_USER_NOTICE:
                     $error = new \ErrorException($message, 0, $level, $file, $line);
 
                     return true;
