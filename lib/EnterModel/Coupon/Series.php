@@ -36,7 +36,7 @@ namespace EnterModel\Coupon {
                 if (!$isCurrency) {
                     $this->discount = (string)((float)$data['value']) . '%';
                 } else {
-                    $this->discount = (string)$data['value'];
+                    $this->discount = (string)((float)$data['value']);
                 }
             }
             try {
@@ -46,7 +46,7 @@ namespace EnterModel\Coupon {
                 if (!empty($data['end_date'])) $this->endAt = date('c', strtotime((string)$data['end_date']));
             } catch (\Exception $e) {}
             if (!empty($data['background_image_url'])) $this->backgroundImageUrl = (string)$data['background_image_url'];
-            if (!empty($data['min_order_sum'])) $this->minOrderSum = (string)$data['min_order_sum'];
+            if (!empty($data['min_order_sum'])) $this->minOrderSum = (string)((float)$data['min_order_sum']);
 
             $this->productSegment = new Series\Segment();
             if (array_key_exists('segment', $data)) $this->productSegment->name = $this->clearValue($data['segment']);
