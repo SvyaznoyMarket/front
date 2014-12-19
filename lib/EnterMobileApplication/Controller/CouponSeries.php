@@ -74,16 +74,19 @@ namespace EnterMobileApplication\Controller {
             $usedSeriesIds = []; // ид серий купонов
             if ($couponListQuery) {
                 try {
-                    foreach ($couponListQuery->getResult() as $couponItem) {
-                        if (empty($couponItem['number'])) continue;
-
-                        $coupon = new Model\Coupon($couponItem); // TODO: вынести в репозиторий
-                        $usedSeriesIds[] = $coupon->seriesId;
-                    }
+                    $couponListData = $couponListQuery->getResult();
                 } catch (\Exception $e) {
                     if (402 == $e->getCode()) {
                         throw new \Exception('Пользователь не авторизован', 401);
                     }
+                    throw $e;
+                }
+
+                foreach ($couponListData as $couponItem) {
+                    if (empty($couponItem['number'])) continue;
+
+                    $coupon = new Model\Coupon($couponItem); // TODO: вынести в репозиторий
+                    $usedSeriesIds[] = $coupon->seriesId;
                 }
             }
 

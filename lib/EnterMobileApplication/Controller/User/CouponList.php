@@ -61,7 +61,17 @@ namespace EnterMobileApplication\Controller\User {
             $curl->execute();
 
             $usedSeriesIds = []; // ид серий купонов
-            foreach ($couponListQuery->getResult() as $couponItem) {
+
+            try {
+                $couponListData = $couponListQuery->getResult();
+            } catch (\Exception $e) {
+                if (402 == $e->getCode()) {
+                    throw new \Exception('Пользователь не авторизован', 401);
+                }
+                throw $e;
+            }
+
+            foreach ($couponListData as $couponItem) {
                 if (empty($couponItem['number'])) continue;
 
                 $coupon = new Model\Coupon($couponItem);
