@@ -18,7 +18,7 @@ class GetTreeList extends Query {
      * @param int|null $maxLevel
      * @param array $filterData
      */
-    public function __construct($regionId = null, $maxLevel = null, array $filterData = []) {
+    public function __construct($regionId = null, $maxLevel = null, array $filterData = [], $rootId = null) {
         $this->url = new Url();
         $this->url->path = 'v2/category/tree';
         $this->url->query = [
@@ -32,6 +32,9 @@ class GetTreeList extends Query {
             $this->url->query['filter'] = [
                 'filters' => $filterData,
             ];
+        }
+        if ($rootId) {
+            $this->url->query['root_id'] = $rootId;
         }
 
         $this->init();
