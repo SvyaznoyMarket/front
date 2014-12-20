@@ -72,6 +72,14 @@ class Slice {
 
         // фильтры в http-запросе и настройках среза
         $baseRequestFilters = (new \EnterMobile\Repository\Product\Filter())->getRequestObjectListByHttpRequest(new Http\Request($slice->filters)); // FIXME !!!
+        // AG-43: если выбрана категория, то удялять замороженные фильтры-категории
+        if ($categoryId) {
+            foreach ($baseRequestFilters as $i => $baseRequestFilter) {
+                if ('category' == $baseRequestFilter->token) {
+                    unset($baseRequestFilters[$i]);
+                }
+            }
+        }
 
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
 
