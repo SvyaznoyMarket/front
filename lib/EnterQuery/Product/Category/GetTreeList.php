@@ -17,6 +17,7 @@ class GetTreeList extends Query {
      * @param string|null $regionId
      * @param int|null $maxLevel
      * @param array $filterData
+     * @param string|null $rootId
      */
     public function __construct($regionId = null, $maxLevel = null, array $filterData = [], $rootId = null) {
         $this->url = new Url();
@@ -35,6 +36,7 @@ class GetTreeList extends Query {
         }
         if ($rootId) {
             $this->url->query['root_id'] = $rootId;
+            $this->url->query['is_load_parents'] = false;
         }
 
         $this->init();
