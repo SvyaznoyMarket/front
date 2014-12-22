@@ -70,6 +70,14 @@ namespace EnterTerminal\Controller\ProductCatalog {
 
             // фильтры в http-запросе и настройках среза
             $baseRequestFilters = (new \EnterMobile\Repository\Product\Filter())->getRequestObjectListByHttpRequest(new Http\Request($slice->filters)); // FIXME !!!
+            // AG-43: если выбрана категория, то удялять замороженные фильтры-категории
+            if ($categoryId) {
+                foreach ($baseRequestFilters as $i => $baseRequestFilter) {
+                    if ('category' == $baseRequestFilter->token) {
+                        unset($baseRequestFilters[$i]);
+                    }
+                }
+            }
 
             // фильтры в запросе
             $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
@@ -98,18 +106,29 @@ namespace EnterTerminal\Controller\ProductCatalog {
             }
 
             // список категорий
-            $categories = [];
-            if ($controllerResponse->category) {
-                $categories = $controllerResponse->category->children;
-            } else {
-                $categoryListQuery = new Query\Product\Category\GetTreeList($controllerResponse->region->id, null, $filterRepository->dumpRequestObjectList($baseRequestFilters));
-                $curl->prepare($categoryListQuery)->execute();
+            // FIXME !!!
+            $baseRequestFilters = (new \EnterMobile\Repository\Product\Filter())->getRequestObjectListByHttpRequest(new Http\Request($slice->filters)); // FIXME !!!
+            $categoryListQuery = new Query\Product\Category\GetTreeList(
+                $controllerResponse->region->id,
+                null,
+                $filterRepository->dumpRequestObjectList($baseRequestFilters),
+                $controllerResponse->category ? $controllerResponse->category->id : null
+            );
+            $curl->prepare($categoryListQuery)->execute();
 
-                try {
-                    $categories = (new \EnterRepository\Product\Category())->getObjectListByQuery($categoryListQuery);
-                } catch(\Exception $e) {
-                    // TODO
+            /** @var Model\Product\Category[] $categories */
+            $categories = [];
+            try {
+                $categoryListResult = $categoryListQuery->getResult();
+                if (isset($categoryListResult[0]['children'][0])) {
+                    foreach ($categoryListResult[0]['children'] as $categoryItem) {
+                        if (!isset($categoryItem['uid'])) continue;
+
+                        $categories[] = new Model\Product\Category($categoryItem);
+                    }
                 }
+            } catch(\Exception $e) {
+                // TODO
             }
 
             // ответ
