@@ -7,7 +7,7 @@ namespace EnterModel\Coupon {
     class Series {
         /** @var string */
         public $id;
-        /** @var string */
+        /** @var Model\Coupon\Series\Discount|null */
         public $discount;
         /** @var string */
         public $backgroundImageUrl;
@@ -32,13 +32,13 @@ namespace EnterModel\Coupon {
         public function __construct(array $data = []) {
             if (array_key_exists('uid', $data)) $this->id = (string)$data['uid'];
             if (!empty($data['value'])) {
-                $this->discount = new Series\Discount();
+                $this->discount = new Model\Coupon\Series\Discount();
                 $isCurrency = @$data['is_currency'];
                 $this->discount->value = (float)$data['value'];
-                if (!$isCurrency) {
-                    $this->discount->unit = '%';
-                } else {
+                if ($isCurrency) {
                     $this->discount->unit = 'руб';
+                } else {
+                    $this->discount->unit = '%';
                 }
             }
             try {
