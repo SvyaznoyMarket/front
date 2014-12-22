@@ -32,11 +32,13 @@ namespace EnterModel\Coupon {
         public function __construct(array $data = []) {
             if (array_key_exists('uid', $data)) $this->id = (string)$data['uid'];
             if (!empty($data['value'])) {
+                $this->discount = new Series\Discount();
                 $isCurrency = @$data['is_currency'];
+                $this->discount->value = (float)$data['value'];
                 if (!$isCurrency) {
-                    $this->discount = (string)((float)$data['value']) . '%';
+                    $this->discount->unit = '%';
                 } else {
-                    $this->discount = (string)((float)$data['value']);
+                    $this->discount->unit = 'руб';
                 }
             }
             try {
@@ -77,6 +79,13 @@ namespace EnterModel\Coupon {
 }
 
 namespace EnterModel\Coupon\Series {
+    class Discount {
+        /** @var float */
+        public $value;
+        /** @var string */
+        public $unit;
+    }
+
     class Segment {
         /** @var string */
         public $name;
