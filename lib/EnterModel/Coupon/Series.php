@@ -58,6 +58,10 @@ namespace EnterModel\Coupon {
 
             if (array_key_exists('is_for_member', $data)) $this->isForMember = (bool)$data['is_for_member'];
             if (array_key_exists('is_for_not_member', $data)) $this->isForNotMember = (bool)$data['is_for_not_member'];
+
+            // FIXME: fixture
+            $this->productSegment->id = 'zimnie-tovari-2014-new';
+            $this->productSegment->type = 'ProductCatalog/Slice';
         }
 
         /**
@@ -87,6 +91,10 @@ namespace EnterModel\Coupon\Series {
     }
 
     class Segment {
+        /** @var string */
+        public $id;
+        /** @var string */
+        public $type;
         /** @var string */
         public $name;
         /** @var string */
