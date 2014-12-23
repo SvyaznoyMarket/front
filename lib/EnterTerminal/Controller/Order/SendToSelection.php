@@ -4,11 +4,12 @@ namespace EnterTerminal\Controller\Order;
 
 use Enter\Http;
 use EnterTerminal\ConfigTrait;
+use EnterAggregator\LoggerTrait;
 use EnterAggregator\CurlTrait;
 use EnterQuery as Query;
 
 class SendToSelection {
-    use ConfigTrait, CurlTrait;
+    use ConfigTrait, LoggerTrait, CurlTrait;
 
     /**
      * @param Http\Request $request
@@ -34,9 +35,11 @@ class SendToSelection {
         if ($contentItemQuery->getError()) {
             $response = new Http\JsonResponse();
             $response->data['error'] = [
-                'code'    => $contentItemQuery->getError()->getCode(),
-                'message' => $contentItemQuery->getError()->getMessage(),
+                'code'    => 500,
+                'message' => 'Ошибка',
             ];
+
+            $this->getLogger()->push(['type' => 'error', 'error' => $contentItemQuery->getError(), 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
 
             return $response;
         }
