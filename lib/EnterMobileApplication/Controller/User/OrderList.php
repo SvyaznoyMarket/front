@@ -34,8 +34,24 @@ namespace EnterMobileApplication\Controller\User {
                 throw new \Exception('Не указан token', Http\Response::STATUS_BAD_REQUEST);
             }
 
+            // количество товаров на страницу
+            $limit = (int)$request->query['limit'] ?: 20;
+            if ($limit < 1) {
+                throw new \Exception('Параметр limit не должен быть меньше 1', Http\Response::STATUS_BAD_REQUEST);
+            }
+            if ($limit > 40) {
+                throw new \Exception('Параметр limit не должен быть больше 40', Http\Response::STATUS_BAD_REQUEST);
+            }
+
+            // номер страницы
+            $pageNum = (int)$request->query['page'] ?: 1;
+            if ($limit < 1) {
+                throw new \Exception('Параметр page не должен быть меньше 1', Http\Response::STATUS_BAD_REQUEST);
+            }
+            $offset = ($pageNum - 1) * $limit;
+
             try {
-                $orderListQuery = new Query\Order\GetListByUserToken($token);
+                $orderListQuery = new Query\Order\GetListByUserToken($token, $offset, $limit);
                 $orderListQuery->setTimeout(6 * $config->coreService->timeout);
                 $curl->prepare($orderListQuery);
 

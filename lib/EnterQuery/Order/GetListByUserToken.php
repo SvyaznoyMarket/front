@@ -15,13 +15,21 @@ class GetListByUserToken extends Query {
 
     /**
      * @param string $token
+     * @param int|null $offset
+     * @param int|null $limit
      */
-    public function __construct($token) {
+    public function __construct($token, $offset = null, $limit = null) {
         $this->url = new Url();
         $this->url->path = 'v2/order/get-limited';
         $this->url->query = [
             'token' => $token,
         ];
+        if ($offset) {
+            $this->url->query['offset'] = $offset;
+        }
+        if ($limit) {
+            $this->url->query['limit'] = $limit;
+        }
 
         $this->init();
     }
