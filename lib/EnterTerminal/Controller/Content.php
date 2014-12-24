@@ -56,6 +56,8 @@ namespace EnterTerminal\Controller {
         }
 
         private function processContentLinks($content, Client $curl, $regionId) {
+            $templateHelper = $this->getTemplateHelper();
+
             if (preg_match_all('/<a\s+[^>]*href="(?:http:\/\/(?:www\.)?enter\.ru)?(\/[^"]*)"/i', $content, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
                 $contentRepository = new \EnterRepository\Content();
 
@@ -72,9 +74,11 @@ namespace EnterTerminal\Controller {
                     } else if (0 === strpos($path, '/catalog/')) {
                         $matches[$key]['query'] = new Query\Product\Category\GetItemByToken($contentRepository->getTokenByPath($path), $regionId);
                         $curl->prepare($matches[$key]['query']);
-                    }
-                    else if (0 === strpos($path, '/product/')) {
+                    } else if (0 === strpos($path, '/product/')) {
                         $matches[$key]['query'] = new Query\Product\GetItemByToken($contentRepository->getTokenByPath($path), $regionId);
+                        $curl->prepare($matches[$key]['query']);
+                    } else if (0 === strpos($path, '/products/set/')) {
+                        $matches[$key]['query'] = new Query\Product\GetListByBarcodeList($contentRepository->getProductBarcodesByPath($path), $regionId);
                         $curl->prepare($matches[$key]['query']);
                     }
                 }
@@ -87,37 +91,44 @@ namespace EnterTerminal\Controller {
                 foreach ($matches as $match) {
                     $linkTagEndPos = $match[0][1] + strlen($match[0][0]) + $shift;
                     $path = $this->getPathFromHrefAttributeValue($match[1][0]);
-                    $newAttributes = null;
+                    $attributes = null;
 
                     if (preg_match('/\/catalog\/slice\/([\w\d-_]+)/', $path, $sliceMatches)) { // /catalog/slice/{sliceToken}
-                        $newAttributes = ' data-type="ProductCatalog/Slice" data-slice-token="' . $this->getTemplateHelper()->escape($sliceMatches[1]) . '"';
+                        $attributes = ' data-type="ProductCatalog/Slice" data-slice-token="' . $templateHelper->escape($sliceMatches[1]) . '"';
                     } else if (preg_match('/\/slices\/([\w\d-_]+)\/([\w\d-_]+)/', $path, $sliceMatches)) { //  /slices/{sliceToken}/{categoryToken}
-                        $newAttributes = ' data-type="ProductCatalog/Slice" data-slice-token="' . $this->getTemplateHelper()->escape($sliceMatches[1]) . '"';
+                        $attributes = ' data-type="ProductCatalog/Slice" data-slice-token="' . $templateHelper->escape($sliceMatches[1]) . '"';
                         $category = $categoryRepository->getObjectByQuery($match['query']);
-                        if (null !== $category) {
-                            $newAttributes .= ' data-category-id="' . $this->getTemplateHelper()->escape($category->id) . '"';
+                        if ($category) {
+                            $attributes .= ' data-category-id="' . $templateHelper->escape($category->id) . '"';
                         }
                     } else if (preg_match('/\/slices\/([\w\d-_]+)/', $path, $sliceMatches)) { //   /slices/{sliceToken}
-                        $newAttributes = ' data-type="ProductCatalog/Slice" data-slice-token="' . $this->getTemplateHelper()->escape($sliceMatches[1]) . '"';
+                        $attributes = ' data-type="ProductCatalog/Slice" data-slice-token="' . $templateHelper->escape($sliceMatches[1]) . '"';
                     } else if (0 === strpos($path, '/catalog/')) {
                         $category = $categoryRepository->getObjectByQuery($match['query']);
-                        if (null !== $category) {
-                            $newAttributes = ' data-type="ProductCatalog/Category" data-category-id="' . $this->getTemplateHelper()->escape($category->id) . '"';
+                        if ($category) {
+                            $attributes = ' data-type="ProductCatalog/Category" data-category-id="' . $templateHelper->escape($category->id) . '"';
                         }
-                    }
-                    else if (0 === strpos($path, '/product/')) {
+                    } else if (0 === strpos($path, '/product/')) {
                         $product = $productRepository->getObjectByQuery($match['query']);
-                        if (null !== $product) {
-                            $newAttributes = ' data-type="ProductCard" data-product-id="' . $this->getTemplateHelper()->escape($product->id) . '"';
+                        if ($product) {
+                            $attributes = ' data-type="ProductCard" data-product-id="' . $templateHelper->escape($product->id) . '"';
                         }
-                    }
-                    else if (0 === strpos($path, '/')) {
-                        $newAttributes = ' data-type="Content" data-content-token="' . $contentRepository->getTokenByPath($path) . '"';
+                    } else if (0 === strpos($path, '/product/')) {
+                        $productIds = array_map(
+                            function(\EnterModel\Product $product) { return $product->id; },
+                            $productRepository->getIndexedObjectListByQueryList([$match['query']])
+                        );
+
+                        if ((bool)$productIds) {
+                            $attributes = ' data-type="ProductCard" data-product-id="' . $templateHelper->json($productIds) . '"';
+                        }
+                    } else if (0 === strpos($path, '/')) {
+                        $attributes = ' data-type="Content" data-content-token="' . $contentRepository->getTokenByPath($path) . '"';
                     }
 
-                    if ($newAttributes !== null) {
-                        $content = substr($content, 0, $linkTagEndPos) . $newAttributes . substr($content, $linkTagEndPos);
-                        $shift += strlen($newAttributes);
+                    if ($attributes !== null) {
+                        $content = substr($content, 0, $linkTagEndPos) . $attributes . substr($content, $linkTagEndPos);
+                        $shift += strlen($attributes);
                     }
                 }
             }
@@ -128,12 +139,14 @@ namespace EnterTerminal\Controller {
         private function getPathFromHrefAttributeValue($href) {
             $url = html_entity_decode($href);
             $url = preg_replace('/\?.*$|\#.*$/s', '', $url);
+
             return $url;
         }
 
         private function removeExternalScripts($content) {
             $content = preg_replace('/<script(?:\s+[^>]*)?>\s*\/\*\s*build:::7\s*\*\/\s*var\s+liveTex\s.*?<\/script>/is', '', $content);
             $content = preg_replace('/<!-- AddThis Button BEGIN -->.*?<!-- AddThis Button END -->/is', '', $content);
+
             return $content;
         }
     }
