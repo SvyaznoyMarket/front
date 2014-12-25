@@ -33,21 +33,16 @@ class Series {
             }
         }
 
-        try {
-            foreach ($query->getResult() as $item) {
-                if (empty($item['uid'])) continue;
+        foreach ($query->getResult() as $item) {
+            if (empty($item['uid'])) continue;
 
-                $series = new Model\Coupon\Series($item);
+            $series = new Model\Coupon\Series($item);
 
-                if (isset($limitsByUi[$series->id])) {
-                    $series->limit = $limitsByUi[$series->id];
-                }
-
-                $seriesList[] = $series;
+            if (isset($limitsByUi[$series->id])) {
+                $series->limit = $limitsByUi[$series->id];
             }
-        } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
-            //trigger_error($e, E_USER_ERROR);
+
+            $seriesList[] = $series;
         }
 
         return $seriesList;
