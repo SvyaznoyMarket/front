@@ -7,6 +7,9 @@ use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
+/**
+ * @deprecated
+ */
 class GetItemByProductCategoryUi extends Query {
     use ScmsQueryTrait;
 
@@ -19,7 +22,7 @@ class GetItemByProductCategoryUi extends Query {
      */
     public function __construct($categoryUi, $regionId) {
         $this->url = new Url();
-        $this->url->path = 'category/get';
+        $this->url->path = 'category/get/v1';
         $this->url->query = [
             'uid'    => $categoryUi,
             'geo_id' => $regionId,
@@ -34,6 +37,6 @@ class GetItemByProductCategoryUi extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = $data;
+        $this->result = isset($data['id']) ? $data : null;
     }
 }

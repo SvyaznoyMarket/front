@@ -94,22 +94,11 @@ namespace EnterAggregator\Controller {
                     }
                 }
             } else if (!empty($categoryCriteria['token'])) {
-                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryToken($categoryCriteria['token'], $regionId);
-                $curl->prepare($catalogConfigQuery);
-
-                $curl->execute();
-
-                $response->catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
-                if (!empty($response->catalogConfig->ui)) {
-                    $categoryItemQuery = new Query\Product\Category\GetItemByUi($response->catalogConfig->ui, $response->region->id);
-                } else {
-                    $this->getLogger()->push(['type' => 'error', 'message' => ['Не получен ui для категории'], 'category.criteria' => $categoryCriteria, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'critical']]);
-
-                    // FIXME: убрать, это запасной вариант
-                    $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'], $response->region->id);
-                }
+                $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'], $response->region->id);
+                $curl->prepare($categoryItemQuery);
             } else if (!empty($categoryCriteria['ui'])) {
                 $categoryItemQuery = new Query\Product\Category\GetItemByUi($categoryCriteria['ui'], $response->region->id);
+                $curl->prepare($categoryItemQuery);
             }
             if ((bool)$categoryCriteria && !$categoryItemQuery) {
                 throw new \Exception('Неверный критерий для получения категории товара');
@@ -153,26 +142,18 @@ namespace EnterAggregator\Controller {
                         $parentCategoryItemQuery = new Query\Product\Category\GetTreeItemById($response->category->parentId, $response->region->id);
                         $curl->prepare($parentCategoryItemQuery);
                     }
-                } else if ($context->branchCategory) {
+                } else if ($context->branchCategory) { // TODO: убрать
                     // запрос предка категории
                     $branchCategoryItemQuery = new Query\Product\Category\GetBranchItemByCategoryObject($response->category, $response->region->id, $filterRepository->dumpRequestObjectList($baseRequestFilters));
                     $curl->prepare($branchCategoryItemQuery);
                 }
             }
 
-            // запрос настроек каталога
-            $catalogConfigQuery = null;
-            if (!$response->catalogConfig && $response->category) { // если еще не загружен, то загрузить
-                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($response->category->ui, $regionId);
-                $curl->prepare($catalogConfigQuery);
-            }
-
             $curl->execute();
 
             // настройки каталога
-            if (!$response->catalogConfig) { // если еще не загружен, то загрузить
-                $response->catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
-            }
+            // FIXME: удалить
+            $response->catalogConfig = $categoryItemQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($categoryItemQuery) : null;
 
             // FIXME
             if ($context->isSlice && !$sorting) {

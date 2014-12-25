@@ -3,12 +3,12 @@
 namespace EnterQuery\Product\Category;
 
 use Enter\Curl\Query;
-use EnterQuery\CoreQueryTrait;
+use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
 class GetItemByUi extends Query {
-    use CoreQueryTrait;
+    use ScmsQueryTrait;
 
     /** @var array|null */
     protected $result;
@@ -19,9 +19,9 @@ class GetItemByUi extends Query {
      */
     public function __construct($ui, $regionId) {
         $this->url = new Url();
-        $this->url->path = 'v2/category/get';
+        $this->url->path = 'category/get/v1';
         $this->url->query = [
-            'ui'     => [$ui],
+            'ui'     => $ui,
             'geo_id' => $regionId,
         ];
 
@@ -34,6 +34,6 @@ class GetItemByUi extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]['id']) ? $data[0] : null;
+        $this->result = isset($data['id']) ? $data : null;
     }
 }

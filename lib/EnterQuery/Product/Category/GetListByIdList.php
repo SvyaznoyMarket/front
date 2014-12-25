@@ -3,12 +3,12 @@
 namespace EnterQuery\Product\Category;
 
 use Enter\Curl\Query;
-use EnterQuery\CoreQueryTrait;
+use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
 class GetListByIdList extends Query {
-    use CoreQueryTrait;
+    use ScmsQueryTrait;
 
     /** @var array */
     protected $result;
@@ -19,7 +19,7 @@ class GetListByIdList extends Query {
      */
     public function __construct(array $ids, $regionId) {
         $this->url = new Url();
-        $this->url->path = 'v2/category/get';
+        $this->url->path = 'category/gets';
         $this->url->query = [
             'id'     => $ids,
             'geo_id' => $regionId,

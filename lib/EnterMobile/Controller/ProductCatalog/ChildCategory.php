@@ -64,6 +64,8 @@ class ChildCategory {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));
         }
 
+        //die(var_dump($controllerResponse->category));
+
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\ChildCategory\Request();
         $pageRequest->httpRequest = $request;
