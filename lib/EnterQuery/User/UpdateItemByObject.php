@@ -19,6 +19,8 @@ class UpdateItemByObject extends Query {
      * @param Model\User $newUser
      */
     public function __construct($token, Model\User $oldUser, Model\User $newUser) {
+        $this->retry = 1;
+
         $this->url = new Url();
         $this->url->path = 'v2/user/update';
         $this->url->query = [

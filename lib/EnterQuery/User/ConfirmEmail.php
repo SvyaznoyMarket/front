@@ -20,6 +20,8 @@ class ConfirmEmail extends Query {
      * @param string $promoToken
      */
     public function __construct($userToken, $email, $code = null, $promoToken) {
+        $this->retry = 1;
+
         $this->url = new Url();
         $this->url->path = 'v2/confirm/email';
 

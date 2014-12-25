@@ -20,6 +20,8 @@ class CreatePacketBySplit extends Query {
      * @param bool $isReceiveSms
      */
     public function __construct(Model\Cart\Split $split, array $metas = [], $isReceiveSms = false) {
+        $this->retry = 1;
+
         $this->url = new Url();
         $this->url->path = 'v2/order/create-packet2';
 

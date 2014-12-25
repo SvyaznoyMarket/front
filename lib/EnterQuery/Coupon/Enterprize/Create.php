@@ -19,6 +19,8 @@ class Create extends Query {
      * @param Model\Coupon\Series $couponSeries
      */
     public function __construct($userToken, Model\User $user, Model\Coupon\Series $couponSeries) {
+        $this->retry = 1;
+
         $this->url = new Url();
         $this->url->path = 'v2/coupon/enter-prize';
 

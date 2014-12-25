@@ -16,6 +16,8 @@ class PlayByUserUi extends Query {
      * @param $userUi
      */
     public function __construct($userUi) {
+        $this->retry = 1;
+
         $this->url = new Url();
         $this->url->path = 'game/bandit/play';
         $this->url->query = [

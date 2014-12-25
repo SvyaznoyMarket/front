@@ -19,6 +19,8 @@ class SendNumber extends Query {
      * @param string|null $token
      */
     public function __construct($orderNumber, $notificationType, $phone = null, $token = null) {
+        $this->retry = 1;
+
         $this->url = new Url();
         $this->url->path = 'v2/order/send-number';
         $this->url->query = [

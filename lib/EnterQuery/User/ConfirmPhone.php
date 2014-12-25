@@ -19,6 +19,8 @@ class ConfirmPhone extends Query {
      * @param string|null $code
      */
     public function __construct($userToken, $phone, $code = null) {
+        $this->retry = 1;
+
         $this->url = new Url();
         $this->url->path = 'v2/confirm/mobile';
 

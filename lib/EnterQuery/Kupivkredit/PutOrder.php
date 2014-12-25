@@ -21,6 +21,8 @@ class PutOrder extends Query {
      * @param Model\Product[] $productsById
      */
     public function __construct(Model\Order $order, Model\User $user, array $productsById) {
+        $this->retry = 1;
+
         $config = $this->getConfig()->credit->kupivkredit;
 
         $this->url = new Url();

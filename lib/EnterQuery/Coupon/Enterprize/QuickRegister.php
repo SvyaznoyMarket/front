@@ -18,6 +18,8 @@ class QuickRegister extends Query {
      * @param \EnterModel\User $user
      */
     public function __construct($userToken, Model\User $user) {
+        $this->retry = 1;
+
         $this->url = new Url();
         $this->url->path = 'v2/coupon/quick-register-in-enter-prize';
 

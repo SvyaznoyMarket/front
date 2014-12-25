@@ -17,11 +17,13 @@ class SendToSelection extends Query {
      * @param string $shopId
      */
     public function __construct($orderNumber, $shopId) {
+        $this->retry = 1;
+
         $this->url = new Url();
         $this->url->path = 'private/erp-integration/send-for-package';
         $this->data = [
             'order_number' => $orderNumber,
-            'shop_id' => $shopId,
+            'shop_id'      => $shopId,
         ];
 
         $this->init();

@@ -18,6 +18,8 @@ class Check extends Query {
      * @param string $code
      */
     public function __construct($phone, $code) {
+        $this->retry = 1;
+
         $this->url = new Url();
         $this->url->path = 'v2/confirm/order';
         $this->data = [

@@ -17,6 +17,8 @@ class SetStatusByUi extends Query {
      * @param array $data
      */
     public function __construct($ui, array $data) {
+        $this->retry = 1;
+
         $this->url = new Url();
         $this->url->path = 'terminal/setStatus/ui/' . $ui;
         $this->data = $data;

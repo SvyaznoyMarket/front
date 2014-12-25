@@ -18,6 +18,8 @@ class CreateItemByObject extends Query {
      * @param bool $willBeSubscribed
      */
     public function __construct(Model\User $user, $willBeSubscribed = null) {
+        $this->retry = 1;
+
         $this->url = new Url();
         $this->url->path = 'v2/user/create';
         $this->data = [

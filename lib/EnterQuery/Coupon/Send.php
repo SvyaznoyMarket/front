@@ -20,6 +20,8 @@ class Send extends Query {
      * @param null $promoToken
      */
     public function __construct($transactionId, Model\Coupon\Series $couponSeries, Model\User $user, $promoToken = null) {
+        $this->retry = 1;
+
         $this->url = new Url();
         $this->url->path = 'v2/coupon/send';
 

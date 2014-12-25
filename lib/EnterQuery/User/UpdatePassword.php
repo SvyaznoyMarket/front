@@ -18,6 +18,8 @@ class UpdatePassword extends Query {
      * @param string $newPassword
      */
     public function __construct($token, $password, $newPassword) {
+        $this->retry = 1;
+
         $this->url = new Url();
         $this->url->path = 'v2/user/change-password';
         $this->url->query = [
