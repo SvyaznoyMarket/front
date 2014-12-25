@@ -3,12 +3,12 @@
 namespace EnterQuery\Product\Category;
 
 use Enter\Curl\Query;
-use EnterQuery\CoreQueryTrait;
+use EnterQuery\SearchQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
 class GetTreeList extends Query {
-    use CoreQueryTrait;
+    use SearchQueryTrait;
 
     /** @var array|null */
     protected $result;
@@ -21,7 +21,7 @@ class GetTreeList extends Query {
      */
     public function __construct($regionId = null, $maxLevel = null, array $filterData = [], $rootId = null) {
         $this->url = new Url();
-        $this->url->path = 'v2/category/tree';
+        $this->url->path = 'category/tree';
         $this->url->query = [
             'is_load_parents' => true,
         ];

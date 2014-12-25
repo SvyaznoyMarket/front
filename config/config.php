@@ -50,6 +50,11 @@ return function(\EnterAggregator\Config $config) {
     $config->coreService->clientId = 'site';
     $config->coreService->debug = false;
 
+    $config->searchService->url = 'http://search.enter.ru/';
+    $config->searchService->timeout = 5;
+    $config->searchService->clientId = 'site';
+    $config->searchService->debug = false;
+
     $config->scmsService->url = 'http://scms.enter.ru/';
     $config->scmsService->timeout = 5;
 
