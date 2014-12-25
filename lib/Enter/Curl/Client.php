@@ -188,7 +188,7 @@ class Client {
                     }
                     $tryAvailable = false;
                     foreach ($this->queries as $query) {
-                        if (count($query->getConnections()) < $retryCount) {
+                        if (count($query->getConnections()) < ($query->getRetry() ?: $retryCount)) {
                             $tryAvailable = true;
                             break;
                         }
@@ -201,7 +201,7 @@ class Client {
 
                     if (0 === $ready) {
                         foreach ($this->queries as $query) {
-                            if (count($query->getConnections()) >= $retryCount) continue;
+                            if (count($query->getConnections()) >= ($query->getRetry() ?: $retryCount)) continue;
                             $this->prepare($query);
                         }
                     }
