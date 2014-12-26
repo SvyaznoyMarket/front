@@ -61,7 +61,7 @@ class CreatePacketBySplit extends Query {
                 'address_floor'       => null,
                 'shop_id'             => ($delivery && $delivery->point) ? $delivery->point->id : null,
                 'extra'               => $order->comment,
-                'bonus_card_number'   => null, // FIXME!!!
+                'bonus_card_number'   => ($user && $user->bonusCardNumber) ? $user->bonusCardNumber : null,
                 'delivery_type_id'    => $delivery ? $delivery->modeId : null, // ATTENTION
                 'delivery_type_token' => $delivery ? $delivery->methodToken : null,
                 'delivery_price'      => $delivery ? $delivery->price : null,
