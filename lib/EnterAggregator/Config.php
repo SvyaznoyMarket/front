@@ -78,8 +78,6 @@ namespace EnterAggregator {
         public $productReview;
         /** @var Config\ProductPhoto */
         public $productPhoto;
-        /** @var Config\ProductCategoryPhoto */
-        public $productCategoryPhoto;
         /** @var Config\Search */
         public $search;
         /** @var Config\Promo */
@@ -122,7 +120,6 @@ namespace EnterAggregator {
             $this->product = new Config\Product();
             $this->productReview = new Config\ProductReview();
             $this->productPhoto = new Config\ProductPhoto();
-            $this->productCategoryPhoto = new Config\ProductCategoryPhoto();
             $this->search = new Config\Search();
             $this->promo = new Config\Promo();
             $this->productLabel = new Config\ProductLabel();
@@ -356,13 +353,6 @@ namespace EnterAggregator\Config {
          * @var int
          */
         public $itemsInCard;
-    }
-
-    class ProductCategoryPhoto {
-        /**
-         * @var array
-         */
-        public $urlPaths = [];
     }
 
     class Search {

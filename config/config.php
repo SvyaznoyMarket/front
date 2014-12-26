@@ -126,10 +126,6 @@ return function(\EnterAggregator\Config $config) {
         4 => '/1/1/2500/',
         5 => '/1/1/1500/',
     ];
-    $config->productCategoryPhoto->urlPaths = [
-        0 => '/6/1/163/',
-        3 => '/6/1/500/',
-    ];
 
     $config->search->minPhraseLength = 2;
 

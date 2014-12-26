@@ -52,7 +52,7 @@ class ChildCategory {
                 $childCategory = new Partial\ProductCatalog\CategoryBlock\Category();
                 $childCategory->name = $childCategoryModel->name;
                 $childCategory->url = $childCategoryModel->link;
-                $childCategory->image = (string)(new Routing\Product\Category\GetImage($childCategoryModel->image, $childCategoryModel->id, 1));
+                $childCategory->image = (string)(new Routing\Product\Category\GetImage($childCategoryModel, 'category_163x163'));
 
                 $page->content->categoryBlock->categories[] = $childCategory;
             }

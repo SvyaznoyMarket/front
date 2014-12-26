@@ -2,50 +2,38 @@
 
 namespace EnterMobile\Routing\Product\Category;
 
-use EnterMobile\Routing\Route;
-use EnterMobile\ConfigTrait;
-use EnterMobile\Config;
+use EnterAggregator\LoggerTrait;
+use EnterModel as Model;
 
-class GetImage extends Route {
-    use ConfigTrait;
+class GetImage {
+    use LoggerTrait;
 
-    /** @var Config */
-    protected $config;
+    /** @var Model\Product\Category */
+    private $category;
+    /** @var string */
+    private $size;
 
-    /**
-     * @param string $imageSource
-     * @param string $categoryId
-     * @param string $imageSize
-     */
-    public function __construct($imageSource, $categoryId, $imageSize) {
-        $this->config = $this->getConfig();
-
-        $this->parameters = [
-            'categoryId'  => $categoryId,
-            'imageSource' => $imageSource,
-            'imageSize'   => $imageSize,
-        ];
+    public function __construct(Model\Product\Category $category, $size) {
+        $this->category = $category;
+        $this->size = $size;
     }
 
     /**
      * @return string
      */
     public function __toString() {
-        return
-            $this->getHost((int)$this->parameters['categoryId'])
-            . (array_key_exists($this->parameters['imageSize'], $this->config->productCategoryPhoto->urlPaths) ? $this->config->productCategoryPhoto->urlPaths[$this->parameters['imageSize']] : reset($this->config->productCategoryPhoto->urlPaths))
-            . $this->parameters['imageSource']
-        ;
-    }
+        try {
+            foreach ($this->category->media->photos as $photo) {
+                foreach ($photo->sources as $source) {
+                    if ($source->type != $this->size) continue;
 
-    /**
-     * @param int $categoryId
-     * @return string
-     */
-    protected function getHost($categoryId) {
-        $hosts = $this->config->mediaHosts;
-        $index = !empty($categoryId) ? ($categoryId % count($hosts)) : rand(0, count($hosts) - 1);
+                    return $source->url;
+                }
+            }
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['route']]);
+        }
 
-        return isset($hosts[$index]) ? $hosts[$index] : '';
+        return '';
     }
 }
