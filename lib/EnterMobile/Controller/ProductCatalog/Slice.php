@@ -12,7 +12,7 @@ use EnterMobile\Controller;
 use EnterMobile\Model\Page\ProductCatalog\ChildCategory;
 use EnterMobile\Repository;
 use EnterQuery as Query;
-use EnterMobile\Model;
+use EnterModel as Model;
 use EnterMobile\Model\Page\ProductCatalog\ChildCategory as Page;
 use EnterQuery;
 
@@ -58,6 +58,14 @@ class Slice {
 
         // фильтры в http-запросе и настройках среза
         $baseRequestFilters = $filterRepository->getRequestObjectListByHttpRequest(new Http\Request($slice->filters));
+        // AG-43: если выбрана категория, то удялять замороженные фильтры-категории
+        if ($categoryToken) {
+            foreach ($baseRequestFilters as $i => $baseRequestFilter) {
+                if ('category' == $baseRequestFilter->token) {
+                    unset($baseRequestFilters[$i]);
+                }
+            }
+        }
 
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
 
@@ -82,28 +90,33 @@ class Slice {
         }
 
         // базовые фильтры
-        $baseRequestFilters[] = (new Repository\Product\Filter())->getSliceRequestObjectBySlice($slice);
+        $baseRequestFilters = (new \EnterMobile\Repository\Product\Filter())->getRequestObjectListByHttpRequest(new Http\Request($slice->filters)); // FIXME !!!
         if ($controllerResponse->category && ($categoryRequestFilter = $filterRepository->getRequestObjectByCategory($controllerResponse->category))) {
             $baseRequestFilters[] = $categoryRequestFilter;
         }
 
         // список категорий
+        $categoryListQuery = new Query\Product\Category\GetTreeList(
+            $controllerResponse->region->id,
+            null,
+            $filterRepository->dumpRequestObjectList($baseRequestFilters),
+            $controllerResponse->category ? $controllerResponse->category->id : null
+        );
+        $curl->prepare($categoryListQuery)->execute();
+
+        /** @var Model\Product\Category[] $categories */
         $categories = [];
-        if ($controllerResponse->category) {
-            $categories = $controllerResponse->category->children;
-        } else {
-            $categoryListQuery = new Query\Product\Category\GetTreeList($controllerResponse->region->id, null, $filterRepository->dumpRequestObjectList($baseRequestFilters));
-            $curl->prepare($categoryListQuery)->execute();
+        try {
+            $categoryListResult = $categoryListQuery->getResult();
+            if (isset($categoryListResult[0]['children'][0])) {
+                foreach ($categoryListResult[0]['children'] as $categoryItem) {
+                    if (!isset($categoryItem['uid'])) continue;
 
-            try {
-                $categories = (new \EnterRepository\Product\Category())->getObjectListByQuery($categoryListQuery);
-            } catch(\Exception $e) {
-                // TODO
+                    $categories[] = new Model\Product\Category($categoryItem);
+                }
             }
-        }
-
-        if (count($categories) <= 1) {
-            $categories = [];
+        } catch(\Exception $e) {
+            // TODO
         }
 
         // запрос для получения страницы
