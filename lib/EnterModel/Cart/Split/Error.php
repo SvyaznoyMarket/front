@@ -16,7 +16,7 @@ class Error {
         $this->code = (int)$data['code'];
         $this->message = (string)$data['message'];
         if (array_key_exists('details', $data)) {
-            $detailItem = $data['details'];
+            $detailItem = (array)$data['details'] + ['block_name' => null];
 
             switch ($this->code) {
                 case 708:
