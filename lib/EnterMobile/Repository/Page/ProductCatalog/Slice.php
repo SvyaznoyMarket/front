@@ -72,14 +72,23 @@ class Slice {
         $dataValue = $dataReset;
         $dataValue['page']++;
         foreach ($request->baseRequestFilters as $requestFilter) {
-            $dataReset[$requestFilter->name] = $requestFilter->value;
+            if ('category' == $requestFilter->name) { // FIXME
+                $dataReset[$requestFilter->name][] = $requestFilter->value;
+            } else {
+                $dataReset[$requestFilter->name] = $requestFilter->value;
+            }
         }
         foreach (array_merge($request->baseRequestFilters, $request->requestFilters) as $requestFilter) {
             if (!$requestFilter->name) {
                 $this->getLogger()->push(['type' => 'warn', 'message' => 'Пустой токен', 'requestFilter' => $requestFilter, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
                 continue;
             }
-            $dataValue[$requestFilter->name] = $requestFilter->value;
+
+            if (('category' == $requestFilter->name) && !$request->category) { // FIXME
+                $dataValue[$requestFilter->name][] = $requestFilter->value;
+            } else {
+                $dataValue[$requestFilter->name] = $requestFilter->value;
+            }
         }
         $page->content->productBlock->dataValue = $templateHelper->json($dataValue);
         $page->content->productBlock->dataReset = $templateHelper->json($dataReset);
