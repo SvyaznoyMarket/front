@@ -3,8 +3,8 @@
 namespace EnterAggregator\Controller {
     use EnterAggregator\ConfigTrait;
     use EnterAggregator\CurlTrait;
-    use EnterAggregator\Model\Context;
-    use EnterCurlQuery as Query;
+    use EnterAggregator\Model\Context\ProductCard as Context;
+    use EnterQuery as Query;
     use EnterRepository as Repository;
     use EnterModel as Model;
 
@@ -14,7 +14,7 @@ namespace EnterAggregator\Controller {
         /**
          * @param string $regionId
          * @param array $productCriteria Критерий получения товара: ['id' => 1] или ['token' => 'hp4530s']
-         * @param \EnterAggregator\Model\Context $context
+         * @param Context $context
          * @throws \Exception
          * @return ProductCard\Response
          */
@@ -75,29 +75,14 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($mainMenuQuery);
             }
 
-            // запрос доставки товара
-            $deliveryListQuery = null;
-            if ($response->product->isBuyable) {
-                $cartProducts = [];
-                $cartProducts[] = new Model\Cart\Product(['id' => $response->product->id, 'quantity' => 1]);
-                foreach ($response->product->kit as $kit) {
-                    $cartProducts[] = new Model\Cart\Product(['id' => $kit->id, 'quantity' => $kit->count]);
-                }
-
-                $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList($cartProducts, $response->region->id);
-                $curl->prepare($deliveryListQuery);
-            }
-
             // запрос отзывов товара
             $reviewListQuery = null;
-            if ($config->productReview->enabled) {
-                $reviewListQuery = new Query\Product\Review\GetListByProductId($response->product->id, 0, $config->productReview->itemsInCard);
-                $curl->prepare($reviewListQuery);
+            if ($config->productReview->enabled && $context->review) {
+                if ($config->productReview->enabled) {
+                    $reviewListQuery = new Query\Product\Review\GetListByProductId($response->product->id, 1, $config->productReview->itemsInCard);
+                    $curl->prepare($reviewListQuery);
+                }
             }
-
-            // запрос видео товара
-            $videoListQuery = new Query\Product\Media\Video\GetListByProductId($response->product->id);
-            $curl->prepare($videoListQuery);
 
             // запрос аксессуаров товара
             $accessoryListQuery = null;
@@ -108,11 +93,44 @@ namespace EnterAggregator\Controller {
 
             // запрос наборов
             $kitListQuery = null;
+            $kits = $response->product->kit;
             if ((bool)$response->product->kit) {
-                $kitListQuery = new Query\Product\GetListByIdList(array_map(function(Model\Product\Kit $kit) {
+                $kitIds = array_map(function(Model\Product\Kit $kit) {
                     return $kit->id;
-                }, $response->product->kit), $response->region->id);
+                }, $response->product->kit);
+
+                // наборы из линиии
+                if ($response->product->line) {
+                    $lineItemQuery = new Query\Product\Line\GetItemByToken($response->product->line->token, $response->region->id);
+                    $curl->prepare($lineItemQuery)->execute();
+                    if ($line = (new Repository\Product\Line())->getObjectByQuery($lineItemQuery)) {
+                        $response->product->line = $line;
+                    }
+
+                    $kitIds = array_merge($kitIds, (array)$response->product->line->productIds);
+                }
+
+                // дополнительные товары из других наборов для расчета доставки
+                $kitIds = array_values(array_unique($kitIds));
+                foreach (array_diff($kitIds, array_map(function(Model\Product\Kit $kit) { return $kit->id; }, $response->product->kit)) as $kitId) {
+                    $kits[] = new Model\Product\Kit(['id' => $kitId]);
+                }
+
+                $kitListQuery = new Query\Product\GetListByIdList($kitIds, $response->region->id);
                 $curl->prepare($kitListQuery);
+            }
+
+            // запрос доставки товара
+            $deliveryListQuery = null;
+            if (($context->delivery || (bool)$response->product->kit) && $response->product->isBuyable) {
+                $cartProducts = [];
+                $cartProducts[] = new Model\Cart\Product(['id' => $response->product->id, 'quantity' => 1]);
+                foreach ($kits as $kit) {
+                    $cartProducts[] = new Model\Cart\Product(['id' => $kit->id, 'quantity' => $kit->count ?: 1]);
+                }
+
+                $deliveryListQuery = new Query\Product\Delivery\GetListByCartProductList($cartProducts, $response->region->id);
+                $curl->prepare($deliveryListQuery);
             }
 
             // запрос списка рейтингов товаров
@@ -122,14 +140,22 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($ratingListQuery);
             }
 
-            // TODO: загрузка предков категории как в каталоге
+            // запрос трастфакторов товара
+            $descriptionItemQuery = new Query\Product\GetDescriptionItemByUi($response->product->ui);
+            $curl->prepare($descriptionItemQuery);
 
             // запрос настроек каталога
             $catalogConfigQuery = null;
             if ($response->product->category) {
-                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryObject(array_merge($response->product->category->ascendants, [$response->product->category]), $response->product);
+                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($response->product->category->ui, $regionId);
                 $curl->prepare($catalogConfigQuery);
             }
+
+            // запрос доступности кредита
+            $cart = new Model\Cart();
+            (new Repository\Cart())->setProductForObject($cart, new Model\Cart\Product(['id' => $response->product->id, 'quantity' => 1]));
+            $paymentGroupListQuery = new Query\PaymentGroup\GetList($response->region->id, $cart, ['isCredit' => true]);
+            $curl->prepare($paymentGroupListQuery);
 
             $curl->execute();
 
@@ -142,15 +168,21 @@ namespace EnterAggregator\Controller {
             $response->product->reviews = $reviewListQuery ? (new Repository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
 
             // видео товара
-            $productRepository->setVideoForObjectByQuery($response->product, $videoListQuery);
+            //$productRepository->setVideoForObjectByQuery($response->product, $descriptionItemQuery);
             // 3d фото товара (maybe3d)
-            $productRepository->setPhoto3dForObjectByQuery($response->product, $videoListQuery);
+            //$productRepository->setPhoto3dForObjectByQuery($response->product, $descriptionItemQuery);
+            // медиа товара
+            $productRepository->setMediaForObjectByQuery($response->product, $descriptionItemQuery);
 
             // наборы
             $kitProductsById = $kitListQuery ? $productRepository->getIndexedObjectListByQueryList([$kitListQuery], function(&$item) {
                 // оптимизация
                 $item['media'] = [reset($item['media'])];
             }) : [];
+            foreach ($kitProductsById as $kitProduct) {
+                $kitProduct->kitCount = 0;
+            }
+
             foreach ($response->product->kit as $kit) {
                 /** @var Model\Product|null $kiProduct */
                 $kiProduct = isset($kitProductsById[$kit->id]) ? $kitProductsById[$kit->id] : null;
@@ -159,6 +191,11 @@ namespace EnterAggregator\Controller {
                 $kiProduct->kitCount = $kit->count; // FIXME
             }
             $response->product->relation->kits = array_values($kitProductsById);
+
+            // аксессуары
+            if ($accessoryListQuery) {
+                $productRepository->setAccessoryRelationForObjectListByQuery([$response->product->id => $response->product], $accessoryListQuery);
+            }
 
             // группированные товары
             $productsById = [];
@@ -172,40 +209,58 @@ namespace EnterAggregator\Controller {
                 $productRepository->setDeliveryForObjectListByQuery($productsById, $deliveryListQuery);
             }
 
-            // если у товара нет доставок, запрашиваем список магазинов, в которых товар может быть на витрине
-            if (!(bool)$response->product->nearestDeliveries) {
-                $shopsIds = [];
-                foreach ($response->product->stock as $stock) {
-                    if ($stock->shopId && ($stock->showroomQuantity > 0)) {
-                        $shopsIds[] = $stock->shopId;
-                    }
+            // категории аксессуаров
+            $response->accessoryCategories = (new Repository\Product\Category())->getIndexedObjectListByProductListAndTokenList($response->product->relation->accessories, $response->catalogConfig ? $response->catalogConfig->accessoryCategoryTokens : []);
+
+            // список магазинов, в которых есть товар
+            $shopIds = [];
+            foreach ($productsById as $product) {
+                foreach ($product->stock as $stock) {
+                    if (!$stock->shopId) continue;
+
+                    $shopIds[] = $stock->shopId;
                 }
+            }
+            if ((bool)$shopIds) {
+                $shopListQuery = new Query\Shop\GetListByIdList($shopIds);
+                $curl->prepare($shopListQuery);
 
-                if ((bool)$shopsIds) {
-                    $shopListQuery = new Query\Shop\GetListByIdList($shopsIds);
-                    $curl->prepare($shopListQuery);
+                $curl->execute();
 
-                    $curl->execute();
+                foreach ($productsById as $product) {
+                    $shopStatesByShopId = [];
+                    foreach ($product->stock as $stock) {
+                        if ($stock->shopId && (($stock->showroomQuantity + $stock->quantity) > 0)) {
+                            $shopState = new Model\Product\ShopState();
+                            $shopState->quantity = $stock->quantity;
+                            $shopState->showroomQuantity = $stock->showroomQuantity;
+                            $shopState->isInShowroomOnly = !$shopState->quantity && ($shopState->showroomQuantity > 0);
 
-                    $productRepository->setNowDeliveryForObjectListByQuery([$response->product->id => $response->product], $shopListQuery);
+                            $shopStatesByShopId[$stock->shopId] = $shopState;
+                        }
+                    }
+                    if ((bool)$shopStatesByShopId) {
+                        $productRepository->setShopStateForObjectListByQuery([$product->id => $product], $shopStatesByShopId, $shopListQuery);
+                    }
                 }
             }
 
             // настройки каталога
             $response->catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
 
-            // аксессуары
-            if ($accessoryListQuery) {
-                $productRepository->setAccessoryRelationForObjectListByQuery([$response->product->id => $response->product], $accessoryListQuery);
-            }
-
             // список рейтингов товаров
             if ($ratingListQuery) {
                 $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
             }
 
-            // категории аксессуаров
-            $response->accessoryCategories = (new Repository\Product\Category())->getIndexedObjectListByProductListAndTokenList($response->product->relation->accessories, $response->catalogConfig ? $response->catalogConfig->accessoryCategoryTokens : []);
+            // трастфакторы товара
+            $productRepository->setDescriptionForObjectByQuery($response->product, $descriptionItemQuery);
+
+            // доступность кредита
+            $response->hasCredit =
+                ($config->credit->directCredit->enabled && $response->product->isBuyable && ($response->product->price >= $config->credit->directCredit->minPrice)) // TODO: удалить часть условия после готовности CORE-2035
+                ? (new Repository\PaymentGroup())->checkCreditObjectByListQuery($paymentGroupListQuery)
+                : false;
 
             return $response;
         }
@@ -226,5 +281,7 @@ namespace EnterAggregator\Controller\ProductCard {
         public $catalogConfig;
         /** @var Model\MainMenu|null */
         public $mainMenu;
+        /** @var bool */
+        public $hasCredit;
     }
 }

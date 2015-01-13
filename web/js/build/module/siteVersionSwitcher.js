@@ -1,0 +1,1 @@
+define(["jquery","module/config"],function(e,i){e(".js-siteVersionSwitcher").click(function(t){t.preventDefault();var o=window.location.host,n=o.split(".");n.length>2&&(o=n[n.length-2]+"."+n[n.length-1]),e.cookie(i.siteVersionSwitcher.cookieName,"0",{expires:i.siteVersionSwitcher.cookieLifetime/60/60/24,path:"/",domain:o}),location=t.currentTarget.href})});

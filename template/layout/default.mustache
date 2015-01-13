@@ -12,6 +12,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="cleartype" content="on">
 
+    <link rel="shortcut icon" href="/favicon.ico">
+
     <script type="text/javascript">
         window.htmlStartTime = new Date().getTime();
         document.documentElement.className = document.documentElement.className.replace("no-js","js");
@@ -42,6 +44,8 @@
 </head>
 
 <body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="">
+    {{>partial/counters}}
+
     <div class="wrapper">
         {{>partial/header}}
 

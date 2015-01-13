@@ -1,4 +1,16 @@
 <a href="{{url}}" class="catalogList_item">
+    {{#labels.0}}
+        <div class="sticker left">
+            <img src="{{imageUrl}}" alt="{{name}}" />
+        </div>
+    {{/labels.0}}
+
+    {{#brand.image}}
+        <div class="sticker right">
+            <img src="{{brand.image}}" alt="{{brand.name}}" />
+        </div>
+    {{/brand.image}}
+
     <div class="img"><img src="{{image}}" /></div>
 
     <div class="catalogList_desc">

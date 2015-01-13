@@ -8,6 +8,7 @@
         'jquery.ui'             : 'vendor/jquery/jquery.ui-1.10.4.custom',
         'jquery.ui.touch-punch' : 'vendor/jquery/jquery.ui.touch-punch-0.2.3',
         'jquery.popup'          : 'plugin/jquery.popup',
+        'jquery.deparam'        : 'plugin/jquery.deparam',
         'jquery.enterslide'     : 'plugin/jquery.enterslide',
         'jquery.touchwipe'      : 'plugin/jquery.touchwipe',
         'jquery.photoswipe'     : 'plugin/jquery.photoswipe',

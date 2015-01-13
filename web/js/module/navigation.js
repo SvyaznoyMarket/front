@@ -54,6 +54,12 @@ define(
              * Показываем/скрываем навигацию второго уравня
              */
             slideNavLevel2 = function slideNavLevel2() {
+                if ($(this).data('url')) {
+                    window.location.href = $(this).data('url');
+
+                    return false;
+                }
+
                 navSiteListLevel2.slideUp();
 
                 if ( ($(this).next(navSiteListLevel2)).is(':visible') ) {

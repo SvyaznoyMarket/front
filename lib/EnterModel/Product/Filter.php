@@ -77,9 +77,9 @@ class Filter {
                 ['id' => 0, 'token' => '0', 'name' => 'Нет'],
             ] as $optionItem) {
                 $option = new Model\Product\Filter\Option();
-                $option->id = $optionItem['id'];
-                $option->token = $optionItem['token'];
-                $option->name = $optionItem['name'];
+                $option->id = (string)$optionItem['id'];
+                $option->token = (string)$optionItem['token'];
+                $option->name = (string)$optionItem['name'];
 
                 $this->option[] = $option;
             }
@@ -89,9 +89,9 @@ class Filter {
                 ['id' => $this->max, 'token' => 'to', 'name' => 'До'],
             ] as $optionItem) {
                 $option = new Model\Product\Filter\Option();
-                $option->id = $optionItem['id'];
-                $option->token = $optionItem['token'];
-                $option->name = $optionItem['name'];
+                $option->id = (string)$optionItem['id'];
+                $option->token = (string)$optionItem['token'];
+                $option->name = (string)$optionItem['name'];
 
                 $this->option[] = $option;
             }

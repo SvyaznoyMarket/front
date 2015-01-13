@@ -1,0 +1,47 @@
+.shopLst {
+	margin: 0;
+
+	&_i {
+		border-top: 1px solid @lightGrey1;
+		border-bottom: none;
+		background: @white;
+		padding: 5px 7px;
+		cursor: pointer;
+
+		&:hover {
+			background: #FEEED4;
+
+			.shopLst_addrs_tx,
+			.shopLst_addrs_tm {
+				background: #FEEED4;
+			}
+		}
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	&_addrs {
+    	position: relative;
+
+		margin: 0 0 0 15px;
+
+		&:after {
+		    top: 5px;
+		}
+
+		&_tx {
+			display: block;
+			font-size: 14px;
+			background: @white;
+		}
+
+		&_tm {
+			display: block;
+			background: @white;
+			font-size: 12px;
+			color: @lightGrey2;
+		}
+	}
+}

@@ -8,6 +8,8 @@ class Shop {
     /** @var string */
     public $id;
     /** @var string */
+    public $ui;
+    /** @var string */
     public $token;
     /** @var string */
     public $name;
@@ -33,14 +35,17 @@ class Shop {
     public $walkWay;
     /** @var string */
     public $carWay;
-    /** @var Model\Subway|null */
-    public $subway;
+    /** @var Model\Subway[] */
+    public $subway = [];
+    /** @var bool */
+    public $hasGreenCorridor;
 
     /**
      * @param array $data
      */
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+        if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
         if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('geo_id', $data)) $this->regionId = (string)$data['geo_id'];
@@ -52,6 +57,7 @@ class Shop {
         if (array_key_exists('description', $data)) $this->description = (string)$data['description'];
         if (array_key_exists('way_walk', $data)) $this->walkWay = (string)$data['way_walk'];
         if (array_key_exists('way_auto', $data)) $this->carWay = (string)$data['way_auto'];
+        if (array_key_exists('is_green_corridor', $data)) $this->hasGreenCorridor = (bool)$data['is_green_corridor'];
 
         if (isset($data['geo']['id'])) {
             $this->region = new Model\Region($data['geo']);
@@ -64,8 +70,10 @@ class Shop {
             }
         }
 
-        if (isset($data['subway']['ui'])) {
-            $this->region = new Model\Subway($data['subway']);
+        if (isset($data['subway'][0]['ui'])) {
+            foreach ($data['subway'] as $subwayItem) {
+                $this->subway[] = new Model\Subway($subwayItem);
+            }
         };
     }
 }

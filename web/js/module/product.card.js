@@ -1,7 +1,8 @@
 define(
     [
         'require', 'jquery', 'underscore', 'mustache', 'module/util',
-        'jquery.enterslide', 'jquery.photoswipe', 'module/product.card.tab'
+        'jquery.enterslide', 'jquery.photoswipe', 'module/product.card.tab', 
+        'module/product.card.fullimg', 'module/product.card.kit'
     ],
     function (
         require, $, _, mustache, util
@@ -75,5 +76,30 @@ define(
             );
         });
 
+
+        // kit
+        $('.js-productKit-reset').on('click', function(e) {
+            var
+                $reset = $(e.target),
+                resetValue = $reset.data('value'),
+                $spinners = $($reset.data('spinnerSelector'))
+            ;
+
+            $spinners.each(function(i, el) {
+                var
+                    $el = $(el),
+                    buttonDataValue = $($el.data('buttonSelector')).data('value'),
+                    dataValue = $el.data('value'),
+                    product = resetValue.product[dataValue.product.id]
+                ;
+
+                if (!product || !buttonDataValue || !buttonDataValue.product || !buttonDataValue.product[product.id]) {
+                    return true; // continue
+                }
+
+                buttonDataValue.product[product.id].quantity = product.quantity;
+                $el.val(product.quantity);
+            });
+        });
     }
 );

@@ -24,8 +24,8 @@ class Config {
                 $object = new Model\Product\Catalog\Config($item);
             }
         } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['repository']]);
-            trigger_error($e, E_USER_ERROR);
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
+            //trigger_error($e, E_USER_ERROR);
         }
 
         return $object;

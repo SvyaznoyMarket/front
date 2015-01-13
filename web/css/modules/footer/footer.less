@@ -120,13 +120,26 @@
 }
 
 .footerCopy {
-	padding: 2px 0;
+	line-height: 1.1;
+    padding: 7px 0;
 
 	background: @black;
 
 	&__link {
 		float: right;
-
-		color: @white;
+		color: @lightGrey1;
+		text-decoration: none;
 	}
+
+	&__link:hover {
+		color: @lightGrey1;
+		text-decoration: underline;
+	}
+}
+
+.footerSmpl {
+	color: @white;
+	position: relative;
+	height: 27px;
+	margin-top: -27px;
 }

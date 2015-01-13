@@ -11,7 +11,7 @@ use EnterAggregator\MustacheRendererTrait;
 use EnterAggregator\SessionTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\DebugContainerTrait;
-use EnterSite\Model\Page\Debug as Page;
+use EnterMobile\Model\Page\Debug as Page; // FIXME
 
 class Debug {
     use RequestIdTrait, ConfigTrait, LoggerTrait, MustacheRendererTrait, SessionTrait, TemplateHelperTrait, DebugContainerTrait;
@@ -66,7 +66,7 @@ class Debug {
             $page->git->branch = trim(shell_exec(sprintf('cd %s && git rev-parse --abbrev-ref HEAD', realpath($config->dir))));
             $page->git->tag = trim(shell_exec(sprintf('cd %s && git describe --always --tag', realpath($config->dir))));
         } catch (\Exception $e) {
-            $logger->push(['type' => 'warn', 'error' => $e, 'action' => __METHOD__, 'tag' => ['debug']]);
+            $logger->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['debug']]);
         }
 
         // times
@@ -95,8 +95,6 @@ class Debug {
                 $curlQuery = (isset($message['query']) && $message['query'] instanceof Query) ? $message['query'] : null;
                 if (!$curlQuery) continue;
 
-                $info = $curlQuery->getInfo();
-
                 $query = new Page\Query();
 
                 $query->url = urldecode((string)$curlQuery->getUrl());
@@ -105,7 +103,7 @@ class Debug {
                 $query->time = round(($curlQuery->getEndAt() - $curlQuery->getStartAt()), 3) * 1000;
 
                 $headers = [];
-                foreach ($curlQuery->getHeaders() as $key => $value) {
+                foreach ($curlQuery->getResponseHeaders() as $key => $value) {
                     if (empty($value)) continue;
 
                     $headers[$key] = $value;
@@ -113,11 +111,10 @@ class Debug {
 
                 $info = $curlQuery->getInfo();
                 $info = [
-                    'code'         => $info['http_code'],
-                    'error'        => $curlQuery->getError(),
-                    'url'          => $info['url'],
-                    'data'         => (bool)$curlQuery->getData() ? $curlQuery->getData() : null,
-                    'header'       => $headers,
+                    'code'           => $info['http_code'],
+                    'url'            => $info['url'],
+                    'data'           => (bool)$curlQuery->getData() ? $curlQuery->getData() : null,
+                    'header'         => $headers,
                     //'content_type' => $info['content_type'],
                     'time' => [
                         'total'         => $info['total_time'],
@@ -127,14 +124,15 @@ class Debug {
                         'starttransfer' => $info['starttransfer_time'],
                         'redirect'      => $info['redirect_time'],
                     ],
-                    'size' => [
+                    'size'           => [
                         'upload'   => $info['size_upload'],
                         'download' => $info['size_download'],
                     ],
-                    'speed' => [
+                    'speed'          => [
                         'download' => $info['speed_download'],
                         'upload'   => $info['speed_upload'],
                     ],
+                    'request_header' => @$info['request_header'],
                 ];
 
                 if ($config->curl->logResponse) {
@@ -143,6 +141,13 @@ class Debug {
                         $info['response'] = $curlQuery->getResult();
                     } catch (\Exception $e) {}
                 }
+
+                $info['error'] = $curlQuery->getError() ? [
+                    'code'    => $curlQuery->getError()->getCode(),
+                    'message' => $curlQuery->getError()->getMessage(),
+                    //'file'    => $curlQuery->getError()->getFile(),
+                    //'line'    => $curlQuery->getError()->getLine(),
+                ] : null;
 
                 $query->info = json_encode($info, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
                 $query->id = md5($curlQuery->getId() . '-' . $curlQuery->getUrl() . '-' . $curlQuery->getStartAt());
@@ -166,7 +171,7 @@ class Debug {
         // данные из контейнера отладки
         foreach (get_object_vars($this->getDebugContainer()) as $key => $value) {
             if (isset($page->{$key})) {
-                $logger->push(['type' => 'warn', 'error' => sprintf('Свойство %s уже существует', $key), 'action' => __METHOD__, 'tag' => ['debug']]);
+                $logger->push(['type' => 'warn', 'error' => sprintf('Свойство %s уже существует', $key), 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['debug']]);
                 continue;
             }
 

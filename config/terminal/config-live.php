@@ -6,4 +6,6 @@ return function(EnterTerminal\Config $config) {
     $handler($config);
 
     // live config
+    $config->editable = false; // важно!
+    $config->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/' . $config->hostname;
 };

@@ -5,17 +5,18 @@ namespace EnterRepository;
 use Enter\Http;
 use Enter\Curl\Query;
 use EnterAggregator\ConfigTrait;
+use EnterAggregator\LoggerTrait;
 use EnterModel as Model;
 
 class User {
-    use ConfigTrait;
+    use ConfigTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request
      * @return string|null
      */
     public function getTokenByHttpRequest(Http\Request $request) {
-        return $request->cookies[$this->getConfig()->userToken->authCookieName];
+        return $request->cookies[$this->getConfig()->userToken->authName];
     }
 
     /**
@@ -24,7 +25,7 @@ class User {
      */
     public function setTokenToHttpResponse($token, Http\Response $response) {
         $config = $this->getConfig();
-        $cookieName = $config->userToken->authCookieName;
+        $cookieName = $config->userToken->authName;
         $cookieDomain = $config->session->cookieDomain;
 
         if ($token) {
@@ -53,7 +54,7 @@ class User {
         }
 
         // редирект
-        $url = trim((string)($request->data['redirect_to'] ?: $request->query['redirect_to']));
+        $url = trim((string)($request->query['redirect_to'] ?: $request->data['redirect_to']));
         if (!$url) {
             $url = $defaultUrl;
         }
@@ -63,13 +64,22 @@ class User {
 
     /**
      * @param Query $query
+     * @throws \Exception
      * @return Model\User|null
      */
     public function getObjectByQuery(Query $query) {
         $user = null;
 
-        if ($item = $query->getResult()) {
-            $user = new Model\User($item);
+        try {
+            if ($item = $query->getResult()) {
+                $user = new Model\User($item);
+            }
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
+
+            if (402 == $e->getCode()) {
+                throw new \Exception('Пользователь не авторизован', 401);
+            }
         }
 
         return $user;

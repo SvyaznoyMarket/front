@@ -51,4 +51,27 @@ class Region {
 
         return $region;
     }
+
+    /**
+     * @param Query $query
+     * @return Model\Region[]
+     */
+    public function getObjectListByQuery(Query $query) {
+        $regions = [];
+
+        $firstRegions = [];
+
+        foreach ($query->getResult() as $item) {
+            if (empty($item['id'])) continue;
+
+            $region = new Model\Region($item);
+            if (in_array($region->id, ['14974', '108136'])) {
+                $firstRegions[] = $region;
+            } else {
+                $regions[] = $region;
+            }
+        }
+
+        return array_merge($firstRegions, $regions);
+    }
 }

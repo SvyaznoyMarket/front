@@ -1,0 +1,58 @@
+/* ==========================================================================
+   Таблица в три колонки .table3Col
+   ========================================================================== */
+
+.table3Col {
+	display: table;
+
+	width: 100%;
+
+	font-size: 16px;
+
+	&_row {
+		display: table-row;
+
+		&-hd {
+			color: @typBoxShadowColor;
+
+			.table3Col_col {
+				padding: 5px 0;
+			}
+		}
+
+		&:last-child {
+
+			.table3Col_col {
+				border-bottom: none;
+			}
+		}
+	}
+
+	.shopLst_addrs {
+		font-size: 16px;
+
+		&:after {
+		    top: 7px;
+		}
+
+		&_row3 {
+			display: none;
+		}
+	}
+
+	&_col {
+		display: table-cell;
+
+		vertical-align: middle;
+
+		border-bottom: 1px solid #d3d3d3;
+
+		line-height: 1.2;
+		
+		padding: 5px;
+
+		&-r {
+			text-align: right;
+		}
+	}
+}

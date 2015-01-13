@@ -13,7 +13,7 @@ $environment = call_user_func(require $applicationDir . '/config/environment.php
 $response = null;
 
 // debug
-$debug = call_user_func(require $applicationDir . '/config/debug.php');
+$debug = call_user_func(require $applicationDir . '/config/mobile/debug.php');
 
 // error reporting
 call_user_func(require $applicationDir . '/config/error-report.php', $debug);
@@ -28,7 +28,7 @@ $request = new \Enter\Http\Request($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
 $error = null;
 
 // config
-(new \EnterSite\Action\InitService())->execute(include $applicationDir . sprintf('/config/config-%s.php', $environment));
+(new \EnterMobile\Action\InitService())->execute(include $applicationDir . sprintf('/config/mobile/config-%s.php', $environment));
 
 // config post-handler
 (new \EnterAggregator\Action\HandleConfig())->execute($environment, $debug);
@@ -37,7 +37,11 @@ $error = null;
 (new \EnterAggregator\Action\HandleError())->execute($error);
 
 // shutdown handler, send response
-(new \EnterSite\Action\RegisterShutdown())->execute($request, $response, $error, $startAt);
+(new \EnterMobile\Action\RegisterShutdown())->execute($request, $response, $error, $startAt);
+
+(new \EnterMobile\Controller\RedirectManager())->execute($request, $response);
 
 // response
-(new \EnterSite\Action\HandleResponse())->execute($request, $response);
+if (!$response) {
+    (new \EnterMobile\Action\HandleResponse())->execute($request, $response);
+}

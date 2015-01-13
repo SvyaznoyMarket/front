@@ -1,0 +1,64 @@
+/* ==========================================================================
+   Список магазинов с метро .shopLst
+   ========================================================================== */
+   
+.shopLst {
+	overflow: auto;
+
+	margin: 0 0 5px;
+
+	&_i {
+		padding: 5px;
+
+		border-bottom: 1px solid;
+
+		&:last-child {
+			margin-bottom: 10px;
+		}
+	}
+
+	&_bul {
+		.rounded(50%);
+		.inline-block();
+		width: 8px;
+		height: 8px;
+		margin: 0 2px 0 -14px;
+	}
+	
+	&_addr {
+		color: #616161;
+	    font-size: 12px;
+	    margin: 0 0 0 15px;
+
+	    &_l {
+	    	.inline-block();
+	    }
+
+	    &_r {
+	    	float: right;
+	    	.inline-block();
+	    }
+	}
+
+	&_mtr {
+	    margin: 0 0 0 15px;
+	}
+
+	&_row1 {
+		display: block;
+	}
+
+	&_row2 {
+		display: block;
+
+		margin: 0 0 5px;
+
+		color: @lightGrey2;
+	}
+
+	&_row3 {
+		display: block;
+
+		text-align: center;
+	}
+}

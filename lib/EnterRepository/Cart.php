@@ -17,20 +17,20 @@ class Cart {
     public function getProductObjectByHttpRequest(Http\Request $request) {
         $cartProduct = null;
 
-        $productData = [
+        $productItem = [
             'id'       => null,
             'quantity' => null,
         ];
         if (!empty($request->query['product']['id'])) {
-            $productData = array_merge($productData, $request->query['product']);
+            $productItem = array_merge($productItem, $request->query['product']);
         } else if (!empty($request->data['product']['id'])) {
-            $productData = array_merge($productData, $request->data['product']);
+            $productItem = array_merge($productItem, $request->data['product']);
         }
 
-        if ($productData['id']) {
+        if ($productItem['id']) {
             $cartProduct = new Model\Cart\Product();
-            $cartProduct->id = (string)$productData['id'];
-            $cartProduct->quantity = (int)$productData['quantity'];
+            $cartProduct->id = (string)$productItem['id'];
+            $cartProduct->quantity = (int)$productItem['quantity'];
         }
 
         return $cartProduct;
@@ -40,14 +40,46 @@ class Cart {
      * @param Http\Request $request
      * @return Model\Cart\Product[]
      */
-    public function getProductObjectListByHttpRequest(Http\Request $request) {
-        $products = [];
-        foreach ((array)$request->query['products'] as $product) {
-            if (!isset($product['id'])) continue;
+    public function getProductListByHttpRequest(Http\Request $request) {
+        $cartProducts = [];
+
+        foreach ((array)$request->data['product'] as $productItem) {
+            $productItem = array_merge([
+                'id'         => null,
+                'quantity'   => null,
+                'parentId'   => null,
+            ], (array)$productItem);
+            if (!$productItem['id']) continue;
 
             $cartProduct = new Model\Cart\Product();
-            $cartProduct->id = (string)$product['id'];
-            $cartProduct->quantity = isset($product['quantity']) ? (int)$product['quantity'] : 0;
+            $cartProduct->id = (string)$productItem['id'];
+            $cartProduct->quantity = (int)$productItem['quantity'];
+            $cartProduct->parentId = (string)$productItem['parentId'];
+            $cartProduct->quantitySign = (isset($productItem['quantitySign']) && in_array($productItem['quantitySign'], ['-', '+']))
+                ? (string)$productItem['quantitySign']
+                : null; // FIXME
+
+            $cartProducts[] = $cartProduct;
+        }
+
+        return $cartProducts;
+    }
+
+    /**
+     * @param Http\Request $request
+     * @return Model\Cart\Product[]
+     */
+    public function getProductObjectListByHttpRequest(Http\Request $request) {
+        $productData = (array)(is_array($request->query['products']) ? $request->query['products'] : $request->data['products']);
+
+        $products = [];
+        foreach ($productData as $productItem) {
+            if (!isset($productItem['id'])) continue;
+
+            $cartProduct = new Model\Cart\Product();
+            $cartProduct->id = (string)$productItem['id'];
+            $cartProduct->quantity = isset($productItem['quantity']) ? (int)$productItem['quantity'] : 0;
+            $cartProduct->sender = isset($productItem['sender']['name']) ? (array)$productItem['sender'] : null;
 
             $products[] = $cartProduct;
         }
@@ -63,13 +95,37 @@ class Cart {
         $cart = new Model\Cart();
 
         $cartData = array_merge([
+            'product' => [],
+        ], (array)$session->get('cart'));
+
+        // импорт старой корзины
+        $oldCartData = array_merge([
             'productList' => [],
         ], (array)$session->get('userCart'));
+        foreach ($oldCartData['productList'] as $productId => $productQuantity) {
+            if (!isset($cartData['product'][$productId])) {
+                $cartData['product'][$productId] = [
+                    'id'       => $productId,
+                    'quantity' => $productQuantity,
+                ];
+            }
+        }
 
-        foreach ($cartData['productList'] as $productId => $productQuantity) {
+        foreach ($cartData['product'] as $productItem) {
+            $productItem = array_merge([
+                'id'       => null,
+                'ui'       => null,
+                'quantity' => null,
+                'parentId' => null,
+                'added'    => null,
+            ], $productItem);
+
             $cartProduct = new Model\Cart\Product();
-            $cartProduct->id = (string)$productId;
-            $cartProduct->quantity = (int)$productQuantity;
+            $cartProduct->id = (string)$productItem['id'];
+            $cartProduct->ui = (string)$productItem['ui'];
+            $cartProduct->quantity = (int)$productItem['quantity'];
+            $cartProduct->parentId = $productItem['parentId'] ? (string)$productItem['parentId'] : null;
+            $cartProduct->addedAt = $productItem['added'] ? (string)$productItem['added'] : null;
 
             $cart->product[$cartProduct->id] = $cartProduct;
         }
@@ -84,28 +140,69 @@ class Cart {
     public function saveObjectToHttpSession(Http\Session $session, Model\Cart $cart) {
         // TODO: купоны, ...
 
-        $cartData = [
+        // сохранение в старой корзине
+        $oldCartData = [
             'productList' => [],
         ];
 
         foreach ($cart->product as $cartProduct) {
-            $cartData['productList'][$cartProduct->id] = $cartProduct->quantity;
+            $oldCartData['productList'][$cartProduct->id] = $cartProduct->quantity;
         }
+        $session->set('userCart', $oldCartData);
 
-        $session->set('userCart', $cartData);
+        // новая корзина
+        $cartData = [
+            'product' => [],
+        ];
+
+        foreach ($cart->product as $cartProduct) {
+            $cartItem = [
+                'id'       => $cartProduct->id,
+                'ui'       => $cartProduct->ui,
+                'quantity' => $cartProduct->quantity,
+            ];
+            if ($cartProduct->parentId) {
+                $cartItem['parentId'] = $cartProduct->parentId;
+            }
+
+            if (!empty($cartProduct->sender['name'])) {
+                $cartItem['sender'] = $cartProduct->sender;
+            }
+
+            if (!isset($cartData['product'][$cartProduct->id]['added'])) {
+                $cartItem['added'] = date('c');
+            } else {
+                $cartItem = array_merge($cartData['product'][$cartProduct->id], $cartItem);
+            }
+
+            $cartData['product'][$cartProduct->id] = $cartItem;
+        }
+        $session->set('cart', $cartData);
     }
 
     /**
+     * @param \EnterModel\Cart $cart
      * @param Query $query
-     * @return Model\Cart
      */
-    public function getObjectByQuery(Query $query) {
-        $cart = null;
+    public function updateObjectByQuery(Model\Cart $cart, Query $query) {
+        $cartProductsById = [];
+        foreach ($cart->product as $cartProduct) {
+            $cartProductsById[$cartProduct->id] = $cartProduct;
+        }
 
         $item = $query->getResult();
-        $cart = new Model\Cart($item);
+        $coreCart = new Model\Cart($item);
 
-        return $cart;
+        $cart->sum = $coreCart->sum;
+        foreach ($coreCart->product as $coreCartProduct) {
+            /** @var \EnterModel\Cart\Product|null $cartProduct */
+            $cartProduct = isset($cartProductsById[$coreCartProduct->id]) ? $cartProductsById[$coreCartProduct->id] : null;
+            if (!$cartProduct) continue;
+
+            $cartProduct->price = $coreCartProduct->price;
+            $cartProduct->sum = $coreCartProduct->sum;
+            $cartProduct->quantity = $coreCartProduct->quantity;
+        }
     }
 
     /**

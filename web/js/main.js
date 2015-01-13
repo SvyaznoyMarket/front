@@ -19,6 +19,7 @@ require.config({
         'jquery.ui'             : 'vendor/jquery/jquery.ui-1.10.4.custom',
         'jquery.ui.touch-punch' : 'vendor/jquery/jquery.ui.touch-punch-0.2.3',
         'jquery.popup'          : 'plugin/jquery.popup',
+        'jquery.deparam'        : 'plugin/jquery.deparam',
         'jquery.enterslide'     : 'plugin/jquery.enterslide',
         'jquery.touchwipe'      : 'plugin/jquery.touchwipe',
         'jquery.photoswipe'     : 'plugin/jquery.photoswipe',
@@ -104,13 +105,17 @@ require(
         'jquery.touchwipe',
         'module/analytics.google',
         'module/util',
+        'module/jira',
         'module/navigation',
         'module/region',
         'module/search',
+        'module/popupShow',
         'module/widget',      // виджеты
         'module/user.common', // инфо о пользователе
         'module/cart.common', // кнопка купить, спиннер
-        'module/product.catalog.common'
+        'module/order.common',
+        'module/product.catalog.common',
+		'module/siteVersionSwitcher'
     ],
     function(require, config) {
         $.cookie.defaults.path = '/';

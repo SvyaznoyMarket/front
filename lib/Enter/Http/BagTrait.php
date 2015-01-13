@@ -10,7 +10,7 @@ trait BagTrait {
     }
 
     public function offsetExists($offset) {
-        return isset($this->container[$offset]);
+        return array_key_exists($offset, $this->container);
     }
 
     public function offsetGet($offset) {

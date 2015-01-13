@@ -2,8 +2,12 @@
 
 namespace EnterAggregator {
     class Config {
+        /** @var array */
+        public $applicationTags = [];
         /** @var string */
         public $dir;
+        /** @var string */
+        public $cacheDir;
         /** @var string */
         public $environment;
         /**
@@ -11,10 +15,17 @@ namespace EnterAggregator {
          * @var int
          */
         public $debugLevel;
+        /**
+         * Возможность редактировать конфигурацию и загружать ее из json-файла
+         * @var bool
+         */
+        public $editable;
         /** @var string */
         public $hostname;
         /** @var Config\Logger */
         public $logger;
+        /** @var Config\Router */
+        public $router;
         /** @var Config\Session */
         public $session;
         /** @var Config\UserToken */
@@ -23,6 +34,12 @@ namespace EnterAggregator {
         public $region;
         /** @var Config\GoogleAnalytics */
         public $googleAnalitics;
+        /** @var Config\GoogleTagManager */
+        public $googleTagManager;
+        /** @var Config\YandexMetrika */
+        public $yandexMetrika;
+        /** @var Config\MailRu */
+        public $mailRu;
         /** @var Config\Credit */
         public $credit;
         /** @var Config\Partner */
@@ -33,18 +50,26 @@ namespace EnterAggregator {
         public $coreService;
         /** @var Config\CmsService */
         public $cmsService;
+        /** @var Config\ScmsService */
+        public $scmsService;
+        /** @var Config\CrmService */
+        public $crmService;
         /** @var Config\AdminService */
         public $adminService;
         /** @var Config\ReviewService */
         public $reviewService;
         /** @var Config\ContentService */
         public $contentService;
+        /** @var Config\InfoService */
+        public $infoService;
         /** @var Config\RetailRocketService */
         public $retailRocketService;
         /** @var Config\MustacheRenderer */
         public $mustacheRenderer;
         /** @var array */
         public $mediaHosts = [];
+        /** @var Config\Order */
+        public $order;
         /** @var Config\Product */
         public $product;
         /** @var Config\ProductReview */
@@ -57,16 +82,20 @@ namespace EnterAggregator {
         public $search;
         /** @var Config\Promo */
         public $promo;
-        /** @var Config\DirecCredit */
-        public $directCredit;
+        /** @var Config\ProductLabel */
+        public $productLabel;
 
         public function __construct() {
             $this->logger = new Config\Logger();
+            $this->router = new Config\Router();
 
             $this->session = new Config\Session();
             $this->userToken = new Config\UserToken();
 
             $this->googleAnalitics = new Config\GoogleAnalytics();
+            $this->googleTagManager = new Config\GoogleTagManager();
+            $this->yandexMetrika = new Config\YandexMetrika();
+            $this->mailRu = new Config\MailRu();
 
             $this->region = new Config\Region();
             $this->credit = new Config\Credit();
@@ -76,21 +105,24 @@ namespace EnterAggregator {
 
             $this->coreService = new Config\CoreService();
             $this->cmsService = new Config\CmsService();
+            $this->scmsService = new Config\ScmsService();
+            $this->crmService = new Config\CrmService();
             $this->adminService = new Config\AdminService();
             $this->reviewService = new Config\ReviewService();
             $this->contentService = new Config\ContentService();
+            $this->infoService = new Config\InfoService();
             $this->retailRocketService = new Config\RetailRocketService();
 
             $this->mustacheRenderer = new Config\MustacheRenderer();
 
+            $this->order = new Config\Order();
             $this->product = new Config\Product();
             $this->productReview = new Config\ProductReview();
             $this->productPhoto = new Config\ProductPhoto();
             $this->productCategoryPhoto = new Config\ProductCategoryPhoto();
             $this->search = new Config\Search();
             $this->promo = new Config\Promo();
-
-            $this->directCredit = new Config\DirecCredit();
+            $this->productLabel = new Config\ProductLabel();
         }
     }
 }
@@ -103,6 +135,17 @@ namespace EnterAggregator\Config {
         public function __construct() {
             $this->fileAppender = new Logger\FileAppender();
         }
+    }
+
+    class Router {
+        /** @var string */
+        public $classPrefix;
+        /**
+         * Файл с маршрутами
+         *
+         * @var string
+         */
+        public $routeFile;
     }
 
     class Session {
@@ -124,7 +167,7 @@ namespace EnterAggregator\Config {
          * Кука авторизованного пользователя
          * @var string
          */
-        public $authCookieName;
+        public $authName;
     }
 
     class GoogleAnalytics {
@@ -132,6 +175,27 @@ namespace EnterAggregator\Config {
         public $id;
         /** @var bool */
         public $enabled;
+    }
+
+    class GoogleTagManager extends CurlService {
+        /** @var bool */
+        public $enabled;
+        /** @var string */
+        public $id;
+    }
+
+    class YandexMetrika extends CurlService {
+        /** @var bool */
+        public $enabled;
+        /** @var int */
+        public $id;
+    }
+
+    class MailRu extends CurlService {
+        /** @var bool */
+        public $enabled;
+        /** @var int */
+        public $id;
     }
 
     class Region {
@@ -144,6 +208,15 @@ namespace EnterAggregator\Config {
     class Credit {
         /** @var string */
         public $cookieName;
+        /** @var Credit\DirecCredit  */
+        public $directCredit;
+        /** @var Credit\Kupivkredit */
+        public $kupivkredit;
+
+        public function __construct() {
+            $this->directCredit = new Credit\DirecCredit();
+            $this->kupivkredit = new Credit\Kupivkredit();
+        }
     }
     class Partner {
         /** @var string */
@@ -182,8 +255,6 @@ namespace EnterAggregator\Config {
         public $password;
         /** @var float */
         public $timeout;
-        /** @var float */
-        public $hugeTimeout;
 
         public function __construct() {}
     }
@@ -191,20 +262,33 @@ namespace EnterAggregator\Config {
     class CoreService extends CurlService {
         /** @var string */
         public $clientId;
+        /** @var bool */
+        public $debug;
     }
 
     class CmsService extends CurlService {
     }
 
-    class AdminService extends CurlService {
+    class ScmsService extends CurlService {
+    }
+
+    class CrmService extends CurlService {
+        /** @var string */
+        public $clientId;
         /** @var bool */
-        public $enabled;
+        public $debug;
+    }
+
+    class AdminService extends CurlService {
     }
 
     class ReviewService extends CurlService {
     }
 
     class ContentService extends CurlService {
+    }
+
+    class InfoService extends CurlService {
     }
 
     class RetailRocketService extends CurlService {
@@ -221,6 +305,17 @@ namespace EnterAggregator\Config {
         public $cacheDir;
         /** @var string */
         public $templateClassPrefix;
+        /**
+         * Проверять передаваемые в escape-функцию значения или нет
+         *
+         * @var bool
+         */
+        public $checkEscape;
+    }
+
+    class Order {
+        /** @var string */
+        public $splitSessionKey;
     }
 
     class Product {
@@ -272,13 +367,9 @@ namespace EnterAggregator\Config {
         public $urlPaths = [];
     }
 
-    class DirecCredit {
-        /** @var bool */
-        public $enabled;
-        /** @var int */
-        public $minPrice;
-        /** @var string */
-        public $partnerId;
+    class ProductLabel {
+        /** @var array */
+        public $urlPaths = [];
     }
 }
 
@@ -335,4 +426,28 @@ namespace EnterAggregator\Config\Partner\Service {
     class GoogleRetargeting extends PartnerConfig {}
 
     class Cityads extends PartnerConfig {}
+}
+
+namespace EnterAggregator\Config\Credit {
+    use EnterAggregator\Config\CurlService;
+
+    class DirecCredit {
+        /** @var bool */
+        public $enabled;
+        /** @var int */
+        public $minPrice;
+        /** @var string */
+        public $partnerId;
+    }
+
+    class Kupivkredit extends CurlService {
+        /** @var bool */
+        public $enabled;
+        /** @var string */
+        public $partnerId;
+        /** @var string */
+        public $secretPhrase;
+        /** @var string */
+        public $channel;
+    }
 }

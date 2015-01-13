@@ -22,7 +22,7 @@ define(
                     window.sonar_basket = { products: data.cartProduct };
                 }
 
-                //require(['https://eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru.js']);
+                require(['//eu-sonar.sociomantic.com/js/2010-07-01/adpan/enter-ru-m']);
             }
         ;
 

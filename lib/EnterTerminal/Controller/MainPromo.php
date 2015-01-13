@@ -1,60 +1,74 @@
 <?php
 
-namespace EnterTerminal\Controller;
+namespace EnterTerminal\Controller {
 
-use Enter\Http;
-use EnterTerminal\ConfigTrait;
-use EnterAggregator\CurlTrait;
-use EnterTerminal\Controller;
-use EnterTerminal\Repository;
-use EnterCurlQuery as Query;
-use EnterModel as Model;
-use EnterTerminal\Model\MainPromo as Page;
+    use Enter\Http;
+    use EnterTerminal\ConfigTrait;
+    use EnterAggregator\CurlTrait;
+    use EnterTerminal\Controller;
+    use EnterTerminal\Repository;
+    use EnterQuery as Query;
+    use EnterModel as Model;
+    use EnterTerminal\Controller\MainPromo\Response;
 
-class MainPromo {
-    use ConfigTrait, CurlTrait;
+    class MainPromo {
+        use ConfigTrait, CurlTrait;
 
-    /**
-     * @param Http\Request $request
-     * @throws \Exception
-     * @return Http\JsonResponse
-     */
-    public function execute(Http\Request $request) {
-        $config = $this->getConfig();
-        $curl = $this->getCurl();
+        /**
+         * @param Http\Request $request
+         * @throws \Exception
+         * @return Http\JsonResponse
+         */
+        public function execute(Http\Request $request) {
+            $config = $this->getConfig();
+            $curl = $this->getCurl();
 
-        $promoRepository = new \EnterRepository\Promo();
+            $promoRepository = new \EnterRepository\Promo();
 
-        // ид магазина
-        $shopId = (new Repository\Shop())->getIdByHttpRequest($request);
+            // ид региона
+            $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+            if (!$regionId) {
+                throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
+            }
 
-        // запрос магазина
-        $shopItemQuery = new Query\Shop\GetItemById($shopId);
-        $curl->prepare($shopItemQuery);
+            // запрос региона
+            $regionItemQuery = new Query\Region\GetItemById($regionId);
+            $curl->prepare($regionItemQuery);
 
-        $curl->execute();
+            $curl->execute();
 
-        // магазин
-        $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
-        if (!$shop) {
-            throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
+            // регион
+            $region = (new Repository\Region())->getObjectByQuery($regionItemQuery);
+            if (!$region) {
+                return (new Controller\Error\NotFound())->execute($request, sprintf('Регион #%s не найден', $regionId));
+            }
+
+            // запрос баннеров
+            $promoListQuery = new Query\Promo\GetList($region->id);
+            $curl->prepare($promoListQuery);
+
+            $curl->execute();
+
+            // баннеры
+            $promos = $promoRepository->getObjectListByQuery($promoListQuery);
+
+            // ответ
+            $response = new Response();
+            $response->region = $region;
+            $response->promos = $promos;
+
+            return new Http\JsonResponse($response);
         }
+    }
+}
 
-        // запрос баннеров
-        $promoListQuery = new Query\Promo\GetList($shop->regionId);
-        $curl->prepare($promoListQuery);
+namespace EnterTerminal\Controller\MainPromo {
+    use EnterModel as Model;
 
-        $curl->execute();
-
-        // баннеры
-        $promos = $promoRepository->getObjectListByQuery($promoListQuery);
-
-        // страница
-        $page = new Page();
-        $page->region = $shop->region;
-        $page->shop = $shop;
-        $page->promos = $promos;
-
-        return new Http\JsonResponse($page);
+    class Response {
+        /** @var Model\Region */
+        public $region;
+        /** @var \EnterModel\Promo[] */
+        public $promos = [];
     }
 }

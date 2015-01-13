@@ -27,6 +27,8 @@ class Property {
     public $isInList;
     /** @var string */
     public $shownValue;
+    /** @var Property\Option[] */
+    public $options = [];
 
     /**
      * @param array $data
@@ -43,6 +45,11 @@ class Property {
         if (array_key_exists('group_position', $data)) $this->groupPosition = (int)$data['group_position'];
         if (array_key_exists('position', $data)) $this->position = (int)$data['position'];
         if (array_key_exists('is_view_list', $data)) $this->isInList = (bool)$data['is_view_list'];
+        if (array_key_exists('option', $data) && is_array($data['option'])) {
+            foreach ($data['option'] as $option) {
+                $this->options[] = new Property\Option($option);
+            }
+        }
 
         if ($this->isMultiple && isset($data['option'][0])) {
             foreach ($data['option'] as $optionItem) {

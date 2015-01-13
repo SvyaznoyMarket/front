@@ -3,54 +3,63 @@
    ========================================================================== */
 
 @media only screen and (max-width: 900px) {
-	.productDesc {
+
+	.prodDescr {
 		margin-bottom: 0;
+
+		&_r {
+			float: none;
+
+			width: auto;
+			padding: 10px 10px;
+
+			border-top: 1px solid @tabLightGreyBorder;
+			background: @tabGrey;
+		}
+
+		&_l {
+			float: none;
+
+			width: 100%;
+			margin: 0 0 30px;
+
+			text-align: center;
+		}
 	}
 
-	.productDescInfo {
-		float: none;
-
-		width: auto;
-		padding: 10px 10px;
-
-		border-top: 1px solid @tabLightGreyBorder;
-		background: @tabGrey;
+	.prodBuy {
+		max-width: 562px;
+		margin: 0 auto;
 	}
 
-	.slidesItems {
-		float: none;
-
-		width: auto;
-		margin: 0 0 30px;
-
-		text-align: center;
-	}
-
-	.productDescHead{
+	.prodHd {
 		float: none;
 
 		width: auto;
 		padding: 0 10px;
 	}
-
-	.buyWidth {
-		max-width: 562px;
-		margin: 0 auto;
-	}
 }
 
 @media only screen and (max-width: 570px) {
-	.productDesc {
 
-		.buyInfoWrap {
+	.prodDescr {
+
+		&_l {
+			min-height: 300px;
+		}
+	}
+
+	.prodBuy {
+
+		&_l {
 			float: none;
+
+			&_w {
+		    	padding-right: 0;
+		    }
 		}
 
-		.buyInfo {
-	    	padding-right: 0;
-		}
-
-		.deliveryInfo {
+		&_r {
 			float: none;
 
 		    width: auto;
@@ -60,10 +69,22 @@
 
 		    border-top: 1px solid @tabLightGreyBorder;
 		}
-	}
 
-	.slidesItems {
-		min-height: 300px;
+		&_b  {
+			margin: 0 auto 10px;
+
+			&_l {
+				padding-right: 85px;
+			}
+
+			&_r {
+				display: block;
+			}
+
+			&_f {
+				display: none;
+			}
+		}
 	}
 
 	.deliveryList {
@@ -78,7 +99,8 @@
 }
 
 @media only screen and (max-width: 330px) {
-	.buyInfoBuy .btnBuy {
+
+	.prodBuy .btnBuy {
 		float: right;
 
 		width: 128px;

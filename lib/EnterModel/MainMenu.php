@@ -22,8 +22,11 @@ namespace EnterModel {
 
 namespace EnterModel\MainMenu {
     use EnterModel as Model;
+    use EnterAggregator\ConfigTrait; // FIXME!!!
 
     class Element {
+        use ConfigTrait;
+
         /** @var string */
         public $type;
         /** @var string */
@@ -48,21 +51,44 @@ namespace EnterModel\MainMenu {
         public $classHover;
         /** @var Model\MainMenu\Element[] */
         public $children = [];
+        /** @var bool */
+        public $hasChildren;
+        /** @var Model\Media[] */
+        public $media = [];
 
         /**
          * @param array $data
          */
         public function __construct(array $data = []) {
-            if (array_key_exists('type', $data)) $this->type = (string)$data['type'];
-            if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
-            if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
-            if (array_key_exists('char', $data)) $this->char = (string)$data['char'];
-            if (array_key_exists('image', $data)) $this->image = (string)$data['image'];
-            if (array_key_exists('link', $data)) $this->url = trim((string)$data['link']);
-            if (array_key_exists('style', $data)) $this->style = (string)$data['style'];
-            if (array_key_exists('styleHover', $data)) $this->styleHover = (string)$data['styleHover'];
-            if (array_key_exists('class', $data)) $this->class = (string)$data['class'];
-            if (array_key_exists('classHover', $data)) $this->classHover = (string)$data['classHover'];
+            $applicationTags = (array)$this->getConfig()->applicationTags;
+
+            if (isset($data['type'])) $this->type = (string)$data['type'];
+            if (isset($data['id'])) $this->id = (string)$data['id'];
+            if (isset($data['name'])) $this->name = (string)$data['name'];
+            if (isset($data['char'])) $this->char = (string)$data['char'];
+            if (isset($data['link'])) $this->url = trim((string)$data['link']);
+            if (isset($data['style'])) $this->style = (string)$data['style'];
+            if (isset($data['styleHover'])) $this->styleHover = (string)$data['styleHover'];
+            if (isset($data['class'])) $this->class = (string)$data['class'];
+            if (isset($data['classHover'])) $this->classHover = (string)$data['classHover'];
+            if (isset($data['medias']) && is_array($data['medias'])) {
+                foreach ($data['medias'] as $mediaItem) {
+                    $media = new Model\Media($mediaItem);
+                    if (isset($media->tags[0]) && !(bool)array_intersect($applicationTags, $media->tags)) continue;
+
+                    $this->media[] = $media;
+                }
+            }
+            if (empty($this->char) && (bool)$this->media) {
+                foreach ($this->media as $media) {
+                    if ('image' == $media->type) {
+                        /** @var Model\Media\ImageSource|null $source */
+                        if ($source = reset($media->sources)) {
+                            $this->image = $source->url;
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -26,6 +26,13 @@
             "productId": "[\\w\\d-_]+"
         }
     },
+    "ProductCatalog\\GetSlice": {
+        "name": "Срез товаров в каталоге товаров",
+        "pattern": "/catalog/slice/{sliceToken}",
+        "require": {
+            "sliceToken": "[\\w\\d-_]+"
+        }
+    },
     "ProductCatalog\\GetRootCategory": {
         "name": "Каталог товаров - родительская категория",
         "pattern": "/catalog/{categoryPath}",
@@ -51,6 +58,27 @@
     "Product\\GetListByFilter": {
         "name": "Список товаров",
         "pattern": "/ajax/product-list"
+    },
+    "Product\\QuantityAvailabilityList": {
+        "name": "Доступность товара",
+        "pattern": "/ajax/product-quantity",
+        "method": ["POST"]
+    },
+
+    "ProductSlice\\GetCategory": {
+        "name": "Срез товаров по категории",
+        "pattern": "/slices/{sliceToken}/{categoryToken}",
+        "require": {
+            "sliceToken": "[\\w\\d-_]+",
+            "categoryToken": "[\\w\\d-_]+"
+        }
+    },
+    "ProductSlice\\Get": {
+        "name": "Срез товаров",
+        "pattern": "/slices/{sliceToken}",
+        "require": {
+            "sliceToken": "[\\w\\d-_]+"
+        }
     },
 
     "Region\\Autocomplete": {
@@ -110,7 +138,6 @@
         }
     },
 
-
     "User\\Login": {
         "name": "Вход пользователя",
         "pattern": "/login"
@@ -146,6 +173,16 @@
         "pattern": "/search"
     },
 
+    "Compare\\Index": {
+        "name": "Сравнение товаров",
+        "pattern": "/compare"
+    },
+
+    "ProductSet\\Index": {
+        "name": "Сеты товаров",
+        "pattern": "/products/set/{productBarcodes}"
+    },
+
     "Cart\\SetProduct": {
         "name": "Установить товар в корзине (когда js поломался)",
         "pattern": "/cart/set-product/{productId}",
@@ -175,5 +212,10 @@
         "require": {
             "productId": "[\\w\\d-_]+"
         }
+    },
+
+    "Content": {
+        "name": "Контентные страницы",
+        "pattern": "/{contentToken}"
     }
 }

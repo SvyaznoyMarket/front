@@ -12,10 +12,10 @@ define(
 
                 var $el = $(e.target),
                     data = $el.data(),
-                    $widget = $($el.data('widgetSelector'))
+                    $widget = $el.data('widgetSelector') ? $($el.data('widgetSelector')) : null
                 ;
 
-                console.info('addProductToCart', $el, $widget, data);
+                console.info('addProductToCart', {'$el': $el, '$widget': $widget, 'data': data});
 
                 if (data.url) {
                     $.post(data.url, data.value, function(response) {
@@ -30,6 +30,9 @@ define(
                         }
 
                         $body.trigger(config.event.productAddedToCart, data.value);
+
+                        // FIXME
+                        $('.js-kit-close').trigger('click');
                     });
 
                     e.preventDefault();
@@ -88,39 +91,66 @@ define(
                 }
             },
 
-            changeProductQuantity = function(e, quantity) {
+            changeProductQuantity = function(e, product, quantity, checkUrl, callback) {
                 e.stopPropagation();
 
                 var idSelector = $(e.target),
                     $el = $(idSelector),
                     dataValue = $el.data('value'),
                     $widget = $($el.data('widgetSelector')),
-                    timer = parseInt($widget.data('timer'))
+                    timer = parseInt($widget.data('timer')),
+                    checkUrl = checkUrl || null,
+                    handle = function(quantity, error) {
+                        if (error || !_.isFinite(quantity) || (quantity < product.minQuantity) || (quantity > 999)) {
+                            var error = error || {code: 'invalid', message: 'Неверное количество товара'};
+
+                            console.info('changeProductQuantityData:js-buyButton', error, quantity, $el);
+
+                            if (callback) callback(error);
+                            return false;
+                        }
+
+                        if (dataValue.product[product.id]) {
+                            dataValue.product[product.id].quantity = quantity;
+                        }
+
+                        if (callback) callback();
+
+                        // FIXME
+                        $('.js-productKit-reset').prop('checked', false);
+                    }
                 ;
 
-                console.info('changeProductQuantity', $el, quantity);
+                console.info('changeProductQuantity', {'$el' : $el, '$widget': $widget, 'product': product, 'quantity': quantity, 'checkUrl': checkUrl});
 
-                if (_.isFinite(timer) && (timer > 0)) {
-                    try {
-                        clearTimeout(timer);
-                    } catch (error) {
-                        console.warn(error);
+
+                if (checkUrl) {
+                    $.post(checkUrl, {
+                        products: [
+                            { id: product.id, quantity: quantity }
+                        ]
+                    }).done(function(result) {
+                        if (result.success) {
+                            handle(quantity);
+                        } else {
+                            handle(product.quantity, {code: 'invalid', message: 'Невозможно установить такое количество'});
+                        }
+                    });
+                } else {
+                    if (('on' == $el.data('autoUpdate')) && _.isFinite(timer) && (timer > 0)) {
+                        try {
+                            clearTimeout(timer);
+                        } catch (error) {
+                            console.warn(error);
+                        }
+
+                        timer = setTimeout(function() { addProductToCart(e); }, 600);
+
+                        $widget.data('timer', timer);
                     }
 
-                    timer = setTimeout(function() { addProductToCart(e); }, 600);
-
-                    $widget.data('timer', timer);
+                    handle(quantity);
                 }
-
-                if (!_.isFinite(quantity) || (quantity <= 0) || (quantity > 999)) {
-                    var error = {code: 'invalid', message: 'Неверное количество товара'};
-
-                    console.info('changeProductQuantityData:js-buyButton', error, quantity, $el);
-
-                    return error;
-                }
-
-                dataValue.product.quantity = quantity;
 
                 // FIXME: осторожно, гкод
                 if ($el.hasClass('js-quickBuyButton')) {
@@ -135,13 +165,29 @@ define(
                 var $el = $(e.target),
                     $widget = $($el.data('widgetSelector')),
                     $target = $($el.data('buttonSelector')),
-                    targetDataValue = $target.data('value');
+                    $value = $($el.data('valueSelector')),
+                    targetDataValue = $target.data('value'),
+                    dataValue = $value.data('value')
+                ;
 
-                console.info('incSpinnerValue', $el, $target, $widget);
+                console.info('incSpinnerValue', { '$el': $el, '$target': $target, '$value': $value, '$widget': $widget});
 
-                if (targetDataValue) {
-                    $target.trigger('changeProductQuantityData', targetDataValue.product.quantity + 1);
-                    $widget.trigger('renderValue', targetDataValue.product);
+                var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
+                if (product) {
+                    $target.trigger('changeProductQuantityData', [
+                        dataValue.product,
+                        product.quantity + 1,
+                        dataValue.checkUrl,
+                        function(error) {
+                            $widget.trigger('renderValue', [product]);
+                            if (error) {
+                                // FIXME
+                                $widget.find('.js-buySpinner-inc').css({opacity: 0.5});
+                            }
+                        }
+                    ]);
+                } else {
+                    console.error('Товар не получен', product);
                 }
 
                 $el.blur();
@@ -153,13 +199,27 @@ define(
                 var $el = $(e.target),
                     $widget = $($el.data('widgetSelector')),
                     $target = $($el.data('buttonSelector')),
-                    targetDataValue = $target.data('value');
+                    $value = $($el.data('valueSelector')),
+                    targetDataValue = $target.data('value'),
+                    dataValue = $value.data('value')
+                ;
 
-                console.info('decSpinnerValue', $el, $target);
+                console.info('incSpinnerValue', { '$el': $el, '$target': $target, '$value': $value, '$widget': $widget});
 
-                if (targetDataValue) {
-                    $target.trigger('changeProductQuantityData', targetDataValue.product.quantity - 1);
-                    $widget.trigger('renderValue', targetDataValue.product);
+                var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
+                if (product) {
+                    $target.trigger('changeProductQuantityData', [
+                        dataValue.product,
+                        product.quantity - 1,
+                        dataValue.checkUrl,
+                        function() {
+                            $widget.trigger('renderValue', [product]);
+                            // FIXME
+                            $widget.find('.js-buySpinner-inc').css({opacity: 1});
+                        }
+                    ]);
+                } else {
+                    console.error('Товар не получен', product);
                 }
 
                 $el.blur();
@@ -171,16 +231,26 @@ define(
                 var $el = $(e.target),
                     $widget = $($el.data('widgetSelector')),
                     $target = $($el.data('buttonSelector')),
-                    targetDataValue = $target.data('value');
+                    targetDataValue = $target.data('value'),
+                    dataValue = $el.data('value')
+                ;
 
-                console.info('changeSpinnerValue', $el, $target);
+                console.info('changeSpinnerValue', { '$el': $el, '$target': $target, '$widget': $widget});
 
                 var value = $el.val();
+                var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
                 if ('' != value) {
-                    $target.trigger('changeProductQuantityData', parseInt(value));
-
-                    if (targetDataValue) {
-                        $widget.trigger('renderValue', targetDataValue.product);
+                    if (product) {
+                        $target.trigger('changeProductQuantityData', [
+                            dataValue.product,
+                            parseInt(value),
+                            dataValue.checkUrl,
+                            function() {
+                                $widget.trigger('renderValue', [product]);
+                                // FIXME
+                                $widget.find('.js-buySpinner-inc').css({opacity: 1});
+                            }
+                        ]);
                     }
                 }
             },

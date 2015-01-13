@@ -32,7 +32,7 @@ define(
                 window.APRT_DATA = data;
                 console.info('partner', 'actionpay', 'APRT_DATA', window.APRT_DATA);
 
-                require(['//rt.actionpay.ru/code/enter/']);
+                require(['//aprtx.com/code/enter/']);
             }
         ;
 

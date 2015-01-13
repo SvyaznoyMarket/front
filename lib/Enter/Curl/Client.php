@@ -48,11 +48,6 @@ class Client {
      * @throws \Exception
      */
     public function query(Query $query) {
-        // таймаут по умолчанию
-        if (!$query->getTimeout()) {
-            $query->setTimeout($this->config->timeout);
-        }
-
         $query->incCall();
 
         $connection = $this->create($query);
@@ -75,7 +70,7 @@ class Client {
 
             $headers = [];
             $this->parseResponse($connection, $response, $headers);
-            $query->setHeaders($headers);
+            $query->setResponseHeaders($headers);
 
             curl_close($connection);
 
@@ -86,14 +81,14 @@ class Client {
             $query->callback($response);
             $query->setEndAt(microtime(true));
 
-            if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $query, 'tag' => ['curl']]);
+            if ($this->logger) $this->logger->push(['sender' => __FILE__ . ' ' .  __LINE__, 'query' => $query, 'tag' => ['curl']]);
 
             return $this;
         } catch (\Exception $e) {
             $query->setError($e);
             $query->setEndAt(microtime(true));
 
-            if ($this->logger) $this->logger->push(['type' => 'error', 'action' => __METHOD__, 'query' => $query, 'tag' => ['curl']]);
+            if ($this->logger) $this->logger->push(['type' => 'error', 'sender' => __FILE__ . ' ' .  __LINE__, 'query' => $query, 'tag' => ['curl']]);
 
             throw $e;
         }
@@ -107,7 +102,7 @@ class Client {
      */
     public function execute($retryTimeout = null, $retryCount = null) {
         if (!$this->multiConnection) {
-            if ($this->logger) $this->logger->push(['type' => 'warn', 'action' => __METHOD__, 'message' => 'Нет запросов для выполнения', 'tag' => ['curl']]);
+            if ($this->logger) $this->logger->push(['type' => 'warn', 'sender' => __FILE__ . ' ' .  __LINE__, 'message' => 'Нет запросов для выполнения', 'tag' => ['curl']]);
 
             return $this;
         }
@@ -123,6 +118,8 @@ class Client {
             $absoluteTimeout = microtime(true);
 
             foreach ($this->queries as $query) {
+                if ($query->getStartAt()) continue;
+
                 $query->setStartAt($absoluteTimeout);
             }
 
@@ -166,12 +163,12 @@ class Client {
 
                         $headers = [];
                         $this->parseResponse($connection, $response, $headers);
-                        $this->queries[$queryId]->setHeaders($headers);
+                        $this->queries[$queryId]->setResponseHeaders($headers);
 
                         // TODO: отложенный запуск обработчиков
                         $this->queries[$queryId]->callback($response);
 
-                        if ($this->logger) $this->logger->push(['action' => __METHOD__, 'query' => $this->queries[$queryId], 'tag' => ['curl']]);
+                        if ($this->logger) $this->logger->push(['sender' => __FILE__ . ' ' .  __LINE__, 'query' => $this->queries[$queryId], 'tag' => ['curl']]);
                         $this->queries[$queryId]->setEndAt(microtime(true));
 
                         unset($this->queries[$queryId]);
@@ -179,7 +176,7 @@ class Client {
                         $this->queries[$queryId]->setError($e);
                         $this->queries[$queryId]->setEndAt(microtime(true));
 
-                        if ($this->logger) $this->logger->push(['type' => 'error', 'action' => __METHOD__, 'query' => $this->queries[$queryId], 'tag' => ['curl']]);
+                        if ($this->logger) $this->logger->push(['type' => 'error', 'sender' => __FILE__ . ' ' .  __LINE__, 'query' => $this->queries[$queryId], 'tag' => ['curl']]);
                     }
                 }
 
@@ -191,7 +188,7 @@ class Client {
                     }
                     $tryAvailable = false;
                     foreach ($this->queries as $query) {
-                        if (count($query->getConnections()) < $retryCount) {
+                        if (count($query->getConnections()) < ($query->getRetry() ?: $retryCount)) {
                             $tryAvailable = true;
                             break;
                         }
@@ -199,12 +196,12 @@ class Client {
                     if ($tryAvailable && null !== $retryTimeout) {
                         $ready = curl_multi_select($this->multiConnection, $timeout);
                     } else {
-                        $ready = curl_multi_select($this->multiConnection, 30);
+                        $ready = curl_multi_select($this->multiConnection, $timeout);
                     }
 
                     if (0 === $ready) {
                         foreach ($this->queries as $query) {
-                            if (count($query->getConnections()) >= $retryCount) continue;
+                            if (count($query->getConnections()) >= ($query->getRetry() ?: $retryCount)) continue;
                             $this->prepare($query);
                         }
                     }
@@ -213,7 +210,7 @@ class Client {
         } catch (\Exception $e) {
             $this->clear();
 
-            if ($this->logger) $this->logger->push(['type' => 'error', 'action' => __METHOD__, 'error' => ['code' => $e->getCode(), 'message' => $e->getMessage()], 'tag' => ['curl']]);
+            if ($this->logger) $this->logger->push(['type' => 'error', 'sender' => __FILE__ . ' ' .  __LINE__, 'error' => ['code' => $e->getCode(), 'message' => $e->getMessage()], 'tag' => ['curl']]);
 
             throw $e;
         }
@@ -250,7 +247,7 @@ class Client {
         $resource = $this->create($query);
         if (0 !== curl_multi_add_handle($this->multiConnection, $resource)) {
             $message = curl_error($resource);
-            if ($this->logger) $this->logger->push(['type' => 'error', 'action' => __METHOD__, 'message' => $message, 'tag' => ['curl']]);
+            if ($this->logger) $this->logger->push(['type' => 'error', 'sender' => __FILE__ . ' ' .  __LINE__, 'message' => $message, 'tag' => ['curl']]);
 
             throw new \Exception($message);
         };
@@ -274,7 +271,10 @@ class Client {
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($connection, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($connection, CURLOPT_URL, $query->getUrl());
-        if ((bool)$this->config->httpheader) {
+
+        if ((bool)$query->getHeaders()) {
+            curl_setopt($connection, CURLOPT_HTTPHEADER, $query->getHeaders());
+        } else if ((bool)$this->config->httpheader) {
             curl_setopt($connection, CURLOPT_HTTPHEADER, $this->config->httpheader);
         }
         if ($this->config->encoding) {
@@ -284,6 +284,8 @@ class Client {
         if ($query->getTimeout()) {
             curl_setopt($connection, CURLOPT_NOSIGNAL, true);
             curl_setopt($connection, CURLOPT_TIMEOUT_MS, $query->getTimeout() * 1000);
+        } else {
+            if ($this->logger) $this->logger->push(['type' => 'error', 'message' => 'Не установлен timeout', 'sender' => __FILE__ . ' ' .  __LINE__, 'query' => $query, 'tag' => ['curl']]);
         }
 
         if ($query->getAuth()) {
@@ -292,11 +294,15 @@ class Client {
 
         if ((bool)$query->getData()) {
             curl_setopt($connection, CURLOPT_POST, true);
-            curl_setopt($connection, CURLOPT_POSTFIELDS, json_encode($query->getData()));
+            curl_setopt($connection, CURLOPT_POSTFIELDS, $query->getDataEncoder() ? call_user_func($query->getDataEncoder(), $query->getData()) : $query->getData());
         }
 
         if ($this->config->referer) {
             curl_setopt($connection, CURLOPT_REFERER, $this->config->referer);
+        }
+
+        if ($this->config->debug) {
+            curl_setopt($connection, CURLINFO_HEADER_OUT, true);
         }
 
         $query->setId((string)$connection);

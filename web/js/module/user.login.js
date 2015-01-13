@@ -6,68 +6,43 @@ define(
         $, _
     ) {
         var
-            $body = $('body'),
-            urlHash = $(location).attr('hash') ? $(location).attr('hash').substring(1) : null;
+            $authContainer = $('.js-authContainer')
         ;
 
-        $('.js-authTab').on('click', function(e) {
-            e.stopPropagation();
-
+        // изменение состояния блока авторизации
+        $authContainer.on('changeState', function(e, state) {
             var
-                $el = $(e.target),
-                $content = $($el.data('contentSelector')),
-                urlHash = $el.data('urlHash')
+                $el = $(this)
             ;
 
-            if ($content.is(':visible')) {
-                return false;
-            }
+            console.info({'$el': $el, 'state': state});
 
-            $('.js-authTab').each(function(i, el) {
-                var $el = $(el),
-                    $content = $($el.data('contentSelector'))
-                ;
-
-                $content.slideUp('fast');
-                $el.addClass('borderBd');
-            });
-
-            $content.slideDown('fast');
-            $el.removeClass('borderBd');
-
-            if (urlHash) {
-                $(location).attr('hash', urlHash);
-            } else {
-                $(location).removeAttr('hash');
-            }
-
-            e.preventDefault();
-        });
-
-        $('.js-authLoginLink').on('click', function(e) {
-            var $content = $($(e.target).data('contentSelector'));
-
-            if ($content.length) {
-                $('.js-authLoginContent').each(function(i, el) {
-                    var $el = $(el),
-                        $input = $el.find(':text')
+            if (state) {
+                var
+                    oldClass = $el.attr('data-state') ? ('state_' + $el.attr('data-state')) : null,
+                    newClass = 'state_' + state
                     ;
-                    $el.hide();
-                    $input.data('value', $input.val());
-                    $input.val('');
-                    console.warn($input);
-                });
+
+                oldClass && $el.removeClass(oldClass);
+                $el.addClass(newClass);
+                $el.attr('data-state', state);
             }
 
-            $content.show();
-            var $input = $content.find(':text');
-            $input.val($input.data('value'));
+            $('.js-resetForm, .js-authForm, .js-registerForm').trigger('clearError');
         });
+
+        // клик по ссылкам
+        $authContainer.find('.js-link').on('click', function(e) {
+            var
+                $el = $(e.target),
+                state = $el.data('state')
+            ;
+
+            console.info({'state': state});
+            $authContainer.trigger('changeState', [state]);
+        });
+        console.info($authContainer);
 
         $(".js-phone-mask").mask("+7 (999) 999 - 99 - 99");
-
-        if (urlHash) {
-            $('.js-authTab').filter('[data-url-hash="' + urlHash + '"]').trigger('click', [false]);
-        }
     }
 );

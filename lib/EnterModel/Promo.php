@@ -4,9 +4,9 @@ namespace EnterModel {
     use EnterModel as Model;
 
     class Promo {
-        /** @var int */
+        /** @var string */
         public $id;
-        /** @var int */
+        /** @var string */
         public $type;
         /** @var string */
         public $name;
@@ -24,7 +24,7 @@ namespace EnterModel {
             if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
             if (array_key_exists('media_image', $data)) $this->image = (string)$data['media_image'];
-            if (array_key_exists('url', $data)) $this->url = (string)$data['url'];
+            if (array_key_exists('url', $data)) $this->url = $data['url'] ? (string)$data['url'] : null;
             if (isset($data['item_list'][0])) {
                 foreach ($data['item_list'] as $item) {
                     $this->items[] = new Model\Promo\Item($item);
@@ -53,6 +53,19 @@ namespace EnterModel {
             }
             else if (isset($this->items[0]->contentToken)) {
                 $this->type = 'Content';
+
+                // FIXME
+                try {
+                    if (preg_match('/[a-z0-9._-]+\/slices\/(\w+)/', $this->url, $matches)) {
+                        if (!empty($matches[1])) {
+                            $item = new Model\Promo\Item();
+                            $item->sliceId = (string)$matches[1];
+
+                            $this->type = 'ProductCatalog/Slice';
+                            $this->items = [$item];
+                        }
+                    }
+                } catch (\Exception $e) {}
             }
         }
     }
@@ -73,9 +86,10 @@ namespace EnterModel\Promo {
         /** @var string */
         public $productId;
         /** @var string */
-        //public $serviceId;
+        public $sliceId;
         /** @var string */
         public $productCategoryId;
+        /** @var string */
         public $contentToken;
 
         /**

@@ -24,7 +24,11 @@ class Service {
     public function getRequestId() {
         static $instance;
 
-        return $instance ?: uniqid();
+        if (!$instance) {
+            $instance = uniqid();
+        }
+
+        return $instance;
     }
 
     /**
@@ -91,6 +95,7 @@ class Service {
             $config->httpheader = ['X-Request-Id: ' . $this->getRequestId(), 'Expect:'];
             $config->retryTimeout = $applicationConfig->curl->retryTimeout;
             $config->retryCount = $applicationConfig->curl->retryCount;
+            $config->debug = $applicationConfig->debugLevel > 0;
 
             $instance = new Curl\Client($config);
             $instance->setLogger($this->getLogger());
@@ -122,9 +127,18 @@ class Service {
                 ]),
                 */
                 'partials_loader'       => new FilesystemAliasLoader($config->templateDir),
-                'escape'                => function($value) {
-                    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-                },
+                'escape'                => $config->checkEscape
+                    ? function($value) {
+                        if (!is_scalar($value)) {
+                            throw new \Exception('Неверное значение ' . json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+                        }
+
+                        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+                    }
+                    : function($value) {
+                        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+                    }
+                ,
                 'charset'               => 'UTF-8',
                 //'logger'                => null,
                 'logger'                => new \Mustache_Logger_StreamLogger('php://stderr'),
@@ -141,9 +155,11 @@ class Service {
         static $instance;
 
         if (!$instance) {
+            $applicationConfig = $this->getConfig();
+
             $config = new Routing\Config();
-            $config->routeClassPrefix = 'EnterSite\Routing\\'; // TODO брать из Config\Application\Router
-            $config->routes = json_decode(file_get_contents(__DIR__ . '/../../config/route.json'), true); // TODO брать из Config\Application\Router
+            $config->routeClassPrefix = $applicationConfig->router->classPrefix;
+            $config->routes = $applicationConfig->router->routeFile ? json_decode(file_get_contents($applicationConfig->router->routeFile), true) : [];
 
             $instance = new Routing\Router($config);
         }
@@ -170,7 +186,7 @@ class Service {
             try {
                 $instance->start();
             } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'action' => __METHOD__, 'tag' => ['critical', 'session']]);
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['fatal', 'session']]);
             }
 
             $GLOBALS[$key] = $instance;
@@ -229,5 +245,38 @@ class Service {
         }
 
         return $instance;
+    }
+
+    /**
+     * @param Config $config
+     * @return Config|\StdClass
+     */
+    protected function loadConfigFromJsonFile(Config $config) {
+        if ($config->editable && $config->cacheDir) {
+            $configPath = $config->cacheDir . '/config.json';
+            $configFile = basename($configPath);
+
+            $path = '';
+            foreach (explode('/', trim($configPath, '/')) as $dir) {
+                $path .= '/' . $dir;
+                if ($configFile == $dir) {
+                    if (is_readable($configPath)) {
+                        if ($data = json_decode(file_get_contents($configPath))) {
+                            $config = $data;
+                        }
+                    } else {
+                        file_put_contents($configPath, json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+                    }
+                } else {
+                    if (!is_dir($path)) {
+                        mkdir($path);
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        }
+
+        return $config;
     }
 }

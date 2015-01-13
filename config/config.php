@@ -1,22 +1,20 @@
 <?php
 
-return function(\EnterSite\Config $config) {
+return function(\EnterAggregator\Config $config) {
     mb_internal_encoding('UTF-8');
 
     $config->dir = realpath(__DIR__ . '/..');
-    $config->hostname = 'enter.ru';
 
     $config->debugLevel = 0;
 
-    $config->logger->fileAppender->enabled = true;
-    $config->logger->fileAppender->file = realpath($config->dir . '/../logs') . '/mobile.log';
+    $config->editable = false; // важно!
 
     $config->session->name = 'enter';
-    $config->session->cookieLifetime = 15552000;
+    $config->session->cookieLifetime = 2592000; // 30 дней
     $config->session->cookieDomain = '.enter.ru';
     $config->session->flashKey = '_flash';
 
-    $config->userToken->authCookieName = '_token';
+    $config->userToken->authName = '_token';
 
     $config->googleAnalitics->enabled = true;
     $config->googleAnalitics->id = 'UA-25485956-5';
@@ -41,36 +39,58 @@ return function(\EnterSite\Config $config) {
     // cityads
     $config->partner->service->cityads->enabled = true;
 
-    $config->curl->queryChunkSize = 50;
+    $config->curl->queryChunkSize = 30;
     $config->curl->logResponse = false;
-    $config->curl->timeout = 90;
-    $config->curl->retryTimeout = 0.5;
+    $config->curl->timeout = 30;
+    $config->curl->retryTimeout = 0.4;
     $config->curl->retryCount = 2;
 
     $config->coreService->url = 'http://api.enter.ru/';
     $config->coreService->timeout = 5;
     $config->coreService->clientId = 'site';
+    $config->coreService->debug = false;
+
+    $config->scmsService->url = 'http://scms.enter.ru/';
+    $config->scmsService->timeout = 5;
+
+    $config->crmService->url = 'http://crm.enter.ru/';
+    $config->crmService->timeout = 5;
+    $config->crmService->clientId = 'site';
+    $config->crmService->debug = false;
+
 
     $config->cmsService->url = 'http://cms.enter.ru/';
-    $config->cmsService->timeout = 1;
+    $config->cmsService->timeout = 5;
 
-    $config->adminService->enabled = true;
     $config->adminService->url = 'http://admin.enter.ru/';
     $config->adminService->timeout = 2;
 
-    $config->reviewService->url = 'http://admin.enter.ru/reviews/';
+    $config->reviewService->url = 'http://scms.enter.ru/reviews/';
     $config->reviewService->timeout = 2;
 
     $config->contentService->url = 'http://content.enter.ru/';
+    $config->contentService->timeout = 2;
+
+    $config->infoService->url = 'http://info.ent3.ru/';
+    $config->infoService->timeout = 8;
 
     $config->retailRocketService->account = '519c7f3c0d422d0fe0ee9775';
     $config->retailRocketService->url = 'http://api.retailrocket.ru/api/';
-    $config->retailRocketService->timeout = 0.5;
+    $config->retailRocketService->timeout = 1;
+
+    $config->googleTagManager->enabled = true;
+    $config->googleTagManager->id = 'GTM-P65PBR';
+
+    $config->yandexMetrika->enabled = true;
+    $config->yandexMetrika->id = 10503055;
+
+    $config->mailRu->enabled = true;
+    $config->mailRu->id = 2553999;
 
     $config->mustacheRenderer->dir = $config->dir . '/vendor/mustache';
-    $config->mustacheRenderer->templateDir = $config->dir . '/template';
     $config->mustacheRenderer->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/mustache-cache';
     $config->mustacheRenderer->templateClassPrefix = preg_replace('/[^\w]/', '_', $config->hostname . '_v2' . '-');
+    $config->mustacheRenderer->checkEscape = false;
 
     $config->mediaHosts = [
         0 => 'http://fs01.enter.ru',
@@ -85,10 +105,14 @@ return function(\EnterSite\Config $config) {
         9 => 'http://fs10.enter.ru',
     ];
 
+    $config->order->splitSessionKey = 'order_split';
+
     $config->product->itemPerPage = 19;
     $config->product->itemsInSlider = 60;
+
     $config->productReview->enabled = true;
     $config->productReview->itemsInCard = 7;
+
     $config->productPhoto->urlPaths = [
         0 => '/1/1/60/',
         1 => '/1/1/120/',
@@ -102,7 +126,7 @@ return function(\EnterSite\Config $config) {
         3 => '/6/1/500/',
     ];
 
-    $config->search->minPhraseLength = 1;
+    $config->search->minPhraseLength = 2;
 
     $config->promo->urlPaths =[
         0 => '/4/1/230x302/',
@@ -110,7 +134,20 @@ return function(\EnterSite\Config $config) {
         2 => '/4/1/920x320/',
     ];
 
-    $config->directCredit->enabled = true;
-    $config->directCredit->minPrice = 3000;
-    $config->directCredit->partnerId = '4427';
+    $config->productLabel->urlPaths = [
+        0 => '/7/1/66x23/',
+        1 => '/7/1/124x38/',
+    ];
+
+    $config->credit->directCredit->enabled = true;
+    $config->credit->directCredit->minPrice = 3000;
+    $config->credit->directCredit->partnerId = '4427';
+
+    $config->credit->kupivkredit->enabled = true;
+    $config->credit->kupivkredit->partnerId = '1-178YO4Z';
+    $config->credit->kupivkredit->secretPhrase = '321ewq';
+    $config->credit->kupivkredit->url = 'https://kupivkredit-test-fe.tcsbank.ru/';
+    $config->credit->kupivkredit->timeout = 2;
+    
+    
 };

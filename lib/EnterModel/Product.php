@@ -8,7 +8,13 @@ class Product {
     /** @var string */
     public $id;
     /** @var string */
+    public $ui;
+    /** @var string */
     public $article;
+    /** @var string */
+    public $barcode;
+    /** @var string */
+    public $typeId;
     /** @var string */
     public $webName;
     /** @var string */
@@ -31,6 +37,10 @@ class Product {
     public $isInShopStockOnly;
     /** @var bool */
     public $isInShopShowroomOnly;
+    /** @var bool */
+    public $isInWarehouse;
+    /** @var bool */
+    public $isKitLocked;
     /** @var Model\Product\Category|null */
     public $category;
     /** @var Model\Brand|null */
@@ -41,16 +51,22 @@ class Product {
     public $propertyGroups = [];
     /** @var Model\Product\Stock[] */
     public $stock = [];
+    /** @var Model\Product\ShopState[] */
+    public $shopStates = [];
     /** @var int */
     public $price;
     /** @var int */
     public $oldPrice;
+    /** @var Model\Product\Label[] */
+    public $labels = [];
     /** @var Model\Product\Media */
     public $media;
     /** @var Model\Product\Rating|null */
     public $rating;
     /** @var Model\Product\ProductModel|null */
     public $model;
+    /** @var Model\Product\Line|null */
+    public $line;
     /** @var Model\Product\NearestDelivery[] */
     public $nearestDeliveries = [];
     /** @var string[] */
@@ -63,6 +79,8 @@ class Product {
     public $kit = [];
     /** @var Model\Product\Review[] */
     public $reviews = [];
+    /** @var Model\Product\Trustfactor[] */
+    public $trustfactors = [];
 
     /**
      * @param array $data
@@ -72,25 +90,33 @@ class Product {
         $this->relation = new Model\Product\Relation();
 
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+        if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
         if (array_key_exists('article', $data)) $this->article = (string)$data['article'];
+        if (array_key_exists('bar_code', $data)) $this->barcode = (string)$data['bar_code'];
+        if (array_key_exists('type_id', $data)) $this->typeId = (string)$data['type_id'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('prefix', $data)) $this->namePrefix = (string)$data['prefix'];
-        if (array_key_exists('name_web', $data)) $this->webName = (string)$data['name_web'];
+        if (array_key_exists('name_web', $data)) $this->webName = $data['name_web'] ? (string)$data['name_web'] : null;
         if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
         if (array_key_exists('link', $data)) $this->link = rtrim((string)$data['link'], '/');
         if (array_key_exists('description', $data)) $this->description = (string)$data['description'];
         if (array_key_exists('tagline', $data)) $this->tagline = (string)$data['tagline'];
         if (array_key_exists('price', $data)) $this->price = $data['price'] ? (int)$data['price'] : null;
         if (array_key_exists('price_old', $data)) $this->oldPrice = $data['price_old'] ? (int)$data['price_old'] : null;
+        if (array_key_exists('is_kit_locked', $data)) $this->isKitLocked = (bool)$data['is_kit_locked'];
 
         $this->isBuyable = isset($data['state']['is_buyable']) && (bool)$data['state']['is_buyable'];
-        $this->calculateState(isset($data['stock'][0]) ? $data['stock'] : []);
+        $this->calculateState(
+            isset($data['stock'][0]) ? $data['stock'] : [],
+            isset($data['partners_offer'][0]) ? $data['partners_offer'] : []
+        );
 
         if (isset($data['category'][0])) {
             $categoryItem = (array)array_pop($data['category']);
             $this->category = new Model\Product\Category($categoryItem);
 
             foreach ($data['category'] as $categoryItem) {
+                if (empty($categoryItem['id'])) continue;
                 $this->category->ascendants[] = new Model\Product\Category($categoryItem);
             }
         }
@@ -116,6 +142,12 @@ class Product {
             }
         }
 
+        if (isset($data['label'][0])) {
+            foreach ($data['label'] as $labelItem) {
+                $this->labels[] = new Model\Product\Label($labelItem);
+            }
+        }
+
         if (isset($data['stock'][0])) {
             foreach ($data['stock'] as $stockItem) {
                 $this->stock[] = new Model\Product\Stock((array)$stockItem);
@@ -130,21 +162,25 @@ class Product {
         }
 
         if (isset($data['model']['property'][0])) $this->model = new Model\Product\ProductModel($data['model']);
+        if (isset($data['line']['id'])) $this->line = new Model\Product\Line($data['line']);
         if (isset($data['accessories'][0])) $this->accessoryIds = $data['accessories'];
         if (isset($data['related'][0])) $this->relatedIds = $data['related'];
     }
 
     /**
      * @param array $stockData
+     * @param array $partnerData
      */
-    protected function calculateState(array $stockData) {
-        $inStore = false;
+    protected function calculateState(array $stockData, array $partnerData) {
+        $this->isInWarehouse = false;
+        $inWarehouse = false;
         $inShowroom = false;
         $inShop = false;
 
         foreach ($stockData as $stockItem) {
-            if ($stockItem['store_id']) {
-                $inStore = true;
+            if ($stockItem['store_id'] && $stockItem['quantity']) { // есть на центральном складе
+                $inWarehouse = true;
+                $this->isInWarehouse = true;
             }
             if ($stockItem['shop_id'] && $stockItem['quantity']) { // есть на складе магазина
                 $inShop = true;
@@ -154,8 +190,19 @@ class Product {
             }
         }
 
-        $this->isInShopStockOnly = !$inStore && $inShop && !$inShowroom; // не на центральном складе, на складе магазина, не на витрине магазина
-        $this->isInShopShowroomOnly = !$inStore && !$inShop && $inShowroom; // не на центральном складе, не на складе магазина, на витрине магазина
-        $this->isInShopOnly = $this->isInShopStockOnly || $this->isInShopShowroomOnly;
+        // TERMINALS-947
+        foreach ($partnerData as $partnerItem) {
+            $partnerItem += ['stock' => []];
+            foreach ((array)$partnerItem['stock'] as $stockItem) {
+                if (!empty($stockItem['quantity'])) {
+                    $this->isInWarehouse = true;
+                    break;
+                }
+            }
+        }
+
+        $this->isInShopOnly = !$inWarehouse && ($inShop || $inShowroom); // не на центральном складе, на складе магазина или на витрине магазина
+        $this->isInShopStockOnly = !$inWarehouse && $inShop && !$inShowroom; // не на центральном складе, на складе магазина, не на витрине магазина
+        $this->isInShopShowroomOnly = !$inWarehouse && !$inShop && $inShowroom; // не на центральном складе, не на складе магазина, на витрине магазина
     }
 }

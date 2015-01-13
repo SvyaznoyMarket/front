@@ -15,4 +15,6 @@ class Config {
     public $retryCount;
     /** @var float */
     public $retryTimeout;
+    /** @var bool */
+    public $debug;
 }

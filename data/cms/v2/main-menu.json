@@ -1,185 +1,1284 @@
 {
     "name": "Главное меню",
-    "verion": "2.0",
-    "items": [
+    "version": "3.0",
+    "item": [
         {
             "name": "Мебель",
             "char": "C",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=80",
+            "source": {
+                "id": 80,
+                "uid": "f7a2f781-c776-4342-81e8-ab2ebe24c51a",
+                "type": "category-get"
+            },
+            "medias": [
+                {
+                    "uid": "f06b6b89-429c-45b4-b831-cb3ab7d37bf6",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "1-mebel.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/f3/34/5a/4fe3a2020aacd89b7ca381a18e48c36d5aac8eee.png",
+                            "width": 132,
+                            "height": 84
+                        }
+                    ]
+                },
+                {
+                    "uid": "92ef0481-74bc-4eb0-96b6-873fb6d91447",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "picta_furniture.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/8b/fa/b5/9bf2618ca509760c955057bcc68ce86613fd3c5a.png",
+                            "width": 157,
+                            "height": 100
+                        }
+                    ]
+                },
+                {
+                    "uid": "ae768718-fa48-45b7-898e-08a5fd33f02d",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "picta_furniture.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/23/f4/18/7596985f4a028c2286358c7065ea5b5df3a02dec.png",
+                            "width": 210,
+                            "height": 132
+                        }
+                    ]
+                }
+            ],
             "children": [
                 {
-                    "source": "category/tree?root_id=80"
+                    "source": {
+                        "id": 80,
+                        "uid": "f7a2f781-c776-4342-81e8-ab2ebe24c51a",
+                        "type": "category-tree"
+                    },
+                    "medias": [],
+                    "children": []
                 }
             ]
         },
         {
             "name": "Товары для дома",
             "char": "A",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=443",
+            "source": {
+                "id": 443,
+                "uid": "b8569e65-e31e-47a1-af20-5b06aff9f189",
+                "type": "category-get"
+            },
+            "medias": [
+                {
+                    "uid": "4099a8a1-5263-464e-a1a9-904e44473437",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "2-dlya_doma@2x.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/34/b8/8a/a367077d44a3320e5d98d615a3eaca7941c94f2e.png",
+                            "width": 132,
+                            "height": 84
+                        }
+                    ]
+                },
+                {
+                    "uid": "bcb65f19-c2c5-45bc-9140-5fef33026862",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "picta_home.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/43/20/ce/8fa891a520099895baf159ffaf88ca0e0611525c.png",
+                            "width": 147,
+                            "height": 96
+                        }
+                    ]
+                },
+                {
+                    "uid": "fd469ff6-6324-48f5-9ced-fa81d63aa17f",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "picta_home.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/2e/bc/63/b20fcda80e3d8a31f0ae6f2310b448f98a738fd7.png",
+                            "width": 196,
+                            "height": 128
+                        }
+                    ]
+                }
+            ],
             "children": [
                 {
-                    "source": "category/tree?root_id=443"
+                    "source": {
+                        "id": 443,
+                        "uid": "b8569e65-e31e-47a1-af20-5b06aff9f189",
+                        "type": "category-tree"
+                    },
+                    "medias": [],
+                    "children": []
                 }
             ]
         },
         {
             "name": "Бытовая техника",
             "char": "B",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=1",
+            "source": {
+                "id": 1,
+                "uid": "616e6afd-fd4d-4ff4-9fe1-8f78236d9be6",
+                "type": "category-get"
+            },
+            "medias": [
+                {
+                    "uid": "4d7f8a98-001d-492a-9ec3-5d17b29eaa3c",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "3-bittexnika@2x.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/f4/d4/8f/8164b72a46c92a1836ea006568970e5b2798be51.png",
+                            "width": 132,
+                            "height": 100
+                        }
+                    ]
+                },
+                {
+                    "uid": "843d671a-ed0a-4092-a3f6-9a247275c3bb",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "picta_appliances.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/d9/41/3a/604b1be72fe30e9d233fd0775388270dd5dfe62d.png",
+                            "width": 115,
+                            "height": 120
+                        }
+                    ]
+                },
+                {
+                    "uid": "d880e52b-f5a6-4a5e-94a5-cde12604b920",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "picta_appliances.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/aa/cd/20/885c5ef8d3f2eec60493359e687d5832c5bfad2e.png",
+                            "width": 154,
+                            "height": 160
+                        }
+                    ]
+                }
+            ],
             "children": [
                 {
-                    "source": "category/tree?root_id=1"
+                    "source": {
+                        "id": 1,
+                        "uid": "616e6afd-fd4d-4ff4-9fe1-8f78236d9be6",
+                        "type": "category-tree"
+                    },
+                    "medias": [],
+                    "children": []
                 }
             ]
         },
         {
             "name": "Электроника",
             "char": "G",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=788",
+            "source": {
+                "id": 788,
+                "uid": "d91b814f-0470-4fd5-a2d0-a0449e63ab6f",
+                "type": "category-get"
+            },
+            "medias": [
+                {
+                    "uid": "4b1bd125-771f-4aad-ba92-caf6a3f62c99",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "4-electro@2x.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/d7/42/bc/ab69086f9c8b68baab9dcd19cdd21d0270c4ece3.png",
+                            "width": 132,
+                            "height": 92
+                        }
+                    ]
+                },
+                {
+                    "uid": "8b0935be-e250-43b1-b9e6-0f7c4ec02512",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "picta_electronics.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/e7/a3/20/400768839472242f6014758a327cca9221a4dab9.png",
+                            "width": 145,
+                            "height": 114
+                        }
+                    ]
+                },
+                {
+                    "uid": "34b5bd3c-f912-4f02-9843-68e388a1b883",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "picta_electronics.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/d6/85/49/b5bb18d565dccbb49ae43833cee9d006f76bf90b.png",
+                            "width": 194,
+                            "height": 152
+                        }
+                    ]
+                }
+            ],
             "children": [
                 {
-                    "source": "category/tree?root_id=788"
+                    "source": {
+                        "id": 788,
+                        "uid": "d91b814f-0470-4fd5-a2d0-a0449e63ab6f",
+                        "type": "category-tree"
+                    },
+                    "medias": [],
+                    "children": []
                 }
             ]
         },
         {
             "name": "Детские товары",
             "char": "D",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=320",
+            "source": {
+                "id": 320,
+                "uid": "feccd951-d555-42c2-b417-a161a78faf03",
+                "type": "category-get"
+            },
+            "medias": [
+                {
+                    "uid": "1a0ff223-c6a6-42e7-a5e8-bd71b3439ecc",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "5-det@2x.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/6b/23/bd/21cd00d2c7cfc6be822951096f04ff1d1606124b.png",
+                            "width": 132,
+                            "height": 100
+                        }
+                    ]
+                },
+                {
+                    "uid": "85842d87-bb41-4b3a-8aa7-4732ea7dacc2",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "picta_kids.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/4c/91/07/081af761c352c5fc77cca4e1a4884eacd501c710.png",
+                            "width": 142,
+                            "height": 140
+                        }
+                    ]
+                },
+                {
+                    "uid": "8ff98c2b-a661-4eb7-925b-f9715b54f98b",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "picta_kids.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/9c/0e/be/d0a1363a8661a0817a417532778770d2ce92fe16.png",
+                            "width": 190,
+                            "height": 186
+                        }
+                    ]
+                }
+            ],
             "children": [
                 {
-                    "source": "category/tree?root_id=320"
+                    "source": {
+                        "id": 320,
+                        "uid": "feccd951-d555-42c2-b417-a161a78faf03",
+                        "type": "category-tree"
+                    },
+                    "medias": [],
+                    "children": []
                 }
             ]
         },
         {
             "name": "Украшения и часы",
             "char": "H",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=923",
+            "source": {
+                "id": 923,
+                "uid": "022fa1e3-c51f-4a48-87fc-de2c917176d6",
+                "type": "category-get"
+            },
+            "medias": [
+                {
+                    "uid": "27156552-f14e-4f2b-9811-71d57a87910d",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "6-jewel@2x.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/72/75/bd/81cdbe3c0da01dd8518165cdc6eb7fea189d7113.png",
+                            "width": 132,
+                            "height": 84
+                        }
+                    ]
+                },
+                {
+                    "uid": "0c7e9396-6a30-4531-a7a1-8d9aa3c51a97",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "picta_jewel.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/57/ad/cd/62ebe34506b13ad2eed750dfa7bf55d0897abf45.png",
+                            "width": 126,
+                            "height": 115
+                        }
+                    ]
+                },
+                {
+                    "uid": "fa338669-87af-42a9-a8b8-b0d7ef491aca",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "picta_jewel.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/a3/93/86/e4465d0d8c1e9e4e459eeb7c4bda850056817645.png",
+                            "width": 166,
+                            "height": 152
+                        }
+                    ]
+                }
+            ],
             "children": [
                 {
-                    "source": "category/tree?root_id=923"
+                    "source": {
+                        "id": 923,
+                        "uid": "022fa1e3-c51f-4a48-87fc-de2c917176d6",
+                        "type": "category-tree"
+                    },
+                    "medias": [],
+                    "children": []
                 }
             ]
         },
         {
             "name": "Парфюмерия и косметика",
             "char": "L",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=2545",
+            "source": {
+                "id": 2545,
+                "uid": "19b9f12c-d489-4540-9a17-23dba0641166",
+                "type": "category-get"
+            },
+            "medias": [
+                {
+                    "uid": "4edfdceb-6d48-43a9-8203-d1d4a59dc373",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "7-parfum@2x.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/04/ab/1c/411671894969a15dffe16e47a4d1f484e1a5b911.png",
+                            "width": 132,
+                            "height": 100
+                        }
+                    ]
+                },
+                {
+                    "uid": "0803e75c-a90b-4876-a6b2-5ba4aeb652ff",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "picta_perfume.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/37/25/75/ff98cc17a1cfff53205a0e4535c9414f3ea0969a.png",
+                            "width": 96,
+                            "height": 129
+                        }
+                    ]
+                },
+                {
+                    "uid": "34d2b892-e226-4b76-bc9d-1d7b63d7d1cb",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "picta_perfume.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/7a/4b/53/8d484b9e6fe6b4c6e2a6a91f31b178a97058754c.png",
+                            "width": 128,
+                            "height": 171
+                        }
+                    ]
+                }
+            ],
             "children": [
                 {
-                    "source": "category/tree?root_id=2545"
+                    "source": {
+                        "id": 2545,
+                        "uid": "19b9f12c-d489-4540-9a17-23dba0641166",
+                        "type": "category-tree"
+                    },
+                    "medias": [],
+                    "children": []
                 }
             ]
         },
         {
             "name": "Подарки и хобби",
             "char": "J",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=185",
+            "source": {
+                "id": 185,
+                "uid": "c9c2dc8d-1ee5-4355-a0c1-898f219eb892",
+                "type": "category-get"
+            },
+            "medias": [
+                {
+                    "uid": "b22dd26b-639b-4cdb-9219-5103340c2de5",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "8-podarok@2x.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/f1/ee/09/e5b9894eaf1e8f6d557317e5753909c770c1480d.png",
+                            "width": 132,
+                            "height": 100
+                        }
+                    ]
+                },
+                {
+                    "uid": "173b79bc-43d1-4cef-bea1-b6f1d33d7298",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "picta_gift.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/10/6a/62/21efd02e6a20921ae2a9f2946298d76f108daa0b.png",
+                            "width": 105,
+                            "height": 120
+                        }
+                    ]
+                },
+                {
+                    "uid": "96d191d6-550c-4151-8364-9e506ad7ded2",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "picta_gift.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/59/dc/0d/5c56579ad4ff10895cd2c0cf3e40ee1bcd438c8d.png",
+                            "width": 140,
+                            "height": 160
+                        }
+                    ]
+                }
+            ],
             "children": [
                 {
-                    "source": "category/tree?root_id=185"
+                    "source": {
+                        "id": 185,
+                        "uid": "c9c2dc8d-1ee5-4355-a0c1-898f219eb892",
+                        "type": "category-tree"
+                    },
+                    "medias": [],
+                    "children": []
                 }
             ]
         },
         {
             "name": "Сделай сам",
             "char": "F",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=224",
+            "source": {
+                "id": 224,
+                "uid": "0e80c81b-31c9-4519-bd10-e6a556fe000c",
+                "type": "category-get"
+            },
+            "medias": [
+                {
+                    "uid": "b5251b3e-90f3-4d46-84d7-75c3bcdd2345",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "9-sdelay_sam@2x.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/70/f1/e4/6c3908711ce0dbed44327f33e7e81e43ab39cc05.png",
+                            "width": 132,
+                            "height": 100
+                        }
+                    ]
+                },
+                {
+                    "uid": "190fad80-ba24-4a33-a35e-f5f454bf1159",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "picta_diy.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/87/65/30/f62599a1e69a5d294371780a2c54fb8421d43981.png",
+                            "width": 90,
+                            "height": 120
+                        }
+                    ]
+                },
+                {
+                    "uid": "d9522513-b7c9-449b-971b-7758ec28fc84",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "picta_diy.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/9d/c3/94/ec648b256a5773d21304341c9dfbb35e5d3d27bf.png",
+                            "width": 120,
+                            "height": 160
+                        }
+                    ]
+                }
+            ],
             "children": [
                 {
-                    "source": "category/tree?root_id=224"
+                    "source": {
+                        "id": 224,
+                        "uid": "0e80c81b-31c9-4519-bd10-e6a556fe000c",
+                        "type": "category-tree"
+                    },
+                    "medias": [],
+                    "children": []
                 }
             ]
         },
         {
             "name": "Зоотовары",
             "char": "E",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=1438",
-            "children": [
+            "source": {
+                "id": 1438,
+                "uid": "b933de12-5037-46db-95a4-370779bb4ee2",
+                "type": "category-get"
+            },
+            "medias": [
                 {
-                    "source": "category/tree?root_id=1438"
+                    "uid": "7a9ec345-2fb6-4cd1-8784-3df6585e696d",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "10-pets@2x.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/99/17/97/2e2895d251d52ee166bd95d1399595860e6590d1.png",
+                            "width": 132,
+                            "height": 100
+                        }
+                    ]
+                },
+                {
+                    "uid": "16271bbd-1181-4e8a-b445-c8627042299a",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "picta_pets.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/25/8f/06/d19f39ea3db98884eabe7a16053ae80b4f2f79fe.png",
+                            "width": 97,
+                            "height": 108
+                        }
+                    ]
+                },
+                {
+                    "uid": "4c6175ab-188d-4d66-8ed2-cbe3f3f976fd",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "picta_pets.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/66/d6/cf/d84b1540cc278c044f35240f2d282050b00d9002.png",
+                            "width": 130,
+                            "height": 144
+                        }
+                    ]
                 }
-            ]
+            ],
+            "children": []
         },
         {
             "name": "Спорт и отдых",
             "char": "I",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=647",
+            "source": {
+                "id": 647,
+                "uid": "846eccd2-e9f0-4ce4-b7a2-bb28a835fd7a",
+                "type": "category-get"
+            },
+            "medias": [
+                {
+                    "uid": "10c941f0-c0ee-44ae-9205-2e8a55b91a49",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "11-sport@2x.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/b1/6f/26/7e4ecba0a024adf0cf6f04200328124671c8db92.png",
+                            "width": 132,
+                            "height": 100
+                        }
+                    ]
+                },
+                {
+                    "uid": "b3da6bab-2d3d-411c-ae18-a868bea423e0",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "sport.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/62/6d/ca/56cd093d0b58330ddb719fe58b6c5f08ad35fe25.png",
+                            "width": 110,
+                            "height": 75
+                        }
+                    ]
+                },
+                {
+                    "uid": "201cde4c-e760-4dc2-9704-f14eb24e3c04",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "sport@2x.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/35/24/c3/c61cea98844a4898e5949a2f4f7d53f6183d25e5.png",
+                            "width": 220,
+                            "height": 150
+                        }
+                    ]
+                }
+            ],
             "children": [
                 {
-                    "source": "category/tree?root_id=647"
+                    "source": {
+                        "id": 647,
+                        "uid": "846eccd2-e9f0-4ce4-b7a2-bb28a835fd7a",
+                        "type": "category-tree"
+                    },
+                    "medias": [],
+                    "children": []
                 }
             ]
         },
         {
             "name": "Авто",
             "char": "M",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=225",
+            "source": {
+                "id": 225,
+                "uid": "f0d53c46-d4fc-413f-b5b3-a2b57b93a717",
+                "type": "category-get"
+            },
+            "medias": [
+                {
+                    "uid": "e037053d-e7aa-4d82-a71c-58391fbea52f",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "auto-grey.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/a6/c1/26/57a91f97c14662c0122d2f90434757a91bf9e86f.png",
+                            "width": 93,
+                            "height": 57
+                        }
+                    ]
+                },
+                {
+                    "uid": "feb969f9-d457-4c88-b55c-2957cf3d35dd",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "auto.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/4c/06/83/6e292e120fa10cd6f374f15c07e285907527e80f.png",
+                            "width": 92,
+                            "height": 55
+                        }
+                    ]
+                },
+                {
+                    "uid": "4fde42b2-5fd0-4970-8d96-ae394c6f7c77",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "auto@2x.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/0c/67/60/969d77a3971b09b66c34ddc1d254b3174f68c711.png",
+                            "width": 184,
+                            "height": 110
+                        }
+                    ]
+                }
+            ],
             "children": [
                 {
-                    "source": "category/tree?root_id=225"
+                    "source": {
+                        "id": 225,
+                        "uid": "f0d53c46-d4fc-413f-b5b3-a2b57b93a717",
+                        "type": "category-tree"
+                    },
+                    "medias": [],
+                    "children": []
                 }
             ]
         },
         {
-            "name": "Сад и огород",
-            "char": "K",
-            "style": "",
-            "styleHover": "",
-            "source": "category/get?id=311",
+            "name": "Зимние товары",
+            "source": {
+                "uid": "ae90d6ee-73de-4cb6-b67e-af00591b248f",
+                "type": "slice",
+                "url": "zimnie-tovari-2014-new"
+            },
+            "medias": [
+                {
+                    "uid": "ed681382-c8f5-4fe0-b82a-6087ddac07b8",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "40-tree-green.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/e4/0f/90/aa4e08c3a7807a993c3da3019c10d1ccb7886813.png",
+                            "width": 40,
+                            "height": 40
+                        }
+                    ]
+                },
+                {
+                    "uid": "202c6ad2-251d-4426-bd93-5347201f5eb5",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "125-tree.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/8d/b0/d3/7e18b4de08e64cc22eebd4dd39fd854d6226741e.png",
+                            "width": 125,
+                            "height": 125
+                        }
+                    ]
+                },
+                {
+                    "uid": "75696aeb-aa49-4949-b7eb-b4395ffe9d1a",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "250-tree.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/4d/15/df/b162c8493d2ee3fef6fb1250993c458599e05e78.png",
+                            "width": 250,
+                            "height": 250
+                        }
+                    ]
+                },
+                {
+                    "uid": "3458dea4-10a9-4365-a29e-30febc9c241d",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-site",
+                        "main"
+                    ],
+                    "name": "105x70-tree.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/e5/e4/b3/3b97e9b4a137806d37a580ffdb97d7141a66ca4b.png",
+                            "width": 105,
+                            "height": 70
+                        }
+                    ]
+                },
+                {
+                    "uid": "f9c9653c-45f6-43dd-b61d-079f0011346c",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "web-site",
+                        "main"
+                    ],
+                    "name": "40-tree-green.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/3e/86/12/4c7cdd42b15b00b51ffaf9faea69d42a49226ca0.png",
+                            "width": 40,
+                            "height": 40
+                        }
+                    ]
+                },
+                {
+                    "uid": "f7471d88-9fe5-4bed-b31b-1ff5fc2b55c5",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "terminal",
+                        "main"
+                    ],
+                    "name": "170x90-tree.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/12/63/3c/528254c3fd18a97a63ff7eb0289f0abe834ffdbb.png",
+                            "width": 170,
+                            "height": 90
+                        }
+                    ]
+                }
+            ],
+            "children": []
+        },
+        {
+            "name": "Tchibo",
+            "source": {
+                "id": 4506,
+                "uid": "caf18e17-550a-4d3e-8285-b1c9cc99b5f4",
+                "type": "category-get"
+            },
+            "medias": [
+                {
+                    "uid": "0cf5d794-d0c3-49ae-b770-00342f797c5f",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "cb191b365ac2d8387e30b9bb679d5b567c5d5266.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/08/92/6b/d559334e88bb1477681aae5f52249e60fb7a1afb.png",
+                            "width": 140,
+                            "height": 140
+                        }
+                    ]
+                },
+                {
+                    "uid": "1f29c5ef-1385-44a6-a39f-b220468440a4",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "picta_tchibo_hdpi.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/a0/69/a1/1e39e60d6f5268132548a2cfdc5f20df59eb8c3c.png",
+                            "width": 210,
+                            "height": 210
+                        }
+                    ]
+                },
+                {
+                    "uid": "2ea6c39a-c95e-49f0-ae84-51e95ee74c57",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "picta_tchibo_xhdpi.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/f6/d8/8c/4e77c7b4fd33ed1acb53e13b1cc5b00b87cabdd4.png",
+                            "width": 280,
+                            "height": 280
+                        }
+                    ]
+                },
+                {
+                    "uid": "070e2b99-2a95-403e-9580-1c143b9b81c0",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-site",
+                        "main"
+                    ],
+                    "name": "TCH_Logo.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/7f/57/ec/a588665da121bc14759cf1ab1a0c40da7884a142.png",
+                            "width": 105,
+                            "height": 71
+                        }
+                    ]
+                },
+                {
+                    "uid": "642d9ecb-c325-41c0-b3aa-833fb917cf00",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "terminal",
+                        "main"
+                    ],
+                    "name": "TCH_Logo.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/53/14/01/ed23988a17a7ab7cfe3def3f231389ca190ea23e.png",
+                            "width": 105,
+                            "height": 71
+                        }
+                    ]
+                }
+            ],
             "children": [
                 {
-                    "source": "category/tree?root_id=311"
+                    "source": {
+                        "id": 4506,
+                        "uid": "caf18e17-550a-4d3e-8285-b1c9cc99b5f4",
+                        "type": "category-tree"
+                    },
+                    "medias": [],
+                    "children": []
                 }
             ]
         },
         {
-            "name": "TCHIBO SHOP",
-            "char": "",
-            "style": "",
-            "image": "http://content.enter.ru/wp-content/uploads/2014/06/TCH_Logo.png",
-            "styleHover": "",
-            "source": "category/get?id=4506",
-            "children": [
+            "name": "Все скидки",
+            "source": {
+                "uid": "662cb4f4-7c77-4096-b85f-2acb7bf03f1d",
+                "type": "slice",
+                "url": "all_labels"
+            },
+            "medias": [
                 {
-                    "source": "category/tree?root_id=4506"
+                    "uid": "1dff941e-2c4a-4c37-9dda-128c9b3fed83",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "mdpi",
+                        "android"
+                    ],
+                    "name": "40x40.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/e5/9f/25/53f113020e69f1a916fbcbfef763eb45dd535db9.png",
+                            "width": 40,
+                            "height": 40
+                        }
+                    ]
+                },
+                {
+                    "uid": "3d817324-0c5e-4e74-a945-b78bbec4d761",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "hdpi",
+                        "android"
+                    ],
+                    "name": "125x125.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/7e/4b/d6/5de28f8a4012f513cd0e07ef905b23c2e8c5de53.png",
+                            "width": 125,
+                            "height": 125
+                        }
+                    ]
+                },
+                {
+                    "uid": "bec0051e-6c92-426c-8485-d14433e9c5b6",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-app",
+                        "xhdpi",
+                        "android"
+                    ],
+                    "name": "250x250.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/76/0e/fc/72dc20d9e6e1cb2098a3afee952f0d18cc3ebbbf.png",
+                            "width": 250,
+                            "height": 250
+                        }
+                    ]
+                },
+                {
+                    "uid": "dcc28bd8-f90c-4c42-91bb-164fd47a9c95",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "mobile-site",
+                        "main"
+                    ],
+                    "name": "105x70.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/a2/f4/8d/944c3a877ee200bf3f62dc15ded2b7cf16fa176b.png",
+                            "width": 105,
+                            "height": 70
+                        }
+                    ]
+                },
+                {
+                    "uid": "775fd1dd-e791-4f6a-ade5-1fcc59662eeb",
+                    "content_type": "image/png",
+                    "provider": "image",
+                    "tags": [
+                        "terminal",
+                        "main"
+                    ],
+                    "name": "170x90.png",
+                    "sources": [
+                        {
+                            "type": "original",
+                            "url": "http://scms.enter.ru/uploads/media/67/a8/46/34dffa15a08488254bea97b1437e5bb82bd98983.png",
+                            "width": 170,
+                            "height": 90
+                        }
+                    ]
                 }
-            ]
-        },
-        {
-            "disabled": true,
-            "name": "Ликвидация!",
-            "style": "",
-            "image": "http://content.enter.ru/wp-content/uploads/2013/07/icon_Liquidation2.gif",
-            "styleHover": "background: url('http://content.enter.ru/wp-content/uploads/2013/07/l_hover.png') no-repeat 0px 0px;",
-            "link": "/slices/likvidatsiya",
-            "children": [
-            ]
+            ],
+            "children": []
         }
     ]
 }

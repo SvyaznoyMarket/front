@@ -12,30 +12,17 @@ class Sorting {
     use ConfigTrait, LoggerTrait;
 
     /**
-     * @param Http\Request $request
-     * @return Model\Product\Sorting|null
-     */
-    public function getObjectByHttpRequest(Http\Request $request) {
-        $sorting = null;
-
-        $data = explode('-', $request->query['sort']);
-        if (isset($data[0]) && isset($data[1])) {
-            $sorting = new Model\Product\Sorting();
-            $sorting->token = $data[0];
-            $sorting->direction = $data[1];
-        }
-
-        return $sorting;
-    }
-
-    /**
      * @return Model\Product\Sorting[]
      */
     public function getObjectList() {
+        $applicationTags = (array)$this->getConfig()->applicationTags;
+
         $sortings = [];
 
         $data = Util\Json::toArray(file_get_contents($this->getConfig()->dir . '/data/cms/v2/catalog/sorting.json'));
         foreach ($data as $item) {
+            if (isset($item['tags'][0]) && !(bool)array_intersect($applicationTags, $item['tags'])) continue;
+
             $item = array_merge([
                 'token'     => null,
                 'name'      => null,
@@ -43,12 +30,13 @@ class Sorting {
             ], $item);
 
             if (!$item['token'] || !$item['name'] || !$item['direction']) {
-                $this->getLogger()->push(['type' => 'error', 'error' => 'Неверный элемент сортировки', 'item' => $item, 'action' => __METHOD__, 'tag' => ['repository']]);
+                $this->getLogger()->push(['type' => 'error', 'error' => 'Неверный элемент сортировки', 'item' => $item, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
                 continue;
             }
 
             $sorting = new Model\Product\Sorting();
             $sorting->name = $item['name'];
+            $sorting->shortName = @$item['shortName'];
             $sorting->token = $item['token'];
             $sorting->direction = $item['direction'];
 

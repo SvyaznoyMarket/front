@@ -1,49 +1,275 @@
 <div class="content">
-    <div class="contentBox960">
-        <!-- Название товара, артикул, отзывы -->
-        <div class="productDescHead">
+    {{! окно большого изображения }}
+    <div class="contentBox960 fullImgCnt js-fullimg-wrap">
+        <div class="clsr1 js-fullimg-close"></div>
 
-            <h1 class="productDescHead_name">
+        <div class="fullImgCnt_img_load js-fullimg-img-loader">
+            {{#product.mainPhoto}}
+                <img class="fullImgCnt_img js-fullimg-img" src="{{product.mainPhoto.originalUrl}}" alt="{{&product.name}}" />
+            {{/product.mainPhoto}}
+        </div>
+
+        <div class="fullImgCnt_thmb js-fullimg-thmb-wrap">
+            <ul class="fullImgCnt_thmb_w js-fullimg-thmb">
+            {{#product.photos}}
+                <li class="fullImgCnt_thmb_i js-fullimg-thmb-i">
+                    <span class="fullImgCnt_thmb_i_w">
+                        <img class="fullImgCnt_thmb_img js-fullimg-thmb-img" src="{{previewUrl}}" data-fullimg="{{originalUrl}}" data-middleimg="{{url}}" />
+                    </span>
+                </li>
+            {{/product.photos}}
+            </ul>
+
+            <div class="fullImgCnt_thmb_btn fullImgCnt_thmb_btn-l js-fullimg-thmb-btn-l fullImgCnt_thmb_btn-disbl"></div>
+            <div class="fullImgCnt_thmb_btn fullImgCnt_thmb_btn-r js-fullimg-thmb-btn-r"></div>
+        </div>
+    </div>
+    {{! окно большого изображения }}
+
+    {{#product.kitBlock}}
+    <!-- редактировать комплектацию -->
+    <div class="id-productKit-content contentBox960 lineKitPopup js-kit-wrap">
+        <div class="backLn js-kit-close">Назад</div>
+
+        <div class="lineKitImg"><img src="{{product.mainPhoto.url}}"></div>
+
+        <div class="lineKitTitle">
+            {{#product.namePrefix}}{{product.namePrefix}}<br />{{/product.namePrefix}}
+            {{product.name}}
+        </div>
+
+        <!-- планшетная версия -->
+        <div class="lineKit lineKit-full lineKit-edit">
+
+            <div class="lineKitItem lineKitItem-head">
+                <div class="lineKitItem_cell"><div class="lineKitItem_cell_cap">Уточните комплектацию</div></div>
+                <div class="lineKitItem_cell"></div>
+                <div class="lineKitItem_cell" style="width: 125px;">Дата доставки</div> 
+                <div class="lineKitItem_cell" style="width: 95px;">Количество</div>
+                <!--<div class="lineKitItem_cell ta-r" style="width: 90px;">Цена</div>-->
+            </div>
+
+            {{#products}}
+            <!-- элемент набора -->
+            <div class="lineKitItem lineKitItem-body">
+                <!-- изображение элемента набора -->
+                <a href="{{url}}" class="lineKitItem_cell lineKitItem_cell-img">
+                    <img src="{{photoUrl}}">
+                </a>
+
+                <!-- описание элементф набора -->
+                <div class="lineKitItem_cell lineKitItem_cell-desc">
+                    <div class="name">
+                        <a href="{{url}}">{{name}}</a>
+                    </div>
+
+                    <!-- цена за штуку -->
+                    <div class="price">{{shownPrice}} <span class="rubl">p</span></div>
+
+                    <div class="column dimantion">
+                        <span class="dimantion_name">Высота</span>
+                        <span class="dimantion_val">{{height}}</span>
+                    </div>
+
+                    <div class="column dimantion">
+                        <span class="dimantion_name">&nbsp;</span>
+                        <span class="dimantion_val separation">x</span>
+                    </div>
+
+                    <div class="column dimantion">
+                        <span class="dimantion_name">Ширина</span>
+                        <span class="dimantion_val">{{width}}</span>
+                    </div>
+
+                    <div class="column dimantion">
+                        <span class="dimantion_name">&nbsp;</span>
+                        <span class="dimantion_val separation">x</span>
+                    </div>
+
+                    <div class="column dimantion">
+                        <span class="dimantion_name">Глубина</span>
+                        <span class="dimantion_val">{{depth}}</span>
+                    </div>
+
+                    <div class="column dimantion">
+                        <span class="dimantion_name">&nbsp;</span>
+                        <span class="dimantion_val">{{unit}}</span>
+                    </div>
+                </div>
+
+                <!-- доставка -->
+                <div class="lineKitItem_cell lineKitItem_cell-l">{{deliveryDate}}</div>
+
+                <!-- каунтер -->
+                <div class="lineKitItem_cell lineKitItem_cell-counter">
+                    {{#cartSpinner}}
+                        {{>partial/cart/spinner}}
+                    {{/cartSpinner}}
+                </div>
+
+                <!-- цена на все -->
+                <!--<div class="lineKitItem_cell lineKitItem_cell-price ta-r">
+                    {{shownSum}}&nbsp;<span class="rubl">p</span>
+                </div>-->
+            </div>
+            <!--/ элемент набора -->
+            {{/products}}
+
+        </div>
+        <!--/ планшетная версия -->
+
+        <!-- мобильная версия -->
+        <div class="lineKit lineKit-edit lineKit-mobile">
+            <div class="lineKitHead">Уточните комплектацию</div>
+
+            {{#products}}
+            <!-- элемент набора -->
+            <div class="lineKitItem clearfix">
+                <div class="lineKitItem_name">
+                    <a href="{{url}}" class="">{{name}}</a>
+                </div>
+
+                <!-- изображение элементф набора -->
+                <a href="" class="lineKitItem_l ta-c">
+                    <img src="{{photoUrl}}" />
+                </a>
+
+                <!-- описание элемента набора -->
+                <div class="lineKitItem_r lineKitItem_desc">
+
+                    <!-- доставка -->
+                    <div class="lineKitItem_delvr">
+                        <span class="lineKitItem_grey">Дата доставки:</span> {{deliveryDate}}
+                    </div>
+
+                    <div class="column dimantion">
+                        <span class="dimantion_name">Высота</span>
+                        <span class="dimantion_val">{{height}}</span>
+                    </div>
+
+                    <div class="column dimantion">
+                        <span class="dimantion_name">&nbsp;</span>
+                        <span class="dimantion_val separation">x</span>
+                    </div>
+
+                    <div class="column dimantion">
+                        <span class="dimantion_name">Ширина</span>
+                        <span class="dimantion_val">{{width}}</span>
+                    </div>
+
+                    <div class="column dimantion">
+                        <span class="dimantion_name">&nbsp;</span>
+                        <span class="dimantion_val separation">x</span>
+                    </div>
+
+                    <div class="column dimantion">
+                        <span class="dimantion_name">Глубина</span>
+                        <span class="dimantion_val">{{depth}}</span>
+                    </div>
+
+                    <div class="column dimantion">
+                        <span class="dimantion_name">&nbsp;</span>
+                        <span class="dimantion_val">{{unit}}</span>
+                    </div>
+                </div>
+                
+                <!-- цена за штуку -->
+                <div class="lineKitItem_l lineKitItem-l lineKitItem_grey ta-c">
+                    {{shownPrice}}&nbsp;<span class="rubl">p</span>
+                </div>
+
+                <!-- каунтер -->
+                <div class="lineKitItem_r lineKitItem_foot lineKitItem-l">
+                    {{#cartSpinner}}
+                        {{>partial/cart/spinner}}
+                    {{/cartSpinner}}
+                    
+                    <!-- цена за все -->
+                    <!--
+                    <span class="lineKitItem_summ lineKitItem_foot">{{shownSum}}&nbsp;<span class="rubl">p</span></span>
+                    -->
+                </div>
+            </div>
+            <!--/ элемент набора -->
+            {{/products}}
+        </div>
+        <!--/ мобильная версия -->
+
+        <div class="lineKitFooter clearfix">
+            <input type="checkbox" id="defaultSet" class="js-productKit-reset customInput customInput-checkbox" checked="checked" data-value="{{&resetDataValue}}" data-spinner-selector=".id-productKit-content .js-buySpinner-value" />
+            <label for="defaultSet" class="customLabel">Базовый комплект</label>
+
+            <div class="lineKitFooter_summ fl-r">
+                &nbsp;
+                <!--
+                {{shownQuantity}}: {{shownSum}} <span class="rubl">p</span>
+                -->
+            </div>
+
+            {{#cartButton}}
+                {{>partial/cart/button}}
+            {{/cartButton}}
+        </div>
+    </div>
+    <!--/ редактировать комплектацию -->
+    {{/product.kitBlock}}
+
+    <div class="contentBox960 js-fullimg-hidden">
+        <!-- Название товара, артикул, отзывы -->
+        <div class="prodHd">
+
+            <h1 class="prodHd_n">
                 {{#product.namePrefix}}{{product.namePrefix}}<br />{{/product.namePrefix}}
                 {{product.name}}
             </h1>
 
             {{#product.article}}
-                <div class="productDescHead_article">Артикул: {{product.article}}</div>
+                <div class="prodHd_artcl">Артикул: {{product.article}}</div>
             {{/product.article}}
 
             {{#product.rating}}
-                <div class="productDescHead_reviews">
+                <div class="prodHd_rating">
                     {{#product.rating}}
                         {{>partial/rating/star-list}}
                     {{/product.rating}}
-                    <span class="reviewsCount">{{product.rating.reviewCount}}</span>
+                    <span class="prodHd_rating_count">{{product.rating.reviewCount}}</span>
                 </div>
-            {{/product.rating}}
+            {{/product.rating}} 
         </div>
         <!--/ Название товара, артикул, отзывы -->
 
-        <div class="productDesc clearfix">
-
+        <div class="prodDescr clearfix">
             <!-- Изображение товара -->
-            <div class="productDescImg slidesItems">
-                <ul class="slidesItemsList clearfix">
+            <div class="prodDescr_l slider js-slider-wpar">
+                {{#product.labels.0}}
+                    <div class="sticker left">
+                        <img src="{{imageUrl}}" alt="{{name}}" />
+                    </div>
+                {{/product.labels.0}}
+
+                {{#product.brand.image}}
+                    <div class="sticker right">
+                        <img src="{{product.brand.image}}" alt="{{product.brand.name}}" />
+                    </div>
+                {{/product.brand.image}}
+
+                <ul class="slider_lst js-slider-list clearfix">
                     {{#product.photos}}
-                        <li class="slidesItemsList_item">
-                            <img class="slidesItemsList_img" src="{{url}}" alt="{{&name}}" />
+                        <li class="slider_lst_i js-slider-list-item">
+                            <img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}" />
                         </li>
                     {{/product.photos}}
                 </ul>
 
-                <div class="slidesItemsBtn slidesItemsBtn_left jsBtnSlidesLeft"></div>
-                <div class="slidesItemsBtn slidesItemsBtn_right jsBtnSlidesRight"></div>
+                <div class="slider_btn slider_btn-l js-slider-btn-left"></div>
+                <div class="slider_btn slider_btn-r js-slider-btn-right"></div>
 
-                <ul class="slidesItemsBtnPag"></ul>
+                <ul class="slider_pag js-slider-pag"></ul>
             </div>
             <!--/ Изображение товара -->
 
             <!-- Информация о покупке -->
-            <div class="productDescInfo clearfix">
+            <div class="prodDescr_r clearfix">
                 {{#product.hasModel}}
                 <div class="chooseModel">
                     {{#product.modelBlock}}
@@ -61,93 +287,94 @@
                     {{/product.moreModelBlock}}
                 </div>
                 {{/product.hasModel}}
-
-                <div class="buyWidth">
-                    <!-- Выбор варианта покупки, каунтер -->
-                    <div class="buyInfoWrap clearfix">
-                        <div class="buyInfo">
-                            <div class="buyInfoPrice">
-                                <!-- Купить по полной цене -->
-                                <div class="buyInfoPrice_item">
-                                    {{#product.credit}}
-                                    <input class="js-creditButton-remove customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
-
-                                    <label class="customLabel customLabel-bigRadio" for="buyprice">
-                                        {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
-                                        <span class="nowPrice">{{product.shownPrice}} <span class="rubl">p</span></span>
-                                    </label>
-                                    {{/product.credit}}
-
-                                    {{^product.credit}}
-                                        {{#product.shownOldPrice}}<span class="oldPrice">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
-                                        <span class="nowPrice">{{product.shownPrice}} <span class="rubl">p</span></span>
-                                    {{/product.credit}}
-                                </div>
-                                <!--/ Купить по полной цене -->
-
+                
+                <div class="prodBuy clearfix">
+                    {{! информация о покупке }}
+                    <div class="prodBuy_l">
+                        <div class="prodBuy_l_w">
+                            {{! Цена }}
+                            <div class="prodBuy_i">
                                 {{#product.credit}}
-                                <!-- Купить в кредит -->
-                                <div class="js-creditPayment buyInfoPrice_item buyInfoPrice_item-credit" data-template-selector="#tpl-creditPayment" data-value="{{&product.credit.dataValue}}" data-price-selector=".{{product.credit.widgetId}}">
+                                <input class="js-creditButton-remove customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
+
+                                <label class="customLabel customLabel-bigRadio" for="buyprice">
+                                    {{#product.shownOldPrice}}<span class="oldP">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
+                                    <span class="nowP">{{product.shownPrice}} <span class="rubl">p</span></span>
+                                </label>
+                                {{/product.credit}}
+
+                                {{^product.credit}}
+                                    {{#product.shownOldPrice}}<span class="oldP">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
+                                    <span class="nowP">{{product.shownPrice}} <span class="rubl">p</span></span>
+                                {{/product.credit}}
+                            </div>
+                            {{! Цена }}
+                            
+                            {{! Цена в кредит }}
+                            {{#product.credit}}
+                                <div class="js-creditPayment prodBuy_i prodBuy_i-credit" data-template-selector="#tpl-creditPayment" data-value="{{&product.credit.dataValue}}" data-price-selector=".{{product.credit.widgetId}}">
                                     <input class="js-creditButton customInput customInput-radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" />
 
                                     <label class="{{product.credit.widgetId}} customLabel customLabel-bigRadio" for="creditinput">
-                                        <span class="creditPrice">В кредит</span>
+                                        <span class="creditP">В кредит</span>
                                     </label>
 
                                     <script id="tpl-creditPayment" type="text/html">
                                     {{={{{ }}}=}}
-                                        <span class="creditPrice">В кредит от <strong>{{shownPrice}}</strong> <span class="rubl">p</span> в месяц</span>
+                                        <span class="creditP">В кредит от <strong>{{shownPrice}}</strong> <span class="rubl">p</span> в месяц</span>
                                     {{{={{ }}=}}}
                                     </script>
                                 </div>
-                                <!--/ Купить в кредит -->
-                                {{/product.credit}}
-                            </div>
+                            {{/product.credit}}
+                            {{! Цена в кредит }}
 
-                            <!-- Купить дешевле -->
-                            <!--<div class="buyInfoLess"><a class="buyInfoLess__link" href="">Хочешь дешевле?</a></div>-->
-                            <!--/ Купить дешевле -->
+                            {{#product.kitBlock}}
+                                {{^isLocked}}
+                                    <div class="btn3 js-kit-open"><a href="" class="btn4">Купить</a></div>
+                                {{/isLocked}}
+                            {{/product.kitBlock}}
 
                             {{#product.cartButtonBlock}}
                                 {{>page/product-card/buttonBlock}}
                             {{/product.cartButtonBlock}}
                         </div>
                     </div>
-                    <!--/ Выбор варианта покупки, каунтер -->
 
-                    <!-- Информация о доставке -->
-                    {{#product.deliveryBlock}}
-                        <div class="deliveryInfo">
-                            <ul class="deliveryList">
-                                {{#deliveries}}
-                                    <li class="deliveryList_item deliveryList_item-{{token}}">
-                                        {{#name}}
-                                            {{name}} {{#priceText}}<strong>{{priceText}}</strong>{{/priceText}}
-                                        {{/name}}
-                                        <span class="{{#name}}descText{{/name}}{{^name}}descTextDotted{{/name}}">{{deliveredAtText}}
-                                        </span>
+                    {{! о доставке }}
+                    <div class="prodBuy_r">
+                        {{#product.shopStateBlock}}
+                            <div class="prodBuy_b ta-c">
+                                <div class="prodBuy_b_t">{{shownCount}}</div>
 
-                                        {{#hasShops}}
-                                            <ul class="addressShopsList">
-                                                {{#shops}}
-                                                    <li class="addressShopsList_item"><a class="" href="{{url}}">{{name}}</a></li>
-                                                {{/shops}}
-                                            </ul>
-                                        {{/hasShops}}
-                                    </li>
-                                {{/deliveries}}
-                            </ul>
-                        </div>
-                    {{/product.deliveryBlock}}
-                    <!--/ Информация о доставке -->
+                                <div class="prodBuy_b_f" style="display: block;">
+                                    <strong class="delivrB_btn btn1 js-popup-middle-link">Забрать сегодня</strong>
+                                </div>
+                            </div>
+                        {{/product.shopStateBlock}}
+
+                        {{#product.deliveryBlock}}
+                            <div class="deliveryInfo">
+                                <ul class="deliveryList">
+                                    {{#deliveries}}
+                                        <li class="deliveryList_item deliveryList_item-{{token}}">
+                                            {{#name}}
+                                                {{name}} {{#priceText}}<strong>{{priceText}}</strong>{{/priceText}}
+                                            {{/name}}
+                                            <span class="{{#name}}descText{{/name}}{{^name}}descTextDotted{{/name}}">{{deliveredAtText}}</span>
+                                        </li>
+                                    {{/deliveries}}
+                                </ul>
+                            </div>
+                        {{/product.deliveryBlock}}
+                    </div>
+                    {{! о доставке }}
                 </div>
             </div>
-            <!--/ Информация о покупке -->
         </div>
     </div>
 
     <!-- Информация о товаре - табы -->
-    <div class="contentBox960">
+    <div class="contentBox960 js-fullimg-hidden">
         <ul class="productDescTab js-tabs">
             <li class="js-ga-click productDescTab_item js-tabs-item productDescTab_item-active" data-ga-click="{&quot;m_details&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_details&quot;,&quot;{{product.article}}&quot;]}">
                 <span class="tabText">Подробности</span>
@@ -186,12 +413,163 @@
     </div>
     <!-- Информация о товаре - табы -->
 
-    <div class="contentBox940 js-tab-selector">
+    <div class="contentBox940 js-tab-selector js-fullimg-hidden">
         <div class="tabContentWrap js-tab-wrap">
             <div class="tabContentInner js-tab">
                 <!-- Таб - Подробнее -->
                 <div class="tabContent js-cont">
                     <div class="tabContent_title">Подробности</div>
+
+                    {{#product.kitBlock}}
+                        <div class="lineKitHead clearfix">
+                            <span class="lineKitHead_title">Базовая комплектация набора</span>
+                            {{^isLocked}}
+                                <span class="lineKitHead_change"><span class="borderBd js-kit-open">Изменить комплектацию</span></span>
+                            {{/isLocked}}
+                        </div>
+
+                        <!-- планшетная версия -->
+                        <div class="lineKit lineKit-full">
+                            <div class="lineKitItem clearfix lineKitItem-head">
+                                <div class="lineKitItem_cell lineKitItem_cell-img"></div>
+                                <div class="lineKitItem_cell lineKitItem_cell-desc"></div>
+                                <div class="lineKitItem_cell" style="width: 120px">Дата доставки</div>
+                                <div class="lineKitItem_cell ta-c" style="width: 100px">Цена за 1 шт.</div>
+                                <div class="lineKitItem_cell ta-r" style="width: 60px">Кол-во</div>
+                            </div>
+
+                            {{#products}}
+                                {{^isHidden}}
+                                <!-- элемент набора -->
+                                <div class="lineKitItem clearfix">
+
+                                    <!-- изображение элемента набора -->
+                                    <a href="{{url}}" class="lineKitItem_cell lineKitItem_cell-img">
+                                        <img src="{{photoUrl}}" />
+                                    </a>
+
+                                    <!-- описание элемента набора -->
+                                    <div class="lineKitItem_cell lineKitItem_cell-desc">
+                                        <div class="name">
+                                            <a href="{{url}}" class="">{{name}}</a>
+                                        </div>
+
+                                        <div class="column dimantion">
+                                            <span class="dimantion_name">Высота</span>
+                                            <span class="dimantion_val">{{height}}</span>
+                                        </div>
+
+                                        <div class="column dimantion">
+                                            <span class="dimantion_name">&nbsp;</span>
+                                            <span class="dimantion_val separation">x</span>
+                                        </div>
+
+                                        <div class="column dimantion">
+                                            <span class="dimantion_name">Ширина</span>
+                                            <span class="dimantion_val">{{width}}</span>
+                                        </div>
+
+                                        <div class="column dimantion">
+                                            <span class="dimantion_name">&nbsp;</span>
+                                            <span class="dimantion_val separation">x</span>
+                                        </div>
+
+                                        <div class="column dimantion">
+                                            <span class="dimantion_name">Глубина</span>
+                                            <span class="dimantion_val">{{depth}}</span>
+                                        </div>
+
+                                        <div class="column dimantion">
+                                            <span class="dimantion_name">&nbsp;</span>
+                                            <span class="dimantion_val">{{unit}}</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- доставка -->
+                                    <div class="lineKitItem_cell">{{deliveryDate}}</div>
+
+                                    <!-- цена -->
+                                    <div class="lineKitItem_cell ta-c">
+                                        {{shownPrice}}&nbsp;<span class="rubl">p</span>
+                                    </div>
+
+                                    <!-- штук в наборе -->
+                                    <div class="lineKitItem_cell ta-r">{{quantity}} шт.</div>
+                                </div>
+                                <!--/ элемент набора -->
+                                {{/isHidden}}
+                            {{/products}}
+                        </div>
+                        <!--/ планшетная версия -->
+
+                        <!-- мобильная версия -->
+                        <div class="lineKit lineKit-mobile">
+                        {{#products}}
+                            {{^isHidden}}
+                            <!-- элемент набора -->
+                            <div class="lineKitItem clearfix">
+                                <div class="lineKitItem_name">
+                                    <a href="{{url}}" class="">{{name}}</a>
+                                </div>
+
+                                <!-- изображение элемента набора -->
+                                <a href="{{url}}" class="lineKitItem_l ta-c">
+                                    <img src="{{photoUrl}}" />
+                                </a>
+
+                                <!-- описание элемента набора -->
+                                <div class="lineKitItem_r lineKitItem_desc">
+
+                                    <!-- доставка -->
+                                    <div class="lineKitItem_delvr">
+                                        <span class="lineKitItem_grey">Дата доставки:</span> {{deliveryDate}}
+                                    </div>
+
+                                    <div class="column dimantion">
+                                        <span class="dimantion_name">Высота</span>
+                                        <span class="dimantion_val">{{height}}</span>
+                                    </div>
+
+                                    <div class="column dimantion">
+                                        <span class="dimantion_name">&nbsp;</span>
+                                        <span class="dimantion_val separation">x</span>
+                                    </div>
+
+                                    <div class="column dimantion">
+                                        <span class="dimantion_name">Ширина</span>
+                                        <span class="dimantion_val">{{width}}</span>
+                                    </div>
+
+                                    <div class="column dimantion">
+                                        <span class="dimantion_name">&nbsp;</span>
+                                        <span class="dimantion_val separation">x</span>
+                                    </div>
+
+                                    <div class="column dimantion">
+                                        <span class="dimantion_name">Глубина</span>
+                                        <span class="dimantion_val">{{depth}}</span>
+                                    </div>
+
+                                    <div class="column dimantion">
+                                        <span class="dimantion_name">&nbsp;</span>
+                                        <span class="dimantion_val">{{unit}}</span>
+                                    </div>
+                                </div>
+
+                                <!-- цена -->
+                                <div class="lineKitItem_l lineKitItem-l ta-c">
+                                    {{shownPrice}}&nbsp;<span class="rubl">p</span>
+                                </div>
+
+                                <!-- штук в наборе -->
+                                <div class="lineKitItem_r lineKitItem-l">{{quantity}} шт.</div>
+                            </div>
+                            <!--/ элемент набора -->
+                            {{/isHidden}}
+                        {{/products}}
+                        </div>
+                        <!--/ мобильная версия -->
+                    {{/product.kitBlock}}
 
                     <p class="specificationsText">{{product.description}}</p>
 
@@ -278,3 +656,47 @@
     </div>
 
 </div><!--/ Контент -->
+
+{{#product.shopStateBlock}}
+<div class="popupBox popupHint js-popup-middle">
+    <div class="popupBox_close"></div>
+
+    <div class="popupBox_inn">
+        <div class="popupHint_hd">{{product.namePrefix}} {{product.name}}<br/>{{product.shownPrice}} <span class="rubl">p</span></div>
+
+        <div class="popupHint_cnt">
+            <ul class="table3Col">
+                <li class="table3Col_row table3Col_row-hd">
+                    <span class="table3Col_col">Магазин</span>
+                    <span class="table3Col_col table3Col_col-hdn">Режим работы</span>
+                    <span class="table3Col_col"></span>
+                </li>
+
+                {{#states}}
+                <li class="table3Col_row">
+                    <span class="table3Col_col">
+                        {{#subway}}
+                            <div class="shopLst_mtr">
+                                <span {{#subway.color}} style="background: {{subway.color}};"{{/subway.color}} class="shopLst_bul"></span> 
+                                м.{{name}},
+                            </div>
+                        {{/subway}}
+
+                        <a class="shopLst_addr" href="{{url}}" target="_blank">{{address}}&nbsp;</a>
+                    </span>
+
+                    <span class="table3Col_col table3Col_col-hdn">{{regime}}</span>
+                    
+                    <span class="table3Col_col table3Col_col-r">
+                        {{#cartButton}}
+                            {{>partial/cart/button}}
+                        {{/cartButton}}
+                    </span>
+                </li>
+                {{/states}}
+
+            </ul>
+        </div>
+    </div>
+</div>
+{{/product.shopStateBlock}}

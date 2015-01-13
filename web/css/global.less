@@ -59,6 +59,12 @@
    Карточка товара
    ========================================================================== */
 
+/** информация о доставке .deliveryInfo .deliveryList .addressShopsList **/
+@import "modules/product-card/deliveryInfo/deliveryInfo.less";
+
+/** описание товара .productDesc .productDescHead **/
+@import "modules/product-card/slider/slider.less";
+
 /** описание товара .productDesc .productDescHead **/
 @import "modules/product-card/productDesc/productDesc.less";
 @import "modules/product-card/productDesc/m.productDesc.less";
@@ -71,9 +77,6 @@
 @import "modules/product-card/productDescTab/productDescTab.less";
 @import "modules/product-card/productDescTab/m.productDescTab.less";
 
-/** информация о доставке .deliveryInfo .deliveryList .addressShopsList **/
-@import "modules/product-card/deliveryInfo/deliveryInfo.less";
-
 /** характеристики товара .specifications .specificationsListCol .specificationsListRow .specificationsList **/
 @import "modules/product-card/specifications/specifications.less";
 @import "modules/product-card/specifications/m.specifications.less";
@@ -81,6 +84,10 @@
 /** контент табов описания товара .tabContentWrap .tabContentInner .tabContent **/
 @import "modules/product-card/tabContent/tabContent.less";
 @import "modules/product-card/tabContent/m.tabContent.less";
+
+/** контент табов описания товара .tabContentWrap .tabContentInner .tabContent **/
+@import "modules/product-card/fullImgCnt/fullImgCnt.less";
+@import "modules/product-card/fullImgCnt/m.fullImgCnt.less";
 
 
 /* ==========================================================================
@@ -152,6 +159,22 @@
 
 
 /* ==========================================================================
+   Список магазинов с метро .shopLst
+   ========================================================================== */
+
+@import "modules/shopLst/shopLst.less";
+@import "modules/shopLst/m.shopLst.less";
+
+
+/* ==========================================================================
+   Таблица в три колонки .table3Col
+   ========================================================================== */
+
+@import "modules/table3Col/table3Col.less";
+@import "modules/table3Col/m.table3Col.less";
+
+
+/* ==========================================================================
    Корзина .cartItem .cartLine .cartBuy
    ========================================================================== */
 
@@ -187,6 +210,8 @@
 @import "modules/catalog/sorting.less";
 @import "modules/catalog/m.sorting.less";
 
+@import "modules/catalog/noProducts.less";
+
 /** блок с параметрами фильтра .params .paramsList **/
 @import "modules/catalog/params.less";
 @import "modules/catalog/m.params.less";
@@ -212,3 +237,47 @@
    ========================================================================== */
 
 @import "modules/forms/formReg/formReg.less";
+
+/* ==========================================================================
+   Категории товаров
+   ========================================================================== */
+
+@import "modules/lineKit/lineKit.less";
+@import "modules/lineKit/m.lineKit.less";
+
+
+/*---------Оформление заказа 3.0----------*/
+@import "modules/order/order.less";
+@import "modules/order/m.order.less";
+
+//блок товара в оформлении заказа .orderCol_cnt 
+@import "modules/order/orderCol/orderCol.less";
+@import "modules/order/orderCol/m.orderCol.less";
+
+//дополнительные пожелания .orderComment
+@import "modules/order/orderComment.less";
+
+//строка перехода к следующему шагу .orderCompl
+@import "modules/order/orderCompl/orderCompl.less";
+@import "modules/order/orderCompl/m.orderCompl.less";
+
+//форма личных данных пользователя .orderU
+@import "modules/order/orderU/orderU.less";
+@import "modules/order/orderU/m.orderU.less";
+
+//форма личных данных пользователя .orderU
+@import "modules/order/orderLn/orderLn.less";
+@import "modules/order/orderLn/m.orderLn.less";
+
+//календарь .celedr
+@import "modules/order/popupFl/popupFl.less";
+@import "modules/order/popupFl/celedr.less";
+@import "modules/order/popupFl/selShop.less";
+@import "modules/order/popupFl/shopLst.less" ;
+
+
+/* ==========================================================================
+   Категории товаров
+   ========================================================================== */
+
+@import "modules/promo/promo.less";

@@ -4,10 +4,11 @@ namespace EnterRepository;
 
 use Enter\Curl\Query;
 use EnterAggregator\ConfigTrait;
+use EnterAggregator\RouterTrait;
 use EnterModel as Model;
 
 class MainMenu {
-    use ConfigTrait;
+    use ConfigTrait, RouterTrait;
 
     /**
      * @param Query $menuListQuery
@@ -27,6 +28,7 @@ class MainMenu {
 
             //trigger_error($e, E_USER_ERROR);
         }
+        //$menuData = json_decode(file_get_contents($this->getConfig()->dir . '/data/cms/v2/main-menu.json'), true);
         $categoryData = $categoryListQuery->getResult();
 
         $categoryItemsById = [];
@@ -55,30 +57,43 @@ class MainMenu {
 
                 $element = null;
 
-                $source = (!empty($elementItem['source']) && is_scalar($elementItem['source'])) ? trim((string)$elementItem['source'], '/') : null;
+                $source = !empty($elementItem['source']['type']) ? ($elementItem['source'] + ['type' => null, 'id' => null]) : null;
                 if ($source) {
-                    $params = [];
-                    parse_str(parse_url($source, PHP_URL_QUERY), $params);
+                    $id = $source['id'];
 
-                    if ((0 === strpos($source, 'category/get')) && !empty($params['id']) && isset($categoryItemsById[$params['id']])) {
+                    if (('category-get' == $source['type']) && !empty($id)) {
+                        $categoryItem = isset($categoryItemsById[$id]) ? $categoryItemsById[$id] : null;
+
                         $element = new Model\MainMenu\Element($elementItem);
                         $element->type = 'category';
-                        $element->id = (string)$categoryItemsById[$params['id']]['id'];
-                        if (!$element->name) {
-                            $element->name = (string)$categoryItemsById[$params['id']]['name'];
+                        $element->id = (string)$categoryItem['id'];
+                        if (!$element->id && isset($elementItem['source']['id'])) {
+                            $element->id = (string)$elementItem['source']['id'];
                         }
-                        $element->url = rtrim((string)$categoryItemsById[$params['id']]['link'], '/');
-                    } else if ((0 === strpos($source, 'category/tree')) && !empty($params['root_id']) && isset($categoryItemsById[$params['root_id']])) {
+
+                        if (!$element->name) {
+                            $element->name = (string)$categoryItem['name'];
+                        }
+                        $element->url = rtrim((string)$categoryItem['link'], '/');
+                    } else if (('category-tree' == $source['type']) && !empty($id)) {
                         $elementItems = [];
                         $categoryItem = null;
-                        foreach ($categoryItemsById[$params['root_id']]['children'] as $categoryItem) {
+                        foreach (isset($categoryItemsById[$id]['children'][0]) ? $categoryItemsById[$id]['children'] : [] as $categoryItem) {
                             $elementItems[] = [
-                                'source' => 'category/get?id=' . $categoryItem['id'],
+                                'source' => [
+                                    'type' => 'category-get',
+                                    'id'   => $categoryItem['id'],
+                                ],
                             ];
                         }
                         unset($categoryItem);
 
                         $walkByMenuElementItem($elementItems, $parentElement);
+                    } else if (('slice' == $source['type']) && !empty($source['url'])) {
+                        $element = new Model\MainMenu\Element($elementItem);
+                        $element->type = 'slice';
+                        $element->id = $source['url'];
+                        $element->url = '/slices/' . $source['url']; // FIXME
                     }
                 } else {
                     $element = new Model\MainMenu\Element($elementItem);
@@ -93,6 +108,7 @@ class MainMenu {
                 }
 
                 $element->level = $parentElement ? ($parentElement->level + 1) : 1;
+                $element->hasChildren = (bool)$element->children;
 
                 if ($parentElement) {
                     $parentElement->children[] = $element;
@@ -101,7 +117,7 @@ class MainMenu {
                 }
             }
         };
-        $walkByMenuElementItem($menuData['items']);
+        $walkByMenuElementItem($menuData['item']);
 
         //die(json_encode($menu->elements, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 

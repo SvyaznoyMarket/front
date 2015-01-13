@@ -1,0 +1,150 @@
+.content-content {
+	margin: 55px auto 0;
+    max-width: 940px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+@font-face {
+	font-family: 'Enter';
+
+	src: url('/css/modules/common/fonts/enter_brash_01-webfont.eot');
+	src: url('/css/modules/common/fonts/enter_brash_01-webfont.eot?#iefix') format('embedded-opentype'),
+	url('/css/modules/common/fonts/enter_brash_01-webfont.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Enter Type';
+
+	src: url('/css/modules/common/fonts/enter_type-webfont.eot');
+	src: url('/css/modules/common/fonts/enter_type-webfont.eot?#iefix') format('embedded-opentype'),
+	url('/css/modules/common/fonts/enter_type-webfont.ttf') format('truetype');
+}
+
+.enter {
+	font-family: 'Enter';
+}
+
+.promo_page {
+    width: 960px;
+	margin: 20px auto;
+}
+
+/*** wow ***/
+.subscribe-form {
+	&__title {
+		padding: 19px 0 0 26px;
+
+		text-align: center;
+		text-transform: uppercase;
+
+		font-family: "Enter";
+		font-size: 24px;
+	}
+
+	&__email {
+		.rounded(4px);
+	    position: relative;
+
+	    float: left;
+
+	    width: 308px;
+	    height: 26px;
+	    margin: 16px 0;
+	    padding: 0 0 0 10px;
+
+	    border: 1px solid #c9c9c9;
+	    background: @white;
+
+	    line-height: 26px;
+
+	    -webkit-appearance: none;
+	    &.mError{
+	    	background: #F28C92;
+	    }
+	}
+
+	&__btn {
+		.orangeGradLight();
+		.rounded(5px);
+		display: block;
+
+		width: 160px;
+		height: 33px;
+		margin: 0 0 0 93px;
+		padding: 0;
+
+		cursor: pointer;
+
+		color: #fff;
+		border: 1px solid #DB8A00;
+
+		font-family: Tahoma;
+		font-size: 16px;
+
+		&:hover {
+			.orangeGradDark();
+		}
+	}
+}
+
+//  двухколоночные промо
+
+.float100 {
+    float: none;
+}
+
+.column215 {
+  position: relative;
+  z-index: 5;
+
+  float: left;
+
+  width: 215px;
+  margin-right: -100%;
+
+	h2 {
+	    margin: 10px 0 15px;
+	    padding: 0;
+
+	    font-size: 20px;
+	    font-weight: normal;
+	}
+}
+
+.column685 {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+}
+
+.leftmenu li {
+    padding: 0 0 10px 16px;
+
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNui8sowAAAAYdEVYdENyZWF0aW9uIFRpbWUAMTguMTAuMjAxMr1uZVsAAAB7SURBVDiN7dMhC0MhAMTx/5vRYrKbXjcJfnG7CCa76XWTxSgurQ7mY2k7uPrjyh1rLe7mcVv4MSSEsGKMC3j1c0RrzRiDWuv+EmstQgiu66L3vocAeO8ByDnvIyklAJxze0gphTknxhiUUntIaw0pJed5vl17/L/zHeQJ1BspiCSppVYAAAAASUVORK5CYII=) no-repeat 0 0;
+
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.allpromo {
+    padding: 20px 10px 0;
+}
+
+// выбрать товар
+.chooseBox {
+    margin: 45px 0 40px !important;
+}
+
+.addthis_toolbox {
+    margin-top: 15px;
+    clear: both;
+}
+
+.clear {
+	clear: both;
+	float: none;
+	width: 100%;
+	height: 1px;
+}

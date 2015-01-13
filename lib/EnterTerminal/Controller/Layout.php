@@ -1,62 +1,78 @@
 <?php
 
-namespace EnterTerminal\Controller;
+namespace EnterTerminal\Controller {
 
-use Enter\Http;
-use EnterTerminal\ConfigTrait;
-use EnterAggregator\CurlTrait;
-use EnterTerminal\Controller;
-use EnterTerminal\Repository;
-use EnterCurlQuery as Query;
-use EnterModel as Model;
-use EnterTerminal\Model\Layout as Page;
+    use Enter\Http;
+    use EnterTerminal\ConfigTrait;
+    use EnterAggregator\CurlTrait;
+    use EnterTerminal\Controller;
+    use EnterTerminal\Repository;
+    use EnterQuery as Query;
+    use EnterModel as Model;
+    use EnterTerminal\Controller\Layout\Response;
 
-class Layout {
-    use ConfigTrait, CurlTrait;
+    class Layout {
+        use ConfigTrait, CurlTrait;
 
-    /**
-     * @param Http\Request $request
-     * @throws \Exception
-     * @return Http\JsonResponse
-     */
-    public function execute(Http\Request $request) {
-        $config = $this->getConfig();
-        $curl = $this->getCurl();
+        /**
+         * @param Http\Request $request
+         * @throws \Exception
+         * @return Http\JsonResponse
+         */
+        public function execute(Http\Request $request) {
+            $config = $this->getConfig();
+            $curl = $this->getCurl();
 
-        // ид магазина
-        $shopId = (new Repository\Shop())->getIdByHttpRequest($request);
+            // ид региона
+            $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+            if (!$regionId) {
+                throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
+            }
 
-        // запрос магазина
-        $shopItemQuery = new Query\Shop\GetItemById($shopId);
-        $curl->prepare($shopItemQuery);
+            $shopUi = is_scalar($request->query['shopUi']) ? (string)$request->query['shopUi'] : null;
 
-        $curl->execute();
+            // запрос региона
+            $regionItemQuery = new Query\Region\GetItemById($regionId);
+            $curl->prepare($regionItemQuery);
 
-        // магазин
-        $shop = (new Repository\Shop())->getObjectByQuery($shopItemQuery);
-        if (!$shop) {
-            throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
+            $curl->execute();
+
+            // регион
+            $region = (new Repository\Region())->getObjectByQuery($regionItemQuery);
+            if (!$region) {
+                return (new Controller\Error\NotFound())->execute($request, sprintf('Регион #%s не найден', $regionId));
+            }
+
+            // запрос дерева категорий для меню
+            $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 1);
+            $curl->prepare($categoryListQuery);
+
+            // запрос меню
+            $mainMenuQuery = new Query\MainMenu\GetItem($shopUi);
+            $curl->prepare($mainMenuQuery);
+
+            $curl->execute();
+
+            // меню
+            $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+
+            // ответ
+            $response = new Response();
+            $response->region = $region;
+            $response->mainMenu = $mainMenu;
+
+            return new Http\JsonResponse($response);
         }
+    }
+}
 
-        // запрос дерева категорий для меню
-        $categoryListQuery = new Query\Product\Category\GetTreeList($shop->regionId, 3);
-        $curl->prepare($categoryListQuery);
+namespace EnterTerminal\Controller\Layout {
+    use EnterModel as Model;
 
-        // запрос меню
-        $mainMenuQuery = new Query\MainMenu\GetItem();
-        $curl->prepare($mainMenuQuery);
-
-        $curl->execute();
-
-        // меню
-        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
-
-        // страница
-        $page = new Page();
-        $page->region = $shop->region;
-        $page->shop = $shop;
-        $page->mainMenu = $mainMenu;
-
-        return new Http\JsonResponse($page);
+    class Response {
+        /** @var Model\Region */
+        public $region;
+        /** @var \EnterModel\MainMenu */
+        public $mainMenu;
     }
 }
