@@ -1,14 +1,14 @@
 (function($) {
     $.fn.slidesbox = function(params) {
         var
-        w = $(window);
+            w = $(window);
         // end of vars
 
         return this.each(function() {
             var
-            options = $.extend({},
-	                  $.fn.slidesbox.defaults,
-	                  params),
+                options = $.extend({},
+                    $.fn.slidesbox.defaults,
+                    params),
 
                 $self = $(this),
 
@@ -26,98 +26,113 @@
 
                 slidesDataLength = $self.data('value').length,
 
-                curSlides = 0,
+                // напрвавление прокрутки next => ( direction == 0 ), prev => ( direction == 1 )
                 direction = 0,
-                index = 1,
-				id,
-				itemUrl,
-				contSrc;
+                // номер передаваемого элемента массива, изначально 0, 1, 2 уже подгружены
+                index = 2,
+                // id баннера
+                id,
+                // url ссылки баннера
+                itemUrl,
+                // адрес картики
+                contSrc,
+
+                interval;
             // end of vars
 
             var
-	            setData = function setData() {
-	            	var i = 0;
+                setData = function setData() {
+                    var i = 0;
 
-	                item.each(function() {
-	                    id = $self.data('value')[i].id;
-	                    itemUrl = $self.data('value')[i].url;
-	                    contSrc = $self.data('value')[i].image;
+                    item.each(function() {
+                        id = $self.data('value')[i].id;
+                        itemUrl = $self.data('value')[i].url;
+                        contSrc = $self.data('value')[i].image;
 
-	                    $(this).attr('data-ga-click', '{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + id + '&quot;]}');
-	                    $(this).attr('href', itemUrl);
-	                    $(this).find(cont).attr('src', contSrc);
+                        $(this).attr('data-ga-click', '{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + id + '&quot;]}');
+                        $(this).attr('href', itemUrl);
+                        $(this).find(cont).attr('src', contSrc);
 
-	                    i++;
-	                });
-	            },
+                        i++;
+                    });
+                },
 
                 slidesResize = function slidesResize() {
 
                     slidesH = $self.find(options.slidesContSelector).height();
 
-                    $self.css({'height': slidesH + 15});
-                    slides.css({'height': slidesH});
+                    $self.css({
+                        'height': slidesH + 15
+                    });
+                    slides.css({
+                        'height': slidesH
+                    });
                 },
 
                 nextSlides = function nextSlides() {
-                	if ( curSlides <= slidesDataLength - 2 ) {
-                		curSlides++;
+                    if ( index >= slidesDataLength - 1 && direction == 0 || ( slidesDataLength - index ) == 3 ) {
+                        index = 0;
+                    } else if ( index == slidesDataLength - 1 && direction == 1) {
+                        index = 2;
+                    } else if ( index == slidesDataLength - 2 && direction == 1) {
+                        index = 1;
+                    } else {
+                        if ( direction == 1 ) {
+                            index = index + 3;
+                        } else {
+                            index++;
+                        }
+                    }
 
-                		if ( direction == 1 ) {
-                			index = index + 3;
-                		} else { index++; }
+                    direction = 0;
 
-                		direction = 0;
+                    id = $self.data('value')[index].id;
+                    itemUrl = $self.data('value')[index].url;
+                    contSrc = $self.data('value')[index].image;
 
-	                    if ( index <= slidesDataLength - 1 ) {
-	                        id = $self.data('value')[index].id;
-	                        itemUrl = $self.data('value')[index].url;
-	                    	contSrc = $self.data('value')[index].image;
-	                    };
+                    slidesImgCenter = $self.find('.slidesImg_item-center');
+                    slidesImgCenter.removeClass(centerClass).addClass(leftClass);
+                    slidesImgCenter.next().removeClass(rightClass).addClass(centerClass);
 
-	                    slidesImgCenter = $self.find('.slidesImg_item-center');
-	                    slidesImgCenter.removeClass(centerClass).addClass(leftClass);
-	                    slidesImgCenter.next().removeClass(rightClass).addClass(centerClass);
+                    slides.append('<a href="' + itemUrl + '" class="js-ga-click js-slides-img-item slidesImg_item slidesImg_item-right" data-ga-click="{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + id + '&quot;]}"><img src="' + contSrc + '" class="js-slides-img-cont slidesImg_cont"></a>');
+                    $('.slidesImg_item-left').prev().remove();
 
-	                    slides.append('<a href="' + itemUrl + '" class="js-ga-click js-slides-img-item slidesImg_item slidesImg_item-right" data-ga-click="{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + id + '&quot;]}"><img src="' + contSrc + '" class="js-slides-img-cont slidesImg_cont"></a>');
-		               	$('.slidesImg_item-left').prev().remove();
+                    pagerCustom();
 
-	                    pagerCustom();
-
-	                    // console.log('index next= ' + index);
-	                    // console.log('direction next= ' + direction);
-	                }
+                    console.log(index)
                 },
 
                 prevSlides = function prevSlides() {
-                	if ( curSlides >= 1 ) {
-                		curSlides--;
+                    if ( index == 2 && direction == 0 || index == 0 && direction == 1) {
+                        index = slidesDataLength - 1;
+                    } else if ( index == 0 && direction == 0 ) {
+                        index = slidesDataLength - 3;
+                    } else if ( index == 1 && direction == 0 ) {
+                        index = slidesDataLength - 2;
+                    } else {
+                        if ( direction == 0 ) {
+                            index = index - 3;
+                        } else {
+                            index--;
+                        }
+                    }
 
-                		if ( direction == 0 ) {
-                			index = index - 3;
-                		} else { index--; }
+                    direction = 1;
 
-                		direction = 1;
-	                    
-                		if ( index >= 0 ) {		
-		                    id = $self.data('value')[index].id;
-		                    itemUrl = $self.data('value')[index].url;
-		                    contSrc = $self.data('value')[index].image;
-		                }
+                    console.log(index);
 
-	                    slidesImgCenter = $self.find('.slidesImg_item-center');
-	                    slidesImgCenter.removeClass(centerClass).addClass(rightClass);
-	                    slidesImgCenter.prev().removeClass(leftClass).addClass(centerClass);
+                    id = $self.data('value')[index].id;
+                    itemUrl = $self.data('value')[index].url;
+                    contSrc = $self.data('value')[index].image;
 
-	                    slides.prepend('<a href="' + itemUrl + '" class="js-ga-click js-slides-img-item slidesImg_item slidesImg_item-left" data-ga-click="{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + id + '&quot;]}"><img src="' + contSrc + '" class="js-slides-img-cont slidesImg_cont"></a>');
-	                    $('.slidesImg_item-right').next().remove();
+                    slidesImgCenter = $self.find('.slidesImg_item-center');
+                    slidesImgCenter.removeClass(centerClass).addClass(rightClass);
+                    slidesImgCenter.prev().removeClass(leftClass).addClass(centerClass);
 
-	                    pagerCustom();
+                    slides.prepend('<a href="' + itemUrl + '" class="js-ga-click js-slides-img-item slidesImg_item slidesImg_item-left" data-ga-click="{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + id + '&quot;]}"><img src="' + contSrc + '" class="js-slides-img-cont slidesImg_cont"></a>');
+                    $('.slidesImg_item-right').next().remove();
 
-	                    // console.log('index prev= ' + index);
-	                    // console.log('direction prev= ' + direction);https://www.google.ru/search?q=IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo3QzRGRTI5MEE1MzQxMUUzODExREU3OTc1MTBDRTA1QyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo3QzRGRTI5MUE1MzQxMUUzODExREU3OTc1MTBDRTA1QyI&ie=utf-8&oe=utf-8&aq=t&rls=org.mozilla:ru:official&client=firefox-a&channel=fflb&gfe_rd=cr&ei=6pOiU_nuJI2BNKGjglg
-	                    // console.log('curSlides prev= ' + curSlides);
-	                }
+                    pagerCustom();
                 },
 
                 addPager = function addPager() {
@@ -134,7 +149,9 @@
                     };
 
                     sliderPager.html(pagerHtml);
-                    $self.find(options.pagerSelector).css({'margin-left': -$self.find(options.pagerSelector).width() / 2});
+                    $self.find(options.pagerSelector).css({
+                        'margin-left': -$self.find(options.pagerSelector).width() / 2
+                    });
                     pagerCustom();
                 },
 
@@ -145,23 +162,21 @@
                     pagerItem.each(function() {
                         $(this).removeClass('slidesImg_pager_item-active');
 
-                        if (curSlides == $(this).data('slide-index')) {
                             $(this).addClass('slidesImg_pager_item-active');
-                        }
+
                     });
                 };
             //end of functions
 
             setData();
             addPager();
-            cont.on('load resize', slidesResize);
+            w.on('load resize', slidesResize);
             rightBtn.on('click', nextSlides);
             leftBtn.on('click', prevSlides);
-            w.on('resize', slidesResize);
 
             $self.touchwipe({
-            	min_move_x: 20,
-      			min_move_y: 20,
+                min_move_x: 20,
+                min_move_y: 20,
                 wipeLeft: function() {
                     nextSlides();
                 },
@@ -169,13 +184,17 @@
                     prevSlides();
                 }
             });
+
+            if ( item.length > 1 ) {
+                interval = setInterval(nextSlides, 6000);
+            }
         });
     };
 
     $.fn.slidesbox.defaults = {
-    	slidesSelector: '.js-slides-img-list',
-    	itemSelector: '.js-slides-img-item',
-    	slidesContSelector: '.js-slides-img-cont',
+        slidesSelector: '.js-slides-img-list',
+        itemSelector: '.js-slides-img-item',
+        slidesContSelector: '.js-slides-img-cont',
 
         leftBtnSelector: '.js-slides-img-left',
         rightBtnSelector: '.js-slides-img-right',
