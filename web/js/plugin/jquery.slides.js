@@ -193,9 +193,9 @@
                 }
             });
 
-            if ( item.length > 1 ) {
-                interval = setInterval(nextSlides, 6000);
-            }
+            // if ( item.length > 1 ) {
+            //     interval = setInterval(nextSlides, 6000);
+            // }
         });
     };
 
