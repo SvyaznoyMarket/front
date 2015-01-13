@@ -32,6 +32,6 @@ class GetListByIdRegionId extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]['id']) ? $data : [];
+        $this->result = isset($data['result'][0]['id']) ? $data['result'] : [];
     }
 }
