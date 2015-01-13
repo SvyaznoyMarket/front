@@ -107,23 +107,27 @@
                 },
 
                 prevSlides = function prevSlides() {
-                    if ( index == 2 && direction == 0 || index == 0 && direction == 1) {
-                        index = slidesDataLength - 1;
-                    } else if ( index == 0 && direction == 0 ) {
-                        index = slidesDataLength - 3;
-                    } else if ( index == 1 && direction == 0 ) {
-                        index = slidesDataLength - 2;
-                    } else {
-                        if ( direction == 0 ) {
-                            index = index - 3;
-                        } else {
-                            index--;
-                        }
-                    }
+                    // if ( index == 2 && direction == 0 || index == 0 && direction == 1) {
+                    //     index = slidesDataLength - 1;
+                    // } else if ( index == 0 && direction == 0 ) {
+                    //     index = slidesDataLength - 3;
+                    // } else if ( index == 1 && direction == 0 ) {
+                    //     index = slidesDataLength - 2;
+                    // } else {
+                    //     if ( direction == 0 ) {
+                    //         index = index - 3;
+                    //     } else {
+                    //         index--;
+                    //     }
+                    // }
 
-                    direction = 1;
+                    // direction = 1;
 
                     console.log(index);
+
+                    index--;
+
+                    index = Math.round((index/slidesDataLength-Math.floor(index/slidesDataLength))*slidesDataLength);
 
                     id = $self.data('value')[index].id;
                     itemUrl = $self.data('value')[index].url;
