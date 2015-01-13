@@ -12,7 +12,7 @@ namespace EnterModel {
         public $type;
         /** @var string[] */
         public $tags = [];
-        /** @var Model\Media\ImageSource[] */
+        /** @var Model\Media\ImageSource[]|Model\Media\SvgSource[] */
         public $sources = [];
 
         /**

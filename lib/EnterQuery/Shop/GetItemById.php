@@ -3,12 +3,12 @@
 namespace EnterQuery\Shop;
 
 use Enter\Curl\Query;
-use EnterQuery\CoreQueryTrait;
+use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
 class GetItemById extends Query {
-    use CoreQueryTrait;
+    use ScmsQueryTrait;
 
     /** @var array|null */
     protected $result;
@@ -18,9 +18,9 @@ class GetItemById extends Query {
      */
     public function __construct($id) {
         $this->url = new Url();
-        $this->url->path = 'v2/shop/get';
+        $this->url->path = 'shop/get';
         $this->url->query = [
-            'id' => $id,
+            'id' => [$id],
         ];
 
         $this->init();

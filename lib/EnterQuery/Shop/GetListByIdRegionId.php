@@ -7,20 +7,20 @@ use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
-class GetListByIdList extends Query {
+class GetListByIdRegionId extends Query {
     use ScmsQueryTrait;
 
     /** @var array */
     protected $result;
 
     /**
-     * @param array $ids
+     * @param string $regionId
      */
-    public function __construct(array $ids) {
+    public function __construct($regionId) {
         $this->url = new Url();
         $this->url->path = 'shop/get';
         $this->url->query = [
-            'id' => $ids,
+            'geo_id' => $regionId,
         ];
 
         $this->init();
