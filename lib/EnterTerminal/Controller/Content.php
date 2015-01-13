@@ -113,14 +113,14 @@ namespace EnterTerminal\Controller {
                         if ($product) {
                             $attributes = ' data-type="ProductCard" data-product-id="' . $templateHelper->escape($product->id) . '"';
                         }
-                    } else if (0 === strpos($path, '/product/')) {
+                    } else if (0 === strpos($path, '/products/set/')) {
                         $productIds = array_map(
                             function(\EnterModel\Product $product) { return $product->id; },
                             $productRepository->getIndexedObjectListByQueryList([$match['query']])
                         );
 
                         if ((bool)$productIds) {
-                            $attributes = ' data-type="ProductCard" data-product-id="' . $templateHelper->json($productIds) . '"';
+                            $attributes = ' data-type="ProductList" data-product-ids="' . implode(',', $productIds) . '"';
                         }
                     } else if (0 === strpos($path, '/')) {
                         $attributes = ' data-type="Content" data-content-token="' . $contentRepository->getTokenByPath($path) . '"';
