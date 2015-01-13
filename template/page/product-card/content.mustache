@@ -44,7 +44,7 @@
             <div class="lineKitItem lineKitItem-head">
                 <div class="lineKitItem_cell"><div class="lineKitItem_cell_cap">Уточните комплектацию</div></div>
                 <div class="lineKitItem_cell"></div>
-                <div class="lineKitItem_cell" style="width: 125px;">Дата доставки</div>
+                <div class="lineKitItem_cell" style="width: 125px;">Дата доставки</div> 
                 <div class="lineKitItem_cell" style="width: 95px;">Количество</div>
                 <!--<div class="lineKitItem_cell ta-r" style="width: 90px;">Цена</div>-->
             </div>
@@ -172,7 +172,7 @@
                         <span class="dimantion_val">{{unit}}</span>
                     </div>
                 </div>
-
+                
                 <!-- цена за штуку -->
                 <div class="lineKitItem_l lineKitItem-l lineKitItem_grey ta-c">
                     {{shownPrice}}&nbsp;<span class="rubl">p</span>
@@ -183,7 +183,7 @@
                     {{#cartSpinner}}
                         {{>partial/cart/spinner}}
                     {{/cartSpinner}}
-
+                    
                     <!-- цена за все -->
                     <!--
                     <span class="lineKitItem_summ lineKitItem_foot">{{shownSum}}&nbsp;<span class="rubl">p</span></span>
@@ -234,7 +234,7 @@
                     {{/product.rating}}
                     <span class="prodHd_rating_count">{{product.rating.reviewCount}}</span>
                 </div>
-            {{/product.rating}}
+            {{/product.rating}} 
         </div>
         <!--/ Название товара, артикул, отзывы -->
 
@@ -287,7 +287,7 @@
                     {{/product.moreModelBlock}}
                 </div>
                 {{/product.hasModel}}
-
+                
                 <div class="prodBuy clearfix">
                     {{! информация о покупке }}
                     <div class="prodBuy_l">
@@ -309,7 +309,7 @@
                                 {{/product.credit}}
                             </div>
                             {{! Цена }}
-
+                            
                             {{! Цена в кредит }}
                             {{#product.credit}}
                                 <div class="js-creditPayment prodBuy_i prodBuy_i-credit" data-template-selector="#tpl-creditPayment" data-value="{{&product.credit.dataValue}}" data-price-selector=".{{product.credit.widgetId}}">
@@ -626,12 +626,7 @@
                             </div>
                         </div>
                     {{/product.reviewBlock.reviews}}
-
-                    {{#reviewsMoreLink}}
-                        {{>partial/product-card/reviewsMoreLink}}
-                    {{/reviewsMoreLink}}
                 </div>
-
                 {{/product.reviewBlock}}
                 <!--/ Таб - Отзывы -->
 
@@ -645,7 +640,7 @@
                     {{/product.accessorySlider}}
                 </div>
                 <!--/ Таб - Аксессуары -->
-
+            
                 <!-- Таб - С этим товаром покупают -->
                 <div class="tabContent js-container js-cont" data-tab-selector="#id-product-alsoBoughtTab" style="display: none;">
 
@@ -682,7 +677,7 @@
                     <span class="table3Col_col">
                         {{#subway}}
                             <div class="shopLst_mtr">
-                                <span {{#subway.color}} style="background: {{subway.color}};"{{/subway.color}} class="shopLst_bul"></span>
+                                <span {{#subway.color}} style="background: {{subway.color}};"{{/subway.color}} class="shopLst_bul"></span> 
                                 м.{{name}},
                             </div>
                         {{/subway}}
@@ -691,7 +686,7 @@
                     </span>
 
                     <span class="table3Col_col table3Col_col-hdn">{{regime}}</span>
-
+                    
                     <span class="table3Col_col table3Col_col-r">
                         {{#cartButton}}
                             {{>partial/cart/button}}
