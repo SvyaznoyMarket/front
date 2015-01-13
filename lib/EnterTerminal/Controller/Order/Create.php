@@ -113,10 +113,7 @@ namespace EnterTerminal\Controller\Order {
             }
 
             // отправлять смс?
-            $isReceiveSms = false;
             if ((bool)$request->data['send_sms']) {
-                $isReceiveSms = 1;
-
                 $meta = new Model\Order\Meta();
                 $meta->key = 'send_sms';
                 $meta->value = 1;
@@ -130,8 +127,7 @@ namespace EnterTerminal\Controller\Order {
             $controllerResponse = (new \EnterAggregator\Controller\Order\Create())->execute(
                 $region->id,
                 $split,
-                $metas,
-                $isReceiveSms
+                $metas
             );
 
             $response->orders = $controllerResponse->orders;
