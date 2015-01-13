@@ -44,7 +44,7 @@ class Shop {
      * @param array $data
      */
     public function __construct(array $data = []) {
-        $this->media = new Model\Product\Media();
+        $this->media = new Model\Shop\Media();
 
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
@@ -76,6 +76,17 @@ class Shop {
         if (isset($data['images'][0])) { // FIXME: deprecated
             foreach ($data['images'] as $photoItem) {
                 $this->photo[] = new Model\Shop\Photo($photoItem);
+            }
+        }
+        if (isset($data['medias'][0])) {
+            foreach ($data['medias'] as $mediaItem) {
+                if (!isset($mediaItem['sources'][0])) continue;
+
+                $media = new Model\Media($mediaItem);
+
+                if ('image' == $media->type) {
+                    $this->media->photos[] = new Model\Media($mediaItem);
+                }
             }
         }
 
