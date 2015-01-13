@@ -23,7 +23,6 @@ class RootCategory {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
-        $productRepository = new \EnterRepository\Product();
         $productCategoryRepository = new \EnterRepository\Product\Category();
 
         // ид региона
@@ -41,54 +40,35 @@ class RootCategory {
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
-        // запрос категории
-        $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryToken, $region->id);
-        $curl->prepare($categoryItemQuery);
-
-        $curl->execute();
-
-        // категория
-        $category = $productCategoryRepository->getObjectByQuery($categoryItemQuery);
-
-        if (!$category) {
-            return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));
-        }
-
-        // запрос предка категории
-        $branchCategoryItemQuery = new Query\Product\Category\GetBranchItemByCategoryObject($category, $region->id);
-        $curl->prepare($branchCategoryItemQuery);
-
         // запрос дерева категорий для меню
         $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
         $curl->prepare($categoryListQuery);
-
-        $curl->execute();
-
-        // предки и дети категории
-        $productCategoryRepository->setBranchForObjectByQuery($category, $branchCategoryItemQuery);
 
         // запрос меню
         $mainMenuQuery = new Query\MainMenu\GetItem();
         $curl->prepare($mainMenuQuery);
 
-        // запрос настроек каталога
-        $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($category->ui, $regionId);
-        $curl->prepare($catalogConfigQuery);
-
         $curl->execute();
+
+        // категория из вехнего списка категорий для меню
+        $category = null;
+        foreach ($categoryListQuery->getResult() as $categoryItem) {
+            if ($categoryToken === @$categoryItem['token']) {
+                $category = new \EnterModel\Product\Category($categoryItem);
+            }
+        }
+        if (!$category) {
+            return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));
+        }
 
         // меню
         $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
-
-        // настройки каталога
-        $catalogConfig = (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\RootCategory\Request();
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->category = $category;
-        $pageRequest->catalogConfig = $catalogConfig;
 
         // страница
         $page = new Page();
