@@ -123,11 +123,13 @@
 
                     // direction = 1;
 
-                    console.log(index);
+                    
 
                     index--;
 
                     index = Math.round((index/slidesDataLength-Math.floor(index/slidesDataLength))*slidesDataLength);
+
+                    console.log(index);
 
                     id = $self.data('value')[index].id;
                     itemUrl = $self.data('value')[index].url;
