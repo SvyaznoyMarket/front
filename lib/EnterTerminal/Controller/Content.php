@@ -120,7 +120,7 @@ namespace EnterTerminal\Controller {
                         );
 
                         if ((bool)$productIds) {
-                            $attributes = ' data-type="ProductList" data-product-id="' . implode(',', $productIds) . '"';
+                            $attributes = ' data-type="ProductList" data-product-ids="' . implode(',', $productIds) . '"';
                         }
                     } else if (0 === strpos($path, '/')) {
                         $attributes = ' data-type="Content" data-content-token="' . $contentRepository->getTokenByPath($path) . '"';
