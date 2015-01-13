@@ -127,13 +127,13 @@
 
                     index--;
 
-                    index = Math.round((index/slidesDataLength-Math.floor(index/slidesDataLength))*slidesDataLength);
+                    index2 = Math.round(((index - 1)/slidesDataLength-Math.floor((index - 1)/slidesDataLength))*slidesDataLength);
 
                     console.log(index);
 
-                    id = $self.data('value')[index].id;
-                    itemUrl = $self.data('value')[index].url;
-                    contSrc = $self.data('value')[index].image;
+                    id = $self.data('value')[index2].id;
+                    itemUrl = $self.data('value')[index2].url;
+                    contSrc = $self.data('value')[index2].image;
 
                     slidesImgCenter = $self.find('.slidesImg_item-center');
                     slidesImgCenter.removeClass(centerClass).addClass(rightClass);
