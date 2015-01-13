@@ -5,3 +5,4 @@
 /config/config-local.php
 /config/terminal/config-local.php
 /node_modules
+sftp-config.json
