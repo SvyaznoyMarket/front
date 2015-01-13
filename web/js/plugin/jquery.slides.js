@@ -70,21 +70,25 @@
                 },
 
                 nextSlides = function nextSlides() {
-                    if ( index >= slidesDataLength - 1 && direction == 0 || ( slidesDataLength - index ) == 3 ) {
-                        index = 0;
-                    } else if ( index == slidesDataLength - 1 && direction == 1) {
-                        index = 2;
-                    } else if ( index == slidesDataLength - 2 && direction == 1) {
-                        index = 1;
-                    } else {
-                        if ( direction == 1 ) {
-                            index = index + 3;
-                        } else {
-                            index++;
-                        }
-                    }
+                    // if ( index >= slidesDataLength - 1 && direction == 0 || ( slidesDataLength - index ) == 3 ) {
+                    //     index = 0;
+                    // } else if ( index == slidesDataLength - 1 && direction == 1) {
+                    //     index = 2;
+                    // } else if ( index == slidesDataLength - 2 && direction == 1) {
+                    //     index = 1;
+                    // } else {
+                    //     if ( direction == 1 ) {
+                    //         index = index + 3;
+                    //     } else {
+                    //         index++;
+                    //     }
+                    // }
 
-                    direction = 0;
+                    // direction = 0;
+
+                    index++;
+
+                    index = Math.round((index/slidesDataLength-Math.floor(index/slidesDataLength))*slidesDataLength);
 
                     id = $self.data('value')[index].id;
                     itemUrl = $self.data('value')[index].url;
