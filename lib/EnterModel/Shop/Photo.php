@@ -2,9 +2,6 @@
 
 namespace EnterModel\Shop;
 
-/**
- * @deprecated
- */
 class Photo {
     /** @var string */
     public $source;

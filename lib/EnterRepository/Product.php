@@ -332,7 +332,6 @@ class Product {
                     $shopItem['way_walk'] = '';
                     $shopItem['way_auto'] = '';
                     $shopItem['images'] = [];
-                    $shopItem['medias'] = [];
 
                     $shopState->shop = new Model\Shop($shopItem);
 

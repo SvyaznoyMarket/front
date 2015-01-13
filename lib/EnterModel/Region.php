@@ -32,14 +32,9 @@ class Region {
         if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
         if (array_key_exists('parent_id', $data)) $this->parentId = (string)$data['parent_id'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
-        if (array_key_exists('token', $data)) $this->token = (string)$data['token']; // FIXME: deprecated
-        if (array_key_exists('slug', $data)) $this->token = (string)$data['slug'];
-
+        if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
         if (array_key_exists('coord_long', $data)) $this->longitude = (float)$data['coord_long'];
         if (array_key_exists('coord_lat', $data)) $this->latitude = (float)$data['coord_lat'];
-        if (isset($data['location']['longitude'])) $this->longitude = (float)$data['location']['longitude'];
-        if (isset($data['location']['latitude'])) $this->latitude = (float)$data['location']['latitude'];
-
         if (array_key_exists('tk_available', $data)) $this->transportCompanyAvailable = (bool)$data['tk_available'];
     }
 }
