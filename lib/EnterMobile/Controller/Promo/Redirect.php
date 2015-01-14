@@ -21,7 +21,6 @@ class Redirect {
         $logger = $this->getLogger();
         $curl = $this->getCurl();
         $router = $this->getRouter();
-        $productCategoryRepository = new \EnterRepository\Product\Category();
         $promoRepository = new \EnterRepository\Promo();
 
         // ид баннера
@@ -53,7 +52,9 @@ class Redirect {
         //die(var_dump($promo));
 
         $url = '/';
-        if (false !== strpos($promo->url, '/')) {
+        if ('ProductCatalog/Slice' == $promo->type && !empty($promo->items[0]->sliceId)) {
+            $url = $router->getUrlByRoute(new Routing\ProductSlice\Get($promo->items[0]->sliceId));
+        } else if (false !== strpos($promo->url, '/')) {
             $url = $promo->url;
         } else {
             $productIds = [];
