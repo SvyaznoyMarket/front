@@ -52,7 +52,7 @@ class Shop {
         if (array_key_exists('slug', $data)) $this->token = (string)$data['slug'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('geo_id', $data)) $this->regionId = (string)$data['geo_id'];
-        if (array_key_exists('working_time', $data) && is_string($data['working_time'])) $this->regime = (string)$data['working_time']; // FIXME: deprecated
+        if (isset($data['working_time']) && is_string($data['working_time'])) $this->regime = (string)$data['working_time']; // FIXME: deprecated
         if (isset($data['working_time']['common'])) $this->regime = (string)$data['working_time']['common'];
 
         if (array_key_exists('coord_long', $data)) $this->longitude = (float)$data['coord_long']; // FIXME: deprecated

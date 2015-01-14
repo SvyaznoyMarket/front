@@ -51,16 +51,16 @@ class ShopList {
                 ];
             }
 
+            $shop = new \EnterModel\Shop($shopItem);
+
             $shopItem = [
-                'id'        => (string)@$shopItem['id'],
-                'address'   => (string)@$shopItem['address'],
-                'longitude' => (float)@$shopItem['coord_long'] ?: null,
-                'latitude'  => (float)@$shopItem['coord_lat'] ?: null,
-                'regime'    => (string)@$shopItem['working_time'],
+                'id'        => $shop->id,
+                'address'   => $shop->address,
+                'longitude' => $shop->longitude,
+                'latitude'  => $shop->latitude,
+                'regime'    => $shop->regime,
                 'type'      => 'shop',
-                'subway'    => isset($shopItem['subway'][0]) ? array_map(function($item) {
-                    return ['name' => @$item['name'], 'line' => @$item['line']];
-                }, $shopItem['subway']) : [],
+                'subway'    => $shop->subway,
             ];
 
             $regionDataById[$regionId]['shops'][] = $shopItem;
