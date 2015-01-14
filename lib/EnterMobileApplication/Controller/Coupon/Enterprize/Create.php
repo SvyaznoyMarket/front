@@ -51,6 +51,21 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
             }
             $response->token = $token;
 
+            // получение данных из хранилища
+            $storageGetQuery = new Query\Storage\GetItemByKey('user_id', $user->id);
+            $curl->prepare($storageGetQuery)->execute();
+            $storageData = (array)$storageGetQuery->getResult() + ['email' => null, 'mobile' => null];
+
+            $user->email = $storageData['email'];
+            if (!$user->email) {
+                throw new \Exception('Нужно подтвердить email');
+            }
+            $user->phone = $storageData['mobile'];
+            if (!$user->phone) {
+                throw new \Exception('Нужно подтвердить телефон');
+            }
+
+            // создание купона
             $createQuery = new Query\Coupon\Enterprize\Create($token, $user, $couponSeries);
             $createQuery->setTimeout(10 * $config->coreService->timeout);
 
@@ -58,6 +73,11 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
 
             try {
                 $result = $createQuery->getResult();
+                $this->getLogger()->push(['core.result' => $result, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['enterprize']]);
+
+                // удаление данных из хранилища
+                $storageDeleteQuery = new Query\Storage\GetItemByKey('user_id', $user->id);
+                $curl->prepare($storageDeleteQuery)->execute();
             } catch (\EnterQuery\CoreQueryException $e) {
                 $detail = $e->getDetail();
 
@@ -97,6 +117,8 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
                     throw $e;
                 }
             }
+
+            if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
 
             // response
             return new Http\JsonResponse($response);

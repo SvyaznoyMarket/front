@@ -109,6 +109,8 @@ namespace EnterMobileApplication\Controller\Coupon {
                 }
             }
 
+            if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
+
             // response
             return new Http\JsonResponse($response);
         }

@@ -48,6 +48,8 @@ namespace EnterAggregator {
         public $curl;
         /** @var Config\CoreService */
         public $coreService;
+        /** @var Config\CorePrivateService */
+        public $corePrivateService;
         /** @var Config\CmsService */
         public $cmsService;
         /** @var Config\ScmsService */
@@ -104,6 +106,7 @@ namespace EnterAggregator {
             $this->curl = new Config\Curl();
 
             $this->coreService = new Config\CoreService();
+            $this->corePrivateService = new Config\CorePrivateService();
             $this->cmsService = new Config\CmsService();
             $this->scmsService = new Config\ScmsService();
             $this->crmService = new Config\CrmService();
@@ -264,6 +267,9 @@ namespace EnterAggregator\Config {
         public $clientId;
         /** @var bool */
         public $debug;
+    }
+
+    class CorePrivateService extends CoreService {
     }
 
     class CmsService extends CurlService {
