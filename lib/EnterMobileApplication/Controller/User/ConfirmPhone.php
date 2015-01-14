@@ -70,7 +70,8 @@ namespace EnterMobileApplication\Controller\User {
 
                     // установка данных в хранилище
                     $storageSetQuery = new Query\Storage\SetItemByKey('user_id', $user->id, array_merge($storageData, [
-                        'mobile' => $phone,
+                        'mobile'         => $phone,
+                        'isRegistration' => true,
                     ]));
                     $curl->prepare($storageSetQuery)->execute();
                 }
