@@ -3,12 +3,12 @@
 namespace EnterQuery\Shop;
 
 use Enter\Curl\Query;
-use EnterQuery\CoreQueryTrait;
+use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
 class GetListByIdList extends Query {
-    use CoreQueryTrait;
+    use ScmsQueryTrait;
 
     /** @var array */
     protected $result;
@@ -18,7 +18,7 @@ class GetListByIdList extends Query {
      */
     public function __construct(array $ids) {
         $this->url = new Url();
-        $this->url->path = 'v2/shop/get';
+        $this->url->path = 'shop/get';
         $this->url->query = [
             'id' => $ids,
         ];
@@ -32,6 +32,6 @@ class GetListByIdList extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]['id']) ? $data : [];
+        $this->result = isset($data['result'][0]['id']) ? $data['result'] : [];
     }
 }
