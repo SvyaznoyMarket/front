@@ -62,14 +62,15 @@ namespace EnterMobileApplication\Controller\User {
                 }
                 $result += ['code' => null, 'message' => null, 'user_id' => null];
 
-                if ($code && $user->id) {
+                $storageValue = $result['user_id'];
+                if ($code && $storageValue) {
                     // получение данных из хранилища
-                    $storageGetQuery = new Query\Storage\GetItemByKey('user_id', $user->id);
+                    $storageGetQuery = new Query\Storage\GetItemByKey('user_id', $storageValue);
                     $curl->prepare($storageGetQuery)->execute();
                     $storageData = (array)$storageGetQuery->getResult();
 
                     // установка данных в хранилище
-                    $storageSetQuery = new Query\Storage\SetItemByKey('user_id', $user->id, array_merge($storageData, [
+                    $storageSetQuery = new Query\Storage\SetItemByKey('user_id', $storageValue, array_merge($storageData, [
                         'mobile'         => $phone,
                         'isRegistration' => true,
                     ]));
