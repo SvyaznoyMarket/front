@@ -24,12 +24,11 @@
                 centerClass = 'slidesImg_item-center',
                 rightClass = 'slidesImg_item-right',
 
-                slidesDataLength = $self.data('value').length,
+                slidesLength = $self.data('value').length,
 
-                // напрвавление прокрутки next => ( direction == 0 ), prev => ( direction == 1 )
-                direction = 0,
-                // номер передаваемого элемента массива, изначально 0, 1, 2 уже подгружены
-                index = 2,
+                // номер передаваемого элемента массива
+                index = 0,
+
                 // id баннера
                 id,
                 // url ссылки баннера
@@ -37,17 +36,22 @@
                 // адрес картики
                 contSrc,
 
-                interval;
+                timeoutId;
             // end of vars
 
             var
                 setData = function setData() {
-                    var i = 0;
+                    var slidesData = $self.data('value'),
+                        i = 0;
 
+                    //перемещаем последний элемент в начало массива
+                    slidesData.unshift(slidesData[slidesLength-1]);
+
+                    //заполняем слайдер данными
                     item.each(function() {
-                        id = $self.data('value')[i].id;
-                        itemUrl = $self.data('value')[i].url;
-                        contSrc = $self.data('value')[i].image;
+                        id = slidesData[i].id;
+                        itemUrl = slidesData[i].url;
+                        contSrc = slidesData[i].image;
 
                         $(this).attr('data-ga-click', '{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + id + '&quot;]}');
                         $(this).attr('href', itemUrl);
@@ -70,29 +74,14 @@
                 },
 
                 nextSlides = function nextSlides() {
-                    // if ( index >= slidesDataLength - 1 && direction == 0 || ( slidesDataLength - index ) == 3 ) {
-                    //     index = 0;
-                    // } else if ( index == slidesDataLength - 1 && direction == 1) {
-                    //     index = 2;
-                    // } else if ( index == slidesDataLength - 2 && direction == 1) {
-                    //     index = 1;
-                    // } else {
-                    //     if ( direction == 1 ) {
-                    //         index = index + 3;
-                    //     } else {
-                    //         index++;
-                    //     }
-                    // }
-
-                    // direction = 0;
-
                     index++;
 
-                    index = Math.round((index/slidesDataLength-Math.floor(index/slidesDataLength))*slidesDataLength);
+                    index = Math.round( ( index / slidesLength - Math.floor( index / slidesLength ) ) * slidesLength );
+                    indexLeft = Math.round( ( ( index + 2 ) / slidesLength - Math.floor( ( index + 2 ) / slidesLength ) ) * slidesLength );
 
-                    id = $self.data('value')[index].id;
-                    itemUrl = $self.data('value')[index].url;
-                    contSrc = $self.data('value')[index].image;
+                    id = $self.data('value')[indexLeft].id;
+                    itemUrl = $self.data('value')[indexLeft].url;
+                    contSrc = $self.data('value')[indexLeft].image;
 
                     slidesImgCenter = $self.find('.slidesImg_item-center');
                     slidesImgCenter.removeClass(centerClass).addClass(leftClass);
@@ -102,38 +91,16 @@
                     $('.slidesImg_item-left').prev().remove();
 
                     pagerCustom();
-
-                    console.log(index)
+                    console.log(index);
                 },
 
                 prevSlides = function prevSlides() {
-                    // if ( index == 2 && direction == 0 || index == 0 && direction == 1) {
-                    //     index = slidesDataLength - 1;
-                    // } else if ( index == 0 && direction == 0 ) {
-                    //     index = slidesDataLength - 3;
-                    // } else if ( index == 1 && direction == 0 ) {
-                    //     index = slidesDataLength - 2;
-                    // } else {
-                    //     if ( direction == 0 ) {
-                    //         index = index - 3;
-                    //     } else {
-                    //         index--;
-                    //     }
-                    // }
-
-                    // direction = 1;
-
-                    
-
                     index--;
+                    index = Math.round( ( index / slidesLength - Math.floor( index / slidesLength ) ) * slidesLength );
 
-                    index2 = Math.round(((index - 1)/slidesDataLength-Math.floor((index - 1)/slidesDataLength))*slidesDataLength);
-
-                    console.log(index);
-
-                    id = $self.data('value')[index2].id;
-                    itemUrl = $self.data('value')[index2].url;
-                    contSrc = $self.data('value')[index2].image;
+                    id = $self.data('value')[index].id;
+                    itemUrl = $self.data('value')[index].url;
+                    contSrc = $self.data('value')[index].image;
 
                     slidesImgCenter = $self.find('.slidesImg_item-center');
                     slidesImgCenter.removeClass(centerClass).addClass(rightClass);
@@ -143,6 +110,7 @@
                     $('.slidesImg_item-right').next().remove();
 
                     pagerCustom();
+                    console.log(index);
                 },
 
                 addPager = function addPager() {
@@ -150,11 +118,11 @@
 
                     sliderPager = $('<div class="js-slides-img-pag slidesImg_pager" />');
 
-                    if (slidesDataLength > 0) {
+                    if (slidesLength > 0) {
                         $self.append(sliderPager);
                     };
 
-                    for (var i = 0; i <= slidesDataLength - 1; i++) {
+                    for (var i = 0; i <= slidesLength - 1; i++) {
                         pagerHtml += '<div class="js-slides-img-pag-item slidesImg_pager_item" data-slide-index="' + i + '" />';
                     };
 
@@ -162,6 +130,7 @@
                     $self.find(options.pagerSelector).css({
                         'margin-left': -$self.find(options.pagerSelector).width() / 2
                     });
+
                     pagerCustom();
                 },
 
@@ -172,8 +141,9 @@
                     pagerItem.each(function() {
                         $(this).removeClass('slidesImg_pager_item-active');
 
-                            $(this).addClass('slidesImg_pager_item-active');
-
+                        if ( index == $(this).data('slide-index') ) {
+                             $(this).addClass('slidesImg_pager_item-active');
+                        }
                     });
                 };
             //end of functions
@@ -189,15 +159,17 @@
                 min_move_y: 20,
                 wipeLeft: function() {
                     nextSlides();
+                    clearTimeout(timeoutId);
                 },
                 wipeRight: function() {
                     prevSlides();
+                    clearTimeout(timeoutId);
                 }
             });
 
-            // if ( item.length > 1 ) {
-            //     interval = setInterval(nextSlides, 6000);
-            // }
+            if ( item.length > 1 ) {
+                timeoutId = setInterval(nextSlides, 6000);
+            }
         });
     };
 
