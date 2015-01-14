@@ -63,7 +63,8 @@ namespace EnterMobileApplication\Controller\User {
                 $result += ['code' => null, 'message' => null, 'user_id' => null];
 
                 $storageValue = $result['user_id'];
-                if ($code && $storageValue) {
+                //if ($code && $storageValue) {
+                if ($storageValue) {
                     // получение данных из хранилища
                     $storageGetQuery = new Query\Storage\GetItemByKey('user_id', $storageValue);
                     $curl->prepare($storageGetQuery)->execute();
