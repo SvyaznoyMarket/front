@@ -62,12 +62,25 @@ namespace EnterMobileApplication\Controller\User {
                 }
                 $result += ['code' => null, 'message' => null, 'user_id' => null];
 
+                if ($code && $user->id) {
+                    // получение данных из хранилища
+                    $storageGetQuery = new Query\Storage\GetItemByKey('user_id', $user->id);
+                    $curl->prepare($storageGetQuery)->execute();
+                    $storageData = (array)$storageGetQuery->getResult();
+
+                    // установка данных в хранилище
+                    $storageSetQuery = new Query\Storage\SetItemByKey('user_id', $user->id, array_merge($storageData, [
+                        'mobile' => $phone,
+                    ]));
+                    $curl->prepare($storageSetQuery)->execute();
+                }
+
                 $response->result = [
                     'code'    => $result['code'],
                     'message' => $result['message'],
                 ];
 
-                $detail = $result['detail'];
+                $detail = isset($result['detail']) ? $result['detail'] : null;
             } catch (\EnterQuery\CoreQueryException $e) {
                 $detail = $e->getDetail();
 
@@ -89,6 +102,8 @@ namespace EnterMobileApplication\Controller\User {
             $response->remainingTime = isset($detail['expired']) ? $detail['expired'] : null;
             $response->attemptCount = isset($detail['attempts']) ? $detail['attempts'] : null;
             $response->remainingTime = isset($detail['retry']) ? $detail['retry'] : null;
+
+            if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
 
             // response
             return new Http\JsonResponse($response);

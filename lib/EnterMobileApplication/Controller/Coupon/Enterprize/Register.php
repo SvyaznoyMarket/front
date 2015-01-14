@@ -137,6 +137,8 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
                 //return (new Controller\User\ConfirmPhone())->execute($request);
             }
 
+            if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
+
             // response
             return new Http\JsonResponse($response);
         }
