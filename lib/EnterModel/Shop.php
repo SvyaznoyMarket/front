@@ -47,7 +47,8 @@ class Shop {
         $this->media = new Model\Shop\Media();
 
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
-        if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
+        if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui']; // FIXME: deprecated
+        if (array_key_exists('uid', $data)) $this->ui = (string)$data['uid'];
         if (array_key_exists('token', $data)) $this->token = (string)$data['token']; // FIXME: deprecated
         if (array_key_exists('slug', $data)) $this->token = (string)$data['slug'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
