@@ -27,13 +27,13 @@ class Slice {
         // ид региона
         $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
         if (!$regionId) {
-            throw new \Exception('Не указан параметр regionId');
+            throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
         }
 
         // токен среза
         $sliceToken = trim((string)$request->query['sliceId']);
         if (!$sliceToken) {
-            throw new \Exception('Не указан параметр sliceId');
+            throw new \Exception('Не указан параметр sliceId', Http\Response::STATUS_BAD_REQUEST);
         }
 
         // ид категории
@@ -44,10 +44,10 @@ class Slice {
 
         $limit = (int)$request->query['limit'];
         if ($limit < 1) {
-            throw new \Exception('limit не должен быть меньше 1');
+            throw new \Exception('limit не должен быть меньше 1', Http\Response::STATUS_BAD_REQUEST);
         }
         if ($limit > 40) {
-            throw new \Exception('limit не должен быть больше 40');
+            throw new \Exception('limit не должен быть больше 40', Http\Response::STATUS_BAD_REQUEST);
         }
 
         // сортировка
@@ -72,6 +72,14 @@ class Slice {
 
         // фильтры в http-запросе и настройках среза
         $baseRequestFilters = (new \EnterMobile\Repository\Product\Filter())->getRequestObjectListByHttpRequest(new Http\Request($slice->filters)); // FIXME !!!
+        // AG-43: если выбрана категория, то удялять замороженные фильтры-категории
+        if ($categoryId) {
+            foreach ($baseRequestFilters as $i => $baseRequestFilter) {
+                if ('category' == $baseRequestFilter->token) {
+                    unset($baseRequestFilters[$i]);
+                }
+            }
+        }
 
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
 
@@ -107,18 +115,41 @@ class Slice {
         }
 
         // список категорий
-        $categories = [];
-        if ($controllerResponse->category) {
-            $categories = $controllerResponse->category->children;
-        } else {
-            $categoryListQuery = new Query\Product\Category\GetTreeList($controllerResponse->region->id, null, $filterRepository->dumpRequestObjectList($baseRequestFilters));
-            $curl->prepare($categoryListQuery)->execute();
+        // FIXME !!!
+        $baseRequestFilters = (new \EnterMobile\Repository\Product\Filter())->getRequestObjectListByHttpRequest(new Http\Request($slice->filters)); // FIXME !!!
+        $categoryListQuery = new Query\Product\Category\GetTreeList(
+            $controllerResponse->region->id,
+            null,
+            $filterRepository->dumpRequestObjectList($baseRequestFilters),
+            $controllerResponse->category ? $controllerResponse->category->id : null
+        );
+        $curl->prepare($categoryListQuery)->execute();
 
-            try {
-                $categories = (new \EnterRepository\Product\Category())->getObjectListByQuery($categoryListQuery);
-            } catch(\Exception $e) {
-                // TODO
+        /** @var Model\Product\Category[] $categories */
+        $categories = [];
+        try {
+            $categoryListResult = $categoryListQuery->getResult();
+
+            $children =
+                $categoryId
+                ? (
+                    isset($categoryListResult[0]['children'][0])
+                    ? $categoryListResult[0]['children']
+                    : []
+                )
+                : (
+                    isset($categoryListResult[0])
+                    ? $categoryListResult
+                    : []
+                )
+            ;
+            foreach ($children as $categoryItem) {
+                if (!isset($categoryItem['uid'])) continue;
+
+                $categories[] = new Model\Product\Category($categoryItem);
             }
+        } catch(\Exception $e) {
+            // TODO
         }
 
         // ответ

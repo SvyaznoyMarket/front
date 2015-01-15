@@ -120,12 +120,24 @@ namespace EnterTerminal\Controller\ProductCatalog {
             $categories = [];
             try {
                 $categoryListResult = $categoryListQuery->getResult();
-                if (isset($categoryListResult[0]['children'][0])) {
-                    foreach ($categoryListResult[0]['children'] as $categoryItem) {
-                        if (!isset($categoryItem['uid'])) continue;
 
-                        $categories[] = new Model\Product\Category($categoryItem);
-                    }
+                $children =
+                    $categoryId
+                    ? (
+                        isset($categoryListResult[0]['children'][0])
+                        ? $categoryListResult[0]['children']
+                        : []
+                    )
+                    : (
+                        isset($categoryListResult[0])
+                        ? $categoryListResult
+                        : []
+                    )
+                ;
+                foreach ($children as $categoryItem) {
+                    if (!isset($categoryItem['uid'])) continue;
+
+                    $categories[] = new Model\Product\Category($categoryItem);
                 }
             } catch(\Exception $e) {
                 // TODO
