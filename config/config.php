@@ -50,6 +50,13 @@ return function(\EnterAggregator\Config $config) {
     $config->coreService->clientId = 'site';
     $config->coreService->debug = false;
 
+    $config->corePrivateService->url = 'http://api.enter.ru/private/';
+    $config->corePrivateService->user = 'Developer';
+    $config->corePrivateService->password = 'dEl23sTOas';
+    $config->corePrivateService->timeout = 5;
+    $config->corePrivateService->clientId = 'site';
+    $config->corePrivateService->debug = false;
+
     $config->searchService->url = 'http://search.enter.ru/';
     $config->searchService->timeout = 5;
     $config->searchService->clientId = 'site';

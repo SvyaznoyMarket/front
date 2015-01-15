@@ -30,7 +30,7 @@ class Register extends Query {
         $this->data = [
             'mobile'    => $user->phone,
             'email'     => $user->email,
-            'name'      => trim(implode(' ', [$user->firstName, $user->lastName])),
+            'name'      => $user->firstName,
             'guid'      => $couponSeries->id,
             'agree'     => true,
         ];
