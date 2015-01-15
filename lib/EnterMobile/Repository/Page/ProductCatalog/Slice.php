@@ -51,7 +51,11 @@ class Slice {
                 $childCategory = new Partial\ProductCatalog\CategoryBlock\Category();
                 $childCategory->name = $iCategoryModel->name;
                 $childCategory->url = $router->getUrlByRoute(new Routing\ProductSlice\GetCategory($request->slice->token, $iCategoryModel->token));
-                $childCategory->image = (string)(new Routing\Product\Category\GetImage($iCategoryModel->image, $iCategoryModel->id, 1));
+                $childCategory->image =
+                    (0 === strpos($iCategoryModel->image, 'http'))
+                    ? $iCategoryModel->image
+                    : (string)(new Routing\Product\Category\GetImage($iCategoryModel->image, $iCategoryModel->id, 1))
+                ;
 
                 $page->content->categoryBlock->categories[] = $childCategory;
             }
