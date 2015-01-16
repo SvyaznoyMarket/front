@@ -40,11 +40,11 @@ namespace EnterTerminal\Controller {
 
             $response->info = $data;
 
-            $shopId = $response->info['shop_id'];
+            $shopUi = $response->info['shop_ui'];
 
             $shopQuery = null;
-            if ($shopId != null) {
-                $shopQuery = new Query\Shop\GetItemById($shopId);
+            if ($shopUi != null) {
+                $shopQuery = new Query\Shop\GetItemByUi($shopUi);
                 $curl->prepare($shopQuery);
             }
 
@@ -53,10 +53,10 @@ namespace EnterTerminal\Controller {
 
             $curl->execute();
 
-            if ($shopId != null) {
+            if ($shopUi != null) {
                 $shop = (new \EnterTerminal\Repository\Shop())->getObjectByQuery($shopQuery);
                 if (!$shop) {
-                    return (new Controller\Error\NotFound())->execute($request, sprintf('Магазин #%s не найден', $shopId));
+                    return (new Controller\Error\NotFound())->execute($request, sprintf('Магазин %s не найден', $shopUi));
                 }
 
                 $response->shop = $shop;
