@@ -7,10 +7,13 @@ use EnterQuery\SearchQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
+/**
+ * @deprecated
+ */
 class GetTreeList extends Query {
     use SearchQueryTrait;
 
-    /** @var array|null */
+    /** @var array */
     protected $result;
 
     /**

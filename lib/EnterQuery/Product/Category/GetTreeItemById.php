@@ -7,6 +7,9 @@ use EnterQuery\SearchQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
+/**
+ * @deprecated
+ */
 class GetTreeItemById extends Query {
     use SearchQueryTrait;
 

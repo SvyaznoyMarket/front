@@ -11,6 +11,20 @@ class MainMenu {
     use ConfigTrait, RouterTrait;
 
     /**
+     * @return \EnterQuery\Product\Category\GetTree
+     */
+    public function getCategoryListQuery() {
+        return new \EnterQuery\Product\Category\GetTree(
+            null,
+            3,
+            false,
+            null,
+            true,
+            ['category_163x163']
+        );
+    }
+
+    /**
      * @param Query $menuListQuery
      * @param Query $categoryListQuery
      * @return Model\MainMenu

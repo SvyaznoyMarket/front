@@ -41,7 +41,7 @@ class RootCategory {
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         // запрос дерева категорий для меню
-        $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
+        $categoryListQuery = (new \EnterRepository\MainMenu())->getCategoryListQuery();
         $curl->prepare($categoryListQuery);
 
         // запрос меню
@@ -53,7 +53,7 @@ class RootCategory {
         // категория из вехнего списка категорий для меню
         $category = null;
         foreach ($categoryListQuery->getResult() as $categoryItem) {
-            if ($categoryToken === @$categoryItem['token']) {
+            if ($categoryToken === @$categoryItem['slug']) {
                 $category = new \EnterModel\Product\Category($categoryItem);
             }
         }
