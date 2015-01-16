@@ -34,18 +34,21 @@ class SendToSelection {
         $sendQuery->setTimeout(10 * $config->coreService->timeout);
         $curl->prepare($sendQuery)->execute();
 
-        if ($sendQuery->getError()) {
-            $response = new Http\JsonResponse();
-            $response->data['error'] = [
-                'code'    => 500,
-                'message' => 'Ошибка',
-            ];
+        $responseData = [];
 
-            $this->getLogger()->push(['type' => 'error', 'error' => $sendQuery->getError(), 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+        try {
+            $sendQuery->getResult();
 
-            return $response;
+            $responseData['success'] = true;
+        } catch (\Exception $e) {
+            switch ($e->getCode()) {
+                default:
+                    $responseData['error'] = ['code' => 500, 'message' => 'Ошибка'];
+            }
+
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
         }
 
-        return new Http\JsonResponse($sendQuery->getResult());
+        return new Http\JsonResponse($responseData);
     }
 }
