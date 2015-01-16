@@ -54,13 +54,14 @@ class ShopList {
             $shop = new \EnterModel\Shop($shopItem);
 
             $shopItem = [
-                'id'        => $shop->id,
-                'address'   => $shop->address,
-                'longitude' => $shop->longitude,
-                'latitude'  => $shop->latitude,
-                'regime'    => $shop->regime,
-                'type'      => 'shop',
-                'subway'    => $shop->subway,
+                'id'               => $shop->id,
+                'address'          => $shop->address,
+                'longitude'        => $shop->longitude,
+                'latitude'         => $shop->latitude,
+                'regime'           => $shop->regime,
+                'type'             => 'shop',
+                'subway'           => $shop->subway,
+                'hasGreenCorridor' => $shop->hasGreenCorridor,
             ];
 
             $regionDataById[$regionId]['shops'][] = $shopItem;
