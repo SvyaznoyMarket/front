@@ -41,9 +41,10 @@ class SendToSelection {
 
             $responseData['success'] = true;
         } catch (\Exception $e) {
-            switch ($e->getCode()) {
-                default:
-                    $responseData['error'] = ['code' => 500, 'message' => 'Ошибка'];
+            if ($e instanceof Query\CoreQueryException) {
+                $responseData['error'] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
+            } else {
+                $responseData['error'] = ['code' => 500, 'message' => 'Ошибка'];
             }
 
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
