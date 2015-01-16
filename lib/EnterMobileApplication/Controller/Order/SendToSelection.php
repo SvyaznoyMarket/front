@@ -1,9 +1,9 @@
 <?php
 
-namespace EnterTerminal\Controller\Order;
+namespace EnterMobileApplication\Controller\Order;
 
 use Enter\Http;
-use EnterTerminal\ConfigTrait;
+use EnterMobileApplication\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\CurlTrait;
 use EnterQuery as Query;
@@ -37,7 +37,9 @@ class SendToSelection {
         $responseData = [];
 
         try {
-            $responseData = $sendQuery->getResult();
+            $sendQuery->getResult();
+
+            $responseData['success'] = true;
         } catch (\Exception $e) {
             if ($e instanceof Query\CoreQueryException) {
                 $responseData['error'] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
