@@ -1,9 +1,9 @@
 <?php
 
-namespace EnterTerminal\Controller\Order;
+namespace EnterMobileApplication\Controller\Order;
 
 use Enter\Http;
-use EnterTerminal\ConfigTrait;
+use EnterMobileApplication\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\CurlTrait;
 use EnterQuery as Query;
