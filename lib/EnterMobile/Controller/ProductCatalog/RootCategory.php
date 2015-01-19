@@ -41,7 +41,7 @@ class RootCategory {
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         // запрос дерева категорий для меню
-        $categoryListQuery = (new \EnterRepository\MainMenu())->getCategoryListQuery();
+        $categoryListQuery = (new \EnterRepository\MainMenu())->getCategoryListQuery(2);
         $curl->prepare($categoryListQuery);
 
         // запрос меню

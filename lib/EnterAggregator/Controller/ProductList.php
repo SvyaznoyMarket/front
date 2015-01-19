@@ -71,41 +71,26 @@ namespace EnterAggregator\Controller {
             $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
             // запрос категории
-            $catalogConfigQuery = null;
             $categoryItemQuery = null;
+            $categoryTreeQuery = null;
             if (!empty($categoryCriteria['id'])) {
-                //$categoryItemQuery = new Query\Product\Category\GetItemById($categoryCriteria['id'], $response->region->id);
                 $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryCriteria['id'], $response->region->id, null, $filterRepository->dumpRequestObjectList($baseRequestFilters));
+                $curl->prepare($categoryItemQuery);
             } else if (!empty($categoryCriteria['link'])) {
-                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryLink($categoryCriteria['link'], $regionId);
-                $curl->prepare($catalogConfigQuery);
-
-                $curl->execute();
-
-                $response->catalogConfig = (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery);
-                if (!empty($response->catalogConfig->ui)) {
-                    $categoryItemQuery = new Query\Product\Category\GetItemByUi($response->catalogConfig->ui, $response->region->id);
-                } else {
-                    $this->getLogger()->push(['type' => 'error', 'message' => ['Не получен ui для категории'], 'category.criteria' => $categoryCriteria, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'critical']]);
-
-                    // FIXME: убрать, это запасной вариант
-                    if (!empty($categoryCriteria['token'])) {
-                        $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'], $response->region->id);
-                    }
-                }
+                $categoryItemQuery = new Query\Product\Category\GetItemByLink($categoryCriteria['link'], $response->region->id);
+                $curl->prepare($categoryItemQuery);
             } else if (!empty($categoryCriteria['token'])) {
                 $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'], $response->region->id);
                 $curl->prepare($categoryItemQuery);
+
+                $categoryTreeQuery = new Query\Product\Category\GetTree($categoryCriteria, 1, true, true, true, ['category_163x163']);
+                $curl->prepare($categoryTreeQuery);
             } else if (!empty($categoryCriteria['ui'])) {
                 $categoryItemQuery = new Query\Product\Category\GetItemByUi($categoryCriteria['ui'], $response->region->id);
                 $curl->prepare($categoryItemQuery);
             }
             if ((bool)$categoryCriteria && !$categoryItemQuery) {
                 throw new \Exception('Неверный критерий для получения категории товара');
-            }
-
-            if ($categoryItemQuery) {
-                $curl->prepare($categoryItemQuery);
             }
 
             $curl->execute();
@@ -115,6 +100,11 @@ namespace EnterAggregator\Controller {
                 $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery);
                 if (!$response->category) {
                     $this->getLogger()->push(['type' => 'error', 'message' => ['Не получена категория'], 'category.criteria' => $categoryCriteria, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+                }
+
+                // предки и дети категории
+                if ($response->category && $categoryTreeQuery) {
+                    $productCategoryRepository->setBranchForObjectByQuery($response->category, $categoryTreeQuery);
                 }
             }
 
@@ -127,27 +117,6 @@ namespace EnterAggregator\Controller {
             // запрос фильтров
             $filterListQuery = new Query\Product\Filter\GetList($filterRepository->dumpRequestObjectList($response->baseRequestFilters), $response->region->id);
             $curl->prepare($filterListQuery);
-
-            $ascendantCategoryItemQuery = null;
-            $parentCategoryItemQuery = null;
-            $branchCategoryItemQuery = null;
-
-            if ($response->category) {
-                if ($context->parentCategory) {
-                    // запрос предка категории
-                    $ascendantCategoryItemQuery = new Query\Product\Category\GetAscendantItemByCategoryObject($response->category, $response->region->id);
-                    $curl->prepare($ascendantCategoryItemQuery);
-                    // запрос родителя категории и его детей
-                    if ($response->category->parentId) {
-                        $parentCategoryItemQuery = new Query\Product\Category\GetTreeItemById($response->category->parentId, $response->region->id);
-                        $curl->prepare($parentCategoryItemQuery);
-                    }
-                } else if ($context->branchCategory) { // TODO: убрать
-                    // запрос предка категории
-                    $branchCategoryItemQuery = new Query\Product\Category\GetBranchItemByCategoryObject($response->category, $response->region->id, $filterRepository->dumpRequestObjectList($baseRequestFilters));
-                    $curl->prepare($branchCategoryItemQuery);
-                }
-            }
 
             $curl->execute();
 
@@ -192,7 +161,8 @@ namespace EnterAggregator\Controller {
             // запрос дерева категорий для меню
             $categoryListQuery = null;
             if ($context->mainMenu) {
-                $categoryListQuery = new Query\Product\Category\GetTreeList($response->region->id, 3);
+                // запрос дерева категорий для меню
+                $categoryListQuery = (new \EnterRepository\MainMenu())->getCategoryListQuery(2);
                 $curl->prepare($categoryListQuery);
             }
 
@@ -202,19 +172,6 @@ namespace EnterAggregator\Controller {
             $response->filters = $filterRepository->getObjectListByQuery($filterListQuery);
             // значения для фильтров
             $filterRepository->setValueForObjectList($response->filters, $response->requestFilters);
-
-            // предки и дети категории
-            if ($branchCategoryItemQuery) {
-                $productCategoryRepository->setBranchForObjectByQuery($response->category, $branchCategoryItemQuery);
-            }
-            // предки категории
-            if ($ascendantCategoryItemQuery) {
-                $response->category->ascendants = $productCategoryRepository->getAscendantListByQuery($ascendantCategoryItemQuery);
-            }
-            // родитель категории
-            if ($parentCategoryItemQuery) {
-                $response->category->parent = $parentCategoryItemQuery ? $productCategoryRepository->getObjectByQuery($parentCategoryItemQuery) : null;
-            }
 
             // листинг идентификаторов товаров
             $response->productUiPager = $productUiPagerQuery ? (new Repository\Product\UiPager())->getObjectByQuery($productUiPagerQuery) : null;
