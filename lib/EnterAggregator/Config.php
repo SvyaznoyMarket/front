@@ -2,6 +2,8 @@
 
 namespace EnterAggregator {
     class Config {
+        /** @var string */
+        public $version;
         /** @var array */
         public $applicationTags = [];
         /** @var string */
