@@ -47,14 +47,13 @@ namespace EnterModel\Product {
          * @param array $data
          */
         public function __construct(array $data = []) {
-            $applicationTags = (array)$this->getConfig()->applicationTags;
+            //$applicationTags = (array)$this->getConfig()->applicationTags;
 
             $this->media = new Model\Product\Category\Media();
 
             if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
             if (array_key_exists('uid', $data)) $this->ui = (string)$data['uid'];
-            if (array_key_exists('parent_id', $data
-            )) $this->parentId = $data['parent_id'] ? (string)$data['parent_id'] : null;
+            if (array_key_exists('parent_id', $data)) $this->parentId = $data['parent_id'] ? (string)$data['parent_id'] : null;
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
             if (array_key_exists('slug', $data)) $this->token = (string)$data['slug'];
             if (array_key_exists('url', $data)) $this->link = (string)$data['url'];
@@ -75,12 +74,12 @@ namespace EnterModel\Product {
             )) $this->productGlobalCount = (int)$data['product_count_global'];
             if (isset($data['children']) && is_array($data['children'])) {
                 foreach ($data['children'] as $childItem) {
-                    if (!isset($childItem['id'])) continue;
+                    if (!isset($childItem['uid'])) continue;
                     $this->children[] = new Model\Product\Category($childItem);
                 }
             }
 
-            if (isset($data['parent']['id'])) {
+            if (isset($data['parent']['uid'])) {
                 $this->parent = new Model\Product\Category($data['parent']);
             }
 
