@@ -70,33 +70,45 @@ namespace EnterAggregator\Controller {
             // регион
             $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
-            // наличие категорий в данном регионе с учетом фильтров
-            $categoryListQuery = new Query\Product\Category\GetAvailableList($categoryCriteria, $response->region->id, 1, $filterRepository->dumpRequestObjectList($baseRequestFilters));
-            $curl->prepare($categoryListQuery);
+            if ((bool)$categoryCriteria) {
+                // наличие категорий в данном регионе с учетом фильтров
+                $categoryListQuery = new Query\Product\Category\GetAvailableList($categoryCriteria,
+                    $response->region->id, 1, $filterRepository->dumpRequestObjectList($baseRequestFilters)
+                );
+                $curl->prepare($categoryListQuery);
 
-            // дерево категорий
-            $categoryTreeQuery = new Query\Product\Category\GetTree($categoryCriteria, 1, true, true, true);
-            $curl->prepare($categoryTreeQuery);
+                // дерево категорий
+                $categoryTreeQuery = new Query\Product\Category\GetTree($categoryCriteria, 1, true, true, true);
+                $curl->prepare($categoryTreeQuery);
 
-            // подробный запрос категории (seo, настройки сортировки, ...)
-            $categoryItemQuery = null;
-            if (!empty($categoryCriteria['token'])) {
-                $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'], $response->region->id);
-            } else if (!empty($categoryCriteria['id'])) {
-                $categoryItemQuery = new Query\Product\Category\GetItemById($categoryCriteria['id'], $response->region->id);
-            } else if (!empty($categoryCriteria['ui'])) {
-                throw new \Exception('Не поддерживаемый критерий ui для категории');
-            } else if (!empty($categoryCriteria['link'])) {
-                throw new \Exception('Не поддерживаемый критерий link для категории');
-            }
-            $curl->prepare($categoryItemQuery);
+                // подробный запрос категории (seo, настройки сортировки, ...)
+                $categoryItemQuery = null;
+                if (!empty($categoryCriteria['token'])) {
+                    $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'],
+                        $response->region->id
+                    );
+                } else if (!empty($categoryCriteria['id'])) {
+                    $categoryItemQuery = new Query\Product\Category\GetItemById($categoryCriteria['id'],
+                        $response->region->id
+                    );
+                } else if (!empty($categoryCriteria['ui'])) {
+                    throw new \Exception('Не поддерживаемый критерий ui для категории');
+                } else if (!empty($categoryCriteria['link'])) {
+                    throw new \Exception('Не поддерживаемый критерий link для категории');
+                }
+                $curl->prepare($categoryItemQuery);
 
-            $curl->execute();
+                $curl->execute();
 
-            $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery);
-            // предки и дети категории
-            if ($response->category && $categoryTreeQuery) {
-                $productCategoryRepository->setBranchForObjectByQuery($response->category, $categoryTreeQuery, $categoryListQuery);
+                $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery);
+                // предки и дети категории
+                if ($response->category && $categoryTreeQuery) {
+                    $productCategoryRepository->setBranchForObjectByQuery($response->category, $categoryTreeQuery, $categoryListQuery);
+                }
+
+                // настройки каталога
+                // FIXME: удалить
+                $response->catalogConfig = $categoryItemQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($categoryItemQuery) : null;
             }
 
             // базовые фильтры
@@ -110,10 +122,6 @@ namespace EnterAggregator\Controller {
             $curl->prepare($filterListQuery);
 
             $curl->execute();
-
-            // настройки каталога
-            // FIXME: удалить
-            $response->catalogConfig = $categoryItemQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($categoryItemQuery) : null;
 
             // FIXME
             if ($context->isSlice && !$sorting) {
