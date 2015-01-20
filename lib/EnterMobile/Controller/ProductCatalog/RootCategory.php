@@ -40,9 +40,19 @@ class RootCategory {
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
-        // запрос дерева категорий для меню
-        $categoryListQuery = (new \EnterRepository\MainMenu())->getCategoryListQuery(1);
+        // наличие категорий в данном регионе
+        $categoryListQuery = new Query\Product\Category\GetList(['token' => $categoryToken], $region->id, 1);
         $curl->prepare($categoryListQuery);
+
+        // запрос дерева категорий для меню
+        $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
+        $curl->prepare($categoryTreeQuery);
+
+        // подробный запрос категории (seo, настройки сортировки, ...)
+        /*
+        $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryToken, $region->id);
+        $curl->prepare($categoryItemQuery);
+        */
 
         // запрос меню
         $mainMenuQuery = new Query\MainMenu\GetItem();
@@ -50,11 +60,31 @@ class RootCategory {
 
         $curl->execute();
 
+        $availableDataByUi = null;
+        try {
+            if ($categoryListQuery) {
+                foreach ($categoryListQuery->getResult() as $item) {
+                    $item += ['id' => null, 'uid' => null, 'product_count' => null];
+
+                    if (!$item['uid'] || !$item['product_count']) continue;
+
+                    $availableDataByUi[$item['uid']] = $item;
+                }
+            }
+        } catch (\Exception $e) {
+            trigger_error($e, E_USER_ERROR);
+        }
+
         // категория из вехнего списка категорий для меню
         $category = null;
-        foreach ($categoryListQuery->getResult() as $categoryItem) {
+        foreach ($categoryTreeQuery->getResult() as $categoryItem) {
             if ($categoryToken === @$categoryItem['slug']) {
+                //$category = new \EnterModel\Product\Category(array_merge_recursive($categoryItemQuery->getResult(), $categoryItem));
                 $category = new \EnterModel\Product\Category($categoryItem);
+
+                if (null !== $availableDataByUi) {
+                    $category->children = array_filter($category->children, function(\EnterModel\Product\Category $category) use (&$availableDataByUi) { return isset($availableDataByUi[$category->ui]); });
+                }
             }
         }
         if (!$category) {
@@ -62,7 +92,7 @@ class RootCategory {
         }
 
         // меню
-        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\RootCategory\Request();

@@ -110,7 +110,7 @@ class Category {
                 foreach ($availableQuery->getResult() as $item) {
                     $item += ['id' => null, 'uid' => null, 'product_count' => null];
 
-                    if (!$item['uid']) continue;
+                    if (!$item['uid'] || !$item['product_count']) continue;
 
                     $availableDataByUi[$item['uid']] = $item;
                 }
@@ -132,8 +132,9 @@ class Category {
                 if ($iCategory->level < $category->level) { // предки
                     $category->ascendants[] = $iCategory;
                 } else if ($iCategory->level == ($category->level + 1)) { // прямые потомки (дети) категории
-                    if ((null !== $availableDataByUi) && !in_array($iCategory->id, $availableDataByUi)) continue; // фильтрация
+                    if ((null !== $availableDataByUi) && !array_key_exists($iCategory->ui, $availableDataByUi)) continue; // фильтрация
 
+                    $iCategory->productCount = $availableDataByUi[$iCategory->ui]['product_count'];
                     $category->children[] = $iCategory;
                 }
 

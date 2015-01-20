@@ -13,7 +13,7 @@ class MainMenu {
     /**
      * @return \EnterQuery\Product\Category\GetTree
      */
-    public function getCategoryListQuery($level) {
+    public function getCategoryTreeQuery($level) {
         return new \EnterQuery\Product\Category\GetTree(
             null,
             $level,

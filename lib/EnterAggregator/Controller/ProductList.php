@@ -153,7 +153,7 @@ namespace EnterAggregator\Controller {
             $rootCategoryTreeQuery = null;
             if ($context->mainMenu) {
                 // запрос дерева категорий для меню
-                $rootCategoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryListQuery(1);
+                $rootCategoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
                 $curl->prepare($rootCategoryTreeQuery);
             }
 
