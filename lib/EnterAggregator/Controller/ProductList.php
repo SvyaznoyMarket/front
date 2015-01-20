@@ -159,11 +159,11 @@ namespace EnterAggregator\Controller {
             }
 
             // запрос дерева категорий для меню
-            $categoryListQuery = null;
+            $rootCategoryTreeQuery = null;
             if ($context->mainMenu) {
                 // запрос дерева категорий для меню
-                $categoryListQuery = (new \EnterRepository\MainMenu())->getCategoryListQuery(2);
-                $curl->prepare($categoryListQuery);
+                $rootCategoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryListQuery(1);
+                $curl->prepare($rootCategoryTreeQuery);
             }
 
             $curl->execute();
@@ -229,8 +229,8 @@ namespace EnterAggregator\Controller {
             }
 
             // меню
-            if ($mainMenuQuery && $categoryListQuery) {
-                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+            if ($mainMenuQuery && $rootCategoryTreeQuery) {
+                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $rootCategoryTreeQuery);
             }
 
             // список рейтингов товаров
