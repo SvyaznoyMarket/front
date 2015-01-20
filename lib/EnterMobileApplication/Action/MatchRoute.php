@@ -3,11 +3,12 @@
 namespace EnterMobileApplication\Action;
 
 use Enter\Http;
+use EnterTerminal\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterMobileApplication\Controller;
 
 class MatchRoute {
-    use LoggerTrait;
+    use ConfigTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request
@@ -15,10 +16,17 @@ class MatchRoute {
      * @throws \Exception
      */
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
+
         $callable = null;
 
         try {
-            $controllerName = implode('\\', array_map('ucfirst', explode('/', trim($request->getPathInfo(), '/'))));
+            $pathInfo = $request->getPathInfo();
+            if ($config->version) {
+                $pathInfo = preg_replace('/^\/' . preg_quote($config->version) . '/', '', $pathInfo);
+            }
+
+            $controllerName = implode('\\', array_map('ucfirst', explode('/', trim($pathInfo, '/'))));
             if (!$controllerName) {
                 $controllerName = 'Index';
             }

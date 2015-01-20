@@ -7,7 +7,7 @@ use EnterAggregator\CurlTrait;
 use EnterQuery as Query;
 use EnterModel as Model;
 
-class Seller {
+class Config {
     use CurlTrait;
 
     /**
@@ -18,21 +18,19 @@ class Seller {
     public function execute(Http\Request $request) {
         $curl = $this->getCurl();
 
-        $sellerUi = is_string($request->query['ui']) ? $request->query['ui'] : null;
-        if (!$sellerUi) {
-            throw new \Exception('Не передан sellerUi', Http\Response::STATUS_BAD_REQUEST);
+        $keys = is_array($request->query['keys']) ? $request->query['keys'] : [];
+        if (!(bool)$keys) {
+            throw new \Exception('Не передан keys', Http\Response::STATUS_BAD_REQUEST);
         }
 
         $responseData = [
-            'seller' => null,
+            'config' => [],
         ];
 
-        $itemQuery = new Query\Seller\GetItemByUi($sellerUi);
+        $itemQuery = new Query\Config\GetListByKeys($keys);
         $curl->prepare($itemQuery)->execute();
 
-        if ($item = $itemQuery->getResult()) {
-            $responseData['seller'] = new Model\Seller($item);
-        }
+        $responseData['config'] = $itemQuery->getResult();
 
         return new Http\JsonResponse($responseData);
     }
