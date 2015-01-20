@@ -7,31 +7,35 @@ use EnterQuery\SearchQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
-/**
- * @deprecated
- */
-class GetTreeItemById extends Query {
+class GetList extends Query {
     use SearchQueryTrait;
 
     /** @var array|null */
     protected $result;
 
     /**
-     * @param string $id
+     * @param string $rootCriteria
      * @param string|null $regionId
-     * @param int|null $maxLevel
+     * @param int|null $depth
      * @param array $filterData
      */
-    public function __construct($id, $regionId = null, $maxLevel = null, array $filterData = []) {
+    public function __construct($rootCriteria, $regionId = null, $depth = null, array $filterData = []) {
         $this->url = new Url();
-        $this->url->path = 'category/tree';
+        $this->url->path = 'category/get-available';
         $this->url->query = [
-            'root_id'         => $id,
-            'is_load_parents' => false,
+            'is_load_parents' => true,
         ];
-        $this->url->query['max_level'] = $maxLevel ?: 6;
+        if (!empty($rootCriteria['id'])) {
+            $this->url->query['root_id'] = $rootCriteria['id'];
+        } else if (!empty($rootCriteria['token'])) {
+            $this->url->query['root_slug'] = $rootCriteria['token'];
+        }
+
         if ($regionId) {
             $this->url->query['region_id'] = $regionId;
+        }
+        if ($depth) {
+            $this->url->query['depth'] = $depth;
         }
         if ((bool)$filterData) {
             $this->url->query['filter'] = [
@@ -48,6 +52,6 @@ class GetTreeItemById extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]) ? $data[0] : null;
+        $this->result = isset($data[0]['id']) ? $data : null;
     }
 }

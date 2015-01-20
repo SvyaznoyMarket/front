@@ -100,9 +100,26 @@ class Category {
      *
      * @param Model\Product\Category $category
      * @param Query $query
+     * @param Query|null $availableQuery
+     * @throws \Exception
      */
-    public function setBranchForObjectByQuery(Model\Product\Category $category, Query $query) {
-        $walk = function($data, Model\Product\Category $parent = null) use (&$walk, &$category) {
+    public function setBranchForObjectByQuery(Model\Product\Category $category, Query $query, Query $availableQuery = null) {
+        $availableDataByUi = null;
+        try {
+            if ($availableQuery) {
+                foreach ($availableQuery->getResult() as $item) {
+                    $item += ['id' => null, 'uid' => null, 'product_count' => null];
+
+                    if (!$item['uid']) continue;
+
+                    $availableDataByUi[$item['uid']] = $item;
+                }
+            }
+        } catch (\Exception $e) {
+            trigger_error($e, E_USER_ERROR);
+        }
+
+        $walk = function($data, Model\Product\Category $parent = null) use (&$walk, &$category, &$availableDataByUi) {
             foreach ($data as $item) {
                 $item += ['uid' => null, 'level' => null, 'children' => null];
 
@@ -115,6 +132,8 @@ class Category {
                 if ($iCategory->level < $category->level) { // предки
                     $category->ascendants[] = $iCategory;
                 } else if ($iCategory->level == ($category->level + 1)) { // прямые потомки (дети) категории
+                    if ((null !== $availableDataByUi) && !in_array($iCategory->id, $availableDataByUi)) continue; // фильтрация
+
                     $category->children[] = $iCategory;
                 }
 

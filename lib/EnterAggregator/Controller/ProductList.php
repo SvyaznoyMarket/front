@@ -70,42 +70,33 @@ namespace EnterAggregator\Controller {
             // регион
             $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
-            // запрос категории
-            $categoryItemQuery = null;
-            $categoryTreeQuery = null;
-            if (!empty($categoryCriteria['id'])) {
-                $categoryItemQuery = new Query\Product\Category\GetTreeItemById($categoryCriteria['id'], $response->region->id, null, $filterRepository->dumpRequestObjectList($baseRequestFilters));
-                $curl->prepare($categoryItemQuery);
-            } else if (!empty($categoryCriteria['link'])) {
-                $categoryItemQuery = new Query\Product\Category\GetItemByLink($categoryCriteria['link'], $response->region->id);
-                $curl->prepare($categoryItemQuery);
-            } else if (!empty($categoryCriteria['token'])) {
-                $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'], $response->region->id);
-                $curl->prepare($categoryItemQuery);
+            // наличие категорий в данном регионе с учетом фильтров
+            $categoryListQuery = new Query\Product\Category\GetList($categoryCriteria, $response->region->id, 1, $filterRepository->dumpRequestObjectList($baseRequestFilters));
+            $curl->prepare($categoryListQuery);
 
-                $categoryTreeQuery = new Query\Product\Category\GetTree($categoryCriteria, 1, true, true, true, ['category_163x163']);
-                $curl->prepare($categoryTreeQuery);
+            // дерево категорий
+            $categoryTreeQuery = new Query\Product\Category\GetTree($categoryCriteria, 1, true, true, true, ['category_163x163']);
+            $curl->prepare($categoryTreeQuery);
+
+            // подробный запрос категории (seo, настройки сортировки, ...)
+            $categoryItemQuery = null;
+            if (!empty($categoryCriteria['token'])) {
+                $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'], $response->region->id);
+            } else if (!empty($categoryCriteria['id'])) {
+                $categoryItemQuery = new Query\Product\Category\GetItemById($categoryCriteria['id'], $response->region->id);
             } else if (!empty($categoryCriteria['ui'])) {
-                $categoryItemQuery = new Query\Product\Category\GetItemByUi($categoryCriteria['ui'], $response->region->id);
-                $curl->prepare($categoryItemQuery);
+                throw new \Exception('Не поддерживаемый критерий ui для категории');
+            } else if (!empty($categoryCriteria['link'])) {
+                throw new \Exception('Не поддерживаемый критерий link для категории');
             }
-            if ((bool)$categoryCriteria && !$categoryItemQuery) {
-                throw new \Exception('Неверный критерий для получения категории товара');
-            }
+            $curl->prepare($categoryItemQuery);
 
             $curl->execute();
 
-            // категория
-            if ($categoryItemQuery) {
-                $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery);
-                if (!$response->category) {
-                    $this->getLogger()->push(['type' => 'error', 'message' => ['Не получена категория'], 'category.criteria' => $categoryCriteria, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
-                }
-
-                // предки и дети категории
-                if ($response->category && $categoryTreeQuery) {
-                    $productCategoryRepository->setBranchForObjectByQuery($response->category, $categoryTreeQuery);
-                }
+            $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery);
+            // предки и дети категории
+            if ($response->category && $categoryTreeQuery) {
+                $productCategoryRepository->setBranchForObjectByQuery($response->category, $categoryTreeQuery, $categoryListQuery);
             }
 
             // базовые фильтры
