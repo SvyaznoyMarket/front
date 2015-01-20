@@ -7,7 +7,7 @@ use EnterQuery\SearchQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
-class GetList extends Query {
+class GetAvailableList extends Query {
     use SearchQueryTrait;
 
     /** @var array|null */

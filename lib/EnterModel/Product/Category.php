@@ -22,7 +22,10 @@ namespace EnterModel\Product {
         public $link;
         /** @var string */
         public $path;
-        /** @var string */
+        /**
+         * @deprecated
+         * @var string
+         */
         public $image;
         /** @var int */
         public $level;
@@ -59,12 +62,14 @@ namespace EnterModel\Product {
             if (array_key_exists('link', $data)) $this->link = (string)$data['link'];
             $this->path = trim(preg_replace('/^\/catalog\//', '', $this->link), '/');
             if (isset($data['medias'][0])) {
-                foreach ($data['medias'] as $i => $mediaItem) {
-                    $photo = new Model\Media($mediaItem);
-                    if ('image' != $photo->type) continue;
-                    //if (isset($media->tags[0]) && !(bool)array_intersect($applicationTags, $media->tags)) continue;
+                foreach ($data['medias'] as $mediaItem) {
+                    if (!isset($mediaItem['sources'][0])) continue;
 
-                    $this->media->photos[] = $photo;
+                    $media = new Model\Media($mediaItem);
+
+                    if ('image' == $media->type) {
+                        $this->media->photos[] = new Model\Media($mediaItem);
+                    }
                 }
             }
             if (array_key_exists('level', $data)) $this->level = (int)$data['level'];

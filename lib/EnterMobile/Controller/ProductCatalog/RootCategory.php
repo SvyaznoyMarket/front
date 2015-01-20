@@ -41,7 +41,7 @@ class RootCategory {
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         // наличие категорий в данном регионе
-        $categoryListQuery = new Query\Product\Category\GetList(['token' => $categoryToken], $region->id, 1);
+        $categoryListQuery = new Query\Product\Category\GetAvailableList(['token' => $categoryToken], $region->id, 1);
         $curl->prepare($categoryListQuery);
 
         // запрос дерева категорий для меню

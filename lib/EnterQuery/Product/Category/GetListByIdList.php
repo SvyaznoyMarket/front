@@ -21,7 +21,7 @@ class GetListByIdList extends Query {
         $this->url = new Url();
         $this->url->path = 'category/gets';
         $this->url->query = [
-            'id'     => $ids,
+            'ids'    => $ids,
             'geo_id' => $regionId,
         ];
 

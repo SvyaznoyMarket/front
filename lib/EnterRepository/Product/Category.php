@@ -121,16 +121,20 @@ class Category {
 
         $walk = function($data, Model\Product\Category $parent = null) use (&$walk, &$category, &$availableDataByUi) {
             foreach ($data as $item) {
-                $item += ['uid' => null, 'level' => null, 'children' => null];
-
+                $item += ['uid' => null, 'level' => null, 'children' => null, 'has_children' => null];
                 if (!$item['uid']) continue;
+
                 $iCategory = new Model\Product\Category($item);
+                $iCategory->hasChildren = (bool)$item['has_children'];
+
                 if ($parent) {
                     $parent->children[] = $iCategory;
                 }
 
                 if ($iCategory->level < $category->level) { // предки
                     $category->ascendants[] = $iCategory;
+                } else if ($iCategory->ui == $category->ui) { // категория
+                    $category->hasChildren = $iCategory->hasChildren;
                 } else if ($iCategory->level == ($category->level + 1)) { // прямые потомки (дети) категории
                     if ((null !== $availableDataByUi) && !array_key_exists($iCategory->ui, $availableDataByUi)) continue; // фильтрация
 

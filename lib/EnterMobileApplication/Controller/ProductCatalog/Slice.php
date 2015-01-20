@@ -161,7 +161,7 @@ class Slice {
             'category'     => $controllerResponse->category ? [
                 'id'           => $controllerResponse->category->id,
                 'name'         => $controllerResponse->category->name,
-                'image'        => $controllerResponse->category->image,
+                'media'        => $controllerResponse->category->media,
                 'productCount' => $controllerResponse->category->productCount,
                 'hasChildren'  => $controllerResponse->category->hasChildren,
             ] : null,
@@ -169,7 +169,7 @@ class Slice {
                 return [
                     'id'           => $category->id,
                     'name'         => $category->name,
-                    'image'        => $category->image,
+                    'media'        => $category->media,
                     'productCount' => $category->productCount,
                     'hasChildren'  => $category->hasChildren,
                 ];

@@ -71,11 +71,11 @@ namespace EnterAggregator\Controller {
             $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
             // наличие категорий в данном регионе с учетом фильтров
-            $categoryListQuery = new Query\Product\Category\GetList($categoryCriteria, $response->region->id, 1, $filterRepository->dumpRequestObjectList($baseRequestFilters));
+            $categoryListQuery = new Query\Product\Category\GetAvailableList($categoryCriteria, $response->region->id, 1, $filterRepository->dumpRequestObjectList($baseRequestFilters));
             $curl->prepare($categoryListQuery);
 
             // дерево категорий
-            $categoryTreeQuery = new Query\Product\Category\GetTree($categoryCriteria, 1, true, true, true, ['category_163x163']);
+            $categoryTreeQuery = new Query\Product\Category\GetTree($categoryCriteria, 1, true, true, true);
             $curl->prepare($categoryTreeQuery);
 
             // подробный запрос категории (seo, настройки сортировки, ...)

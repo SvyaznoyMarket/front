@@ -56,6 +56,7 @@ class ListByFilter {
 
             $category = (new \EnterRepository\Product\Category())->getObjectByQuery($categoryQuery);
             if ($category) {
+                // FIXME: удалить
                 $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($category->ui, $regionId);
                 $curl->prepare($catalogConfigQuery);
             }
@@ -117,18 +118,7 @@ class ListByFilter {
         );
         $curl->prepare($productUiPagerQuery);
 
-        // запрос предка категории
-        $branchCategoryItemQuery = null;
-        if ($category) {
-            $branchCategoryItemQuery = new Query\Product\Category\GetBranchItemByCategoryObject($category, $region->id);
-            $curl->prepare($branchCategoryItemQuery);
-        }
-
         $curl->execute();
-
-        if ($branchCategoryItemQuery) {
-            (new \EnterRepository\Product\Category())->setBranchForObjectByQuery($category, $branchCategoryItemQuery);
-        }
 
         // фильтры
         $filters = $filterListQuery ? $filterRepository->getObjectListByQuery($filterListQuery) : [];
