@@ -102,36 +102,27 @@ class Category {
      * @param Query $query
      */
     public function setBranchForObjectByQuery(Model\Product\Category $category, Query $query) {
-        $walk = function($item) use (&$walk, &$category) {
-            if (!$item) {
-                return;
-            }
+        $walk = function($data, Model\Product\Category $parent = null) use (&$walk, &$category) {
+            foreach ($data as $item) {
+                $item += ['uid' => null, 'level' => null, 'children' => null];
 
-            $id = isset($item['id']) ? (string)$item['id'] : null;
-            $level = isset($item['level']) ? (int)$item['level'] : null;
-            if ($id == $category->id) {
-                if (!empty($item['children'])) {
-                    foreach ($item['children'] as $childItem) {
-                        if (!isset($childItem['id'])) continue;
-
-                        $category->children[] = new Model\Product\Category($childItem);
-                    }
-                }
-            } else if ($level < $category->level) {
-                if (isset($item['children'][0]['id'])) {
-                    $childItem = $item['children'][0];
-
-                    $walk($childItem);
-                    unset($item['children']);
+                if (!$item['uid']) continue;
+                $iCategory = new Model\Product\Category($item);
+                if ($parent) {
+                    $parent->children[] = $iCategory;
                 }
 
-                if (!empty($item['id'])) {
-                    $category->ascendants[] = new Model\Product\Category($item);
+                if ($iCategory->level < $category->level) { // предки
+                    $category->ascendants[] = $iCategory;
+                } else if ($iCategory->level == ($category->level + 1)) { // прямые потомки (дети) категории
+                    $category->children[] = $iCategory;
                 }
+
+                $walk($item['children'], $iCategory);
             }
         };
 
-        $walk($query->getResult(), $category);
+        $walk($query->getResult());
 
         $category->parent = reset($category->ascendants);
         $category->ascendants = array_reverse($category->ascendants, true);
