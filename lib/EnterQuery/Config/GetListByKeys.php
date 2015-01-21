@@ -31,15 +31,13 @@ class GetListByKeys extends Query {
     public function callback($response) {
         $data = $this->parse($response) + ['result' => []];
 
-        /*
         $item = null;
         foreach ($data['result'] as &$item) {
             if (!array_key_exists('value', $item)) continue;
 
-            $item['value'] = json_decode($item['value'], true);
+            $item['value'] = json_decode(htmlspecialchars_decode($item['value']), true);
         }
         unset($item);
-        */
 
         $this->result = isset($data['result'][0]['key']) ? $data : [];
     }

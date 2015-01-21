@@ -15,7 +15,7 @@ return function(EnterMobileApplication\Config $config) {
 
     $config->hostname = 'mapi.enter.ru';
 
-    $config->logger->fileAppender->file = realpath($config->dir . '/../logs') . '/mobile-application.log';
+    $config->logger->fileAppender->file = realpath($config->dir . '/../../logs') . '/mobile-application.log';
     $config->logger->fileAppender->enabled = true;
 
     $config->session->name = 'token';
