@@ -19,7 +19,6 @@ class Index {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
-        $productCategoryRepository = new \EnterRepository\Product\Category();
         $promoRepository = new \EnterRepository\Promo();
 
         // ид региона

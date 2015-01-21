@@ -11,6 +11,7 @@ class MainMenu {
     use ConfigTrait, RouterTrait;
 
     /**
+     * @param int $level
      * @return \EnterQuery\Product\Category\GetTree
      */
     public function getCategoryTreeQuery($level) {
