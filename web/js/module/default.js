@@ -1,7 +1,7 @@
 define(
     ['jquery', 'jquery.smartbanner'],
-    function($, document) {
-    	// баннер для android, скачать прилодение из Google Play
+    function($) {
+        // баннер для android, скачать прилодение из Google Play
         $.smartbanner({
             title: 'Enter для Android',
             author: 'ООО "Энтер" (Enter LLC)',
@@ -14,8 +14,6 @@ define(
         });
 
         window.MBP = window.MBP || {};
-
-        /*globals MBP*/
 
         /**
          * Fix for iPhone viewport scale bug
@@ -167,7 +165,7 @@ define(
             }
             this.reset(event);
             this.handler.apply(event.currentTarget, [event]);
-            if (event.type === 'touchend') {
+            if (event.type == 'touchend') {
                 MBP.preventGhostClick(this.startX, this.startY);
             }
             var pattern = new RegExp(' ?' + this.pressedClass, 'gi');
@@ -220,7 +218,7 @@ define(
         // This bug only affects touch Android 2.3 devices, but a simple ontouchstart test creates a false positive on
         // some Blackberry devices. https://github.com/Modernizr/Modernizr/issues/372
         // The browser sniffing is to avoid the Blackberry case. Bah
-        MBP.dodgyAndroid = ('ontouchstart' in window) && (navigator.userAgent.indexOf('Android 2.3') !== -1);
+        MBP.dodgyAndroid = ('ontouchstart' in window) && (navigator.userAgent.indexOf('Android 2.3') != -1);
 
         MBP.listenForGhostClicks = (function() {
             var alreadyRan = false;
@@ -251,7 +249,7 @@ define(
                 try {
                     el.addEventListener(evt, fn, bubble);
                 } catch (e) {
-                    if (typeof fn === 'object' && fn.handleEvent) {
+                    if (typeof fn == 'object' && fn.handleEvent) {
                         el.addEventListener(evt, function(e) {
                             // Bind fn as this and set first arg as event object
                             fn.handleEvent.call(fn, e);
@@ -262,7 +260,7 @@ define(
                 }
             } else if ('attachEvent' in el) {
                 // check if the callback is an object and contains handleEvent
-                if (typeof fn === 'object' && fn.handleEvent) {
+                if (typeof fn == 'object' && fn.handleEvent) {
                     el.attachEvent('on' + evt, function() {
                         // Bind fn as this
                         fn.handleEvent.call(fn);
@@ -279,7 +277,7 @@ define(
                 try {
                     el.removeEventListener(evt, fn, bubble);
                 } catch (e) {
-                    if (typeof fn === 'object' && fn.handleEvent) {
+                    if (typeof fn == 'object' && fn.handleEvent) {
                         el.removeEventListener(evt, function(e) {
                             // Bind fn as this and set first arg as event object
                             fn.handleEvent.call(fn, e);
@@ -290,7 +288,7 @@ define(
                 }
             } else if ('detachEvent' in el) {
                 // check if the callback is an object and contains handleEvent
-                if (typeof fn === 'object' && fn.handleEvent) {
+                if (typeof fn == 'object' && fn.handleEvent) {
                     el.detachEvent("on" + evt, function() {
                         // Bind fn as this
                         fn.handleEvent.call(fn);
@@ -307,7 +305,7 @@ define(
          */
 
         MBP.autogrow = function(element, lh) {
-            function handler() {
+            function handler(e) {
                 var newHeight = this.scrollHeight;
                 var currentHeight = this.clientHeight;
                 if (newHeight > currentHeight) {
@@ -318,14 +316,10 @@ define(
             var setLineHeight = (lh) ? lh : 12;
             var textLineHeight = element.currentStyle ? element.currentStyle.lineHeight : getComputedStyle(element, null).lineHeight;
 
-            textLineHeight = (textLineHeight.indexOf('px') === -1) ? setLineHeight : parseInt(textLineHeight, 10);
+            textLineHeight = (textLineHeight.indexOf('px') == -1) ? setLineHeight : parseInt(textLineHeight, 10);
 
             element.style.overflow = 'hidden';
-
-            if (element.addEventListener)
-                element.addEventListener('input', handler, false);
-            else
-                element.attachEvent('onpropertychange', handler);
+            element.addEventListener ? element.addEventListener('input', handler, false) : element.attachEvent('onpropertychange', handler);
         };
 
         /**
@@ -354,7 +348,6 @@ define(
          * Prevent iOS from zooming onfocus
          * https://github.com/h5bp/mobile-boilerplate/pull/108
          * Adapted from original jQuery code here: http://nerd.vasilis.nl/prevent-ios-from-zooming-onfocus/
-         * Отмена зума при фокусе на текстовом поле
          */
 
         MBP.preventZoom = function() {
@@ -378,4 +371,53 @@ define(
                 }
             }
         };
-	});
+
+        /**
+         * iOS Startup Image helper
+         */
+
+        MBP.startupImage = function() {
+            var portrait;
+            var landscape;
+            var pixelRatio;
+            var head;
+            var link1;
+            var link2;
+
+            pixelRatio = window.devicePixelRatio;
+            head = document.getElementsByTagName('head')[0];
+
+            if (navigator.platform === 'iPad') {
+                portrait = pixelRatio === 2 ? 'img/startup/startup-tablet-portrait-retina.png' : 'img/startup/startup-tablet-portrait.png';
+                landscape = pixelRatio === 2 ? 'img/startup/startup-tablet-landscape-retina.png' : 'img/startup/startup-tablet-landscape.png';
+
+                link1 = document.createElement('link');
+                link1.setAttribute('rel', 'apple-touch-startup-image');
+                link1.setAttribute('media', 'screen and (orientation: portrait)');
+                link1.setAttribute('href', portrait);
+                head.appendChild(link1);
+
+                link2 = document.createElement('link');
+                link2.setAttribute('rel', 'apple-touch-startup-image');
+                link2.setAttribute('media', 'screen and (orientation: landscape)');
+                link2.setAttribute('href', landscape);
+                head.appendChild(link2);
+            } else {
+                portrait = pixelRatio === 2 ? "img/startup/startup-retina.png" : "img/startup/startup.png";
+                portrait = screen.height === 568 ? "img/startup/startup-retina-4in.png" : portrait;
+                link1 = document.createElement('link');
+                link1.setAttribute('rel', 'apple-touch-startup-image');
+                link1.setAttribute('href', portrait);
+                head.appendChild(link1);
+            }
+
+            //hack to fix letterboxed full screen web apps on 4" iPhone / iPod with iOS 6
+            if (navigator.platform.match(/iPhone|iPod/i) && (screen.height === 568) && navigator.userAgent.match(/\bOS 6_/)) {
+                if (MBP.viewportmeta) {
+                    MBP.viewportmeta.content = MBP.viewportmeta.content
+                        .replace(/\bwidth\s*=\s*320\b/, 'width=320.1')
+                        .replace(/\bwidth\s*=\s*device-width\b/, '');
+                }
+            }
+        };
+    });
