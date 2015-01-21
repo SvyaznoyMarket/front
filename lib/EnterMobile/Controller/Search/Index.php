@@ -41,7 +41,7 @@ class Index {
 
         // номер страницы
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
-        $limit = (new \EnterRepository\Product\Catalog\Config())->getLimitByHttpRequest($request);
+        $limit = $productRepository->getLimitByHttpRequest($request);
 
         // список сортировок
         $sortings = (new \EnterRepository\Product\Sorting())->getObjectList();
