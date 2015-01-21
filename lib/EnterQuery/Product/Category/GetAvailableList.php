@@ -34,7 +34,7 @@ class GetAvailableList extends Query {
         if ($regionId) {
             $this->url->query['region_id'] = $regionId;
         }
-        if ($depth) {
+        if (is_int($depth)) {
             $this->url->query['depth'] = $depth;
         }
         if ((bool)$filterData) {

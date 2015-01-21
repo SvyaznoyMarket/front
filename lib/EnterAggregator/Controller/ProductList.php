@@ -109,6 +109,32 @@ namespace EnterAggregator\Controller {
                 // настройки каталога
                 // FIXME: удалить
                 $response->catalogConfig = $categoryItemQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($categoryItemQuery) : null;
+            } else {
+                // TODO: распараллелить
+                // список категорий
+                $categoryAvailableListQuery = new Query\Product\Category\GetAvailableList(
+                    null,
+                    $response->region->id,
+                    0,
+                    $filterRepository->dumpRequestObjectList($baseRequestFilters)
+                );
+                $curl->prepare($categoryAvailableListQuery)->execute();
+
+                $categoryUis = [];
+                foreach ($categoryAvailableListQuery->getResult() as $item) {
+                    $item += ['id' => null, 'uid' => null, 'product_count' => null];
+
+                    if (!$item['uid'] || !$item['product_count']) continue;
+                    $categoryUis[] = (string)$item['uid'];
+                }
+
+                /** @var Model\Product\Category[] $categories */
+                $categoryListQuery = (bool)$categoryUis ? new Query\Product\Category\GetListByUiList($categoryUis, $response->region->id) : [];
+                if ($categoryListQuery) {
+                    $curl->prepare($categoryListQuery)->execute();
+
+                    $response->categories = (new \EnterRepository\Product\Category())->getObjectListByQuery($categoryListQuery);
+                }
             }
 
             // базовые фильтры
@@ -302,6 +328,8 @@ namespace EnterAggregator\Controller\ProductList {
         public $region;
         /** @var Model\Product\Category|null */
         public $category;
+        /** @var Model\Product\Category[] */
+        public $categories = [];
         /** @var Model\Product\Catalog\Config */
         public $catalogConfig;
         /** @var Model\MainMenu|null */
