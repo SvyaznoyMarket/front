@@ -112,7 +112,7 @@ class ListByFilter {
             $region->id,
             ($pageNum - 1) * $limit,
             $limit,
-            $catalogConfigQuery ? (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null
+            $catalogConfigQuery ? (new \EnterRepository\Product\Category())->getConfigObjectByQuery($catalogConfigQuery) : null
         );
         $curl->prepare($productUiPagerQuery);
 

@@ -5,10 +5,11 @@ namespace EnterRepository\Product;
 use Enter\Http;
 use Enter\Curl\Query;
 use EnterAggregator\ConfigTrait;
+use EnterAggregator\LoggerTrait;
 use EnterModel as Model;
 
 class Category {
-    use ConfigTrait;
+    use ConfigTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request
@@ -169,5 +170,25 @@ class Category {
         }
 
         return $categories;
+    }
+
+    /**
+     * @param Query $query
+     * @return \EnterModel\Product\Category\Config|null
+     */
+    public function getConfigObjectByQuery(Query $query) {
+        $object = null;
+
+        try {
+            $item = $query->getResult();
+            if ($item) {
+                $object = new Model\Product\Category\Config($item);
+            }
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
+            //trigger_error($e, E_USER_ERROR);
+        }
+
+        return $object;
     }
 }

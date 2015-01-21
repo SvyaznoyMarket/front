@@ -131,7 +131,7 @@ namespace EnterTerminal\Controller\ProductCatalog\Slice {
         public $category;
         /** @var Model\Product\Category[] */
         public $categories = [];
-        /** @var Model\Product\Catalog\Config */
+        /** @var Model\Product\Category\Config */
         public $catalogConfig;
         /** @var Model\Product[] */
         public $products = [];

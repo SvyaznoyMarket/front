@@ -19,7 +19,7 @@ class GetIdPager extends Query {
      * @param string|null $regionId
      * @param $offset
      * @param $limit
-     * @param Model\Product\Catalog\Config|null $catalogConfig
+     * @param Model\Product\Category\Config|null $catalogConfig
      */
     public function __construct(array $filterData, Model\Product\Sorting $sorting = null, $regionId = null, $offset = null, $limit = null, $catalogConfig = null) {
         $sortingData = []; // TODO: вынести в Repository\Product\Sorting::dumpObjectList

@@ -109,7 +109,7 @@ namespace EnterAggregator\Controller {
 
                 // настройки каталога
                 // FIXME: удалить
-                $response->catalogConfig = $categoryItemQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($categoryItemQuery) : null;
+                $response->catalogConfig = $categoryItemQuery ? (new Repository\Product\Category())->getConfigObjectByQuery($categoryItemQuery) : null;
             } else {
                 // список корневых категорий
                 $categoryAvailableListQuery = new Query\Product\Category\GetAvailableList(
@@ -151,7 +151,7 @@ namespace EnterAggregator\Controller {
 
             // FIXME
             if ($context->isSlice && !$sorting) {
-                $response->catalogConfig = new Model\Product\Catalog\Config();
+                $response->catalogConfig = new Model\Product\Category\Config();
                 $response->catalogConfig->sortings = [
                     'in_shop' => 'desc',
                     'artem'   => 'desc',
@@ -330,7 +330,7 @@ namespace EnterAggregator\Controller\ProductList {
         public $category;
         /** @var Model\Product\Category[] */
         public $categories = [];
-        /** @var Model\Product\Catalog\Config */
+        /** @var Model\Product\Category\Config */
         public $catalogConfig;
         /** @var Model\MainMenu|null */
         public $mainMenu;

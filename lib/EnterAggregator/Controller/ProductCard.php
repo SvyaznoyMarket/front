@@ -246,7 +246,7 @@ namespace EnterAggregator\Controller {
             }
 
             // настройки каталога
-            $response->catalogConfig = $catalogConfigQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null;
+            $response->catalogConfig = $catalogConfigQuery ? (new Repository\Product\Category())->getConfigObjectByQuery($catalogConfigQuery) : null;
 
             // список рейтингов товаров
             if ($ratingListQuery) {
@@ -277,7 +277,7 @@ namespace EnterAggregator\Controller\ProductCard {
         public $product;
         /** @var Model\Product\Category[] */
         public $accessoryCategories = [];
-        /** @var Model\Product\Catalog\Config */
+        /** @var Model\Product\Category\Config */
         public $catalogConfig;
         /** @var Model\MainMenu|null */
         public $mainMenu;
