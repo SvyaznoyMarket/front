@@ -26,6 +26,7 @@ require.config({
         'jquery.slides'         : 'plugin/jquery.slides',
         'jquery.scrollTo'       : 'plugin/jquery.scrollTo',
         'jquery.maskedinput'    : 'plugin/jquery.maskedinput',
+        'jquery.smartbanner'    : 'plugin/jquery.smartbanner',
 
         'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
         'mustache'           : 'vendor/mustache-0.8.2',
@@ -69,6 +70,9 @@ require.config({
         'jquery.maskedinput': {
             deps: ['jquery']
         },
+        'jquery.smartbanner': {
+            deps: ['jquery']
+        },
         'underscore': {
             exports: '_'
         },
@@ -103,6 +107,7 @@ require(
         'jquery.cookie',
         'jquery.ui', 'jquery.ui.touch-punch', 'jquery.popup',
         'jquery.touchwipe',
+        'module/default',
         'module/analytics.google',
         'module/util',
         'module/jira',

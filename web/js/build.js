@@ -14,6 +14,7 @@
         'jquery.photoswipe'     : 'plugin/jquery.photoswipe',
         'jquery.slides'         : 'plugin/jquery.slides',
         'jquery.maskedinput'    : 'plugin/jquery.maskedinput',
+        'jquery.smartbanner'    : 'plugin/jquery.smartbanner',
 
         'underscore'         : 'empty:',
         'mustache'           : 'vendor/mustache-0.8.2',
