@@ -91,7 +91,6 @@
                     $('.slidesImg_item-left').prev().remove();
 
                     pagerCustom();
-                    console.log(index);
                 },
 
                 prevSlides = function prevSlides() {
@@ -110,7 +109,6 @@
                     $('.slidesImg_item-right').next().remove();
 
                     pagerCustom();
-                    console.log(index);
                 },
 
                 addPager = function addPager() {
