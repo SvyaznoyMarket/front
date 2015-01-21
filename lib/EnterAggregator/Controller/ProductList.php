@@ -70,6 +70,7 @@ namespace EnterAggregator\Controller {
             // регион
             $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
+            $categoryRootListQuery = null;
             if ((bool)$categoryCriteria) {
                 // наличие категорий в данном регионе с учетом фильтров
                 $categoryListQuery = new Query\Product\Category\GetAvailableList($categoryCriteria,
@@ -110,8 +111,7 @@ namespace EnterAggregator\Controller {
                 // FIXME: удалить
                 $response->catalogConfig = $categoryItemQuery ? (new Repository\Product\Catalog\Config())->getObjectByQuery($categoryItemQuery) : null;
             } else {
-                // TODO: распараллелить
-                // список категорий
+                // список корневых категорий
                 $categoryAvailableListQuery = new Query\Product\Category\GetAvailableList(
                     null,
                     $response->region->id,
@@ -128,12 +128,9 @@ namespace EnterAggregator\Controller {
                     $categoryUis[] = (string)$item['uid'];
                 }
 
-                /** @var Model\Product\Category[] $categories */
-                $categoryListQuery = (bool)$categoryUis ? new Query\Product\Category\GetListByUiList($categoryUis, $response->region->id) : [];
-                if ($categoryListQuery) {
-                    $curl->prepare($categoryListQuery)->execute();
-
-                    $response->categories = (new \EnterRepository\Product\Category())->getObjectListByQuery($categoryListQuery);
+                $categoryRootListQuery = (bool)$categoryUis ? new Query\Product\Category\GetListByUiList($categoryUis, $response->region->id) : [];
+                if ($categoryRootListQuery) {
+                    $curl->prepare($categoryRootListQuery);
                 }
             }
 
@@ -148,6 +145,9 @@ namespace EnterAggregator\Controller {
             $curl->prepare($filterListQuery);
 
             $curl->execute();
+
+            // корневые категории
+            $response->categories = $categoryRootListQuery ? (new \EnterRepository\Product\Category())->getObjectListByQuery($categoryRootListQuery) : [];
 
             // FIXME
             if ($context->isSlice && !$sorting) {
