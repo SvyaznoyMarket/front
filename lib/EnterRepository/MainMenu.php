@@ -20,8 +20,7 @@ class MainMenu {
             $level,
             false,
             null,
-            true,
-            ['category_163x163']
+            true
         );
     }
 
@@ -90,6 +89,7 @@ class MainMenu {
                             $element->name = (string)$categoryItem['name'];
                         }
                         $element->url = rtrim((string)$categoryItem['link'], '/');
+                        $element->hasChildren = @$categoryItem['has_children'];
                     } else if (('category-tree' == $source['type']) && !empty($ui)) {
                         $elementItems = [];
                         $categoryItem = null;
@@ -109,6 +109,7 @@ class MainMenu {
                         $element->type = 'slice';
                         $element->id = $source['url'];
                         $element->url = '/slices/' . $source['url']; // FIXME
+                        $element->hasChildren = true;
                     }
                 } else {
                     $element = new Model\MainMenu\Element($elementItem);
@@ -123,7 +124,6 @@ class MainMenu {
                 }
 
                 $element->level = $parentElement ? ($parentElement->level + 1) : 1;
-                $element->hasChildren = (bool)$element->children;
 
                 if ($parentElement) {
                     $parentElement->children[] = $element;

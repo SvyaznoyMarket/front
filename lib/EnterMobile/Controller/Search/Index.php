@@ -76,8 +76,8 @@ class Index {
         $curl->prepare($searchResultQuery);
 
         // запрос дерева категорий для меню
-        $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
-        $curl->prepare($categoryListQuery);
+        $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
+        $curl->prepare($categoryTreeQuery);
 
         $curl->execute();
 
@@ -131,7 +131,7 @@ class Index {
         $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
 
         // меню
-        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
 
         // список рейтингов товаров
         if ($ratingListQuery) {

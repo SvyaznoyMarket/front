@@ -62,10 +62,10 @@ namespace EnterAggregator\Controller {
             }
 
             // запрос дерева категорий для меню
-            $categoryListQuery = null;
+            $categoryTreeQuery = null;
             if ($context->mainMenu) {
-                $categoryListQuery = new Query\Product\Category\GetTreeList($response->region->id, 3);
-                $curl->prepare($categoryListQuery);
+                $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
+                $curl->prepare($categoryTreeQuery);
             }
 
             // запрос меню
@@ -161,7 +161,7 @@ namespace EnterAggregator\Controller {
 
             // меню
             if ($mainMenuQuery) {
-                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
             }
 
             // отзывы товара

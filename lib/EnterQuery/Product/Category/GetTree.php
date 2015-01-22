@@ -51,7 +51,7 @@ class GetTree extends Query {
             $this->url->query['load_siblings'] = true;
         }
         // глубина загрузки потомков относительно корневой категории
-        if ($depth) {
+        if (is_int($depth)) {
             $this->url->query['depth'] = $depth;
         }
         // media

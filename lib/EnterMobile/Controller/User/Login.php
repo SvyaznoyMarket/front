@@ -65,8 +65,8 @@ class Login {
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         // запрос дерева категорий для меню
-        $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
-        $curl->prepare($categoryListQuery);
+        $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
+        $curl->prepare($categoryTreeQuery);
 
         // запрос меню
         $mainMenuQuery = new Query\MainMenu\GetItem();
@@ -75,7 +75,7 @@ class Login {
         $curl->execute();
 
         // меню
-        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\User\Login\Request();

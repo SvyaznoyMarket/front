@@ -65,8 +65,8 @@ class Index {
         $curl->prepare($mainMenuQuery);
 
         // запрос дерева категорий для меню
-        $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
-        $curl->prepare($categoryListQuery);
+        $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
+        $curl->prepare($categoryTreeQuery);
 
         // запрос товаров по баркодам
         $productListQuery = new Query\Product\GetListByBarcodeList($barcodes, $region->id);
@@ -75,7 +75,7 @@ class Index {
         $curl->execute();
 
         // меню
-        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
 
         // товары
         $products = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
