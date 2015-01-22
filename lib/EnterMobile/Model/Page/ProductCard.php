@@ -164,8 +164,12 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product {
     }
 
     class ReviewBlock {
-        /** @var ReviewBlock\Review[] */
+        /** @var Partial\ProductReview[] */
         public $reviews = [];
+        /** @var string */
+        public $url;
+        /** @var string */
+        public $dataValue;
         /** @var Partial\Link|null */
         public $moreLink;
     }
@@ -262,25 +266,6 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product\KitBlock {
         public $cartSpinner;
         /** @var bool */
         public $isHidden;
-    }
-}
-
-namespace EnterMobile\Model\Page\ProductCard\Content\Product\ReviewBlock {
-    use EnterMobile\Model\Partial;
-
-    class Review {
-        /** @var string */
-        public $createdAt;
-        /** @var string */
-        public $author;
-        /** @var Partial\Rating\Star[] */
-        public $stars = [];
-        /** @var string */
-        public $extract;
-        /** @var string */
-        public $pros;
-        /** @var string */
-        public $cons;
     }
 }
 

@@ -125,6 +125,14 @@
         "pattern": "/orders/new"
     },
 
+    "Product\\Review\\GetList": {
+        "name": "Отзывы товара",
+        "pattern": "/ajax/product-review-list/{productId}",
+        "require": {
+            "productId": "[\\w\\d-_]+"
+        }
+    },
+
     "Shop\\Index": {
         "name": "Магазины",
         "pattern": "/shops"
