@@ -100,7 +100,7 @@ class Category {
                 $iCategory = new Model\Product\Category($item);
                 $iCategory->hasChildren = (bool)$item['has_children'];
 
-                if ($parent) {
+                if ($parent && ($iCategory->ui != $category->ui)) {
                     $parent->children[] = $iCategory;
                 }
 
