@@ -112,7 +112,7 @@ class Debug {
                 $info = $curlQuery->getInfo();
                 $info = [
                     'code'           => $info['http_code'],
-                    'url'            => $info['url'],
+                    'url'            => urldecode($info['url']),
                     'data'           => (bool)$curlQuery->getData() ? $curlQuery->getData() : null,
                     'header'         => $headers,
                     //'content_type' => $info['content_type'],
