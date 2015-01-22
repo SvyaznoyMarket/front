@@ -145,10 +145,10 @@ namespace EnterAggregator\Controller {
             $curl->prepare($descriptionItemQuery);
 
             // запрос настроек каталога
-            $catalogConfigQuery = null;
-            if ($response->product->category) {
-                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($response->product->category->ui, $regionId);
-                $curl->prepare($catalogConfigQuery);
+            $categoryItemQuery = null;
+            if ($response->product->category && $response->product->category->ui) {
+                $categoryItemQuery = new Query\Product\Category\GetItemByUi($response->product->category->ui, $regionId);
+                $curl->prepare($categoryItemQuery);
             }
 
             // запрос доступности кредита
@@ -246,7 +246,7 @@ namespace EnterAggregator\Controller {
             }
 
             // настройки каталога
-            $response->catalogConfig = $catalogConfigQuery ? (new Repository\Product\Category())->getConfigObjectByQuery($catalogConfigQuery) : null;
+            $response->catalogConfig = $categoryItemQuery ? (new Repository\Product\Category())->getConfigObjectByQuery($categoryItemQuery) : null;
 
             // список рейтингов товаров
             if ($ratingListQuery) {

@@ -47,17 +47,15 @@ class ListByFilter {
             $sorting = reset($sortings);
         }
 
-        $catalogConfigQuery = null;
+        $categoryItemQuery = null;
         $category = null;
         if (is_string($request->query['category'])) {
-            $categoryQuery = new Query\Product\Category\GetItemById($request->query['category'], $regionId);
-            $curl->prepare($categoryQuery);
+            $categoryItemQuery = new Query\Product\Category\GetItemById($request->query['category'], $regionId);
+            $curl->prepare($categoryItemQuery);
+
             $curl->execute();
-            $category = (new \EnterRepository\Product\Category())->getObjectByQuery($categoryQuery);
-            if ($category) {
-                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($category->ui, $regionId);
-                $curl->prepare($catalogConfigQuery);
-            }
+
+            $category = (new \EnterRepository\Product\Category())->getObjectByQuery($categoryItemQuery);
         }
 
         // запрос региона
@@ -112,7 +110,7 @@ class ListByFilter {
             $region->id,
             ($pageNum - 1) * $limit,
             $limit,
-            $catalogConfigQuery ? (new \EnterRepository\Product\Category())->getConfigObjectByQuery($catalogConfigQuery) : null
+            $categoryItemQuery ? (new \EnterRepository\Product\Category())->getConfigObjectByQuery($categoryItemQuery) : null
         );
         $curl->prepare($productUiPagerQuery);
 

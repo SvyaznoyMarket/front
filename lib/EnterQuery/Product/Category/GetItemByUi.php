@@ -21,7 +21,7 @@ class GetItemByUi extends Query {
         $this->url = new Url();
         $this->url->path = 'category/get/v1';
         $this->url->query = [
-            'ui'     => $ui,
+            'uid'    => $ui,
             'geo_id' => $regionId,
         ];
 

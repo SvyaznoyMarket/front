@@ -55,6 +55,7 @@ namespace EnterModel\Product {
             $this->media = new Model\Product\Category\Media();
 
             if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+            if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui']; // FIXME: deprecated
             if (array_key_exists('uid', $data)) $this->ui = (string)$data['uid'];
             if (array_key_exists('parent_id', $data)) $this->parentId = $data['parent_id'] ? (string)$data['parent_id'] : null;
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
