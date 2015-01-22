@@ -626,9 +626,10 @@
                             </div>
                         </div>
                     {{/product.reviewBlock.reviews}}
-                     {{#reviewsMoreLink}}
-                         {{>partial/product-card/reviewsMoreLink}}
-                     {{/reviewsMoreLink}}
+
+                    {{#moreLink}}
+                        <a href="{{url}}" class="catalogMore btnStyleGrey">{{name}}</a>
+                    {{/moreLink}}
                 </div>
                 {{/product.reviewBlock}}
                 <!--/ Таб - Отзывы -->
