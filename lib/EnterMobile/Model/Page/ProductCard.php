@@ -166,6 +166,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product {
     class ReviewBlock {
         /** @var ReviewBlock\Review[] */
         public $reviews = [];
+        /** @var Partial\Link|null */
+        public $moreLink;
     }
 
     class ModelBlock {
