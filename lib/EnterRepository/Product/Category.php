@@ -100,19 +100,10 @@ class Category {
                 $iCategory = new Model\Product\Category($item);
                 $iCategory->hasChildren = (bool)$item['has_children'];
 
-                if ($parent && ($iCategory->ui != $category->ui)) {
-                    $parent->children[] = $iCategory;
-                }
-
                 if ($iCategory->level < $category->level) { // предки
                     $category->ascendants[] = $iCategory;
                 } else if ($iCategory->ui == $category->ui) { // категория
                     $category->hasChildren = $iCategory->hasChildren;
-                } else if ($iCategory->level == ($category->level + 1)) { // прямые потомки (дети) категории
-                    if ((null !== $availableDataByUi) && !array_key_exists($iCategory->ui, $availableDataByUi)) continue; // фильтрация
-
-                    $iCategory->productCount = $availableDataByUi[$iCategory->ui]['product_count'];
-                    $category->children[] = $iCategory;
                 }
 
                 $walk($item['children'], $iCategory);
@@ -120,6 +111,15 @@ class Category {
         };
 
         $walk($query->getResult());
+
+        // фильтрация детей
+        if ((null !== $availableDataByUi)) {
+            foreach ($category->children as $i => $child) {
+                if (!array_key_exists($child->ui, $availableDataByUi)) {
+                    unset($category->children[$i]);
+                }
+            }
+        }
 
         $category->parent = reset($category->ascendants);
         $category->ascendants = array_reverse($category->ascendants, true);
