@@ -80,9 +80,9 @@ class MainMenu {
 
                         $element = new Model\MainMenu\Element($elementItem);
                         $element->type = 'category';
-                        $element->id = (string)$categoryItem['uid'];
+                        $element->id = (string)$categoryItem['id'];
                         if (!$element->id && isset($elementItem['source']['uid'])) {
-                            $element->id = (string)$elementItem['source']['uid'];
+                            $element->id = (string)$elementItem['source']['id'];
                         }
 
                         if (!$element->name) {
@@ -97,6 +97,7 @@ class MainMenu {
                                 'source' => [
                                     'type'  => 'category-get',
                                     'uid'   => $categoryItem['uid'],
+                                    'id'    => $categoryItem['id'],
                                 ],
                             ];
                         }
