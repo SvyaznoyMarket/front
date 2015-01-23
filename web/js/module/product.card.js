@@ -121,17 +121,18 @@ define(
                             if (_.isObject(response.result) && dataValue && $listContainer.length) {
                                 dataValue.page = response.result.page;
                                 dataValue.count = response.result.count;
+                                dataValue.limit = response.result.limit;
 
-                                if (dataValue.count <= dataValue.page * dataValue.limit) {
+                                if (
+                                    ((dataValue.page * dataValue.limit) > dataValue.count)
+                                    || !response.result.count
+                                ) {
                                     $moreLink.hide();
                                 } else {
                                     $moreLink.show();
                                 }
 
-                                _.each(response.result.reviews, function(content) {
-                                    console.warn(content);
-                                    $listContainer.append(content);
-                                });
+                                $listContainer.append(response.result.reviewBlock);
                             }
                         })
                         .always(function() {

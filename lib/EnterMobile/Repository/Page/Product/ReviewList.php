@@ -42,7 +42,7 @@ class ReviewList {
             $reviews[] = $review;
         }
 
-        $page->reviews[] = $renderer->render('page/product-card/review-list', ['reviews' => $reviews]);
+        $page->reviewBlock = (bool)$reviews ? $renderer->render('page/product-card/review-list', ['reviews' => $reviews]) : null;
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
