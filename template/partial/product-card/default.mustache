@@ -5,13 +5,16 @@
         </div>
     {{/labels.0}}
 
-    {{#brand.image}}
-        <div class="sticker right">
-            <img src="{{brand.image}}" alt="{{brand.name}}" />
-        </div>
-    {{/brand.image}}
 
-    <div class="img"><img src="{{image}}" /></div>
+
+    <div class="img">
+        <img src="{{image}}" />
+        {{#brand.image}}
+            <div class="sticker right">
+                <img src="{{brand.image}}" alt="{{brand.name}}" />
+            </div>
+        {{/brand.image}}
+    </div>
 
     <div class="catalogList_desc">
         <span class="name">{{name}}</span>

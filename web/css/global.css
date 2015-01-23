@@ -4205,7 +4205,7 @@ body.noScroll {
   text-align: center;
 }
 /* ==========================================================================
-   Каталог -> листинг товаров .catalogList 
+   Каталог -> листинг товаров .catalogList
    ========================================================================== */
 @media only screen and (max-width: 959px) {
   .catalogList {
@@ -4263,6 +4263,7 @@ body.noScroll {
   .catalogList .img {
     float: left;
     width: 40%;
+    position: relative;
   }
   .catalogList .img img {
     width: 90%;

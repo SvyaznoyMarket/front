@@ -12,9 +12,10 @@ define(
 			tabList = tabWrap.find('.js-tab'),
 			tab = tabList.find('.js-cont'),
 			tabCount = tab.length;
-		// end of vars	
-	
-		var 
+			btnMore = tabWrap.find('.js-productReviewList-more');
+		// end of vars
+
+		var
 			/*
 			 * Добавление атрибутов к элементам описания товара
 			 */
@@ -29,7 +30,7 @@ define(
 					})
 
 					i++;
-				}); 
+				});
 
 				//добавляем атрибут к контенту таба
 				var i = 0;
@@ -41,7 +42,7 @@ define(
 					})
 
 					i++;
-				}); 
+				});
 
 			},
 
@@ -53,9 +54,9 @@ define(
 				tabWrap.css({'height' : tab.first().height(), 'min-height' : 350 })
 
 				tabWrap.css({'width' : tabWrapWidth})
-				tab.css({'width': tabWrapWidth});	
+				tab.css({'width': tabWrapWidth});
 				tabList.css({'width' : tabWrapWidth * tabCount});
-				
+
 				tabItem.removeClass('productDescTab_item-active');
 				tabItem.first().addClass('productDescTab_item-active');
 				tabList.stop(true, true).animate({'left' : 0});
@@ -66,9 +67,9 @@ define(
 			 * Слайдинг табов
 			 */
 			tabsSlide = function tabsSlide( event ) {
-					
+
 				event.preventDefault();
-					
+
 				var $self = $(this),
 					tabLinkId = $self.data('tab'),
 					tabId = tab.filter('[data-desc="tab-'+tabLinkId+'"]');
@@ -79,27 +80,33 @@ define(
 				else {
 					posLeft = tabWrapWidth * tabLinkId;
 				};
-				
+
 				$('html,body').animate({
-					scrollTop: $self.offset().top - $('.header').outerHeight()}, 400, 
+					scrollTop: $self.offset().top - $('.header').outerHeight()}, 400,
 					function(){
                 		$('html,body').clearQueue();
             		}
-            	); 
+            	);
 
 				tabItem.removeClass('productDescTab_item-active');
 				$self.addClass('productDescTab_item-active');
 				tabList.stop(true, true).animate({'left' : -posLeft});
 				tabWrap.stop(true, true).animate({'height' : tabId.height() });
 			};
-
-			
 		//end of function
+
+		/*
+		 * Обработка высоты блока при нажатии кнопки "еще отзывы"
+		 */
+		tab.bind('DOMNodeInserted',function(e){
+			var $self = $(this);
+				e.stopPropagation();
+				tabWrap.stop(true, true).animate({'height' : $self.height()});
+		});
 
         addData();
 	    $(window).on('resize', tabsToggle);
 	    tabsToggle();
 	    tabItem.on('click', tabsSlide);
-
     }
 );

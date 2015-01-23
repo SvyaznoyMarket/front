@@ -1,0 +1,30 @@
+{{#reviews}}
+    <div class="reviewsBox clearfix">
+        <div class="reviewsBox__left">
+            <div class="reviews">
+                {{>partial/rating/star-list}}
+            </div>
+
+            <div class="reviewsName">{{author}}</div>
+
+            <div class="reviewsDate">{{createdAt}}</div>
+        </div>
+
+        <div class="reviewsBox__right">
+            <div class="reviewsText">
+                <span class="reviewsText__mark">«</span>
+                <p class="reviewsText__par">{{extract}}</p>
+            </div>
+
+            <div class="reviewsText">
+                <span class="reviewsText__mark">+</span>
+                <p class="reviewsText__par">{{pros}}</p>
+            </div>
+
+            <div class="reviewsText">
+                <span class="reviewsText__mark">−</span>
+                <p class="reviewsText__par">{{cons}}</p>
+            </div>
+        </div>
+    </div>
+{{/reviews}}
