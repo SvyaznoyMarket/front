@@ -262,7 +262,7 @@ class Product {
 
             foreach ($productData as $item) {
                 $productId = (string)$item['id'];
-                if (!isset($productsById[$productId])) continue;
+                if (!$productId || !isset($productsById[$productId])) continue;
 
                 if (!isset($item['delivery_mode_list'])) continue;
                 foreach ($item['delivery_mode_list'] as $deliveryItem) {
