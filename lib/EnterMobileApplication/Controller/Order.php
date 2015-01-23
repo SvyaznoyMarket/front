@@ -40,6 +40,9 @@ namespace EnterMobileApplication\Controller {
 
             // заказ
             $order = (new Repository\Order())->getObjectByQuery($itemQuery);
+            if (!$order) {
+                throw new \Exception('Заказ не найден', 404);
+            }
 
             $orders = [$order];
 
