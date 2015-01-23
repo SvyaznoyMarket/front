@@ -36,24 +36,24 @@ class Filter {
      * @return Model\Product\Filter[]
      */
     public function getObjectListByCategoryList(array $categories) {
-        $filters = [];
-
-        $categoryOptionData = [];
+        $filter = new Model\Product\Filter([
+            'filter_id' => 'category',
+            'name'      => 'Категории',
+            'type_id'   => Model\Product\Filter::TYPE_LIST,
+        ]);
         foreach ($categories as $category) {
-            $categoryOptionData[] = [
+            $option = new Model\Product\Filter\Option([
                 'id'       => $category->id,
                 'token'    => $category->id,
                 'name'     => $category->name,
                 'quantity' => $category->productCount,
-                'image'    => $category->image,
-            ];
+            ]);
+            $option->media = $category->media;
+
+            $filter->option[] = $option;
         }
-        $filters[] = new Model\Product\Filter([
-            'filter_id' => 'category',
-            'name'      => 'Категории',
-            'type_id'   => Model\Product\Filter::TYPE_LIST,
-            'options'   => $categoryOptionData,
-        ]);
+
+        $filters[] = $filter;
 
         return $filters;
     }
