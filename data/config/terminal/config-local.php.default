@@ -9,7 +9,5 @@ return function(EnterTerminal\Config $config) {
     $config->hostname = 'tapi.enter.loc';
     $config->editable = false;
 
-    //$config->coreService->url = 'http://glukkkk.core.ent3.ru/';
-    $config->scmsService->url = 'http://scms.ent3.ru/';
-    $config->searchService->url = 'http://sphinx.t13/';
+    //$config->scmsService->url = 'http://scms.ent3.ru/';
 };

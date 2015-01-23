@@ -14,5 +14,4 @@ return function(\EnterMobile\Config $config) {
     $config->partner->enabled = false;
 
     //$config->scmsService->url = 'http://scms.ent3.ru/';
-    //$config->searchService->url = 'http://sphinx.t13/';
 };
