@@ -596,39 +596,12 @@
                 <div class="tabContent js-cont">
                     <div class="tabContent_title">Отзывы</div>
 
-                    {{#product.reviewBlock.reviews}}
-                        <div class="reviewsBox clearfix">
-                            <div class="reviewsBox__left">
-                                <div class="reviews">
-                                    {{>partial/rating/star-list}}
-                                </div>
-
-                                <div class="reviewsName">{{author}}</div>
-
-                                <div class="reviewsDate">{{createdAt}}</div>
-                            </div>
-
-                            <div class="reviewsBox__right">
-                                <div class="reviewsText">
-                                    <span class="reviewsText__mark">«</span>
-                                    <p class="reviewsText__par">{{extract}}</p>
-                                </div>
-
-                                <div class="reviewsText">
-                                    <span class="reviewsText__mark">+</span>
-                                    <p class="reviewsText__par">{{pros}}</p>
-                                </div>
-
-                                <div class="reviewsText">
-                                    <span class="reviewsText__mark">−</span>
-                                    <p class="reviewsText__par">{{cons}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    {{/product.reviewBlock.reviews}}
+                    <div class="js-productReviewList-container" data-url="{{url}}" data-value="{{&dataValue}}">
+                        {{>page/product-card/review-list}}
+                    </div>
 
                     {{#moreLink}}
-                        <a href="{{url}}" class="catalogMore btnStyleGrey">{{name}}</a>
+                        <a href="#" data-container-selector=".js-productReviewList-container" class="js-productReviewList-more catalogMore btnStyleGrey">{{name}}</a>
                     {{/moreLink}}
                 </div>
                 {{/product.reviewBlock}}

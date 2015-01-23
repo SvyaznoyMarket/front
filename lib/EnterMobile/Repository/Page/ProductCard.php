@@ -5,9 +5,9 @@ namespace EnterMobile\Repository\Page;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
-use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\DateHelperTrait;
 use EnterAggregator\TranslateHelperTrait;
+use EnterAggregator\TemplateHelperTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
@@ -15,7 +15,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use ConfigTrait, LoggerTrait, RouterTrait, DateHelperTrait, TranslateHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, DateHelperTrait, TranslateHelperTrait, TemplateHelperTrait;
 
     /**
      * @param Page $page
@@ -28,6 +28,7 @@ class ProductCard {
         $router = $this->getRouter();
         $dateHelper = $this->getDateHelper();
         $translateHelper = $this->getTranslateHelper();
+        $templateHelper = $this->getTemplateHelper();
 
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
         $cartProductReserveButtonRepository = new Repository\Partial\Cart\ProductReserveButton();
@@ -339,7 +340,7 @@ class ProductCard {
         if ((bool)$productModel->reviews) {
             $page->content->product->reviewBlock = new Page\Content\Product\ReviewBlock();
             foreach ($productModel->reviews as $reviewModel) {
-                $review = new Page\Content\Product\ReviewBlock\Review();
+                $review = new Partial\ProductReview();
                 $review->author = $reviewModel->author;
                 $review->createdAt = $reviewModel->createdAt ? $dateHelper->dateToRu($reviewModel->createdAt): null;
                 $review->extract = $reviewModel->extract;
@@ -348,6 +349,14 @@ class ProductCard {
                 $review->stars = $ratingRepository->getStarList($reviewModel->starScore);
 
                 $page->content->product->reviewBlock->reviews[] = $review;
+            }
+
+            if ($productModel->rating && ($productModel->rating->reviewCount > $config->productReview->itemsInCard)) {
+                $page->content->product->reviewBlock->moreLink = new Partial\Link();
+                $page->content->product->reviewBlock->moreLink->name = 'Еще отзывы';
+
+                $page->content->product->reviewBlock->url = $router->getUrlByRoute(new Routing\Product\Review\GetList($productModel->id));
+                $page->content->product->reviewBlock->dataValue = $templateHelper->json(['page' => 2]);
             }
         }
 

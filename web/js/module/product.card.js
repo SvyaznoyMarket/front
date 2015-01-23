@@ -101,5 +101,50 @@ define(
                 $el.val(product.quantity);
             });
         });
+
+
+        // reviews
+        $('.js-productReviewList-more').on('click', function(e) {
+            e.preventDefault();
+
+            try {
+                var
+                    $moreLink = $(this),
+                    $listContainer = $($moreLink.data('containerSelector')),
+                    url = $listContainer.data('url'),
+                    dataValue = $listContainer.data('value')
+                ;
+
+                if (url && (true !== $moreLink.data('disabled'))) {
+                    $.get(url, dataValue)
+                        .done(function(response) {
+                            if (_.isObject(response.result) && dataValue && $listContainer.length) {
+                                dataValue.page = response.result.page;
+                                dataValue.count = response.result.count;
+
+                                if (dataValue.count <= dataValue.page * dataValue.limit) {
+                                    $moreLink.hide();
+                                } else {
+                                    $moreLink.show();
+                                }
+
+                                _.each(response.result.reviews, function(content) {
+                                    console.warn(content);
+                                    $listContainer.append(content);
+                                });
+                            }
+                        })
+                        .always(function() {
+                            $moreLink.data('disabled', false);
+                        })
+                    ;
+
+                    $moreLink.data('disabled', true);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
     }
 );
