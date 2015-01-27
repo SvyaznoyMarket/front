@@ -122,6 +122,7 @@ class Category {
                     unset($category->children[$i]);
                 }
             }
+            $category->children = array_values($category->children);
         }
 
         $category->parent = reset($category->ascendants);
