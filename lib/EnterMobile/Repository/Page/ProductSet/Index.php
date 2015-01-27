@@ -31,6 +31,13 @@ class Index {
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
 
         $page->dataModule = 'product.catalog';
+        $page->title = $request->title;
+        $page->header = $request->title;
+
+        $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
+        $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
+        $breadcrumb->name = $request->title;
+        $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
 
         $currentRoute = new Routing\ProductSet\Index(implode(',', array_map(function(\EnterModel\Product $product){ return $product->barcode; }, $request->products)));
 

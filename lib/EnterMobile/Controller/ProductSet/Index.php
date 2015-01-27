@@ -83,6 +83,7 @@ class Index {
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductSet\Index\Request();
         $pageRequest->httpRequest = $request;
+        $pageRequest->title = $request->query['title'];
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->pageNum = $pageNum;
