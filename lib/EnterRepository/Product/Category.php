@@ -101,6 +101,13 @@ class Category {
                 $iCategory->hasChildren = (bool)$item['has_children'];
                 $iCategory->parentId = $parent ? $parent->id : null;
 
+                // фильтрация
+                if ((null !== $availableDataByUi)) {
+                    if (!array_key_exists($iCategory->ui, $availableDataByUi)) {
+                        continue;
+                    }
+                }
+
                 if ($iCategory->level < $category->level) { // предки
                     $category->ascendants[] = $iCategory;
                 } else if ($iCategory->ui == $category->ui) { // категория
@@ -115,18 +122,9 @@ class Category {
 
         $walk($query->getResult());
 
-        // фильтрация детей
-        if ((null !== $availableDataByUi)) {
-            foreach ($category->children as $i => $child) {
-                if (!array_key_exists($child->ui, $availableDataByUi)) {
-                    unset($category->children[$i]);
-                }
-            }
-            $category->children = array_values($category->children);
-        }
-
-        $category->parent = reset($category->ascendants);
-        $category->ascendants = array_reverse($category->ascendants, true);
+        $category->children = array_values($category->children);
+        $category->parent = end($category->ascendants);
+        $category->ascendants = array_values(array_reverse($category->ascendants, true));
     }
 
     /**
