@@ -99,11 +99,14 @@ class Category {
 
                 $iCategory = new Model\Product\Category($item);
                 $iCategory->hasChildren = (bool)$item['has_children'];
+                $iCategory->parentId = $parent ? $parent->id : null;
 
                 if ($iCategory->level < $category->level) { // предки
                     $category->ascendants[] = $iCategory;
                 } else if ($iCategory->ui == $category->ui) { // категория
                     $category->hasChildren = $iCategory->hasChildren;
+                } else if ($parent && ($parent->ui == $category->ui)) { // дети
+                    $category->children[] = $iCategory;
                 }
 
                 $walk($item['children'], $iCategory);
