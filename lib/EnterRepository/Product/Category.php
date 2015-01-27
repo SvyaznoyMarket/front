@@ -112,6 +112,7 @@ class Category {
                     $category->ascendants[] = $iCategory;
                 } else if ($iCategory->ui == $category->ui) { // категория
                     $category->hasChildren = $iCategory->hasChildren;
+                    $category->parentId = $parent ? $parent->id : null;
                 } else if ($parent && ($parent->ui == $category->ui)) { // дети
                     $category->children[] = $iCategory;
                 }
