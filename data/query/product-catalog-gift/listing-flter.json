@@ -1,0 +1,254 @@
+{
+  "filter_groups": [
+    {
+      "id": "holiday",
+      "name": "Праздник"
+    },
+    {
+      "id": "sex",
+      "name": "Пол"
+    },
+    {
+      "id": "relation",
+      "name": "Связь"
+    },
+    {
+      "id": "age",
+      "name": "Возраст"
+    }
+  ],
+  "filters": [
+    {
+      "group_id": "holiday",
+      "filter_id": "tag",
+      "name": "Праздник",
+      "type_id": 5,
+      "is_multiple": false,
+      "options": [
+        {
+          "id": 706,
+          "name": "Новый Год",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 707,
+          "name": "День рождения",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 708,
+          "name": "Юбилей",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 709,
+          "name": "День свадьбы",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 710,
+          "name": "Новоселье",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 711,
+          "name": "Благодарность",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 712,
+          "name": "Любой праздник",
+          "quantity": 1,
+          "global": 1
+        }
+      ]
+    },
+
+    {
+      "group_id": "sex",
+      "filter_id": "tag",
+      "name": "Пол",
+      "type_id": 5,
+      "is_multiple": false,
+      "options": [
+        {
+          "id": 687,
+          "name": "Женщине",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 688,
+          "name": "Мужчине",
+          "quantity": 1,
+          "global": 1
+        }
+      ]
+    },
+
+    {
+      "group_id": "relation",
+      "filter_id": "tag",
+      "name": "Связь",
+      "type_id": 5,
+      "is_multiple": false,
+      "options": [
+        {
+          "id": 689,
+          "name": "Любимой",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 698,
+          "name": "Любимому",
+          "quantity": 1,
+          "global": 1
+        },
+
+        {
+          "id": 690,
+          "name": "Коллеге",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 692,
+          "name": "Боссу",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 693,
+          "name": "Подруге",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 699,
+          "name": "Другу",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 694,
+          "name": "Девочке",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 700,
+          "name": "Мальчику",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 695,
+          "name": "Маме",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 703,
+          "name": "Папе",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 696,
+          "name": "Бабушке",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 705,
+          "name": "Дедушке",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 697,
+          "name": "Себе",
+          "quantity": 1,
+          "global": 1
+        }
+      ]
+    },
+
+    {
+      "group_id": "age",
+      "filter_id": "tag",
+      "name": "Возраст",
+      "type_id": 5,
+      "is_multiple": false,
+      "options": [
+        {
+          "id": 713,
+          "name": "0–1 год",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 716,
+          "name": "1–3 года",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 717,
+          "name": "4–7 лет",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 718,
+          "name": "8–12 лет",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 719,
+          "name": "13–16 лет",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 720,
+          "name": "17–23 года",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 721,
+          "name": "24–35 лет",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 722,
+          "name": "36–60 лет",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 723,
+          "name": "Старше 60",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 724,
+          "name": "Возраст не имеет значения",
+          "quantity": 1,
+          "global": 1
+        }
+      ]
+    }
+  ]
+}
