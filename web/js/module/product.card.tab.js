@@ -31,11 +31,10 @@ define(
                         'data-tab': i
                     })
 
-                    i++;
+                    i += 1;
                 });
 
                 //добавляем атрибут к контенту таба
-                var i = 0;
                 tab.each(function() {
                     var $self = $(this);
 
@@ -43,7 +42,7 @@ define(
                         'data-desc': "tab-" + i
                     })
 
-                    i++;
+                    i += 1;
                 });
             },
 

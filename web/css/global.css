@@ -2524,6 +2524,7 @@ body.noScroll {
     display: none;
   }
   .tabContentWrap {
+    height: auto !important;
     overflow: visible;
   }
   .tabContentInner {
