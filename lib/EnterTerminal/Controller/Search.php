@@ -180,6 +180,7 @@ namespace EnterTerminal\Controller {
             // ответ
             $response = new Response();
             $response->searchPhrase = $searchPhrase;
+            $response->forcedMean = $searchResult->forcedMean;
             $response->products = array_values($productsById);
             $response->productCount = $searchResult->productCount;
             $response->filters = $filters;
@@ -196,6 +197,8 @@ namespace EnterTerminal\Controller\Search {
     class Response {
         /** @var string */
         public $searchPhrase;
+        /** @var string|null */
+        public $forcedMean;
         /** @var Model\Product[] */
         public $products = [];
         /** @var int */
