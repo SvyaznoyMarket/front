@@ -160,6 +160,7 @@ class Search {
         // ответ
         $response = [
             'searchPhrase' => $searchPhrase,
+            'forcedMean'   => $searchResult->forcedMean,
             'productCount' => $searchResult->productCount,
             'products'     => $this->getProductList(array_values($productsById)),
             'filters'      => $this->getFilterList($filters),
