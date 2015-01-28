@@ -20,6 +20,8 @@ class Filter {
     public $name;
     /** @var int */
     public $typeId;
+    /** @var string|null */
+    public $groupId;
     /** @var bool */
     public $isMultiple;
     /** @var string */
@@ -46,6 +48,7 @@ class Filter {
         if (array_key_exists('filter_id', $data)) $this->token = (string)$data['filter_id'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('type_id', $data)) $this->typeId = (int)$data['type_id'];
+        if (array_key_exists('group_id', $data)) $this->groupId = (string)$data['group_id'];
         //if (array_key_exists('is_multiple', $data)) $this->isMultiple = (bool)$data['is_multiple'];
         // FIXME: костыль для ядра
         $this->isMultiple = in_array($this->typeId, [self::TYPE_LIST, self::TYPE_BOOLEAN]) && !in_array($this->token, ['shop', 'category']);

@@ -86,8 +86,27 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
             }
 
+            $filterData = (array)json_decode(file_get_contents($config->dir . '/data/query/product-catalog-gift/listing-filter.json'), true) + [
+                'filter_groups' => [],
+                'filters'       => [],
+            ];
+            // группы фильтров
+            /** @var Model\Product\Filter\Group[] $filterGroups */
+            $filterGroups = [];
+            foreach ($filterData['filter_groups'] as $item) {
+                if (!isset($item['id'])) continue;
+
+                $filterGroups[] = new Model\Product\Filter\Group($item);
+            }
+
             // захардкоженные фильтры
-            $controllerResponse->filters;
+            /** @var Model\Product\Filter[] $filters */
+            $filters = [];
+            foreach ($filterData['filters'] as $item) {
+                if (!isset($item['filter_id'])) continue;
+
+                $filters[] = new Model\Product\Filter($item);
+            }
 
             // ответ
             $response = new Response();
@@ -96,7 +115,8 @@ namespace EnterTerminal\Controller\ProductCatalog {
             $response->catalogConfig = $controllerResponse->catalogConfig;
             $response->products = $controllerResponse->products;
             $response->productCount = $controllerResponse->productUiPager->count;
-            $response->filters = $controllerResponse->filters;
+            $response->filters = $filters;
+            $response->filterGroups = $filterGroups;
             $response->sortings = $controllerResponse->sortings;
 
             return new Http\JsonResponse($response);
@@ -122,5 +142,7 @@ namespace EnterTerminal\Controller\ProductCatalog\Gift {
         public $sortings = [];
         /** @var Model\Product\Filter[] */
         public $filters = [];
+        /** @var Model\Product\Filter\Group[] */
+        public $filterGroups = [];
     }
 }
