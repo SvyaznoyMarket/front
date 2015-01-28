@@ -2,6 +2,8 @@
 
 namespace EnterModel\Product\Filter;
 
+use EnterModel as Model;
+
 class Option {
     /** @var string */
     public $id;
@@ -13,8 +15,8 @@ class Option {
     public $quantity;
     /** @var int */
     public $globalQuantity;
-    /** @var string|null */
-    public $image;
+    /** @var Model\Media|null */
+    public $media;
 
     /**
      * @param array $data
@@ -25,6 +27,5 @@ class Option {
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('quantity', $data)) $this->quantity = (int)$data['quantity'];
         if (array_key_exists('global', $data)) $this->globalQuantity = (int)$data['global'];
-        if (array_key_exists('image', $data)) $this->image = (string)$data['image'];
     }
 }

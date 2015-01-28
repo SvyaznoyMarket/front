@@ -1,27 +1,27 @@
 <?php
 
-namespace EnterQuery\Product\Catalog\Config;
+namespace EnterQuery\Product\Category;
 
 use Enter\Curl\Query;
 use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
-class GetItemByProductCategoryLink extends Query {
+class GetItemByLink extends Query {
     use ScmsQueryTrait;
 
     /** @var array|null */
     protected $result;
 
     /**
-     * @param $categoryLink
-     * @param $regionId
+     * @param $link
+     * @param string $regionId
      */
-    public function __construct($categoryLink, $regionId) {
+    public function __construct($link, $regionId) {
         $this->url = new Url();
         $this->url->path = 'category/get/v1';
         $this->url->query = [
-            'url'    => $categoryLink,
+            'url'    => $link,
             'geo_id' => $regionId,
         ];
 
@@ -34,6 +34,6 @@ class GetItemByProductCategoryLink extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = $data;
+        $this->result = isset($data['uid']) ? $data : null;
     }
 }

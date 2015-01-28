@@ -39,7 +39,7 @@ class Slice {
 
         // номер страницы
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
-        $limit = (new \EnterRepository\Product\Catalog\Config())->getLimitByHttpRequest($request);
+        $limit = (new \EnterRepository\Product())->getLimitByHttpRequest($request);
 
         // сортировка
         $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
@@ -89,48 +89,6 @@ class Slice {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));
         }
 
-        // базовые фильтры
-        $baseRequestFilters = (new \EnterMobile\Repository\Product\Filter())->getRequestObjectListByHttpRequest(new Http\Request($slice->filters)); // FIXME !!!
-        if ($controllerResponse->category && ($categoryRequestFilter = $filterRepository->getRequestObjectByCategory($controllerResponse->category))) {
-            $baseRequestFilters[] = $categoryRequestFilter;
-        }
-
-        // список категорий
-        $categoryListQuery = new Query\Product\Category\GetTreeList(
-            $controllerResponse->region->id,
-            null,
-            $filterRepository->dumpRequestObjectList($baseRequestFilters),
-            $controllerResponse->category ? $controllerResponse->category->id : null
-        );
-        $curl->prepare($categoryListQuery)->execute();
-
-        /** @var Model\Product\Category[] $categories */
-        $categories = [];
-        try {
-            $categoryListResult = $categoryListQuery->getResult();
-
-            $children =
-                $categoryToken
-                ? (
-                    isset($categoryListResult[0]['children'][0])
-                    ? $categoryListResult[0]['children']
-                    : []
-                )
-                : (
-                    isset($categoryListResult[0])
-                    ? $categoryListResult
-                    : []
-                )
-            ;
-            foreach ($children as $categoryItem) {
-                if (!isset($categoryItem['uid'])) continue;
-
-                $categories[] = new Model\Product\Category($categoryItem);
-            }
-        } catch(\Exception $e) {
-            // TODO
-        }
-
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\Slice\Request();
         $pageRequest->httpRequest = $request;
@@ -141,12 +99,12 @@ class Slice {
         $pageRequest->count = $controllerResponse->productUiPager->count; // TODO: передавать productUiPager
         $pageRequest->slice = $slice;
         $pageRequest->requestFilters = $requestFilters;
-        $pageRequest->baseRequestFilters = $baseRequestFilters;
+        $pageRequest->baseRequestFilters = $controllerResponse->baseRequestFilters;
         $pageRequest->filters = $controllerResponse->filters;
         $pageRequest->sorting = $controllerResponse->sorting;
         $pageRequest->sortings = $controllerResponse->sortings;
         $pageRequest->category = $controllerResponse->category;
-        $pageRequest->categories = $categories;
+        $pageRequest->categories = $controllerResponse->category ? $controllerResponse->category->children : $controllerResponse->categories;
         $pageRequest->catalogConfig = $controllerResponse->catalogConfig;
         $pageRequest->products = $controllerResponse->products;
 

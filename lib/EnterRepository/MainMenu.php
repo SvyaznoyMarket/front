@@ -11,6 +11,20 @@ class MainMenu {
     use ConfigTrait, RouterTrait;
 
     /**
+     * @param int $level
+     * @return \EnterQuery\Product\Category\GetTree
+     */
+    public function getCategoryTreeQuery($level) {
+        return new \EnterQuery\Product\Category\GetTree(
+            null,
+            $level,
+            false,
+            null,
+            true
+        );
+    }
+
+    /**
      * @param Query $menuListQuery
      * @param Query $categoryListQuery
      * @return Model\MainMenu
@@ -31,15 +45,15 @@ class MainMenu {
         //$menuData = json_decode(file_get_contents($this->getConfig()->dir . '/data/cms/v2/main-menu.json'), true);
         $categoryData = $categoryListQuery->getResult();
 
-        $categoryItemsById = [];
-        // индексирование данных категорий по id
-        $walkByCategoryData = function(&$categoryData) use (&$categoryItemsById, &$walkByCategoryData) {
+        $categoryItemsByUi = [];
+        // индексирование данных категорий по ui
+        $walkByCategoryData = function(&$categoryData) use (&$categoryItemsByUi, &$walkByCategoryData) {
             $categoryItem = null;
             foreach ($categoryData as &$categoryItem) {
-                if (isset($categoryItem['id'])) $categoryItem['id'] = (string)$categoryItem['id'];
+                if (isset($categoryItem['uid'])) $categoryItem['uid'] = (string)$categoryItem['uid'];
                 if (isset($categoryItem['root_id'])) $categoryItem['root_id'] = (string)$categoryItem['root_id'];
 
-                $categoryItemsById[$categoryItem['id']] = $categoryItem;
+                $categoryItemsByUi[$categoryItem['uid']] = $categoryItem;
 
                 if (isset($categoryItem['children'][0])) {
                     $walkByCategoryData($categoryItem['children']);
@@ -49,7 +63,7 @@ class MainMenu {
         };
         $walkByCategoryData($categoryData);
 
-        $walkByMenuElementItem = function($elementItems, Model\MainMenu\Element $parentElement = null) use (&$menu, &$walkByMenuElementItem, &$categoryItemsById) {
+        $walkByMenuElementItem = function($elementItems, Model\MainMenu\Element $parentElement = null) use (&$menu, &$walkByMenuElementItem, &$categoryItemsByUi) {
             foreach ($elementItems as $elementItem) {
                 if (isset($elementItem['disabled']) && (true === $elementItem['disabled'])) {
                     continue;
@@ -57,12 +71,12 @@ class MainMenu {
 
                 $element = null;
 
-                $source = !empty($elementItem['source']['type']) ? ($elementItem['source'] + ['type' => null, 'id' => null]) : null;
+                $source = !empty($elementItem['source']['type']) ? ($elementItem['source'] + ['type' => null, 'uid' => null]) : null;
                 if ($source) {
-                    $id = $source['id'];
+                    $ui = $source['uid'];
 
-                    if (('category-get' == $source['type']) && !empty($id)) {
-                        $categoryItem = isset($categoryItemsById[$id]) ? $categoryItemsById[$id] : null;
+                    if (('category-get' == $source['type']) && !empty($ui)) {
+                        $categoryItem = isset($categoryItemsByUi[$ui]) ? $categoryItemsByUi[$ui] : null;
 
                         $element = new Model\MainMenu\Element($elementItem);
                         $element->type = 'category';
@@ -75,14 +89,15 @@ class MainMenu {
                             $element->name = (string)$categoryItem['name'];
                         }
                         $element->url = rtrim((string)$categoryItem['link'], '/');
-                    } else if (('category-tree' == $source['type']) && !empty($id)) {
+                    } else if (('category-tree' == $source['type']) && !empty($ui)) {
                         $elementItems = [];
                         $categoryItem = null;
-                        foreach (isset($categoryItemsById[$id]['children'][0]) ? $categoryItemsById[$id]['children'] : [] as $categoryItem) {
+                        foreach (isset($categoryItemsByUi[$ui]['children'][0]) ? $categoryItemsByUi[$ui]['children'] : [] as $categoryItem) {
                             $elementItems[] = [
                                 'source' => [
-                                    'type' => 'category-get',
-                                    'id'   => $categoryItem['id'],
+                                    'type'  => 'category-get',
+                                    'uid'   => $categoryItem['uid'],
+                                    'id'    => $categoryItem['id'],
                                 ],
                             ];
                         }
@@ -101,7 +116,6 @@ class MainMenu {
 
                 if (!$element) continue;
 
-                $element->class .= ((bool)$element->class ? ' ' : '') . 'mId' . md5(json_encode($element));
 
                 if (isset($elementItem['children'][0])) {
                     $walkByMenuElementItem($elementItem['children'], $element);

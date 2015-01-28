@@ -19,6 +19,7 @@ namespace EnterAggregator\Controller\Cart {
          * @param Http\Session $session
          * @param Model\Cart $cart
          * @param Model\Cart\Product[] $cartProducts
+         * @return Response
          */
         public function execute(
             $regionId,

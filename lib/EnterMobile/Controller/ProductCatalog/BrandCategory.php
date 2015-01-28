@@ -48,7 +48,7 @@ class BrandCategory {
 
         // номер страницы
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
-        $limit = (new \EnterRepository\Product\Catalog\Config())->getLimitByHttpRequest($request);
+        $limit = (new \EnterRepository\Product())->getLimitByHttpRequest($request);
 
         // сортировка
         $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);

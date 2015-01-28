@@ -97,7 +97,7 @@ namespace EnterTerminal\Controller\ProductCatalog\Category {
     class Response {
         /** @var Model\Product\Category */
         public $category;
-        /** @var Model\Product\Catalog\Config */
+        /** @var Model\Product\Category\Config */
         public $catalogConfig;
         /** @var Model\Product[] */
         public $products = [];

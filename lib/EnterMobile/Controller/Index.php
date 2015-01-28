@@ -19,7 +19,6 @@ class Index {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
-        $productCategoryRepository = new \EnterRepository\Product\Category();
         $promoRepository = new \EnterRepository\Promo();
 
         // ид региона
@@ -35,8 +34,8 @@ class Index {
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
         // запрос категорий
-        $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
-        $curl->prepare($categoryListQuery);
+        $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
+        $curl->prepare($categoryTreeQuery);
 
         // запрос баннеров
         $promoListQuery = new Query\Promo\GetList($region->id);
@@ -52,7 +51,7 @@ class Index {
         $promos = $promoRepository->getObjectListByQuery($promoListQuery);
 
         // меню
-        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Index\Request();

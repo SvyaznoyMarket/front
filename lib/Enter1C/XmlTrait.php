@@ -7,6 +7,8 @@ trait XmlTrait {
      * Узлы с двумя или более дочерними элементами с одинаковыми именами преобразуются в массив с числовыми индексами.
      * Пустые элементы преобразуются в пустую строку (в противоположность способу
      * json_decode(json_encode(simplexml_load_string($xml)), true)).
+     * @param $xml
+     * @return array|string
      */
     public function convertXmlToArray($xml) {
         if (is_string($xml)) {

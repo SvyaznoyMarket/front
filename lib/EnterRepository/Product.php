@@ -39,6 +39,19 @@ class Product {
     }
 
     /**
+     * @param Http\Request $request
+     * @return int
+     */
+    public function getLimitByHttpRequest(Http\Request $request) {
+        $limit = (int)$request->query['limit'];
+        if (($limit >= 400) || ($limit <= 0)) {
+            $limit = $this->getConfig()->product->itemPerPage;
+        }
+
+        return $limit;
+    }
+
+    /**
      * @param Query $query
      * @return Model\Product
      */

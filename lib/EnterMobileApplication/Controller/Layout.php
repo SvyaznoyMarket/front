@@ -39,8 +39,8 @@ namespace EnterMobileApplication\Controller {
             $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
             // запрос дерева категорий для меню
-            $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 1);
-            $curl->prepare($categoryListQuery);
+            $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(0);
+            $curl->prepare($categoryTreeQuery);
 
             // запрос меню
             $mainMenuQuery = new Query\MainMenu\GetItem();
@@ -49,7 +49,7 @@ namespace EnterMobileApplication\Controller {
             $curl->execute();
 
             // меню
-            $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+            $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
 
             // ответ
             $response = new Response();

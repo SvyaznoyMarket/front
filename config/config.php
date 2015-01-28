@@ -57,6 +57,11 @@ return function(\EnterAggregator\Config $config) {
     $config->corePrivateService->clientId = 'site';
     $config->corePrivateService->debug = false;
 
+    $config->searchService->url = 'http://search.enter.ru/';
+    $config->searchService->timeout = 5;
+    $config->searchService->clientId = 'site';
+    $config->searchService->debug = false;
+
     $config->scmsService->url = 'http://scms.enter.ru/';
     $config->scmsService->timeout = 5;
 
@@ -127,10 +132,6 @@ return function(\EnterAggregator\Config $config) {
         3 => '/1/1/500/',
         4 => '/1/1/2500/',
         5 => '/1/1/1500/',
-    ];
-    $config->productCategoryPhoto->urlPaths = [
-        0 => '/6/1/163/',
-        3 => '/6/1/500/',
     ];
 
     $config->search->minPhraseLength = 2;
