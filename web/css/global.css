@@ -2406,6 +2406,7 @@ body.noScroll {
    ========================================================================== */
 .tabContentWrap {
   overflow: hidden;
+  min-height: 350px;
 }
 .tabContentInner {
   position: relative;
@@ -2416,7 +2417,6 @@ body.noScroll {
 }
 .tabContent {
   display: inline-block;
-  min-height: 350px;
   margin: 0 0 30px;
   vertical-align: top;
   font-size: 12px;
@@ -2524,8 +2524,8 @@ body.noScroll {
     display: none;
   }
   .tabContentWrap {
-    overflow: visible;
     height: auto !important;
+    overflow: visible;
   }
   .tabContentInner {
     left: 0 !important;

@@ -1,112 +1,142 @@
 define(
     ['jquery'],
-    function ($) {
+    function($) {
 
-		var body = $('body'),
+        var body = $('body'),
 
-			tabWrap = $('.js-tab-wrap'),
-			tabWrapWidth = $('.js-tab-selector').width(),
-			tabItem = $('.js-tabs-item'),
-			posLeft = 0,
+            tabWrap = $('.js-tab-wrap'),
+            tabWrapWidth = $('.js-tab-selector').width(),
+            tabItem = $('.js-tabs-item'),
+            posLeft = 0,
 
-			tabList = tabWrap.find('.js-tab'),
-			tab = tabList.find('.js-cont'),
-			tabCount = tab.length;
-			btnMore = tabWrap.find('.js-productReviewList-more');
-		// end of vars
+            tabList = tabWrap.find('.js-tab'),
+            tab = tabList.find('.js-cont'),
+            tabCount = tab.length,
 
-		var
-			/*
-			 * Добавление атрибутов к элементам описания товара
-			 */
-			addData = function addData() {
-				//добавляем атрибут к табу data-tab
-				var i = 0;
-				tabItem.each(function() {
-					var $self = $(this);
+            $w = $(window),
+            $wwidth = $w.width();
+        // end of vars
 
-					$self.attr({
-						'data-tab': i
-					})
+        var
+        /*
+         * Добавление атрибутов к элементам описания товара
+         */
+            addData = function addData() {
+                //добавляем атрибут к табу data-tab
+                var i = 0;
+                tabItem.each(function() {
+                    var $self = $(this);
 
-					i++;
-				});
+                    $self.attr({
+                        'data-tab': i
+                    })
 
-				//добавляем атрибут к контенту таба
-				var i = 0;
-				tab.each(function() {
-					var $self = $(this);
+                    i += 1;
+                });
 
-					$self.attr({
-						'data-desc': "tab-"+i
-					})
+                //добавляем атрибут к контенту таба
+                tab.each(function() {
+                    var $self = $(this);
 
-					i++;
-				});
+                    $self.attr({
+                        'data-desc': "tab-" + i
+                    })
 
-			},
+                    i += 1;
+                });
+            },
 
-			/*
-			 * Пересчет высоты/ширины контента табов
-			 */
-			tabsToggle = function tabsToggle() {
-				tabWrapWidth = $('.js-tab-selector').width();
-				tabWrap.css({'height' : tab.first().height(), 'min-height' : 350 })
+            /*
+             * Пересчет высоты/ширины контента табов
+             */
+            tabsToggle = function tabsToggle() {
+                tabWrapWidth = $('.js-tab-selector').width();
 
-				tabWrap.css({'width' : tabWrapWidth})
-				tab.css({'width': tabWrapWidth});
-				tabList.css({'width' : tabWrapWidth * tabCount});
+                tab.css({
+                    'width': tabWrapWidth
+                });
 
-				tabItem.removeClass('productDescTab_item-active');
-				tabItem.first().addClass('productDescTab_item-active');
-				tabList.stop(true, true).animate({'left' : 0});
-				tabWrap.stop(true, true).animate({'height' : tab.first().height() })
-			},
+                tabWrap.css({
+                    'width': tabWrapWidth,
+                    'height': tab.data( "desc", 0 ).height()
+                });
 
-			/*
-			 * Слайдинг табов
-			 */
-			tabsSlide = function tabsSlide( event ) {
+                tabList
+	                .css({
+	                    'width': tabWrapWidth * tabCount
+	                })
+	                .stop(true, true).animate({
+	                    'left': 0
+	                });
 
-				event.preventDefault();
+                tabItem
+                	.removeClass('productDescTab_item-active')
+                	.first().addClass('productDescTab_item-active');
+            },
 
-				var $self = $(this),
-					tabLinkId = $self.data('tab'),
-					tabId = tab.filter('[data-desc="tab-'+tabLinkId+'"]');
+            /*
+             * Слайдинг табов
+             */
+            tabsSlide = function tabsSlide(event) {
 
-				if ( tabLinkId == 0) {
-					posLeft = 0;
-				}
-				else {
-					posLeft = tabWrapWidth * tabLinkId;
-				};
+                event.preventDefault();
 
-				$('html,body').animate({
-					scrollTop: $self.offset().top - $('.header').outerHeight()}, 400,
-					function(){
-                		$('html,body').clearQueue();
-            		}
-            	);
+                var $self = $(this),
+                    tabLinkId = $self.data('tab'),
+                    tabId = tab.filter('[data-desc="tab-' + tabLinkId + '"]');
 
-				tabItem.removeClass('productDescTab_item-active');
-				$self.addClass('productDescTab_item-active');
-				tabList.stop(true, true).animate({'left' : -posLeft});
-				tabWrap.stop(true, true).animate({'height' : tabId.height() });
-			};
-		//end of function
+                if (tabLinkId == 0) {
+                    posLeft = 0;
+                } else {
+                    posLeft = tabWrapWidth * tabLinkId;
+                }
 
-		/*
-		 * Обработка высоты блока при нажатии кнопки "еще отзывы"
-		 */
-		tab.bind('DOMNodeInserted',function(e){
-			var $self = $(this);
-				e.stopPropagation();
-				tabWrap.stop(true, true).animate({'height' : $self.height()});
-		});
+                $('html,body').animate({
+                        scrollTop: $self.offset().top - $('.header').outerHeight()
+                    }, 400,
+                    function() {
+                        $('html,body').clearQueue();
+                    }
+                );
+
+                tabItem.removeClass('productDescTab_item-active');
+                $self.addClass('productDescTab_item-active');
+                tabList.stop(true, true).animate({
+                    'left': -posLeft
+                });
+                tabWrap.stop(true, true).animate({
+                    'height': tabId.height()
+                });
+            };
+        //end of function
 
         addData();
-	    $(window).on('resize', tabsToggle);
-	    tabsToggle();
-	    tabItem.on('click', tabsSlide);
+        tabsToggle();
+        tabItem.on('click', tabsSlide);
+
+        /*
+         * пересчет высоты блока отзывов при нажатии кнопки "еще отзывы"
+         */
+
+        $('.js-productReviewList-more').on('click', function(e) {
+            e.preventDefault();
+
+	        tab.on('DOMNodeInserted', function() {
+	            var $self = $(this);
+
+	            tabWrap.stop(true, true).animate({
+	                'height': $self.height()
+	            });
+	        });
+	    });
+
+        /*
+         * Проверка изменения ширины страницы
+         */
+        $w.on('resize', function() {
+            if ($(this).width() != $wwidth) {
+                tabsToggle();
+            }
+        });
     }
 );
