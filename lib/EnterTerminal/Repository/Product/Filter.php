@@ -42,13 +42,17 @@ class Filter extends BaseRepository {
             $key = $requestFilter->token;
             $value = $requestFilter->value;
 
+            if (0 === strpos($key, 'tag-')) {
+                $key = 'tag_and';
+            }
+
             if (!isset($filterData[$key])) {
                 $filterData[$key] = [
                     'value' => [],
                 ];
             }
 
-            if (('from' == $requestFilter->optionToken) || ('to' == $requestFilter->optionToken)) {
+            if (('from' === $requestFilter->optionToken) || ('to' === $requestFilter->optionToken)) {
                 $filterData[$key]['value'][$requestFilter->optionToken] = $value;
             } else {
                 $filterData[$key]['value'][] = $value;

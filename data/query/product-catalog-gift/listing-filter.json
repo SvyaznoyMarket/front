@@ -20,7 +20,7 @@
   "filters": [
     {
       "group_id": "holiday",
-      "filter_id": "tag_and",
+      "filter_id": "tag-holiday",
       "name": "Праздник",
       "type_id": 5,
       "is_multiple": false,
@@ -72,7 +72,7 @@
 
     {
       "group_id": "sex",
-      "filter_id": "tag_and",
+      "filter_id": "tag-sex",
       "name": "Пол",
       "type_id": 5,
       "is_multiple": false,
@@ -94,7 +94,7 @@
 
     {
       "group_id": "relation",
-      "filter_id": "tag_and",
+      "filter_id": "tag-relation",
       "name": "Связь",
       "type_id": 5,
       "is_multiple": false,
@@ -183,7 +183,7 @@
 
     {
       "group_id": "age",
-      "filter_id": "tag_and",
+      "filter_id": "tag-age",
       "name": "Возраст",
       "type_id": 5,
       "is_multiple": false,

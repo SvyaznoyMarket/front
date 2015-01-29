@@ -107,6 +107,7 @@ namespace EnterTerminal\Controller\ProductCatalog {
 
                 $filters[] = new Model\Product\Filter($item);
             }
+            $filterRepository->setValueForObjectList($filters, $requestFilters);
 
             // ответ
             $response = new Response();
