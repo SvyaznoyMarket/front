@@ -52,6 +52,8 @@ namespace EnterAggregator {
         public $coreService;
         /** @var Config\CorePrivateService */
         public $corePrivateService;
+        /** @var Config\SearchService */
+        public $searchService;
         /** @var Config\CmsService */
         public $cmsService;
         /** @var Config\ScmsService */
@@ -80,8 +82,6 @@ namespace EnterAggregator {
         public $productReview;
         /** @var Config\ProductPhoto */
         public $productPhoto;
-        /** @var Config\ProductCategoryPhoto */
-        public $productCategoryPhoto;
         /** @var Config\Search */
         public $search;
         /** @var Config\Promo */
@@ -109,6 +109,7 @@ namespace EnterAggregator {
 
             $this->coreService = new Config\CoreService();
             $this->corePrivateService = new Config\CorePrivateService();
+            $this->searchService = new Config\SearchService();
             $this->cmsService = new Config\CmsService();
             $this->scmsService = new Config\ScmsService();
             $this->crmService = new Config\CrmService();
@@ -124,7 +125,6 @@ namespace EnterAggregator {
             $this->product = new Config\Product();
             $this->productReview = new Config\ProductReview();
             $this->productPhoto = new Config\ProductPhoto();
-            $this->productCategoryPhoto = new Config\ProductCategoryPhoto();
             $this->search = new Config\Search();
             $this->promo = new Config\Promo();
             $this->productLabel = new Config\ProductLabel();
@@ -274,6 +274,13 @@ namespace EnterAggregator\Config {
     class CorePrivateService extends CoreService {
     }
 
+    class SearchService extends CurlService {
+        /** @var string */
+        public $clientId;
+        /** @var bool */
+        public $debug;
+    }
+
     class CmsService extends CurlService {
     }
 
@@ -354,13 +361,6 @@ namespace EnterAggregator\Config {
          * @var int
          */
         public $itemsInCard;
-    }
-
-    class ProductCategoryPhoto {
-        /**
-         * @var array
-         */
-        public $urlPaths = [];
     }
 
     class Search {

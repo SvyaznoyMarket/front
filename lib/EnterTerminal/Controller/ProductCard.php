@@ -62,7 +62,7 @@ namespace EnterTerminal\Controller\ProductCard {
     use EnterModel as Model;
 
     class Response {
-        /** @var Model\Product\Catalog\Config */
+        /** @var Model\Product\Category\Config */
         public $catalogConfig;
         /** @var Model\Product */
         public $product;

@@ -5,10 +5,11 @@ namespace EnterRepository\Product;
 use Enter\Http;
 use Enter\Curl\Query;
 use EnterAggregator\ConfigTrait;
+use EnterAggregator\LoggerTrait;
 use EnterModel as Model;
 
 class Category {
-    use ConfigTrait;
+    use ConfigTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request
@@ -54,34 +55,6 @@ class Category {
     }
 
     /**
-     * Преобразовывает древовидную структуру данных в линейную
-     * и возвращает список категорий от верхнего уровня до нижнего (branch)
-     *
-     * @param \Enter\Curl\Query $query
-     * @return Model\Product\Category[]
-     */
-    public function getAscendantListByQuery(Query $query) {
-        $categories = [];
-
-        $walk = function(array $item) use (&$walk, &$categories) {
-            $childItem = isset($item['children'][0]['id']) ? $item['children'][0] : null;
-            // удаляем children, т.к. он не загружен полностью - в нем только один элемент
-            if (isset($item['children'])) unset($item['children']);
-            $categories[] = new Model\Product\Category($item);
-
-            if ($childItem) {
-                $walk($childItem);
-            }
-        };
-
-        if ($item = $query->getResult()) {
-            $walk($item);
-        }
-
-        return $categories;
-    }
-
-    /**
      * @param Query $query
      * @return Model\Product\Category
      */
@@ -100,41 +73,59 @@ class Category {
      *
      * @param Model\Product\Category $category
      * @param Query $query
+     * @param Query|null $availableQuery
+     * @throws \Exception
      */
-    public function setBranchForObjectByQuery(Model\Product\Category $category, Query $query) {
-        $walk = function($item) use (&$walk, &$category) {
-            if (!$item) {
-                return;
+    public function setBranchForObjectByQuery(Model\Product\Category $category, Query $query, Query $availableQuery = null) {
+        $availableDataByUi = null;
+        try {
+            if ($availableQuery) {
+                foreach ($availableQuery->getResult() as $item) {
+                    $item += ['id' => null, 'uid' => null, 'product_count' => null];
+
+                    if (!$item['uid'] || !$item['product_count']) continue;
+
+                    $availableDataByUi[$item['uid']] = $item;
+                }
             }
+        } catch (\Exception $e) {
+            trigger_error($e, E_USER_ERROR);
+        }
 
-            $id = isset($item['id']) ? (string)$item['id'] : null;
-            $level = isset($item['level']) ? (int)$item['level'] : null;
-            if ($id == $category->id) {
-                if (!empty($item['children'])) {
-                    foreach ($item['children'] as $childItem) {
-                        if (!isset($childItem['id'])) continue;
+        $walk = function($data, Model\Product\Category $parent = null) use (&$walk, &$category, &$availableDataByUi) {
+            foreach ($data as $item) {
+                $item += ['uid' => null, 'level' => null, 'children' => null, 'has_children' => null];
+                if (!$item['uid']) continue;
 
-                        $category->children[] = new Model\Product\Category($childItem);
+                $iCategory = new Model\Product\Category($item);
+                $iCategory->hasChildren = (bool)$item['has_children'];
+                $iCategory->parentId = $parent ? $parent->id : null;
+
+                // фильтрация
+                if ((null !== $availableDataByUi)) {
+                    if (!array_key_exists($iCategory->ui, $availableDataByUi)) {
+                        continue;
                     }
                 }
-            } else if ($level < $category->level) {
-                if (isset($item['children'][0]['id'])) {
-                    $childItem = $item['children'][0];
 
-                    $walk($childItem);
-                    unset($item['children']);
+                if ($iCategory->level < $category->level) { // предки
+                    $category->ascendants[] = $iCategory;
+                } else if ($iCategory->ui == $category->ui) { // категория
+                    $category->hasChildren = $iCategory->hasChildren;
+                    $category->parentId = $parent ? $parent->id : null;
+                } else if ($parent && ($parent->ui == $category->ui)) { // дети
+                    $category->children[] = $iCategory;
                 }
 
-                if (!empty($item['id'])) {
-                    $category->ascendants[] = new Model\Product\Category($item);
-                }
+                $walk($item['children'], $iCategory);
             }
         };
 
-        $walk($query->getResult(), $category);
+        $walk($query->getResult());
 
-        $category->parent = reset($category->ascendants);
-        $category->ascendants = array_reverse($category->ascendants, true);
+        $category->children = array_values($category->children);
+        $category->parent = end($category->ascendants);
+        $category->ascendants = array_values(array_reverse($category->ascendants, true));
     }
 
     /**
@@ -182,5 +173,25 @@ class Category {
         }
 
         return $categories;
+    }
+
+    /**
+     * @param Query $query
+     * @return \EnterModel\Product\Category\Config|null
+     */
+    public function getConfigObjectByQuery(Query $query) {
+        $object = null;
+
+        try {
+            $item = $query->getResult();
+            if ($item) {
+                $object = new Model\Product\Category\Config($item);
+            }
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
+            //trigger_error($e, E_USER_ERROR);
+        }
+
+        return $object;
     }
 }

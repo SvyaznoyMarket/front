@@ -41,14 +41,6 @@ namespace EnterModel\MainMenu {
         public $url;
         /** @var int */
         public $level = 1;
-        /** @var string */
-        public $style;
-        /** @var string */
-        public $styleHover;
-        /** @var string */
-        public $class;
-        /** @var string */
-        public $classHover;
         /** @var Model\MainMenu\Element[] */
         public $children = [];
         /** @var bool */
@@ -67,10 +59,6 @@ namespace EnterModel\MainMenu {
             if (isset($data['name'])) $this->name = (string)$data['name'];
             if (isset($data['char'])) $this->char = (string)$data['char'];
             if (isset($data['link'])) $this->url = trim((string)$data['link']);
-            if (isset($data['style'])) $this->style = (string)$data['style'];
-            if (isset($data['styleHover'])) $this->styleHover = (string)$data['styleHover'];
-            if (isset($data['class'])) $this->class = (string)$data['class'];
-            if (isset($data['classHover'])) $this->classHover = (string)$data['classHover'];
             if (isset($data['medias']) && is_array($data['medias'])) {
                 foreach ($data['medias'] as $mediaItem) {
                     $media = new Model\Media($mediaItem);

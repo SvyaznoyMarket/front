@@ -138,7 +138,7 @@ class Category {
             $response = [
                 'id'          => $category->id,
                 'name'        => $category->name,
-                'image'       => $category->image,
+                'media'       => $category->media,
                 'hasChildren' => $category->hasChildren,
             ];
 
@@ -183,7 +183,7 @@ class Category {
             $response = [
                 'id'          => $category->id,
                 'name'        => $category->name,
-                'image'       => $category->image,
+                'media'       => $category->media,
                 'hasChildren' => $category->hasChildren,
             ];
 

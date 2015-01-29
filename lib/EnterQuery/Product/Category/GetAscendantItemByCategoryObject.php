@@ -3,12 +3,12 @@
 namespace EnterQuery\Product\Category;
 
 use Enter\Curl\Query;
-use EnterQuery\CoreQueryTrait;
+use EnterQuery\SearchQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
 class GetAscendantItemByCategoryObject extends Query {
-    use CoreQueryTrait;
+    use SearchQueryTrait;
 
     /** @var array|null */
     protected $result;
@@ -19,7 +19,7 @@ class GetAscendantItemByCategoryObject extends Query {
      */
     public function __construct(Model\Product\Category $category, $regionId = null) {
         $this->url = new Url();
-        $this->url->path = 'v2/category/tree';
+        $this->url->path = 'category/tree';
         $this->url->query = [
             'root_id'         => $category->id,
             'max_level'       => $category->level - 1,

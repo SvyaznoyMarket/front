@@ -105,49 +105,11 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
             }
 
-            // список категорий
-            // FIXME !!!
-            $baseRequestFilters = (new \EnterMobile\Repository\Product\Filter())->getRequestObjectListByHttpRequest(new Http\Request($slice->filters)); // FIXME !!!
-            $categoryListQuery = new Query\Product\Category\GetTreeList(
-                $controllerResponse->region->id,
-                null,
-                $filterRepository->dumpRequestObjectList($baseRequestFilters),
-                $controllerResponse->category ? $controllerResponse->category->id : null
-            );
-            $curl->prepare($categoryListQuery)->execute();
-
-            /** @var Model\Product\Category[] $categories */
-            $categories = [];
-            try {
-                $categoryListResult = $categoryListQuery->getResult();
-
-                $children =
-                    $categoryId
-                    ? (
-                        isset($categoryListResult[0]['children'][0])
-                        ? $categoryListResult[0]['children']
-                        : []
-                    )
-                    : (
-                        isset($categoryListResult[0])
-                        ? $categoryListResult
-                        : []
-                    )
-                ;
-                foreach ($children as $categoryItem) {
-                    if (!isset($categoryItem['uid'])) continue;
-
-                    $categories[] = new Model\Product\Category($categoryItem);
-                }
-            } catch(\Exception $e) {
-                // TODO
-            }
-
             // ответ
             $response = new Response();
             $response->slice = $slice;
             $response->category = $controllerResponse->category;
-            $response->categories = $categories;
+            $response->categories = $controllerResponse->category ? $controllerResponse->category->children : $controllerResponse->categories;
             $response->catalogConfig = $controllerResponse->catalogConfig;
             $response->products = $controllerResponse->products;
             $response->productCount = $controllerResponse->productUiPager->count;
@@ -169,7 +131,7 @@ namespace EnterTerminal\Controller\ProductCatalog\Slice {
         public $category;
         /** @var Model\Product\Category[] */
         public $categories = [];
-        /** @var Model\Product\Catalog\Config */
+        /** @var Model\Product\Category\Config */
         public $catalogConfig;
         /** @var Model\Product[] */
         public $products = [];

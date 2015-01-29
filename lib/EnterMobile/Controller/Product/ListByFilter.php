@@ -36,7 +36,7 @@ class ListByFilter {
 
         // номер страницы
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
-        $limit = (new \EnterRepository\Product\Catalog\Config())->getLimitByHttpRequest($request);
+        $limit = $productRepository->getLimitByHttpRequest($request);
 
         // список сортировок
         $sortings = (new \EnterRepository\Product\Sorting())->getObjectList();
@@ -47,18 +47,15 @@ class ListByFilter {
             $sorting = reset($sortings);
         }
 
-        $catalogConfigQuery = null;
+        $categoryItemQuery = null;
         $category = null;
-        if ($request->query['category']) {
-            $categoryQuery = new Query\Product\Category\GetItemById($request->query['category'], $regionId);
-            $curl->prepare($categoryQuery);
+        if (is_string($request->query['category'])) {
+            $categoryItemQuery = new Query\Product\Category\GetItemById($request->query['category'], $regionId);
+            $curl->prepare($categoryItemQuery);
+
             $curl->execute();
 
-            $category = (new \EnterRepository\Product\Category())->getObjectByQuery($categoryQuery);
-            if ($category) {
-                $catalogConfigQuery = new Query\Product\Catalog\Config\GetItemByProductCategoryUi($category->ui, $regionId);
-                $curl->prepare($catalogConfigQuery);
-            }
+            $category = (new \EnterRepository\Product\Category())->getObjectByQuery($categoryItemQuery);
         }
 
         // запрос региона
@@ -113,22 +110,11 @@ class ListByFilter {
             $region->id,
             ($pageNum - 1) * $limit,
             $limit,
-            $catalogConfigQuery ? (new \EnterRepository\Product\Catalog\Config())->getObjectByQuery($catalogConfigQuery) : null
+            $categoryItemQuery ? (new \EnterRepository\Product\Category())->getConfigObjectByQuery($categoryItemQuery) : null
         );
         $curl->prepare($productUiPagerQuery);
 
-        // запрос предка категории
-        $branchCategoryItemQuery = null;
-        if ($category) {
-            $branchCategoryItemQuery = new Query\Product\Category\GetBranchItemByCategoryObject($category, $region->id);
-            $curl->prepare($branchCategoryItemQuery);
-        }
-
         $curl->execute();
-
-        if ($branchCategoryItemQuery) {
-            (new \EnterRepository\Product\Category())->setBranchForObjectByQuery($category, $branchCategoryItemQuery);
-        }
 
         // фильтры
         $filters = $filterListQuery ? $filterRepository->getObjectListByQuery($filterListQuery) : [];

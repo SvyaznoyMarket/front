@@ -33,7 +33,7 @@ class ChildCategory {
 
         // номер страницы
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
-        $limit = (new \EnterRepository\Product\Catalog\Config())->getLimitByHttpRequest($request);
+        $limit = (new \EnterRepository\Product())->getLimitByHttpRequest($request);
 
         // сортировка
         $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
@@ -63,6 +63,8 @@ class ChildCategory {
         if (!$controllerResponse->category) {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));
         }
+
+        //die(var_dump($controllerResponse->category));
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductCatalog\ChildCategory\Request();

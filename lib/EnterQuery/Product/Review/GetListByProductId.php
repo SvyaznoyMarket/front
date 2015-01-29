@@ -13,9 +13,9 @@ class GetListByProductId extends Query {
     protected $result;
 
     /**
-     * @param $productId
-     * @param $pageNum Начиная с единицы
-     * @param $itemsPerPage
+     * @param string $productId
+     * @param int $pageNum
+     * @param int $itemsPerPage
      */
     public function __construct($productId, $pageNum, $itemsPerPage) {
         $this->url = new Url();

@@ -22,6 +22,7 @@ class Config {
         foreach ([
             'coreService',
             'scmsService',
+            'searchService',
             'infoService',
             'curl',
         ] as $key) {
