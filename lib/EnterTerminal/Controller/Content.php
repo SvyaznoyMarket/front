@@ -6,6 +6,7 @@ namespace EnterTerminal\Controller {
     use Enter\Http;
     use EnterTerminal\ConfigTrait;
     use EnterAggregator\CurlTrait;
+    use EnterAggregator\LoggerTrait;
     use EnterAggregator\TemplateHelperTrait;
     use EnterTerminal\Controller;
     use EnterTerminal\Repository;
@@ -13,7 +14,7 @@ namespace EnterTerminal\Controller {
     use EnterTerminal\Controller\Content\Response;
 
     class Content {
-        use ConfigTrait, CurlTrait, TemplateHelperTrait;
+        use ConfigTrait, CurlTrait, LoggerTrait, TemplateHelperTrait;
 
         /**
          * @param Http\Request $request
@@ -97,28 +98,48 @@ namespace EnterTerminal\Controller {
                         $attributes = ' data-type="ProductCatalog/Slice" data-slice-token="' . $templateHelper->escape($sliceMatches[1]) . '"';
                     } else if (preg_match('/\/slices\/([\w\d-_]+)\/([\w\d-_]+)/', $path, $sliceMatches)) { //  /slices/{sliceToken}/{categoryToken}
                         $attributes = ' data-type="ProductCatalog/Slice" data-slice-token="' . $templateHelper->escape($sliceMatches[1]) . '"';
-                        $category = $categoryRepository->getObjectByQuery($match['query']);
+
+                        $category = null;
+                        try {
+                            $category = $categoryRepository->getObjectByQuery($match['query']);
+                        } catch (\Exception $e) {
+                            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['content']]);
+                        }
                         if ($category) {
                             $attributes .= ' data-category-id="' . $templateHelper->escape($category->id) . '"';
                         }
                     } else if (preg_match('/\/slices\/([\w\d-_]+)/', $path, $sliceMatches)) { //   /slices/{sliceToken}
                         $attributes = ' data-type="ProductCatalog/Slice" data-slice-token="' . $templateHelper->escape($sliceMatches[1]) . '"';
                     } else if (0 === strpos($path, '/catalog/')) {
-                        $category = $categoryRepository->getObjectByQuery($match['query']);
+                        $category = null;
+                        try {
+                            $category = $categoryRepository->getObjectByQuery($match['query']);
+                        } catch (\Exception $e) {
+                            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['content']]);
+                        }
                         if ($category) {
                             $attributes = ' data-type="ProductCatalog/Category" data-category-id="' . $templateHelper->escape($category->id) . '"';
                         }
                     } else if (0 === strpos($path, '/product/')) {
-                        $product = $productRepository->getObjectByQuery($match['query']);
+                        $product = null;
+                        try {
+                            $product = $productRepository->getObjectByQuery($match['query']);
+                        } catch (\Exception $e) {
+                            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['content']]);
+                        }
                         if ($product) {
                             $attributes = ' data-type="ProductCard" data-product-id="' . $templateHelper->escape($product->id) . '"';
                         }
                     } else if (0 === strpos($path, '/products/set/')) {
-                        $productIds = array_map(
-                            function(\EnterModel\Product $product) { return $product->id; },
-                            $productRepository->getIndexedObjectListByQueryList([$match['query']])
-                        );
-
+                        $productIds = [];
+                        try {
+                            $productIds = array_map(
+                                function(\EnterModel\Product $product) { return $product->id; },
+                                $productRepository->getIndexedObjectListByQueryList([$match['query']])
+                            );
+                        } catch (\Exception $e) {
+                            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['content']]);
+                        }
                         if ((bool)$productIds) {
                             $attributes = ' data-type="ProductList" data-product-ids="' . implode(',', $productIds) . '"';
                         }
