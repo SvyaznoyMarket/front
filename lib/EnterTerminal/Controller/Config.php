@@ -41,9 +41,10 @@ namespace EnterTerminal\Controller {
             $response->info = $data;
 
             $shopUi = $response->info['shop_ui'];
+            $shopType = isset($data['point']['type']) ? $data['point']['type'] : null;
 
             $shopQuery = null;
-            if ($shopUi != null) {
+            if ($shopUi && ('shop_svyaznoy' != $shopType)) {
                 $shopQuery = new Query\Shop\GetItemByUi($shopUi);
                 $curl->prepare($shopQuery);
             }
@@ -53,7 +54,7 @@ namespace EnterTerminal\Controller {
 
             $curl->execute();
 
-            if ($shopUi != null) {
+            if ($shopQuery) {
                 $shop = (new \EnterTerminal\Repository\Shop())->getObjectByQuery($shopQuery);
                 if (!$shop) {
                     return (new Controller\Error\NotFound())->execute($request, sprintf('Магазин %s не найден', $shopUi));
