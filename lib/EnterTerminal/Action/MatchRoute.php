@@ -3,11 +3,12 @@
 namespace EnterTerminal\Action;
 
 use Enter\Http;
+use EnterTerminal\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterTerminal\Controller;
 
 class MatchRoute {
-    use LoggerTrait;
+    use ConfigTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request
@@ -15,10 +16,17 @@ class MatchRoute {
      * @throws \Exception
      */
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
+
         $callable = null;
 
         try {
-            $controllerClass = '\\EnterTerminal\\Controller\\' . implode('\\', array_map('ucfirst', explode('/', trim($request->getPathInfo(), '/')))); // TODO: перенести в настройки
+            $pathInfo = $request->getPathInfo();
+            if ($config->version) {
+                $pathInfo = preg_replace('/^\/' . preg_quote($config->version) . '/', '', $pathInfo);
+            }
+
+            $controllerClass = '\\EnterTerminal\\Controller\\' . implode('\\', array_map('ucfirst', explode('/', trim($pathInfo, '/')))); // TODO: перенести в настройки
             $this->getLogger()->push(['controller' => $controllerClass, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['routing']]);
             $callable = [new $controllerClass, 'execute'];
         } catch (\Exception $e) {

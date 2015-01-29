@@ -9,6 +9,8 @@ return function(EnterTerminal\Config $config) {
     ini_set('session.use_only_cookies', false);
     ini_set('session.use_trans_sid', true);
 
+    $config->version = '1.5';
+
     $config->applicationTags = ['app-terminal', 'terminal'];
 
     $config->hostname = 't.enter.ru';
