@@ -19,7 +19,7 @@ class SendShopContact extends Query {
      */
     public function __construct($shopId, $email) {
         $this->url = new Url();
-        $this->url->path = '/v2/notifications/send-shop-contacts';
+        $this->url->path = 'v2/notification/send-shop-contacts';
         $this->url->query = [
             'shop_id' => $shopId,
             'email'   => $email,
