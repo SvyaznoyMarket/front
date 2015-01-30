@@ -33,6 +33,6 @@ class Update {
         file_put_contents($configPath, json_encode($configData, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // http-ответ
-        return (new \EnterAggregator\Controller\Redirect())->execute('/Admin/Config', 302);
+        return (new \EnterAggregator\Controller\Redirect())->execute('/' . $config->version . '/Admin/Config', 302);
     }
 }

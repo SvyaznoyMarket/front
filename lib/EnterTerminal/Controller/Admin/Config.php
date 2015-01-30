@@ -32,7 +32,7 @@ class Config {
         $page = [
             'title' => $config->hostname,
             'updateForm'  => [
-                'action' => '/Admin/Config/Update',
+                'action' => '/' . $config->version . '/Admin/Config/Update',
                 'field'  => [
                     'config' => [
                         'name'  => 'form[config]',
