@@ -94,24 +94,17 @@
 
     {
       "group_id": "relation",
-      "filter_id": "tag-relation",
+      "filter_id": "tag-relation-man",
       "name": "Связь",
       "type_id": 5,
       "is_multiple": false,
       "options": [
-        {
-          "id": 689,
-          "name": "Любимой",
-          "quantity": 1,
-          "global": 1
-        },
         {
           "id": 698,
           "name": "Любимому",
           "quantity": 1,
           "global": 1
         },
-
         {
           "id": 690,
           "name": "Коллеге",
@@ -125,20 +118,8 @@
           "global": 1
         },
         {
-          "id": 693,
-          "name": "Подруге",
-          "quantity": 1,
-          "global": 1
-        },
-        {
           "id": 699,
           "name": "Другу",
-          "quantity": 1,
-          "global": 1
-        },
-        {
-          "id": 694,
-          "name": "Девочке",
           "quantity": 1,
           "global": 1
         },
@@ -149,26 +130,65 @@
           "global": 1
         },
         {
-          "id": 695,
-          "name": "Маме",
-          "quantity": 1,
-          "global": 1
-        },
-        {
           "id": 703,
           "name": "Папе",
           "quantity": 1,
           "global": 1
         },
         {
-          "id": 696,
-          "name": "Бабушке",
+          "id": 705,
+          "name": "Дедушке",
           "quantity": 1,
           "global": 1
         },
         {
-          "id": 705,
-          "name": "Дедушке",
+          "id": 697,
+          "name": "Себе",
+          "quantity": 1,
+          "global": 1
+        }
+      ]
+    },
+    {
+      "group_id": "relation",
+      "filter_id": "tag-relation-woman",
+      "name": "Связь",
+      "type_id": 5,
+      "is_multiple": false,
+      "options": [
+        {
+          "id": 689,
+          "name": "Любимой",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 690,
+          "name": "Коллеге",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 692,
+          "name": "Боссу",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 694,
+          "name": "Девочке",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 695,
+          "name": "Маме",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 696,
+          "name": "Бабушке",
           "quantity": 1,
           "global": 1
         },

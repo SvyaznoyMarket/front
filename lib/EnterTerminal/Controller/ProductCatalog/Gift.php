@@ -86,6 +86,19 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
             }
 
+            // исключение фильтров
+            $deletedFilterTokens = []; // ид фильтров, которые будут удалены
+            foreach ($requestFilters as $requestFilter) {
+                if ('tag-sex' === $requestFilter->token) {
+                    if ('687' == $requestFilter->value) { // если подарок Женщине, то Любимой
+                        $deletedFilterTokens[] = 'tag-relation-man';
+                    } else if ('688' == $requestFilter->value) {
+                        $deletedFilterTokens[] = 'tag-relation-woman';
+                    }
+                }
+            }
+
+            // обработка дынных из json-файла
             $filterData = (array)json_decode(file_get_contents($config->dir . '/data/query/product-catalog-gift/listing-filter.json'), true) + [
                 'filter_groups' => [],
                 'filters'       => [],
@@ -105,7 +118,10 @@ namespace EnterTerminal\Controller\ProductCatalog {
             foreach ($filterData['filters'] as $item) {
                 if (!isset($item['filter_id'])) continue;
 
-                $filters[] = new Model\Product\Filter($item);
+                $filter = new Model\Product\Filter($item);
+                if (in_array($filter->token, $deletedFilterTokens)) continue;
+
+                $filters[] = $filter;
             }
             $filterRepository->setValueForObjectList($filters, $requestFilters);
 
