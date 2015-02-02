@@ -98,7 +98,11 @@ class Slice {
         // если фильтр по баркодам
         if (!(bool)$baseRequestFilter && isset($slice->filters['barcode'])) {
             // FIXME: осторожно, опасный код
-            $request->query['productBarcodes'] = implode(',', $slice->filters['barcode']);
+            $request->query['productBarcodes'] =
+                (is_array($slice->filters['barcode']) && isset($slice->filters['barcode'][1]))
+                ? implode(',', $slice->filters['barcode'])
+                : $slice->filters['barcode']
+            ;
             $request->query['title'] = $slice->name;
 
             return (new Controller\ProductSet\Index())->execute($request);
