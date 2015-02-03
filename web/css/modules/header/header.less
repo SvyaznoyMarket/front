@@ -18,14 +18,14 @@
 }
 
 /* Иконка меню */
-.headerLeftAside { 
+.headerLeftAside {
 	position: relative;
 
 	float: left;
- 
-	width: 110px; 
+
+	width: 110px;
 	margin-left: -100%;
-} 
+}
 
 .navIco {
 	display: inline-block;
@@ -43,8 +43,8 @@
 	&_link {
 		display: block;
 
-    	width: 33px;
-		height: 28px;
+    	width: 26px;
+		height: 26px;
 
 		cursor: pointer;
 
@@ -70,13 +70,13 @@
 
 /* Хлебные крошки */
 .headerCenterWrap {
-	float: left; 
+	float: left;
 	overflow: hidden;
- 
+
 	width: 100%;
 }
 
-.headerCenter { 
+.headerCenter {
 	overflow: hidden;
 
 	min-height: 5px;
@@ -122,6 +122,7 @@
 
     width: 275px;
     margin-left: -275px;
+    margin-top: -3px;
 }
 
 .transBg {
@@ -137,7 +138,7 @@
 	float: right;
 
     background: @black;
-    
+
 
 	&_item {
 		float: right;
@@ -152,22 +153,13 @@
 	&_link {
 		display: block;
 
-		padding: 23px 0 0;
+		padding: 0;
 
 		text-align: center;
 		text-transform: uppercase;
 
 		color: @white;
 		outline: none;
-		background: url("@{base-url}/header/img/menuIco1024.png") no-repeat 50% -37px;
-
-		&-auth {
-			background-position: 50% -80px;
-		}
-
-		&-cart {
-			background-position: 50% -122px;
-		}
 
 		&-cartVal {
 			position: relative;
@@ -175,7 +167,7 @@
 			text-transform: none;
 
 			font-size: 11px;
-	
+
 			.userBox_text {
 				color: @firmOrange;
 
@@ -188,19 +180,15 @@
 
 			.qnt {
 
-				.rounded(4px);
-			    position: absolute;
-			    top: -6px;
-			    right: 0;
-
-			    height: 15px;
-			    padding: 0 6px;
-
-				background: #f88a08;
-
-			    font-size: 12px;
-			    font-weight: bold;
-			    line-height: 15px;
+				border-radius: 4px;
+				position: absolute;
+				top: 11px;
+				left: 0;
+				height: 15px;
+				font-size: 11px;
+				font-weight: bold;
+				line-height: 15px;
+				width: 100%;
 			}
 		}
 
@@ -232,6 +220,7 @@
 			//animation: 0.3s linear 0s normal none 1 resize;
 			outline: none;
 		}
+
 	}
 
 	.transBg {
@@ -286,3 +275,41 @@
 // 	    transform: scale(1, 1);
 // 	}
 // }
+
+.sprite-icon{
+	background-image: url("@{base-url}/header/img/menu-sprite1024.png");
+	 &--cart-empty {
+        .i-sprite(-5px, -3px, 26px, 26px);
+    }
+
+    &--cart-full {
+        .i-sprite(-41px, -3px, 26px, 26px);
+    }
+
+    &--user-unauth {
+        .i-sprite(-77px, -5px, 26px, 26px);
+    }
+
+    &--user-auth {
+        .i-sprite(-113px, -5px, 26px, 26px);
+    }
+
+    &--user-vip {
+        .i-sprite(-149px, -5px, 26px, 26px);
+    }
+
+    &--search-white {
+        .i-sprite(-185px, -3px, 26px, 26px);
+    }
+
+    &--search {
+        .i-sprite(-221px, -3px, 26px, 26px);
+    }
+}
+
+.userBox_link .sprite-icon{
+	display: block;
+	margin-right:auto;
+	margin-left: auto;
+	margin-bottom: 3px;
+}
