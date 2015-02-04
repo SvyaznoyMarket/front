@@ -352,8 +352,11 @@ class ProductCard {
             }
 
             if ($productModel->rating && ($productModel->rating->reviewCount > $config->productReview->itemsInCard)) {
+                /*
                 $page->content->product->reviewBlock->moreLink = new Partial\Link();
                 $page->content->product->reviewBlock->moreLink->name = 'Еще отзывы';
+                */
+                $page->content->product->reviewBlock->moreLink = null;
 
                 $page->content->product->reviewBlock->url = $router->getUrlByRoute(new Routing\Product\Review\GetList($productModel->id));
                 $page->content->product->reviewBlock->dataValue = $templateHelper->json(['page' => 2]);
