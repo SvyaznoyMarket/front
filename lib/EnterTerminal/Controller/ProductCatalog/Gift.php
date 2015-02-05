@@ -127,6 +127,7 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 if (!isset($item['filter_id'])) continue;
 
                 $filter = new Model\Product\Filter($item);
+                $filter->isMultiple = false;
                 if (in_array($filter->token, $deletedFilterTokens)) continue;
 
                 $filters[] = $filter;
