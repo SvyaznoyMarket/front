@@ -50,16 +50,8 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 $sorting->direction = trim((string)$request->query['sort']['direction']);
             }
 
-            // фильтры в http-запросе и настройках среза
+            // базовые фильтры
             $baseRequestFilters = [];
-            // AG-43: если выбрана категория, то удялять замороженные фильтры-категории
-            if ($categoryId) {
-                foreach ($baseRequestFilters as $i => $baseRequestFilter) {
-                    if ('category' == $baseRequestFilter->token) {
-                        unset($baseRequestFilters[$i]);
-                    }
-                }
-            }
 
             // фильтры в запросе
             $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
@@ -112,10 +104,11 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 $filterGroups[] = new Model\Product\Filter\Group($item);
             }
 
-            // захардкоженные фильтры
+            // фильтры
             /** @var Model\Product\Filter[] $filters */
             $filters = [];
 
+            // фильтр по цене
             foreach ($controllerResponse->filters as $filter) {
                 if ('price' === $filter->token) {
                     $filters[] = $filter;
@@ -123,6 +116,10 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 }
             }
 
+            // фильтры по категориям
+            $filters = array_merge($filters, $filterRepository->getObjectListByCategoryList($controllerResponse->categories));
+
+            // захардкоженные фильтры
             foreach ($filterData['filters'] as $item) {
                 if (!isset($item['filter_id'])) continue;
 
@@ -136,8 +133,6 @@ namespace EnterTerminal\Controller\ProductCatalog {
 
             // ответ
             $response = new Response();
-            $response->category = $controllerResponse->category;
-            $response->categories = $controllerResponse->category ? $controllerResponse->category->children : $controllerResponse->categories;
             $response->catalogConfig = $controllerResponse->catalogConfig;
             $response->products = $controllerResponse->products;
             $response->productCount = $controllerResponse->productUiPager->count;
@@ -154,10 +149,6 @@ namespace EnterTerminal\Controller\ProductCatalog\Gift {
     use EnterModel as Model;
 
     class Response {
-        /** @var Model\Product\Category */
-        public $category;
-        /** @var Model\Product\Category[] */
-        public $categories = [];
         /** @var Model\Product\Category\Config */
         public $catalogConfig;
         /** @var Model\Product[] */
