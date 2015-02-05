@@ -115,6 +115,14 @@ namespace EnterTerminal\Controller\ProductCatalog {
             // захардкоженные фильтры
             /** @var Model\Product\Filter[] $filters */
             $filters = [];
+
+            foreach ($controllerResponse->filters as $filter) {
+                if ('price' === $filter->token) {
+                    $filters[] = $filter;
+                    break;
+                }
+            }
+
             foreach ($filterData['filters'] as $item) {
                 if (!isset($item['filter_id'])) continue;
 
