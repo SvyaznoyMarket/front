@@ -19,6 +19,8 @@ namespace EnterTerminal\Controller {
         public function execute(Http\Request $request) {
             $curl = $this->getCurl();
 
+            $keys = is_array($request->query['keys']) ? $request->query['keys'] : [];
+
             if (is_string($request->query['ip'])) {
                 $infoQuery = new Query\Terminal\GetInfoByIp($request->query['ip']);
             } else if (is_string($request->query['ui'])) {
@@ -52,6 +54,12 @@ namespace EnterTerminal\Controller {
             $businessRulesQuery = new Query\BusinessRule\GetList();
             $curl->prepare($businessRulesQuery);
 
+            $configQuery = null;
+            if ((bool)$keys) {
+                $configQuery = new Query\Config\GetListByKeys($keys);
+                $curl->prepare($configQuery);
+            }
+
             $curl->execute();
 
             if ($shopQuery) {
@@ -68,12 +76,14 @@ namespace EnterTerminal\Controller {
             } catch (\Exception $e) {
                 $businessRules = [];
             }
-
             if (!is_array($businessRules)) {
                 throw new \Exception('Не удалось получить бизнес правила');
             }
-
             $response->businessRules = $this->filterBusinessRules($businessRules, $response->info['client_id']);
+
+            if ($configQuery) {
+                $response->config = $configQuery->getResult()['result'];
+            }
 
             return new Http\JsonResponse($response);
         }
@@ -116,6 +126,8 @@ namespace EnterTerminal\Controller\Config {
         /** @var array */
         public $info;
         /** @var array */
-        public $businessRules;
+        public $businessRules = [];
+        /** @var array */
+        public $config = [];
     }
 }
