@@ -4,12 +4,13 @@ namespace EnterTerminal\Controller {
 
     use Enter\Http;
     use EnterAggregator\CurlTrait;
+    use EnterAggregator\LoggerTrait;
     use EnterTerminal\Controller;
     use EnterQuery as Query;
     use EnterTerminal\Controller\Config\Response;
 
     class Config {
-        use CurlTrait;
+        use CurlTrait, LoggerTrait;
 
         /**
          * @param Http\Request $request
@@ -20,6 +21,7 @@ namespace EnterTerminal\Controller {
             $curl = $this->getCurl();
 
             $keys = is_array($request->query['keys']) ? $request->query['keys'] : [];
+            $specialPageTokens = is_array($request->query['specialPages']) ? $request->query['specialPages'] : null;
 
             if (is_string($request->query['ip'])) {
                 $infoQuery = new Query\Terminal\GetInfoByIp($request->query['ip']);
@@ -51,13 +53,22 @@ namespace EnterTerminal\Controller {
                 $curl->prepare($shopQuery);
             }
 
+            // бизнес правила
             $businessRulesQuery = new Query\BusinessRule\GetList();
             $curl->prepare($businessRulesQuery);
 
+            // настройки
             $configQuery = null;
             if ((bool)$keys) {
                 $configQuery = new Query\Config\GetListByKeys($keys);
                 $curl->prepare($configQuery);
+            }
+
+            // специальные страницы
+            $specialPageListQuery = null;
+            if ((bool)$specialPageTokens) {
+                $specialPageListQuery = new Query\SpecialPage\GetListByTokenList($specialPageTokens);
+                $curl->prepare($specialPageListQuery);
             }
 
             $curl->execute();
@@ -82,7 +93,19 @@ namespace EnterTerminal\Controller {
             $response->businessRules = $this->filterBusinessRules($businessRules, $response->info['client_id']);
 
             if ($configQuery) {
-                $response->config = $configQuery->getResult()['result'];
+                try {
+                    $response->config = $configQuery->getResult()['result'];
+                } catch (\Exception $e) {
+                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+                }
+            }
+
+            if ($specialPageListQuery) {
+                try {
+                    $response->specialPages = $specialPageListQuery->getResult()['special_pages'];
+                } catch (\Exception $e) {
+                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+                }
             }
 
             return new Http\JsonResponse($response);
@@ -129,5 +152,7 @@ namespace EnterTerminal\Controller\Config {
         public $businessRules = [];
         /** @var array */
         public $config = [];
+        /** @var array */
+        public $specialPages = [];
     }
 }
