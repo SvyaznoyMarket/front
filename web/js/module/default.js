@@ -3,12 +3,13 @@ define(
     function($) {
         // баннер для android, скачать прилодение из Google Play
         $.smartbanner({
-            title: 'Enter для Android',
+            title: 'Enter',
             author: 'ООО "Энтер" (Enter LLC)',
             price: 'Бесплатно',
             icon: '/img/logo_app.png',
             button: 'Скачать!',
             inGooglePlay: 'В Google Play',
+            inAppStore: 'В App Store',
             appendToSelector: '.content',
             appStoreLanguage: 'ru'
         });
