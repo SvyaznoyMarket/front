@@ -13,9 +13,9 @@ class GetListByTokenList extends Query {
     protected $result = [];
 
     /**
-     * @param $tokens
+     * @param array $tokens
      */
-    public function __construct($tokens) {
+    public function __construct(array $tokens) {
         $this->url = new Url();
         $this->url->path = 'seo/special-page';
         $this->url->query = [

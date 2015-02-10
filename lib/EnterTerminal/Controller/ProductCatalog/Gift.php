@@ -54,7 +54,7 @@ namespace EnterTerminal\Controller\ProductCatalog {
             $baseRequestFilters = [];
 
             // фильтры в запросе
-            $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
+            $requestFilters = $this->getRequestFilters($request, $filterRepository);
 
             $context = new Context\ProductCatalog();
             $context->mainMenu = false;
@@ -141,6 +141,93 @@ namespace EnterTerminal\Controller\ProductCatalog {
             $response->sortings = $controllerResponse->sortings;
 
             return new Http\JsonResponse($response);
+        }
+
+        /**
+         * @param Http\Request $request
+         * @return Model\Product\RequestFilter[]
+         */
+        private function getRequestFilters(Http\Request $request, \EnterTerminal\Repository\Product\Filter $filterRepository) {
+            $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
+            $isSubmitted = (bool)$requestFilters;
+
+            if (!$filterRepository->getObjectByToken($requestFilters, 'tag-holiday')) {
+                $specialPageListQuery = new Query\SpecialPage\GetListByTokenList(['gift']);
+                $this->getCurl()->query($specialPageListQuery);
+
+                $filter = new Model\Product\RequestFilter();
+                $filter->token = 'tag-holiday';
+                $filter->name = 'tag-holiday';
+                $filter->optionToken = 0;
+                $filter->value = !empty($specialPageListQuery->getResult()['special_pages']['gift']['default_filter_id']) ? $specialPageListQuery->getResult()['special_pages']['gift']['default_filter_id'] : '737';
+                $requestFilters[] = $filter;
+            }
+
+            if (!$filterRepository->getObjectByToken($requestFilters, 'tag-sex')) {
+                $holidayFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-holiday');
+
+                $filter = new Model\Product\RequestFilter();
+                if ($holidayFilter && $holidayFilter->value == 738) {
+                    $filter->token = 'tag-sex';
+                    $filter->name = 'tag-sex';
+                    $filter->optionToken = 0;
+                    $filter->value = '688';
+                } else {
+                    $filter->token = 'tag-sex';
+                    $filter->name = 'tag-sex';
+                    $filter->optionToken = 0;
+                    $filter->value = '687';
+                }
+
+                $requestFilters[] = $filter;
+            }
+
+            $sexFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-sex');
+            if ($sexFilter && $sexFilter->value == 687) {
+                $filter = new Model\Product\RequestFilter();
+                $filter->token = 'tag-relation-woman';
+                $filter->name = 'tag-relation-woman';
+                $filter->optionToken = 0;
+                $filter->value = '689';
+                $requestFilters[] = $filter;
+            } else {
+                $filter = new Model\Product\RequestFilter();
+                $filter->token = 'tag-relation-man';
+                $filter->name = 'tag-relation-man';
+                $filter->optionToken = 0;
+                $filter->value = '698';
+                $requestFilters[] = $filter;
+            }
+
+            if (!$filterRepository->getObjectByToken($requestFilters, 'tag-age')) {
+                $filter = new Model\Product\RequestFilter();
+                $filter->token = 'tag-age';
+                $filter->name = 'tag-age';
+                $filter->optionToken = 0;
+                $filter->value = '724';
+                $requestFilters[] = $filter;
+            }
+
+            $holidayFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-holiday');
+            $sexFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-sex');
+            $relationWomanFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-relation-woman');
+            if (!$filterRepository->getObjectByToken($requestFilters, 'category') && !$isSubmitted && ($holidayFilter && $holidayFilter->value == 737) && ($sexFilter && $sexFilter->value == 687) && ($relationWomanFilter && $relationWomanFilter->value == 689)) {
+                $filter = new Model\Product\RequestFilter();
+                $filter->token = 'category';
+                $filter->name = 'category';
+                $filter->optionToken = 0;
+                $filter->value = '923';
+                $requestFilters[] = $filter;
+
+                $filter = new Model\Product\RequestFilter();
+                $filter->token = 'category';
+                $filter->name = 'category';
+                $filter->optionToken = 1;
+                $filter->value = '2545';
+                $requestFilters[] = $filter;
+            }
+
+            return $requestFilters;
         }
     }
 }
