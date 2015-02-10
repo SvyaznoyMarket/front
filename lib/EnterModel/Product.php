@@ -81,6 +81,8 @@ class Product {
     public $reviews = [];
     /** @var Model\Product\Trustfactor[] */
     public $trustfactors = [];
+    /** @var Model\Product\PartnerOffer[] */
+    private $partnerOffers = [];
 
     /**
      * @param array $data
@@ -165,6 +167,12 @@ class Product {
         if (isset($data['line']['id'])) $this->line = new Model\Product\Line($data['line']);
         if (isset($data['accessories'][0])) $this->accessoryIds = $data['accessories'];
         if (isset($data['related'][0])) $this->relatedIds = $data['related'];
+
+        if (isset($data['partners_offer'][0])) {
+            foreach ($data['partners_offer'] as $partnersOffer) {
+                $this->partnerOffers[] = new Model\Product\PartnerOffer((array)$partnersOffer);
+            }
+        }
     }
 
     /**
@@ -204,5 +212,28 @@ class Product {
         $this->isInShopOnly = !$inWarehouse && ($inShop || $inShowroom); // не на центральном складе, на складе магазина или на витрине магазина
         $this->isInShopStockOnly = !$inWarehouse && $inShop && !$inShowroom; // не на центральном складе, на складе магазина, не на витрине магазина
         $this->isInShopShowroomOnly = !$inWarehouse && !$inShop && $inShowroom; // не на центральном складе, не на складе магазина, на витрине магазина
+    }
+
+    /**
+     * @return Model\Product\PartnerOffer|null
+     */
+    public function getSlotPartnerOffer()
+    {
+        // TODO удалить временную заглушку
+        if ($_SERVER['APPLICATION_ENV'] === 'local') {
+            return new Model\Product\PartnerOffer([
+                'name' => 'ООО МЕГАЭЛАТОН',
+                'type' => '2',
+                'offer' => 'http://www.enter.ru/terms_megaetalon',
+            ]);
+        }
+
+        foreach ($this->partnerOffers as $offer) {
+            if (2 == $offer->type) {
+                return $offer;
+            }
+        }
+
+        return null;
     }
 }

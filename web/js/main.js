@@ -120,7 +120,8 @@ require(
         'module/cart.common', // кнопка купить, спиннер
         'module/order.common',
         'module/product.catalog.common',
-		'module/siteVersionSwitcher'
+		'module/siteVersionSwitcher',
+		'module/slotButton'
     ],
     function(require, config) {
         $.cookie.defaults.path = '/';

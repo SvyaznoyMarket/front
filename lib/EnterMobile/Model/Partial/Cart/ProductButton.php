@@ -25,5 +25,7 @@ namespace EnterMobile\Model\Partial\Cart {
         public $isInCart;
         /** @var bool */
         public $isQuick;
+        /** @var bool */
+        public $isSlot;
     }
 }

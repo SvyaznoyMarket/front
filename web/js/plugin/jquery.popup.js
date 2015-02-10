@@ -12,6 +12,10 @@
 				$overlay = $('<div class="popupOverlay"></div>');
 			// end of vars
 
+            if (!$self.closest('html').length) {
+                $('body').append($self);
+            }
+
             showPopup();
             $(window).bind('load resize', propertyPopup);
 
@@ -21,7 +25,7 @@
                 $self.fadeIn(300);
 
                 propertyPopup();
-            };
+            }
 
             function propertyPopup() {
                 var widthBody = $('body').width(),
@@ -34,16 +38,23 @@
             function closePopup() {
                 $overlay.fadeOut(300, function(){ $overlay.remove() });
                 $self.fadeOut(300);
-            };
+            }
 
             if (options.closeClick) {
-                $overlay.click(function(e) { closePopup(); e.preventDefault; });
-                $self.find(options.closeSelector).click(function(e) { closePopup(); e.preventDefault; });
-            };
+                $overlay.click(function(e) { closePopup(); e.preventDefault(); });
+            }
+
+            if (options.closeSelector) {
+                $self.find(options.closeSelector).click(function(e) { closePopup(); e.preventDefault(); });
+            }
 
             if(options.closeBtn) {
                 $self.find(options.closeSelector).css({'display' : 'block'});
-            };
+            }
+
+            $self.on('close', function() {
+                closePopup();
+            });
   		});
     };
 

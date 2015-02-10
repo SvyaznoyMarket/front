@@ -116,6 +116,10 @@
         "method": ["POST"]
     },
 
+    "Order\\Slot\\Index": {
+        "name": "Оформление заказа-слота",
+        "pattern": "/orders/slot/create"
+    },
     "Order\\Quick\\Index": {
         "name": "Оформление заказа в один клик",
         "pattern": "/orders/one-click/new"
