@@ -70,7 +70,8 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 $filterRepository, // репозиторий фильтров
                 $baseRequestFilters,
                 $requestFilters, // фильтры в http-запросе
-                $context
+                $context,
+                $this->getFilterRequestFilters($requestFilters)
             );
 
             // категория
@@ -144,7 +145,6 @@ namespace EnterTerminal\Controller\ProductCatalog {
         }
 
         /**
-         * @param Http\Request $request
          * @return Model\Product\RequestFilter[]
          */
         private function getRequestFilters(Http\Request $request, \EnterTerminal\Repository\Product\Filter $filterRepository) {
@@ -232,6 +232,21 @@ namespace EnterTerminal\Controller\ProductCatalog {
             }
 
             return $requestFilters;
+        }
+
+        /**
+         * @param Model\Product\RequestFilter[] $filters
+         * @return Model\Product\RequestFilter[]
+         */
+        private function getFilterRequestFilters(array $filters) {
+            foreach ($filters as $key => $filter) {
+                // Поскольку метод /v2/listing/filter самостоятельно не исключает фильтр по цене из рассчёта min/max значений цены, делаем это сами
+                if ('price' === $filter->token) {
+                    unset($filters[$key]);
+                }
+            }
+
+            return array_values($filters);
         }
     }
 }
