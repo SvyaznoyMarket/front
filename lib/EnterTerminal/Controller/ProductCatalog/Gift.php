@@ -159,7 +159,7 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 $filter->token = 'tag-holiday';
                 $filter->name = 'tag-holiday';
                 $filter->optionToken = 0;
-                $filter->value = !empty($specialPageListQuery->getResult()['special_pages']['gift']['default_filter_id']) ? $specialPageListQuery->getResult()['special_pages']['gift']['default_filter_id'] : '737';
+                $filter->value = !empty($specialPageListQuery->getResult()['special_pages']['gift']['default_filter_id']) ? (string)$specialPageListQuery->getResult()['special_pages']['gift']['default_filter_id'] : '737';
                 $requestFilters[] = $filter;
             }
 
@@ -184,19 +184,23 @@ namespace EnterTerminal\Controller\ProductCatalog {
 
             $sexFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-sex');
             if ($sexFilter && $sexFilter->value == 687) {
-                $filter = new Model\Product\RequestFilter();
-                $filter->token = 'tag-relation-woman';
-                $filter->name = 'tag-relation-woman';
-                $filter->optionToken = 0;
-                $filter->value = '689';
-                $requestFilters[] = $filter;
+                if (!$filterRepository->getObjectByToken($requestFilters, 'tag-relation-woman')) {
+                    $filter = new Model\Product\RequestFilter();
+                    $filter->token = 'tag-relation-woman';
+                    $filter->name = 'tag-relation-woman';
+                    $filter->optionToken = 0;
+                    $filter->value = '689';
+                    $requestFilters[] = $filter;
+                }
             } else {
-                $filter = new Model\Product\RequestFilter();
-                $filter->token = 'tag-relation-man';
-                $filter->name = 'tag-relation-man';
-                $filter->optionToken = 0;
-                $filter->value = '698';
-                $requestFilters[] = $filter;
+                if (!$filterRepository->getObjectByToken($requestFilters, 'tag-relation-man')) {
+                    $filter = new Model\Product\RequestFilter();
+                    $filter->token = 'tag-relation-man';
+                    $filter->name = 'tag-relation-man';
+                    $filter->optionToken = 0;
+                    $filter->value = '698';
+                    $requestFilters[] = $filter;
+                }
             }
 
             if (!$filterRepository->getObjectByToken($requestFilters, 'tag-age')) {
