@@ -18,31 +18,11 @@
     font-size: 21px;
     line-height: 38px;
 
-    &:hover {
-        .gradient(#ffa200, #f79200, #ffa200);
-        text-decoration: none;
-
-        color: @white;
-    }
-
-    &:active {
-        text-decoration: none;
-
-        background: #f79200;
-    }
-
     // в корзине
     &-incart {
         color: @black;
         border-color: @black;
         background: @white;
-
-        &:hover,
-        &:active {
-            color: @black;
-            border-color: @black;
-            background: @white;
-        }
     }
 
     // резерв и на витрине
@@ -54,7 +34,7 @@
         text-indent: 40px;
 
         border: 1px solid #a1a1a1;
-        
+
         &:after {
             position: absolute;
             top: 9px;
@@ -69,11 +49,6 @@
             background-repeat: no-repeat;
             background-position: 0 0;
         }
-
-        &:hover,
-        &:active {
-            background: @black;
-        }
     }
 
     // недоступен
@@ -81,13 +56,18 @@
         color: @typGray;
         border-color: @white;
         background: @white;
+    }
 
-        &:hover,
-        &:active {
-            color: @typGray;
-            border-color: @white;
-            background: @white;
-        }
+    &--bid {
+        background: #c1d837;
+        color: @black;
+        .rounded(3px);
+        border: none;
+        border-bottom: 3px solid rgba(171, 190, 24, 1.00);
+        font-size: 18px;
+        height: auto;
+        line-height: 1.1;
+        padding: 5px 0;
     }
 }
 
@@ -120,7 +100,7 @@
     &:hover {
         text-decoration: none;
     }
-    
+
     &_cart {
         display: inline-block;
 
