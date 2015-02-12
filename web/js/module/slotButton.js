@@ -32,7 +32,7 @@ define(
 
     					'<div class="popup__form-group">' +
     						'<div class="orderU_fld">' +
-    							'<input class="orderU_tx textfield" type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
+    							'<input class="orderU_tx textfield js-slotButton-popup-phone" type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
                                 '<label class="orderU_lbl orderU_lbl-str">Телефон</label>' +
     						'</div>' +
     					'</div>' +
@@ -137,7 +137,8 @@ define(
                 })),
                 $close = $('.js-slotButton-popup-close', $popup),
                 $form = $('form', $popup),
-                $errors = $('.js-slotButton-popup-errors', $form);
+                $errors = $('.js-slotButton-popup-errors', $form),
+                $phone = $('.js-slotButton-popup-phone', $form);
 
             (function() {
                 $content.prepend($popup);
@@ -168,7 +169,7 @@ define(
                 validate($form);
             });
 
-            $('[name="phone"]', $popup).keyup(function(e){
+            $phone.keyup(function(e){
                 var val = $(e.currentTarget).val();
                 if (val[val.length - 1] != '_') {
                     validate($form);
@@ -213,6 +214,8 @@ define(
                     }
                 })
             });
+
+            $phone.focus();
         });
     }
 );
