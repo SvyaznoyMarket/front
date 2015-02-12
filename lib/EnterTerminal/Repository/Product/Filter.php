@@ -47,6 +47,20 @@ class Filter extends BaseRepository {
 
     /**
      * @param Model\Product\RequestFilter[] $requestFilters
+     * @param string $filterToken
+     */
+    public function deleteObjectByToken(array &$requestFilters, $filterToken) {
+        foreach ($requestFilters as $key => $requestFilter) {
+            if ($requestFilter->token === $filterToken) {
+                unset($requestFilters[$key]);
+            }
+        }
+
+        $requestFilters = array_values($requestFilters);
+    }
+
+    /**
+     * @param Model\Product\RequestFilter[] $requestFilters
      * @return array
      */
     public function dumpRequestObjectList(array $requestFilters) {

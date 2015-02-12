@@ -21,7 +21,6 @@ namespace EnterTerminal\Controller\ProductCatalog {
          */
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
-            $curl = $this->getCurl();
             $filterRepository = new \EnterTerminal\Repository\Product\Filter();
 
             // ид региона
@@ -155,83 +154,56 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 $specialPageListQuery = new Query\SpecialPage\GetListByTokenList(['gift']);
                 $this->getCurl()->query($specialPageListQuery);
 
-                $filter = new Model\Product\RequestFilter();
-                $filter->token = 'tag-holiday';
-                $filter->name = 'tag-holiday';
-                $filter->optionToken = 0;
-                $filter->value = !empty($specialPageListQuery->getResult()['special_pages']['gift']['default_filter_id']) ? (string)$specialPageListQuery->getResult()['special_pages']['gift']['default_filter_id'] : '737';
-                $requestFilters[] = $filter;
+                $requestFilters[] = $this->createRequestFilter('tag-holiday', 0, !empty($specialPageListQuery->getResult()['special_pages']['gift']['default_filter_id']) ? (string)$specialPageListQuery->getResult()['special_pages']['gift']['default_filter_id'] : '737');
             }
 
             if (!$filterRepository->getObjectByToken($requestFilters, 'tag-sex')) {
                 $holidayFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-holiday');
 
-                $filter = new Model\Product\RequestFilter();
                 if ($holidayFilter && $holidayFilter->value == 738) {
-                    $filter->token = 'tag-sex';
-                    $filter->name = 'tag-sex';
-                    $filter->optionToken = 0;
-                    $filter->value = '688';
+                    $requestFilters[] = $this->createRequestFilter('tag-sex', 0, '688');
                 } else {
-                    $filter->token = 'tag-sex';
-                    $filter->name = 'tag-sex';
-                    $filter->optionToken = 0;
-                    $filter->value = '687';
+                    $requestFilters[] = $this->createRequestFilter('tag-sex', 0, '687');
                 }
-
-                $requestFilters[] = $filter;
             }
 
             $sexFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-sex');
             if ($sexFilter && $sexFilter->value == 687) {
                 if (!$filterRepository->getObjectByToken($requestFilters, 'tag-relation-woman')) {
-                    $filter = new Model\Product\RequestFilter();
-                    $filter->token = 'tag-relation-woman';
-                    $filter->name = 'tag-relation-woman';
-                    $filter->optionToken = 0;
-                    $filter->value = '689';
-                    $requestFilters[] = $filter;
+                    $requestFilters[] = $this->createRequestFilter('tag-relation-woman', 0, '689');
                 }
+
+                $filterRepository->deleteObjectByToken($requestFilters, 'tag-relation-man');
             } else {
                 if (!$filterRepository->getObjectByToken($requestFilters, 'tag-relation-man')) {
-                    $filter = new Model\Product\RequestFilter();
-                    $filter->token = 'tag-relation-man';
-                    $filter->name = 'tag-relation-man';
-                    $filter->optionToken = 0;
-                    $filter->value = '698';
-                    $requestFilters[] = $filter;
+                    $requestFilters[] = $this->createRequestFilter('tag-relation-man', 0, '698');
                 }
+
+                $filterRepository->deleteObjectByToken($requestFilters, 'tag-relation-woman');
             }
 
             if (!$filterRepository->getObjectByToken($requestFilters, 'tag-age')) {
-                $filter = new Model\Product\RequestFilter();
-                $filter->token = 'tag-age';
-                $filter->name = 'tag-age';
-                $filter->optionToken = 0;
-                $filter->value = '724';
-                $requestFilters[] = $filter;
+                $requestFilters[] = $this->createRequestFilter('tag-age', 0, '724');
             }
 
             $holidayFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-holiday');
             $sexFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-sex');
             $relationWomanFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-relation-woman');
             if (!$filterRepository->getObjectByToken($requestFilters, 'category') && !$isSubmitted && ($holidayFilter && $holidayFilter->value == 737) && ($sexFilter && $sexFilter->value == 687) && ($relationWomanFilter && $relationWomanFilter->value == 689)) {
-                $filter = new Model\Product\RequestFilter();
-                $filter->token = 'category';
-                $filter->name = 'category';
-                $filter->optionToken = 0;
-                $filter->value = '923';
-                $requestFilters[] = $filter;
-
-                $filter = new Model\Product\RequestFilter();
-                $filter->token = 'category';
-                $filter->name = 'category';
-                $filter->optionToken = 1;
-                $filter->value = '2545';
-                $requestFilters[] = $filter;
+                $requestFilters[] = $this->createRequestFilter('category', 0, '923');
+                $requestFilters[] = $this->createRequestFilter('category', 1, '2545');
             }
 
             return $requestFilters;
+        }
+
+        private function createRequestFilter($token, $optionIndex, $optionValue) {
+            $filter = new Model\Product\RequestFilter();
+            $filter->token = $token;
+            $filter->name = $token;
+            $filter->optionToken = $optionIndex;
+            $filter->value = $optionValue;
+            return $filter;
         }
 
         /**
