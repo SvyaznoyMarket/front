@@ -80,15 +80,18 @@ class Client {
                 throw new \Exception(sprintf('Пустой ответ от %s', $query->getUrl()));
             }
 
-            $query->callback($response);
             $query->setEndAt(microtime(true));
+
+            $query->callback($response);
 
             if ($this->logger) $this->logger->push(['sender' => __FILE__ . ' ' .  __LINE__, 'query' => $query, 'tag' => ['curl']]);
 
             return $this;
         } catch (\Exception $e) {
             $query->setError($e);
-            $query->setEndAt(microtime(true));
+            if (!$query->getEndAt()) {
+                $query->setEndAt(microtime(true));
+            }
 
             if ($this->logger) $this->logger->push(['type' => 'error', 'sender' => __FILE__ . ' ' .  __LINE__, 'query' => $query, 'tag' => ['curl']]);
 
@@ -172,11 +175,12 @@ class Client {
                         $this->parseResponse($connection, $response, $headers);
                         $this->queries[$queryId]->setResponseHeaders($headers);
 
+                        $this->queries[$queryId]->setEndAt(microtime(true));
+
                         // TODO: отложенный запуск обработчиков
                         $this->queries[$queryId]->callback($response);
 
                         if ($this->logger) $this->logger->push(['sender' => __FILE__ . ' ' .  __LINE__, 'query' => $this->queries[$queryId], 'tag' => ['curl']]);
-                        $this->queries[$queryId]->setEndAt(microtime(true));
 
                         if (is_resource($connection)) {
                             curl_multi_remove_handle($this->multiConnection, $connection);
@@ -185,7 +189,9 @@ class Client {
                         unset($this->queries[$queryId]);
                     } catch (\Exception $e) {
                         $this->queries[$queryId]->setError($e);
-                        $this->queries[$queryId]->setEndAt(microtime(true));
+                        if (!$this->queries[$queryId]->getEndAt()) {
+                            $this->queries[$queryId]->setEndAt(microtime(true));
+                        }
 
                         if ($this->logger) $this->logger->push(['type' => 'error', 'sender' => __FILE__ . ' ' .  __LINE__, 'query' => $this->queries[$queryId], 'tag' => ['curl']]);
 
