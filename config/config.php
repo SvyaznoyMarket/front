@@ -42,7 +42,7 @@ return function(\EnterAggregator\Config $config) {
     $config->curl->queryChunkSize = 30;
     $config->curl->logResponse = false;
     $config->curl->timeout = 30;
-    $config->curl->retryTimeout = 0.4;
+    $config->curl->retryTimeout = 0.28;
     $config->curl->retryCount = 2;
 
     $config->coreService->url = 'http://api.enter.ru/';

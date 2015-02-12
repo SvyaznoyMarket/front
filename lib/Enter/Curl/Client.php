@@ -72,7 +72,9 @@ class Client {
             $this->parseResponse($connection, $response, $headers);
             $query->setResponseHeaders($headers);
 
-            curl_close($connection);
+            if (is_resource($connection)) {
+                curl_close($connection);
+            }
 
             if (null === $response) {
                 throw new \Exception(sprintf('Пустой ответ от %s', $query->getUrl()));
@@ -89,6 +91,10 @@ class Client {
             $query->setEndAt(microtime(true));
 
             if ($this->logger) $this->logger->push(['type' => 'error', 'sender' => __FILE__ . ' ' .  __LINE__, 'query' => $query, 'tag' => ['curl']]);
+
+            if (is_resource($connection)) {
+                curl_close($connection);
+            }
 
             throw $e;
         }
@@ -139,8 +145,9 @@ class Client {
                     $queryId = (string)$connection;
 
                     foreach ($this->queries[$queryId]->getConnections() as $resource) {
-                        if ($resource !== $connection) {
+                        if (is_resource($resource) && ($resource !== $connection)) {
                             curl_multi_remove_handle($this->multiConnection, $resource);
+                            curl_close($resource);
                         }
                     }
 
@@ -171,12 +178,21 @@ class Client {
                         if ($this->logger) $this->logger->push(['sender' => __FILE__ . ' ' .  __LINE__, 'query' => $this->queries[$queryId], 'tag' => ['curl']]);
                         $this->queries[$queryId]->setEndAt(microtime(true));
 
+                        if (is_resource($connection)) {
+                            curl_multi_remove_handle($this->multiConnection, $connection);
+                            curl_close($connection);
+                        }
                         unset($this->queries[$queryId]);
                     } catch (\Exception $e) {
                         $this->queries[$queryId]->setError($e);
                         $this->queries[$queryId]->setEndAt(microtime(true));
 
                         if ($this->logger) $this->logger->push(['type' => 'error', 'sender' => __FILE__ . ' ' .  __LINE__, 'query' => $this->queries[$queryId], 'tag' => ['curl']]);
+
+                        if (is_resource($connection)) {
+                            curl_multi_remove_handle($this->multiConnection, $connection);
+                            curl_close($connection);
+                        }
                     }
                 }
 
@@ -222,7 +238,10 @@ class Client {
 
     public function clear() {
         foreach ($this->connections as $resource) {
-            curl_multi_remove_handle($this->multiConnection, $resource);
+            if (is_resource($resource)) {
+                curl_multi_remove_handle($this->multiConnection, $resource);
+                curl_close($resource);
+            }
         }
         curl_multi_close($this->multiConnection);
         $this->multiConnection = null;
