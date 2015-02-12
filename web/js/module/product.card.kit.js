@@ -6,7 +6,7 @@ define(
             wrap = $('.js-kit-wrap'),
             open = $('.js-kit-open'),
             closer = $('.js-kit-close'),
-            hiddenCnt= $('.js-fullimg-hidden');
+            hiddenCnt= $('.js-content-hidden');
         // end of vars
 
         var 

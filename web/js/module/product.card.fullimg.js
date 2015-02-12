@@ -7,7 +7,7 @@ define(
             wrap = $('.js-fullimg-wrap'),
             open = $('.js-fullimg-open'),
             closer = $('.js-fullimg-close'),
-            hiddenCnt= $('.js-fullimg-hidden'),
+            hiddenCnt= $('.js-content-hidden'),
 
             img = $('.js-fullimg-img'),
             imgLoad = $('.fullImgCnt_img_load'),

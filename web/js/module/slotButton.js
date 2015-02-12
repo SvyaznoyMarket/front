@@ -123,6 +123,8 @@ define(
                 $button = $(this),
                 data = $button.data('value'),
                 product = getFirstObjectProperty(data.product),
+                $content = $('.js-content'),
+                $contentHidden = $('.js-content-hidden'),
                 $popup = $(Mustache.render(popupTemplate, {
                     full: true,
                     partnerName: product.partnerName,
@@ -133,14 +135,24 @@ define(
                     userEmail: '', // TODO подставлять значение текущего пользователя
                     userName: '' // TODO подставлять значение текущего пользователя
                 })),
+                $close = $('.js-slotButton-popup-close', $popup),
                 $form = $('form', $popup),
                 $errors = $('.js-slotButton-popup-errors', $form);
 
-            $popup.enterPopup({
-                closeClick: true,
-                closeSelector: '.js-slotButton-popup-close',
-                destroyOnClose: true
-            });
+            (function() {
+                $content.prepend($popup);
+                $('html, body').animate({scrollTop: 0}, 'fast');
+                $popup.slideDown().show(0);
+                $contentHidden.css({'overflow' : 'hidden'}).delay(100).animate({'opacity' : 0, 'height' : 0});
+
+                $close.click(function(e) {
+                    e.preventDefault();
+                    $popup.slideUp(400, function() {
+                        $popup.remove(); // Удаляем, т.к. каждый раз создаётся попап с новыми данными (для нового товара)
+                    });
+                    $contentHidden.css({'opacity' : 1, 'height' : 'auto', 'overflow' : 'visible'});
+                });
+            })();
 
             $.mask.definitions['x'] = '[0-9]';
             $.mask.placeholder = "_";
