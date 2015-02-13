@@ -39,7 +39,8 @@ namespace EnterAggregator\Controller {
             Repository\Product\Filter $filterRepository,
             array $baseRequestFilters,
             array $requestFilters,
-            Context\ProductCatalog $context
+            Context\ProductCatalog $context,
+            array $filterRequestFilters = []
         ) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
@@ -141,7 +142,11 @@ namespace EnterAggregator\Controller {
             }
 
             // запрос фильтров
-            $filterListQuery = new Query\Product\Filter\GetList($filterRepository->dumpRequestObjectList($response->baseRequestFilters), $response->region->id);
+            if (!$filterRequestFilters) {
+                $filterRequestFilters = $response->baseRequestFilters;
+            }
+
+            $filterListQuery = new Query\Product\Filter\GetList($filterRepository->dumpRequestObjectList($filterRequestFilters), $response->region->id);
             $curl->prepare($filterListQuery);
 
             $curl->execute();

@@ -26,6 +26,24 @@
       "is_multiple": false,
       "options": [
         {
+          "id": 737,
+          "name": "14 февраля",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 738,
+          "name": "23 февраля",
+          "quantity": 1,
+          "global": 1
+        },
+        {
+          "id": 739,
+          "name": "8 марта",
+          "quantity": 1,
+          "global": 1
+        },
+        {
           "id": 706,
           "name": "Новый Год",
           "quantity": 1,

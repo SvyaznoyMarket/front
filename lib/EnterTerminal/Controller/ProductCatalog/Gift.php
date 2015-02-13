@@ -21,7 +21,6 @@ namespace EnterTerminal\Controller\ProductCatalog {
          */
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
-            $curl = $this->getCurl();
             $filterRepository = new \EnterTerminal\Repository\Product\Filter();
 
             // ид региона
@@ -50,19 +49,11 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 $sorting->direction = trim((string)$request->query['sort']['direction']);
             }
 
-            // фильтры в http-запросе и настройках среза
+            // базовые фильтры
             $baseRequestFilters = [];
-            // AG-43: если выбрана категория, то удялять замороженные фильтры-категории
-            if ($categoryId) {
-                foreach ($baseRequestFilters as $i => $baseRequestFilter) {
-                    if ('category' == $baseRequestFilter->token) {
-                        unset($baseRequestFilters[$i]);
-                    }
-                }
-            }
 
             // фильтры в запросе
-            $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
+            $requestFilters = $this->getRequestFilters($request, $filterRepository);
 
             $context = new Context\ProductCatalog();
             $context->mainMenu = false;
@@ -78,7 +69,8 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 $filterRepository, // репозиторий фильтров
                 $baseRequestFilters,
                 $requestFilters, // фильтры в http-запросе
-                $context
+                $context,
+                $this->getFilterRequestFilters($requestFilters)
             );
 
             // категория
@@ -112,13 +104,27 @@ namespace EnterTerminal\Controller\ProductCatalog {
                 $filterGroups[] = new Model\Product\Filter\Group($item);
             }
 
-            // захардкоженные фильтры
+            // фильтры
             /** @var Model\Product\Filter[] $filters */
             $filters = [];
+
+            // фильтр по цене
+            foreach ($controllerResponse->filters as $filter) {
+                if ('price' === $filter->token) {
+                    $filters[] = $filter;
+                    break;
+                }
+            }
+
+            // фильтры по категориям
+            $filters = array_merge($filters, $filterRepository->getObjectListByCategoryList($controllerResponse->categories));
+
+            // захардкоженные фильтры
             foreach ($filterData['filters'] as $item) {
                 if (!isset($item['filter_id'])) continue;
 
                 $filter = new Model\Product\Filter($item);
+                $filter->isMultiple = false;
                 if (in_array($filter->token, $deletedFilterTokens)) continue;
 
                 $filters[] = $filter;
@@ -127,8 +133,6 @@ namespace EnterTerminal\Controller\ProductCatalog {
 
             // ответ
             $response = new Response();
-            $response->category = $controllerResponse->category;
-            $response->categories = $controllerResponse->category ? $controllerResponse->category->children : $controllerResponse->categories;
             $response->catalogConfig = $controllerResponse->catalogConfig;
             $response->products = $controllerResponse->products;
             $response->productCount = $controllerResponse->productUiPager->count;
@@ -138,6 +142,84 @@ namespace EnterTerminal\Controller\ProductCatalog {
 
             return new Http\JsonResponse($response);
         }
+
+        /**
+         * @return Model\Product\RequestFilter[]
+         */
+        private function getRequestFilters(Http\Request $request, \EnterTerminal\Repository\Product\Filter $filterRepository) {
+            $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
+            $isSubmitted = (bool)$requestFilters;
+
+            if (!$filterRepository->getObjectByToken($requestFilters, 'tag-holiday')) {
+                $specialPageListQuery = new Query\SpecialPage\GetListByTokenList(['gift']);
+                $this->getCurl()->query($specialPageListQuery);
+
+                $requestFilters[] = $this->createRequestFilter('tag-holiday', 0, !empty($specialPageListQuery->getResult()['special_pages']['gift']['default_filter_id']) ? (string)$specialPageListQuery->getResult()['special_pages']['gift']['default_filter_id'] : '737');
+            }
+
+            if (!$filterRepository->getObjectByToken($requestFilters, 'tag-sex')) {
+                $holidayFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-holiday');
+
+                if ($holidayFilter && $holidayFilter->value == 738) {
+                    $requestFilters[] = $this->createRequestFilter('tag-sex', 0, '688');
+                } else {
+                    $requestFilters[] = $this->createRequestFilter('tag-sex', 0, '687');
+                }
+            }
+
+            $sexFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-sex');
+            if ($sexFilter && $sexFilter->value == 687) {
+                if (!$filterRepository->getObjectByToken($requestFilters, 'tag-relation-woman')) {
+                    $requestFilters[] = $this->createRequestFilter('tag-relation-woman', 0, '689');
+                }
+
+                $filterRepository->deleteObjectByToken($requestFilters, 'tag-relation-man');
+            } else {
+                if (!$filterRepository->getObjectByToken($requestFilters, 'tag-relation-man')) {
+                    $requestFilters[] = $this->createRequestFilter('tag-relation-man', 0, '698');
+                }
+
+                $filterRepository->deleteObjectByToken($requestFilters, 'tag-relation-woman');
+            }
+
+            if (!$filterRepository->getObjectByToken($requestFilters, 'tag-age')) {
+                $requestFilters[] = $this->createRequestFilter('tag-age', 0, '724');
+            }
+
+            $holidayFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-holiday');
+            $sexFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-sex');
+            $relationWomanFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-relation-woman');
+            if (!$filterRepository->getObjectByToken($requestFilters, 'category') && !$isSubmitted && ($holidayFilter && $holidayFilter->value == 737) && ($sexFilter && $sexFilter->value == 687) && ($relationWomanFilter && $relationWomanFilter->value == 689)) {
+                $requestFilters[] = $this->createRequestFilter('category', 0, '923');
+                $requestFilters[] = $this->createRequestFilter('category', 1, '2545');
+            }
+
+            return $requestFilters;
+        }
+
+        private function createRequestFilter($token, $optionIndex, $optionValue) {
+            $filter = new Model\Product\RequestFilter();
+            $filter->token = $token;
+            $filter->name = $token;
+            $filter->optionToken = $optionIndex;
+            $filter->value = $optionValue;
+            return $filter;
+        }
+
+        /**
+         * @param Model\Product\RequestFilter[] $filters
+         * @return Model\Product\RequestFilter[]
+         */
+        private function getFilterRequestFilters(array $filters) {
+            foreach ($filters as $key => $filter) {
+                // Поскольку метод /v2/listing/filter самостоятельно не исключает фильтр по цене из рассчёта min/max значений цены, делаем это сами
+                if ('price' === $filter->token) {
+                    unset($filters[$key]);
+                }
+            }
+
+            return array_values($filters);
+        }
     }
 }
 
@@ -145,10 +227,6 @@ namespace EnterTerminal\Controller\ProductCatalog\Gift {
     use EnterModel as Model;
 
     class Response {
-        /** @var Model\Product\Category */
-        public $category;
-        /** @var Model\Product\Category[] */
-        public $categories = [];
         /** @var Model\Product\Category\Config */
         public $catalogConfig;
         /** @var Model\Product[] */
