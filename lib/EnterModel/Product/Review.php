@@ -18,6 +18,8 @@ class Review {
     /** @var string */
     public $author;
     /** @var string */
+    public $email;
+    /** @var string */
     public $source;
     /** @var \DateTime|null */
     public $createdAt;
