@@ -135,7 +135,7 @@ define(
                 $phone = $('.js-slotButton-popup-phone', $form);
 
             (function() {
-                $content.prepend($popup);
+                $content.append($popup);
                 $('html, body').animate({scrollTop: 0}, 'fast');
                 $popup.show(0);
                 $contentHidden.css({'overflow' : 'hidden', 'opacity' : 0, 'height' : 0});
