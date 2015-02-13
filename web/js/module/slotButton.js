@@ -21,14 +21,18 @@ define(
                             '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> условия доставки, сборки и оплаты.</li>' +
                         '</ul>' +
 
-                        '<div class="orderU_fld">' +
+                        '<div class="popupBox-bid__err js-slotButton-popup-errors" style="display: none;"></div>' +
+
+                        '<div class="orderU_fld js-slotButton-popup-element">' +
                             '<input class="orderU_tx textfield js-slotButton-popup-phone" type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
                             '<label class="orderU_lbl orderU_lbl-str">Телефон</label>' +
+                            '<span class="js-slotButton-popup-element-error" style="display: none">Неверный формат телефона</span>' +
                         '</div>' +
 
-                        '<div class="orderU_fld">' +
-                            '<input class="orderU_tx textfield" type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" />' +
+                        '<div class="orderU_fld js-slotButton-popup-element">' +
+                            '<input class="orderU_tx textfield js-slotButton-popup-email" type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" />' +
                             '<label class="orderU_lbl">E-mail</label>' +
+                            '<span class="js-slotButton-popup-element-error" style="display: none">Неверный формат email</span>' +
                         '</div>' +
 
                         '<div class="orderU_fld">' +
@@ -36,10 +40,7 @@ define(
                             '<input class="orderU_tx textfield" type="text" name="name" value="{{userName}}" />' +
                         '</div>' +
 
-                        '<div class="popupBox-bid__err js-slotButton-popup-errors" style="display: none;">' +
-                        '</div>' +
-
-                        '<div class="popupBox-bid__check"><input type="checkbox" class="customInput customInput-checkbox" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и согласен с информацией о продавце и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label></div>' +
+                        '<div class="popupBox-bid__check js-slotButton-popup-element"><input type="checkbox" class="customInput customInput-checkbox js-slotButton-popup-confirm" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и согласен с информацией о продавце и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label></div>' +
                         '<div class="popupBox-bid__vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
                         '<div class="popupBox-bid__footnote">' +
@@ -61,34 +62,81 @@ define(
                     '<button type="submit" class="js-slotButton-popup-okButton btn6 popupBox-bid__btn">Ок</button>' +
                 '</div>',
 
-            validateEmail = function(email) {
+            testEmail = function(email) {
                 var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 return re.test(email);
             },
 
-            validate = function($form) {
-                var isValid = true,
-                    $phoneInput = $('[name="phone"]', $form),
-                    $emailInput = $('[name="email"]', $form),
-                    parentClass = '.orderU_fld',
-                    labelClass = '.input-group';
+            showError = function($input) {
+                var $element = $input.closest('.js-slotButton-popup-element');
+                $input.addClass(errorCssClass);
+                $element.find('.js-slotButton-popup-element-error').show();
+            },
+
+            hideError = function($input) {
+                var $element = $input.closest('.js-slotButton-popup-element');
+                $input.removeClass(errorCssClass);
+                $element.find('.js-slotButton-popup-element-error').hide();
+            },
+
+            validatePhone = function($form, disableFail) {
+                var $phoneInput = $('.js-slotButton-popup-phone', $form);
 
                 if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test($phoneInput.val().replace(/\s+/g, ''))) {
-                    isValid = false;
-                    $phoneInput.addClass(errorCssClass).siblings('.js-slotButton-popup-error').show();
-                    $phoneInput.parents(parentClass).children(labelClass).addClass('lbl-error');
+                    if (!disableFail) {
+                        showError($phoneInput);
+                    }
+
+                    return false;
                 } else {
-                    $phoneInput.removeClass(errorCssClass).siblings('.js-slotButton-popup-error').hide();
-                    $phoneInput.parents(parentClass).children(labelClass).removeClass('lbl-error');
+                    hideError($phoneInput);
+                    return true;
+                }
+            },
+
+            validateEmail = function($form, disableFail) {
+                var $emailInput = $('.js-slotButton-popup-email', $form);
+
+                if ($emailInput.val().length != 0 && !testEmail($emailInput.val())) {
+                    if (!disableFail) {
+                        showError($emailInput);
+                    }
+
+                    return false;
+                } else {
+                    hideError($emailInput);
+                    return true;
+                }
+            },
+
+            validateConfirm = function($form, disableFail) {
+                var $confirmInput = $('.js-slotButton-popup-confirm', $form);
+
+                if (!$confirmInput[0].checked) {
+                    if (!disableFail) {
+                        showError($confirmInput);
+                    }
+
+                    return false;
+                } else {
+                    hideError($confirmInput);
+                    return true;
+                }
+            },
+
+            validate = function($form) {
+                var isValid = true;
+
+                if (!validatePhone($form)) {
+                    isValid = false;
                 }
 
-                if ($emailInput.val().length != 0 && !validateEmail($emailInput.val())) {
+                if (!validateEmail($form)) {
                     isValid = false;
-                    $emailInput.addClass(errorCssClass).siblings('.js-slotButton-popup-error').show();
-                    $emailInput.parents(parentClass).children(labelClass).addClass('lbl-error');
-                } else {
-                    $emailInput.removeClass(errorCssClass).siblings('.js-slotButton-popup-error').hide();
-                    $emailInput.parents(parentClass).children(labelClass).removeClass('lbl-error');
+                }
+
+                if (!validateConfirm($form)) {
+                    isValid = false;
                 }
 
                 return isValid;
@@ -126,7 +174,9 @@ define(
                 $close = $('.js-slotButton-popup-close', $popup),
                 $form = $('form', $popup),
                 $errors = $('.js-slotButton-popup-errors', $form),
-                $phone = $('.js-slotButton-popup-phone', $form);
+                $phone = $('.js-slotButton-popup-phone', $form),
+                $email = $('.js-slotButton-popup-email', $form),
+                $confirm = $('.js-slotButton-popup-confirm', $form);
 
             function close() {
                 $popup.hide(0, function() {
@@ -157,19 +207,30 @@ define(
                 }
             });
 
-            $('input', $popup).blur(function(){
-                validate($form);
+            $phone.blur(function() {
+                validatePhone($form);
             });
 
-            $phone.keyup(function(e){
-                var val = $(e.currentTarget).val();
-                if (val[val.length - 1] != '_') {
-                    validate($form);
-                }
+            $phone.keyup(function() {
+                validatePhone($form, true);
+            });
+
+            $email.blur(function() {
+                validateEmail($form);
+            });
+
+            $email.keyup(function() {
+                validateEmail($form, true);
+            });
+
+            $confirm.click(function() {
+                validateConfirm($form);
             });
 
             $form.submit(function(e) {
                 e.preventDefault();
+
+                $errors.empty().hide();
 
                 if (!validate($form)) {
                     return;

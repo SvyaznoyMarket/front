@@ -30,7 +30,11 @@ class Index {
             }
 
             if ($_SERVER['APPLICATION_ENV'] === 'local') {
-                return new Http\JsonResponse(['orderNumber' => 123456]);
+                if ($request->data['email']) {
+                    return new Http\JsonResponse(['error' => 'Ошибка при создании заявки']);
+                } else {
+                    return new Http\JsonResponse(['orderNumber' => 123456]);
+                }
             }
 
             $cartSplitResponse = $this->queryCartSplit($request->data['productId'], $regionId);
