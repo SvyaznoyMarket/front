@@ -18,8 +18,8 @@ class SetItemByUserUi extends Query {
         $this->url = new Url();
         $this->url->path = 'api/favorite/add';
         $this->data = [
-            'user_uid'    => $userUi,
-            'product_uid' => $product->ui,
+            'user_uid' => $userUi,
+            'uid'      => $product->ui,
         ];
 
         $this->init();
