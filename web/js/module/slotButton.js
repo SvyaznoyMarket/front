@@ -5,67 +5,61 @@ define(
             $body = $('body'),
             errorCssClass = 'textfield-err',
             popupTemplate =
-			'<div class="js-slotButton-popup popupBox popupBox-bid" style="position: absolute; z-index: 1035;">' +
-				'<div class="popupBox_close js-slotButton-popup-close" style="display: block;"></div>' +
+			'<div class="js-slotButton-popup popupBox popupBox-bid">' +
+                '<div class="popupBox_close js-slotButton-popup-close" style="display: block;"></div>' +
 
-				'<div class="popupBox_inn">' +
+                '<div class="popupBox_inn">' +
                     '<form action="/orders/slot/create" method="post">' +
-    					'<input type="hidden" name="productId" value="{{productId}}" />' +
-    					'<input type="hidden" name="sender" value="{{sender}}" />' +
+                        '<input type="hidden" name="productId" value="{{productId}}" />' +
+                        '<input type="hidden" name="sender" value="{{sender}}" />' +
 
-    					'{{#full}}' +
+                        '{{#full}}' +
                             '<div class="popupBox_title">Отправить заявку</div>' +
 
-    						'<ul class="lst-tree">' +
+                            '<ul class="lst-tree">' +
                                 '<li class="lst-tree__i lst-tree__i--tl">Закажите обратный звонок и уточните:</li>' +
-    							'<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> состав мебели и техники;</li>' +
-    							'<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> условия доставки, сборки и оплаты.</li>' +
-    						'</ul>' +
-    					'{{/full}}' +
+                                '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> состав мебели и техники;</li>' +
+                                '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> условия доставки, сборки и оплаты.</li>' +
+                            '</ul>' +
+                        '{{/full}}' +
 
-    					'{{^full}}' +
-    						'<div class="popup--request__head">Отправить заявку</div>' +
-    					'{{/full}}' +
+                        '{{^full}}' +
+                            '<div class="ppopupBox_title">Отправить заявку</div>' +
+                        '{{/full}}' +
 
-    					'<div class="js-slotButton-popup-errors" style="display: none;">' +
-    					'</div>' +
+                        '<div class="orderU_fld">' +
+                            '<input class="orderU_tx textfield js-slotButton-popup-phone" type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
+                            '<label class="orderU_lbl orderU_lbl-str">Телефон</label>' +
+                        '</div>' +
 
-    					'<div class="popup__form-group">' +
-    						'<div class="orderU_fld">' +
-    							'<input class="orderU_tx textfield js-slotButton-popup-phone" type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
-                                '<label class="orderU_lbl orderU_lbl-str">Телефон</label>' +
-    						'</div>' +
-    					'</div>' +
+                        '<div class="orderU_fld">' +
+                            '<input class="orderU_tx textfield" type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" />' +
+                            '<label class="orderU_lbl">E-mail</label>' +
+                        '</div>' +
 
-    					'<div class="popup__form-group">' +
-    						'<div class="orderU_fld">' +
-                                '<input class="orderU_tx textfield" type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" />' +
-    							'<label class="orderU_lbl">E-mail</label>' +
-    						'</div>' +
-    					'</div>' +
+                        '<div class="orderU_fld">' +
+                            '<label class="orderU_lbl">Имя</label>' +
+                            '<input class="orderU_tx textfield" type="text" name="name" value="{{userName}}" />' +
+                        '</div>' +
 
-    					'<div class="popup__form-group">' +
-    						'<div class="orderU_fld">' +
-    							'<label class="orderU_lbl">Имя</label>' +
-    							'<input class="orderU_tx textfield" type="text" name="name" value="{{userName}}" />' +
-    						'</div>' +
-    					'</div>' +
+                        '<div class="popupBox-bid__err js-slotButton-popup-errors" style="display: none;">' +
+                        '</div>' +
 
-    					'<div class="popupBox-bid__check"><input type="checkbox" class="customInput customInput-checkbox" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и согласен с информацией о продавце и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label></div>' +
-    					'<div class="popupBox-bid__vendor">Продавец-партнёр: {{partnerName}}</div>' +
+                        '<div class="popupBox-bid__check"><input type="checkbox" class="customInput customInput-checkbox" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и согласен с информацией о продавце и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label></div>' +
+                        '<div class="popupBox-bid__vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
-    					'<div class="popupBox-bid__footnote">' +
-    						'<button type="submit" class="js-slotButton-popup-submitButton btn6 popupBox-bid__btn">Отправить заявку</button>' +
-    					'</div>' +
+                        '<div class="popupBox-bid__footnote">' +
+                            '<button type="submit" class="js-slotButton-popup-submitButton btn6 popupBox-bid__btn">Отправить заявку</button>' +
+                        '</div>' +
 
-    					'{{#full}}' +
-    						'<div class="popupBox-bid__footnote">' +
-    							'<a href="{{productUrl}}" class="lnk--goto-card js-slotButton-popup-close">Перейти в карточку товара</a>' +
-    						'</div>' +
-    					'{{/full}}' +
-    				'</form>'+
+                        '{{#full}}' +
+                            '<div class="popupBox-bid__footnote">' +
+                                '<a href="{{productUrl}}" class="lnk--goto-card underline js-slotButton-popup-close">Перейти в карточку товара</a>' +
+                            '</div>' +
+                        '{{/full}}' +
+                    '</form>'+
                 '</div>' +
-			'</div>',
+            '</div>',
 
             popupResultTemplate =
                 '<div class="popupBox_title">Ваша заявка № {{orderNumber}} отправлена</div>' +
@@ -82,7 +76,7 @@ define(
                 var isValid = true,
                     $phoneInput = $('[name="phone"]', $form),
                     $emailInput = $('[name="email"]', $form),
-                    parentClass = '.popup__form-group',
+                    parentClass = '.orderU_fld',
                     labelClass = '.input-group';
 
                 if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test($phoneInput.val().replace(/\s+/g, ''))) {
@@ -143,12 +137,12 @@ define(
             (function() {
                 $content.prepend($popup);
                 $('html, body').animate({scrollTop: 0}, 'fast');
-                $popup.slideDown().show(0);
-                $contentHidden.css({'overflow' : 'hidden'}).delay(100).animate({'opacity' : 0, 'height' : 0});
+                $popup.show(0);
+                $contentHidden.css({'overflow' : 'hidden', 'opacity' : 0, 'height' : 0});
 
                 $close.click(function(e) {
                     e.preventDefault();
-                    $popup.slideUp(400, function() {
+                    $popup.hide(0, function() {
                         $popup.remove(); // Удаляем, т.к. каждый раз создаётся попап с новыми данными (для нового товара)
                     });
                     $contentHidden.css({'opacity' : 1, 'height' : 'auto', 'overflow' : 'visible'});

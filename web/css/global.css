@@ -571,6 +571,9 @@ textarea[contenteditable] {
 .ta-r {
   text-align: right;
 }
+.underline {
+  text-decoration: underline;
+}
 .btnStyle {
   background: #ffc000;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffaa01), color-stop(1, #ffc000));
@@ -3438,8 +3441,14 @@ body.noScroll {
   font-size: 14px;
 }
 .popupBox-bid {
+  top: 10px;
   width: auto;
+  z-index: 11;
   font-size: 14px;
+  position: relative;
+  margin: 0 auto;
+  left: 0;
+  top: 0;
 }
 .popupBox-bid .popupBox_inn {
   padding: 10px 30px;
@@ -3457,21 +3466,25 @@ body.noScroll {
 }
 .popupBox-bid__vendor {
   padding-left: 29px;
-  margin: 0 0 15px;
 }
 .popupBox-bid__footnote {
   text-align: center;
   margin: 0 0 10px;
 }
-.popupBox-bid__footnote a {
-  text-decoration: underline;
-}
 .popupBox-bid__btn {
   padding: 5px 20px;
-  margin-top: 15px;
+  margin-top: 20px;
+  text-decoration: none;
+  display: inline-block;
+  *zoom: 1;
+  *display: inline;
 }
 .popupBox-bid .orderU_tx {
   width: 100%;
+}
+.popupBox-bid__err {
+  color: #ec434f;
+  margin: 0 0 10px;
 }
 .jsSearchBox {
   -webkit-border-radius: 0 0 4px 4px;
