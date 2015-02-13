@@ -35,7 +35,7 @@ class ProductButton {
         \EnterModel\Product $product,
         \EnterModel\Cart\Product $cartProduct = null,
         $allowInShopOnly = false,
-        $isFull = false
+        $isFull = true
     ) {
         if (!$allowInShopOnly && $product->isInShopOnly) {
             return null;
@@ -76,10 +76,11 @@ class ProductButton {
 
         // если товар в корзине
         if ($slotPartnerOffer = $product->getSlotPartnerOffer()) {
-            $button->text = $isFull ? 'Отправить заявку' : 'Как купить?';
+            $button->text = $isFull ? 'Как купить?' : 'Отправить заявку';
             $button->isSlot = true;
             $dataValue['product'][$product->id]['partnerName'] = $slotPartnerOffer->name;
             $dataValue['product'][$product->id]['partnerOfferUrl'] = $slotPartnerOffer->offerUrl;
+            $dataValue['isFull'] = $isFull;
         } else if ($cartProduct) {
             $button->text = 'В корзине';
             $button->url = '/cart'; // TODO: route
