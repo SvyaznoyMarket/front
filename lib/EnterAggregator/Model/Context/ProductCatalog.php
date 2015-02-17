@@ -35,4 +35,10 @@ class ProductCatalog extends Context {
      * @var bool
      */
     public $isSlice = false;
+    /**
+     * Проверять товары в избранном?
+     *
+     * @var bool
+     */
+    public $favourite = false;
 }
