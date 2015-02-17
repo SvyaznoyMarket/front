@@ -44,6 +44,7 @@ trait ProductListingTrait {
                     'starScore'   => $product->rating->starScore,
                     'reviewCount' => $product->rating->reviewCount,
                 ] : null,
+                'favorite'        => isset($product->favorite) ? $product->favorite : null,
             ];
         }
 

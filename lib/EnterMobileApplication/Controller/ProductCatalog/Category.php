@@ -24,6 +24,8 @@ class Category {
         $curl = $this->getCurl();
         $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME!!!
 
+        $userToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
+
         // ид региона
         $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
         if (!$regionId) {
@@ -66,6 +68,7 @@ class Category {
         $context->parentCategory = false;
         $context->branchCategory = false;
         $context->productOnlyForLeafCategory = false;
+        $context->favourite = true;
         $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
             $regionId,
             ['id' => $categoryId], // критерий получения категории товара
@@ -75,7 +78,8 @@ class Category {
             $filterRepository, // репозиторий фильтров
             [],
             $requestFilters, // фильтры в http-запросе
-            $context
+            $context,
+            $userToken
         );
 
         // категория

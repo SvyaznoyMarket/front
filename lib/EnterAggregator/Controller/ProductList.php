@@ -27,6 +27,7 @@ namespace EnterAggregator\Controller {
          * @param Model\Product\RequestFilter[] $baseRequestFilters
          * @param Model\Product\RequestFilter[] $requestFilters
          * @param Context\ProductCatalog $context
+         * @param string|null $userToken
          * @throws \Exception
          * @return ProductList\Response
          */
@@ -39,7 +40,8 @@ namespace EnterAggregator\Controller {
             Repository\Product\Filter $filterRepository,
             array $baseRequestFilters,
             array $requestFilters,
-            Context\ProductCatalog $context
+            Context\ProductCatalog $context,
+            $userToken = null
         ) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
@@ -65,10 +67,27 @@ namespace EnterAggregator\Controller {
             $regionQuery = new Query\Region\GetItemById($regionId);
             $curl->prepare($regionQuery);
 
+            // запрос пользователя
+            $userItemQuery = null;
+            if ($userToken && ($context->favourite)) {
+                $userItemQuery = new Query\User\GetItemByToken($userToken);
+                $curl->prepare($userItemQuery);
+            }
+
             $curl->execute();
 
             // регион
             $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
+
+            // пользователь
+            $user = null;
+            try {
+                if ($userItemQuery) {
+                    $user = (new Repository\User())->getObjectByQuery($userItemQuery);
+                }
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+            }
 
             // запрос категории
             $catalogConfigQuery = null;
@@ -280,6 +299,14 @@ namespace EnterAggregator\Controller {
                 //$curl->prepare($descriptionListQuery);
             }
 
+            // запрос на проверку товаров в избранном
+            $favoriteListQuery = null;
+            if ($context->favourite && $user && $response->productUiPager->uis) {
+                $favoriteListQuery = new Query\User\Favorite\CheckListByUserUi($user->ui, $response->productUiPager->uis);
+                $favoriteListQuery->setTimeout($config->crmService->timeout / 2);
+                $curl->prepare($favoriteListQuery);
+            }
+
             $curl->execute();
 
             // список товаров
@@ -338,6 +365,31 @@ namespace EnterAggregator\Controller {
                         }
                     }
                 }
+            }
+
+            // товары в избранном
+            try {
+                if ($favoriteListQuery) {
+                    // товары по ui
+                    $productsByUi = [];
+                    foreach ($productsById as $product) {
+                        $productsByUi[$product->ui] = $product;
+                    }
+
+                    foreach ($favoriteListQuery->getResult() as $item) {
+                        $item += ['uid' => null, 'is_favorite' => null];
+
+                        $ui = $item['uid'] ? (string)$item['uid'] : null;
+                        if (!$ui || !$item['is_favorite'] || !isset($productsByUi[$ui])) continue;
+
+                        $productsByUi[$ui]->favorite = [
+                            'ui' => $ui,
+                        ]; // FIXME
+                    }
+
+                }
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
             }
 
             $response->products = array_values($productsById);
