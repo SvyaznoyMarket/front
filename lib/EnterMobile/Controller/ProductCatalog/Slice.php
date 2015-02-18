@@ -67,6 +67,8 @@ class Slice {
             }
         }
 
+        $baseRequestFilters[] = $filterRepository->getSliceRequestObjectBySlice($slice);
+
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
 
         $context = new Context\ProductCatalog();
