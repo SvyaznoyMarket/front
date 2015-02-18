@@ -58,11 +58,11 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
 
             if (!$user->isEnterprizeMember) {
                 $user->email = $storageData['email'];
+                $user->phone = $storageData['mobile'];
             }
             if (!$user->email) {
                 throw new \Exception('Нужно подтвердить email');
             }
-            $user->phone = $storageData['mobile'];
             if (!$user->phone) {
                 throw new \Exception('Нужно подтвердить телефон');
             }
