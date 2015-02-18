@@ -56,7 +56,9 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
             $curl->prepare($storageGetQuery)->execute();
             $storageData = (array)$storageGetQuery->getResult() + ['email' => null, 'mobile' => null];
 
-            $user->email = $storageData['email'];
+            if (!$user->isEnterprizeMember) {
+                $user->email = $storageData['email'];
+            }
             if (!$user->email) {
                 throw new \Exception('Нужно подтвердить email');
             }
