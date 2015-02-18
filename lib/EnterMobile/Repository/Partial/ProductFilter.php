@@ -72,14 +72,8 @@ class ProductFilter {
                 $element->title = $optionModel->name;
                 $element->name = self::getName($filterModel, $optionModel);
                 $element->id = 'id-productFilter-' . $filterModel->token . '-' . $optionModel->id;
-
-                if (isset($requestFilterModelsByName[$element->name])) {
-                    $element->value = $requestFilterModelsByName[$element->name]->value;
-                    $element->isActive = $requestFilterModelsByName[$element->name]->value == $optionModel->id;
-                } else {
-                    $element->value = $optionModel->id;
-                    $element->isActive = false;
-                }
+                $element->value = $optionModel->id;
+                $element->isActive = isset($requestFilterModelsByName[$element->name]) && $requestFilterModelsByName[$element->name]->value == $element->value;
 
                 // максимальное и минимальное значения для слайдера
                 if (in_array($filterModel->typeId, [\EnterModel\Product\Filter::TYPE_SLIDER, \EnterModel\Product\Filter::TYPE_NUMBER])) {
