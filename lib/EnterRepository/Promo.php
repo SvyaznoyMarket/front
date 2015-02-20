@@ -28,7 +28,7 @@ class Promo {
         try {
             foreach ($query->getResult() as $item) {
                 $typeId = @$item['type_id'];
-                if ('1' != $typeId) continue;
+                if ('3' != $typeId) continue;
 
                 $promos[] = new Model\Promo($item);
             }
