@@ -40,7 +40,7 @@ define(
                             '<input class="orderU_tx textfield" type="text" name="name" value="{{userName}}" />' +
                         '</div>' +
 
-                        '<div class="popupBox-bid__check js-slotButton-popup-element"><input type="checkbox" class="customInput customInput-checkbox js-slotButton-popup-confirm" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и согласен с информацией о продавце и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label></div>' +
+                        '<div class="popupBox-bid__check js-slotButton-popup-element js-slotButton-popup-check"><input type="checkbox" class="customInput customInput-checkbox js-slotButton-popup-confirm" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и согласен с информацией о продавце и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label></div>' +
                         '<div class="popupBox-bid__vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
                         '<div class="popupBox-bid__footnote">' +
@@ -69,13 +69,21 @@ define(
 
             showError = function($input) {
                 var $element = $input.closest('.js-slotButton-popup-element');
-                $input.addClass(errorCssClass);
+                var $errtarget = ($input.attr('type') == 'checkbox') ? $checkbox : $input;
+
+                //($input.attr('type') == 'checkbox') && ($errtarget = $checkbox);
+
+                $errtarget.addClass(errorCssClass);
+
                 $element.find('.js-slotButton-popup-element-error').show();
             },
 
             hideError = function($input) {
                 var $element = $input.closest('.js-slotButton-popup-element');
-                $input.removeClass(errorCssClass);
+                var $errtarget = ($input.attr('type') == 'checkbox') ? $checkbox : $input;
+
+                $errtarget.removeClass(errorCssClass);
+
                 $element.find('.js-slotButton-popup-element-error').hide();
             },
 
@@ -177,6 +185,7 @@ define(
                 $phone = $('.js-slotButton-popup-phone', $form),
                 $email = $('.js-slotButton-popup-email', $form),
                 $confirm = $('.js-slotButton-popup-confirm', $form);
+                $checkbox = $('.js-slotButton-popup-check',$form);
 
             function close() {
                 $popup.hide(0, function() {
