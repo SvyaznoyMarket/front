@@ -29,14 +29,6 @@ class Index {
                 throw new Exception('Подтвердите согласие с офертой');
             }
 
-            if ($_SERVER['APPLICATION_ENV'] === 'local' || $_SERVER['APPLICATION_ENV'] === 'dev') {
-                if ($request->data['email']) {
-                    return new Http\JsonResponse(['error' => 'Ошибка при создании заявки']);
-                } else {
-                    return new Http\JsonResponse(['orderNumber' => 123456]);
-                }
-            }
-
             $cartSplitResponse = $this->queryCartSplit($request->data['productId'], $regionId);
             $orderCreatePacketResponse = $this->queryOrderCreatePacket($cartSplitResponse, $request->data['productId'], $regionId, $phone, $request->data['email'], $request->data['name']);
         } catch (Exception $e) {

@@ -219,15 +219,6 @@ class Product {
      */
     public function getSlotPartnerOffer()
     {
-        // TODO удалить временную заглушку
-        if ($_SERVER['APPLICATION_ENV'] === 'local' || $_SERVER['APPLICATION_ENV'] === 'dev') {
-            return new Model\Product\PartnerOffer([
-                'name' => 'ООО МЕГАЭЛАТОН',
-                'type' => '2',
-                'offer' => 'http://www.enter.ru/terms_megaetalon',
-            ]);
-        }
-
         foreach ($this->partnerOffers as $offer) {
             if (2 == $offer->type) {
                 return $offer;
