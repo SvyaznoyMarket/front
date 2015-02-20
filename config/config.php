@@ -118,6 +118,7 @@ return function(\EnterAggregator\Config $config) {
     ];
 
     $config->order->splitSessionKey = 'order_split';
+    $config->order->excludedError = [705, 708, 735, 759, 800];
 
     $config->product->itemPerPage = 19;
     $config->product->itemsInSlider = 60;

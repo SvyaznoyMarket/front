@@ -19,7 +19,7 @@ class CreatePacketBySplit extends Query {
      * @param Model\Order\Meta[] $metas
      * @param bool $isReceiveSms
      */
-    public function __construct(Model\Cart\Split $split, array $metas = [], $isReceiveSms = false) {
+    public function __construct(Model\Cart\Split $split, array $metas = [], $isReceiveSms = false, $typeId = Model\Order::TYPE_ORDER, $userMobile = null, $userEmail = null, $userFirstName = null) {
         $this->retry = 1;
 
         $this->url = new Url();
@@ -44,16 +44,16 @@ class CreatePacketBySplit extends Query {
             }
 
             $orderData = [
-                'type_id'             => 1, // TODO: вынести в константу
+                'type_id'             => $typeId,
                 'geo_id'              => $split->region->id,
                 'user_id'             => null, // FIXME!!!
                 'is_legal'            => false, // FIXME!!!
                 'payment_id'          => $order->paymentMethodId,
                 'credit_bank_id'      => null, // FIXME!!!
                 'last_name'           => $user ? $user->lastName : null,
-                'first_name'          => $user ? $user->firstName : null,
-                'email'               => $user ? $user->email : null,
-                'mobile'              => $user ? $user->phone : null,
+                'first_name'          => $userFirstName ? $userFirstName : ($user ? $user->firstName : null),
+                'email'               => $userEmail ? $userEmail : ($user ? $user->email : null),
+                'mobile'              => $userMobile ? $userMobile : ($user ? $user->phone : null),
                 'address_street'      => null,
                 'address_number'      => null,
                 'address_building'    => null,

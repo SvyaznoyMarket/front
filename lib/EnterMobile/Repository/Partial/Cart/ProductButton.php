@@ -34,7 +34,8 @@ class ProductButton {
     public function getObject(
         \EnterModel\Product $product,
         \EnterModel\Cart\Product $cartProduct = null,
-        $allowInShopOnly = false
+        $allowInShopOnly = false,
+        $isFull = true
     ) {
         if (!$allowInShopOnly && $product->isInShopOnly) {
             return null;
@@ -59,7 +60,6 @@ class ProductButton {
                 'quantity' => $cartProduct ? $cartProduct->quantity : 1,
             ],
         ]];
-        $button->dataValue = $this->helper->json($dataValue);
 
         // ga
         $button->dataGa = $this->helper->json([
@@ -75,7 +75,13 @@ class ProductButton {
         $button->isQuick = false;
 
         // если товар в корзине
-        if ($cartProduct) {
+        if ($slotPartnerOffer = $product->getSlotPartnerOffer()) {
+            $button->text = $isFull ? 'Как купить?' : 'Отправить заявку';
+            $button->isSlot = true;
+            $dataValue['product'][$product->id]['partnerName'] = $slotPartnerOffer->name;
+            $dataValue['product'][$product->id]['partnerOfferUrl'] = $slotPartnerOffer->offerUrl;
+            $dataValue['isFull'] = $isFull;
+        } else if ($cartProduct) {
             $button->text = 'В корзине';
             $button->url = '/cart'; // TODO: route
             $button->dataUrl = '';
@@ -94,6 +100,8 @@ class ProductButton {
                 $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id));
             }
         }
+
+        $button->dataValue = $this->helper->json($dataValue);
 
         return $button;
     }
