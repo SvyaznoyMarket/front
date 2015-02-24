@@ -15,11 +15,13 @@ define(
 
                         '<div class="popupBox_title">Отправить заявку</div>' +
 
-                        '<ul class="lst-tree">' +
-                            '<li class="lst-tree__i lst-tree__i--tl">Закажите обратный звонок и уточните:</li>' +
-                            '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> состав мебели и техники;</li>' +
-                            '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> условия доставки, сборки и оплаты.</li>' +
-                        '</ul>' +
+                        '{{#full}}' +
+                            '<ul class="lst-tree">' +
+                                '<li class="lst-tree__i lst-tree__i--tl">Закажите обратный звонок и уточните:</li>' +
+                                '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> комплектность мебели и техники;</li>' +
+                                '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> условия доставки, сборки и оплаты.</li>' +
+                            '</ul>' +
+                        '{{/full}}' +
 
                         '<div class="popupBox-bid__err js-slotButton-popup-errors" style="display: none;"></div>' +
 

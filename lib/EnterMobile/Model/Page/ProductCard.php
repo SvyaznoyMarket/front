@@ -96,6 +96,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
         public $brand;
         /** @var \EnterModel\Product\Label[] */
         public $labels = [];
+        /** @var \EnterModel\Product\PartnerOffer|null */
+        public $slotPartnerOffer;
 
         public function __construct() {}
     }
