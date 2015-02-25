@@ -5,6 +5,8 @@ namespace EnterModel;
 use EnterModel as Model;
 
 class Product {
+    const PARTNER_OFFER_TYPE_SLOT = 2;
+
     /** @var string */
     public $id;
     /** @var string */
