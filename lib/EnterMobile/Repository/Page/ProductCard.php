@@ -63,7 +63,6 @@ class ProductCard {
         $page->content->product->shownOldPrice = $productModel->oldPrice ? number_format((float)$productModel->oldPrice, 0, ',', ' ') : null;
         $page->content->product->cartButtonBlock = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($productModel);
         $page->content->product->brand = $productModel->brand;
-        $page->content->product->slotPartnerOffer = $productModel->getSlotPartnerOffer();
 
         // шильдики
         foreach ($productModel->labels as $label) {
@@ -353,11 +352,11 @@ class ProductCard {
             }
 
             if ($productModel->rating && ($productModel->rating->reviewCount > $config->productReview->itemsInCard)) {
-                /*
+
                 $page->content->product->reviewBlock->moreLink = new Partial\Link();
                 $page->content->product->reviewBlock->moreLink->name = 'Еще отзывы';
-                */
-                $page->content->product->reviewBlock->moreLink = null;
+
+                //$page->content->product->reviewBlock->moreLink = null;
 
                 $page->content->product->reviewBlock->url = $router->getUrlByRoute(new Routing\Product\Review\GetList($productModel->id));
                 $page->content->product->reviewBlock->dataValue = $templateHelper->json(['page' => 2]);
