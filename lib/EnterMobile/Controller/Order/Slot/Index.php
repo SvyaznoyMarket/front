@@ -99,6 +99,7 @@ class Index {
         $curl->execute();
 
         $splitResult = new Model\Cart\Split($splitQuery->getResult());
+        $splitResult->region = new Model\Region(['id' => $regionId]);
         if (!$splitResult->orders) {
             foreach ($splitResult->errors as $error) {
                 if (708 == $error->code) {
