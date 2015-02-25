@@ -11,9 +11,5 @@ return function(\EnterMobile\Config $config) {
     $config->debugLevel = 1;
 
     //$config->googleAnalitics->enabled = false;
-    $config->coreService->url        = 'http://haritonov.core.ent3.ru/';
-    $config->corePrivateService->url = 'http://haritonov.core.ent3.ru/private/';
-    $config->coreService->timeout = 30;
-    $config->corePrivateService->timeout = 30;
 
 };
