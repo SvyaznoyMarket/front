@@ -26,21 +26,21 @@
     </div>
     {{! окно большого изображения }}
 
-    <div class="contentBox960 js-content-hidden">
-        <div class="prodHd">
-            <h1 class="prodHd_n">
-                {{#product.namePrefix}}{{product.namePrefix}}<br />{{/product.namePrefix}}
-                {{product.name}}
-            </h1>
+    <div class="contentBox960 js-content-hidden product-container">
 
-            {{#product.article}}
-                <div class="prodHd_artcl">Артикул: {{product.article}}</div>
-            {{/product.article}}
-        </div>
+        <div class="product-card clearfix">
+            <div class="product-card-head">
+                <h1 class="product-card-head__title">
+                    {{#product.namePrefix}}{{product.namePrefix}}<br />{{/product.namePrefix}}
+                    {{product.name}}
+                </h1>
 
-        <div class="prodDescr clearfix">
+                {{#product.article}}
+                    <div class="product-card-head__article">Артикул: {{product.article}}</div>
+                {{/product.article}}
+            </div>
             <!-- Изображение товара -->
-            <div class="prodDescr_l slider js-slider-wpar">
+            <div class="product-card__section-left slider js-slider-wpar">
                 {{#product.labels.0}}
                     <div class="sticker left">
                         <img src="{{imageUrl}}" alt="{{name}}" />
@@ -69,41 +69,35 @@
             <!--/ Изображение товара -->
 
             {{#product.slotPartnerOffer}}
-                <div class="prodDescr_r clearfix">
-                    <div class="prodBuy clearfix">
-                        <div class="prodBuy_l">
-                            <div class="prodBuy_l_w">
-                                <div class="">Продавец-партнёр: <nobr>{{name}}</nobr></div>
+                    <div class="product-card__section-right clearfix">
+                        <div class="product-card-info-container">
+                            <div class="product-card-head__vendor">Продавец-партнёр: <nobr>{{name}}</nobr></div>
 
-                                <div class="prodBuy_i">
-                                    <span class="nowP">{{product.shownPrice}} <span class="rubl">p</span></span>
-                                </div>
+                            <div class="product-card-price">
+                                {{product.shownPrice}} <span class="rubl">p</span>
+                            </div>
 
-                                <span class="">Цена базового комплекта</span>
-                                <span class="">Срок доставки базового комплекта 3 дня</span>
-                                <div class="">
-                                    <span>Закажите обратный звонок и уточните:</span>
-                                    <ul class="">
-                                        <li>комплектность мебели и техники;</li>
-                                        <li>условия доставки, сборки и оплаты.</li>
-                                    </ul>
+                            <span class="product-card-info--price">Цена базового комплекта</span>
+                            <span class="product-card-info--deliv-period">Срок доставки базового комплекта 3 дня</span>
+                            <div class="product-card-info--recall">
+                                <span>Закажите обратный звонок и уточните:</span>
+                                <ul class="product-card-info--recall-list">
+                                    <li>комплектность мебели и техники;</li>
+                                    <li>условия доставки, сборки и оплаты.</li>
+                                </ul>
 
-                                    {{#product.cartButtonBlock}}
-                                        <div class="js-widget {{widgetId}}" data-template-selector="#tpl-product-buyButtonBlock">
-                                            <div class="buyInfoBuy">
-                                                <!-- Кнопка купить -->
-                                                {{#cartButton}}
-                                                    {{>partial/cart/button}}
-                                                {{/cartButton}}
-                                                <!--/ Кнопка купить -->
-                                            </div>
-                                        </div>
-                                    {{/product.cartButtonBlock}}
-                                </div>
+                                {{#product.cartButtonBlock}}
+                                    <div class="js-widget {{widgetId}} btn-container" data-template-selector="#tpl-product-buyButtonBlock">
+                                        <!-- Кнопка купить -->
+                                        {{#cartButton}}
+                                            {{>partial/cart/button}}
+                                        {{/cartButton}}
+                                        <!--/ Кнопка купить -->
+                                    </div>
+                                {{/product.cartButtonBlock}}
                             </div>
                         </div>
                     </div>
-                </div>
             {{/product.slotPartnerOffer}}
         </div>
     </div>
