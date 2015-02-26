@@ -87,7 +87,7 @@ class Slice {
         $context->mainMenu = false;
         $context->parentCategory = false;
         $context->branchCategory = false;
-        $context->productOnlyForLeafCategory = false;
+        $context->productOnlyForLeafCategory = true;
         $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
             $regionId,
             $categoryId ? ['id' => $categoryId] : [], // критерий получения категории товара
