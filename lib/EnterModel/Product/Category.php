@@ -80,7 +80,7 @@ namespace EnterModel\Product {
             )) $this->productGlobalCount = (int)$data['product_count_global'];
             if (isset($data['children']) && is_array($data['children'])) {
                 foreach ($data['children'] as $childItem) {
-                    if (!isset($childItem['uid']) || '24db977d-82cf-4799-8deb-a3be679288f1' == $childItem['uid']) continue; // AG-59 Кухни по слотам (временная заглушка, до исправления фильтрации дочерних категорий в $walk в /lib/EnterRepository/Product/Category.php)
+                    if (!isset($childItem['uid']) || 'be23c7db-4d67-4b6b-bdf8-cdfec4b2aefe' == $childItem['uid']) continue; // AG-59 Кухни по слотам (временная заглушка, до исправления фильтрации дочерних категорий в $walk в /lib/EnterRepository/Product/Category.php)
                     $this->children[] = new Model\Product\Category($childItem);
                 }
             }
