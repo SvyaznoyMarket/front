@@ -3,6 +3,7 @@ define(
     function ($, Mustache, config) {
         var
             $body = $('body'),
+            $header = $('.js-header'),
             errorCssClass = 'textfield-err',
             popupTemplate =
 			'<div class="js-slotButton-popup popupBox popupBox-bid">' +
@@ -125,21 +126,32 @@ define(
             },
 
             validate = function($form) {
-                var isValid = true;
+                var
+                    isValid = true,
+                    $errorInput;
 
                 if (!validatePhone($form)) {
                     isValid = false;
+                    if (!$errorInput) {
+                        $errorInput = $('.js-slotButton-popup-phone', $form).closest('.js-slotButton-popup-element');
+                    }
                 }
 
                 if (!validateEmail($form)) {
                     isValid = false;
+                    if (!$errorInput) {
+                        $errorInput = $('.js-slotButton-popup-email', $form).closest('.js-slotButton-popup-element');
+                    }
                 }
 
                 if (!validateConfirm($form)) {
                     isValid = false;
+                    if (!$errorInput) {
+                        $errorInput = $('.js-slotButton-popup-confirm', $form).closest('.js-slotButton-popup-element');
+                    }
                 }
 
-                return isValid;
+                return {isValid: isValid, $errorInput: $errorInput};
             },
 
             getFirstObjectProperty = function(object) {
@@ -150,6 +162,12 @@ define(
 
                     return object[key]
                 }
+            },
+
+            scrollTo = function(to) {
+                $('html, body').animate({
+                    scrollTop: /^\d+$/.test(to) ? to : to.offset().top - $header.outerHeight()
+                }, 'fast');
             };
 
         $body.on('click', '.js-slotButton', function(e) {
@@ -188,7 +206,7 @@ define(
 
             (function() {
                 $content.append($popup);
-                $('html, body').animate({scrollTop: 0}, 'fast');
+                scrollTo(0);
                 $popup.show(0);
                 $contentHidden.css({'overflow' : 'hidden', 'opacity' : 0, 'height' : 0});
 
@@ -233,7 +251,9 @@ define(
 
                 $errors.empty().hide();
 
-                if (!validate($form)) {
+                var validateResult = validate($form);
+                if (!validateResult.isValid) {
+                    scrollTo(validateResult.$errorInput);
                     return;
                 }
 
@@ -247,6 +267,7 @@ define(
                     success: function(result){
                         if (result.error) {
                             $errors.text(result.error).show();
+                            scrollTo($errors);
                             return;
                         }
 
@@ -259,10 +280,14 @@ define(
                         $('.js-slotButton-popup-okButton', $popup).click(function() {
                             e.preventDefault();
                             close();
+                            scrollTo(0);
                         });
+
+                        scrollTo(0);
                     },
                     error: function(){
                         $errors.text('Ошибка при создании заявки').show();
+                        scrollTo($errors);
                     },
                     complete: function(){
                         $submitButton.removeAttr('disabled');
@@ -271,9 +296,7 @@ define(
             });
 
             (function() {
-                var
-                    $header = $('.js-header'),
-                    oldHeaderPosition = $header.css('position');
+                var oldHeaderPosition = $header.css('position');
 
                 $phone.add($email).add($name).focus(function() {
                     $header.css('position', 'absolute');
