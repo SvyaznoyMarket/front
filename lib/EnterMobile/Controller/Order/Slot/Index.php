@@ -20,6 +20,8 @@ class Index {
     public function execute(Http\Request $request) {
         $referer = isset($request->server['HTTP_REFERER']) ? $request->server['HTTP_REFERER'] : '/';
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
+        $userToken = (new \EnterRepository\User)->getTokenByHttpRequest($request);
+        $curl = $this->getCurl();
         $cartSplitResponse = null;
 
         try {
@@ -29,8 +31,41 @@ class Index {
                 throw new Exception('Подтвердите согласие с офертой');
             }
 
-            $cartSplitResponse = $this->queryCartSplit($request->data['productId'], $regionId);
-            $orderCreatePacketResponse = $this->queryOrderCreatePacket($cartSplitResponse, $request->data['productId'], $regionId, $phone, $request->data['email'], $request->data['name']);
+            // запрос пользователя
+            $userItemQuery = $userToken ? new Query\User\GetItemByToken($userToken) : null;
+            if ($userItemQuery) {
+                $curl->prepare($userItemQuery);
+            }
+
+            // запрос cart/split
+            $splitQuery = new Query\Cart\Split\GetItem(
+                new Model\Cart([
+                    'product_list' => [
+                        ['id' => $request->data['productId'], 'quantity' => 1]
+                    ]
+                ]),
+                new Model\Region(['id' => $regionId])
+            );
+            $splitQuery->setTimeout($this->getConfig()->coreService->timeout * 2);
+            $curl->prepare($splitQuery);
+
+            $curl->execute();
+
+            $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
+
+            $cartSplitResponse = new Model\Cart\Split($splitQuery->getResult());
+            $cartSplitResponse->region = new Model\Region(['id' => $regionId]);
+            if (!$cartSplitResponse->orders) {
+                foreach ($cartSplitResponse->errors as $error) {
+                    if (708 == $error->code) {
+                        throw new Exception('Товара нет в наличии');
+                    }
+                }
+
+                throw new \Exception('Отстуствуют данные по заказам');
+            }
+
+            $orderCreatePacketResponse = $this->queryOrderCreatePacket($cartSplitResponse, $request->data['productId'], $regionId, $phone, $request->data['email'], $request->data['name'], $user);
         } catch (Exception $e) {
             return $request->isXmlHttpRequest() ? new Http\JsonResponse(['error' => $e->getMessage()]) : (new \EnterAggregator\Controller\Redirect())->execute($referer, 302);
         } catch (Query\CoreQueryException $e) {
@@ -93,39 +128,8 @@ class Index {
         return $phone;
     }
 
-    private function queryCartSplit($productId, $regionId) {
-        $splitQuery = new Query\Cart\Split\GetItem(
-            new Model\Cart([
-                'product_list' => [
-                    ['id' => $productId, 'quantity' => 1]
-                ]
-            ]),
-            new Model\Region(['id' => $regionId])
-        );
-
-        $splitQuery->setTimeout($this->getConfig()->coreService->timeout * 2);
-
-        $curl = $this->getCurl();
-        $curl->prepare($splitQuery);
-        $curl->execute();
-
-        $splitResult = new Model\Cart\Split($splitQuery->getResult());
-        $splitResult->region = new Model\Region(['id' => $regionId]);
-        if (!$splitResult->orders) {
-            foreach ($splitResult->errors as $error) {
-                if (708 == $error->code) {
-                    throw new Exception('Товара нет в наличии');
-                }
-            }
-
-            throw new \Exception('Отстуствуют данные по заказам');
-        }
-
-        return $splitResult;
-    }
-
-    private function queryOrderCreatePacket(Model\Cart\Split $cartSplitResponse, $productId, $regionId, $phone, $email, $name) {
-        $createOrderQuery = new Query\Order\CreatePacketBySplit($cartSplitResponse, $this->getOrderCreatePacketMetas($cartSplitResponse, $productId, $regionId), false, Model\Order::TYPE_SLOT, $phone, $email, $name);
+    private function queryOrderCreatePacket(Model\Cart\Split $cartSplitResponse, $productId, $regionId, $phone, $email, $name, Model\User $user = null) {
+        $createOrderQuery = new Query\Order\CreatePacketBySplit($cartSplitResponse, $this->getOrderCreatePacketMetas($cartSplitResponse, $productId, $regionId), false, Model\Order::TYPE_SLOT, $phone, $email, $name, $user);
         $createOrderQuery->setTimeout(90);
         $this->getCurl()->query($createOrderQuery);
         return $createOrderQuery->getResult();
