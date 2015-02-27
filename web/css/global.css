@@ -3452,6 +3452,7 @@ body.noScroll {
 .popupBox-bid .popupBox_title {
   text-align: center;
   margin-bottom: 15px;
+  padding-top: 20px;
 }
 .popupBox-bid__check {
   padding: 4px 0px 6px 17px;
