@@ -57,7 +57,7 @@ define(
             '</div>',
 
             popupResultTemplate =
-                '<div class="popupBox_title">Ваша заявка № {{orderNumber}} отправлена</div>' +
+                '<div class="popupBox_title">Ваша заявка<br/>№ {{orderNumber}}<br/>отправлена</div>' +
                 '<div class="popupBox-bid__footnote">' +
                     '<button type="submit" class="js-slotButton-popup-okButton btn btn--big btn--slot noselect">Ок</button>' +
                 '</div>',
