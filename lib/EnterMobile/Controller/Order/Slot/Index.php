@@ -35,7 +35,18 @@ class Index {
             return $request->isXmlHttpRequest() ? new Http\JsonResponse(['error' => $e->getMessage()]) : (new \EnterAggregator\Controller\Redirect())->execute($referer, 302);
         } catch (Query\CoreQueryException $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['curl', 'order/create']]);
-            return $request->isXmlHttpRequest() ? new Http\JsonResponse(['error' => 708 == $e->getCode() ? 'Товара нет в наличии' : ($this->getConfig()->debugLevel ? $e->getMessage() : 'Ошибка при создании заявки')]) : (new \EnterAggregator\Controller\Redirect())->execute($referer, 302);
+
+            if (708 == $e->getCode()) {
+                $errorMessage = 'Товара нет в наличии';
+            } else if (720 == $e->getCode()) {
+                $errorMessage = 'Это дублирующий заказ';
+            } else if ($this->getConfig()->debugLevel) {
+                $errorMessage = $e->getMessage();
+            } else {
+                $errorMessage = 'Ошибка при создании заявки';
+            }
+
+            return $request->isXmlHttpRequest() ? new Http\JsonResponse(['error' => $errorMessage]) : (new \EnterAggregator\Controller\Redirect())->execute($referer, 302);
         } catch (\Exception $e) {
             if (!in_array($e->getCode(), $this->getConfig()->order->excludedError)) {
                 $this->getLogger()->push([
