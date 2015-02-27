@@ -3436,7 +3436,7 @@ body.noScroll {
   position: relative;
   margin: 0 auto;
   left: 0;
-  top: 0;
+  top: 2px;
 }
 .popupBox-bid .popupBox_title {
   text-align: center;
