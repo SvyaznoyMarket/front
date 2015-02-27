@@ -15,18 +15,16 @@ define(
 
                         '<div class="popupBox_title">Отправить заявку</div>' +
 
-                        '{{#full}}' +
-                            '<ul class="lst-tree">' +
-                                '<li class="lst-tree__i lst-tree__i--tl">Закажите обратный звонок и уточните:</li>' +
-                                '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> комплектность мебели и техники;</li>' +
-                                '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> условия доставки, сборки и оплаты.</li>' +
-                            '</ul>' +
-                        '{{/full}}' +
+                        '<ul class="lst-tree">' +
+                            '<li class="lst-tree__i lst-tree__i--tl">Закажите обратный звонок и уточните:</li>' +
+                            '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> комплектность мебели и техники;</li>' +
+                            '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> условия доставки, сборки и оплаты.</li>' +
+                        '</ul>' +
 
                         '<div class="popupBox-bid__err js-slotButton-popup-errors" style="display: none;"></div>' +
 
                         '<div class="orderU_fld js-slotButton-popup-element">' +
-                            '<input class="orderU_tx textfield js-slotButton-popup-phone" type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
+                            '<input class="orderU_tx textfield js-slotButton-popup-phone" type="tel" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
                             '<label class="orderU_lbl orderU_lbl-str">Телефон</label>' +
                             '<span class="js-slotButton-popup-element-error" style="display: none">Неверный формат телефона</span>' +
                         '</div>' +
@@ -42,11 +40,11 @@ define(
                             '<input class="orderU_tx textfield" type="text" name="name" value="{{userName}}" />' +
                         '</div>' +
 
-                        '<div class="popupBox-bid__check js-slotButton-popup-element js-slotButton-popup-check"><input type="checkbox" class="customInput customInput-checkbox js-slotButton-popup-confirm" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и согласен с информацией {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}о продавце и его офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label></div>' +
+                        '<div class="popupBox-bid__check js-slotButton-popup-element js-slotButton-popup-check"><input type="checkbox" class="customInput customInput-checkbox js-slotButton-popup-confirm" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и&nbsp;согласен с информацией о&nbsp;{{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}продавце{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}} и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label></div>' +
                         '<div class="popupBox-bid__vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
                         '<div class="popupBox-bid__footnote">' +
-                            '<button type="submit" class="js-slotButton-popup-submitButton btn6 popupBox-bid__btn">Отправить заявку</button>' +
+                            '<button type="submit" class="js-slotButton-popup-submitButton btn btn--big btn--slot noselect">Отправить заявку</button>' +
                         '</div>' +
 
                         '{{#full}}' +
@@ -61,7 +59,7 @@ define(
             popupResultTemplate =
                 '<div class="popupBox_title">Ваша заявка № {{orderNumber}} отправлена</div>' +
                 '<div class="popupBox-bid__footnote">' +
-                    '<button type="submit" class="js-slotButton-popup-okButton btn6 popupBox-bid__btn">Ок</button>' +
+                    '<button type="submit" class="js-slotButton-popup-okButton btn btn--big btn--slot noselect">Ок</button>' +
                 '</div>',
 
             testEmail = function(email) {
