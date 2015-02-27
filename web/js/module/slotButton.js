@@ -193,14 +193,14 @@ define(
                 $popup.hide(0, function() {
                     $popup.remove(); // Удаляем, т.к. каждый раз создаётся попап с новыми данными (для нового товара)
                 });
-                $contentHidden.css({'opacity' : 1, 'height' : 'auto', 'overflow' : 'visible', 'display' : 'block'});
+                $contentHidden.css({'opacity' : 1, 'height' : 'auto', 'overflow' : 'visible'});
             }
 
             (function() {
                 $content.append($popup);
                 $('html, body').animate({scrollTop: 0}, 'fast');
                 $popup.show(0);
-                $contentHidden.css({'overflow' : 'hidden', 'opacity' : 0, 'height' : 0, 'display' : 'none'});
+                $contentHidden.css({'overflow' : 'hidden', 'opacity' : 0, 'height' : 0});
 
                 $close.click(function(e) {
                     e.preventDefault();
@@ -279,8 +279,6 @@ define(
                     }
                 })
             });
-
-            $phone.focus();
         });
     }
 );

@@ -1,7 +1,6 @@
 /* ==========================================================================
    Шапка сайта .header
    ========================================================================== */
-
 .header {
 	position: fixed;
     z-index: 1010;
@@ -15,6 +14,9 @@
 	color: @white;
 	background: @black;
 	border-bottom: 1px solid #858585;
+	transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
 }
 
 /* Иконка меню */
