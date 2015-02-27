@@ -37,10 +37,10 @@ define(
 
                         '<div class="orderU_fld">' +
                             '<label class="orderU_lbl">Имя</label>' +
-                            '<input class="orderU_tx textfield" type="text" name="name" value="{{userName}}" />' +
+                            '<input class="orderU_tx textfield js-slotButton-popup-name" type="text" name="name" value="{{userName}}" />' +
                         '</div>' +
 
-                        '<div class="popupBox-bid__check js-slotButton-popup-element js-slotButton-popup-check"><input type="checkbox" class="customInput customInput-checkbox js-slotButton-popup-confirm" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и&nbsp;согласен с информацией о&nbsp;{{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}продавце{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}} и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label></div>' +
+                        '<div class="popupBox-bid__check js-slotButton-popup-element"><input type="checkbox" class="customInput customInput-checkbox js-slotButton-popup-confirm" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и&nbsp;согласен с информацией о&nbsp;{{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}продавце{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}} и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label></div>' +
                         '<div class="popupBox-bid__vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
                         '<div class="popupBox-bid__footnote">' +
@@ -69,21 +69,13 @@ define(
 
             showError = function($input) {
                 var $element = $input.closest('.js-slotButton-popup-element');
-                var $errtarget = ($input.attr('type') == 'checkbox') ? $checkbox : $input;
-
-                //($input.attr('type') == 'checkbox') && ($errtarget = $checkbox);
-
-                $errtarget.addClass(errorCssClass);
-
+                ($input.attr('type') == 'checkbox' ? $element : $input).addClass(errorCssClass);
                 $element.find('.js-slotButton-popup-element-error').show();
             },
 
             hideError = function($input) {
                 var $element = $input.closest('.js-slotButton-popup-element');
-                var $errtarget = ($input.attr('type') == 'checkbox') ? $checkbox : $input;
-
-                $errtarget.removeClass(errorCssClass);
-
+                ($input.attr('type') == 'checkbox' ? $element : $input).removeClass(errorCssClass);
                 $element.find('.js-slotButton-popup-element-error').hide();
             },
 
@@ -184,8 +176,8 @@ define(
                 $errors = $('.js-slotButton-popup-errors', $form),
                 $phone = $('.js-slotButton-popup-phone', $form),
                 $email = $('.js-slotButton-popup-email', $form),
+                $name = $('.js-slotButton-popup-name', $form),
                 $confirm = $('.js-slotButton-popup-confirm', $form);
-                $checkbox = $('.js-slotButton-popup-check',$form);
 
             function close() {
                 $popup.hide(0, function() {
@@ -277,6 +269,22 @@ define(
                     }
                 })
             });
+
+            (function() {
+                var
+                    $header = $('.js-header'),
+                    oldHeaderPosition = $header.css('position');
+
+                $phone.add($email).add($name).focus(function() {
+                    $header.css('position', 'absolute');
+                });
+
+                $phone.add($email).add($name).blur(function() {
+                    $header.css('position', oldHeaderPosition);
+                });
+            })();
+
+            $phone.focus();
         });
     }
 );
