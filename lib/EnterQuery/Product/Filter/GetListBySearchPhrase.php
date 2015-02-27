@@ -24,6 +24,7 @@ class GetListBySearchPhrase extends Query {
             'filter' => [
                 'filters' => [
                     ['text', 3, $searchPhrase],
+                    ['exclude_partner_type', 1, \EnterModel\Product::PARTNER_OFFER_TYPE_SLOT], // MSITE-132 Временно исключить из выдачи сайта партнёрские товары-слоты
                 ],
             ],
         ];
