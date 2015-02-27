@@ -43,9 +43,6 @@ class GetAvailableList extends Query {
             ];
         }
 
-        // MSITE-132 Временно исключить из выдачи сайта партнёрские товары-слоты
-        $this->url->query['filter']['filters'][] = ['exclude_partner_type', 1, \EnterModel\Product::PARTNER_OFFER_TYPE_SLOT];
-
         $this->init();
     }
 

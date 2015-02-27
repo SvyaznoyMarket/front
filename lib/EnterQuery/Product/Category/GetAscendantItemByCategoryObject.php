@@ -24,9 +24,6 @@ class GetAscendantItemByCategoryObject extends Query {
             'root_id'         => $category->id,
             'max_level'       => $category->level - 1,
             'is_load_parents' => true,
-            'filter'          => [
-                'filters' => ['exclude_partner_type', 1, \EnterModel\Product::PARTNER_OFFER_TYPE_SLOT], // MSITE-132 Временно исключить из выдачи сайта партнёрские товары-слоты
-            ],
         ];
         if ($regionId) {
             $this->url->query['region_id'] = $regionId;
