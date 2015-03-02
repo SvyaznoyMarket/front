@@ -45,7 +45,7 @@ class CreatePacketBySplit extends Query {
             $orderData = [
                 'type_id'             => $typeId,
                 'geo_id'              => $split->region->id,
-                'user_id'             => $user ? $user->id : null, // FIXME!!!
+                'user_id'             => $user ? $user->id : null,
                 'is_legal'            => false, // FIXME!!!
                 'payment_id'          => $order->paymentMethodId,
                 'credit_bank_id'      => null, // FIXME!!!
