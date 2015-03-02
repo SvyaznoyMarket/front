@@ -1471,6 +1471,9 @@ body.noScroll {
 .userBox_text {
   font-size: 11px;
 }
+.fixfixed .header {
+  position: absolute;
+}
 .sprite-icon {
   background-image: url("modules/header/img/menu-sprite1024.png");
 }

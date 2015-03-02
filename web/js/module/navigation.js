@@ -93,5 +93,16 @@ define(
 
         fader.live('click touchend', closeNav);
 
+
+            var $body = jQuery('body');
+
+            $(document)
+            .on('focus', 'input, textarea, input + label, select', function(e) {
+                $body.addClass('fixfixed');
+            })
+            .on('blur', 'input, textarea, input + label, select', function(e) {
+                $body.removeClass('fixfixed');
+            });
+
     }
 );

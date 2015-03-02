@@ -30,7 +30,7 @@ require.config({
 
         'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
         'mustache'           : 'vendor/mustache-0.8.2',
-        'html5'              : 'vendor/html5-3.6.2',
+        'modernizr'          : 'vendor/modernizr.custom',
         'boilerplate.helper' : 'vendor/boilerplate.helper-4.1.0',
 
         'browserstate.history'         : 'vendor/browserstate.history-1.8b2',
@@ -79,7 +79,7 @@ require.config({
         'mustache': {
             exports: '_'
         },
-        'html5': [],
+        'modernizr': [],
         'boilerplate.helper': [],
 
         'browserstate.history': [],
@@ -101,7 +101,7 @@ require(
     [
         'require',
         'module/config',
-        'html5',
+        'modernizr',
         'boilerplate.helper',
         'jquery',
         'jquery.cookie',

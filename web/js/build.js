@@ -18,7 +18,7 @@
 
         'underscore'         : 'empty:',
         'mustache'           : 'vendor/mustache-0.8.2',
-        'html5'              : 'vendor/html5-3.6.2',
+        'modernizr'          : 'vendor/modernizr.custom',
         'boilerplate.helper' : 'vendor/boilerplate.helper-4.1.0',
 
         'browserstate.history'         : 'vendor/browserstate.history-1.8b2',
