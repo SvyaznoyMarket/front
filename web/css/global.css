@@ -2339,7 +2339,7 @@ body.noScroll {
 }
 /** табы подробного описания товара .productDescTab  **/
 /* ==========================================================================
-   Карточка товара -> табы подробного описания товара .productDescTab 
+   Карточка товара -> табы подробного описания товара .productDescTab
    ========================================================================== */
 .productDescTab {
   display: table;
@@ -2369,8 +2369,8 @@ body.noScroll {
   color: #262626;
   background-color: #ffffff;
 }
-.productDescTab_item:last-child {
-  border-right: 1px solid #b1b1b1;
+.productDescTab_item:first-child {
+  border-left: none;
 }
 .productDescTab .tabText {
   display: inline-block;
