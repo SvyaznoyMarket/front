@@ -331,6 +331,8 @@ namespace EnterAggregator\Config {
     class Order {
         /** @var string */
         public $splitSessionKey;
+        /** @var array */
+        public $excludedError = [];
     }
 
     class Product {
