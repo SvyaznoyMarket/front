@@ -3498,6 +3498,14 @@ body.noScroll {
   text-indent: 0px;
   padding-left: 90px;
 }
+.popupBox .orderU_fld {
+  margin: 0 0 22px;
+}
+.popupBox .orderU_fld .err-elem {
+  position: absolute;
+  left: 0px;
+  top: 35px;
+}
 .jsSearchBox {
   -webkit-border-radius: 0 0 4px 4px;
   -moz-border-radius: 0 0 4px 4px;

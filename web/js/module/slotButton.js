@@ -27,13 +27,13 @@ define(
                         '<div class="orderU_fld js-slotButton-popup-element">' +
                             '<input class="orderU_tx textfield js-slotButton-popup-phone" type="tel" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
                             '<label class="orderU_lbl orderU_lbl-str">Телефон</label>' +
-                            '<span class="js-slotButton-popup-element-error" style="display: none">Неверный формат телефона</span>' +
+                            '<span class="js-slotButton-popup-element-error err-elem" style="display: none">Неверный формат телефона</span>' +
                         '</div>' +
 
                         '<div class="orderU_fld js-slotButton-popup-element">' +
                             '<input class="orderU_tx textfield js-slotButton-popup-email" type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" />' +
                             '<label class="orderU_lbl">E-mail</label>' +
-                            '<span class="js-slotButton-popup-element-error" style="display: none">Неверный формат email</span>' +
+                            '<span class="js-slotButton-popup-element-error err-elem" style="display: none">Неверный формат email</span>' +
                         '</div>' +
 
                         '<div class="orderU_fld">' +
