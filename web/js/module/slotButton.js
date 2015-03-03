@@ -4,6 +4,7 @@ define(
         var
             $body = $('body'),
             $header = $('.js-header'),
+            oldHeaderPosition = $header.css('position'),
             errorCssClass = 'textfield-err',
             popupTemplate =
 			'<div class="js-slotButton-popup popupBox popupBox-bid">' +
@@ -166,7 +167,7 @@ define(
 
             scrollTo = function(to) {
                 $('html, body').animate({
-                    scrollTop: /^\d+$/.test(to) ? to : to.offset().top - $header.outerHeight()
+                    scrollTop: /^\d+$/.test(to) ? to : to.offset().top
                 }, 'fast');
             };
 
@@ -202,9 +203,12 @@ define(
                     $popup.remove(); // Удаляем, т.к. каждый раз создаётся попап с новыми данными (для нового товара)
                 });
                 $contentHidden.css({'opacity' : 1, 'height' : 'auto', 'overflow' : 'visible'});
+                $header.css('position', oldHeaderPosition);
+                scrollTo(0);
             }
 
             (function() {
+                $header.css('position', 'absolute');
                 $content.append($popup);
                 scrollTo(0);
                 $popup.show(0);
@@ -280,7 +284,6 @@ define(
                         $('.js-slotButton-popup-okButton', $popup).click(function() {
                             e.preventDefault();
                             close();
-                            scrollTo(0);
                         });
 
                         scrollTo(0);
@@ -294,18 +297,6 @@ define(
                     }
                 })
             });
-
-            (function() {
-                var oldHeaderPosition = $header.css('position');
-
-                $phone.add($email).add($name).focus(function() {
-                    $header.css('position', 'absolute');
-                });
-
-                $phone.add($email).add($name).blur(function() {
-                    $header.css('position', oldHeaderPosition);
-                });
-            })();
 
             $phone.focus();
         });
