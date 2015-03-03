@@ -18,118 +18,104 @@ class Create {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
-        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
-        $userToken = (new \EnterRepository\User)->getTokenByHttpRequest($request);
-        $curl = $this->getCurl();
-        $cartSplitResponse = null;
+        $userItemQuery = null;
+        $cartSplitQuery = null;
+        $orderCreatePacketQuery = null;
 
         try {
-            $phone = $this->getValidatedPhone($request->data['phone']);
+            $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request);
+            if (!$regionId) {
+                throw new \Exception('Не передан параметр regionId');
+            }
+
+            if (!$request->data['productId']) {
+                throw new \Exception('Не передан productId');
+            }
 
             if ($request->data['confirm'] != '1') {
-                throw new Exception('Подтвердите согласие с офертой');
+                throw new \Exception('Не подтверждено согласие с офертой');
             }
 
-            // запрос пользователя
-            $userItemQuery = $userToken ? new Query\User\GetItemByToken($userToken) : null;
-            if ($userItemQuery) {
-                $curl->prepare($userItemQuery);
-            }
+            $userItemQuery = $this->prepareUserItemQuery($request->query['userToken']);
+            $cartSplitQuery = $this->prepareCartSplitQuery($request->data['productId'], $regionId);
+            $this->getCurl()->execute();
 
-            // запрос cart/split
-            $splitQuery = new Query\Cart\Split\GetItem(
-                new Model\Cart([
-                    'product_list' => [
-                        ['id' => $request->data['productId'], 'quantity' => 1]
-                    ]
-                ]),
-                new Model\Region(['id' => $regionId])
-            );
-            $splitQuery->setTimeout($this->getConfig()->coreService->timeout * 2);
-            $curl->prepare($splitQuery);
-
-            $curl->execute();
-
-            $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
-
-            $cartSplitResponse = new Model\Cart\Split($splitQuery->getResult());
+            $cartSplitResponse = new Model\Cart\Split($cartSplitQuery->getResult());
             $cartSplitResponse->region = new Model\Region(['id' => $regionId]);
-            if (!$cartSplitResponse->orders) {
-                foreach ($cartSplitResponse->errors as $error) {
-                    if (708 == $error->code) {
-                        throw new Exception('Товара нет в наличии');
-                    }
-                }
 
-                throw new \Exception('Отстуствуют данные по заказам');
+            foreach ($cartSplitResponse->errors as $error) {
+                throw new \Exception($error->message, $error->code);
             }
 
-            $orderCreatePacketResponse = $this->queryOrderCreatePacket($cartSplitResponse, $request->data['productId'], $regionId, $phone, $request->data['email'], $request->data['name'], $user);
-        } catch (Exception $e) {
-            return new Http\JsonResponse(['error' => $e->getMessage()]);
-        } catch (Query\CoreQueryException $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['curl', 'order/create']]);
+            $orderCreatePacketQuery = $this->prepareOrderCreatePacketQuery($cartSplitResponse, $request->data['productId'], $regionId, $request->data['phone'], $request->data['email'], $request->data['name'], $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null);
+            $this->getCurl()->query($orderCreatePacketQuery);
+            $orderCreatePacketResponse = $orderCreatePacketQuery->getResult();
 
-            if (708 == $e->getCode()) {
-                $errorMessage = 'Товара нет в наличии';
-            } else if (720 == $e->getCode()) {
-                $errorMessage = 'Это дублирующий заказ';
-            } else if ($this->getConfig()->debugLevel) {
-                $errorMessage = $e->getMessage();
-            } else {
-                $errorMessage = 'Ошибка при создании заявки';
+            if (!isset($orderCreatePacketResponse[0]['number_erp'])) {
+                throw new \Exception('Ошибка при создании заявки');
             }
 
-            return new Http\JsonResponse(['error' => $errorMessage]);
+            return new Http\JsonResponse([
+                'orderNumber' => $orderCreatePacketResponse[0]['number_erp'],
+            ]);
         } catch (\Exception $e) {
-            if (!in_array($e->getCode(), $this->getConfig()->order->excludedError)) {
-                $this->getLogger()->push([
-                    'type' => 'error',
-                    'error'   => ['code' => $e->getCode(), 'message' => $e->getMessage(), 'trace' => $e->getTraceAsString()],
-                    'url'     => 'order/create-packet2',
-                    'split'   => $cartSplitResponse,
-                    'server'  => array_map(function($name) use (&$request) { return $request->server[$name]; }, [
-                        'HTTP_USER_AGENT',
-                        'HTTP_X_REQUESTED_WITH',
-                        'HTTP_REFERER',
-                        'HTTP_COOKIE',
-                        'REQUEST_METHOD',
-                        'QUERY_STRING',
-                        'REQUEST_TIME_FLOAT',
-                    ]),
-                    'sender' => __FILE__ . ' ' .  __LINE__,
-                    'tag' => ['order/create'],
-                ]);
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'queries' => [$userItemQuery, $cartSplitQuery, $orderCreatePacketQuery], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['critical', 'order', 'slot']]);
+
+            $displayErrorCodes = [
+                0,
+                736, // Не указан телефон
+                759, // Некорректный email
+                720, // Это дублирующий заказ
+                708, // Запрошенного количества товара нет в наличии
+                752, // Товара нет в наличии на складе
+                800, // Товар недоступен для продажи
+            ];
+
+            if (in_array($e->getCode(), $displayErrorCodes) || $this->getConfig()->debugLevel) {
+                return new Http\JsonResponse(['error' => ['code' => $e->getCode(), 'message' => $e->getMessage()]], Http\Response::STATUS_INTERNAL_SERVER_ERROR);
+            } else {
+                return new Http\JsonResponse(['error' => ['code' => 0, 'message' => 'Ошибка при создании заявки']], Http\Response::STATUS_INTERNAL_SERVER_ERROR);
             }
-
-            throw $e;
         }
-
-        return new Http\JsonResponse([
-            'orderNumber' => isset($orderCreatePacketResponse[0]['number_erp']) ? $orderCreatePacketResponse[0]['number_erp'] : null,
-        ]);
     }
 
-    private function getValidatedPhone($phone) {
-        if (empty($phone)) {
-            throw new Exception('Не указан телефон');
+    /**
+     * @param string $userToken
+     * @return Query\User\GetItemByToken|null
+     */
+    private function prepareUserItemQuery($userToken) {
+        if ($userToken) {
+            $userItemQuery =  new Query\User\GetItemByToken($userToken);
+            $this->getCurl()->prepare($userItemQuery);
+            return $userItemQuery;
         }
 
-        $phone = preg_replace('/^\+7/', '8', $phone);
-        $phone = preg_replace('/[^\d]/', '', $phone);
-
-        if (11 != strlen($phone)) {
-            throw new Exception('Неверный номер телефона');
-        }
-
-        return $phone;
+        return null;
     }
 
-    private function queryOrderCreatePacket(Model\Cart\Split $cartSplitResponse, $productId, $regionId, $phone, $email, $name, Model\User $user = null) {
-        $createOrderQuery = new Query\Order\CreatePacketBySplit($cartSplitResponse, $this->getOrderCreatePacketMetas($cartSplitResponse, $productId, $regionId), false, Model\Order::TYPE_SLOT, $phone, $email, $name, $user);
-        $createOrderQuery->setTimeout(90);
-        $this->getCurl()->query($createOrderQuery);
-        return $createOrderQuery->getResult();
+    /**
+     * @param int $productId
+     * @param int $regionId
+     * @return Query\Cart\Split\GetItem
+     */
+    private function prepareCartSplitQuery($productId, $regionId) {
+        $query = new Query\Cart\Split\GetItem(
+            new Model\Cart([
+                'product_list' => [
+                    ['id' => $productId, 'quantity' => 1]
+                ]
+            ]),
+            new Model\Region(['id' => $regionId])
+        );
+        $query->setTimeout($this->getConfig()->coreService->timeout * 2);
+        $this->getCurl()->prepare($query);
+        return $query;
+    }
+
+    private function prepareOrderCreatePacketQuery(Model\Cart\Split $cartSplitResponse, $productId, $regionId, $phone, $email, $name, Model\User $user = null) {
+        $orderCreatePacketQuery = new Query\Order\CreatePacketBySplit($cartSplitResponse, $this->getOrderCreatePacketMetas($cartSplitResponse, $productId, $regionId), false, Model\Order::TYPE_SLOT, $phone, $email, $name, $user);
+        $orderCreatePacketQuery->setTimeout(90);
+        return $orderCreatePacketQuery;
     }
 
     private function getOrderCreatePacketMetas(Model\Cart\Split $cartSplitResponse, $productId, $regionId) {
