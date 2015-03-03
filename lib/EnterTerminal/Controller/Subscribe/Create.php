@@ -45,6 +45,8 @@ class Create {
                 case 910:
                     $responseData['error'] = ['code' => $e->getCode(), 'message' => 'Подписка уже оформлена'];
                     break;
+                default:
+                    $responseData['error'] = ['code' => $e->getCode(), 'message' => $e->getMessage()];
             }
         }
 
