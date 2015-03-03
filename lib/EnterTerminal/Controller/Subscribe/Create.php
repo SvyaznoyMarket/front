@@ -51,6 +51,6 @@ class Create {
         }
 
         // ответ
-        return new Http\JsonResponse($responseData);
+        return new Http\JsonResponse($responseData, empty($responseData['error']) ? Http\Response::STATUS_OK : Http\Response::STATUS_INTERNAL_SERVER_ERROR);
     }
 }
