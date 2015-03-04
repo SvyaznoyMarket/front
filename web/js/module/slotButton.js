@@ -42,7 +42,7 @@ define(
                             '<input class="orderU_tx textfield js-slotButton-popup-name" type="text" name="name" value="{{userName}}" />' +
                         '</div>' +
 
-                        '<div class="popupBox-bid__check js-slotButton-popup-element"><input type="checkbox" class="customInput customInput-checkbox js-slotButton-popup-confirm" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и&nbsp;согласен <nobr>с&nbsp;информацией {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}о&nbsp;продавце и его офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</nobr></label></div>' +
+                        '<div class="popupBox-bid__check js-slotButton-popup-element noselect"><input type="checkbox" class="customInput customInput-checkbox js-slotButton-popup-confirm" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и&nbsp;согласен <nobr>с&nbsp;информацией {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}о&nbsp;продавце и его офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</nobr></label></div>' +
                         '<div class="popupBox-bid__vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
                         '<div class="popupBox-bid__footnote">' +
