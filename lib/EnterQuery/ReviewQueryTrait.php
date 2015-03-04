@@ -40,7 +40,7 @@ trait ReviewQueryTrait {
 
         try {
             $response = Util\Json::toArray($response);
-            if (array_key_exists('error', $response)) {
+            if (isset($response['error']['message'])) {
                 $response = array_merge(['code' => 0, 'message' => null], $response['error']);
 
                 throw new \Exception($response['message'], $response['code']);
