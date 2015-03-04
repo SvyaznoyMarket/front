@@ -5,8 +5,6 @@ namespace EnterModel;
 use EnterModel as Model;
 
 class Product {
-    const PARTNER_OFFER_TYPE_SLOT = 2;
-
     /** @var string */
     public $id;
     /** @var string */
@@ -83,6 +81,8 @@ class Product {
     public $reviews = [];
     /** @var Model\Product\Trustfactor[] */
     public $trustfactors = [];
+    /** @var Model\Product\PartnerOffer[] */
+    public $partnerOffers = [];
 
     /**
      * @param array $data
@@ -167,6 +167,16 @@ class Product {
         if (isset($data['line']['id'])) $this->line = new Model\Product\Line($data['line']);
         if (isset($data['accessories'][0])) $this->accessoryIds = $data['accessories'];
         if (isset($data['related'][0])) $this->relatedIds = $data['related'];
+
+        if (isset($data['partners_offer'][0])) {
+            foreach ($data['partners_offer'] as $partnerOffer) {
+                $partnerOffer = new Model\Product\PartnerOffer($partnerOffer);
+                // Пока не требуется отдавать предложения других партнёров
+                if (Model\Product\Partner::TYPE_SLOT == $partnerOffer->partner->type) {
+                    $this->partnerOffers[] = $partnerOffer;
+                }
+            }
+        }
     }
 
     /**
