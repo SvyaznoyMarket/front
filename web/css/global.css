@@ -7481,10 +7481,16 @@ body.noScroll {
   .product-card__section-right {
     display: block;
     float: none;
+    max-width: 100%;
     text-align: center;
   }
   .product-card__section-right .product-card-info-container {
+    border-style: dashed;
     border-left: none;
     border-right: none;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    margin: 0 0 10px;
   }
 }
