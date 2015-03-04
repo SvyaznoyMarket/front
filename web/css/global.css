@@ -1317,9 +1317,6 @@ body.noScroll {
   color: #ffffff;
   background: #000000;
   border-bottom: 1px solid #858585;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  -webkit-backface-visibility: hidden;
 }
 /* Иконка меню */
 .headerLeftAside {

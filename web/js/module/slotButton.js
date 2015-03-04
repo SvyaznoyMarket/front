@@ -207,18 +207,16 @@ define(
                 scrollTo(0);
             }
 
-            (function() {
-                $header.css('position', 'absolute');
-                $content.append($popup);
-                scrollTo(0);
-                $popup.show(0);
-                $contentHidden.css({'overflow' : 'hidden', 'opacity' : 0, 'height' : 0});
+            scrollTo(0);
+            $content.append($popup);
+            $popup.show();
+            $contentHidden.css({'overflow': 'hidden', 'opacity': 0, 'height': 0});
+            $header.css('position', 'absolute');
 
-                $close.click(function(e) {
-                    e.preventDefault();
-                    close();
-                });
-            })();
+            $close.click(function(e) {
+                e.preventDefault();
+                close();
+            });
 
             $.mask.definitions['x'] = '[0-9]';
             $.mask.placeholder = "_";
