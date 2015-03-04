@@ -2369,8 +2369,8 @@ body.noScroll {
   color: #262626;
   background-color: #ffffff;
 }
-.productDescTab_item:first-child {
-  border-left: none;
+.productDescTab_item:last-child {
+  border-right: none;
 }
 .productDescTab .tabText {
   display: inline-block;
@@ -7482,5 +7482,9 @@ body.noScroll {
     display: block;
     float: none;
     text-align: center;
+  }
+  .product-card__section-right .product-card-info-container {
+    border-left: none;
+    border-right: none;
   }
 }
