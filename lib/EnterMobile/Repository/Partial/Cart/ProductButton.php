@@ -78,8 +78,8 @@ class ProductButton {
         if ($slotPartnerOffer = $product->getSlotPartnerOffer()) {
             $button->text = $isFull ? 'Как купить?' : 'Отправить заявку';
             $button->isSlot = true;
-            $dataValue['product'][$product->id]['partnerName'] = $slotPartnerOffer->name;
-            $dataValue['product'][$product->id]['partnerOfferUrl'] = $slotPartnerOffer->offerUrl;
+            $dataValue['product'][$product->id]['partnerName'] = $slotPartnerOffer->partner->name;
+            $dataValue['product'][$product->id]['partnerOfferUrl'] = $slotPartnerOffer->partner->offerUrl;
             $dataValue['isFull'] = $isFull;
         } else if ($cartProduct) {
             $button->text = 'В корзине';

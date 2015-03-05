@@ -43,9 +43,6 @@ class GetAvailableList extends Query {
             ];
         }
 
-        // AG-59 Кухни по слотам
-        $this->url->query['filter']['filters'][] = ['exclude_partner_type', 1, \EnterModel\Product::PARTNER_OFFER_TYPE_SLOT];
-
         $this->init();
     }
 

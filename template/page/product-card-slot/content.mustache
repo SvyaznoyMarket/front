@@ -71,14 +71,14 @@
             {{#product.slotPartnerOffer}}
                     <div class="product-card__section-right clearfix">
                         <div class="product-card-info-container">
-                            <div class="product-card-head__vendor">Продавец-партнёр: <nobr>{{name}}</nobr></div>
+                            <div class="product-card-head__vendor">Продавец-партнёр: <nobr>{{partner.name}}</nobr></div>
 
                             <div class="product-card-price">
                                 {{product.shownPrice}} <span class="rubl">p</span>
                             </div>
 
                             <span class="product-card-info--price">Цена базового комплекта</span>
-                            <span class="product-card-info--deliv-period">Срок доставки базового комплекта 3 дня</span>
+                            <span class="product-card-info--deliv-period">Срок доставки базового комплекта {{deliveryDayCount}} дня</span>
                             <div class="product-card-info--recall">
                                 <span>Закажите обратный звонок и уточните:</span>
                                 <ul class="product-card-info--recall-list">

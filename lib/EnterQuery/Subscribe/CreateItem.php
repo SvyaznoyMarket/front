@@ -23,16 +23,16 @@ class CreateItem extends Query {
         $this->url = new Url();
         $this->url->path = 'v2/subscribe/create';
 
-        if ($userToken) {
-            $this->url->query['token'] = $userToken;
-        }
-
-        $this->data[] = [
+        $this->url->query = [
             'channel_id'   => $subscribe->channelId,
             //'type'         => $subscribe->type,
             'email'        => $subscribe->email,
             //'is_confirmed' => $subscribe->isConfirmed,
         ];
+
+        if ($userToken) {
+            $this->url->query['token'] = $userToken;
+        }
 
         $this->init();
     }
