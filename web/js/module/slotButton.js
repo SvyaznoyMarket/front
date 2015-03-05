@@ -3,6 +3,8 @@ define(
     function ($, Mustache, config) {
         var
             $body = $('body'),
+            $header = $('.js-header'),
+            oldHeaderPosition = $header.css('position'),
             errorCssClass = 'textfield-err',
             popupTemplate =
 			'<div class="js-slotButton-popup popupBox popupBox-bid">' +
@@ -17,34 +19,34 @@ define(
 
                         '<ul class="lst-tree">' +
                             '<li class="lst-tree__i lst-tree__i--tl">Закажите обратный звонок и уточните:</li>' +
-                            '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> состав мебели и техники;</li>' +
+                            '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> комплектность мебели и техники;</li>' +
                             '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> условия доставки, сборки и оплаты.</li>' +
                         '</ul>' +
 
                         '<div class="popupBox-bid__err js-slotButton-popup-errors" style="display: none;"></div>' +
 
                         '<div class="orderU_fld js-slotButton-popup-element">' +
-                            '<input class="orderU_tx textfield js-slotButton-popup-phone" type="text" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
+                            '<input class="orderU_tx textfield js-slotButton-popup-phone" type="tel" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
                             '<label class="orderU_lbl orderU_lbl-str">Телефон</label>' +
-                            '<span class="js-slotButton-popup-element-error" style="display: none">Неверный формат телефона</span>' +
+                            '<span class="js-slotButton-popup-element-error err-elem" style="display: none">Неверный формат телефона</span>' +
                         '</div>' +
 
                         '<div class="orderU_fld js-slotButton-popup-element">' +
                             '<input class="orderU_tx textfield js-slotButton-popup-email" type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" />' +
                             '<label class="orderU_lbl">E-mail</label>' +
-                            '<span class="js-slotButton-popup-element-error" style="display: none">Неверный формат email</span>' +
+                            '<span class="js-slotButton-popup-element-error err-elem" style="display: none">Неверный формат email</span>' +
                         '</div>' +
 
                         '<div class="orderU_fld">' +
                             '<label class="orderU_lbl">Имя</label>' +
-                            '<input class="orderU_tx textfield" type="text" name="name" value="{{userName}}" />' +
+                            '<input class="orderU_tx textfield js-slotButton-popup-name" type="text" name="name" value="{{userName}}" />' +
                         '</div>' +
 
-                        '<div class="popupBox-bid__check js-slotButton-popup-element js-slotButton-popup-check"><input type="checkbox" class="customInput customInput-checkbox js-slotButton-popup-confirm" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и согласен с информацией о {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}продавце{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}} и его {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label></div>' +
+                        '<div class="popupBox-bid__check js-slotButton-popup-element noselect"><input type="checkbox" class="customInput customInput-checkbox js-slotButton-popup-confirm" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и&nbsp;согласен <nobr>с&nbsp;информацией {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}о&nbsp;продавце и его офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</nobr></label></div>' +
                         '<div class="popupBox-bid__vendor">Продавец-партнёр: {{partnerName}}</div>' +
 
                         '<div class="popupBox-bid__footnote">' +
-                            '<button type="submit" class="js-slotButton-popup-submitButton btn6 popupBox-bid__btn">Отправить заявку</button>' +
+                            '<button type="submit" class="js-slotButton-popup-submitButton btn btn--big btn--slot noselect">Отправить заявку</button>' +
                         '</div>' +
 
                         '{{#full}}' +
@@ -57,9 +59,9 @@ define(
             '</div>',
 
             popupResultTemplate =
-                '<div class="popupBox_title">Ваша заявка № {{orderNumber}} отправлена</div>' +
+                '<div class="popupBox_title">Ваша заявка<br/>№ {{orderNumber}}<br/>отправлена</div>' +
                 '<div class="popupBox-bid__footnote">' +
-                    '<button type="submit" class="js-slotButton-popup-okButton btn6 popupBox-bid__btn">Ок</button>' +
+                    '<button type="submit" class="js-slotButton-popup-okButton btn btn--big btn--slot noselect">Ок</button>' +
                 '</div>',
 
             testEmail = function(email) {
@@ -69,21 +71,13 @@ define(
 
             showError = function($input) {
                 var $element = $input.closest('.js-slotButton-popup-element');
-                var $errtarget = ($input.attr('type') == 'checkbox') ? $checkbox : $input;
-
-                //($input.attr('type') == 'checkbox') && ($errtarget = $checkbox);
-
-                $errtarget.addClass(errorCssClass);
-
+                ($input.attr('type') == 'checkbox' ? $element : $input).addClass(errorCssClass);
                 $element.find('.js-slotButton-popup-element-error').show();
             },
 
             hideError = function($input) {
                 var $element = $input.closest('.js-slotButton-popup-element');
-                var $errtarget = ($input.attr('type') == 'checkbox') ? $checkbox : $input;
-
-                $errtarget.removeClass(errorCssClass);
-
+                ($input.attr('type') == 'checkbox' ? $element : $input).removeClass(errorCssClass);
                 $element.find('.js-slotButton-popup-element-error').hide();
             },
 
@@ -133,21 +127,32 @@ define(
             },
 
             validate = function($form) {
-                var isValid = true;
+                var
+                    isValid = true,
+                    $errorInput;
 
                 if (!validatePhone($form)) {
                     isValid = false;
+                    if (!$errorInput) {
+                        $errorInput = $('.js-slotButton-popup-phone', $form).closest('.js-slotButton-popup-element');
+                    }
                 }
 
                 if (!validateEmail($form)) {
                     isValid = false;
+                    if (!$errorInput) {
+                        $errorInput = $('.js-slotButton-popup-email', $form).closest('.js-slotButton-popup-element');
+                    }
                 }
 
                 if (!validateConfirm($form)) {
                     isValid = false;
+                    if (!$errorInput) {
+                        $errorInput = $('.js-slotButton-popup-confirm', $form).closest('.js-slotButton-popup-element');
+                    }
                 }
 
-                return isValid;
+                return {isValid: isValid, $errorInput: $errorInput};
             },
 
             getFirstObjectProperty = function(object) {
@@ -158,6 +163,12 @@ define(
 
                     return object[key]
                 }
+            },
+
+            scrollTo = function(to) {
+                $('html, body').animate({
+                    scrollTop: /^\d+$/.test(to) ? to : to.offset().top
+                }, 'fast');
             };
 
         $body.on('click', '.js-slotButton', function(e) {
@@ -184,27 +195,28 @@ define(
                 $errors = $('.js-slotButton-popup-errors', $form),
                 $phone = $('.js-slotButton-popup-phone', $form),
                 $email = $('.js-slotButton-popup-email', $form),
+                $name = $('.js-slotButton-popup-name', $form),
                 $confirm = $('.js-slotButton-popup-confirm', $form);
-                $checkbox = $('.js-slotButton-popup-check',$form);
 
             function close() {
                 $popup.hide(0, function() {
                     $popup.remove(); // Удаляем, т.к. каждый раз создаётся попап с новыми данными (для нового товара)
                 });
                 $contentHidden.css({'opacity' : 1, 'height' : 'auto', 'overflow' : 'visible'});
+                $header.css('position', oldHeaderPosition);
+                scrollTo(0);
             }
 
-            (function() {
-                $content.append($popup);
-                $('html, body').animate({scrollTop: 0}, 'fast');
-                $popup.show(0);
-                $contentHidden.css({'overflow' : 'hidden', 'opacity' : 0, 'height' : 0});
+            scrollTo(0);
+            $content.append($popup);
+            $popup.show();
+            $contentHidden.css({'overflow': 'hidden', 'opacity': 0, 'height': 0});
+            $header.css('position', 'absolute');
 
-                $close.click(function(e) {
-                    e.preventDefault();
-                    close();
-                });
-            })();
+            $close.click(function(e) {
+                e.preventDefault();
+                close();
+            });
 
             $.mask.definitions['x'] = '[0-9]';
             $.mask.placeholder = "_";
@@ -241,7 +253,9 @@ define(
 
                 $errors.empty().hide();
 
-                if (!validate($form)) {
+                var validateResult = validate($form);
+                if (!validateResult.isValid) {
+                    scrollTo(validateResult.$errorInput);
                     return;
                 }
 
@@ -255,6 +269,7 @@ define(
                     success: function(result){
                         if (result.error) {
                             $errors.text(result.error).show();
+                            scrollTo($errors);
                             return;
                         }
 
@@ -268,9 +283,12 @@ define(
                             e.preventDefault();
                             close();
                         });
+
+                        scrollTo(0);
                     },
                     error: function(){
                         $errors.text('Ошибка при создании заявки').show();
+                        scrollTo($errors);
                     },
                     complete: function(){
                         $submitButton.removeAttr('disabled');

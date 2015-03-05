@@ -22,27 +22,25 @@ define(
          * Добавление атрибутов к элементам описания товара
          */
             addData = function addData() {
+
                 //добавляем атрибут к табу data-tab
                 var i = 0;
                 tabItem.each(function() {
                     var $self = $(this);
-
                     $self.attr({
                         'data-tab': i
                     })
-
-                    i += 1;
+                    i +=1;
                 });
 
                 //добавляем атрибут к контенту таба
+                var i = 0;
                 tab.each(function() {
                     var $self = $(this);
-
                     $self.attr({
                         'data-desc': "tab-" + i
                     })
-
-                    i += 1;
+                    i +=1;
                 });
             },
 
@@ -58,20 +56,20 @@ define(
 
                 tabWrap.css({
                     'width': tabWrapWidth,
-                    'height': tab.data( "desc", 0 ).height()
+                    'height': tab.data("desc", 0).height()
                 });
 
                 tabList
-	                .css({
-	                    'width': tabWrapWidth * tabCount
-	                })
-	                .stop(true, true).animate({
-	                    'left': 0
-	                });
+                    .css({
+                        'width': tabWrapWidth * tabCount
+                    })
+                    .stop(true, true).animate({
+                        'left': 0
+                    });
 
                 tabItem
-                	.removeClass('productDescTab_item-active')
-                	.first().addClass('productDescTab_item-active');
+                    .removeClass('productDescTab_item-active')
+                    .first().addClass('productDescTab_item-active');
             },
 
             /*
@@ -107,6 +105,8 @@ define(
                 tabWrap.stop(true, true).animate({
                     'height': tabId.height()
                 });
+
+                console.log(tabId);
             };
         //end of function
 
@@ -121,14 +121,14 @@ define(
         $('.js-productReviewList-more').on('click', function(e) {
             e.preventDefault();
 
-	        tab.on('DOMNodeInserted', function() {
-	            var $self = $(this);
+            tab.on('DOMNodeInserted', function() {
+                var $self = $(this);
 
-	            tabWrap.stop(true, true).animate({
-	                'height': $self.height()
-	            });
-	        });
-	    });
+                tabWrap.stop(true, true).animate({
+                    'height': $self.height()
+                });
+            });
+        });
 
         /*
          * Проверка изменения ширины страницы

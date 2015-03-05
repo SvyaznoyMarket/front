@@ -37,6 +37,7 @@ class GetTreeList extends Query {
                 'filters' => $filterData,
             ];
         }
+
         if ($rootId) {
             $this->url->query['root_id'] = $rootId;
             $this->url->query['is_load_parents'] = false;

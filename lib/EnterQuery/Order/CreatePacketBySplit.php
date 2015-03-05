@@ -19,15 +19,14 @@ class CreatePacketBySplit extends Query {
      * @param Model\Order\Meta[] $metas
      * @param bool $isReceiveSms
      */
-    public function __construct(Model\Cart\Split $split, array $metas = [], $isReceiveSms = false, $typeId = Model\Order::TYPE_ORDER, $userMobile = null, $userEmail = null, $userFirstName = null) {
+    public function __construct(Model\Cart\Split $split, array $metas = [], $isReceiveSms = false, $typeId = Model\Order::TYPE_ORDER, $userMobile = null, $userEmail = null, $userFirstName = null, Model\User $user = null) {
         $this->retry = 1;
 
         $this->url = new Url();
         $this->url->path = 'v2/order/create-packet2';
 
         // build data
-        $user = $split->user;
-        $address = $user ? $user->address : null;
+        $address = $split->user ? $split->user->address : null;
 
         $data = [];
         foreach ($split->orders as $order) {
@@ -46,14 +45,14 @@ class CreatePacketBySplit extends Query {
             $orderData = [
                 'type_id'             => $typeId,
                 'geo_id'              => $split->region->id,
-                'user_id'             => null, // FIXME!!!
+                'user_id'             => $user ? $user->id : null,
                 'is_legal'            => false, // FIXME!!!
                 'payment_id'          => $order->paymentMethodId,
                 'credit_bank_id'      => null, // FIXME!!!
-                'last_name'           => $user ? $user->lastName : null,
-                'first_name'          => $userFirstName ? $userFirstName : ($user ? $user->firstName : null),
-                'email'               => $userEmail ? $userEmail : ($user ? $user->email : null),
-                'mobile'              => $userMobile ? $userMobile : ($user ? $user->phone : null),
+                'last_name'           => $split->user ? $split->user->lastName : null,
+                'first_name'          => $userFirstName ? $userFirstName : ($split->user ? $split->user->firstName : null),
+                'email'               => $userEmail ? $userEmail : ($split->user ? $split->user->email : null),
+                'mobile'              => $userMobile ? $userMobile : ($split->user ? $split->user->phone : null),
                 'address_street'      => null,
                 'address_number'      => null,
                 'address_building'    => null,
@@ -61,7 +60,7 @@ class CreatePacketBySplit extends Query {
                 'address_floor'       => null,
                 'shop_id'             => ($delivery && $delivery->point) ? $delivery->point->id : null,
                 'extra'               => $order->comment,
-                'bonus_card_number'   => ($user && $user->bonusCardNumber) ? $user->bonusCardNumber : null,
+                'bonus_card_number'   => ($split->user && $split->user->bonusCardNumber) ? $split->user->bonusCardNumber : null,
                 'delivery_type_id'    => $delivery ? $delivery->modeId : null, // ATTENTION
                 'delivery_type_token' => $delivery ? $delivery->methodToken : null,
                 'delivery_price'      => $delivery ? $delivery->price : null,
@@ -71,8 +70,8 @@ class CreatePacketBySplit extends Query {
                 'product'             => [],
             ];
 
-            if ($user->smsCode) {
-                $orderData['sms_code'] = $user->smsCode;
+            if ($split->user->smsCode) {
+                $orderData['sms_code'] = $split->user->smsCode;
             }
 
             if ($isReceiveSms) {

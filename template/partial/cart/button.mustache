@@ -1,8 +1,8 @@
-<div class="js-widget {{widgetId}}" data-template-selector="#tpl-product-buyButton">
+<div class="js-widget {{widgetId}} noselect" data-template-selector="#tpl-product-buyButton">
     {{^isDisabled}}
         <a
             href="{{url}}"
-            class="{{id}}{{#isSlot}} btnBuy btnBuy--bid js-slotButton{{/isSlot}} {{^isSlot}} js-ga-click{{^isQuick}} js-buyButton{{/isQuick}}{{#isQuick}} js-quickBuyButton{{/isQuick}}{{^isInShopOnly}} btnBuy{{/isInShopOnly}}{{#isInShopOnly}} delivrB_btn btn2{{/isInShopOnly}}{{#isInCart}} btnBuy-incart{{/isInCart}}{{/isSlot}}"
+            class="{{id}}{{#isSlot}}btn btn--big btn--slot js-slotButton noselect{{/isSlot}} {{^isSlot}} js-ga-click{{^isQuick}} js-buyButton{{/isQuick}}{{#isQuick}} js-quickBuyButton{{/isQuick}}{{^isInShopOnly}} btnBuy{{/isInShopOnly}}{{#isInShopOnly}} delivrB_btn btn2{{/isInShopOnly}}{{#isInCart}} btnBuy-incart{{/isInCart}}{{/isSlot}}"
             data-ga-click="{{&dataGa}}"
             {{#widgetId}}data-widget-selector=".{{widgetId}}"{{/widgetId}}
             data-url="{{&dataUrl}}"
