@@ -55,6 +55,7 @@ class HandleResponse {
             if (in_array($e->getCode(), [
                 Http\Response::STATUS_UNAUTHORIZED,
                 Http\Response::STATUS_BAD_REQUEST,
+                Http\Response::STATUS_INTERNAL_SERVER_ERROR,
             ])) {
                 $response = new Http\JsonResponse([
                     'error' => ['code' => $e->getCode(), 'message' => $e->getMessage()],
