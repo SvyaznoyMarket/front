@@ -4,6 +4,7 @@ namespace EnterMobile\Repository\Partial;
 
 use Enter\Http;
 use Enter\Util;
+use EnterAggregator\PriceHelperTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\UrlHelperTrait;
 use EnterAggregator\TemplateHelperTrait;
@@ -12,7 +13,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 
 class ProductFilter {
-    use RouterTrait, UrlHelperTrait, TemplateHelperTrait;
+    use RouterTrait, UrlHelperTrait, TemplateHelperTrait, PriceHelperTrait;
 
     /**
      * @param \EnterModel\Product\Filter[] $filterModels
@@ -153,7 +154,7 @@ class ProductFilter {
                             if (($filterModel->min == $requestFilterModel->value) || ($filterModel->max == $requestFilterModel->value)) continue;
 
                             if ('price' == $filterModel->token) {
-                                $element->title = $optionModel->name . ' ' . number_format((float)$requestFilterModel->value, 0, ',', ' ') . 'р';
+                                $element->title = $optionModel->name . ' ' . $this->getPriceHelper()->format($requestFilterModel->value) . 'р';
                             } else {
                                 $element->title = $optionModel->name . ' ' . $requestFilterModel->value . ($filterModel->unit ? $filterModel->unit : '');
                             }

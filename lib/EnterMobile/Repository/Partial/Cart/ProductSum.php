@@ -2,10 +2,13 @@
 
 namespace EnterMobile\Repository\Partial\Cart;
 
+use EnterAggregator\PriceHelperTrait;
 use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 
 class ProductSum {
+    use PriceHelperTrait;
+
     /**
      * @param \EnterModel\Cart\Product|null $cartProduct
      * @return Partial\Cart\ProductSum|null
@@ -19,7 +22,7 @@ class ProductSum {
             $productSum = new Partial\Cart\ProductSum();
             $productSum->widgetId = self::getWidgetId($cartProduct->id);
             $productSum->value = $cartProduct->sum;
-            $productSum->shownValue = number_format((float)$cartProduct->sum, 0, ',', ' ');
+            $productSum->shownValue = $this->getPriceHelper()->format($cartProduct->sum);
         }
 
         return $productSum;

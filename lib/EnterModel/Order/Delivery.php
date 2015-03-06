@@ -5,7 +5,7 @@ namespace EnterModel\Order;
 use EnterModel as Model;
 
 class Delivery {
-    /** @var int */
+    /** @var float */
     public $price;
     /** @var int */
     public $date;
@@ -25,7 +25,7 @@ class Delivery {
             if (array_key_exists('delivery_id', $data)) $this->typeId = (string)$data['delivery_id'];
         }
 
-        if (array_key_exists('price', $data)) $this->price = (int)$data['price'];
+        if (array_key_exists('price', $data)) $this->price = (float)$data['price'];
         if (array_key_exists('delivery_date', $data) && $data['delivery_date'] && ('0000-00-00' != $data['delivery_date'])) {
             try {
                 $this->date = (new \DateTime($data['delivery_date']))->getTimestamp();

@@ -53,9 +53,9 @@ class Product {
     public $stock = [];
     /** @var Model\Product\ShopState[] */
     public $shopStates = [];
-    /** @var int */
+    /** @var float */
     public $price;
-    /** @var int */
+    /** @var float */
     public $oldPrice;
     /** @var Model\Product\Label[] */
     public $labels = [];
@@ -103,8 +103,8 @@ class Product {
         if (array_key_exists('link', $data)) $this->link = rtrim((string)$data['link'], '/');
         if (array_key_exists('description', $data)) $this->description = (string)$data['description'];
         if (array_key_exists('tagline', $data)) $this->tagline = (string)$data['tagline'];
-        if (array_key_exists('price', $data)) $this->price = $data['price'] ? (int)$data['price'] : null;
-        if (array_key_exists('price_old', $data)) $this->oldPrice = $data['price_old'] ? (int)$data['price_old'] : null;
+        if (array_key_exists('price', $data)) $this->price = $data['price'] ? (float)$data['price'] : null;
+        if (array_key_exists('price_old', $data)) $this->oldPrice = $data['price_old'] ? (float)$data['price_old'] : null;
         if (array_key_exists('is_kit_locked', $data)) $this->isKitLocked = (bool)$data['is_kit_locked'];
 
         $this->isBuyable = isset($data['state']['is_buyable']) && (bool)$data['state']['is_buyable'];

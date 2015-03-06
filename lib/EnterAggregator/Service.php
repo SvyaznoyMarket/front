@@ -209,6 +209,19 @@ class Service {
     }
 
     /**
+     * @return Helper\Price
+     */
+    public function getPriceHelper() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new Helper\Price();
+        }
+
+        return $instance;
+    }
+
+    /**
      * @return Helper\Translate
      */
     public function getTranslateHelper() {

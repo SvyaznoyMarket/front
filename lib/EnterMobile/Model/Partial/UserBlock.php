@@ -28,7 +28,7 @@ namespace EnterMobile\Model\Partial\UserBlock {
         public $url;
         /** @var int */
         public $quantity;
-        /** @var int */
+        /** @var float */
         public $sum;
         /** @var string */
         public $shownSum;

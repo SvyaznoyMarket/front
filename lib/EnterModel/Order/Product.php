@@ -7,9 +7,9 @@ use EnterModel as Model;
 class Product {
     /** @var string */
     public $id;
-    /** @var int */
+    /** @var float */
     public $price;
-    /** @var int */
+    /** @var float */
     public $sum;
     /** @var int */
     public $quantity;
@@ -19,8 +19,8 @@ class Product {
      */
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
-        if (array_key_exists('price', $data)) $this->price = (int)$data['price'];
+        if (array_key_exists('price', $data)) $this->price = (float)$data['price'];
         if (array_key_exists('quantity', $data)) $this->quantity = (int)$data['quantity'];
-        if (array_key_exists('sum', $data)) $this->sum = (int)$data['sum'];
+        if (array_key_exists('sum', $data)) $this->sum = (float)$data['sum'];
     }
 }

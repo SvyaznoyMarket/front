@@ -9,11 +9,11 @@ class ProductCard {
     public $name;
     /** @var string */
     public $url;
-    /** @var int */
+    /** @var float */
     public $price;
     /** @var string */
     public $shownPrice;
-    /** @var int */
+    /** @var float */
     public $oldPrice;
     /** @var string */
     public $shownOldPrice;

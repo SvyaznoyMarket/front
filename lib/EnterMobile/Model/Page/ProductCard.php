@@ -40,11 +40,11 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
         public $namePrefix;
         /** @var string */
         public $article;
-        /** @var int */
+        /** @var float */
         public $price;
         /** @var string */
         public $shownPrice;
-        /** @var int */
+        /** @var float */
         public $oldPrice;
         /** @var string */
         public $shownOldPrice;

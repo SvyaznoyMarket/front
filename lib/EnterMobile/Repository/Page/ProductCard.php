@@ -2,6 +2,7 @@
 
 namespace EnterMobile\Repository\Page;
 
+use EnterAggregator\PriceHelperTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
@@ -15,7 +16,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use ConfigTrait, LoggerTrait, RouterTrait, DateHelperTrait, TranslateHelperTrait, TemplateHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, DateHelperTrait, TranslateHelperTrait, TemplateHelperTrait, PriceHelperTrait;
 
     /**
      * @param Page $page
@@ -58,9 +59,9 @@ class ProductCard {
         $page->content->product->article = $productModel->article;
         $page->content->product->description = $productModel->description;
         $page->content->product->price = $productModel->price;
-        $page->content->product->shownPrice = $productModel->price ? number_format((float)$productModel->price, 0, ',', ' ') : null;
+        $page->content->product->shownPrice = $productModel->price ? $this->getPriceHelper()->format($productModel->price) : null;
         $page->content->product->oldPrice = $productModel->oldPrice;
-        $page->content->product->shownOldPrice = $productModel->oldPrice ? number_format((float)$productModel->oldPrice, 0, ',', ' ') : null;
+        $page->content->product->shownOldPrice = $productModel->oldPrice ? $this->getPriceHelper()->format($productModel->oldPrice) : null;
         $page->content->product->cartButtonBlock = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($productModel);
         $page->content->product->brand = $productModel->brand;
         $page->content->product->slotPartnerOffer = $productModel->getSlotPartnerOffer();
@@ -92,7 +93,7 @@ class ProductCard {
                 if (in_array($deliveryModel->token, [\EnterModel\Product\NearestDelivery::TOKEN_STANDARD, \EnterModel\Product\NearestDelivery::TOKEN_SELF])) {
                     $delivery->priceText = !$deliveryModel->price
                         ? 'бесплатно'
-                        : (number_format((float)$deliveryModel->price, 0, ',', ' ') . ' p')
+                        : ($this->getPriceHelper()->format($deliveryModel->price) . ' p')
                     ;
                     if ($deliveryModel->deliveredAt) {
                         $delivery->deliveredAtText = $translateHelper->humanizeDate($deliveryModel->deliveredAt);
@@ -241,8 +242,8 @@ class ProductCard {
                 $kit->name = $kitProductModel->name;
                 $kit->url = $kitProductModel->link;
                 $kit->quantity = $kitProductModel->kitCount;
-                $kit->shownPrice = $kitProductModel->price ? number_format((float)$kitProductModel->price, 0, ',', ' ') : null;
-                $kit->shownSum = $kitProductModel->price ? number_format((float)$kitProductModel->price * $kitProductModel->kitCount, 0, ',', ' ') : null;
+                $kit->shownPrice = $kitProductModel->price ? $this->getPriceHelper()->format($kitProductModel->price) : null;
+                $kit->shownSum = $kitProductModel->price ? $this->getPriceHelper()->format($kitProductModel->price * $kitProductModel->kitCount) : null;
                 if (isset($kitProductModel->media->photos[0])) {
                     $photoModel = $kitProductModel->media->photos[0];
                     $kit->photoUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel->source, $photoModel->id, 3));
@@ -284,7 +285,7 @@ class ProductCard {
                 $page->content->product->kitBlock->products[] = $kit;
             }
 
-            $page->content->product->kitBlock->shownSum = number_format((float)$sum, 0, ',', ' ');
+            $page->content->product->kitBlock->shownSum = $this->getPriceHelper()->format($sum);
             $page->content->product->kitBlock->shownQuantity = 'Итого за ' . $count . ' ' . $translateHelper->numberChoice($count, ['предмет', 'предмета', 'предметов']);
             $page->content->product->kitBlock->cartButton = $cartProductButtonRepository->getListObject(
                 array_reverse($productModel->relation->kits),

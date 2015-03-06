@@ -9,13 +9,13 @@ class ProductCard {
     public $name;
     /** @var string */
     public $url;
-    /** @var int */
+    /** @var float */
     public $price;
     /** @var string */
     public $shownPrice;
     /** @var Partial\Cart\ProductSum|null */
     public $sum;
-    /** @var int */
+    /** @var float */
     public $oldPrice;
     /** @var string */
     public $shownOldPrice;

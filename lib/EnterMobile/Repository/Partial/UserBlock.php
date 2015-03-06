@@ -2,13 +2,14 @@
 
 namespace EnterMobile\Repository\Partial;
 
+use EnterAggregator\PriceHelperTrait;
 use EnterAggregator\RouterTrait;
 use EnterMobile\Routing;
 use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 
 class UserBlock {
-    use RouterTrait;
+    use RouterTrait, PriceHelperTrait;
 
     /**
      * @param \EnterModel\Cart $cart
@@ -36,7 +37,7 @@ class UserBlock {
         $userBlock->cart->url = $router->getUrlByRoute(new Routing\Cart\Index());
         if ($userBlock->isCartNotEmpty) {
             $userBlock->cart->quantity = count($cart->product);
-            $userBlock->cart->shownSum = $cart->sum ? number_format((float)$cart->sum, 0, ',', ' ') : null;
+            $userBlock->cart->shownSum = $cart->sum ? $this->getPriceHelper()->format($cart->sum) : null;
             $userBlock->cart->sum = $cart->sum;
         }
 

@@ -2,6 +2,7 @@
 
 namespace EnterMobile\Repository\Partial;
 
+use EnterAggregator\PriceHelperTrait;
 use EnterAggregator\TranslateHelperTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterMobile\Routing;
@@ -10,7 +11,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 
 class Cart {
-    use TranslateHelperTrait, TemplateHelperTrait;
+    use TranslateHelperTrait, TemplateHelperTrait, PriceHelperTrait;
 
     /**
      * @param \EnterModel\Cart $cartModel
@@ -24,7 +25,7 @@ class Cart {
         $cart = new Partial\Cart();
         $cart->widgetId = self::getWidgetId();
         $cart->sum = $cartModel->sum;
-        $cart->shownSum = number_format((float)$cartModel->sum, 0, ',', ' ');
+        $cart->shownSum = $this->getPriceHelper()->format($cartModel->sum);
         $cart->quantity = count($cartModel);
         $cart->shownQuantity = $cart->quantity . ' ' . $this->getTranslateHelper()->numberChoice($cart->quantity, ['товар', 'товара', 'товаров']);
 

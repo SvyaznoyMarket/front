@@ -41,7 +41,7 @@ namespace EnterMobile\Model\Page\User\Get\Cart {
         public $id;
         /** @var string */
         public $name;
-        /** @var int */
+        /** @var float */
         public $price;
         /** @var int */
         public $quantity;
