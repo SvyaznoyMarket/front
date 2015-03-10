@@ -160,7 +160,7 @@ namespace EnterTerminal\Controller\ProductCatalog {
             if (!$filterRepository->getObjectByToken($requestFilters, 'tag-sex')) {
                 $holidayFilter = $filterRepository->getObjectByToken($requestFilters, 'tag-holiday');
 
-                if ($holidayFilter && $holidayFilter->value == 738) {
+                if ($holidayFilter && ($holidayFilter->value == 738 || $holidayFilter->value == 707)) {
                     $requestFilters[] = $this->createRequestFilter('tag-sex', 0, '688');
                 } else {
                     $requestFilters[] = $this->createRequestFilter('tag-sex', 0, '687');
