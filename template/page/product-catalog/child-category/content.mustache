@@ -6,7 +6,9 @@
                 {{#categories}}
                 <li class="catalogCategories_item">
                     <a href="{{url}}" class="catalogCategories_link">
-                        <img src="{{image}}" alt="{{name}}" class="catalogCategories_img">
+                        <div class="catalogCategories-img-container">
+                            <img src="{{image}}" alt="{{name}}" class="catalogCategories_img">
+                        </div>
                         <span class="catalogCategories_text">{{name}}</span>
                     </a>
                 </li>
