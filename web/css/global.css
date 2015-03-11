@@ -4257,14 +4257,14 @@ body.noScroll {
   .catalogCategories_link {
     display: table;
     width: 100%;
-    height: auto;
+    height: 63px;
   }
   .catalogCategories_text {
     width: 89%;
     height: 63px;
   }
   .catalogCategories-img-container {
-    height: auto;
+    height: 53px;
     width: 52px;
     padding: 1px 2px;
     line-height: 58px;
