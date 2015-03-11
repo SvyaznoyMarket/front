@@ -14,7 +14,7 @@ define(
                 dataValue = $el.data('value')
             ;
 
-            console.info('partner', action, dataValue, $el);
+            console.info('partner', id, action, dataValue, $el);
             require(['module/partner/' + id], function(module) {
                 try {
                     module.handle && module.handle(action, dataValue, $el);
