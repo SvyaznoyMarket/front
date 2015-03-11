@@ -4162,16 +4162,18 @@ body.noScroll {
   margin-right: 0;
 }
 .catalogCategories-img-container {
-  margin: 4px 5px 0;
+  padding: 2px 5px 4px;
   height: 70px;
   width: 70px;
   float: left;
   text-align: center;
+  line-height: 70px;
 }
 .catalogCategories_img {
   display: inline-block;
   *zoom: 1;
   *display: inline;
+  vertical-align: middle;
   max-width: 100%;
   max-height: 100%;
 }
@@ -4188,6 +4190,7 @@ body.noScroll {
   line-height: 1.2;
 }
 .catalogCategories_link {
+  height: 78px;
   display: block;
 }
 .catalogCategories_link:hover {
@@ -4254,17 +4257,21 @@ body.noScroll {
   .catalogCategories_link {
     display: table;
     width: 100%;
+    height: auto;
   }
   .catalogCategories_text {
     width: 89%;
-    height: 53px;
+    height: 63px;
+  }
+  .catalogCategories-img-container {
+    height: auto;
+    width: 52px;
+    padding: 1px 2px;
+    line-height: 58px;
   }
   .catalogCategories_img {
-    display: table-cell;
     width: auto;
-    height: 58px;
-    margin: 0;
-    padding: 2px 5px 3px;
+    height: auto;
     background: #ffffff;
   }
 }
