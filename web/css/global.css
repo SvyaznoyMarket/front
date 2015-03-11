@@ -3828,6 +3828,7 @@ body.noScroll {
 }
 .cartItem_col-desc .price {
   color: #777777;
+  white-space: nowrap;
 }
 .cartItem_col-price {
   width: 290px;
@@ -3835,6 +3836,7 @@ body.noScroll {
 }
 .cartItem_col-price .priceNum {
   display: none;
+  white-space: nowrap;
 }
 .cartItem_col-price .price {
   display: inline-block;
@@ -3845,6 +3847,7 @@ body.noScroll {
   font-size: 20px;
   line-height: 41px;
   *display: inline;
+  white-space: nowrap;
 }
 .cartItem_col-price .delete {
   display: inline-block;
@@ -3874,6 +3877,7 @@ body.noScroll {
 .cartLine_left .price {
   padding-left: 20px;
   font-size: 22px;
+  white-space: nowrap;
 }
 .cartLine_right {
   float: right;
@@ -4083,6 +4087,7 @@ body.noScroll {
 }
 .cartBar_text .price {
   font-size: 18px;
+  white-space: nowrap;
 }
 .cartBar_btn {
   float: right;
