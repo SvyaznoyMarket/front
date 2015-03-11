@@ -59,6 +59,7 @@ namespace EnterModel\Product {
             if (array_key_exists('uid', $data)) $this->ui = (string)$data['uid'];
             if (array_key_exists('parent_id', $data)) $this->parentId = $data['parent_id'] ? (string)$data['parent_id'] : null;
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
+            if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
             if (array_key_exists('slug', $data)) $this->token = (string)$data['slug'];
             if (array_key_exists('link', $data)) $this->link = (string)$data['link'];
             $this->path = trim(preg_replace('/^\/catalog\//', '', $this->link), '/');
