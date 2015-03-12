@@ -39,6 +39,8 @@ namespace EnterMobile\Model\Partial\ProductFilter {
         public $minValue;
         /** @var string */
         public $maxValue;
+        /** @var bool */
+        public $isRubValue = false;
         /** @var string */
         public $id;
         /** @var bool */

@@ -154,7 +154,8 @@ class ProductFilter {
                             if (($filterModel->min == $requestFilterModel->value) || ($filterModel->max == $requestFilterModel->value)) continue;
 
                             if ('price' == $filterModel->token) {
-                                $element->title = $optionModel->name . ' ' . $this->getPriceHelper()->format($requestFilterModel->value) . 'р';
+                                $element->title = $optionModel->name . ' ' . $this->getPriceHelper()->format($requestFilterModel->value);
+                                $element->isRubValue = true;
                             } else {
                                 $element->title = $optionModel->name . ' ' . $requestFilterModel->value . ($filterModel->unit ? $filterModel->unit : '');
                             }
