@@ -22,7 +22,11 @@
                 </div>
 
                 <div class="cartItem_col cartItem_col-price">
-                    <div class="priceNum">{{shownPrice}} <span class="rubl">p</span></div><!--/ дубль для мобилки -->
+                    <div class="priceNum">
+                    {{#sum}}
+                        {{>partial/cart/productSum}}
+                    {{/sum}}
+                    </div><!--/ дубль для мобилки -->
 
                     <div class="price">{{shownPrice}} <span class="rubl">p</span></div>
 
