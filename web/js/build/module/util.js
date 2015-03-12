@@ -1,1 +1,1 @@
-define([],function(){return{formatCurrency:function(e){return e=String(e),e=e.replace(",","."),e=e.replace(/\s/g,""),e=String(Number(e).toFixed(2)),e=e.split("."),e[0].length>=5&&(e[0]=e[0].replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g,"$1 ")),0==e[1]&&(e=e.slice(0,1)),e.join(".")}}});
+define([],function(){return{formatCurrency:function(e){return e=String(e),e=e.replace(",","."),e=e.replace(/\s/g,""),e=String(Number(e).toFixed(2)),e=e.split("."),e[0].length>=5&&(e[0]=e[0].replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g,"$1 ")),0==e[1]&&(e=e.slice(0,1)),e.join(".")}}});

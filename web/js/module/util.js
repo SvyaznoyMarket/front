@@ -11,7 +11,7 @@ define(
                 price = price.split('.');
 
                 if (price[0].length >= 5) {
-                    price[0] = price[0].replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 '); // В качестве разделителя груп цифр используется символ &thinsp;
+                    price[0] = price[0].replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
                 }
 
                 if (price[1] == 0) {
