@@ -3994,13 +3994,14 @@ body.noScroll {
     font-size: 16px;
   }
   .cartItem_col-price .priceNum {
-    float: left;
-    width: 80px;
+    float: right;
+    min-width: 80px;
     margin-right: 10px;
     font-size: 15px;
   }
   .cartItem_col-price .price {
-    width: 65px;
+    float: left;
+    min-width: 65px;
     font-size: 15px;
   }
   .cartLine {
