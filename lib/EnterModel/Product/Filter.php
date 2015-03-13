@@ -88,8 +88,8 @@ class Filter {
             }
         } else if (in_array($this->typeId, [self::TYPE_SLIDER, self::TYPE_NUMBER])) {
             foreach ([
-                ['id' => $this->min, 'token' => 'from', 'name' => 'От'],
-                ['id' => $this->max, 'token' => 'to', 'name' => 'До'],
+                ['id' => $this->min, 'token' => 'from', 'name' => 'от'],
+                ['id' => $this->max, 'token' => 'to', 'name' => 'до'],
             ] as $optionItem) {
                 $option = new Model\Product\Filter\Option();
                 $option->id = (string)$optionItem['id'];
