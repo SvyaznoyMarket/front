@@ -3950,7 +3950,7 @@ body.noScroll {
   .cartItem_col-price .priceNum {
     display: block;
     float: left;
-    width: 100px;
+    max-width: 100px;
     margin-right: 10px;
     text-align: center;
     color: #777777;
@@ -3995,7 +3995,7 @@ body.noScroll {
   }
   .cartItem_col-price .priceNum {
     float: right;
-    min-width: 80px;
+    width: 67px;
     margin-right: 10px;
     font-size: 15px;
   }
@@ -4007,6 +4007,7 @@ body.noScroll {
     float: left;
     min-width: 65px;
     width: auto;
+    max-width: 100px;
     font-size: 15px;
   }
   .cartLine {
