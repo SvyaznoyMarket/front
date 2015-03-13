@@ -123,6 +123,8 @@ class Redirect {
                     $item = reset($item);
                     if (!empty($item['link'])) {
                         $url = rtrim((string)$item['link'], '/');
+                    } else if (!empty($item['url'])) {
+                        $url = rtrim((string)$item['url'], '/');
                     }
 
                 } catch (\Exception $e) {
