@@ -3999,9 +3999,14 @@ body.noScroll {
     margin-right: 10px;
     font-size: 15px;
   }
+  .cartItem_col-price .priceNum .price {
+    color: #000;
+  }
   .cartItem_col-price .price {
+    color: #777777;
     float: left;
     min-width: 65px;
+    width: auto;
     font-size: 15px;
   }
   .cartLine {
