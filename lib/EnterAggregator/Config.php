@@ -370,6 +370,10 @@ namespace EnterAggregator\Config {
 
     class Promo {
         /**
+         * @var int
+         */
+        public $typeId;
+        /**
          * @var array
          */
         public $urlPaths = [];

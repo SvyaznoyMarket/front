@@ -136,6 +136,7 @@ return function(\EnterAggregator\Config $config) {
 
     $config->search->minPhraseLength = 2;
 
+    $config->promo->typeId = 3;
     $config->promo->urlPaths =[
         0 => '/4/1/230x302/',
         1 => '/4/1/768x302/',

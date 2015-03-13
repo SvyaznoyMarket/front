@@ -4,11 +4,12 @@ namespace EnterRepository;
 
 use Enter\Http;
 use Enter\Curl\Query;
+use EnterAggregator\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterModel as Model;
 
 class Promo {
-    use LoggerTrait;
+    use LoggerTrait, ConfigTrait;
 
     /**
      * @param Http\Request $request
@@ -23,12 +24,13 @@ class Promo {
      * @return Model\Promo[]
      */
     public function getObjectListByQuery(Query $query) {
+        $config = $this->getConfig();
         $promos = [];
 
         try {
             foreach ($query->getResult() as $item) {
                 $typeId = @$item['type_id'];
-                if ('3' != $typeId) continue;
+                if ($typeId != $config->promo->typeId) continue;
 
                 $promos[] = new Model\Promo($item);
             }
