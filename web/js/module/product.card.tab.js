@@ -13,8 +13,7 @@ define(
             tab = tabList.find('.js-cont'),
             tabCount = tab.length,
 
-            $w = $(window),
-            $wwidth = $w.width();
+            $w = $(window);
         // end of vars
 
         var
@@ -107,7 +106,27 @@ define(
                 });
 
                 console.log(tabId);
-            };
+            },
+        /*
+         * пересчет ширины блоков
+         */
+         widthResizing = function widthResizing(){
+         		var winWidth = $('.js-tab-selector').width();
+
+                tab.css({
+                    'width': winWidth
+                });
+
+                tabWrap.css({
+                    'width': winWidth
+                });
+
+                tabList
+                    .css({
+                        'width': winWidth * tabCount
+                    })
+         }
+            ;
         //end of function
 
         addData();
@@ -134,9 +153,8 @@ define(
          * Проверка изменения ширины страницы
          */
         $w.on('resize', function() {
-            if ($(this).width() != $wwidth) {
-                tabsToggle();
-            }
+        	widthResizing();
+        	tabsToggle();
         });
     }
 );
