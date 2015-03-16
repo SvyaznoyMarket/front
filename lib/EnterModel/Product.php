@@ -83,6 +83,8 @@ class Product {
     public $trustfactors = [];
     /** @var Model\Product\PartnerOffer[] */
     public $partnerOffers = [];
+    /** @var array|null */
+    public $favorite;
 
     /**
      * @param array $data

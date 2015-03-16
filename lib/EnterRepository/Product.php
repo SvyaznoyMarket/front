@@ -428,4 +428,28 @@ class Product {
             $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
     }
+
+    /**
+     * @param Model\Product[] $products
+     * @param Query $favoriteListQuery
+     * @throws \Exception
+     */
+    public function setFavoriteForObjectListByQuery(array $products, Query $favoriteListQuery) {
+        // товары по ui
+        $productsByUi = [];
+        foreach ($products as $product) {
+            $productsByUi[$product->ui] = $product;
+        }
+
+        foreach ($favoriteListQuery->getResult() as $item) {
+            $item += ['uid' => null, 'is_favorite' => null];
+
+            $ui = $item['uid'] ? (string)$item['uid'] : null;
+            if (!$ui || !$item['is_favorite'] || !isset($productsByUi[$ui])) continue;
+
+            $productsByUi[$ui]->favorite = [
+                'ui' => $ui,
+            ]; // FIXME
+        }
+    }
 }

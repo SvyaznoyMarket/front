@@ -22,6 +22,8 @@ namespace EnterMobileApplication\Controller {
                 throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
+            $userToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
+
             // ид товара
             $productId = trim((string)$request->query['productId']);
             if (!$productId) {
@@ -30,7 +32,13 @@ namespace EnterMobileApplication\Controller {
 
             $context = new Context();
             $context->mainMenu = false;
-            $controllerResponse = (new \EnterAggregator\Controller\ProductCard())->execute($regionId, ['id' => $productId], $context);
+            $context->favourite = true;
+            $controllerResponse = (new \EnterAggregator\Controller\ProductCard())->execute(
+                $regionId,
+                ['id' => $productId],
+                $context,
+                $userToken
+            );
             // товар
             if (!$controllerResponse->product) {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Товар #%s не найден', $productId));

@@ -333,23 +333,7 @@ namespace EnterAggregator\Controller {
             // товары в избранном
             try {
                 if ($favoriteListQuery) {
-                    // товары по ui
-                    $productsByUi = [];
-                    foreach ($productsById as $product) {
-                        $productsByUi[$product->ui] = $product;
-                    }
-
-                    foreach ($favoriteListQuery->getResult() as $item) {
-                        $item += ['uid' => null, 'is_favorite' => null];
-
-                        $ui = $item['uid'] ? (string)$item['uid'] : null;
-                        if (!$ui || !$item['is_favorite'] || !isset($productsByUi[$ui])) continue;
-
-                        $productsByUi[$ui]->favorite = [
-                            'ui' => $ui,
-                        ]; // FIXME
-                    }
-
+                    $productRepository->setFavoriteForObjectListByQuery($productsById, $favoriteListQuery);
                 }
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
