@@ -83,6 +83,8 @@ class Product {
     public $trustfactors = [];
     /** @var Model\Product\PartnerOffer[] */
     public $partnerOffers = [];
+    /** @var int */
+    public $availableStoreQuantity;
 
     /**
      * @param array $data
@@ -189,6 +191,8 @@ class Product {
         $inShowroom = false;
         $inShop = false;
 
+        $availableStories = [];
+
         foreach ($stockData as $stockItem) {
             if ($stockItem['store_id'] && $stockItem['quantity']) { // есть на центральном складе
                 $inWarehouse = true;
@@ -200,6 +204,27 @@ class Product {
             if ($stockItem['shop_id'] && $stockItem['quantity_showroom']) { // есть на витрине магазина
                 $inShowroom = true;
             }
+
+            // TERMINALS-1050
+            if ($stockItem['store_id'] && $stockItem['quantity']) {
+                $availableStories[] = $stockItem;
+            }
+        }
+
+        usort($availableStories, function($a, $b) {
+            return $b['priority'] - $a['priority'];
+        });
+        $availableStore = reset($availableStories) ?: null;
+        if ($availableStore) {
+            $this->availableStoreQuantity =
+                $availableStore['is_supplier']
+                ? (
+                    $availableStore['is_infinite']
+                    ? $availableStore['quantity']
+                    : $availableStore['quantity_supplier']
+                )
+                : $availableStore['quantity']
+            ;
         }
 
         // TERMINALS-947
