@@ -78,7 +78,7 @@ trait ProductListingTrait {
                         'token'    => $option->token,
                         'name'     => $option->name,
                         'quantity' => $option->quantity,
-                        'image'    => $option->image,
+                        //'image'    => $option->image,
                     ];
                 }, $filter->option),
             ];
