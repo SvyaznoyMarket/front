@@ -1,27 +1,29 @@
 <?php
 
-namespace EnterQuery\User\Favorite;
+namespace EnterQuery\User\Wishlist;
 
 use Enter\Curl\Query;
 use EnterQuery\CrmQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
-class DeleteListByUserUi extends Query {
+class GetItemByUserUi extends Query {
     use CrmQueryTrait;
 
     /** @var array */
     protected $result;
 
-
     /**
      * @param string $userUi
+     * @param string $id
      */
-    public function __construct($userUi) {
+    public function __construct($userUi, $id) {
         $this->url = new Url();
-        $this->url->path = 'api/favorite/flush';
-        $this->data = [
-            'user_uid' => $userUi,
+        $this->url->path = 'api/wishlist';
+        $this->url->query = [
+            'user_uid'      => $userUi,
+            'wishlist_id'   => $id,
+            'with_products' => true,
         ];
 
         $this->init();
