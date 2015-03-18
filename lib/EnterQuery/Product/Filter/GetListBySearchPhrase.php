@@ -3,12 +3,12 @@
 namespace EnterQuery\Product\Filter;
 
 use Enter\Curl\Query;
-use EnterQuery\CoreQueryTrait;
+use EnterQuery\SearchQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
 class GetListBySearchPhrase extends Query {
-    use CoreQueryTrait;
+    use SearchQueryTrait;
 
     /** @var array */
     protected $result;
@@ -19,7 +19,7 @@ class GetListBySearchPhrase extends Query {
      */
     public function __construct($searchPhrase, $regionId = null) {
         $this->url = new Url();
-        $this->url->path = 'v2/listing/filter';
+        $this->url->path = 'listing/filter';
         $this->url->query = [
             'filter' => [
                 'filters' => [
