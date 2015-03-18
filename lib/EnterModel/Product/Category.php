@@ -80,7 +80,7 @@ namespace EnterModel\Product {
             )) $this->productGlobalCount = (int)$data['product_count_global'];
             if (isset($data['children']) && is_array($data['children'])) {
                 foreach ($data['children'] as $childItem) {
-                    if (!isset($childItem['uid'])) continue;
+                    if (!isset($childItem['uid']) || 'be23c7db-4d67-4b6b-bdf8-cdfec4b2aefe' == $childItem['uid']) continue; // AG-59 Временная заглушка для отключения кухонь
                     $this->children[] = new Model\Product\Category($childItem);
                 }
             }

@@ -42,6 +42,8 @@ class GetTreeList extends Query {
             $this->url->query['is_load_parents'] = false;
         }
 
+        $this->url->query['filter']['filters'][] = ['exclude_partner_type', 1, 2]; // AG-59 Временная заглушка для отключения кухонь
+
         $this->init();
     }
 

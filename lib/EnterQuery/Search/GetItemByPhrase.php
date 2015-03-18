@@ -42,6 +42,8 @@ class GetItemByPhrase extends Query {
             $this->url->query['product'] = ['sort' => [$sorting->token => $sorting->direction]];
         }
 
+        $this->url->query['filter']['filters'][] = ['exclude_partner_type', 1, 2]; // AG-59 Временная заглушка для отключения кухонь
+
         $this->init();
     }
 
