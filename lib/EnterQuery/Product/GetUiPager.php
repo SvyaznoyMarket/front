@@ -47,8 +47,6 @@ class GetUiPager extends Query {
             $this->url->query['region_id'] = $regionId;
         }
 
-        $this->url->query['filter']['filters'][] = ['exclude_partner_type', 1, 2]; // AG-59 Временная заглушка для отключения кухонь
-
         $this->init();
     }
 
