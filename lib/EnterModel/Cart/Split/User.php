@@ -3,6 +3,8 @@ namespace EnterModel\Cart\Split;
 
 class User {
     /** @var string|null */
+    public $ui;
+    /** @var string|null */
     public $phone;
     /** @var string|null */
     public $lastName;
