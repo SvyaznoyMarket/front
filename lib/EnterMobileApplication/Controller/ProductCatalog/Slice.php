@@ -24,6 +24,8 @@ class Slice {
         $curl = $this->getCurl();
         $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME!!!
 
+        $userToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
+
         // ид региона
         $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
         if (!$regionId) {
@@ -88,6 +90,7 @@ class Slice {
         $context->parentCategory = false;
         $context->branchCategory = false;
         $context->productOnlyForLeafCategory = false;
+        $context->favourite = true;
         $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
             $regionId,
             $categoryId ? ['id' => $categoryId] : [], // критерий получения категории товара
@@ -97,7 +100,8 @@ class Slice {
             $filterRepository, // репозиторий фильтров
             $baseRequestFilters,
             $requestFilters, // фильтры в http-запросе
-            $context
+            $context,
+            $userToken
         );
 
         // категория

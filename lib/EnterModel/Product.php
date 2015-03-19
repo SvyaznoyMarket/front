@@ -85,6 +85,8 @@ class Product {
     public $partnerOffers = [];
     /** @var int */
     public $availableStoreQuantity;
+    /** @var array|null */
+    public $favorite;
 
     /**
      * @param array $data

@@ -32,6 +32,7 @@ namespace EnterAggregator\Controller\Order {
             $logger = $this->getLogger();
             $curl = $this->getCurl();
             $orderRepository = new Repository\Order();
+            $productRepository = new Repository\Product();
             $paymentMethodRepository = new Repository\PaymentMethod();
 
             // ответ
@@ -120,8 +121,9 @@ namespace EnterAggregator\Controller\Order {
                 }
             }
 
+            // запрос товаров
             $productListQuery = null;
-            if ((bool)$orderProductsById) {
+            if ($orderProductsById) {
                 $productListQuery = new Query\Product\GetListByIdList(array_keys($orderProductsById), $regionId);
                 $curl->prepare($productListQuery);
             }
@@ -132,6 +134,25 @@ namespace EnterAggregator\Controller\Order {
             $productsById = [];
             try {
                 $productsById = $productListQuery ? (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]) : [];
+            } catch (\Exception $e) {
+                $logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
+            }
+
+            // запрос на проверку товаров в избранном
+            $favoriteListQuery = null;
+            if ($orderProductsById && $split->user->ui) {
+                $favoriteListQuery = new Query\User\Favorite\CheckListByUserUi($split->user->ui, array_map(function(Model\Product $product) { return $product->ui; }, $productsById));
+                $favoriteListQuery->setTimeout($config->crmService->timeout / 2);
+                $curl->prepare($favoriteListQuery);
+
+                $curl->execute();
+            }
+
+            // товары в избранном
+            try {
+                if ($favoriteListQuery) {
+                    $productRepository->setFavoriteForObjectListByQuery($productsById, $favoriteListQuery);
+                }
             } catch (\Exception $e) {
                 $logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
             }

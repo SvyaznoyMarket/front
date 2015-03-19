@@ -17,4 +17,10 @@ class ProductCard extends Context {
      * @var bool
      */
     public $delivery = true;
+    /**
+     * Проверять товары в избранном?
+     *
+     * @var bool
+     */
+    public $favourite = false;
 }

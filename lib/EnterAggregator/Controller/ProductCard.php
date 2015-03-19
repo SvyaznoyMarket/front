@@ -3,25 +3,28 @@
 namespace EnterAggregator\Controller {
     use EnterAggregator\ConfigTrait;
     use EnterAggregator\CurlTrait;
+    use EnterAggregator\LoggerTrait;
     use EnterAggregator\Model\Context\ProductCard as Context;
     use EnterQuery as Query;
     use EnterRepository as Repository;
     use EnterModel as Model;
 
     class ProductCard {
-        use ConfigTrait, CurlTrait;
+        use ConfigTrait, CurlTrait, LoggerTrait;
 
         /**
          * @param string $regionId
          * @param array $productCriteria Критерий получения товара: ['id' => 1] или ['token' => 'hp4530s']
          * @param Context $context
-         * @throws \Exception
+         * @param string|null $userToken
          * @return ProductCard\Response
+         * @throws \Exception
          */
         public function execute(
             $regionId,
             array $productCriteria,
-            Context $context
+            Context $context,
+            $userToken = null
         ) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
@@ -53,12 +56,29 @@ namespace EnterAggregator\Controller {
             }
             $curl->prepare($productItemQuery);
 
+            // запрос пользователя
+            $userItemQuery = null;
+            if ($userToken && ($context->favourite)) {
+                $userItemQuery = new Query\User\GetItemByToken($userToken);
+                $curl->prepare($userItemQuery);
+            }
+
             $curl->execute();
 
             // товар
             $response->product = $productRepository->getObjectByQuery($productItemQuery);
             if (!$response->product) {
                 return $response;
+            }
+
+            // пользователь
+            $user = null;
+            try {
+                if ($userItemQuery) {
+                    $user = (new Repository\User())->getObjectByQuery($userItemQuery);
+                }
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
             }
 
             // запрос дерева категорий для меню
@@ -133,11 +153,22 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($deliveryListQuery);
             }
 
+            // ид товаров
+            $productIds = array_merge([$response->product->id], (bool)$response->product->accessoryIds ? $response->product->accessoryIds : []);
+
             // запрос списка рейтингов товаров
             $ratingListQuery = null;
             if ($config->productReview->enabled) {
-                $ratingListQuery = new Query\Product\Rating\GetListByProductIdList(array_merge([$response->product->id], (bool)$response->product->accessoryIds ? $response->product->accessoryIds : []));
+                $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($productIds);
                 $curl->prepare($ratingListQuery);
+            }
+
+            // запрос на проверку товаров в избранном
+            $favoriteListQuery = null;
+            if ($context->favourite && $user && $response->product->ui) {
+                $favoriteListQuery = new Query\User\Favorite\CheckListByUserUi($user->ui, [$response->product->ui]);
+                $favoriteListQuery->setTimeout($config->crmService->timeout / 2);
+                $curl->prepare($favoriteListQuery);
             }
 
             // запрос трастфакторов товара
@@ -158,6 +189,15 @@ namespace EnterAggregator\Controller {
             $curl->prepare($paymentGroupListQuery);
 
             $curl->execute();
+
+            // товары в избранном
+            try {
+                if ($favoriteListQuery) {
+                    $productRepository->setFavoriteForObjectListByQuery([$response->product], $favoriteListQuery);
+                }
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+            }
 
             // меню
             if ($mainMenuQuery) {

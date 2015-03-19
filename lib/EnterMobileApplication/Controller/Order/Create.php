@@ -30,6 +30,8 @@ namespace EnterMobileApplication\Controller\Order {
             // ответ
             $response = new Response();
 
+            $userToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
+
             // данные пользователя
             $userData = (array)(isset($request->data['user']) ? $request->data['user'] : []);
 
@@ -43,12 +45,29 @@ namespace EnterMobileApplication\Controller\Order {
             $regionItemQuery = new Query\Region\GetItemById($regionId);
             $curl->prepare($regionItemQuery);
 
+            // запрос пользователя
+            $userItemQuery = null;
+            if ($userToken) {
+                $userItemQuery = new Query\User\GetItemByToken($userToken);
+                $curl->prepare($userItemQuery);
+            }
+
             $curl->execute();
 
             // регион
             $region = (new Repository\Region())->getObjectByQuery($regionItemQuery);
             if (!$region) {
                 throw new \Exception(sprintf('Регион #%s не найден', $regionId));
+            }
+
+            // пользователь
+            $user = null;
+            try {
+                if ($userItemQuery) {
+                    $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
+                }
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
             }
 
             $splitData = (array)$session->get($config->order->splitSessionKey);
@@ -76,6 +95,11 @@ namespace EnterMobileApplication\Controller\Order {
                 // дополнительные свойства разбиения
                 $split->region = $region;
                 $split->clientIp = $request->getClientIp();
+
+                // пользователь
+                if ($user) {
+                    $split->user->ui = $user->ui;
+                }
 
                 // meta
                 $metas = [];
