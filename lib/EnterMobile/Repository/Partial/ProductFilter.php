@@ -155,7 +155,7 @@ class ProductFilter {
 
                             if ('price' == $filterModel->token) {
                                 $element->title = $optionModel->name . ' ' . $this->getPriceHelper()->format($requestFilterModel->value);
-                                $element->isRubValue = true;
+                                $element->isCurrencyValue = true;
                             } else {
                                 $element->title = $optionModel->name . ' ' . $requestFilterModel->value . ($filterModel->unit ? $filterModel->unit : '');
                             }

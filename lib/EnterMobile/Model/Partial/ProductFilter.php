@@ -40,7 +40,7 @@ namespace EnterMobile\Model\Partial\ProductFilter {
         /** @var string */
         public $maxValue;
         /** @var bool */
-        public $isRubValue = false;
+        public $isCurrencyValue = false;
         /** @var string */
         public $id;
         /** @var bool */
