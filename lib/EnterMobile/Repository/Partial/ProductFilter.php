@@ -153,7 +153,7 @@ class ProductFilter {
                             // Игнорирование фильтра с мин или макс значением
                             if (($filterModel->min == $requestFilterModel->value) || ($filterModel->max == $requestFilterModel->value)) continue;
 
-                            if ('price' == $filterModel->token) {
+                            if ('price' === $filterModel->token) {
                                 $element->title = $optionModel->name . ' ' . $this->getPriceHelper()->format($requestFilterModel->value);
                                 $element->isCurrencyValue = true;
                             } else {
@@ -184,7 +184,11 @@ class ProductFilter {
                 continue;
             }
 
-            // TODO: сортировка элементов slider-фильтра: сначала from, потом to
+            if ('price' === $filter->token) {
+                if (2 == count($filter->elements) && ('f-price-to' === $filter->elements[0]->name)) { // FIXME: ненадежно
+                    $filter->elements = array_reverse($filter->elements);
+                }
+            }
         }
 
         return array_values($filtersByToken);
