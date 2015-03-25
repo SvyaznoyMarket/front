@@ -31,9 +31,6 @@ class GetListBySearchPhrase extends Query {
             $this->url->query['region_id'] = $regionId;
         }
 
-        // AG-59 Кухни по слотам
-        $this->url->query['filter']['filters'][] = ['exclude_partner_type', 1, 2];
-
         $this->init();
     }
 
