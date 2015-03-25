@@ -1,13 +1,13 @@
 <?php
 
-namespace EnterTerminal\Controller\Search {
+namespace EnterMobileApplication\Controller\Search {
 
     use Enter\Http;
-    use EnterTerminal\ConfigTrait;
+    use EnterMobileApplication\ConfigTrait;
     use EnterAggregator\CurlTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
-    use EnterTerminal\Controller\Search\Autocomplete\Response;
+    use EnterMobileApplication\Controller\Search\Autocomplete\Response;
 
     class Autocomplete {
         use ConfigTrait, CurlTrait;
@@ -22,7 +22,7 @@ namespace EnterTerminal\Controller\Search {
             $config = $this->getConfig();
 
             // ид региона
-            $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
+            $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request);
             if (!$regionId) {
                 throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
@@ -51,7 +51,7 @@ namespace EnterTerminal\Controller\Search {
     }
 }
 
-namespace EnterTerminal\Controller\Search\Autocomplete {
+namespace EnterMobileApplication\Controller\Search\Autocomplete {
     use EnterModel as Model;
 
     class Response {
