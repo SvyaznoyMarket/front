@@ -93,8 +93,11 @@ namespace EnterAggregator\Controller {
             $categoryRootListQuery = null;
             if ((bool)$categoryCriteria) {
                 // наличие категорий в данном регионе с учетом фильтров
-                $categoryListQuery = new Query\Product\Category\GetAvailableList($categoryCriteria,
-                    $response->region->id, 1, $filterRepository->dumpRequestObjectList($baseRequestFilters)
+                $categoryListQuery = new Query\Product\Category\GetAvailableList(
+                    $categoryCriteria,
+                    $response->region->id,
+                    1,
+                    $filterRepository->dumpRequestObjectList($baseRequestFilters)
                 );
                 $curl->prepare($categoryListQuery);
 
