@@ -107,8 +107,9 @@ class Create {
             ]),
             new Model\Region(['id' => $regionId])
         );
-        $query->setTimeout($this->getConfig()->coreService->timeout * 2);
+        $query->setTimeout(3 * $this->getConfig()->coreService->timeout);
         $this->getCurl()->prepare($query);
+
         return $query;
     }
 

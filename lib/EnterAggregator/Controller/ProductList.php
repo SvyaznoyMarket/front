@@ -112,9 +112,7 @@ namespace EnterAggregator\Controller {
                         $response->region->id
                     );
                 } else if (!empty($categoryCriteria['id'])) {
-                    $categoryItemQuery = new Query\Product\Category\GetItemById($categoryCriteria['id'],
-                        $response->region->id
-                    );
+                    $categoryItemQuery = new Query\Product\Category\GetItemById($categoryCriteria['id'], $response->region->id);
                 } else if (!empty($categoryCriteria['ui'])) {
                     throw new \Exception('Не поддерживаемый критерий ui для категории');
                 } else if (!empty($categoryCriteria['link'])) {

@@ -101,6 +101,7 @@ class Slice {
             $baseRequestFilters,
             $requestFilters, // фильтры в http-запросе
             $context,
+            [],
             $userToken
         );
 
