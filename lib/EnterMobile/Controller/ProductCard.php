@@ -6,7 +6,6 @@ use Enter\Http;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterAggregator\DebugContainerTrait;
-use EnterAggregator\Model\Context\ProductCard as Context;
 use EnterMobile\Controller;
 use EnterMobile\Repository;
 use EnterQuery as Query;
@@ -30,14 +29,17 @@ class ProductCard {
         // токен товара
         $productToken = $productRepository->getTokenByHttpRequest($request);
 
-        $context = new Context();
-        $context->mainMenu = true;
-        $context->review = true;
-        $controllerResponse = (new \EnterAggregator\Controller\ProductCard())->execute(
-            $regionId,
-            ['token' => $productToken],
-            $context
-        );
+        // контроллер
+        $controller = new \EnterAggregator\Controller\ProductCard();
+        // запрос для контроллера
+        $controllerRequest = $controller->createRequest();
+        $controllerRequest->config->mainMenu = true;
+        $controllerRequest->config->review = true;
+        $controllerRequest->regionId = $regionId;
+        $controllerRequest->productCriteria = ['token' => $productToken];
+        // ответ от контроллера
+        $controllerResponse = $controller->execute($controllerRequest);
+
         if (!$controllerResponse->product) {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Товар @%s не найден', $productToken));
         }

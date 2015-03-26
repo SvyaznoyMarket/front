@@ -4,28 +4,19 @@ namespace EnterAggregator\Controller {
     use EnterAggregator\ConfigTrait;
     use EnterAggregator\CurlTrait;
     use EnterAggregator\LoggerTrait;
-    use EnterAggregator\Model\Context\ProductCard as Context;
     use EnterQuery as Query;
-    use EnterRepository as Repository;
     use EnterModel as Model;
+    use EnterRepository as Repository;
 
     class ProductCard {
         use ConfigTrait, CurlTrait, LoggerTrait;
 
         /**
-         * @param string $regionId
-         * @param array $productCriteria Критерий получения товара: ['id' => 1] или ['token' => 'hp4530s']
-         * @param Context $context
-         * @param string|null $userToken
+         * @param ProductCard\Request $request
          * @return ProductCard\Response
          * @throws \Exception
          */
-        public function execute(
-            $regionId,
-            array $productCriteria,
-            Context $context,
-            $userToken = null
-        ) {
+        public function execute(ProductCard\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
             $productRepository = new Repository\Product();
@@ -34,7 +25,7 @@ namespace EnterAggregator\Controller {
             $response = new ProductCard\Response();
 
             // запрос региона
-            $regionQuery = new Query\Region\GetItemById($regionId);
+            $regionQuery = new Query\Region\GetItemById($request->regionId);
             $curl->prepare($regionQuery);
 
             $curl->execute();
@@ -44,12 +35,12 @@ namespace EnterAggregator\Controller {
 
             // запрос товара
             $productItemQuery = null;
-            if (!empty($productCriteria['id'])) {
-                $productItemQuery = new Query\Product\GetItemById($productCriteria['id'], $response->region->id);
-            } else if (!empty($productCriteria['token'])) {
-                $productItemQuery = new Query\Product\GetItemByToken($productCriteria['token'], $response->region->id);
-            } else if (!empty($productCriteria['ui'])) {
-                //$productItemQuery = new Query\Product\GetItemByUi($productCriteria['ui'], $response->region->id);
+            if (!empty($request->productCriteria['id'])) {
+                $productItemQuery = new Query\Product\GetItemById($request->productCriteria['id'], $response->region->id);
+            } else if (!empty($request->productCriteria['token'])) {
+                $productItemQuery = new Query\Product\GetItemByToken($request->productCriteria['token'], $response->region->id);
+            } else if (!empty($request->productCriteria['ui'])) {
+                //$productItemQuery = new Query\Product\GetItemByUi($request->productCriteria['ui'], $response->region->id);
             }
             if (!$productItemQuery) {
                 throw new \Exception('Неверный критерий для получения товара');
@@ -58,8 +49,8 @@ namespace EnterAggregator\Controller {
 
             // запрос пользователя
             $userItemQuery = null;
-            if ($userToken && ($context->favourite)) {
-                $userItemQuery = new Query\User\GetItemByToken($userToken);
+            if ($request->userToken && ($request->config->favourite)) {
+                $userItemQuery = new Query\User\GetItemByToken($request->userToken);
                 $curl->prepare($userItemQuery);
             }
 
@@ -83,21 +74,21 @@ namespace EnterAggregator\Controller {
 
             // запрос дерева категорий для меню
             $categoryTreeQuery = null;
-            if ($context->mainMenu) {
+            if ($request->config->mainMenu) {
                 $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
                 $curl->prepare($categoryTreeQuery);
             }
 
             // запрос меню
             $mainMenuQuery = null;
-            if ($context->mainMenu) {
+            if ($request->config->mainMenu) {
                 $mainMenuQuery = new Query\MainMenu\GetItem();
                 $curl->prepare($mainMenuQuery);
             }
 
             // запрос отзывов товара
             $reviewListQuery = null;
-            if ($config->productReview->enabled && $context->review) {
+            if ($config->productReview->enabled && $request->config->review) {
                 if ($config->productReview->enabled) {
                     $reviewListQuery = new Query\Product\Review\GetListByProductId($response->product->id, 1, $config->productReview->itemsInCard);
                     $curl->prepare($reviewListQuery);
@@ -142,7 +133,7 @@ namespace EnterAggregator\Controller {
 
             // запрос доставки товара
             $deliveryListQuery = null;
-            if (($context->delivery || (bool)$response->product->kit) && $response->product->isBuyable) {
+            if (($request->config->delivery || (bool)$response->product->kit) && $response->product->isBuyable) {
                 $cartProducts = [];
                 $cartProducts[] = new Model\Cart\Product(['id' => $response->product->id, 'quantity' => 1]);
                 foreach ($kits as $kit) {
@@ -165,7 +156,7 @@ namespace EnterAggregator\Controller {
 
             // запрос на проверку товаров в избранном
             $favoriteListQuery = null;
-            if ($context->favourite && $user && $response->product->ui) {
+            if ($request->config->favourite && $user && $response->product->ui) {
                 $favoriteListQuery = new Query\User\Favorite\CheckListByUserUi($user->ui, [$response->product->ui]);
                 $favoriteListQuery->setTimeout($config->crmService->timeout / 2);
                 $curl->prepare($favoriteListQuery);
@@ -178,7 +169,7 @@ namespace EnterAggregator\Controller {
             // запрос настроек каталога
             $categoryItemQuery = null;
             if ($response->product->category && $response->product->category->ui) {
-                $categoryItemQuery = new Query\Product\Category\GetItemByUi($response->product->category->ui, $regionId);
+                $categoryItemQuery = new Query\Product\Category\GetItemByUi($response->product->category->ui, $request->regionId);
                 $curl->prepare($categoryItemQuery);
             }
 
@@ -304,11 +295,33 @@ namespace EnterAggregator\Controller {
 
             return $response;
         }
+
+        /**
+         * @return ProductCard\Request
+         */
+        public function createRequest() {
+            return new ProductCard\Request();
+        }
     }
 }
 
 namespace EnterAggregator\Controller\ProductCard {
     use EnterModel as Model;
+
+    class Request {
+        /** @var string */
+        public $regionId;
+        /** @var array */
+        public $productCriteria;
+        /** @var Request\Config */
+        public $config;
+        /** @var string|null */
+        public $userToken;
+
+        public function __construct() {
+            $this->config = new Request\Config();
+        }
+    }
 
     class Response {
         /** @var Model\Region|null */
@@ -323,5 +336,34 @@ namespace EnterAggregator\Controller\ProductCard {
         public $mainMenu;
         /** @var bool */
         public $hasCredit;
+    }
+}
+
+namespace EnterAggregator\Controller\ProductCard\Request {
+    class Config {
+        /**
+         * Загружать главное меню
+         *
+         * @var bool
+         */
+        public $mainMenu = true;
+        /**
+         * Загружать отзывы
+         *
+         * @var bool
+         */
+        public $review = false;
+        /**
+         * Загружать доставку
+         *
+         * @var bool
+         */
+        public $delivery = true;
+        /**
+         * Проверять товары в избранном?
+         *
+         * @var bool
+         */
+        public $favourite = false;
     }
 }

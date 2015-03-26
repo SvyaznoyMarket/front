@@ -5,7 +5,6 @@ namespace EnterTerminal\Controller\ProductCatalog {
     use Enter\Http;
     use EnterTerminal\ConfigTrait;
     use EnterAggregator\CurlTrait;
-    use EnterAggregator\Model\Context;
     use EnterTerminal\Controller;
     use EnterQuery as Query;
     use EnterModel as Model;

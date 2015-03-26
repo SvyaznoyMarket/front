@@ -3,7 +3,6 @@
 namespace EnterMobileApplication\Controller {
 
     use Enter\Http;
-    use EnterAggregator\Model\Context\ProductCard as Context;
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterMobileApplication\Controller;
@@ -30,15 +29,18 @@ namespace EnterMobileApplication\Controller {
                 throw new \Exception('Не указан параметр productId', Http\Response::STATUS_BAD_REQUEST);
             }
 
-            $context = new Context();
-            $context->mainMenu = false;
-            $context->favourite = true;
-            $controllerResponse = (new \EnterAggregator\Controller\ProductCard())->execute(
-                $regionId,
-                ['id' => $productId],
-                $context,
-                $userToken
-            );
+            // контроллер
+            $controller = new \EnterAggregator\Controller\ProductCard();
+            // запрос для контроллера
+            $controllerRequest = $controller->createRequest();
+            $controllerRequest->config->mainMenu = false;
+            $controllerRequest->config->favourite = true;
+            $controllerRequest->regionId = $regionId;
+            $controllerRequest->productCriteria = ['id' => $productId];
+            $controllerRequest->userToken = $userToken;
+            // ответ от контроллера
+            $controllerResponse = $controller->execute($controllerRequest);
+
             // товар
             if (!$controllerResponse->product) {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Товар #%s не найден', $productId));

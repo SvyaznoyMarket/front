@@ -334,6 +334,9 @@ namespace EnterAggregator\Controller {
             return $response;
         }
 
+        /**
+         * @return ProductList\Request
+         */
         public function createRequest() {
             return new ProductList\Request();
         }
@@ -403,6 +406,12 @@ namespace EnterAggregator\Controller\ProductList {
 
 namespace EnterAggregator\Controller\ProductList\Request {
     class Config {
+        /**
+         * Загружать главное меню
+         *
+         * @var bool
+         */
+        public $mainMenu = true;
         /**
          * Загружать родительскую категорию с ее потомками
          *

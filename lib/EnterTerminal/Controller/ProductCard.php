@@ -3,7 +3,6 @@
 namespace EnterTerminal\Controller {
 
     use Enter\Http;
-    use EnterAggregator\Model\Context\ProductCard as Context;
     use EnterAggregator\CurlTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
@@ -33,14 +32,17 @@ namespace EnterTerminal\Controller {
                 throw new \Exception('Не указан параметр productId', Http\Response::STATUS_BAD_REQUEST);
             }
 
-            $context = new Context();
-            $context->mainMenu = false;
-            $context->delivery = false; // TERMINALS-971
-            $controllerResponse = (new \EnterAggregator\Controller\ProductCard())->execute(
-                $regionId,
-                ['id' => $productId],
-                $context
-            );
+            // контроллер
+            $controller = new \EnterAggregator\Controller\ProductCard();
+            // запрос для контроллера
+            $controllerRequest = $controller->createRequest();
+            $controllerRequest->config->mainMenu = false;
+            $controllerRequest->config->delivery = false; // TERMINALS-971
+            $controllerRequest->regionId = $regionId;
+            $controllerRequest->productCriteria = ['id' => $productId];
+            // ответ от контроллера
+            $controllerResponse = $controller->execute($controllerRequest);
+
             // товар
             if (!$controllerResponse->product) {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Товар #%s не найден', $productId));

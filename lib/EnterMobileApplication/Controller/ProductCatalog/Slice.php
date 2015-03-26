@@ -5,7 +5,6 @@ namespace EnterMobileApplication\Controller\ProductCatalog;
 use Enter\Http;
 use EnterMobileApplication\ConfigTrait;
 use EnterAggregator\CurlTrait;
-use EnterAggregator\Model\Context;
 use EnterQuery as Query;
 use EnterModel as Model;
 use EnterMobileApplication\Controller;

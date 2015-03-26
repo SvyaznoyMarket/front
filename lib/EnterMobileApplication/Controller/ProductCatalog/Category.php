@@ -3,7 +3,6 @@
 namespace EnterMobileApplication\Controller\ProductCatalog;
 
 use Enter\Http;
-use EnterAggregator\Model\Context;
 use EnterMobileApplication\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterMobileApplication\Controller;

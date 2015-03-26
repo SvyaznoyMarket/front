@@ -7,7 +7,6 @@ use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterAggregator\DebugContainerTrait;
-use EnterAggregator\Model\Context;
 use EnterMobile\Controller;
 use EnterMobile\Model\Page\ProductCatalog\ChildCategory;
 use EnterMobile\Repository;

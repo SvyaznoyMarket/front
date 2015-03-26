@@ -8,7 +8,6 @@ use EnterAggregator\CurlTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterAggregator\DebugContainerTrait;
-use EnterAggregator\Model\Context;
 use EnterMobile\Controller;
 use EnterMobile\Repository;
 use EnterQuery as Query;
