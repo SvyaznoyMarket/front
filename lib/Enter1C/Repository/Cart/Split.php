@@ -130,6 +130,7 @@ class Split {
                         'use_user_address' => $order->delivery->useUserAddress ? 'true' : 'false',
                         'type_id' => $order->delivery->typeId,
                         'type_ui' => $order->delivery->typeUi,
+                        'box_ui' => $order->delivery->boxUi,
                     ] : null,
                     'total_cost' => $order->sum,
                     'total_original_cost' => $order->originalSum,
