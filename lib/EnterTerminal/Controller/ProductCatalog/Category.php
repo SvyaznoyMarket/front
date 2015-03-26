@@ -55,22 +55,24 @@ namespace EnterTerminal\Controller\ProductCatalog {
             // фильтр категории в http-запросе
             //$requestFilters[] = $filterRepository->getRequestObjectByCategory($category);
 
-            $context = new Context\ProductCatalog();
-            $context->mainMenu = false;
-            $context->parentCategory = true;
-            $context->branchCategory = false;
-            $context->shopState = true;
-            $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
-                $regionId,
-                ['id' => $categoryId], // критерий получения категории товара
-                $pageNum, // номер страницы
-                $limit, // лимит
-                $sorting, // сортировка
-                $filterRepository, // репозиторий фильтров
-                [],
-                $requestFilters, // фильтры в http-запросе
-                $context
-            );
+            // контроллер
+            $controller = new \EnterAggregator\Controller\ProductList();
+            // запрос для контроллера
+            $controllerRequest = $controller->createRequest();
+            $controllerRequest->config->mainMenu = false;
+            $controllerRequest->config->parentCategory = true;
+            $controllerRequest->config->branchCategory = false;
+            $controllerRequest->config->shopState = true;
+            $controllerRequest->regionId = $regionId;
+            $controllerRequest->categoryCriteria = ['id' => $categoryId]; // критерий получения категории товара
+            $controllerRequest->pageNum = $pageNum;
+            $controllerRequest->limit = $limit;
+            $controllerRequest->sorting = $sorting;
+            $controllerRequest->filterRepository = $filterRepository;
+            $controllerRequest->baseRequestFilters = [];
+            $controllerRequest->requestFilters = $requestFilters;
+            // ответ от контроллера
+            $controllerResponse = $controller->execute($controllerRequest);
 
             // категория
             if (!$controllerResponse->category) {

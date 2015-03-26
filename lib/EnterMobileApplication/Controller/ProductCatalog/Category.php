@@ -63,25 +63,26 @@ class Category {
         // фильтр категории в http-запросе
         //$requestFilters[] = $filterRepository->getRequestObjectByCategory($category);
 
-        $context = new Context\ProductCatalog();
-        $context->mainMenu = false;
-        $context->parentCategory = false;
-        $context->branchCategory = false;
-        $context->productOnlyForLeafCategory = false;
-        $context->favourite = true;
-        $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
-            $regionId,
-            ['id' => $categoryId], // критерий получения категории товара
-            $pageNum, // номер страницы
-            $limit, // лимит
-            $sorting, // сортировка
-            $filterRepository, // репозиторий фильтров
-            [],
-            $requestFilters, // фильтры в http-запросе
-            $context,
-            [],
-            $userToken
-        );
+        // контроллер
+        $controller = new \EnterAggregator\Controller\ProductList();
+        // запрос для контроллера
+        $controllerRequest = $controller->createRequest();
+        $controllerRequest->config->mainMenu = false;
+        $controllerRequest->config->parentCategory = false;
+        $controllerRequest->config->branchCategory = false;
+        $controllerRequest->config->productOnlyForLeafCategory = false;
+        $controllerRequest->config->favourite = true;
+        $controllerRequest->regionId = $regionId;
+        $controllerRequest->categoryCriteria = ['id' => $categoryId]; // критерий получения категории товара
+        $controllerRequest->pageNum = $pageNum;
+        $controllerRequest->limit = $limit;
+        $controllerRequest->sorting = $sorting;
+        $controllerRequest->filterRepository = $filterRepository;
+        $controllerRequest->baseRequestFilters = [];
+        $controllerRequest->requestFilters = $requestFilters;
+        $controllerRequest->userToken = $userToken;
+        // ответ от контроллера
+        $controllerResponse = $controller->execute($controllerRequest);
 
         // категория
         if (!$controllerResponse->category) {

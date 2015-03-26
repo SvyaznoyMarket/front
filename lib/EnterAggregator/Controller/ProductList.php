@@ -5,45 +5,19 @@ namespace EnterAggregator\Controller {
     use EnterAggregator\ConfigTrait;
     use EnterAggregator\CurlTrait;
     use EnterAggregator\LoggerTrait;
-    use EnterAggregator\Model\Context;
-    use EnterModel;
-    use EnterModel\Product\RequestFilter;
     use EnterQuery as Query;
-    use EnterQuery;
-    use EnterRepository as Repository;
     use EnterModel as Model;
-    use EnterRepository;
+    use EnterRepository as Repository;
 
     class ProductList {
         use ConfigTrait, CurlTrait, LoggerTrait;
 
         /**
-         * @param string $regionId
-         * @param array $categoryCriteria
-         * @param int $pageNum
-         * @param int $limit
-         * @param Model\Product\Sorting|null $sorting
-         * @param Repository\Product\Filter $filterRepository
-         * @param Model\Product\RequestFilter[] $baseRequestFilters
-         * @param Model\Product\RequestFilter[] $requestFilters
-         * @param Context\ProductCatalog $context
-         * @param string|null $userToken
-         * @throws \Exception
+         * @param ProductList\Request $request
          * @return ProductList\Response
+         * @throws \Exception
          */
-        public function execute(
-            $regionId,
-            array $categoryCriteria,
-            $pageNum,
-            $limit,
-            $sorting,
-            Repository\Product\Filter $filterRepository,
-            array $baseRequestFilters,
-            array $requestFilters,
-            Context\ProductCatalog $context,
-            array $filterRequestFilters = [],
-            $userToken = null
-        ) {
+        public function execute(ProductList\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
             $productRepository = new Repository\Product();
@@ -56,22 +30,22 @@ namespace EnterAggregator\Controller {
             $response->sortings = (new Repository\Product\Sorting())->getObjectList();
 
             // выбранная сортировка
-            $response->sorting = $sorting;
+            $response->sorting = $request->sorting;
             if (!$response->sorting) {
                 $response->sorting = reset($response->sortings);
             }
 
             // выбранные фильтры
-            $response->requestFilters = $requestFilters;
+            $response->requestFilters = $request->requestFilters;
 
             // запрос региона
-            $regionQuery = new Query\Region\GetItemById($regionId);
+            $regionQuery = new Query\Region\GetItemById($request->regionId);
             $curl->prepare($regionQuery);
 
             // запрос пользователя
             $userItemQuery = null;
-            if ($userToken && ($context->favourite)) {
-                $userItemQuery = new Query\User\GetItemByToken($userToken);
+            if ($request->userToken && ($request->config->favourite)) {
+                $userItemQuery = new Query\User\GetItemByToken($request->userToken);
                 $curl->prepare($userItemQuery);
             }
 
@@ -91,31 +65,31 @@ namespace EnterAggregator\Controller {
             }
 
             $categoryRootListQuery = null;
-            if ((bool)$categoryCriteria) {
+            if ((bool)$request->categoryCriteria) {
                 // наличие категорий в данном регионе с учетом фильтров
                 $categoryListQuery = new Query\Product\Category\GetAvailableList(
-                    $categoryCriteria,
+                    $request->categoryCriteria,
                     $response->region->id,
                     1,
-                    $filterRepository->dumpRequestObjectList($baseRequestFilters)
+                    $request->filterRepository->dumpRequestObjectList($request->baseRequestFilters)
                 );
                 $curl->prepare($categoryListQuery);
 
                 // дерево категорий
-                $categoryTreeQuery = new Query\Product\Category\GetTree($categoryCriteria, 1, true, true, true);
+                $categoryTreeQuery = new Query\Product\Category\GetTree($request->categoryCriteria, 1, true, true, true);
                 $curl->prepare($categoryTreeQuery);
 
                 // подробный запрос категории (seo, настройки сортировки, ...)
                 $categoryItemQuery = null;
-                if (!empty($categoryCriteria['token'])) {
-                    $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryCriteria['token'],
+                if (!empty($request->categoryCriteria['token'])) {
+                    $categoryItemQuery = new Query\Product\Category\GetItemByToken($request->categoryCriteria['token'],
                         $response->region->id
                     );
-                } else if (!empty($categoryCriteria['id'])) {
-                    $categoryItemQuery = new Query\Product\Category\GetItemById($categoryCriteria['id'], $response->region->id);
-                } else if (!empty($categoryCriteria['ui'])) {
+                } else if (!empty($request->categoryCriteria['id'])) {
+                    $categoryItemQuery = new Query\Product\Category\GetItemById($request->categoryCriteria['id'], $response->region->id);
+                } else if (!empty($request->categoryCriteria['ui'])) {
                     throw new \Exception('Не поддерживаемый критерий ui для категории');
-                } else if (!empty($categoryCriteria['link'])) {
+                } else if (!empty($request->categoryCriteria['link'])) {
                     throw new \Exception('Не поддерживаемый критерий link для категории');
                 }
                 $curl->prepare($categoryItemQuery);
@@ -137,7 +111,7 @@ namespace EnterAggregator\Controller {
                     null,
                     $response->region->id,
                     0,
-                    $filterRepository->dumpRequestObjectList($baseRequestFilters)
+                    $request->filterRepository->dumpRequestObjectList($request->baseRequestFilters)
                 );
                 $curl->prepare($categoryAvailableListQuery)->execute();
 
@@ -156,17 +130,17 @@ namespace EnterAggregator\Controller {
             }
 
             // базовые фильтры
-            $response->baseRequestFilters = $baseRequestFilters;
+            $response->baseRequestFilters = $request->baseRequestFilters;
             if ($response->category) {
-                $response->baseRequestFilters[] = $filterRepository->getRequestObjectByCategory($response->category);
+                $response->baseRequestFilters[] = $request->filterRepository->getRequestObjectByCategory($response->category);
             }
 
             // запрос фильтров
-            if (!$filterRequestFilters) {
-                $filterRequestFilters = $response->baseRequestFilters;
+            if (!$request->filterRequestFilters) {
+                $request->filterRequestFilters = $response->baseRequestFilters;
             }
 
-            $filterListQuery = new Query\Product\Filter\GetList($filterRepository->dumpRequestObjectList($filterRequestFilters), $response->region->id);
+            $filterListQuery = new Query\Product\Filter\GetList($request->filterRepository->dumpRequestObjectList($request->filterRequestFilters), $response->region->id);
             $curl->prepare($filterListQuery);
 
             $curl->execute();
@@ -175,7 +149,7 @@ namespace EnterAggregator\Controller {
             $response->categories = $categoryRootListQuery ? (new \EnterRepository\Product\Category())->getObjectListByQuery($categoryRootListQuery) : [];
 
             // FIXME
-            if ($context->isSlice && !$sorting) {
+            if ($request->config->isSlice && !$request->sorting) {
                 $response->catalogConfig = new Model\Product\Category\Config();
                 $response->catalogConfig->sortings = [
                     'in_shop' => 'desc',
@@ -191,18 +165,18 @@ namespace EnterAggregator\Controller {
             // запрос листинга идентификаторов товаров
             $productUiPagerQuery = null;
             if (
-                !$context->productOnlyForLeafCategory
-                || ($context->productOnlyForLeafCategory && $response->category && !$response->category->hasChildren)
+                !$request->config->productOnlyForLeafCategory
+                || ($request->config->productOnlyForLeafCategory && $response->category && !$response->category->hasChildren)
             ) {
                 $productUiPagerQuery = new Query\Product\GetUiPager(
                     array_merge(
-                        $filterRepository->dumpRequestObjectList($response->requestFilters),
-                        $filterRepository->dumpRequestObjectList($response->baseRequestFilters)
+                        $request->filterRepository->dumpRequestObjectList($response->requestFilters),
+                        $request->filterRepository->dumpRequestObjectList($response->baseRequestFilters)
                     ),
                     $sorting,
                     $response->region->id,
-                    ($pageNum - 1) * $limit,
-                    $limit,
+                    ($request->pageNum - 1) * $request->limit,
+                    $request->limit,
                     $response->catalogConfig
                 );
                 $curl->prepare($productUiPagerQuery);
@@ -210,7 +184,7 @@ namespace EnterAggregator\Controller {
 
             // запрос дерева категорий для меню
             $rootCategoryTreeQuery = null;
-            if ($context->mainMenu) {
+            if ($request->config->mainMenu) {
                 // запрос дерева категорий для меню
                 $rootCategoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
                 $curl->prepare($rootCategoryTreeQuery);
@@ -219,9 +193,9 @@ namespace EnterAggregator\Controller {
             $curl->execute();
 
             // фильтры
-            $response->filters = $filterRepository->getObjectListByQuery($filterListQuery);
+            $response->filters = $request->filterRepository->getObjectListByQuery($filterListQuery);
             // значения для фильтров
-            $filterRepository->setValueForObjectList($response->filters, $response->requestFilters);
+            $request->filterRepository->setValueForObjectList($response->filters, $response->requestFilters);
 
             // листинг идентификаторов товаров
             $response->productUiPager = $productUiPagerQuery ? (new Repository\Product\UiPager())->getObjectByQuery($productUiPagerQuery) : null;
@@ -249,7 +223,7 @@ namespace EnterAggregator\Controller {
 
             // запрос меню
             $mainMenuQuery = null;
-            if ($context->mainMenu) {
+            if ($request->config->mainMenu) {
                 $mainMenuQuery = new Query\MainMenu\GetItem();
                 $curl->prepare($mainMenuQuery);
             }
@@ -270,7 +244,7 @@ namespace EnterAggregator\Controller {
 
             // запрос на проверку товаров в избранном
             $favoriteListQuery = null;
-            if ($context->favourite && $user && $response->productUiPager->uis) {
+            if ($request->config->favourite && $user && $response->productUiPager->uis) {
                 $favoriteListQuery = new Query\User\Favorite\CheckListByUserUi($user->ui, $response->productUiPager->uis);
                 $favoriteListQuery->setTimeout($config->crmService->timeout / 2);
                 $curl->prepare($favoriteListQuery);
@@ -302,7 +276,7 @@ namespace EnterAggregator\Controller {
             }
 
             // список магазинов, в которых есть товар
-            if ($context->shopState) {
+            if ($request->config->shopState) {
                 $shopIds = [];
                 foreach ($productsById as $product) {
                     foreach ($product->stock as $stock) {
@@ -359,11 +333,45 @@ namespace EnterAggregator\Controller {
 
             return $response;
         }
+
+        public function createRequest() {
+            return new ProductList\Request();
+        }
     }
 }
 
 namespace EnterAggregator\Controller\ProductList {
     use EnterModel as Model;
+    use EnterRepository as Repository;
+
+    class Request {
+        /** @var string */
+        public $regionId;
+        /** @var array */
+        public $categoryCriteria;
+        /** @var int */
+        public $pageNum;
+        /** @var int */
+        public $limit;
+        /** @var Model\Product\Sorting|null */
+        public $sorting;
+        /** @var Repository\Product\Filter */
+        public $filterRepository;
+        /** @var Model\Product\RequestFilter[] */
+        public $baseRequestFilters = [];
+        /** @var Model\Product\RequestFilter[] */
+        public $requestFilters = [];
+        /** @var Request\Config */
+        public $config;
+        /** @var array */
+        public $filterRequestFilters = [];
+        /** @var string|null */
+        public $userToken;
+
+        public function __construct() {
+            $this->config = new Request\Config();
+        }
+    }
 
     class Response {
         /** @var Model\Region|null */
@@ -390,5 +398,46 @@ namespace EnterAggregator\Controller\ProductList {
         public $products = [];
         /** @var Model\Product\UiPager|null */
         public $productUiPager;
+    }
+}
+
+namespace EnterAggregator\Controller\ProductList\Request {
+    class Config {
+        /**
+         * Загружать родительскую категорию с ее потомками
+         *
+         * @var bool
+         */
+        public $parentCategory = false;
+        /**
+         * Загружать ветку категории
+         *
+         * @var bool
+         */
+        public $branchCategory = false;
+        /**
+         * Загружать товары только для конечных категорий
+         *
+         * @var bool
+         */
+        public $productOnlyForLeafCategory = false;
+        /**
+         * Загружать остатки товаров по магазинам
+         *
+         * @var bool
+         */
+        public $shopState = false;
+        /**
+         * Это срез товаров? // FIXME костыль
+         *
+         * @var bool
+         */
+        public $isSlice = false;
+        /**
+         * Проверять товары в избранном?
+         *
+         * @var bool
+         */
+        public $favourite = false;
     }
 }

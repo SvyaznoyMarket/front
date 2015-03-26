@@ -55,23 +55,25 @@ namespace EnterTerminal\Controller\ProductCatalog {
             // фильтры в запросе
             $requestFilters = $this->getRequestFilters($request, $filterRepository);
 
-            $context = new Context\ProductCatalog();
-            $context->mainMenu = false;
-            $context->parentCategory = true;
-            $context->branchCategory = false;
-            $context->shopState = true;
-            $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
-                $regionId,
-                $categoryId ? ['id' => $categoryId] : [], // критерий получения категории товара
-                $pageNum, // номер страницы
-                $limit, // лимит
-                $sorting, // сортировка
-                $filterRepository, // репозиторий фильтров
-                $baseRequestFilters,
-                $requestFilters, // фильтры в http-запросе
-                $context,
-                $this->getFilterRequestFilters($requestFilters)
-            );
+            // контроллер
+            $controller = new \EnterAggregator\Controller\ProductList();
+            // запрос для контроллера
+            $controllerRequest = $controller->createRequest();
+            $controllerRequest->config->mainMenu = false;
+            $controllerRequest->config->parentCategory = true;
+            $controllerRequest->config->branchCategory = false;
+            $controllerRequest->config->shopState = true;
+            $controllerRequest->regionId = $regionId;
+            $controllerRequest->categoryCriteria = $categoryId ? ['id' => $categoryId] : []; // критерий получения категории товара
+            $controllerRequest->pageNum = $pageNum;
+            $controllerRequest->limit = $limit;
+            $controllerRequest->sorting = $sorting;
+            $controllerRequest->filterRepository = $filterRepository;
+            $controllerRequest->baseRequestFilters = $baseRequestFilters;
+            $controllerRequest->requestFilters = $requestFilters;
+            $controllerRequest->filterRequestFilters = $this->getFilterRequestFilters($requestFilters);
+            // ответ от контроллера
+            $controllerResponse = $controller->execute($controllerRequest);
 
             // категория
             if ($categoryId && !$controllerResponse->category) {

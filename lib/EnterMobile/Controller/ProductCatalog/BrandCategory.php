@@ -59,21 +59,23 @@ class BrandCategory {
         $baseRequestFilters = [];
         $baseRequestFilters[] = $filterRepository->getBrandRequestObjectByBrand($brand);
 
-        $context = new Context\ProductCatalog();
-        $context->mainMenu = true;
-        $context->parentCategory = false;
-        $context->branchCategory = true;
-        $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
-            $regionId,
-            ['token' => $categoryToken], // критерий получения категории товара
-            $pageNum, // номер страницы
-            $limit, // лимит
-            $sorting, // сортировка
-            $filterRepository, // репозиторий фильтров
-            $baseRequestFilters, // базовые фильтры
-            $requestFilters, // фильтры в http-запросе
-            $context
-        );
+        // контроллер
+        $controller = new \EnterAggregator\Controller\ProductList();
+        // запрос для контроллера
+        $controllerRequest = $controller->createRequest();
+        $controllerRequest->config->mainMenu = true;
+        $controllerRequest->config->parentCategory = false;
+        $controllerRequest->config->branchCategory = true;
+        $controllerRequest->regionId = $regionId;
+        $controllerRequest->categoryCriteria = ['token' => $categoryToken]; // критерий получения категории товара;
+        $controllerRequest->pageNum = $pageNum;
+        $controllerRequest->limit = $limit;
+        $controllerRequest->sorting = $sorting;
+        $controllerRequest->filterRepository = $filterRepository;
+        $controllerRequest->baseRequestFilters = $baseRequestFilters;
+        $controllerRequest->requestFilters = $requestFilters;
+        // ответ от контроллера
+        $controllerResponse = $controller->execute($controllerRequest);
 
         if (!$controllerResponse->category) {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));

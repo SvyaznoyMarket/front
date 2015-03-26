@@ -71,21 +71,23 @@ class Slice {
 
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
 
-        $context = new Context\ProductCatalog();
-        $context->mainMenu = true;
-        $context->parentCategory = false;
-        $context->branchCategory = true;
-        $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
-            $regionId,
-            $categoryToken ? ['token' => $categoryToken] : [], // критерий получения категории товара
-            $pageNum, // номер страницы
-            $limit, // лимит
-            $sorting, // сортировка
-            $filterRepository, // репозиторий фильтров
-            $baseRequestFilters,
-            array_merge($requestFilters, $baseRequestFilters), // фильтры
-            $context
-        );
+        // контроллер
+        $controller = new \EnterAggregator\Controller\ProductList();
+        // запрос для контроллера
+        $controllerRequest = $controller->createRequest();
+        $controllerRequest->config->mainMenu = true;
+        $controllerRequest->config->parentCategory = false;
+        $controllerRequest->config->branchCategory = true;
+        $controllerRequest->regionId = $regionId;
+        $controllerRequest->categoryCriteria = $categoryToken ? ['token' => $categoryToken] : []; // критерий получения категории товара
+        $controllerRequest->pageNum = $pageNum;
+        $controllerRequest->limit = $limit;
+        $controllerRequest->sorting = $sorting;
+        $controllerRequest->filterRepository = $filterRepository;
+        $controllerRequest->baseRequestFilters = $baseRequestFilters;
+        $controllerRequest->requestFilters = array_merge($requestFilters, $baseRequestFilters);
+        // ответ от контроллера
+        $controllerResponse = $controller->execute($controllerRequest);
 
         if ($categoryToken && !$controllerResponse->category) {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара @%s не найдена', $categoryToken));
