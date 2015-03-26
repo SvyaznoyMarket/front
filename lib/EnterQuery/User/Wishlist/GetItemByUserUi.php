@@ -22,7 +22,7 @@ class GetItemByUserUi extends Query {
         $this->url->path = 'api/wishlist';
         $this->url->query = [
             'user_uid'      => $userUi,
-            'wishlist_id'   => $id,
+            'id'            => $id,
             'with_products' => true,
         ];
 
