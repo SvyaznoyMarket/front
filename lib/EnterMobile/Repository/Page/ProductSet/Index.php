@@ -31,6 +31,7 @@ class Index {
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
 
         $page->dataModule = 'product.catalog';
+        $page->isProductSet = true;
 
         $currentRoute = new Routing\ProductSet\Index(implode(',', array_map(function(\EnterModel\Product $product){ return $product->barcode; }, $request->products)));
 

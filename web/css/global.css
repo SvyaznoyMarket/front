@@ -4308,6 +4308,9 @@ body.noScroll {
 .catalogList {
   font-size: 0;
 }
+.catalogList.productSet {
+  margin-top: 25px;
+}
 .catalogList_item {
   position: relative;
   z-index: 10;
