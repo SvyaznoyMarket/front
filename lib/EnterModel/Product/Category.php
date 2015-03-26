@@ -61,7 +61,8 @@ namespace EnterModel\Product {
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
             if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
             if (array_key_exists('slug', $data)) $this->token = (string)$data['slug'];
-            if (array_key_exists('link', $data)) $this->link = (string)$data['link'];
+            if (array_key_exists('link', $data)) $this->link = (string)$data['link']; // элемент link возвращает метод https://scms.enter.ru/api/category/tree
+            if (array_key_exists('url', $data)) $this->link = (string)$data['url']; // элемент url возвращает метод https://scms.enter.ru/category/get/v1
             $this->path = trim(preg_replace('/^\/catalog\//', '', $this->link), '/');
             if (isset($data['medias'][0])) {
                 foreach ($data['medias'] as $mediaItem) {

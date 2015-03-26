@@ -50,7 +50,8 @@ class Content {
 
         $curl->execute();
 
-        if ($contentItemQuery->getError() && $contentItemQuery->getError()->getCode() === 404)
+        // wordpress (content.enter.ru) при отсутствии запрашиваемой страницы вместо 404 отдаёт 301 редирект на запрашиваемую страницу со слешем в конце
+        if ($contentItemQuery->getError() && in_array($contentItemQuery->getError()->getCode(), [404, 301]))
             return (new \EnterMobile\Controller\Error\NotFound())->execute($request);
 
         $contentItem = $contentItemQuery->getResult();
