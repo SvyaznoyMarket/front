@@ -7,7 +7,6 @@ namespace EnterMobileApplication\Controller\Product {
     use EnterAggregator\CurlTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
-    use EnterAggregator\Model\Context\Product\RecommendedList as Context;
     use EnterMobileApplication\Controller\Product\RecommendedList\Response;
 
     class RecommendedList {
@@ -39,16 +38,17 @@ namespace EnterMobileApplication\Controller\Product {
 
             $response = new Response();
 
-            $context = new Context();
-            $context->alsoBought = in_array('alsoBought', $types);
-            $context->alsoViewed = in_array('alsoViewed', $types);
-            $context->similar = in_array('similar', $types);
-
-            $controllerResponse = (new \EnterAggregator\Controller\Product\RecommendedListByProduct())->execute(
-                $regionId,
-                $productIds,
-                $context
-            );
+            // контроллер
+            $controller = new \EnterAggregator\Controller\Product\RecommendedListByProduct();
+            // запрос для контроллера
+            $controllerRequest = $controller->createRequest();
+            $controllerRequest->config->alsoBought = in_array('alsoBought', $types);
+            $controllerRequest->config->alsoViewed = in_array('alsoViewed', $types);
+            $controllerRequest->config->similar = in_array('similar', $types);
+            $controllerRequest->regionId = $regionId;
+            $controllerRequest->productIds = $productIds;
+            // ответ от контроллера
+            $controllerResponse = $controller->execute($controllerRequest);
 
             foreach (array_slice($controllerResponse->alsoBoughtIdList, 0, $limit) as $i => $iProductId) {
                 /** @var Model\Product|null $product */

@@ -6,35 +6,29 @@ namespace EnterAggregator\Controller\Product {
     use EnterAggregator\ConfigTrait;
     use EnterAggregator\CurlTrait;
     use EnterAggregator\LoggerTrait;
-    use EnterRepository as Repository;
     use EnterQuery as Query;
     use EnterModel as Model;
-    use EnterAggregator\Model\Context\Product\RecommendedList as Context;
+    use EnterRepository as Repository;
 
     class RecommendedListByProduct {
         use ConfigTrait, LoggerTrait, CurlTrait;
 
         /**
-         * @param string $regionId
-         * @param string[] $productIds
-         * @param Context $context
-         * @return RecommendedList\Response
+         * @param RecommendedListByProduct\Request $request
+         * @return RecommendedListByProduct\Response
+         * @throws \Exception
          */
-        public function execute(
-            $regionId,
-            array $productIds,
-            Context $context
-        ) {
+        public function execute(RecommendedListByProduct\Request $request) {
             $logger = $this->getLogger();
             $config = $this->getConfig();
             $curl = $this->getCurl();
             $productRepository = new Repository\Product();
 
             // response
-            $response = new RecommendedList\Response();
+            $response = new RecommendedListByProduct\Response();
 
             // запрос региона
-            $regionQuery = new Query\Region\GetItemById($regionId);
+            $regionQuery = new Query\Region\GetItemById($request->regionId);
             $curl->prepare($regionQuery);
 
             $curl->execute();
@@ -43,7 +37,7 @@ namespace EnterAggregator\Controller\Product {
             $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
             // запрос товара
-            $productListQuery = new Query\Product\GetListByIdList($productIds, $region->id);
+            $productListQuery = new Query\Product\GetListByIdList($request->productIds, $region->id);
             $curl->prepare($productListQuery);
 
             $curl->execute();
@@ -60,7 +54,7 @@ namespace EnterAggregator\Controller\Product {
 
             // запрос идетификаторов товаров "с этим товаром также покупают"
             $crossSellItemToItemsListQuery = null;
-            if ($context->alsoBought) {
+            if ($request->config->alsoBought) {
                 $crossSellItemToItemsListQuery =
                     $product
                     ? new Query\Product\Relation\CrossSellItemToItems\GetIdListByProductId($product->id)
@@ -72,7 +66,7 @@ namespace EnterAggregator\Controller\Product {
 
             // запрос идетификаторов товаров "похожие товары"
             $upSellItemToItemsListQuery = null;
-            if ($context->similar) {
+            if ($request->config->similar) {
                 $upSellItemToItemsListQuery = new Query\Product\Relation\UpSellItemToItems\GetIdListByProductId($product->id);
                 $upSellItemToItemsListQuery->setTimeout(1.5 * $config->retailRocketService->timeout);
                 $curl->prepare($upSellItemToItemsListQuery);
@@ -80,7 +74,7 @@ namespace EnterAggregator\Controller\Product {
 
             // запрос идетификаторов товаров "с этим товаром также смотрят"
             $itemToItemsListQuery = null;
-            if ($context->alsoViewed) {
+            if ($request->config->alsoViewed) {
                 $itemToItemsListQuery = new Query\Product\Relation\ItemToItems\GetIdListByProductId($product->id);
                 $itemToItemsListQuery->setTimeout(1.5 * $config->retailRocketService->timeout);
                 $curl->prepare($itemToItemsListQuery);
@@ -207,11 +201,31 @@ namespace EnterAggregator\Controller\Product {
 
             return $response;
         }
+
+        /**
+         * @return RecommendedListByProduct\Request
+         */
+        public function createRequest() {
+            return new RecommendedListByProduct\Request();
+        }
     }
 }
 
-namespace EnterAggregator\Controller\Product\RecommendedList {
+namespace EnterAggregator\Controller\Product\RecommendedListByProduct {
     use EnterModel as Model;
+
+    class Request {
+        /** @var string */
+        public $regionId;
+        /** @var string[] */
+        public $productIds = [];
+        /** @var Request\Config */
+        public $config;
+
+        public function __construct() {
+            $this->config = new Request\Config();
+        }
+    }
 
     class Response {
         /** @var Model\Region|null */
@@ -226,5 +240,28 @@ namespace EnterAggregator\Controller\Product\RecommendedList {
         public $similarIdList = [];
         /** @var string[] */
         public $alsoViewedIdList = [];
+    }
+}
+
+namespace EnterAggregator\Controller\Product\RecommendedListByProduct\Request {
+    class Config {
+        /**
+         * Похожие товары
+         *
+         * @var bool
+         */
+        public $similar = false;
+        /**
+         * Также покупают
+         *
+         * @var bool
+         */
+        public $alsoBought = false;
+        /**
+         * Также смотрят
+         *
+         * @var bool
+         */
+        public $alsoViewed = false;
     }
 }

@@ -7,7 +7,6 @@ use EnterAggregator\MustacheRendererTrait;
 use EnterMobile\Repository;
 use EnterQuery as Query;
 use EnterMobile\Model;
-use EnterAggregator\Model\Context\Product\RecommendedList as Context;
 use EnterMobile\Model\Page\Product\RecommendedList as Page;
 
 class RecommendedList {
@@ -22,13 +21,15 @@ class RecommendedList {
         // ид товара
         $productId = $productRepository->getIdByHttpRequest($request);
 
-        $context = new Context();
-        $context->alsoBought = true;
-        $controllerResponse = (new \EnterAggregator\Controller\Product\RecommendedListByProduct())->execute(
-            $regionId,
-            [$productId],
-            $context
-        );
+        // контроллер
+        $controller = new \EnterAggregator\Controller\Product\RecommendedListByProduct();
+        // запрос для контроллера
+        $controllerRequest = $controller->createRequest();
+        $controllerRequest->config->alsoBought = true;
+        $controllerRequest->regionId = $regionId;
+        $controllerRequest->productIds = [$productId];
+        // ответ от контроллера
+        $controllerResponse = $controller->execute($controllerRequest);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Product\RecommendedList\Request();
