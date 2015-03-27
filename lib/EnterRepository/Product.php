@@ -98,9 +98,9 @@ class Product {
 
     /**
      * @param Model\Product $product
-     * @param Query $videoListQuery
+     * @param Query $descriptionListQuery
      */
-    public function setMediaForObjectByQuery(Model\Product $product, Query $videoListQuery) {
+    public function setMediaForObjectByQuery(Model\Product $product, Query $descriptionListQuery) {
         // TODO
     }
 
@@ -380,16 +380,26 @@ class Product {
     }
 
     /**
-     * @param Model\Product $product
-     * @param Query $descriptionItemQuery
+     * @param Model\Product[] $productsByUi
+     * @param Query $descriptionListQuery
      */
-    public function setDescriptionForObjectByQuery($product, Query $descriptionItemQuery) {
+    public function setDescriptionForListByListQuery(array $productsByUi, Query $descriptionListQuery) {
         try {
-            if ($descriptionItem = $descriptionItemQuery->getResult()) {
-                foreach ($descriptionItem['trustfactors'] as $trustfactorItem) {
-                    if (!isset($trustfactorItem['uid'])) continue;
+            foreach ($descriptionListQuery->getResult() as $descriptionItem) {
+                /** @var Model\Product|null $product */
+                $product =
+                    (isset($descriptionItem['uid']) && isset($productsByUi[$descriptionItem['uid']]))
+                    ? $productsByUi[$descriptionItem['uid']]
+                    : null
+                ;
+                if (!$product) continue;
 
-                    $product->trustfactors[] = new Model\Product\Trustfactor($trustfactorItem);
+                if (isset($descriptionItem['trustfactors']) && is_array($descriptionItem['trustfactors'])) {
+                    foreach ($descriptionItem['trustfactors'] as $trustfactorItem) {
+                        if (!isset($trustfactorItem['uid'])) continue;
+
+                        $product->trustfactors[] = new Model\Product\Trustfactor($trustfactorItem);
+                    }
                 }
             }
         } catch (\Exception $e) {

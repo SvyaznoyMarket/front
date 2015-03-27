@@ -15,13 +15,42 @@ class GetDescriptionListByUiList extends Query {
 
     /**
      * @param string[] $uis
+     * @param array $filter
+     * @param string|null $regionId
      */
-    public function __construct(array $uis) {
-        $this->url = new Url();
-        $this->url->path = 'product/get-description';
-        $this->url->query = [
-            'uid' => $uis,
+    public function __construct(array $uis, array $filter = [], $regionId = null) {
+        $filter += [
+            'trustfactor' => false,
+            'category'    => false,
+            'media'       => false,
+            'property'    => false,
+            'tag'         => false,
+            'seo'         => false,
         ];
+
+        $this->url = new Url();
+        $this->url->path = 'product/get-description/v1';
+        $this->url->query = [
+            'uids' => $uis,
+        ];
+        if ($filter['trustfactor']) {
+            $this->url->query['trustfactor'] = true;
+        }
+        if ($filter['category']) {
+            $this->url->query['category'] = true;
+        }
+        if ($filter['media']) {
+            $this->url->query['media'] = true;
+        }
+        if ($filter['property']) {
+            $this->url->query['property'] = true;
+        }
+        if ($filter['tag']) {
+            $this->url->query['tag'] = true;
+        }
+        if ($filter['seo']) {
+            $this->url->query['seo'] = true;
+        }
 
         $this->init();
     }
@@ -32,6 +61,6 @@ class GetDescriptionListByUiList extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]) ? $data : [];
+        $this->result = isset($data['products']) ? $data['products'] : [];
     }
 }

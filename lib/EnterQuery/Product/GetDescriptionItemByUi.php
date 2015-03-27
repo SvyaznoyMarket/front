@@ -14,6 +14,7 @@ class GetDescriptionItemByUi extends Query {
     protected $result;
 
     /**
+     * @deprecated
      * @param string $ui
      */
     public function __construct($ui) {

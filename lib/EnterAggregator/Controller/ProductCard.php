@@ -163,8 +163,18 @@ namespace EnterAggregator\Controller {
             }
 
             // запрос трастфакторов товара
-            $descriptionItemQuery = new Query\Product\GetDescriptionItemByUi($response->product->ui);
-            $curl->prepare($descriptionItemQuery);
+            $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
+                [$response->product->ui],
+                [
+                    'trustfactor' => true,
+                    'category'    => true,
+                    'media'       => true,
+                    'property'    => true,
+                    'tag'         => true,
+                    'seo'         => true,
+                ]
+            );
+            $curl->prepare($descriptionListQuery);
 
             // запрос настроек каталога
             $categoryItemQuery = null;
@@ -203,7 +213,7 @@ namespace EnterAggregator\Controller {
             // 3d фото товара (maybe3d)
             //$productRepository->setPhoto3dForObjectByQuery($response->product, $descriptionItemQuery);
             // медиа товара
-            $productRepository->setMediaForObjectByQuery($response->product, $descriptionItemQuery);
+            $productRepository->setMediaForObjectByQuery($response->product, $descriptionListQuery);
 
             // наборы
             $kitProductsById = $kitListQuery ? $productRepository->getIndexedObjectListByQueryList([$kitListQuery], function(&$item) {
@@ -285,7 +295,12 @@ namespace EnterAggregator\Controller {
             }
 
             // трастфакторы товара
-            $productRepository->setDescriptionForObjectByQuery($response->product, $descriptionItemQuery);
+            $productRepository->setDescriptionForListByListQuery(
+                [
+                    $response->product->ui => $response->product
+                ],
+                $descriptionListQuery
+            );
 
             // доступность кредита
             $response->hasCredit =
