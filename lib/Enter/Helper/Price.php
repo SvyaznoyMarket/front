@@ -10,7 +10,7 @@ class Price {
     public function format($price) {
         $price = str_replace(',', '.', $price);
         $price = preg_replace('/\s/', '', $price);
-        $price = number_format($price, 2, '.', '');
+        $price = number_format((float)$price, 2, '.', '');
         $price = explode('.', $price);
 
         /* Маленькие пробелы между разрядами целой части цены */
