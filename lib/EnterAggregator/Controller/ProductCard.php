@@ -208,13 +208,6 @@ namespace EnterAggregator\Controller {
             // отзывы товара
             $response->product->reviews = $reviewListQuery ? (new Repository\Product\Review())->getObjectListByQuery($reviewListQuery) : [];
 
-            // видео товара
-            //$productRepository->setVideoForObjectByQuery($response->product, $descriptionItemQuery);
-            // 3d фото товара (maybe3d)
-            //$productRepository->setPhoto3dForObjectByQuery($response->product, $descriptionItemQuery);
-            // медиа товара
-            $productRepository->setMediaForObjectByQuery($response->product, $descriptionListQuery);
-
             // наборы
             $kitProductsById = $kitListQuery ? $productRepository->getIndexedObjectListByQueryList([$kitListQuery], function(&$item) {
                 // оптимизация

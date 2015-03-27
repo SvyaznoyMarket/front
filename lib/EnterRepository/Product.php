@@ -97,14 +97,6 @@ class Product {
     }
 
     /**
-     * @param Model\Product $product
-     * @param Query $descriptionListQuery
-     */
-    public function setMediaForObjectByQuery(Model\Product $product, Query $descriptionListQuery) {
-        // TODO
-    }
-
-    /**
      * @deprecated
      * @param Model\Product $product
      * @param Query $videoListQuery
