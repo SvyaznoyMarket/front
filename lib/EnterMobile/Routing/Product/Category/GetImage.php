@@ -13,6 +13,10 @@ class GetImage {
     /** @var string */
     private $size;
 
+    /**
+     * @param Model\Product\Category $category
+     * @param $size
+     */
     public function __construct(Model\Product\Category $category, $size) {
         $this->category = $category;
         $this->size = $size;

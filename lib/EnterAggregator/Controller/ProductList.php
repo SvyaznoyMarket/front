@@ -270,11 +270,6 @@ namespace EnterAggregator\Controller {
                 $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
             }
 
-            // список медиа для товаров
-            if ($descriptionListQuery) {
-                $productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
-            }
-
             // список магазинов, в которых есть товар
             if ($request->config->shopState) {
                 $shopIds = [];
