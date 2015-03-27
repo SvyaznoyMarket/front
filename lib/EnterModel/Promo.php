@@ -32,7 +32,7 @@ namespace EnterModel {
             }
 
             if (!count($this->items)) {
-                $contentRepository = new \EnterRepository\Content();
+                $contentRepository = new \EnterRepository\Content(); // FIXME: модель не должна знать о репозитории
 
                 $item = new Model\Promo\Item();
                 $item->typeId = Model\Promo\Item::TYPE_CONTENT;
