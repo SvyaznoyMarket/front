@@ -20,6 +20,10 @@ class InternalServerError {
         $response = ($request && $request->isXmlHttpRequest()) ? new Http\JsonResponse() : new Http\Response();
         $response->statusCode = Http\Response::STATUS_INTERNAL_SERVER_ERROR;
 
+        if (!$this->getConfig()->debugLevel) {
+            return $response;
+        }
+
         $page = [
             'dataDebug' => $this->getConfig()->debugLevel ? 'true' : '',
             'error'     => array_merge([

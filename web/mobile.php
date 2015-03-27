@@ -16,7 +16,7 @@ $response = null;
 $debug = call_user_func(require $applicationDir . '/config/mobile/debug.php');
 
 // error reporting
-call_user_func(require $applicationDir . '/config/error-report.php', $debug);
+call_user_func(require $applicationDir . '/config/error-report.php');
 
 // autoload
 call_user_func(require $applicationDir . '/config/autoload.php', $applicationDir);

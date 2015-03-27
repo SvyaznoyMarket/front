@@ -16,7 +16,11 @@ class HandleConfig {
 
         // environment & debug
         $config->environment = $environment;
-        $config->debugLevel = $debugLevel;
+
+        if ($debugLevel !== null) {
+            $config->debugLevel = $debugLevel;
+        }
+
         if ($config->debugLevel) {
             $config->logger->fileAppender->file = str_replace('.log', '-debug.log', $config->logger->fileAppender->file);
         }

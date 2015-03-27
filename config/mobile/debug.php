@@ -1,7 +1,7 @@
 <?php
 
 return function() {
-    $debugLevel = false;
+    $debugLevel = null;
 
     if (isset($_GET['APPLICATION_DEBUG'])) {
         $debugLevel = (int)$_GET['APPLICATION_DEBUG'];
