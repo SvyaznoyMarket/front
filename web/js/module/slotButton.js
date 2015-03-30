@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'mustache', 'module/config', 'jquery.popup', 'jquery.maskedinput'],
-    function ($, Mustache, config) {
+    ['jquery', 'mustache', 'module/config', 'module/util', 'jquery.popup', 'jquery.maskedinput'],
+    function ($, Mustache, config, util) {
         var
             $body = $('body'),
             $header = $('.js-header'),
@@ -274,7 +274,7 @@ define(
                         }
 
                         $form.after($(Mustache.render(popupResultTemplate, {
-                            orderNumber: result.orderNumber
+                            orderNumber: result.order.number
                         })));
 
                         $form.remove();
@@ -285,6 +285,8 @@ define(
                         });
 
                         scrollTo(0);
+
+                        util.sendOrdersToGoogleAnalytics([result.order]);
                     },
                     error: function(){
                         $errors.text('Ошибка при создании заявки').show();
