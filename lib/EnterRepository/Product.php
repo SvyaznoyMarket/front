@@ -322,12 +322,24 @@ class Product {
                 ;
                 if (!$product) continue;
 
+                // trustfactors
                 if (isset($descriptionItem['trustfactors']) && is_array($descriptionItem['trustfactors'])) {
                     foreach ($descriptionItem['trustfactors'] as $trustfactorItem) {
                         if (!isset($trustfactorItem['uid'])) continue;
 
                         $product->trustfactors[] = new Model\Product\Trustfactor($trustfactorItem);
                     }
+                }
+
+                // media
+                if (
+                    isset($descriptionItem['medias'])
+                    && is_array($descriptionItem['medias'])
+                    && (count($descriptionItem['medias']) >= count($product->media->photos)) // SITE-5284
+                ) {
+                    // удаляет фотографии товара из ядра
+                    unset($product->media);
+                    $product->media = new Model\Product\Media($descriptionItem);
                 }
             }
         } catch (\Exception $e) {
