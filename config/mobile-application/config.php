@@ -9,7 +9,7 @@ return function(EnterMobileApplication\Config $config) {
     ini_set('session.use_only_cookies', false);
     ini_set('session.use_trans_sid', true);
 
-    $config->version = '1.2';
+    $config->version = '1.3';
 
     $config->applicationTags = ['app-mobile', 'mobile-app'];
 
