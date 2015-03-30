@@ -2,50 +2,38 @@
 
 namespace EnterMobile\Routing\Product\Media;
 
+use EnterAggregator\LoggerTrait;
 use EnterMobile\Routing\Route;
-use EnterMobile\ConfigTrait;
 use EnterMobile\Config;
+use EnterModel as Model;
 
 class GetPhoto extends Route {
-    use ConfigTrait;
+    use LoggerTrait;
 
-    /** @var Config */
-    protected $config;
+    /** @var Model\Media */
+    private $photo;
+    /** @var string */
+    private $size;
 
-    /**
-     * @param string $photoSource
-     * @param string $photoId
-     * @param string $photoSize
-     */
-    public function __construct($photoSource, $photoId, $photoSize) {
-        $this->config = $this->getConfig();
-
-        $this->parameters = [
-            'photoId'     => $photoId,
-            'photoSource' => $photoSource,
-            'photoSize'   => $photoSize,
-        ];
+    public function __construct(Model\Media $photo, $size) {
+        $this->photo = $photo;
+        $this->size = $size;
     }
 
     /**
      * @return string
      */
     public function __toString() {
-        return
-            $this->getHost((int)$this->parameters['photoId'])
-            . (array_key_exists($this->parameters['photoSize'], $this->config->productPhoto->urlPaths) ? $this->config->productPhoto->urlPaths[$this->parameters['photoSize']] : reset($this->config->productPhoto->urlPaths))
-            . $this->parameters['photoSource']
-        ;
-    }
+        try {
+            foreach ($this->photo->sources as $source) {
+                if ($source->type != $this->size) continue;
 
-    /**
-     * @param int $photoId
-     * @return string
-     */
-    protected function getHost($photoId) {
-        $hosts = $this->config->mediaHosts;
-        $index = !empty($photoId) ? ($photoId % count($hosts)) : rand(0, count($hosts) - 1);
+                return $source->url;
+            }
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['route']]);
+        }
 
-        return isset($hosts[$index]) ? $hosts[$index] : '';
+        return '';
     }
 }

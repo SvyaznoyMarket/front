@@ -328,7 +328,7 @@ class Partner {
                     'description' => $description,
                     'fn'          => $product->name,
                     'identifier'  => $product->article . '_' . $request->region->id,
-                    'photo'       => $photo ? ((string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 3))) : null,
+                    'photo'       => $photo ? ((string)(new Routing\Product\Media\GetPhoto($photo, 'product_500'))) : null,
                     'price' => $product->price,
                     'url'   => $request->httpRequest->getSchemeAndHttpHost() . $product->link,
                     'valid' => $product->isBuyable ? 0 : time(),

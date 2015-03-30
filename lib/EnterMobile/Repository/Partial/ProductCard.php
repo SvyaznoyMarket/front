@@ -37,9 +37,9 @@ class ProductCard {
         $card->shownPrice = $product->price ? $this->getPriceHelper()->format($product->price) : null;
         $card->oldPrice = $product->oldPrice;
         $card->shownOldPrice = $product->oldPrice ? $this->getPriceHelper()->format($product->oldPrice) : null;
+        /** @var \EnterModel\Media|null $photo */
         if ($photo = reset($product->media->photos)) {
-            /** @var \EnterModel\Product\Media\Photo $photo */
-            $card->image = (string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 2));
+            $card->image = (string)(new Routing\Product\Media\GetPhoto($photo, 'product_160'));
         }
         $card->id = $product->id;
         $card->categoryId = $product->category ? $product->category->id : null;

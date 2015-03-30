@@ -33,9 +33,9 @@ class ProductCard {
         $card->sum = (new Repository\Partial\Cart\ProductSum())->getObject($cartProduct);
         $card->oldPrice = $product->oldPrice;
         $card->shownOldPrice = $product->oldPrice ? $this->getPriceHelper()->format($product->oldPrice) : null;
+        /** @var \EnterModel\Media|null $photo */
         if ($photo = reset($product->media->photos)) {
-            /** @var \EnterModel\Product\Media\Photo $photo */
-            $card->image = (string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 1));
+            $card->image = (string)(new Routing\Product\Media\GetPhoto($photo, 'product_60'));
         }
         $card->id = $product->id;
         $card->cartSpinner = $cartSpinner;
