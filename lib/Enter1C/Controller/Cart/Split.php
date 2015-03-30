@@ -34,7 +34,7 @@ class Split {
 
         $splitQuery = new Query\Cart\Split\GetItem(
             $cart,
-            new Model\Region(['ui' => $requestData['geo_ui']]),
+            new Model\Region(['code' => $requestData['geo_code']]),
             new Model\Shop(['ui' => $requestData['shop_ui']]),
             new Model\PaymentMethod(['ui' => $requestData['payment_method_ui']]),
             isset($requestData['previous_split']) && is_array($requestData['previous_split']) ? $splitRepository->convertXmlArrayToCoreArray($requestData['previous_split']) : [],
@@ -51,7 +51,7 @@ class Split {
         if (isset($requestData['point']['token']) && isset($requestData['point']['id'])) {
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
-                new Model\Region(['ui' => $requestData['geo_ui']]),
+                new Model\Region(['code' => $requestData['geo_code']]),
                 new Model\Shop(['ui' => $requestData['shop_ui']]),
                 new Model\PaymentMethod(['ui' => $requestData['payment_method_ui']]),
                 $split->dump(),
