@@ -26,6 +26,8 @@ class Index {
         $config = $this->getConfig();
         $curl = $this->getCurl();
 
+        $productRepository = new \EnterRepository\Product();
+
         $barcodes = explode(',', is_scalar($request->query['productBarcodes']) ? $request->query['productBarcodes'] : '');
         $barcodes = array_filter($barcodes, function($barcode) { $barcode = trim($barcode); return !empty($barcode); });
         if (!(bool)$barcodes) {
@@ -38,7 +40,7 @@ class Index {
 
         // номер страницы
         $pageNum = (new Repository\PageNum())->getByHttpRequest($request);
-        $limit = (new \EnterRepository\Product())->getLimitByHttpRequest($request);
+        $limit = $productRepository->getLimitByHttpRequest($request);
 
         // сортировка
         $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
@@ -77,7 +79,32 @@ class Index {
         $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
 
         // товары
-        $products = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+        $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
+
+        // запрос списка медиа для товаров
+        $descriptionListQuery = null;
+        if ($productsById) {
+            $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
+                array_map(function(\EnterModel\Product $product) { return $product->ui; }, $productsById),
+                [
+                    'media'       => true,
+                    'media_types' => ['main'], // только главная картинка
+                ]
+            );
+            $curl->prepare($descriptionListQuery);
+        }
+
+        $curl->execute();
+
+        // товары по ui
+        $productsByUi = [];
+        call_user_func(function() use (&$productsById, &$productsByUi) {
+            foreach ($productsById as $product) {
+                $productsByUi[$product->ui] = $product;
+            }
+        });
+        // медиа для товаров
+        $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductSet\Index\Request();
@@ -86,7 +113,7 @@ class Index {
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->pageNum = $pageNum;
         $pageRequest->limit = $limit;
-        $pageRequest->count = count($products);
+        $pageRequest->count = count($productsById);
         $pageRequest->requestFilters = [];
         $pageRequest->baseRequestFilters = [];
         $pageRequest->filters = [];
@@ -94,7 +121,7 @@ class Index {
         $pageRequest->sortings = $sortings;
         $pageRequest->category = null;
         $pageRequest->catalogConfig = null;
-        $pageRequest->products = $products;
+        $pageRequest->products = $productsById;
 
         // страница
         $page = new Page();
