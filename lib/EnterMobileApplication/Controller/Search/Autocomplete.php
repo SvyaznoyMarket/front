@@ -21,14 +21,18 @@ namespace EnterMobileApplication\Controller\Search {
             $curl = $this->getCurl();
             $config = $this->getConfig();
 
+            $searchRepository = new \EnterRepository\Search();
+
             // ид региона
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request);
             if (!$regionId) {
                 throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
-            $searchRepository = new \EnterRepository\Search();
-            $searchPhrase = $searchRepository->getPhraseByHttpRequest($request);
+            $searchPhrase = $request->query['searchPhrase'] ?: null;
+            if (!$searchPhrase) {
+                throw new \Exception('Не передан параметр searchPhrase', Http\Response::STATUS_BAD_REQUEST);
+            }
 
             // запрос autocomplete
             $query = new Query\Search\GetAutocompleteResultByPhrase($searchPhrase, $regionId);
