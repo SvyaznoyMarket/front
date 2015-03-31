@@ -5,6 +5,7 @@ define(
 
         showPopup = function (e) {
             e.stopPropagation();
+            e.preventDefault();
 
             console.log('showPopup');
 
@@ -13,7 +14,8 @@ define(
                 closeBtn: false
             });
 
-            e.preventDefault();
+            // MSITE-156
+            $($('.js-search-form').data('inputSelector')).focus();
         };
 
         $body.on('click', '.js-searchLink', showPopup);
