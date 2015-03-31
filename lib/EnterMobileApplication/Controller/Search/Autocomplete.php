@@ -29,9 +29,9 @@ namespace EnterMobileApplication\Controller\Search {
                 throw new \Exception('Не передан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
-            $searchPhrase = $request->query['searchPhrase'] ?: null;
+            $searchPhrase = $request->query['phrase'] ?: null;
             if (!$searchPhrase) {
-                throw new \Exception('Не передан параметр searchPhrase', Http\Response::STATUS_BAD_REQUEST);
+                throw new \Exception('Не передан параметр phrase', Http\Response::STATUS_BAD_REQUEST);
             }
 
             // запрос autocomplete
