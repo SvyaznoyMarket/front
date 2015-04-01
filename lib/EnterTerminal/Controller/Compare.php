@@ -51,7 +51,9 @@ namespace EnterTerminal\Controller {
             if ($productListQuery) {
                 $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery], function(&$item) {
                     // оптимизация
-                    $item['media'] = [reset($item['media'])];
+                    if ($mediaItem = reset($item['media'])) {
+                        $item['media'] = [$mediaItem];
+                    }
                 });
             }
 
