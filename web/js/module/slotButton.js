@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'mustache', 'module/config', 'jquery.popup', 'jquery.maskedinput'],
-    function ($, Mustache, config) {
+    ['jquery', 'mustache', 'module/config', 'module/util', 'jquery.popup', 'jquery.maskedinput'],
+    function ($, Mustache, config, util) {
         var
             $body = $('body'),
             $header = $('.js-header'),
@@ -26,7 +26,7 @@ define(
                         '<div class="popupBox-bid__err js-slotButton-popup-errors" style="display: none;"></div>' +
 
                         '<div class="orderU_fld js-slotButton-popup-element">' +
-                            '<input class="orderU_tx textfield js-slotButton-popup-phone" type="tel" name="phone" value="{{userPhone}}" placeholder="8 (___) ___-__-__" data-mask="8 (xxx) xxx-xx-xx" />' +
+                            '<input class="orderU_tx textfield js-slotButton-popup-phone" type="tel" name="phone" value="{{userPhone}}" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx" />' +
                             '<label class="orderU_lbl orderU_lbl-str">Телефон</label>' +
                             '<span class="js-slotButton-popup-element-error err-elem" style="display: none">Неверный формат телефона</span>' +
                         '</div>' +
@@ -84,7 +84,7 @@ define(
             validatePhone = function($form, disableFail) {
                 var $phoneInput = $('.js-slotButton-popup-phone', $form);
 
-                if (!/8\(\d{3}\)\d{3}-\d{2}-\d{2}/.test($phoneInput.val().replace(/\s+/g, ''))) {
+                if (!/\+7\(\d{3}\)\d{3}-\d{2}-\d{2}/.test($phoneInput.val().replace(/\s+/g, ''))) {
                     if (!disableFail) {
                         showError($phoneInput);
                     }
@@ -274,7 +274,7 @@ define(
                         }
 
                         $form.after($(Mustache.render(popupResultTemplate, {
-                            orderNumber: result.orderNumber
+                            orderNumber: result.order.number
                         })));
 
                         $form.remove();
@@ -285,6 +285,8 @@ define(
                         });
 
                         scrollTo(0);
+
+                        util.sendOrdersToGoogleAnalytics([result.order]);
                     },
                     error: function(){
                         $errors.text('Ошибка при создании заявки').show();

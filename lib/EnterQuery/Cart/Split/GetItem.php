@@ -39,6 +39,8 @@ class GetItem extends Query {
             $this->url->query['geo_id'] = $region->id;
         } else if ($region->ui != null) {
             $this->url->query['geo_ui'] = $region->ui;
+        } else if ($region->code != null) {
+            $this->url->query['geo_code'] = $region->code;
         }
 
         if ($shop) {

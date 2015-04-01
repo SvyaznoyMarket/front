@@ -10,6 +10,6 @@ return function(\EnterMobile\Config $config) {
     $config->mustacheRenderer->checkEscape = true;
     $config->debugLevel = 1;
 
-    //$config->googleAnalitics->enabled = false;
+    //$config->googleAnalytics->enabled = false;
 
 };

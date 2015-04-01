@@ -10,6 +10,8 @@ class Region {
     /** @var string */
     public $ui;
     /** @var string */
+    public $code;
+    /** @var string */
     public $parentId;
     /** @var string */
     public $name;
@@ -30,6 +32,7 @@ class Region {
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
+        if (array_key_exists('code', $data)) $this->code = (string)$data['code'];
         if (array_key_exists('parent_id', $data)) $this->parentId = (string)$data['parent_id'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
         if (array_key_exists('token', $data)) $this->token = (string)$data['token']; // FIXME: deprecated

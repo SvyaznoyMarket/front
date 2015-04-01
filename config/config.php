@@ -16,8 +16,8 @@ return function(\EnterAggregator\Config $config) {
 
     $config->userToken->authName = '_token';
 
-    $config->googleAnalitics->enabled = true;
-    $config->googleAnalitics->id = 'UA-25485956-5';
+    $config->googleAnalytics->enabled = true;
+    $config->googleAnalytics->id = 'UA-25485956-5';
 
     $config->region->defaultId = '14974';
     $config->region->cookieName = 'geoshop';

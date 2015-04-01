@@ -63,9 +63,9 @@ class DefaultPage {
         ]);
 
         $page->googleAnalytics = false;
-        if ($config->googleAnalitics->enabled) {
+        if ($config->googleAnalytics->enabled) {
             $page->googleAnalytics = new Page\GoogleAnalytics();
-            $page->googleAnalytics->id = $config->googleAnalitics->id;
+            $page->googleAnalytics->id = $config->googleAnalytics->id;
         }
 
         $page->googleTagManager = false;
