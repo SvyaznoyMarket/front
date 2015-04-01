@@ -116,7 +116,7 @@ class ProductButton {
         }
 
         if ($product->sender) {
-            $button->url .= '?' . http_build_query($product->sender);
+            $button->url .= (false === strpos($button->url, '?') ? '?' : '&') . http_build_query($product->sender);
         }
 
         $button->dataValue = $this->helper->json($dataValue);
