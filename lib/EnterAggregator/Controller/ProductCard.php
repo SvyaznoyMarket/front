@@ -211,7 +211,9 @@ namespace EnterAggregator\Controller {
             // наборы
             $kitProductsById = $kitListQuery ? $productRepository->getIndexedObjectListByQueryList([$kitListQuery], function(&$item) {
                 // оптимизация
-                $item['media'] = [reset($item['media'])];
+                if ($mediaItem = reset($item['media'])) {
+                    $item['media'] = [$mediaItem];
+                }
             }) : [];
             foreach ($kitProductsById as $kitProduct) {
                 $kitProduct->kitCount = 0;

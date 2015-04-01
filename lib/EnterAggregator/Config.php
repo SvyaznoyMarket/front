@@ -35,7 +35,7 @@ namespace EnterAggregator {
         /** @var Config\Region */
         public $region;
         /** @var Config\GoogleAnalytics */
-        public $googleAnalitics;
+        public $googleAnalytics;
         /** @var Config\GoogleTagManager */
         public $googleTagManager;
         /** @var Config\YandexMetrika */
@@ -96,7 +96,7 @@ namespace EnterAggregator {
             $this->session = new Config\Session();
             $this->userToken = new Config\UserToken();
 
-            $this->googleAnalitics = new Config\GoogleAnalytics();
+            $this->googleAnalytics = new Config\GoogleAnalytics();
             $this->googleTagManager = new Config\GoogleTagManager();
             $this->yandexMetrika = new Config\YandexMetrika();
             $this->mailRu = new Config\MailRu();

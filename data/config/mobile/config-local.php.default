@@ -10,7 +10,7 @@ return function(\EnterMobile\Config $config) {
     $config->session->cookieDomain = '.enter.loc';
     $config->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/' . $config->hostname;
 
-    $config->googleAnalitics->enabled = false;
+    $config->googleAnalytics->enabled = false;
     $config->partner->enabled = false;
 
     //$config->scmsService->url = 'http://scms.ent3.ru/';

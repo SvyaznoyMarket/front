@@ -66,6 +66,24 @@ class Product {
     }
 
     /**
+     * @param Query $query
+     * @return Model\Product[]
+     */
+    public function getIndexedObjectListByQuery(Query $query) {
+        $products = [];
+
+        $items = $query->getResult();
+        if (is_array($items)) {
+            foreach ($items as $item) {
+                $model = new Model\Product($item);
+                $products[$model->id] = $model;
+            }
+        }
+
+        return $products;
+    }
+
+    /**
      * @param Query[] $queries
      * @param callable|null $parser
      * @return Model\Product[]
