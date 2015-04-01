@@ -8,6 +8,10 @@ define(
         var $body = $('body'),
 
             handle = function(dataGa, $el, e) {
+                if (!_.isObject(dataGa)) {
+                    dataGa = JSON.parse(dataGa);
+                }
+
                 if (('undefined' != typeof ga) && _.isObject(dataGa)) {
 
                     _.each(dataGa, function(data, handlerName) {
@@ -48,7 +52,6 @@ define(
                 dataGa = $el.data('gaClick')
             ;
 
-            console.info('js-ga-click', $el, dataGa);
             handle(dataGa, $el, e);
         });
 
@@ -57,7 +60,6 @@ define(
                 dataGa = $el.data('gaSubmit')
             ;
 
-            console.info('js-ga-submit', $el, dataGa);
             handle(dataGa, $el, e);
         });
 

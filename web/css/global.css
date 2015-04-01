@@ -2957,7 +2957,7 @@ body.noScroll {
 }
 .sliderBox {
   position: relative;
-  z-index: 100;
+  z-index: 150;
   overflow: hidden;
   margin: 0 0 30px;
 }
@@ -3030,6 +3030,31 @@ body.noScroll {
 }
 .sliderCat .sliderBox {
   border-left: 1px solid #d8d8d8;
+}
+.alsoBoughtContainer {
+  position: relative;
+}
+.alsoBoughtContainer .sliderBoxItems_item {
+  padding: 0 25px;
+  width: 100px;
+}
+.alsoBoughtContainer .sliderBox .productDesc {
+  font-size: 11px;
+}
+.alsoBoughtContainer .sliderBox .productDesc_name {
+  max-height: 60px;
+  overflow: hidden;
+}
+.alsoBoughtContainer .sliderBox .productDesc_img {
+  max-height: 80px;
+  max-width: 73px;
+}
+.alsoBoughtContainer .sliderBox .btnBuy {
+  font-size: 12px;
+  width: 80px;
+}
+.alsoBoughtContainer .sliderBox .productPrice {
+  font-size: 14px;
 }
 /* ==========================================================================
    Слайдер товаров .sliderBox, .sliderControls, .sliderCat

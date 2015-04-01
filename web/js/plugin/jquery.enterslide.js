@@ -64,8 +64,14 @@
      * Метод добавления контролов
      */
     _addControls : function() {
-      this.$navNext = $('<span class="sliderControls_btn sliderControls_btn__right"></span>');
-      this.$navPrev = $('<span class="sliderControls_btn sliderControls_btn__left"></span>');
+      this.$navNext = $('<span class="sliderControls_btn sliderControls_btn__right js-ga-click"></span>');
+      this.$navPrev = $('<span class="sliderControls_btn sliderControls_btn__left js-ga-click"></span>');
+
+      if (this.options.scrollGa) {
+        this.$navNext.data('gaClick', JSON.stringify(this.options.scrollGa));
+        this.$navPrev.data('gaClick', JSON.stringify(this.options.scrollGa));
+      }
+
       $('<div class="sliderControls"/>')
       .append( this.$navPrev )
       .append( this.$navNext )

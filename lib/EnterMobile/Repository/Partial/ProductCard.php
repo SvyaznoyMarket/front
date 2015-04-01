@@ -32,14 +32,20 @@ class ProductCard {
         $card = new Partial\ProductCard();
 
         $card->name = $product->name;
-        $card->url = $product->link;
+
+        if ($product->sender) {
+            $card->url = $product->link . '?' . http_build_query($product->sender);
+        } else {
+            $card->url = $product->link;
+        }
+
         $card->price = $product->price;
         $card->shownPrice = $product->price ? $this->getPriceHelper()->format($product->price) : null;
         $card->oldPrice = $product->oldPrice;
         $card->shownOldPrice = $product->oldPrice ? $this->getPriceHelper()->format($product->oldPrice) : null;
         if ($photo = reset($product->media->photos)) {
             /** @var \EnterModel\Product\Media\Photo $photo */
-            $card->image = (string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 2));
+            $card->image = (string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 1));
         }
         $card->id = $product->id;
         $card->categoryId = $product->category ? $product->category->id : null;
