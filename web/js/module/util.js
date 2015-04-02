@@ -141,6 +141,38 @@ define(
                 }
             },
 
+            trackGoogleAnalyticsEvent: function(dataGa) {
+                if (dataGa[0] != 'send' || dataGa[1] != 'event') {
+                    return;
+                }
+
+                console.log('ga event', dataGa);
+
+                if (typeof dataGa[2] != 'undefined') {
+                    dataGa[2] = String(dataGa[2]);
+                }
+
+                if (typeof dataGa[3] != 'undefined') {
+                    dataGa[3] = String(dataGa[3]);
+                }
+
+                if (typeof dataGa[4] != 'undefined') {
+                    dataGa[4] = String(dataGa[4]);
+                }
+
+                if (typeof dataGa[5] != 'undefined') {
+                    dataGa[5] = Number(dataGa[5]);
+                }
+
+                if (typeof ga != 'undefined') {
+                    ga.apply(ga, dataGa);
+                }
+
+                if (typeof _gaq != 'undefined') {
+                    _gaq.push(['_trackEvent'].concat(dataGa.slice(2)));
+                }
+            },
+
             sendOrdersToGoogleAnalytics: function(orders) {
                 $.each(orders, function(i, order) {
                     util.trackGoogleAnalyticsTransaction({

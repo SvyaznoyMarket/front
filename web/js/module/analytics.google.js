@@ -1,49 +1,46 @@
 define(
     [
-        'require', 'jquery', 'underscore'
+        'require', 'jquery', 'underscore', 'module/util'
     ],
     function (
-        require, $, _
+        require, $, _, util
     ) {
-        var $body = $('body'),
+        var
+            $body = $('body'),
 
             handle = function(dataGa, $el, e) {
                 if (!_.isObject(dataGa)) {
                     dataGa = JSON.parse(dataGa);
                 }
 
-                if (('undefined' != typeof ga) && _.isObject(dataGa)) {
+                if (_.isObject(dataGa)) {
+                    console.info('dataGa', dataGa);
+                    _.each(dataGa, function(dataGaItem) {
+                        _.each(dataGaItem, function(v, k) {
+                            if ('{product.sum}' == v) {
+                                var dataValue = $el.data('value');
+                                if (dataValue && dataValue.product) {
+                                    var productId = getProductIdByArticle(dataValue.product, dataGaItem[4]);
+                                    dataGaItem[k] = dataValue.product[productId].price * dataValue.product[productId].quantity;
+                                }
+                            }
+                        });
 
-                    _.each(dataGa, function(data, handlerName) {
-                        console.info('ga', handlerName, data);
-
-                        if (!handlers[handlerName]) {
-                            handlerName = 'default';
-                        }
-
-                        handlers[handlerName](data, $el, e);
+                        util.trackGoogleAnalyticsEvent(dataGaItem);
                     });
                 }
             },
 
-            handlers = {
-                'default': function(dataGa, $el, e) {
-                    ga.apply(ga, dataGa);
-                },
+            getProductIdByArticle = function(products, article) {
+                var productId;
+                $.each(products, function(k, v) {
+                    if (v.article == article) {
+                        productId = v.id;
+                        return false;
+                    }
+                });
 
-                'm_add_to_basket': function(dataGa, $el, e) {
-                    var dataValue = $el.data('value');
-
-                    _.each(dataGa, function(v, k) {
-                        if ('{product.sum}' == v) {
-                            if (dataValue && dataValue.product) {
-                                dataGa[k] = dataValue.product.price * dataValue.product.quantity;
-                            }
-                        }
-                    });
-
-                    ga.apply(ga, dataGa);
-                }
+                return productId;
             }
         ;
 

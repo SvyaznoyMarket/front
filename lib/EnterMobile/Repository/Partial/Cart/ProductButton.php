@@ -53,6 +53,7 @@ class ProductButton {
         $dataValue = ['product' => [
             $product->id => [
                 'id'       => $product->id,
+                'article'  => $product->article,
                 'name'     => $product->name,
                 'token'    => $product->token,
                 'price'    => $product->price,
@@ -61,20 +62,17 @@ class ProductButton {
             ],
         ]];
 
-        // ga
+        $ga = [
+            ['send', 'event', 'm_add_to_basket', $product->name, $product->article, '{product.sum}'],
+        ];
+
         if ($product->ga) {
-            $ga = [
-                'm_add_to_basket' => [
-                    $product->ga['category'],
-                    $product->ga['events']['addToCart']['action'],
-                    $product->ga['category'],
-                    $product->ga['events']['addToCart']['productName'],
-                    $product->ga['events']['addToCart']['label']
-                ]
-            ];
-        } else {
-            $ga = [
-                'm_add_to_basket' => ['send', 'event', 'm_add_to_basket', $product->name, $product->article, '{product.sum}'],
+            $ga[] = [
+                $product->ga['category'],
+                $product->ga['events']['addToCart']['action'],
+                $product->ga['category'],
+                $product->ga['events']['addToCart']['productName'],
+                $product->ga['events']['addToCart']['label']
             ];
         }
 
@@ -149,6 +147,7 @@ class ProductButton {
 
             $dataValue['product'][$product->id] = [
                 'id'           => $product->id,
+                'article'      => $product->article,
                 'name'         => $product->name,
                 'token'        => $product->token,
                 'price'        => $product->price,
@@ -162,12 +161,9 @@ class ProductButton {
         $button->dataUrl = $this->router->getUrlByRoute(new Routing\User\Cart\Product\Set());
         $button->dataValue = $this->helper->json($dataValue);
 
-        // ga
         $dataGa = [];
         foreach ($products as $product) {
-            $dataGa[] = [
-                ['send', 'event', 'm_add_to_basket', $product->name, $product->article, '{product.sum}'],
-            ];
+            $dataGa[] = ['send', 'event', 'm_add_to_basket', $product->name, $product->article, '{product.sum}'];
         }
         $button->dataGa = $this->helper->json($dataGa);
 
