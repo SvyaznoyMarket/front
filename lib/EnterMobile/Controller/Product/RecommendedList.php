@@ -26,6 +26,7 @@ class RecommendedList {
         // запрос для контроллера
         $controllerRequest = $controller->createRequest();
         $controllerRequest->config->alsoBought = true;
+        $controllerRequest->config->similar = true;
         $controllerRequest->regionId = $regionId;
         $controllerRequest->productIds = [$productId];
         // ответ от контроллера

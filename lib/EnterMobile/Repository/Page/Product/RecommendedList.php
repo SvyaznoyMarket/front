@@ -31,16 +31,53 @@ class RecommendedList {
         $url = $router->getUrlByRoute(new Routing\Product\GetRecommendedList($request->product->id));
 
         // alsoBought slider
-        $slider = $productSliderRepository->getObject('alsoBoughtSlider', $url);
+        $sliderGa = $templateHelper->json([
+            'm_recommended' => [
+                'RR_взаимодействие_мобильный',
+                'Пролистывание',
+                'RR_взаимодействие_мобильный',
+                'ProductAccessories'
+            ]
+        ]);
+        $slider = $productSliderRepository->getObject('alsoBoughtSlider', $url, $sliderGa);
         $slider->hasCategories = false;
         foreach ($request->alsoBoughtIdList as $productId) {
             /** @var \EnterModel\Product|null $productModel */
             $productModel = !empty($request->recommendedProductsById[$productId]) ? $request->recommendedProductsById[$productId] : null;
             if (!$productModel) continue;
 
+            $productModel->sender = [
+                'sender[name]'      => 'retailrocket',
+                'sender[position]'  => 'ProductAccessories',
+                'sender[type]'      => 'alsoBought',
+                'sender[method]'    => 'CrossSellItemToItems'
+            ];
+
+            $productModel->ga = [
+                'category' => 'RR_взаимодействие_мобильный',
+                'events' => [
+                    'addToCart' => [
+                        'action' => 'Добавил в корзину',
+                        'productName' => $productModel->name.'(RR_мобильный_ProductAccessories)',
+                        'label' => 'ProductAccessories'
+                    ],
+                    'toProductPage' => [
+                        'action' => 'Перешел на карточку товара',
+                        'label' => 'ProductAccessories',
+                        'product' => $productModel->article
+                    ]
+                ]
+            ];
+
             $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
             $productCard->dataGa = $templateHelper->json([
-                'm_recommended' => ['send', 'event', 'm_recommended', $productModel->article],
+                'm_recommended' => [
+                    $productModel->ga['category'],
+                    $productModel->ga['events']['toProductPage']['action'],
+                    $productModel->ga['category'],
+                    $productModel->ga['events']['toProductPage']['product'],
+                    $productModel->ga['events']['toProductPage']['label']
+                ]
             ]);
 
             $slider->productCards[] = $productCard;
@@ -62,12 +99,43 @@ class RecommendedList {
         $page->widgets['.' . $slider->widgetId] = $slider;
 
         // similar slider
-        $slider = $productSliderRepository->getObject('similarSlider', $url);;
+        $sliderGa = $templateHelper->json([
+            'm_recommended' => [
+                'RR_взаимодействие_мобильный',
+                'Пролистывание',
+                'RR_взаимодействие_мобильный',
+                'ProductSimilar'
+            ]
+        ]);
+        $slider = $productSliderRepository->getObject('similarSlider', $url, $sliderGa);;
         $slider->hasCategories = false;
         foreach ($request->similarIdList as $productId) {
             /** @var \EnterModel\Product|null $productModel */
             $productModel = !empty($request->recommendedProductsById[$productId]) ? $request->recommendedProductsById[$productId] : null;
             if (!$productModel) continue;
+
+            $productModel->sender = [
+                'sender[name]'      => 'retailrocket',
+                'sender[position]'  => 'ProductSimilar',
+                'sender[type]'      => 'similar',
+                'sender[method]'    => 'UpSellItemToItems'
+            ];
+
+            $productModel->ga = [
+                'category' => 'RR_взаимодействие_мобильный',
+                'events' => [
+                    'addToCart' => [
+                        'action' => 'Добавил в корзину',
+                        'productName' => $productModel->name.'(RR_мобильный_ProductSimilar)',
+                        'label' => 'ProductSimilar'
+                    ],
+                    'toProductPage' => [
+                        'action' => 'Перешел на карточку товара',
+                        'label' => 'ProductSimilar',
+                        'product' => $productModel->article
+                    ]
+                ]
+            ];
 
             $slider->productCards[] = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
         }

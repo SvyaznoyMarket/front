@@ -44,9 +44,14 @@ define(
                         $parent.show();
                         $($parent.data('tabSelector')).animate({width: 'show'});
                     }
-                });
 
-                $('.js-productSliderList').enterslide();
+                    var $productSlider = $widget.find('.js-productSlider');
+                    var $productSliderList = $widget.find('.js-productSliderList');
+
+                    $productSliderList.enterslide({
+                        scrollGa: $productSlider.data('ga')
+                    });
+                });
             });
         });
 

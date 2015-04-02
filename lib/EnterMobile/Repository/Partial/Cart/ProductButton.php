@@ -62,9 +62,23 @@ class ProductButton {
         ]];
 
         // ga
-        $button->dataGa = $this->helper->json([
-            'm_add_to_basket' => ['send', 'event', 'm_add_to_basket', $product->name, $product->article, '{product.sum}'],
-        ]);
+        if ($product->ga) {
+            $ga = [
+                'm_add_to_basket' => [
+                    $product->ga['category'],
+                    $product->ga['events']['addToCart']['action'],
+                    $product->ga['category'],
+                    $product->ga['events']['addToCart']['productName'],
+                    $product->ga['events']['addToCart']['label']
+                ]
+            ];
+        } else {
+            $ga = [
+                'm_add_to_basket' => ['send', 'event', 'm_add_to_basket', $product->name, $product->article, '{product.sum}'],
+            ];
+        }
+
+        $button->dataGa = $this->helper->json($ga);
 
         $button->id = self::getId($product->id);
         $button->widgetId = self::getWidgetId($product->id);
@@ -99,6 +113,10 @@ class ProductButton {
             } else if (!$button->url) {
                 $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id));
             }
+        }
+
+        if ($product->sender) {
+            $button->url .= (false === strpos($button->url, '?') ? '?' : '&') . http_build_query($product->sender);
         }
 
         $button->dataValue = $this->helper->json($dataValue);
