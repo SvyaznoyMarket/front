@@ -258,7 +258,7 @@ class Product {
         $availableStore = reset($availableStories) ?: null;
         if ($availableStore) {
             $this->availableStoreQuantity =
-                $availableStore['is_supplier']
+                ($availableStore['is_supplier'] && !$availableStore['quantity'])
                 ? (
                     $availableStore['is_infinite']
                     ? $availableStore['quantity']
