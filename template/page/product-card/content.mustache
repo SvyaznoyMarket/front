@@ -631,6 +631,57 @@
             </div>
         </div>
     </div>
+<!--Временно: верстка формы отзыва о товаре -->
+<div class="reviews-wrap">
+    <div class="reviews-add">
+        <span class="reviews-add-icon">+</span>
+        <span class="reviews-add-title">Добавить отзыв</span>
+    </div>
+
+    <form action="/orders/slot/create" method="post">
+        <div class="reviews-title">Отзыв о товаре</div>
+        <div class="reviews-header">Планшетный компьютер Explay Hit 7" 3G 4Gb черный</div>
+        <div class="reviews-mark-wrap">
+        <span class="reviews-mark__title">Оценка</span>
+            <ul class="reviews-mark__list">
+                <li class="reviews-mark__item mark-full"></li>
+                <li class="reviews-mark__item mark-full"></li>
+                <li class="reviews-mark__item mark-full"></li>
+                <li class="reviews-mark__item"></li>
+                <li class="reviews-mark__item"></li>
+            </ul>
+        </div>
+        <div class="reviews-input-group">
+            <input class="reviews-input textfield" type="text" name="name" value="">
+            <label class="reviews-label">Имя</label>
+        </div>
+        <div class="reviews-input-group">
+            <input class="reviews-input textfield" type="email" name="email" value="" >
+            <label class="reviews-label reviews-label-required">E-mail</label>
+        </div>
+        <div class="reviews-textarea-group">
+            <label class="reviews-textarea-label">Достоинства</label>
+            <textarea class="reviews-textarea"></textarea>
+        </div>
+        <div class="reviews-textarea-group">
+            <label class="reviews-textarea-label">Недостатки</label>
+            <textarea class="reviews-textarea"></textarea>
+        </div>
+        <div class="reviews-textarea-group">
+            <label class="reviews-textarea-label">Комментарий</label>
+            <textarea class="reviews-textarea"></textarea>
+        </div>
+        <div class="btn-container">
+            <button type="submit" class="btn btn--medium btn--submit noselect">Отправить</button>
+            <button class="btn btn--medium btn--close noselect">Закрыть</button>
+        </div>
+    </form>
+    <span class="reviews-added-success">Спасибо! Ваш отзыв появится на сайте после проверки модератором.</span>
+    <div class="btn-container">
+        <button class="btn btn--medium btn--close noselect">Закрыть</button>
+    </div>
+</div>
+
 
 </div><!--/ Контент -->
 
