@@ -17,6 +17,8 @@ namespace EnterMobile\Model\Partial {
         public $categories = [];
         /** @var bool */
         public $hasCategories;
+        /** @var string */
+        public $dataGa;
     }
 }
 

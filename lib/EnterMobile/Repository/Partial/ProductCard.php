@@ -32,7 +32,13 @@ class ProductCard {
         $card = new Partial\ProductCard();
 
         $card->name = $product->name;
-        $card->url = $product->link;
+
+        if ($product->sender) {
+            $card->url = $product->link . '?' . http_build_query($product->sender);
+        } else {
+            $card->url = $product->link;
+        }
+
         $card->price = $product->price;
         $card->shownPrice = $product->price ? $this->getPriceHelper()->format($product->price) : null;
         $card->oldPrice = $product->oldPrice;

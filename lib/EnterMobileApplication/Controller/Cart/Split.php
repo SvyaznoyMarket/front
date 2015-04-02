@@ -49,7 +49,14 @@ namespace EnterMobileApplication\Controller\Cart {
 
             $cart = new Model\Cart();
             foreach ($request->data['cart']['products'] as $productItem) {
-                $cartRepository->setProductForObject($cart, new Model\Cart\Product($productItem));
+                $cartProduct = new Model\Cart\Product($productItem);
+                $cartRepository->setProductForObject($cart, $cartProduct);
+            }
+
+            /** @var Model\Cart\Product[] $cartProductsById */
+            $cartProductsById = []; // товары в корзине по ид
+            foreach ($cart->product as $cartProduct) {
+                $cartProductsById[$cartProduct->id] = $cartProduct;
             }
 
             // ид региона
@@ -100,7 +107,17 @@ namespace EnterMobileApplication\Controller\Cart {
 
                 // добавление данных о корзине
                 $splitData['cart'] = [
-                    'product_list' => array_map(function(Model\Cart\Product $product) { return ['id' => $product->id, 'quantity' => $product->quantity]; }, $cart->product),
+                    'product_list' => array_map(
+                        function(Model\Cart\Product $cartProduct) {
+                            return [
+                                'id'       => $cartProduct->id,
+                                'quantity' => $cartProduct->quantity,
+                                'sender'   => $cartProduct->sender,
+                                'meta'     => $cartProduct->clientMeta,
+                            ];
+                        },
+                        $cart->product
+                    ),
                 ];
 
                 // сохранение в сессии
@@ -108,6 +125,13 @@ namespace EnterMobileApplication\Controller\Cart {
 
                 $response->split = new Model\Cart\Split($splitData);
                 $response->split->region = $region;
+
+                // MAPI-4
+                foreach ($response->split->orders as $order) {
+                    foreach ($order->products as $product) {
+                        $product->meta = isset($cartProductsById[$product->id]) ? $cartProductsById[$product->id]->clientMeta : null; // FIXME
+                    }
+                }
 
                 // обогащение данными о товарах
                 /** @var Model\Product[] $productsById */
@@ -127,7 +151,8 @@ namespace EnterMobileApplication\Controller\Cart {
                             $productId = @$productItem['id'] ? (string)$productItem['id'] : null;
                             if (!$productId) continue;
 
-                            $productsById[$productId] = new Model\Product($productItem);
+                            $product = new Model\Product($productItem);
+                            $productsById[$productId] = $product;
                         }
 
                         foreach ($response->split->errors as $error) {

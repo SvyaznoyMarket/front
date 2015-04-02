@@ -28,6 +28,11 @@ class ProductCard {
 
         $card->name = $product->name;
         $card->url = $product->link;
+
+        if ($product->sender) {
+            $card->url .= (false === strpos($card->url, '?') ? '?' : '&') . http_build_query($product->sender);
+        }
+
         $card->price = $product->price;
         $card->shownPrice = $product->price ? $this->getPriceHelper()->format($product->price) : null;
         $card->sum = (new Repository\Partial\Cart\ProductSum())->getObject($cartProduct);

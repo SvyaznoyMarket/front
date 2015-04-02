@@ -90,6 +90,10 @@ class Product {
     public $availableStoreQuantity;
     /** @var array|null */
     public $favorite;
+    /** @var array|null */
+    public $sender;
+    /** @var array|null */
+    public $ga;
 
     /**
      * @param array $data

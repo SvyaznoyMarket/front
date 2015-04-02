@@ -45,6 +45,7 @@ class ProductReserveButton {
         $dataValue = ['product' => [
             $product->id => [
                 'id'       => $product->id,
+                'article'  => $product->article,
                 'name'     => $product->name,
                 'token'    => $product->token,
                 'price'    => $product->price,
@@ -56,7 +57,7 @@ class ProductReserveButton {
 
         // ga
         $button->dataGa = $this->helper->json([
-            'm_add_to_basket' => ['send', 'event', 'm_1_click_order', $product->name, $product->article, '{product.sum}'],
+            ['send', 'event', 'm_1_click_order', $product->name, $product->article, '{product.sum}'],
         ]);
 
         $button->id = self::getId($product->id);

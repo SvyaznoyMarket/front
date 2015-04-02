@@ -373,6 +373,15 @@
         </div>
     </div>
 
+    <div class="contentBox960">
+        <div class="alsoBoughtContainer">
+            <h2 class="alsoBoughtTitle">С этим товаром покупают</h2>
+            {{#product.alsoBoughtSlider}}
+                {{>partial/product-slider/default}}
+            {{/product.alsoBoughtSlider}}
+        </div>
+    </div>
+
     <!-- Информация о товаре - табы -->
     <div class="contentBox960 js-content-hidden">
         <ul class="productDescTab js-tabs">
@@ -406,8 +415,8 @@
             </li>
             {{/product.accessorySlider}}
 
-            <li id="id-product-alsoBoughtTab" class="productDescTab_item js-tabs-item" style="display: none;">
-                С этим товаром покупают
+            <li id="id-product-similarTab" class="productDescTab_item js-tabs-item" style="display: none;">
+                Похожие товары
             </li>
         </ul>
     </div>
@@ -618,16 +627,16 @@
                 </div>
                 <!--/ Таб - Аксессуары -->
 
-                <!-- Таб - С этим товаром покупают -->
-                <div class="tabContent js-container js-cont" data-tab-selector="#id-product-alsoBoughtTab" style="display: none;">
+                <!-- Таб - Похожие товары -->
+                <div class="tabContent js-container js-cont" data-tab-selector="#id-product-similarTab" style="display: none;">
 
-                    <div class="tabContent_title">С этим товаром покупают</div>
+                    <div class="tabContent_title">Похожие товары</div>
 
-                    {{#product.alsoBoughtSlider}}
+                    {{#product.similarSlider}}
                         {{>partial/product-slider/default}}
-                    {{/product.alsoBoughtSlider}}
+                    {{/product.similarSlider}}
                 </div>
-                <!--/ Таб - С этим товаром покупают -->
+                <!--/ Таб - Похожие товары -->
             </div>
         </div>
     </div>
