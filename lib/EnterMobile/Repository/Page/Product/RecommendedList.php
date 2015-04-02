@@ -32,7 +32,7 @@ class RecommendedList {
 
         // alsoBought slider
         $sliderGa = $templateHelper->json([
-            'm_recommended' => [
+            [
                 'RR_взаимодействие_мобильный',
                 'Пролистывание',
                 'RR_взаимодействие_мобильный',
@@ -71,7 +71,7 @@ class RecommendedList {
 
             $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
             $productCard->dataGa = $templateHelper->json([
-                'm_recommended' => [
+                [
                     $productModel->ga['category'],
                     $productModel->ga['events']['toProductPage']['action'],
                     $productModel->ga['category'],
@@ -100,7 +100,7 @@ class RecommendedList {
 
         // similar slider
         $sliderGa = $templateHelper->json([
-            'm_recommended' => [
+            [
                 'RR_взаимодействие_мобильный',
                 'Пролистывание',
                 'RR_взаимодействие_мобильный',
