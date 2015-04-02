@@ -82,7 +82,8 @@ namespace EnterMobileApplication\Controller\Order {
             // корзина из данных о разбиении
             $cart = new Model\Cart();
             foreach ($splitData['cart']['product_list'] as $productItem) {
-                $cartRepository->setProductForObject($cart, new Model\Cart\Product($productItem));
+                $cartProduct = new Model\Cart\Product($productItem);
+                $cartRepository->setProductForObject($cart, $cartProduct);
             }
 
             // слияние данных о пользователе
@@ -109,6 +110,25 @@ namespace EnterMobileApplication\Controller\Order {
                     $split,
                     $metas
                 );
+
+                // MAPI-4
+                try {
+                    call_user_func(function() use (&$controllerResponse, &$cart) {
+                        /** @var Model\Cart\Product[] $cartProductsById */
+                        $cartProductsById = [];
+                        foreach ($cart->product as $cartProduct) {
+                            $cartProductsById[$cartProduct->id] = $cartProduct;
+                        }
+
+                        foreach ($controllerResponse->orders as $order) {
+                            foreach ($order->product as $product) {
+                                $product->meta = isset($cartProductsById[$product->id]) ? $cartProductsById[$product->id]->clientMeta : null;
+                            }
+                        }
+                    });
+                } catch (\Exception $e) {
+                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical', 'order']]);
+                }
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical', 'order']]);
 
