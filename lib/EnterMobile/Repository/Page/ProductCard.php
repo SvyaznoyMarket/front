@@ -148,7 +148,7 @@ class ProductCard {
             $photo->name = $productModel->name;
             $photo->url = (string)(new Routing\Product\Media\GetPhoto($photoModel, 'product_500'));
             $photo->previewUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel, 'product_60'));
-            $photo->originalUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel, 'product_150'));
+            $photo->originalUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel, 'product_1500'));
 
             $page->content->product->photos[] = $photo;
 
