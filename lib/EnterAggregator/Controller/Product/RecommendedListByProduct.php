@@ -44,6 +44,7 @@ namespace EnterAggregator\Controller\Product {
 
             // товары
             $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
+
             // товар
             /** @var Model\Product|null $product */
             $product = reset($productsById) ?: null;
@@ -116,19 +117,43 @@ namespace EnterAggregator\Controller\Product {
             $recommendedIds = array_unique(array_merge($alsoBoughtIdList, $similarIdList, $alsoViewedIdList));
 
             // запрос списка товаров
+            $descriptionListQueries = [];
             $productListQueries = [];
             foreach (array_chunk($recommendedIds, $config->curl->queryChunkSize) as $idsInChunk) {
                 $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id);
                 $productListQuery->setTimeout(1.5 * $config->coreService->timeout);
                 $curl->prepare($productListQuery);
-
                 $productListQueries[] = $productListQuery;
+
+                // запрос списка медиа для товаров
+                $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                    $idsInChunk,
+                    [
+                        'media'       => true,
+                        'media_types' => ['main'], // только главная картинка
+                    ]
+                );
+                $curl->prepare($descriptionListQuery);
+                $descriptionListQueries[] = $descriptionListQuery;
             }
 
             $curl->execute();
 
             // товары
             $recommendedProductsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
+
+            // товары по ui
+            $productsByUi = [];
+            call_user_func(function() use (&$recommendedProductsById, &$productsByUi) {
+                foreach ($recommendedProductsById as $product) {
+                    $productsByUi[$product->ui] = $product;
+                }
+            });
+
+            // медиа для товаров
+            foreach ($descriptionListQueries as $descriptionListQuery) {
+                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+            }
 
             foreach ($alsoBoughtIdList as $i => $alsoBoughtId) {
                 // SITE-2818 из списка товаров "с этим товаром также покупают" убираем товары, которые есть только в магазинах
