@@ -105,9 +105,19 @@ class Index {
 
         // запрос списка товаров
         $productListQuery = null;
+        $descriptionListQuery = null;
         if ((bool)$searchResult->productIds) {
             $productListQuery = new Query\Product\GetListByIdList($searchResult->productIds, $region->id);
             $curl->prepare($productListQuery);
+
+            $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                $searchResult->productIds,
+                [
+                    'media'       => true,
+                    'media_types' => ['main'], // только главная картинка
+                ]
+            );
+            $curl->prepare($descriptionListQuery);
         }
 
         // запрос меню
@@ -121,14 +131,21 @@ class Index {
             $curl->prepare($ratingListQuery);
         }
 
-        // запрос списка видео для товаров
-        //$descriptionListQuery = new Query\Product\GetDescriptionListByUiList($searchResult->productIds);
-        //$curl->prepare($descriptionListQuery);
-
         $curl->execute();
 
         // список товаров
         $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
+
+        // товары по ui
+        $productsByUi = [];
+        call_user_func(function() use (&$productsById, &$productsByUi) {
+            foreach ($productsById as $product) {
+                $productsByUi[$product->ui] = $product;
+            }
+        });
+
+        // медиа для товаров
+        $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
 
         // меню
         $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
