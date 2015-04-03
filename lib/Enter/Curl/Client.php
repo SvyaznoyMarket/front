@@ -297,11 +297,13 @@ class Client {
         curl_setopt($connection, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($connection, CURLOPT_URL, $query->getUrl());
 
+        $headers = [];
         if ((bool)$query->getHeaders()) {
-            curl_setopt($connection, CURLOPT_HTTPHEADER, $query->getHeaders());
+            $headers = $query->getHeaders();
         } else if ((bool)$this->config->httpheader) {
-            curl_setopt($connection, CURLOPT_HTTPHEADER, $this->config->httpheader);
+            $headers = $this->config->httpheader;
         }
+
         if ($this->config->encoding) {
             curl_setopt($connection, CURLOPT_ENCODING, $this->config->encoding);
         }
@@ -318,9 +320,12 @@ class Client {
         }
 
         if ((bool)$query->getData()) {
+            $headers[] = 'Content-Type: application/json';
             curl_setopt($connection, CURLOPT_POST, true);
             curl_setopt($connection, CURLOPT_POSTFIELDS, $query->getDataEncoder() ? call_user_func($query->getDataEncoder(), $query->getData()) : $query->getData());
         }
+
+        curl_setopt($connection, CURLOPT_HTTPHEADER, $headers);
 
         if ($this->config->referer) {
             curl_setopt($connection, CURLOPT_REFERER, $this->config->referer);
