@@ -145,7 +145,9 @@ class Index {
         });
 
         // медиа для товаров
-        $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+        if ($productsByUi) {
+            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+        }
 
         // меню
         $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);

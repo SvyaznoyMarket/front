@@ -110,10 +110,20 @@ namespace EnterTerminal\Controller {
             $filterRepository->setValueForObjectList($filters, $requestFilters);
 
             // запрос списка товаров
+            $descriptionListQuery = null;
             $productListQuery = null;
             if ((bool)$searchResult->productIds) {
                 $productListQuery = new Query\Product\GetListByIdList($searchResult->productIds, $regionId);
                 $curl->prepare($productListQuery);
+
+                $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                    $searchResult->productIds,
+                    [
+                        'media'       => true,
+                        'media_types' => ['main'], // только главная картинка
+                    ]
+                );
+                $curl->prepare($descriptionListQuery);
             }
 
             // запрос списка рейтингов товаров
@@ -131,6 +141,19 @@ namespace EnterTerminal\Controller {
 
             // список товаров
             $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
+
+            // товары по ui
+            $productsByUi = [];
+            call_user_func(function() use (&$productsById, &$productsByUi) {
+                foreach ($productsById as $product) {
+                    $productsByUi[$product->ui] = $product;
+                }
+            });
+
+            // медиа для товаров
+            if ($productsByUi) {
+                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+            }
 
             // список рейтингов товаров
             if ($ratingListQuery) {
