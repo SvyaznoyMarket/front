@@ -51,8 +51,8 @@ class CreatePacketBySplit extends Query {
                 'credit_bank_id'      => null, // FIXME!!!
                 'last_name'           => $split->user ? $split->user->lastName : null,
                 'first_name'          => $userFirstName ? $userFirstName : ($split->user ? $split->user->firstName : null),
-                'email'               => $userEmail ? $userEmail : ($split->user ? $split->user->email : null),
-                'mobile'              => $userMobile ? $userMobile : ($split->user ? $split->user->phone : null),
+                'email'               => ($userEmail ? $userEmail : ($split->user ? $split->user->email : null)) ?: null,
+                'mobile'              => ($userMobile ? $userMobile : ($split->user ? $split->user->phone : null)) ?: null,
                 'address_street'      => null,
                 'address_number'      => null,
                 'address_building'    => null,
