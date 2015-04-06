@@ -87,7 +87,7 @@ namespace EnterMobileApplication\Controller\Order {
             }
 
             // слияние данных о пользователе
-            $splitData['user'] = array_merge((array)(isset($splitData['user']) ? $splitData['user'] : []), $userData);
+            $splitData['user'] = array_merge((array)(isset($splitData['user_info']) ? $splitData['user_info'] : []), $userData);
 
             $split = null;
             try {
