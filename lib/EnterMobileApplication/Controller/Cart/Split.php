@@ -291,7 +291,7 @@ namespace EnterMobileApplication\Controller\Cart {
                     $dump['user_info']['first_name'] = $changeData['user']['firstName'];
                 }
                 if (array_key_exists('email', $changeData['user'])) {
-                    $dump['user_info']['email'] = $changeData['user']['email'];
+                    $dump['user_info']['email'] = !empty($changeData['user']['email']) ? $changeData['user']['email'] : null;
                 }
                 if (array_key_exists('bonusCardNumber', $changeData['user'])) {
                     $dump['user_info']['bonus_card_number'] = $changeData['user']['bonusCardNumber'];
