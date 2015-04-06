@@ -10,6 +10,8 @@ class Region {
     /** @var string */
     public $ui;
     /** @var string */
+    public $kladrId;
+    /** @var string */
     public $code;
     /** @var string */
     public $parentId;
@@ -32,6 +34,7 @@ class Region {
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
+        if (array_key_exists('kladr_id', $data)) $this->kladrId = !empty($data['kladr_id']) ? (string)$data['kladr_id'] : null;
         if (array_key_exists('code', $data)) $this->code = (string)$data['code'];
         if (array_key_exists('parent_id', $data)) $this->parentId = (string)$data['parent_id'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
