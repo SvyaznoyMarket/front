@@ -99,6 +99,7 @@ namespace EnterMobileApplication\Controller\Order {
 
                 // пользователь
                 if ($user) {
+                    $split->user->id = $user->id;
                     $split->user->ui = $user->ui;
                 }
 
