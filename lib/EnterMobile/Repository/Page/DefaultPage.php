@@ -150,6 +150,14 @@ class DefaultPage {
                 'id'   => 'tpl-user',
                 'name' => 'partial/user',
             ],
+            [
+                'id'   => 'tpl-cart-slot-form',
+                'name' => 'partial/cart/slot/form',
+            ],
+            [
+                'id'   => 'tpl-cart-slot-form-result',
+                'name' => 'partial/cart/slot/form/result',
+            ],
         ]);
     }
 }
