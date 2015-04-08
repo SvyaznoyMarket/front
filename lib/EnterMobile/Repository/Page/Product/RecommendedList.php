@@ -33,9 +33,10 @@ class RecommendedList {
         // alsoBought slider
         $sliderGa = $templateHelper->json([
             [
+                'send',
+                'event',
                 'RR_взаимодействие_мобильный',
                 'Пролистывание',
-                'RR_взаимодействие_мобильный',
                 'ProductAccessories'
             ]
         ]);
@@ -77,11 +78,11 @@ class RecommendedList {
             );
             $productCard->dataGa = $templateHelper->json([
                 [
+                    'send',
+                    'event',
                     $productModel->ga['category'],
                     $productModel->ga['events']['toProductPage']['action'],
-                    $productModel->ga['category'],
-                    $productModel->ga['events']['toProductPage']['product'],
-                    $productModel->ga['events']['toProductPage']['label']
+                    $productModel->ga['events']['toProductPage']['product']
                 ]
             ]);
 
@@ -106,9 +107,10 @@ class RecommendedList {
         // similar slider
         $sliderGa = $templateHelper->json([
             [
+                'send',
+                'event',
                 'RR_взаимодействие_мобильный',
                 'Пролистывание',
-                'RR_взаимодействие_мобильный',
                 'ProductSimilar'
             ]
         ]);
@@ -142,7 +144,17 @@ class RecommendedList {
                 ]
             ];
 
-            $slider->productCards[] = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
+            $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
+            $productCard->dataGa = $templateHelper->json([
+                [
+                    'send',
+                    'event',
+                    $productModel->ga['category'],
+                    $productModel->ga['events']['toProductPage']['action'],
+                    $productModel->ga['events']['toProductPage']['product']
+                ]
+            ]);
+            $slider->productCards[] = $productCard;
         }
         $slider->count = count($slider->productCards);
         $page->widgets['.' . $slider->widgetId] = $slider;
