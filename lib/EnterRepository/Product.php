@@ -328,8 +328,9 @@ class Product {
     /**
      * @param Model\Product[] $productsByUi
      * @param Query $descriptionListQuery
+     * @param bool $forceDescriptionMedia
      */
-    public function setDescriptionForListByListQuery(array $productsByUi, Query $descriptionListQuery) {
+    public function setDescriptionForListByListQuery(array $productsByUi, Query $descriptionListQuery, $forceDescriptionMedia = false) {
         try {
             foreach ($descriptionListQuery->getResult() as $descriptionItem) {
                 /** @var Model\Product|null $product */
@@ -351,9 +352,11 @@ class Product {
 
                 // media
                 if (
-                    isset($descriptionItem['medias'])
-                    && is_array($descriptionItem['medias'])
-                    && (count($descriptionItem['medias']) >= count($product->media->photos)) // SITE-5284
+                    (!empty($descriptionItem['medias']) && is_array($descriptionItem['medias']))
+                    && (
+                        $forceDescriptionMedia
+                        || (count($descriptionItem['medias']) >= count($product->media->photos)) // SITE-5284
+                    )
                 ) {
                     // удаляет фотографии товара из ядра
                     unset($product->media);

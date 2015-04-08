@@ -171,7 +171,7 @@ class Product {
                 $host = isset($hosts[$index]) ? $hosts[$index] : '';
 
                 foreach ($data['media'] as $mediaItem) {
-                    if (!$mediaItem['source'] || $mediaItem['type_id'] != 1) continue;
+                    if (!$mediaItem['source'] || ($mediaItem['type_id'] != 1)) continue;
                     // преобразование в формат scms
                     $item = [
                         'content_type' => 'image/jpeg',
