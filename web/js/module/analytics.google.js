@@ -9,9 +9,6 @@ define(
             $body = $('body'),
 
             handle = function(dataGa, $el, e) {
-                if (!_.isObject(dataGa)) {
-                    dataGa = JSON.parse(dataGa);
-                }
 
                 if (_.isObject(dataGa)) {
                     console.info('dataGa', dataGa);
