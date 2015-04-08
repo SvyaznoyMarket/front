@@ -137,7 +137,7 @@ namespace EnterMobileApplication\Controller\Order {
 
                         foreach ($controllerResponse->orders as $order) {
                             foreach ($order->product as $product) {
-                                $product->meta = isset($cartProductsById[$product->id]) ? $cartProductsById[$product->id]->clientMeta : null;
+                                $product->meta = !empty($cartProductsById[$product->id]) ? $cartProductsById[$product->id]->clientMeta : null;
                             }
                         }
                     });
