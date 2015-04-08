@@ -67,7 +67,21 @@ namespace EnterMobileApplication\Controller\Order {
             }
 
             // слияние данных о пользователе
-            $splitData['user'] = array_merge((array)(isset($splitData['user']) ? $splitData['user'] : []), $userData);
+            if (!isset($splitData['user_info'])) {
+                $splitData['user_info'] = [];
+            }
+            if (!empty($userData['email'])) {
+                $splitData['user_info']['email'] = $userData['email'];
+            }
+            if (!empty($userData['phone'])) {
+                $splitData['user_info']['phone'] = $userData['phone'];
+            }
+            if (!empty($userData['lastName'])) {
+                $splitData['user_info']['last_name'] = $userData['lastName'];
+            }
+            if (!empty($userData['firstName'])) {
+                $splitData['user_info']['first_name'] = $userData['firstName'];
+            }
 
             $split = null;
             try {
