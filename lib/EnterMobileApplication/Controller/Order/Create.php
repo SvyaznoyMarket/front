@@ -87,7 +87,21 @@ namespace EnterMobileApplication\Controller\Order {
             }
 
             // слияние данных о пользователе
-            $splitData['user'] = array_merge((array)(isset($splitData['user_info']) ? $splitData['user_info'] : []), $userData);
+            if (!isset($splitData['user_info'])) {
+                $splitData['user_info'] = [];
+            }
+            if (!empty($userData['email'])) {
+                $splitData['user_info']['email'] = $userData['email'];
+            }
+            if (!empty($userData['phone'])) {
+                $splitData['user_info']['phone'] = $userData['phone'];
+            }
+            if (!empty($userData['lastName'])) {
+                $splitData['user_info']['last_name'] = $userData['lastName'];
+            }
+            if (!empty($userData['firstName'])) {
+                $splitData['user_info']['first_name'] = $userData['firstName'];
+            }
 
             $split = null;
             try {
@@ -122,8 +136,11 @@ namespace EnterMobileApplication\Controller\Order {
                         }
 
                         foreach ($controllerResponse->orders as $order) {
-                            foreach ($order->product as $product) {
-                                $product->meta = isset($cartProductsById[$product->id]) ? $cartProductsById[$product->id]->clientMeta : null;
+                            foreach ($order->product as $orderProduct) {
+                                $cartProduct = isset($cartProductsById[$orderProduct->id]) ? $cartProductsById[$orderProduct->id] : null;
+                                if ($cartProduct) {
+                                    $orderProduct->meta = $cartProduct->clientMeta;
+                                }
                             }
                         }
                     });
