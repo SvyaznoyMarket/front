@@ -68,8 +68,8 @@
       this.$navPrev = $('<span class="sliderControls_btn sliderControls_btn__left js-ga-click"></span>');
 
       if (this.options.scrollGa) {
-        this.$navNext.data('gaClick', JSON.stringify(this.options.scrollGa));
-        this.$navPrev.data('gaClick', JSON.stringify(this.options.scrollGa));
+        this.$navNext.data('gaClick', this.options.scrollGa);
+        this.$navPrev.data('gaClick', this.options.scrollGa);
       }
 
       $('<div class="sliderControls"/>')

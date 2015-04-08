@@ -68,11 +68,11 @@ class ProductButton {
 
         if ($product->ga) {
             $ga[] = [
+                'send',
+                'event',
                 $product->ga['category'],
                 $product->ga['events']['addToCart']['action'],
-                $product->ga['category'],
-                $product->ga['events']['addToCart']['productName'],
-                $product->ga['events']['addToCart']['label']
+                $product->ga['events']['addToCart']['productName']
             ];
         }
 
