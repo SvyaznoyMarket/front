@@ -136,11 +136,8 @@ namespace EnterMobileApplication\Controller\Order {
                         }
 
                         foreach ($controllerResponse->orders as $order) {
-                            foreach ($order->product as $orderProduct) {
-                                $cartProduct = isset($cartProductsById[$orderProduct->id]) ? $cartProductsById[$orderProduct->id] : null;
-                                if ($cartProduct) {
-                                    $orderProduct->meta = $cartProduct->clientMeta;
-                                }
+                            foreach ($order->product as $product) {
+                                $product->meta = isset($cartProductsById[$product->id]) ? $cartProductsById[$product->id]->clientMeta : null;
                             }
                         }
                     });
