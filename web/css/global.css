@@ -3032,6 +3032,7 @@ body.noScroll {
   border-left: 1px solid #d8d8d8;
 }
 .alsoBoughtContainer {
+  display: none;
   position: relative;
 }
 .alsoBoughtContainer .sliderBoxItems_item {
