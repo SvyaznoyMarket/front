@@ -121,7 +121,8 @@ require(
         'module/order.common',
         'module/product.catalog.common',
 		'module/siteVersionSwitcher',
-		'module/slotButton'
+		'module/slotButton',
+        'module/addReview'
     ],
     function(require, config) {
         $.cookie.defaults.path = '/';

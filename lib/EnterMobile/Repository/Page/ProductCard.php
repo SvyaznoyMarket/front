@@ -55,6 +55,7 @@ class ProductCard {
 
         // содержание
         $page->content->product->name = $productModel->webName;
+        $page->content->product->id = $productModel->id;
         $page->content->product->namePrefix = $productModel->namePrefix;
         $page->content->product->article = $productModel->article;
         $page->content->product->description = $productModel->description;
@@ -445,6 +446,15 @@ class ProductCard {
                     //'partial/cart/quickButton',
                 ],
             ],
+            [
+                'id'       => 'tpl-product-addReviewForm',
+                'name'     => 'partial/add-review-form',
+                'partials' => [
+                    //'partial/cart/button',
+                    //'partial/cart/spinner',
+                    //'partial/cart/quickButton',
+                ],
+            ]
         ]);
 
         // direct credit

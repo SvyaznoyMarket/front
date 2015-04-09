@@ -2798,6 +2798,15 @@ body.noScroll {
 .reviews-wrap .btn--close {
   float: left;
 }
+.reviews-wrap .error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  margin: 15px 0;
+  padding: 15px;
+  border-radius: 4px;
+  width: 290px;
+}
 .reviews-title {
   font-size: 18px;
 }
@@ -2855,6 +2864,9 @@ body.noScroll {
   display: block;
   font-size: 15px;
   margin-bottom: 5px;
+}
+.reviews-textarea.fieldError {
+  border-color: #ff0000;
 }
 .reviews-mark-wrap {
   font-size: 15px;
