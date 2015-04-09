@@ -22,6 +22,7 @@ namespace EnterMobileApplication\Controller {
         public function execute(Http\Request $request) {
             $curl = $this->getCurl();
             $config = $this->getConfig();
+            $productRepository = new Repository\Product();
 
             $response = new Response();
 
@@ -90,9 +91,34 @@ namespace EnterMobileApplication\Controller {
             // товары сгруппированные по id
             $productsById = [];
             try {
-                $productsById = $productListQuery ? (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]) : [];
+                $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
+            }
+
+            $descriptionListQuery = null;
+            if ($productsById) {
+                $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
+                    array_map(function(Model\Product $product) { return $product->ui; }, $productsById),
+                    [
+                        'media'       => true,
+                        'media_types' => ['main'], // только главная картинка
+                    ]
+                );
+                $curl->prepare($descriptionListQuery);
+
+                $curl->execute();
+
+                // товары по ui
+                $productsByUi = [];
+                call_user_func(function() use (&$productsById, &$productsByUi) {
+                    foreach ($productsById as $product) {
+                        $productsByUi[$product->ui] = $product;
+                    }
+                });
+
+                // медиа для товаров
+                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
             }
 
             // товары
