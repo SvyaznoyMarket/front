@@ -3068,6 +3068,16 @@ body.noScroll {
     border: none;
   }
 }
+@media only screen and (max-width: 600px) {
+  .alsoBoughtContainer .sliderBoxItems_item {
+    padding: 0 18px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .alsoBoughtContainer .sliderBoxItems_item {
+    padding: 0 20px;
+  }
+}
 /* ==========================================================================
    Подвал сайта .footer .socLink .publicInfoList .publicInfoText .footerCopy
    ========================================================================== */
