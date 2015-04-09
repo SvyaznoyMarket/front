@@ -179,10 +179,7 @@ class Product {
         if (isset($data['partners_offer'][0])) {
             foreach ($data['partners_offer'] as $partnerOffer) {
                 $partnerOffer = new Model\Product\PartnerOffer((array)$partnerOffer);
-                // Пока не требуется отдавать предложения других партнёров
-                if (Model\Product\Partner::TYPE_SLOT == $partnerOffer->partner->type) {
-                    $this->partnerOffers[] = $partnerOffer;
-                }
+                $this->partnerOffers[] = $partnerOffer;
             }
         }
     }
