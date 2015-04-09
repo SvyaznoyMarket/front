@@ -26,6 +26,7 @@ namespace EnterMobileApplication\Controller\Cart {
             $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
             $orderRepository = new \EnterRepository\Order();
+            $productRepository = new \EnterRepository\Product();
 
             // ответ
             $response = new Response();
@@ -127,49 +128,72 @@ namespace EnterMobileApplication\Controller\Cart {
                 $response->split->region = $region;
 
                 // MAPI-4
+                $productIds = [];
                 foreach ($response->split->orders as $order) {
                     foreach ($order->products as $product) {
                         $product->meta = isset($cartProductsById[$product->id]) ? $cartProductsById[$product->id]->clientMeta : null; // FIXME
+
+                        $productIds[] = $product->id;
                     }
                 }
 
-                // обогащение данными о товарах
-                /** @var Model\Product[] $productsById */
-                $productsById = [];
-                foreach ($response->split->errors as $error) {
-                    $productId = !empty($error->detail['product']['id']) ? $error->detail['product']['id'] : null;
-                    if (!$productId) continue;
+                $productListQuery = new Query\Product\GetListByIdList($productIds, $region->id);
+                $curl->prepare($productListQuery);
 
-                    $productsById[$productId] = null;
-                }
-                if ((bool)$productsById) {
-                    $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id);
-                    $curl->prepare($productListQuery)->execute();
+                $curl->execute();
 
-                    try {
-                        foreach ($productListQuery->getResult() as $productItem) {
-                            $productId = @$productItem['id'] ? (string)$productItem['id'] : null;
-                            if (!$productId) continue;
+                // список товаров
+                $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
 
-                            $product = new Model\Product($productItem);
-                            $productsById[$productId] = $product;
+                if ($productsById) {
+                    // MAPI-9
+                    // запрос списка медиа для товаров
+                    $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
+                        array_map(function(Model\Product $product) { return $product->ui; }, $productsById),
+                        [
+                            'media'       => true,
+                            'media_types' => ['main'], // только главная картинка
+                        ]
+                    );
+                    $curl->prepare($descriptionListQuery);
+
+                    $curl->execute();
+
+                    // товары по ui
+                    $productsByUi = [];
+                    call_user_func(function() use (&$productsById, &$productsByUi) {
+                        foreach ($productsById as $product) {
+                            $productsByUi[$product->ui] = $product;
                         }
+                    });
 
-                        foreach ($response->split->errors as $error) {
-                            $productId = !empty($error->detail['product']['id']) ? $error->detail['product']['id'] : null;
-                            /** @var Model\Product|null $product */
-                            $product = ($productId && isset($productsById[$productId])) ? $productsById[$productId] : null;
+                    // медиа для товаров
+                    $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
 
-                            if (!$product) continue;
-
-                            $error->detail['product'] += [
-                                'name'    => $product->name,
-                                'webName' => $product->webName,
-                            ];
+                    foreach ($response->split->orders as $order) {
+                        foreach ($order->products as $product) {
+                            $product->media = isset($productsById[$product->id]) ? $productsById[$product->id]->media : []; // FIXME
                         }
-                    } catch (\Exception $e) {
-                        $this->getLogger()->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
                     }
+                }
+
+                // товары в деталях ошибок
+                try {
+                    foreach ($response->split->errors as $error) {
+                        $productId = !empty($error->detail['product']['id']) ? $error->detail['product']['id'] : null;
+                        /** @var Model\Product|null $product */
+                        $product = ($productId && isset($productsById[$productId])) ? $productsById[$productId] : null;
+
+                        if (!$product) continue;
+
+                        $error->detail['product'] += [
+                            'name'    => $product->name,
+                            'webName' => $product->webName,
+                            'media'   => $product->media,
+                        ];
+                    }
+                } catch (\Exception $e) {
+                    $this->getLogger()->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
                 }
 
                 // type fix
