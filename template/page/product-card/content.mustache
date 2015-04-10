@@ -373,14 +373,14 @@
         </div>
     </div>
 
+    {{#product.alsoBoughtSlider}}
     <div class="contentBox960">
-        <div class="alsoBoughtContainer">
+        <div class="alsoBoughtContainer js-container">
             <h2 class="alsoBoughtTitle">С этим товаром покупают</h2>
-            {{#product.alsoBoughtSlider}}
-                {{>partial/product-slider/default}}
-            {{/product.alsoBoughtSlider}}
+            {{>partial/product-slider/default}}
         </div>
     </div>
+    {{/product.alsoBoughtSlider}}
 
     <!-- Информация о товаре - табы -->
     <div class="contentBox960 js-content-hidden">
