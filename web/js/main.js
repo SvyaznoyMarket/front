@@ -132,7 +132,7 @@ require(
             require([config.wikimart.url], function() {
                 var WikimartSettings = {
                     // Формат ссылок на товары
-                    catalogGoodUrlPattern: 'http://example.com#modelDetail?goodId=%GOOD_ID%',
+                    catalogGoodUrlPattern: config.wikimart.productUrlPattern,
                     // Ссылка на каталог
                     catalogUrl: 'http://example.com#catalog',
                     // Id города

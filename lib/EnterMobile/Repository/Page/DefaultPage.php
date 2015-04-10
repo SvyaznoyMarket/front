@@ -63,7 +63,8 @@ class DefaultPage {
             'wikimart'  =>
                 $config->wikimart->enabled
                 ? [
-                    'url' => $config->wikimart->jsUrl,
+                    'url'               => $config->wikimart->jsUrl,
+                    'productUrlPattern' => $request->httpRequest ? ($request->httpRequest->getSchemeAndHttpHost() . '/wm-product/%GOOD_ID%') : null,
                 ]
                 : null
             ,

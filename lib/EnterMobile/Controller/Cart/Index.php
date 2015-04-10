@@ -75,6 +75,7 @@ class Index {
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Cart\Index\Request();
+        $pageRequest->httpRequest = $request;
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->cart = $cart;
