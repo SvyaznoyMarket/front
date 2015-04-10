@@ -6,63 +6,6 @@ define(
             $header = $('.js-header'),
             oldHeaderPosition = $header.css('position'),
             errorCssClass = 'textfield-err',
-            popupTemplate =
-			'<div class="js-slotButton-popup popupBox popupBox-bid">' +
-                '<div class="popupBox_close js-slotButton-popup-close" style="display: block;"></div>' +
-
-                '<div class="popupBox_inn">' +
-                    '<form action="/orders/slot/create" method="post">' +
-                        '<input type="hidden" name="productId" value="{{productId}}" />' +
-                        '<input type="hidden" name="sender" value="{{sender}}" />' +
-
-                        '<div class="popupBox_title">Отправить заявку</div>' +
-
-                        '<ul class="lst-tree">' +
-                            '<li class="lst-tree__i lst-tree__i--tl">Закажите обратный звонок и уточните:</li>' +
-                            '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> комплектность мебели и техники;</li>' +
-                            '<li class="lst-tree__i"><i style="background-color: #c1d837" class="lst-tree__bul"></i> условия доставки, сборки и оплаты.</li>' +
-                        '</ul>' +
-
-                        '<div class="popupBox-bid__err js-slotButton-popup-errors" style="display: none;"></div>' +
-
-                        '<div class="orderU_fld js-slotButton-popup-element">' +
-                            '<input class="orderU_tx textfield js-slotButton-popup-phone" type="tel" name="phone" value="{{userPhone}}" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx" />' +
-                            '<label class="orderU_lbl orderU_lbl-str">Телефон</label>' +
-                            '<span class="js-slotButton-popup-element-error err-elem" style="display: none">Неверный формат телефона</span>' +
-                        '</div>' +
-
-                        '<div class="orderU_fld js-slotButton-popup-element">' +
-                            '<input class="orderU_tx textfield js-slotButton-popup-email" type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" />' +
-                            '<label class="orderU_lbl">E-mail</label>' +
-                            '<span class="js-slotButton-popup-element-error err-elem" style="display: none">Неверный формат email</span>' +
-                        '</div>' +
-
-                        '<div class="orderU_fld">' +
-                            '<label class="orderU_lbl">Имя</label>' +
-                            '<input class="orderU_tx textfield js-slotButton-popup-name" type="text" name="name" value="{{userName}}" />' +
-                        '</div>' +
-
-                        '<div class="popupBox-bid__check js-slotButton-popup-element noselect"><input type="checkbox" class="customInput customInput-checkbox js-slotButton-popup-confirm" name="confirm" id="confirm" value="1" /> <label class="customLabel" for="confirm">Я ознакомлен и&nbsp;согласен <nobr>с&nbsp;информацией {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}о&nbsp;продавце и его офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</nobr></label></div>' +
-                        '<div class="popupBox-bid__vendor">Продавец-партнёр: {{partnerName}}</div>' +
-
-                        '<div class="popupBox-bid__footnote">' +
-                            '<button type="submit" class="js-slotButton-popup-submitButton btn btn--big btn--slot noselect">Отправить заявку</button>' +
-                        '</div>' +
-
-                        '{{#full}}' +
-                            '<div class="popupBox-bid__footnote">' +
-                                '<a href="{{productUrl}}" class="lnk--goto-card underline">Перейти в карточку товара</a>' +
-                            '</div>' +
-                        '{{/full}}' +
-                    '</form>'+
-                '</div>' +
-            '</div>',
-
-            popupResultTemplate =
-                '<div class="popupBox_title">Ваша заявка<br/>№ {{orderNumber}}<br/>отправлена</div>' +
-                '<div class="popupBox-bid__footnote">' +
-                    '<button type="submit" class="js-slotButton-popup-okButton btn btn--big btn--slot noselect">Ок</button>' +
-                '</div>',
 
             testEmail = function(email) {
                 var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -180,7 +123,7 @@ define(
                 product = getFirstObjectProperty(data.product),
                 $content = $('.js-content'),
                 $contentHidden = $('.js-content-hidden'),
-                $popup = $(Mustache.render(popupTemplate, {
+                $popup = $(Mustache.render($('#tpl-cart-slot-form').html(), {
                     full: data.isFull,
                     partnerName: product.partnerName,
                     partnerOfferUrl: product.partnerOfferUrl,
@@ -273,7 +216,7 @@ define(
                             return;
                         }
 
-                        $form.after($(Mustache.render(popupResultTemplate, {
+                        $form.after($(Mustache.render($('#tpl-cart-slot-form-result').html(), {
                             orderNumber: result.order.number
                         })));
 
