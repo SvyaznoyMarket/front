@@ -50,17 +50,20 @@ class ProductButton {
 
         $button->dataUrl = $this->router->getUrlByRoute(new Routing\User\Cart\Product\Set());
 
-        $dataValue = ['product' => [
-            $product->id => [
-                'id'       => $product->id,
-                'article'  => $product->article,
-                'name'     => $product->name,
-                'token'    => $product->token,
-                'price'    => $product->price,
-                'url'      => $product->link,
-                'quantity' => $cartProduct ? $cartProduct->quantity : 1,
+        $dataValue = [
+            'product' => [
+                $product->id => [
+                    'id'       => $product->id,
+                    'wmId'     => $product->wikimartId,
+                    'article'  => $product->article,
+                    'name'     => $product->name,
+                    'token'    => $product->token,
+                    'price'    => $product->price,
+                    'url'      => $product->link,
+                    'quantity' => $cartProduct ? $cartProduct->quantity : 1,
+                ],
             ],
-        ]];
+        ];
 
         $ga = [
             ['send', 'event', 'm_add_to_basket', $product->name, $product->article, '{product.sum}'],
