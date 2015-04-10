@@ -358,9 +358,16 @@ class Product {
                         || (count($descriptionItem['medias']) >= count($product->media->photos)) // SITE-5284
                     )
                 ) {
-                    // удаляет фотографии товара из ядра
-                    unset($product->media);
-                    $product->media = new Model\Product\Media($descriptionItem);
+                    // убеждаемся что есть именно картинки, а не другой медиа-контент
+                    foreach ($descriptionItem['medias'] as $mediaItem) {
+                        if ('image' === $mediaItem['provider']) {
+                            // удаляет фотографии товара из ядра
+                            unset($product->media);
+                            $product->media = new Model\Product\Media($descriptionItem);
+
+                            break;
+                        }
+                    }
                 }
             }
         } catch (\Exception $e) {
