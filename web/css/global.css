@@ -4651,25 +4651,6 @@ body.noScroll {
   vertical-align: top;
   font-size: 16px;
 }
-.catalogList .reviews {
-  height: 15px;
-  margin: 0 0 10px;
-}
-.catalogList .reviews_star {
-  display: inline-block;
-  height: 14px;
-  margin: 0 2px 0 0;
-  vertical-align: top;
-  line-height: 14px;
-}
-.catalogList .reviews_count {
-  display: inline-block;
-  margin: 0 0 0 5px;
-  vertical-align: top;
-  color: #6b6b6b;
-  font-size: 14px;
-  line-height: 1;
-}
 .catalogList .price {
   margin: 15px 0 10px;
 }
