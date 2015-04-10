@@ -408,4 +408,12 @@ class Product {
             ]; // FIXME
         }
     }
+
+    public function isOnlyWikimartPartnerOffer(Model\Product $product) {
+        return
+            (1 === count($product->partnerOffers))
+            && isset($product->partnerOffers[0])
+            && ('ad8fa8fb-6d74-4e2c-ae6e-71fc31ff8ce6' === $product->partnerOffers[0]->partner->ui)
+        ;
+    }
 }
