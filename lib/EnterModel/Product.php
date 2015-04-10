@@ -10,6 +10,8 @@ class Product {
     /** @var string */
     public $ui;
     /** @var string */
+    public $wikimartId;
+    /** @var string */
     public $article;
     /** @var string */
     public $barcode;
@@ -179,11 +181,18 @@ class Product {
         if (isset($data['partners_offer'][0])) {
             foreach ($data['partners_offer'] as $partnerOffer) {
                 $partnerOffer = new Model\Product\PartnerOffer((array)$partnerOffer);
-                // Пока не требуется отдавать предложения других партнёров
-                if (Model\Product\Partner::TYPE_SLOT == $partnerOffer->partner->type) {
-                    $this->partnerOffers[] = $partnerOffer;
-                }
+                $this->partnerOffers[] = $partnerOffer;
             }
+        }
+
+        // wikimart
+        if (
+            isset($this->partnerOffers[0])
+            && (1 === count($this->partnerOffers))
+            && ('ad8fa8fb-6d74-4e2c-ae6e-71fc31ff8ce6' === $this->partnerOffers[0]->partner->ui)
+            && $this->partnerOffers[0]->productId
+        ) {
+            $this->wikimartId = $this->partnerOffers[0]->productId;
         }
     }
 

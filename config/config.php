@@ -16,6 +16,9 @@ return function(\EnterAggregator\Config $config) {
 
     $config->userToken->authName = '_token';
 
+    $config->wikimart->enabled = false;
+    $config->wikimart->jsUrl = 'http://checkout.wikimart.ru/js/enter/script/';
+
     $config->googleAnalytics->enabled = true;
     $config->googleAnalytics->id = 'UA-25485956-5';
 
@@ -157,6 +160,5 @@ return function(\EnterAggregator\Config $config) {
     $config->credit->kupivkredit->secretPhrase = '321ewq';
     $config->credit->kupivkredit->url = 'https://kupivkredit-test-fe.tcsbank.ru/';
     $config->credit->kupivkredit->timeout = 2;
-    
-    
+
 };
