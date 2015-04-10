@@ -2,9 +2,12 @@
 
 namespace EnterModel;
 
+use EnterMobile\ConfigTrait;
 use EnterModel as Model;
 
 class Product {
+    use ConfigTrait; // FIXME
+
     /** @var string */
     public $id;
     /** @var string */
@@ -187,7 +190,8 @@ class Product {
 
         // wikimart
         if (
-            isset($this->partnerOffers[0])
+            $this->getConfig()->wikimart->enabled
+            && isset($this->partnerOffers[0])
             && (1 === count($this->partnerOffers))
             && ('ad8fa8fb-6d74-4e2c-ae6e-71fc31ff8ce6' === $this->partnerOffers[0]->partner->ui)
             && $this->partnerOffers[0]->productId

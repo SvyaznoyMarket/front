@@ -36,8 +36,16 @@ define(
             }
         ;
 
-        $body
-            .on('render', '.js-cart-total', getCreditPayment);
+        console.info({'window.WikimartAffiliate': window.WikimartAffiliate});
+        try {
+            if (window.WikimartAffiliate) {
+                window.WikimartAffiliate.createCheckoutIFrame('wikimart-checkout-block');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+
+        $body.on('render', '.js-cart-total', getCreditPayment);
 
         getCreditPayment();
 
@@ -49,6 +57,5 @@ define(
         $body.on('blur', 'input, textarea', function() {
             $body.find('.cartBar').slideDown('100');
         });
-
     }
 );

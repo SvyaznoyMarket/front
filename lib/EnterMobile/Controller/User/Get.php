@@ -33,6 +33,10 @@ class Get {
 
         // корзина из сессии
         $cart = $cartRepository->getObjectByHttpSession($session);
+        if ($config->wikimart->enabled) {
+            $cart->product = [];
+            $cart->sum = 0;
+        }
 
         // токен пользователя
         $userToken = (new \EnterRepository\User)->getTokenByHttpRequest($request);

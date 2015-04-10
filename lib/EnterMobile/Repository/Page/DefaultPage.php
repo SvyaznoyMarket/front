@@ -60,6 +60,13 @@ class DefaultPage {
                 'cookieName' => $config->siteVersionSwitcher->cookieName,
                 'cookieLifetime' => $config->siteVersionSwitcher->cookieLifetime,
             ],
+            'wikimart'  =>
+                $config->wikimart->enabled
+                ? [
+                    'url' => $config->wikimart->jsUrl,
+                ]
+                : null
+            ,
         ]);
 
         $page->googleAnalytics = false;
