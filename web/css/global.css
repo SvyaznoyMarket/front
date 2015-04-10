@@ -3226,6 +3226,9 @@ body.noScroll {
   display: none;
   position: relative;
 }
+.alsoBoughtContainer .alsoBoughtTitle {
+  padding-left: 10px;
+}
 .alsoBoughtContainer .sliderBoxItems_item {
   padding: 0 25px;
   width: 100px;
