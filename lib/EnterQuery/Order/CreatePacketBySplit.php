@@ -18,8 +18,14 @@ class CreatePacketBySplit extends Query {
      * @param Model\Cart\Split $split
      * @param Model\Order\Meta[] $metas
      * @param bool $isReceiveSms
+     * @param int $typeId
      */
-    public function __construct(Model\Cart\Split $split, array $metas = [], $isReceiveSms = false, $typeId = Model\Order::TYPE_ORDER, $userMobile = null, $userEmail = null, $userFirstName = null, Model\User $user = null) {
+    public function __construct(
+        Model\Cart\Split $split,
+        array $metas = [],
+        $isReceiveSms = false,
+        $typeId = Model\Order::TYPE_ORDER
+    ) {
         $this->retry = 1;
 
         $this->url = new Url();
@@ -45,14 +51,14 @@ class CreatePacketBySplit extends Query {
             $orderData = [
                 'type_id'             => $typeId,
                 'geo_id'              => $split->region->id,
-                'user_id'             => $user ? $user->id : null,
+                'user_id'             => $split->user ? $split->user->id : null,
                 'is_legal'            => false, // FIXME!!!
                 'payment_id'          => $order->paymentMethodId,
                 'credit_bank_id'      => null, // FIXME!!!
                 'last_name'           => $split->user ? $split->user->lastName : null,
-                'first_name'          => $userFirstName ? $userFirstName : ($split->user ? $split->user->firstName : null),
-                'email'               => $userEmail ? $userEmail : ($split->user ? $split->user->email : null),
-                'mobile'              => $userMobile ? $userMobile : ($split->user ? $split->user->phone : null),
+                'first_name'          => $split->user ? $split->user->firstName : null,
+                'email'               => ($split->user && !empty($split->user->email)) ? $split->user->email : null,
+                'mobile'              => ($split->user && !empty($split->user->phone)) ? $split->user->phone : null,
                 'address_street'      => null,
                 'address_number'      => null,
                 'address_building'    => null,

@@ -4,11 +4,12 @@ namespace EnterMobileApplication\Action;
 
 use Enter\Http;
 use EnterAggregator\LoggerTrait;
+use EnterAggregator\RequestIdTrait;
 use EnterAggregator\Action;
 use EnterMobileApplication\Controller;
 
 class RegisterShutdown {
-    use LoggerTrait;
+    use LoggerTrait, RequestIdTrait;
 
     /**
      * @param Http\Request|null $request
@@ -44,6 +45,9 @@ class RegisterShutdown {
 
             // debug info
             (new \EnterMobileApplication\Action\Debug())->execute($request, $response, $error, $startAt, $endAt);
+
+            // request id
+            $response->data['requestId'] = $this->getRequestId();
 
             // send response
             $response->send();

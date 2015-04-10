@@ -45,9 +45,10 @@ class ShopList {
 
             if (!isset($regionDataById[$regionId])) {
                 $regionDataById[$regionId] = [
-                    'id'    => $regionId,
-                    'name'  => @$shopItem['geo']['name'] ? (string)$shopItem['geo']['name'] : null,
-                    'shops' => [],
+                    'id'      => $regionId,
+                    'kladrId' => @$shopItem['geo']['kladr_id'] ? (string)$shopItem['geo']['kladr_id'] : null,
+                    'name'    => @$shopItem['geo']['name'] ? (string)$shopItem['geo']['name'] : null,
+                    'shops'   => [],
                 ];
             }
 

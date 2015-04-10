@@ -3,6 +3,8 @@ namespace EnterModel\Cart\Split;
 
 class User {
     /** @var string|null */
+    public $id;
+    /** @var string|null */
     public $ui;
     /** @var string|null */
     public $phone;
@@ -36,7 +38,7 @@ class User {
         $this->firstName = $data['first_name'] ? (string)$data['first_name'] : null;
         $this->email = $data['email'] ? (string)$data['email'] : null;
         $this->address = $data['address'] ? new User\Address($data['address']) : null;
-        $this->bonusCardNumber = $data['bonus_card_number'] ? (string)$data['bonus_card_number'] : null;
+        //$this->bonusCardNumber = $data['bonus_card_number'] ? (string)$data['bonus_card_number'] : null;
     }
 
     /**

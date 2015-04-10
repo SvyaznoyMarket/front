@@ -1,0 +1,50 @@
+<div class="js-addReviewPopup popupBox popupBox-bid">
+    <div class="reviews-wrap">
+        {{^success}}
+        <form action="/ajax/product-review-add" method="post" id="review-form">
+            <div class="reviews-title">Отзыв о товаре</div>
+            <div class="reviews-header">{{productName}}</div>
+            <div class="reviews-mark-wrap">
+                <span class="reviews-mark__title">Оценка</span>
+                <ul class="reviews-mark__list">
+                    <li class="reviews-mark__item"></li>
+                    <li class="reviews-mark__item"></li>
+                    <li class="reviews-mark__item"></li>
+                    <li class="reviews-mark__item"></li>
+                    <li class="reviews-mark__item"></li>
+                </ul>
+            </div>
+            <div class="reviews-input-group">
+                <input class="reviews-input textfield" type="text" name="author" value="">
+                <label class="reviews-label">Имя</label>
+            </div>
+            <div class="reviews-input-group">
+                <input class="reviews-input textfield" type="email" name="email" value="">
+                <label class="reviews-label reviews-label-required">E-mail</label>
+            </div>
+            <div class="reviews-textarea-group">
+                <label class="reviews-textarea-label">Достоинства</label>
+                <textarea class="reviews-textarea" name="pros"></textarea>
+            </div>
+            <div class="reviews-textarea-group">
+                <label class="reviews-textarea-label">Недостатки</label>
+                <textarea class="reviews-textarea" name="cons"></textarea>
+            </div>
+            <div class="reviews-textarea-group">
+                <label class="reviews-textarea-label">Комментарий</label>
+                <textarea class="reviews-textarea" name="extract"></textarea>
+            </div>
+            <div class="btn-container">
+                <button type="submit" class="btn btn--medium btn--submit noselect">Отправить</button>
+                <button class="btn btn--medium btn--close noselect js-close-review-form">Закрыть</button>
+            </div>
+        </form>
+        {{/success}}
+        {{#success}}
+        <span class="reviews-added-success">Спасибо! Ваш отзыв появится на сайте после проверки модератором.</span>
+        <div class="btn-container">
+            <button class="btn btn--medium btn--close noselect js-close-review-form">Закрыть</button>
+        </div>
+        {{/success}}
+    </div>
+</div>
