@@ -13,6 +13,8 @@ class Product {
     /** @var string */
     public $ui;
     /** @var string */
+    public $wikimartId;
+    /** @var string */
     public $article;
     /** @var string */
     public $barcode;
@@ -220,6 +222,16 @@ class Product {
                 $partnerOffer = new Model\Product\PartnerOffer((array)$partnerOffer);
                 $this->partnerOffers[] = $partnerOffer;
             }
+        }
+
+        // wikimart
+        if (
+            isset($this->partnerOffers[0])
+            && (1 === count($this->partnerOffers))
+            && ('ad8fa8fb-6d74-4e2c-ae6e-71fc31ff8ce6' === $this->partnerOffers[0]->partner->ui)
+            && $this->partnerOffers[0]->productId
+        ) {
+            $this->wikimartId = $this->partnerOffers[0]->productId;
         }
     }
 
