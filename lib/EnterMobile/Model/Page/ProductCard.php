@@ -34,6 +34,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
     use EnterMobile\Model\Partial;
 
     class Product {
+        /** @var int */
+        public $id;
         /** @var string */
         public $name;
         /** @var string */
