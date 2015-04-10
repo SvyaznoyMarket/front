@@ -373,14 +373,14 @@
         </div>
     </div>
 
+    {{#product.alsoBoughtSlider}}
     <div class="contentBox960">
-        <div class="alsoBoughtContainer">
+        <div class="alsoBoughtContainer js-container">
             <h2 class="alsoBoughtTitle">С этим товаром покупают</h2>
-            {{#product.alsoBoughtSlider}}
-                {{>partial/product-slider/default}}
-            {{/product.alsoBoughtSlider}}
+            {{>partial/product-slider/default}}
         </div>
     </div>
+    {{/product.alsoBoughtSlider}}
 
     <!-- Информация о товаре - табы -->
     <div class="contentBox960 js-content-hidden">
@@ -397,7 +397,6 @@
                 {{/product.hasPhoto3d}}
             </li>
 
-            {{#product.reviewBlock}}
             <li class="productDescTab_item js-tabs-item">
                 <span class="tabText">Отзывы</span>
                 <span class="tabImg reviews">
@@ -407,7 +406,6 @@
                     <span class="reviewsCount">{{product.rating.reviewCount}}</span>
                 </span>
             </li>
-            {{/product.reviewBlock}}
 
             {{#product.accessorySlider}}
             <li class="productDescTab_item js-tabs-item">
@@ -601,19 +599,24 @@
                 <!--/ Таб - Подробнее -->
 
                 <!-- Таб - Отзывы -->
-                {{#product.reviewBlock}}
+
                 <div class="tabContent js-cont">
                     <div class="tabContent_title">Отзывы</div>
-
+                    <div class="reviews-add js-reviews-add" data-product-name="{{product.name}}" data-product-id="{{product.id}}">
+                        <span class="reviews-add-icon">+</span>
+                        <span class="reviews-add-title">Добавить отзыв</span>
+                    </div>
+                    {{#product.reviewBlock}}
                     <div class="js-productReviewList-container" data-url="{{url}}" data-value="{{&dataValue}}">
                         {{>page/product-card/review-list}}
                     </div>
+                    {{/product.reviewBlock}}
 
                     {{#moreLink}}
                         <a href="#" data-container-selector=".js-productReviewList-container" class="js-productReviewList-more catalogMore btnStyleGrey">{{name}}</a>
                     {{/moreLink}}
                 </div>
-                {{/product.reviewBlock}}
+
                 <!--/ Таб - Отзывы -->
 
                 <!-- Таб - Аксессуары -->

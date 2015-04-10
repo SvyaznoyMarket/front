@@ -137,6 +137,12 @@
         }
     },
 
+    "Product\\Review\\Add": {
+      "name": "Добавление отзыва",
+      "pattern": "/ajax/product-review-add",
+      "method": ["POST"]
+    },
+
     "Shop\\Index": {
         "name": "Магазины",
         "pattern": "/shops"
