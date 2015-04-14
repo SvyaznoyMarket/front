@@ -16,7 +16,7 @@ define(
             var template = $('#tpl-product-addReviewForm').html();
 
             var reviewData = {
-                score       : 1,
+                score       : 10,
                 author      : '',
                 email       : '',
                 pros        : '',
