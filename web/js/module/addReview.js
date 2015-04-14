@@ -93,16 +93,55 @@ define(
                 ];
 
                 for (var i = 0, ll = fields.length; i < ll; i++) {
+
                     if (fields[i].val() === '') {
                         fields[i].addClass('fieldError');
+                        fields[i].parents('.js-input-group').append(
+                        '<span class="error-message">' +
+                            getErrorMessage(fields[i].prop('name')) +
+                        '</span>');
                         errors.push(fields[i]);
                     } else {
                         fields[i].removeClass('fieldError');
+                        fields[i].parents('.js-input-group').find('.error-message').remove();
                     }
+
                 }
 
                 return (errors.length === 0);
 
+            }
+
+            function getErrorMessage(fieldName) {
+                var errorMessages = {
+                    author  : 'Не указано имя',
+                    email   : 'Неверный e-mail',
+                    pros    : 'Не указаны достоинства',
+                    cons    : 'Не указаны недостатки',
+                    extract : 'Не указан комментарий',
+                    unknown : 'Не заполнено поле'
+                };
+
+                switch (fieldName) {
+                    case 'author':
+                        return errorMessages.author;
+                        break;
+                    case 'email':
+                        return errorMessages.email;
+                        break;
+                    case 'pros':
+                        return errorMessages.pros;
+                        break;
+                    case 'cons':
+                        return errorMessages.cons;
+                        break;
+                    case 'extract':
+                        return errorMessages.extract;
+                        break;
+                    default:
+                        return errorMessages.unknown;
+                        break;
+                }
             }
 
             function handleRatingHover() {
