@@ -66,6 +66,7 @@ class CreatePacketBySplit extends Query {
                 'delivery_price'      => $delivery ? $delivery->price : null,
                 'delivery_period'     => ($delivery && $delivery->interval) ? [$delivery->interval->from, $delivery->interval->to] : null,
                 'delivery_date'       => $deliveryDate ? $deliveryDate->format('Y-m-d') : null,
+                'box_ui'              => $delivery ? $delivery->boxUi : null,
                 'ip'                  => $split->clientIp,
                 'product'             => [],
             ];
