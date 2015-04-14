@@ -1,4 +1,13 @@
 .reviews{
+  .error-message{
+    position: absolute;
+    z-index: 9999;
+    background: #fff;
+    color: red;
+    right: 10px;
+    padding: 0 5px;
+  }
+
 	&-wrap{
 		width: 320px;
 		margin: 0 auto;
@@ -37,6 +46,11 @@
 			width: 320px;
 			margin: 0 0 10px;
 			position: relative;
+
+            .error-message {
+              top: -10px;
+              .error-message
+            }
 		}
 	}
 	&-label{
@@ -76,6 +90,11 @@
 			width: 320px;
 			margin: 0 0 10px;
 			position: relative;
+
+            .error-message {
+              top:15px;
+              .error-message
+            }
 		}
 		&-label{
 			display: block;

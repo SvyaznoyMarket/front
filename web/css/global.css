@@ -2784,6 +2784,14 @@ body.noScroll {
   display: none;
 }
 /** добавление отзыва о товаре **/
+.reviews .error-message {
+  position: absolute;
+  z-index: 9999;
+  background: #fff;
+  color: red;
+  right: 10px;
+  padding: 0 5px;
+}
 .reviews-wrap {
   width: 320px;
   margin: 0 auto;
@@ -2823,6 +2831,15 @@ body.noScroll {
   margin: 0 0 10px;
   position: relative;
 }
+.reviews-input-group .error-message {
+  top: -10px;
+  position: absolute;
+  z-index: 9999;
+  background: #fff;
+  color: red;
+  right: 10px;
+  padding: 0 5px;
+}
 .reviews-label {
   -webkit-border-radius: 4px 0 0 4px;
   -moz-border-radius: 4px 0 0 4px;
@@ -2859,6 +2876,15 @@ body.noScroll {
   width: 320px;
   margin: 0 0 10px;
   position: relative;
+}
+.reviews-textarea-group .error-message {
+  top: 15px;
+  position: absolute;
+  z-index: 9999;
+  background: #fff;
+  color: red;
+  right: 10px;
+  padding: 0 5px;
 }
 .reviews-textarea-label {
   display: block;
