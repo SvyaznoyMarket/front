@@ -116,7 +116,7 @@
           instance.$items.hide();
           instance._reWidthSlider(showItem);
         }
-      })
+      });
       
       // touch
       instance.$list.touchwipe({

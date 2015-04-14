@@ -2793,7 +2793,7 @@ body.noScroll {
   padding: 0 5px;
 }
 .reviews-wrap {
-  width: 360px;
+  width: 320px;
   margin: 0 auto;
   overflow: hidden;
 }
@@ -2827,7 +2827,7 @@ body.noScroll {
   display: inline-block;
 }
 .reviews-input-group {
-  width: 360px;
+  width: 320px;
   margin: 0 0 10px;
   position: relative;
 }
@@ -2862,7 +2862,7 @@ body.noScroll {
   background-position: 3px 5px;
 }
 .reviews-textarea {
-  width: 310px;
+  width: 308px;
   height: 65px;
   padding: 5px;
   resize: none;
@@ -2873,7 +2873,7 @@ body.noScroll {
   background: #fff;
 }
 .reviews-textarea-group {
-  width: 360px;
+  width: 320px;
   margin: 0 0 10px;
   position: relative;
 }

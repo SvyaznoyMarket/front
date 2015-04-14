@@ -45,15 +45,19 @@ define(
                         $($parent.data('tabSelector')).animate({width: 'show'});
                     }
 
-                    var $productSlider = $widget.find('.js-productSlider');
-                    var $productSliderList = $widget.find('.js-productSliderList');
+                });
 
-                    $productSliderList.enterslide({
-                        scrollGa: $productSlider.data('ga')
+                $('.js-productSliderList').each(function(){
+                    var scrollGa = $(this).parents('.js-productSlider').data('ga');
+
+                    $(this).enterslide({
+                        scrollGa: scrollGa
                     });
                 });
             });
         });
+
+
 
 
         // direct-credit
