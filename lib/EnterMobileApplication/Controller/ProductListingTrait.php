@@ -46,6 +46,7 @@ trait ProductListingTrait {
                 ] : null,
                 'favorite'        => isset($product->favorite) ? $product->favorite : null,
                 'partnerOffers'   => $product->partnerOffers,
+                'wikimartId'      => $product->wikimartId
             ];
         }
 
