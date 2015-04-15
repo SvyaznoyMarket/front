@@ -21,6 +21,8 @@ class Delivery {
     public $typeId;
     /** @var string|null */
     public $typeUi;
+    /** @var string|null */
+    public $boxUi;
 
     /**
      * @param array $data
@@ -35,6 +37,7 @@ class Delivery {
         $this->useUserAddress = (bool)$data['use_user_address'];
         $this->typeId = !empty($data['type_id']) ? (string)$data['type_id'] : null; // FIXME
         $this->typeUi = !empty($data['type_ui']) ? (string)$data['type_ui'] : null; // FIXME
+        $this->boxUi = !empty($data['box_ui']) ? (string)$data['box_ui'] : null;
     }
 
     /**
@@ -51,6 +54,7 @@ class Delivery {
             'use_user_address'      => $this->useUserAddress,
             'type_id'               => $this->typeId,
             'type_ui'               => $this->typeUi,
+            'box_ui'                => $this->boxUi
         ];
     }
 }
