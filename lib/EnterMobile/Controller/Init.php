@@ -3,13 +3,14 @@
 namespace EnterMobile\Controller;
 
 use Enter\Http;
+use EnterAggregator\AbTestTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
 use EnterQuery as Query;
 
-class RedirectManager {
-    use ConfigTrait, CurlTrait, LoggerTrait;
+class Init {
+    use ConfigTrait, CurlTrait, LoggerTrait, AbTestTrait;
 
     /**
      * @param Http\Request $request
@@ -32,15 +33,21 @@ class RedirectManager {
 
         $curl = $this->getCurl();
 
-        $query = new Query\RedirectManager\GetItem($url);
-        $curl->prepare($query);
+        $redirectQuery = new Query\RedirectManager\GetItem($url);
+        $curl->prepare($redirectQuery);
+
+        $abTestQuery = new Query\AbTest\GetActiveList();
+        $curl->prepare($abTestQuery);
+
         $curl->execute();
 
-        if ($query->getError()) {
+        $this->getAbTest()->setObjectListByQuery($abTestQuery);
+
+        if ($redirectQuery->getError()) {
             return;
         }
 
-        $result = (array)$query->getResult() + ['to_url' => null];
+        $result = (array)$redirectQuery->getResult() + ['to_url' => null];
         $redirectUrl = trim($result['to_url']);
 
         if (!$redirectUrl) {

@@ -8,6 +8,7 @@ use Enter\Logging;
 use Enter\Routing;
 use Enter\Http;
 use Enter\Helper;
+use EnterRepository as Repository;
 use Enter\Mustache\Loader\FilesystemAliasLoader;
 
 class Service {
@@ -193,6 +194,19 @@ class Service {
         }
 
         return $GLOBALS[$key];
+    }
+
+    /**
+     * @return Repository\AbTest
+     */
+    public function getAbTest() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new Repository\AbTest();
+        }
+
+        return $instance;
     }
 
     /**
