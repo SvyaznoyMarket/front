@@ -31,6 +31,8 @@ class Order {
     public $possiblePaymentMethodIds = [];
     /** @var array */
     public $groupedPossiblePointIds = [];
+    /** @var Model\Cart\Split\Order\Point[] */
+    public $groupedPossiblePoints;
     /** @var string|null */
     public $comment;
 
@@ -72,6 +74,11 @@ class Order {
                 $this->groupedPossiblePointIds[$token][] = (string)$id;
             }
         }
+        foreach ($data['possible_point_data'] as $token => $items) {
+            foreach ($items as $item) {
+                $this->groupedPossiblePoints[$token][] = new Order\Point($item);
+            }
+        }
         $this->comment = $data['comment'] ? (string)$data['comment'] : null;
     }
 
@@ -79,6 +86,12 @@ class Order {
      * @return array
      */
     public function dump() {
+        $possiblePointsData = [];
+        foreach ($this->groupedPossiblePoints as $token => $possiblePoint) {
+            $possiblePointsData[$token] = $possiblePoint->dump();
+        }
+
+
         return [
             'block_name'               => $this->blockName,
             'seller'                   => $this->seller ? $this->seller->dump() : null,
@@ -94,6 +107,7 @@ class Order {
             'possible_days'            => $this->possibleDays,
             'possible_payment_methods' => $this->possiblePaymentMethodIds,
             'possible_points'          => $this->groupedPossiblePointIds,
+            'possible_point_data'      => $possiblePointsData,
             'comment'                  => $this->comment,
         ];
     }
