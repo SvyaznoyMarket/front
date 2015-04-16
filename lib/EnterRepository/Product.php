@@ -328,8 +328,9 @@ class Product {
     /**
      * @param Model\Product[] $productsByUi
      * @param Query $descriptionListQuery
+     * @param bool $forceDescriptionMedia
      */
-    public function setDescriptionForListByListQuery(array $productsByUi, Query $descriptionListQuery) {
+    public function setDescriptionForListByListQuery(array $productsByUi, Query $descriptionListQuery, $forceDescriptionMedia = false) {
         try {
             foreach ($descriptionListQuery->getResult() as $descriptionItem) {
                 /** @var Model\Product|null $product */
@@ -340,11 +341,32 @@ class Product {
                 ;
                 if (!$product) continue;
 
+                // trustfactors
                 if (isset($descriptionItem['trustfactors']) && is_array($descriptionItem['trustfactors'])) {
                     foreach ($descriptionItem['trustfactors'] as $trustfactorItem) {
                         if (!isset($trustfactorItem['uid'])) continue;
 
                         $product->trustfactors[] = new Model\Product\Trustfactor($trustfactorItem);
+                    }
+                }
+
+                // media
+                if (
+                    (!empty($descriptionItem['medias']) && is_array($descriptionItem['medias']))
+                    && (
+                        $forceDescriptionMedia
+                        || (count($descriptionItem['medias']) >= count($product->media->photos)) // SITE-5284
+                    )
+                ) {
+                    // убеждаемся что есть именно картинки, а не другой медиа-контент
+                    foreach ($descriptionItem['medias'] as $mediaItem) {
+                        if ('image' === $mediaItem['provider']) {
+                            // удаляет фотографии товара из ядра
+                            unset($product->media);
+                            $product->media = new Model\Product\Media($descriptionItem);
+
+                            break;
+                        }
                     }
                 }
             }

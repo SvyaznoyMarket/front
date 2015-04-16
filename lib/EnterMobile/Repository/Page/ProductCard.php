@@ -147,36 +147,14 @@ class ProductCard {
         foreach ($productModel->media->photos as $i => $photoModel) {
             $photo = new Page\Content\Product\Photo();
             $photo->name = $productModel->name;
-            $photo->url = (string)(new Routing\Product\Media\GetPhoto($photoModel->source, $photoModel->id, 3));
-            $photo->previewUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel->source, $photoModel->id, 0));
-            $photo->originalUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel->source, $photoModel->id, 5));
+            $photo->url = (string)(new Routing\Product\Media\GetPhoto($photoModel, 'product_500'));
+            $photo->previewUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel, 'product_60'));
+            $photo->originalUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel, 'product_1500'));
 
             $page->content->product->photos[] = $photo;
 
             if (0 == $i) {
                 $page->content->product->mainPhoto = $photo;
-            }
-        }
-
-        // видео товара
-        if ((bool)$productModel->media->videos) {
-            $page->content->product->hasVideo = true;
-            foreach ($productModel->media->videos as $videoModel) {
-                $video = new Page\Content\Product\Video();
-                $video->content = $videoModel->content;
-
-                $page->content->product->videos[] = $video;
-            }
-        }
-
-        // 3d фото товара (maybe3d)
-        if ((bool)$productModel->media->photo3ds) {
-            $page->content->product->hasPhoto3d = true;
-            foreach ($productModel->media->photo3ds as $photo3dModel) {
-                $photo3d = new Page\Content\Product\Photo3d();
-                $photo3d->source = $photo3dModel->source;
-
-                $page->content->product->photo3ds[] = $photo3d;
             }
         }
 
@@ -247,7 +225,7 @@ class ProductCard {
                 $kit->shownSum = $kitProductModel->price ? $this->getPriceHelper()->format($kitProductModel->price * $kitProductModel->kitCount) : null;
                 if (isset($kitProductModel->media->photos[0])) {
                     $photoModel = $kitProductModel->media->photos[0];
-                    $kit->photoUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel->source, $photoModel->id, 3));
+                    $kit->photoUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel, 'product_500'));
                 }
 
                 if (isset($kitProductModel->nearestDeliveries[0])) {
@@ -400,10 +378,13 @@ class ProductCard {
                         $option->url = $optionModel->product ? $optionModel->product->link : null;
                         $option->shownValue = $optionModel->value;
                         $option->unit = $propertyModel->unit;
+                        // TODO
+                        /*
                         $option->image = ($propertyModel->isImage && $optionModel->product)
                             ? (string)(new Routing\Product\Media\GetPhoto($optionModel->product->image, $optionModel->product->id, 2))
                             : null
                         ;
+                        */
 
                         $property->options[] = $option;
                     }

@@ -207,6 +207,19 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($productListQuery);
             }
 
+            // запрос списка медиа для товаров
+            $descriptionListQuery = null;
+            if ($response->productUiPager && (bool)$response->productUiPager->uis) {
+                $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
+                    $response->productUiPager->uis,
+                    [
+                        'media'       => true,
+                        'media_types' => ['main'], // только главная картинка
+                    ]
+                );
+                $curl->prepare($descriptionListQuery);
+            }
+
             // запрос доставки товаров
             $deliveryListQuery = null;
             if (false && $response->productUiPager && (bool)$response->productUiPager->uis) {
@@ -235,13 +248,6 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($ratingListQuery);
             }
 
-            // запрос списка медиа для товаров
-            $descriptionListQuery = null;
-            if ($response->productUiPager && (bool)$response->productUiPager->uis) {
-                //$descriptionListQuery = new Query\Product\GetDescriptionListByUiList($response->productUiPager->uis); // TODO: не реализовано на scms
-                //$curl->prepare($descriptionListQuery);
-            }
-
             // запрос на проверку товаров в избранном
             $favoriteListQuery = null;
             if ($request->config->favourite && $user && $response->productUiPager->uis) {
@@ -254,6 +260,17 @@ namespace EnterAggregator\Controller {
 
             // список товаров
             $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
+
+            // товары по ui
+            $productsByUi = [];
+            call_user_func(function() use (&$productsById, &$productsByUi) {
+                foreach ($productsById as $product) {
+                    $productsByUi[$product->ui] = $product;
+                }
+            });
+
+            // медиа для товаров
+            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
 
             // доставка товаров
             if ($deliveryListQuery) {

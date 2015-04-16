@@ -5,10 +5,21 @@ namespace EnterModel\Product;
 use EnterModel as Model;
 
 class Media {
-    /** @var Model\Product\Media\Photo[] */
+    /** @var Model\Media[] */
     public $photos = [];
-    /** @var Model\Product\Media\Photo3d[] */
-    public $photo3ds = [];
-    /** @var Model\Product\Media\Video[] */
-    public $videos = [];
+
+    /**
+     * @param array $data
+     */
+    public function __construct(array $data = []) {
+        if (isset($data['medias'][0])) {
+            foreach ($data['medias'] as $item) {
+                $media = new Model\Media($item);
+
+                if ('image' == $media->type) {
+                    $this->photos[] = $media;
+                }
+            }
+        }
+    }
 }

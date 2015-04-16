@@ -61,15 +61,35 @@ namespace EnterMobileApplication\Controller\User\Favorite {
                         $favoriteListResult['products']
                     )
                 );
-                if ((bool)$productUis) {
+                if ($productUis) {
                     $productListQuery = new Query\Product\GetListByUiList($productUis, $config->region->defaultId);
                     $curl->prepare($productListQuery);
 
+                    // запрос списка медиа для товаров
+                    $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
+                        $productUis,
+                        [
+                            'media'       => true,
+                            'media_types' => ['main'], // только главная картинка
+                        ]
+                    );
+                    $curl->prepare($descriptionListQuery);
+
                     $curl->execute();
 
-                    $response->products = array_values(
-                        (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery])
-                    );
+                    $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+
+                    // товары по ui
+                    $productsByUi = [];
+                    call_user_func(function() use (&$productsById, &$productsByUi) {
+                        foreach ($productsById as $product) {
+                            $productsByUi[$product->ui] = $product;
+                        }
+                    });
+                    // медиа для товаров
+                    (new \EnterRepository\Product())->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+
+                    $response->products = array_values($productsById);
                 }
             } catch (\Exception $e) {
                 if ($config->debugLevel) $this->getDebugContainer()->error = $e;

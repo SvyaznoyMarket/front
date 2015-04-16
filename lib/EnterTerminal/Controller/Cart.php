@@ -24,6 +24,7 @@ namespace EnterTerminal\Controller {
             $session = $this->getSession();
             $curl = $this->getCurl();
             $cartRepository = new \EnterRepository\Cart();
+            $productRepository = new \EnterRepository\Product();
 
             // ид региона
             $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
@@ -39,10 +40,20 @@ namespace EnterTerminal\Controller {
                 $productsById[$cartProduct->id] = null;
             }
 
+            $descriptionListQuery = null;
             $productListQuery = null;
             if ((bool)$productsById) {
                 $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $regionId);
                 $curl->prepare($productListQuery);
+
+                $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                    array_keys($productsById),
+                    [
+                        'media'       => true,
+                        'media_types' => ['main'], // только главная картинка
+                    ]
+                );
+                $curl->prepare($descriptionListQuery);
             }
 
             $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
@@ -51,7 +62,18 @@ namespace EnterTerminal\Controller {
             $curl->execute();
 
             if ($productListQuery) {
-                $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+                $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
+
+                // товары по ui
+                $productsByUi = [];
+                call_user_func(function() use (&$productsById, &$productsByUi) {
+                    foreach ($productsById as $product) {
+                        $productsByUi[$product->ui] = $product;
+                    }
+                });
+
+                // медиа для товаров
+                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
             }
 
             // корзина из ядра

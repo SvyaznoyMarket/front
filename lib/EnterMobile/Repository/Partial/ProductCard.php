@@ -22,12 +22,14 @@ class ProductCard {
      * @param \EnterModel\Product $product
      * @param Partial\Cart\ProductButton|null $cartButton
      * @param \EnterModel\Product\Category $category
+     * @param string $imageSize
      * @return Partial\ProductCard
      */
     public function getObject(
         \EnterModel\Product $product,
         Partial\Cart\ProductButton $cartButton = null,
-        \EnterModel\Product\Category $category = null
+        \EnterModel\Product\Category $category = null,
+        $imageSize = 'product_160'
     ) {
         $card = new Partial\ProductCard();
 
@@ -43,9 +45,9 @@ class ProductCard {
         $card->shownPrice = $product->price ? $this->getPriceHelper()->format($product->price) : null;
         $card->oldPrice = $product->oldPrice;
         $card->shownOldPrice = $product->oldPrice ? $this->getPriceHelper()->format($product->oldPrice) : null;
+        /** @var \EnterModel\Media|null $photo */
         if ($photo = reset($product->media->photos)) {
-            /** @var \EnterModel\Product\Media\Photo $photo */
-            $card->image = (string)(new Routing\Product\Media\GetPhoto($photo->source, $photo->id, 1));
+            $card->image = (string)(new Routing\Product\Media\GetPhoto($photo, $imageSize));
         }
         $card->id = $product->id;
         $card->categoryId = $product->category ? $product->category->id : null;

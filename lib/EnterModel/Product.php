@@ -2,7 +2,7 @@
 
 namespace EnterModel;
 
-use EnterMobile\ConfigTrait;
+use EnterAggregator\ConfigTrait;
 use EnterModel as Model;
 
 class Product {
@@ -101,6 +101,20 @@ class Product {
      * @param array $data
      */
     public function __construct(array $data = []) {
+        static $photoUrlSizes;
+
+        if (!$photoUrlSizes) {
+            $photoUrlSizes = [
+                'product_60'   => '/1/1/60/',
+                'product_120'  => '/1/1/120/',
+                'product_160'  => '/1/1/160/',
+                'product_200'  => '/1/1/200/',
+                'product_500'  => '/1/1/500/',
+                'product_1500' => '/1/1/1500/',
+                'product_2500' => '/1/1/2500/',
+            ];
+        }
+
         $this->media = new Model\Product\Media();
         $this->relation = new Model\Product\Relation();
 
@@ -150,11 +164,33 @@ class Product {
             }
         }
 
+        // ядерные фотографии
         if (isset($data['media'][0])) {
-            foreach ($data['media'] as $mediaItem) {
-                if (empty($mediaItem['id']) || $mediaItem['type_id'] != 1) continue;
-                $this->media->photos[] = new Model\Product\Media\Photo($mediaItem);
-            }
+            call_user_func(function() use (&$data, &$photoUrlSizes) {
+                // host
+                $hosts = $this->getConfig()->mediaHosts;
+                $index = !empty($photoId) ? ($photoId % count($hosts)) : rand(0, count($hosts) - 1);
+                $host = isset($hosts[$index]) ? $hosts[$index] : '';
+
+                foreach ($data['media'] as $mediaItem) {
+                    if (!$mediaItem['source'] || ($mediaItem['type_id'] != 1)) continue;
+                    // преобразование в формат scms
+                    $item = [
+                        'content_type' => 'image/jpeg',
+                        'provider'     => 'image',
+                        'tags'         => [],
+                        'sources'      => [],
+                    ];
+                    foreach ($photoUrlSizes as $type => $prefix) {
+                        $item['sources'][] = [
+                            'type' => $type,
+                            'url'  => $host . $prefix . $mediaItem['source'],
+                        ];
+                    }
+
+                    $this->media->photos[] = $media = new Model\Media($item);
+                }
+            });
         }
 
         if (isset($data['label'][0])) {

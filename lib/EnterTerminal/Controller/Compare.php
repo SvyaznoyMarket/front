@@ -40,10 +40,20 @@ namespace EnterTerminal\Controller {
                 $productsById[$compareProduct->id] = null;
             }
 
+            $descriptionListQuery = null;
             $productListQuery = null;
             if ((bool)$productsById) {
                 $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $regionId);
                 $curl->prepare($productListQuery);
+
+                $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                    array_keys($productsById),
+                    [
+                        'media'       => true,
+                        'media_types' => ['main'], // только главная картинка
+                    ]
+                );
+                $curl->prepare($descriptionListQuery);
             }
 
             $curl->execute();
@@ -55,6 +65,19 @@ namespace EnterTerminal\Controller {
                         $item['media'] = [$mediaItem];
                     }
                 });
+
+                // товары по ui
+                $productsByUi = [];
+                call_user_func(function() use (&$productsById, &$productsByUi) {
+                    foreach ($productsById as $product) {
+                        $productsByUi[$product->ui] = $product;
+                    }
+                });
+
+                // медиа для товаров
+                if ($productsByUi) {
+                    $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                }
             }
 
             // список магазинов, в которых есть товар

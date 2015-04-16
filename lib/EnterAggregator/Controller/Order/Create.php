@@ -138,6 +138,30 @@ namespace EnterAggregator\Controller\Order {
                 $logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
             }
 
+            if ($productsById) {
+                $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
+                    array_map(function(Model\Product $product) { return $product->ui; }, $productsById),
+                    [
+                        'media'       => true,
+                        'media_types' => ['main'], // только главная картинка
+                    ]
+                );
+                $curl->prepare($descriptionListQuery);
+
+                $curl->execute();
+
+                // товары по ui
+                $productsByUi = [];
+                call_user_func(function() use (&$productsById, &$productsByUi) {
+                    foreach ($productsById as $product) {
+                        $productsByUi[$product->ui] = $product;
+                    }
+                });
+
+                // медиа для товаров
+                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery, true);
+            }
+
             // запрос на проверку товаров в избранном
             $favoriteListQuery = null;
             if ($orderProductsById && $split->user->ui) {

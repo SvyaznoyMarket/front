@@ -53,12 +53,23 @@ class ProductList {
         }
 
         // запрос товаров
+        $descriptionListQueries = [];
         $productListQueries = [];
         foreach (array_chunk($productIds, $config->curl->queryChunkSize) as $idsInChunk) {
             $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id);
             $curl->prepare($productListQuery);
-
             $productListQueries[] = $productListQuery;
+
+            // запрос списка медиа для товаров
+            $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                $idsInChunk,
+                [
+                    'media'       => true,
+                    'media_types' => ['main'], // только главная картинка
+                ]
+            );
+            $curl->prepare($descriptionListQuery);
+            $descriptionListQueries[] = $descriptionListQuery;
         }
 
         // запрос списка рейтингов товаров
@@ -76,6 +87,19 @@ class ProductList {
 
         // список товаров
         $productsById = (bool)$productListQueries ? $productRepository->getIndexedObjectListByQueryList($productListQueries) : [];
+
+        // товары по ui
+        $productsByUi = [];
+        call_user_func(function() use (&$recommendedProductsById, &$productsByUi) {
+            foreach ($recommendedProductsById as $product) {
+                $productsByUi[$product->ui] = $product;
+            }
+        });
+
+        // медиа для товаров
+        foreach ($descriptionListQueries as $descriptionListQuery) {
+            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+        }
 
         // список рейтингов товаров
         if ($ratingListQuery) {
