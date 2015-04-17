@@ -17,33 +17,34 @@ class Init {
      * @param Http\Response $response
      */
     public function execute(Http\Request $request, Http\Response &$response = null) {
-        if (!$this->getConfig()->redirectManager->enabled) {
-            return;
-        }
-
-        if ($request->isXmlHttpRequest()) {
-            return;
-        }
+        $curl = $this->getCurl();
 
         $url = $request->getPathInfo();
 
-        if ('/' === $url) {
-            return;
+        $redirectQuery = null;
+        if (
+            $this->getConfig()->redirectManager->enabled
+            && !$request->isXmlHttpRequest()
+            && ('/' !== $url)
+        ) {
+            $redirectQuery = new Query\RedirectManager\GetItem($url);
+            $curl->prepare($redirectQuery);
         }
-
-        $curl = $this->getCurl();
-
-        $redirectQuery = new Query\RedirectManager\GetItem($url);
-        $curl->prepare($redirectQuery);
 
         $abTestQuery = new Query\AbTest\GetActiveList();
         $curl->prepare($abTestQuery);
 
         $curl->execute();
 
-        $this->getAbTest()->setObjectListByQuery($abTestQuery);
+        try {
+            $this->getAbTest()->setObjectListByQuery($abTestQuery);
+            $this->getAbTest()->setValueForObjectListByHttpRequest($request);
+        } catch(\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['abtest']]);
+        }
 
-        if ($redirectQuery->getError()) {
+        // если не было запроса на получение редиректа или произошла ошибка...
+        if (!$redirectQuery || $redirectQuery->getError()) {
             return;
         }
 

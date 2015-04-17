@@ -26,14 +26,27 @@ class AbTest {
         return (array)$value;
     }
 
+    /**
+     * @param Http\Request $request
+     */
     public function setValueForObjectListByHttpRequest(Http\Request $request) {
         $value = $this->getValueByHttpRequest($request);
 
         foreach ($this->modelsByToken as $model) {
             if (!empty($value[$model->token])) {
-                $model->value = $value[$model->token];
-            } else {
+                    foreach ($model->items as $item) {
+                        if ($item->token === $value[$model->token]) {
+                            if (0 === $item->traffic) {
+                                $this->generateValueForObject($model);
+                            } else {
+                                $model->chosenItem = $item;
+                            }
 
+                            break;
+                        }
+                    }
+            } else {
+                $this->generateValueForObject($model);
             }
         }
     }
@@ -42,16 +55,13 @@ class AbTest {
      * @param Query $query
      */
     public function setObjectListByQuery(Query $query) {
-        try {
-            foreach ($query->getResult() as $item) {
-                if (empty($item['token'])) continue;
+        foreach ($query->getResult() as $item) {
+            if (empty($item['token'])) continue;
 
-                $model = new Model\AbTest($item);
-                $this->modelsByToken[$model->token] = $model;
-            }
-        } catch(\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
+            $model = new Model\AbTest($item);
+            $this->modelsByToken[$model->token] = $model;
         }
+        //unset($this->modelsByToken['salePercentage']);
     }
 
     /**
@@ -68,16 +78,56 @@ class AbTest {
         $value = [];
 
         foreach ($this->modelsByToken as $model) {
-            if (empty($model->token) || empty($model->value)) continue;
+            if (empty($model->token) || !$model->chosenItem) continue;
 
-            $value[$model->token] = $model->value;
+            $value[$model->token] = $model->chosenItem->token;
         }
 
+        ksort($value);
 
         return $value;
     }
 
-    public function generateValueForObject(Model\AbTest $model) {
+    /**
+     * @param Http\Response $response
+     * @param Http\Request $request
+     */
+    public function setValueForResponse(Http\Response $response, Http\Request $request) {
+        $encodedValue = json_encode($this->dumpValue());
 
+        if ($encodedValue !== json_encode($this->getValueByHttpRequest($request))) {
+            $config = $this->getConfig()->abTest;
+
+            $response->headers->setCookie(new Http\Cookie(
+                $config->cookieName,
+                $encodedValue,
+                time() + 20 * 365 * 24 * 60 * 60,
+                '/',
+                $this->getConfig()->session->cookieDomain,
+                false,
+                false
+            ));
+        }
+    }
+
+    /**
+     * @param Model\AbTest $model
+     */
+    public function generateValueForObject(Model\AbTest $model) {
+        $luck = mt_rand(0, 99);
+        $total = 0;
+
+        foreach ($model->items as $item) {
+            if ($total >= 100) continue;
+
+            $diff = (int)$item->traffic;
+            if ($luck < $total + $diff) {
+                $model->chosenItem = $item;
+
+                return;
+            }
+
+            $total += $diff;
+        }
     }
 }

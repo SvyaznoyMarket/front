@@ -23,8 +23,8 @@ class AbTest {
     public $gaSlotNumber;
     /** @var int|null */
     public $gaSlotScope;
-    /** @var string */
-    public $value = 'default';
+    /** @var Model\AbTest\Item|null */
+    public $chosenItem;
 
     /**
      * @param array $data
