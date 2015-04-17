@@ -8,7 +8,8 @@ define(
 
             var $el = {
                 content         : $('.js-content'),
-                jsContentHidden : $('.js-content-hidden')
+                jsContentHidden : $('.js-content-hidden'),
+                header          : $('.header')
             };
 
             var ui = {};
@@ -40,6 +41,14 @@ define(
 
             function toggleContentContainer() {
                 $el.jsContentHidden.toggleClass('hidden');
+            }
+
+            function toggleHeaderPosition() {
+                if ($el.header.css('position') === 'fixed') {
+                    $el.header.css('position', 'absolute');
+                } else if ($el.header.css('position') === 'absolute') {
+                    $el.header.css('position', 'fixed');
+                }
             }
 
             function postReview(evt) {
@@ -183,6 +192,8 @@ define(
             function unset() {
                 ui.jsAddReviewPopup.remove();
                 toggleContentContainer();
+                toggleHeaderPosition();
+                scrollToTop();
             }
 
             function closeReviewForm(evt) {
@@ -200,6 +211,7 @@ define(
 
                 appendTemplate(formType);
                 toggleContentContainer();
+                toggleHeaderPosition();
                 populateUIObject();
                 bindFormEvents();
                 showForm();
