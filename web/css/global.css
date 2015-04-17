@@ -2822,12 +2822,11 @@ body.noScroll {
   font-size: 22px;
 }
 .reviews-input {
-  width: 320px;
+  width: 100%;
   padding-left: 90px;
   display: inline-block;
 }
 .reviews-input-group {
-  width: 320px;
   margin: 0 0 10px;
   position: relative;
 }
@@ -2862,7 +2861,11 @@ body.noScroll {
   background-position: 3px 5px;
 }
 .reviews-textarea {
-  width: 308px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  width: 100%;
   height: 65px;
   padding: 5px;
   resize: none;
@@ -2873,7 +2876,6 @@ body.noScroll {
   background: #fff;
 }
 .reviews-textarea-group {
-  width: 320px;
   margin: 0 0 10px;
   position: relative;
 }
@@ -2931,6 +2933,11 @@ body.noScroll {
 .reviews-add-title {
   font-size: 14px;
   border-bottom: 1px solid;
+}
+@media (max-width: 400px) {
+  .reviews-wrap {
+    width: 300px;
+  }
 }
 /* ==========================================================================
    Блока каунтера .counter
