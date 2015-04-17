@@ -72,6 +72,27 @@ class AbTest {
     }
 
     /**
+     * @param $token
+     * @return Model\AbTest|null
+     */
+    public function getObjectByToken($token) {
+        $model = isset($this->modelsByToken[$token]) ? $this->modelsByToken[$token] : null;
+
+        if (!$model) {
+            $item = new Model\AbTest\Item();
+            $item->token = 'default';
+
+            $model = new Model\AbTest();
+            $model->token = $token;
+            $model->isActive = false;
+            $model->items[] = $item;
+            $model->chosenItem = $item;
+        }
+
+        return $model;
+    }
+
+    /**
      * @return array
      */
     public function dumpValue() {
