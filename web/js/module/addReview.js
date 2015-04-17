@@ -32,11 +32,7 @@ define(
             }
 
             function appendTemplate(data) {
-                var tplData = data || {
-                                productName   : options.productName,
-                                productId     : options.productId
-                                };
-                $el.content.append( renderTemplate(tplData) );
+                $el.content.append( renderTemplate(data) );
             }
 
             function toggleContentContainer() {
@@ -206,10 +202,20 @@ define(
                 $body.scrollTo(0);
             }
 
+            function createTemplateData(tplData) {
+                var defaultTplData = {
+                    productName   : options.productName,
+                    productId     : options.productId
+                };
+
+                return _.extend(defaultTplData, tplData);
+            }
+
             function init(reviewConfirm) {
                 var formType = (reviewConfirm === 'confirm') ? {success: true} : {};
+                var tplData = createTemplateData(formType);
 
-                appendTemplate(formType);
+                appendTemplate(tplData);
                 toggleContentContainer();
                 toggleHeaderPosition();
                 populateUIObject();
