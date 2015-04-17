@@ -96,6 +96,7 @@ define(
                     $('textarea[name="cons"]'),
                     $('textarea[name="extract"]')
                 ];
+                var firstErrorField;
 
                 for (var i = 0, ll = fields.length; i < ll; i++) {
 
@@ -106,15 +107,24 @@ define(
                             getErrorMessage(fields[i].prop('name')) +
                         '</span>');
                         errors.push(fields[i]);
+
+                        if (!firstErrorField) firstErrorField = fields[i];
                     } else {
                         fields[i].removeClass('fieldError');
                         fields[i].parents('.js-input-group').find('.error-message').remove();
                     }
+                }
 
+                if (firstErrorField) {
+                    scrollToErrorField(firstErrorField);
                 }
 
                 return (errors.length === 0);
+            }
 
+            function scrollToErrorField($errorField) {
+                var margin = 20; // чтобы ошибочное поле не было впритык к верху экрана
+                $body.scrollTo($errorField.offset().top - margin);
             }
 
             function getErrorMessage(fieldName) {
