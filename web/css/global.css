@@ -1862,15 +1862,16 @@ body.noScroll {
   width: 100%;
   margin-top: 25px;
   text-align: center;
-  overflow: hidden;
 }
 .btn--big {
-  display: block;
   overflow: visible;
   width: auto;
   padding: 4px 23px 3px;
   text-align: center;
   text-decoration: none;
+  display: inline-block;
+  *zoom: 1;
+  *display: inline;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -1897,21 +1898,19 @@ body.noScroll {
   min-width: 145px;
   color: #000;
   border: 1px solid #ccd594;
+  border-bottom: 3px solid #b8c64b;
   background: #cbdf59;
-  -webkit-box-shadow: 0 3px 0 #b8c64b, 0 3px 0 #b8c64b;
-  -moz-box-shadow: 0 3px 0 #b8c64b, 0 3px 0 #b8c64b;
-  box-shadow: 0 3px 0 #b8c64b, 0 3px 0 #b8c64b;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 .btn--slot:hover {
   background-color: #cee062;
 }
 .btn--slot:active {
   margin-top: 2px;
-  margin-bottom: -2px;
   background-color: #cee062;
-  -webkit-box-shadow: 0 1px 0 #b8c64b;
-  -moz-box-shadow: 0 1px 0 #b8c64b;
-  box-shadow: 0 1px 0 #b8c64b;
+  border-bottom: 1px solid #b8c64b;
 }
 .btn--close {
   background: #ffffff;

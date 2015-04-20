@@ -6,11 +6,9 @@
         margin-top: 25px;
 
         text-align: center;
-        overflow: hidden;
     }
     &--big
     {
-        display: block;
         overflow: visible;
 
         width: auto;
@@ -19,6 +17,7 @@
         text-align: center;
         text-align: center;
         text-decoration: none;
+        .inline-block();
 
         .box-sizing();
     }
@@ -42,9 +41,11 @@
 
         color: #000;
         border: 1px solid #ccd594;
+        border-bottom: 3px solid #b8c64b;
         background: #cbdf59;
+        .rounded(5px);
 
-        .box-shadow2(0 3px 0 #b8c64b, 0 5px #feffbe);
+        
         &:hover
         {
             background-color: #cee062;
@@ -52,11 +53,10 @@
         &:active
         {
             margin-top: 2px;
-            margin-bottom: -2px;
 
             background-color: #cee062;
 
-            .box-shadow(0 1px 0 #b8c64b);
+            border-bottom: 1px solid #b8c64b;
         }
     }
     &--close{
