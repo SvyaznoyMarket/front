@@ -8,7 +8,8 @@ define(
 
             var $el = {
                 content         : $('.js-content'),
-                jsContentHidden : $('.js-content-hidden')
+                jsContentHidden : $('.js-content-hidden'),
+                header          : $('.header')
             };
 
             var ui = {};
@@ -31,15 +32,19 @@ define(
             }
 
             function appendTemplate(data) {
-                var tplData = data || {
-                                productName   : options.productName,
-                                productId     : options.productId
-                                };
-                $el.content.append( renderTemplate(tplData) );
+                $el.content.append( renderTemplate(data) );
             }
 
             function toggleContentContainer() {
                 $el.jsContentHidden.toggleClass('hidden');
+            }
+
+            function toggleHeaderPosition() {
+                if ($el.header.css('position') === 'fixed') {
+                    $el.header.css('position', 'absolute');
+                } else if ($el.header.css('position') === 'absolute') {
+                    $el.header.css('position', 'fixed');
+                }
             }
 
             function postReview(evt) {
@@ -91,25 +96,42 @@ define(
                     $('textarea[name="cons"]'),
                     $('textarea[name="extract"]')
                 ];
+                var firstErrorField;
+                var emailCorrect = false;
 
                 for (var i = 0, ll = fields.length; i < ll; i++) {
+                    if (fields[i].prop('name') == 'email') {
+                        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        if (re.test(fields[i].val())) {
+                            emailCorrect = true;
+                        }
+                    }
 
-                    if (fields[i].val() === '') {
+                    if (fields[i].val() === '' || !emailCorrect) {
                         fields[i].addClass('fieldError');
                         fields[i].parents('.js-input-group').append(
                         '<span class="error-message">' +
                             getErrorMessage(fields[i].prop('name')) +
                         '</span>');
                         errors.push(fields[i]);
+
+                        if (!firstErrorField) firstErrorField = fields[i];
                     } else {
                         fields[i].removeClass('fieldError');
                         fields[i].parents('.js-input-group').find('.error-message').remove();
                     }
+                }
 
+                if (firstErrorField) {
+                    scrollToErrorField(firstErrorField);
                 }
 
                 return (errors.length === 0);
+            }
 
+            function scrollToErrorField($errorField) {
+                var margin = 20; // чтобы ошибочное поле не было впритык к верху экрана
+                $body.scrollTo($errorField.offset().top - margin);
             }
 
             function getErrorMessage(fieldName) {
@@ -157,9 +179,17 @@ define(
                 reviewData.score = (ui.reviewMarkItem.index($(this)) + 1) * 2;
             }
 
+            function removeErrorMsg() {
+                $(this).removeClass('fieldError');
+                $(this).parents('.js-input-group').find('.error-message').remove();
+            }
+
             function bindFormEvents() {
                 ui.reviewMarkItem.hover(handleRatingHover);
                 ui.reviewMarkItem.click(saveUserRating);
+
+                ui.textInput.focus(removeErrorMsg);
+                ui.textarea.focus(removeErrorMsg);
 
                 ui.reviewForm.submit(postReview);
 
@@ -172,7 +202,9 @@ define(
                     reviewMarkItem      : $('.reviews-mark__item'),
                     reviewForm          : $('#review-form'),
                     closeReviewFormBtn  : $('.js-close-review-form'),
-                    reviewsWrap         : $('.reviews-wrap')
+                    reviewsWrap         : $('.reviews-wrap'),
+                    textInput           : $('#review-form').find('.reviews-input'),
+                    textarea            : $('#review-form').find('textarea')
                 });
             }
 
@@ -183,6 +215,8 @@ define(
             function unset() {
                 ui.jsAddReviewPopup.remove();
                 toggleContentContainer();
+                toggleHeaderPosition();
+                scrollToTop();
             }
 
             function closeReviewForm(evt) {
@@ -195,11 +229,22 @@ define(
                 $body.scrollTo(0);
             }
 
+            function createTemplateData(tplData) {
+                var defaultTplData = {
+                    productName   : options.productName,
+                    productId     : options.productId
+                };
+
+                return _.extend(defaultTplData, tplData);
+            }
+
             function init(reviewConfirm) {
                 var formType = (reviewConfirm === 'confirm') ? {success: true} : {};
+                var tplData = createTemplateData(formType);
 
-                appendTemplate(formType);
+                appendTemplate(tplData);
                 toggleContentContainer();
+                toggleHeaderPosition();
                 populateUIObject();
                 bindFormEvents();
                 showForm();
