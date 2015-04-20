@@ -5,6 +5,8 @@ class Point {
     /** @var string|null */
     public $id;
     /** @var string|null */
+    public $groupToken;
+    /** @var string|null */
     public $nearestDay;
     /** @var int */
     public $cost;

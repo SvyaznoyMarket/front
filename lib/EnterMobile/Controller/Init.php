@@ -3,44 +3,52 @@
 namespace EnterMobile\Controller;
 
 use Enter\Http;
+use EnterAggregator\AbTestTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
 use EnterQuery as Query;
 
-class RedirectManager {
-    use ConfigTrait, CurlTrait, LoggerTrait;
+class Init {
+    use ConfigTrait, CurlTrait, LoggerTrait, AbTestTrait;
 
     /**
      * @param Http\Request $request
      * @param Http\Response $response
      */
     public function execute(Http\Request $request, Http\Response &$response = null) {
-        if (!$this->getConfig()->redirectManager->enabled) {
-            return;
-        }
-
-        if ($request->isXmlHttpRequest()) {
-            return;
-        }
+        $curl = $this->getCurl();
 
         $url = $request->getPathInfo();
 
-        if ('/' === $url) {
-            return;
+        $redirectQuery = null;
+        if (
+            $this->getConfig()->redirectManager->enabled
+            && !$request->isXmlHttpRequest()
+            && ('/' !== $url)
+        ) {
+            $redirectQuery = new Query\RedirectManager\GetItem($url);
+            $curl->prepare($redirectQuery);
         }
 
-        $curl = $this->getCurl();
+        $abTestQuery = new Query\AbTest\GetActiveList();
+        $curl->prepare($abTestQuery);
 
-        $query = new Query\RedirectManager\GetItem($url);
-        $curl->prepare($query);
         $curl->execute();
 
-        if ($query->getError()) {
+        try {
+            $this->getAbTest()->setObjectListByQuery($abTestQuery);
+            $this->getAbTest()->setValueForObjectListByHttpRequest($request);
+        } catch(\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['abtest']]);
+        }
+
+        // если не было запроса на получение редиректа или произошла ошибка...
+        if (!$redirectQuery || $redirectQuery->getError()) {
             return;
         }
 
-        $result = (array)$query->getResult() + ['to_url' => null];
+        $result = (array)$redirectQuery->getResult() + ['to_url' => null];
         $redirectUrl = trim($result['to_url']);
 
         if (!$redirectUrl) {

@@ -32,7 +32,7 @@ class Order {
     /** @var array */
     public $groupedPossiblePointIds = [];
     /** @var Model\Cart\Split\Order\Point[] */
-    public $groupedPossiblePoints;
+    public $possiblePoints;
     /** @var string|null */
     public $comment;
 
@@ -74,9 +74,12 @@ class Order {
                 $this->groupedPossiblePointIds[$token][] = (string)$id;
             }
         }
-        foreach ($data['possible_point_data'] as $token => $items) {
+        foreach ($data['possible_point_data'] as $groupToken => $items) {
             foreach ($items as $item) {
-                $this->groupedPossiblePoints[$token][] = new Order\Point($item);
+                $possiblePoint = new Order\Point($item);
+                $possiblePoint->groupToken = $groupToken;
+
+                $this->possiblePoints[] = $possiblePoint;
             }
         }
         $this->comment = $data['comment'] ? (string)$data['comment'] : null;
@@ -87,8 +90,8 @@ class Order {
      */
     public function dump() {
         $possiblePointsData = [];
-        foreach ($this->groupedPossiblePoints as $token => $possiblePoint) {
-            $possiblePointsData[$token] = $possiblePoint->dump();
+        foreach ($this->possiblePoints as $possiblePoint) {
+            $possiblePointsData[$possiblePoint->groupToken] = $possiblePoint->dump();
         }
 
 

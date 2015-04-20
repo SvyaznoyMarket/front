@@ -7,9 +7,10 @@ use EnterMobile\Action;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\SessionTrait;
+use EnterAggregator\AbTestTrait;
 
 class HandleResponse {
-    use ConfigTrait, LoggerTrait, SessionTrait;
+    use ConfigTrait, LoggerTrait, SessionTrait, AbTestTrait;
 
     /**
      * @param \Enter\Http\Request $request
@@ -38,6 +39,15 @@ class HandleResponse {
 
                 // response
                 $response = call_user_func($controllerCall, $request);
+            }
+
+            // аб-тест кука
+            if ($response) {
+                try {
+                    $this->getAbTest()->setValueForResponse($response, $request);
+                } catch (\Exception $e) {
+                    $logger->push(['type' => 'error', 'sender' => __FILE__ . ' ' .  __LINE__, 'error'  => $e, 'tag' => ['abtest']]);
+                }
             }
 
             // партнерские куки

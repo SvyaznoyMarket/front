@@ -25,6 +25,8 @@ return function(\EnterAggregator\Config $config) {
     $config->region->defaultId = '14974';
     $config->region->cookieName = 'geoshop';
 
+    $config->abTest->cookieName = 'switch';
+
     $config->credit->cookieName = 'credit_on';
 
     $config->partner->cookieName = 'last_partner';
