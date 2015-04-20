@@ -2800,12 +2800,14 @@ body.noScroll {
   overflow: hidden;
 }
 .reviews-wrap .btn--submit {
+  border-bottom: 2px solid #ea7900;
   float: left;
 }
 .reviews-wrap .btn--submit + .btn--close {
   float: right;
 }
 .reviews-wrap .btn--close {
+  border-bottom: 2px solid;
   float: left;
 }
 .reviews-wrap .error {
