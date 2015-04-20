@@ -172,9 +172,17 @@ define(
                 reviewData.score = (ui.reviewMarkItem.index($(this)) + 1) * 2;
             }
 
+            function removeErrorMsg() {
+                $(this).removeClass('fieldError');
+                $(this).parents('.js-input-group').find('.error-message').remove();
+            }
+
             function bindFormEvents() {
                 ui.reviewMarkItem.hover(handleRatingHover);
                 ui.reviewMarkItem.click(saveUserRating);
+
+                ui.textInput.focus(removeErrorMsg);
+                ui.textarea.focus(removeErrorMsg);
 
                 ui.reviewForm.submit(postReview);
 
@@ -187,7 +195,9 @@ define(
                     reviewMarkItem      : $('.reviews-mark__item'),
                     reviewForm          : $('#review-form'),
                     closeReviewFormBtn  : $('.js-close-review-form'),
-                    reviewsWrap         : $('.reviews-wrap')
+                    reviewsWrap         : $('.reviews-wrap'),
+                    textInput           : $('#review-form').find('.reviews-input'),
+                    textarea            : $('#review-form').find('textarea')
                 });
             }
 
