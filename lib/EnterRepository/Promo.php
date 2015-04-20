@@ -29,7 +29,7 @@ class Promo {
 
         try {
             foreach ($query->getResult() as $item) {
-                $typeId = @$item['type_id'];
+                $typeId = isset($item['type_id']) ? (int)$item['type_id'] : null;
                 if ($typeId != $config->promo->typeId) continue;
 
                 $promos[] = new Model\Promo($item);
