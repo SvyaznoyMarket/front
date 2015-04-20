@@ -8,7 +8,8 @@ define(
 
             var $el = {
                 content         : $('.js-content'),
-                jsContentHidden : $('.js-content-hidden')
+                jsContentHidden : $('.js-content-hidden'),
+                header          : $('.header')
             };
 
             var ui = {};
@@ -31,15 +32,19 @@ define(
             }
 
             function appendTemplate(data) {
-                var tplData = data || {
-                                productName   : options.productName,
-                                productId     : options.productId
-                                };
-                $el.content.append( renderTemplate(tplData) );
+                $el.content.append( renderTemplate(data) );
             }
 
             function toggleContentContainer() {
                 $el.jsContentHidden.toggleClass('hidden');
+            }
+
+            function toggleHeaderPosition() {
+                if ($el.header.css('position') === 'fixed') {
+                    $el.header.css('position', 'absolute');
+                } else if ($el.header.css('position') === 'absolute') {
+                    $el.header.css('position', 'fixed');
+                }
             }
 
             function postReview(evt) {
@@ -91,6 +96,7 @@ define(
                     $('textarea[name="cons"]'),
                     $('textarea[name="extract"]')
                 ];
+                var firstErrorField;
 
                 for (var i = 0, ll = fields.length; i < ll; i++) {
 
@@ -101,15 +107,24 @@ define(
                             getErrorMessage(fields[i].prop('name')) +
                         '</span>');
                         errors.push(fields[i]);
+
+                        if (!firstErrorField) firstErrorField = fields[i];
                     } else {
                         fields[i].removeClass('fieldError');
                         fields[i].parents('.js-input-group').find('.error-message').remove();
                     }
+                }
 
+                if (firstErrorField) {
+                    scrollToErrorField(firstErrorField);
                 }
 
                 return (errors.length === 0);
+            }
 
+            function scrollToErrorField($errorField) {
+                var margin = 20; // чтобы ошибочное поле не было впритык к верху экрана
+                $body.scrollTo($errorField.offset().top - margin);
             }
 
             function getErrorMessage(fieldName) {
@@ -183,6 +198,8 @@ define(
             function unset() {
                 ui.jsAddReviewPopup.remove();
                 toggleContentContainer();
+                toggleHeaderPosition();
+                scrollToTop();
             }
 
             function closeReviewForm(evt) {
@@ -195,11 +212,22 @@ define(
                 $body.scrollTo(0);
             }
 
+            function createTemplateData(tplData) {
+                var defaultTplData = {
+                    productName   : options.productName,
+                    productId     : options.productId
+                };
+
+                return _.extend(defaultTplData, tplData);
+            }
+
             function init(reviewConfirm) {
                 var formType = (reviewConfirm === 'confirm') ? {success: true} : {};
+                var tplData = createTemplateData(formType);
 
-                appendTemplate(formType);
+                appendTemplate(tplData);
                 toggleContentContainer();
+                toggleHeaderPosition();
                 populateUIObject();
                 bindFormEvents();
                 showForm();

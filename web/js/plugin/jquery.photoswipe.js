@@ -11,10 +11,24 @@
       slidePag = $('.js-slider-pag'),
 
       btnSlidesLeft = $('.js-slider-btn-left'),
-      btnSlidesRight = $('.js-slider-btn-right');
+      btnSlidesRight = $('.js-slider-btn-right'),
+
+      windowWidth = $(window).width(),
+      windowHeight = $(window).height();
   // end of vars
 
   var
+      /*
+       * Функция проверки необходимости ресайза
+       */
+      checkResizeNeeding = function() {
+          if ($(window).width() != windowWidth && $(window).height() != windowHeight) {
+              windowWidth = $(window).width();
+              windowHeight = $(window).height();
+
+              resizeSlides();
+          }
+      },
       /*
         * Функция ресайза блока слайдера изображений товара
        */
@@ -134,7 +148,7 @@
     }
   });
 
-  $(window).on('resize', resizeSlides);
+  $(window).on('resize', checkResizeNeeding);
   resizeSlides();
 
   btnSlidesRight.on('click', nextSlides);
