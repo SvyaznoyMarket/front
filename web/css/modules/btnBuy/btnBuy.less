@@ -17,12 +17,19 @@
 
     font-size: 21px;
     line-height: 38px;
-
+        
+    
+    &:hover{
+        color: @white;
+    }
     // в корзине
     &-incart {
         color: @black;
         border-color: @black;
         background: @white;
+        &:hover{
+            color: @black;
+        }
     }
 
     // резерв и на витрине
@@ -56,10 +63,6 @@
         color: @typGray;
         border-color: @white;
         background: @white;
-    }
-
-    &:hover{
-        color: @white;
     }
 
 }

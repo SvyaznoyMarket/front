@@ -1783,10 +1783,16 @@ body.noScroll {
   font-size: 21px;
   line-height: 38px;
 }
+.btnBuy:hover {
+  color: #ffffff;
+}
 .btnBuy-incart {
   color: #000000;
   border-color: #000000;
   background: #ffffff;
+}
+.btnBuy-incart:hover {
+  color: #000000;
 }
 .btnBuy-inshop {
   background: #040404;
@@ -1825,9 +1831,6 @@ body.noScroll {
   color: #a6a6a6;
   border-color: #ffffff;
   background: #ffffff;
-}
-.btnBuy:hover {
-  color: #ffffff;
 }
 .btnBuyOneClick {
   margin: 10px 0 0;
