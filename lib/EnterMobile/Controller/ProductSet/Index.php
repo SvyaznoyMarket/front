@@ -104,7 +104,9 @@ class Index {
             }
         });
         // медиа для товаров
-        $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+        if ($descriptionListQuery) {
+            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+        }
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductSet\Index\Request();

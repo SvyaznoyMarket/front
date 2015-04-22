@@ -270,7 +270,9 @@ namespace EnterAggregator\Controller {
             });
 
             // медиа для товаров
-            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+            if ($descriptionListQuery) {
+                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+            }
 
             // доставка товаров
             if ($deliveryListQuery) {

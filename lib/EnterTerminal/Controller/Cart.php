@@ -73,7 +73,9 @@ namespace EnterTerminal\Controller {
                 });
 
                 // медиа для товаров
-                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                if ($descriptionListQuery) {
+                    $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                }
             }
 
             // корзина из ядра

@@ -145,7 +145,7 @@ class Index {
         });
 
         // медиа для товаров
-        if ($productsByUi) {
+        if ($productsByUi && $descriptionListQuery) {
             $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
         }
 
