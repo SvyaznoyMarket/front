@@ -18,7 +18,8 @@ class GetListByUserUi extends Query {
         $this->url = new Url();
         $this->url->path = 'api/favorite';
         $this->url->query = [
-            'user_uid' => $userUi,
+            'user_uid'      => $userUi,
+            'trigger_event' => true,
         ];
 
         $this->init();
