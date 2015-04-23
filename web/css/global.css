@@ -1997,8 +1997,9 @@ body.noScroll {
   float: none;
 }
 .slider_lst_img {
-  width: 90%;
+  width: auto;
   max-width: 350px;
+  max-height: 500px;
 }
 .slider_btn {
   -webkit-border-radius: 4px;
