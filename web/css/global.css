@@ -1242,6 +1242,10 @@ body.noScroll {
   max-width: 620px;
   margin: 0 auto;
 }
+.viewportSizeWrapper {
+  width: 100%;
+  overflow: hidden;
+}
 .pageNav {
   display: none;
   padding: 15px 10px 20px;
@@ -1783,10 +1787,16 @@ body.noScroll {
   font-size: 21px;
   line-height: 38px;
 }
+.btnBuy:hover {
+  color: #ffffff;
+}
 .btnBuy-incart {
   color: #000000;
   border-color: #000000;
   background: #ffffff;
+}
+.btnBuy-incart:hover {
+  color: #000000;
 }
 .btnBuy-inshop {
   background: #040404;
@@ -1825,9 +1835,6 @@ body.noScroll {
   color: #a6a6a6;
   border-color: #ffffff;
   background: #ffffff;
-}
-.btnBuy:hover {
-  color: #ffffff;
 }
 .btnBuyOneClick {
   margin: 10px 0 0;
@@ -1990,8 +1997,9 @@ body.noScroll {
   float: none;
 }
 .slider_lst_img {
-  width: 90%;
+  width: auto;
   max-width: 350px;
+  max-height: 500px;
 }
 .slider_btn {
   -webkit-border-radius: 4px;
@@ -2499,6 +2507,34 @@ body.noScroll {
     background-color: #f6f6f6;
   }
 }
+@media only screen and (min-width: 320px) and (max-width: 700px) {
+  .productDescTab {
+    display: block;
+    white-space: nowrap;
+    overflow-x: scroll;
+    border-top-color: #d8d8d8;
+  }
+  .productDescTab_item {
+    display: inline-block;
+    padding-right: 15px;
+    padding-left: 15px;
+    text-align: left;
+    color: #000000;
+    border-right: none;
+    border-bottom: 1px solid #d8d8d8;
+    background: #ffffff;
+    background-image: none;
+    background-repeat: no-repeat;
+  }
+  .productDescTab_item:hover,
+  .productDescTab_item-active {
+    background-color: #f6f6f6;
+    border-bottom: none;
+  }
+  .productDescTab::-webkit-scrollbar {
+    display: none;
+  }
+}
 /** характеристики товара .specifications .specificationsListCol .specificationsListRow .specificationsList **/
 /* ==========================================================================
    Карточка товара -> характеристики товара .specifications .specificationsListCol .specificationsListRow .specificationsList
@@ -2676,24 +2712,7 @@ body.noScroll {
     border-bottom: 1px solid #d8d8d8;
   }
   .productDescTab {
-    display: none;
-  }
-  .tabContentWrap {
-    height: auto !important;
-    overflow: visible;
-  }
-  .tabContentInner {
-    left: 0 !important;
-    width: 100% !important;
-  }
-  .tabContent {
     display: block;
-  }
-  .tabContent_title {
-    display: block;
-    margin: 30px 0 20px;
-    font-size: 20px;
-    font-weight: bold;
   }
   .specificationsList {
     display: block;
@@ -2798,6 +2817,7 @@ body.noScroll {
   width: 320px;
   margin: 0 auto;
   overflow: hidden;
+  padding-top: 20px;
 }
 .reviews-wrap .btn--submit {
   border-bottom: 2px solid #ea7900;
@@ -3233,7 +3253,7 @@ body.noScroll {
   font-size: 0;
 }
 .sliderBoxItems_item {
-  display: inline-block;
+  float: left;
   width: 205px;
   padding: 0 10px;
   text-align: center;
@@ -3576,12 +3596,6 @@ body.noScroll {
   }
   .reviews-mark__item.mark-full {
     background-image: url("modules/product-card/reviews/images/star_full@2x.png");
-  }
-}
-@media only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 760px) {
-  .productDescTab_item {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAcCAYAAABoMT8aAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozQkRGRDdDMzgwQjkxMUUzQkI0NEQxN0Y5NTBDNkNCRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozQkRGRDdDNDgwQjkxMUUzQkI0NEQxN0Y5NTBDNkNCRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjNCREZEN0MxODBCOTExRTNCQjQ0RDE3Rjk1MEM2Q0JGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjNCREZEN0MyODBCOTExRTNCQjQ0RDE3Rjk1MEM2Q0JGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+VQDJNgAAAGZJREFUeNpiYoAAUygmC3QB8X8ongfEzKQa8B3JABBeQKohx9EMINkQJSB+OKgNWThqyCA2ZC4pqRWXIcZMDHQAFHmBokAc1UyiZsUB0wwCxyjNLN8p0QwCfZTUCTBgCcUkA4AAAwCsfoXKiLKJcAAAAABJRU5ErkJggg==);
-    background-size: 8px 14px;
   }
 }
 /* ==========================================================================

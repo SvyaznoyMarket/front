@@ -97,10 +97,17 @@ define(
                     $('textarea[name="extract"]')
                 ];
                 var firstErrorField;
+                var emailCorrect = false;
 
                 for (var i = 0, ll = fields.length; i < ll; i++) {
+                    if (fields[i].prop('name') == 'email') {
+                        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        if (re.test(fields[i].val())) {
+                            emailCorrect = true;
+                        }
+                    }
 
-                    if (fields[i].val() === '') {
+                    if (fields[i].val() === '' || !emailCorrect) {
                         fields[i].addClass('fieldError');
                         fields[i].parents('.js-input-group').append(
                         '<span class="error-message">' +
@@ -172,9 +179,17 @@ define(
                 reviewData.score = (ui.reviewMarkItem.index($(this)) + 1) * 2;
             }
 
+            function removeErrorMsg() {
+                $(this).removeClass('fieldError');
+                $(this).parents('.js-input-group').find('.error-message').remove();
+            }
+
             function bindFormEvents() {
                 ui.reviewMarkItem.hover(handleRatingHover);
                 ui.reviewMarkItem.click(saveUserRating);
+
+                ui.textInput.focus(removeErrorMsg);
+                ui.textarea.focus(removeErrorMsg);
 
                 ui.reviewForm.submit(postReview);
 
@@ -187,7 +202,9 @@ define(
                     reviewMarkItem      : $('.reviews-mark__item'),
                     reviewForm          : $('#review-form'),
                     closeReviewFormBtn  : $('.js-close-review-form'),
-                    reviewsWrap         : $('.reviews-wrap')
+                    reviewsWrap         : $('.reviews-wrap'),
+                    textInput           : $('#review-form').find('.reviews-input'),
+                    textarea            : $('#review-form').find('textarea')
                 });
             }
 
