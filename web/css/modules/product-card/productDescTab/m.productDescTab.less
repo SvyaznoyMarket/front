@@ -45,3 +45,45 @@
         }
     }
 }
+
+@media only screen and (min-width: 320px) and (max-width: 700px) {
+  .productDescTab {
+    display: block;
+    white-space: nowrap;
+    overflow-x: scroll;
+
+
+    border-top-color: @tabLightGreyBorder;
+
+    &_item {
+      display: inline-block;
+
+      padding-right: 15px;
+      padding-left: 15px;
+
+      text-align: left;
+
+      color: @black;
+      border-right: none;
+      border-bottom: 1px solid @tabLightGreyBorder;
+      background: @white;
+      background: @white;
+      background-image: none;
+      background-repeat: no-repeat;
+
+      &:hover,
+      &-active {
+        background-color: @tabGrey;
+        border-bottom: none;
+      }
+    }
+  }
+
+  .productDescTab::-webkit-scrollbar {
+    display: none;
+  }
+
+
+
+
+}
