@@ -148,7 +148,7 @@ return function(\EnterAggregator\Config $config) {
         1 => '/7/1/124x38/',
     ];
 
-    $config->credit->directCredit->enabled = true;
+    $config->credit->directCredit->enabled = false;
     $config->credit->directCredit->minPrice = 3000;
     $config->credit->directCredit->partnerId = '4427';
 
