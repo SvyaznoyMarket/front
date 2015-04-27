@@ -1836,6 +1836,9 @@ body.noScroll {
   border-color: #ffffff;
   background: #ffffff;
 }
+.btnBuy-disabled:hover {
+  color: #a6a6a6;
+}
 .btnBuyOneClick {
   margin: 10px 0 0;
 }
