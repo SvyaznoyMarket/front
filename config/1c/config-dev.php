@@ -6,4 +6,5 @@ return function(Enter1C\Config $config) {
     $handler($config);
 
     // dev config
+    $config->eventService->url = 'http://event.ent3.ru/';
 };

@@ -50,6 +50,8 @@ namespace EnterAggregator {
         public $curl;
         /** @var Config\CoreService */
         public $coreService;
+        /** @var Config\EventService */
+        public $eventService;
         /** @var Config\CorePrivateService */
         public $corePrivateService;
         /** @var Config\SearchService */
@@ -108,6 +110,7 @@ namespace EnterAggregator {
             $this->curl = new Config\Curl();
 
             $this->coreService = new Config\CoreService();
+            $this->eventService = new Config\EventService();
             $this->corePrivateService = new Config\CorePrivateService();
             $this->searchService = new Config\SearchService();
             $this->cmsService = new Config\CmsService();
@@ -269,6 +272,13 @@ namespace EnterAggregator\Config {
         public $clientId;
         /** @var bool */
         public $debug;
+    }
+
+    class EventService extends CurlService {
+        /** @var bool */
+        public $enabled;
+        /** @var string */
+        public $clientId;
     }
 
     class CorePrivateService extends CoreService {

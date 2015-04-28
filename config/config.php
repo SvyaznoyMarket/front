@@ -50,6 +50,11 @@ return function(\EnterAggregator\Config $config) {
     $config->coreService->clientId = 'site';
     $config->coreService->debug = false;
 
+    $config->eventService->enabled = true;
+    $config->eventService->url = 'http://event.enter.ru/';
+    $config->eventService->timeout = 1;
+    $config->eventService->clientId = 'site';
+
     $config->corePrivateService->url = 'http://api.enter.ru/private/';
     $config->corePrivateService->user = 'Developer';
     $config->corePrivateService->password = 'dEl23sTOas';
