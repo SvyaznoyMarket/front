@@ -8,4 +8,5 @@ return function(EnterTerminal\Config $config) {
     // dev config
     $config->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/' . $config->hostname;
     $config->credit->kupivkredit->url = 'https://kupivkredit-test-fe.tcsbank.ru/';
+    $config->eventService->url = 'http://event.ent3.ru/';
 };

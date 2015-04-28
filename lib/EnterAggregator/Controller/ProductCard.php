@@ -79,6 +79,12 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($categoryTreeQuery);
             }
 
+            $productViewEventQuery = null;
+            if ($config->eventService->enabled) {
+                $productViewEventQuery = new Query\Event\PushProductView($response->product->ui, $user ? $user->ui : null);
+                $curl->prepare($productViewEventQuery);
+            }
+
             // запрос меню
             $mainMenuQuery = null;
             if ($request->config->mainMenu) {
