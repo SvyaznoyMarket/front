@@ -19,6 +19,7 @@ class UpdateItemByUserUi extends Query {
         $this->url->path = 'api/address/update';
         $this->data = [
             'user_uid'    => $userUi,
+            'id'          => $address->id,
             'type'        => $address->type,
             'title'       => $address->name,
             'kladr_id'    => $address->kladrId,

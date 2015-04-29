@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterMobileApplication\Controller\User\Favorite;
+namespace EnterMobileApplication\Controller\User\Address;
 
 use Enter\Http;
 use EnterMobileApplication\ConfigTrait;
@@ -29,17 +29,14 @@ class Delete {
         if (!$token) {
             throw new \Exception('Не указан token', Http\Response::STATUS_BAD_REQUEST);
         }
-        $productId = is_scalar($request->query['productId']) ? (string)$request->query['productId'] : null;
-        if (!$productId) {
-            throw new \Exception('Не указан productId', Http\Response::STATUS_BAD_REQUEST);
+        $id = is_scalar($request->query['id']) ? (string)$request->query['id'] : null;
+        if (!$id) {
+            throw new \Exception('Не указан id', Http\Response::STATUS_BAD_REQUEST);
         }
 
         try {
             $userItemQuery = new Query\User\GetItemByToken($token);
             $curl->prepare($userItemQuery);
-
-            $productItemQuery = new Query\Product\GetItemById($productId, $config->region->defaultId);
-            $curl->prepare($productItemQuery);
 
             $curl->execute();
 
@@ -50,18 +47,13 @@ class Delete {
             }
             */
 
-            $product = (new \EnterRepository\Product())->getObjectByQuery($productItemQuery);
-            if (!$product) {
-                return new Controller\Error\NotFound($request, 'Товар не найден');
-            }
-
-            $favoriteItemQuery = new Query\User\Favorite\DeleteItemByUserUi($user->ui, $product);
-            $favoriteItemQuery->setTimeout(3 * $config->crmService->timeout);
-            $curl->prepare($favoriteItemQuery);
+            $addressItemQuery = new Query\User\Address\DeleteItemByUserUi($user->ui, $id);
+            $addressItemQuery->setTimeout(3 * $config->crmService->timeout);
+            $curl->prepare($addressItemQuery);
 
             $curl->execute();
 
-            $favoriteItemQuery->getResult();
+            $addressItemQuery->getResult();
         } catch (\Exception $e) {
             if ($config->debugLevel) $this->getDebugContainer()->error = $e;
         }
