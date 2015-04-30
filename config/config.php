@@ -80,10 +80,6 @@ return function(\EnterAggregator\Config $config) {
     $config->crmService->clientId = 'site';
     $config->crmService->debug = false;
 
-
-    $config->cmsService->url = 'http://cms.enter.ru/';
-    $config->cmsService->timeout = 5;
-
     $config->adminService->url = 'http://admin.enter.ru/';
     $config->adminService->timeout = 2;
 

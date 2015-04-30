@@ -50,9 +50,6 @@ class ImportConfig {
         $config->coreService->hugeTimeout = $importedConfig->coreV2['hugeTimeout'];
         $config->coreService->clientId = $importedConfig->coreV2['client_id'];
 
-        $config->cmsService->url = str_replace('/v1/', '/', $importedConfig->dataStore['url']);
-        $config->cmsService->timeout = $importedConfig->dataStore['timeout'];
-
         $config->adminService->enabled = $importedConfig->shopScript['enabled'];
         $config->adminService->url = str_replace('/v2/', '/', $importedConfig->shopScript['url']);
         $config->adminService->timeout = $importedConfig->shopScript['timeout'];
