@@ -599,7 +599,9 @@
 
                 <div class="tabContent js-cont">
                     <div class="tabContent_title">Отзывы</div>
-                    <div class="reviews-add js-reviews-add" data-product-name="{{product.name}}" data-product-id="{{product.id}}">
+                    <div class="reviews-add js-reviews-add"
+                         data-product-name="{{#product.namePrefix}}{{product.namePrefix}}{{/product.namePrefix}}
+                        {{product.name}}" data-product-id="{{product.id}}">
                         <span class="reviews-add-icon">+</span>
                         <span class="reviews-add-title">Добавить отзыв</span>
                     </div>
