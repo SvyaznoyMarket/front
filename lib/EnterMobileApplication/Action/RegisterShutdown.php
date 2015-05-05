@@ -49,6 +49,9 @@ class RegisterShutdown {
             // request id
             $response->data['requestId'] = $this->getRequestId();
 
+            // json_encode options
+            $response->encodeOption = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
+
             // send response
             $response->send();
         });

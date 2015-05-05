@@ -55,6 +55,11 @@ return function(\EnterAggregator\Config $config) {
     $config->coreService->clientId = 'site';
     $config->coreService->debug = false;
 
+    $config->eventService->enabled = true;
+    $config->eventService->url = 'http://event.enter.ru/';
+    $config->eventService->timeout = 1;
+    $config->eventService->clientId = 'site';
+
     $config->corePrivateService->url = 'http://api.enter.ru/private/';
     $config->corePrivateService->user = 'Developer';
     $config->corePrivateService->password = 'dEl23sTOas';
@@ -74,10 +79,6 @@ return function(\EnterAggregator\Config $config) {
     $config->crmService->timeout = 5;
     $config->crmService->clientId = 'site';
     $config->crmService->debug = false;
-
-
-    $config->cmsService->url = 'http://cms.enter.ru/';
-    $config->cmsService->timeout = 5;
 
     $config->adminService->url = 'http://admin.enter.ru/';
     $config->adminService->timeout = 2;
@@ -153,7 +154,7 @@ return function(\EnterAggregator\Config $config) {
         1 => '/7/1/124x38/',
     ];
 
-    $config->credit->directCredit->enabled = true;
+    $config->credit->directCredit->enabled = false;
     $config->credit->directCredit->minPrice = 3000;
     $config->credit->directCredit->partnerId = '4427';
 

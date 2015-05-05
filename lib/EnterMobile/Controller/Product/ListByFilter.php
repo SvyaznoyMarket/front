@@ -162,7 +162,9 @@ class ListByFilter {
             }
         });
         // медиа для товаров
-        $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+        if ($descriptionListQuery) {
+            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+        }
 
         // список рейтингов товаров
         if ($ratingListQuery) {

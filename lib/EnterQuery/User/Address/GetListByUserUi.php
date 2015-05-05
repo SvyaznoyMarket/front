@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterQuery\User\Favorite;
+namespace EnterQuery\User\Address;
 
 use Enter\Curl\Query;
 use EnterQuery\CrmQueryTrait;
@@ -13,14 +13,19 @@ class GetListByUserUi extends Query {
     /** @var array */
     protected $result;
 
-
-    public function __construct($userUi) {
+    /**
+     * @param string $userUi
+     * @param array $sort Например, [priority => DESC]
+     */
+    public function __construct($userUi, array $sort = null) {
         $this->url = new Url();
-        $this->url->path = 'api/favorite';
+        $this->url->path = 'api/address';
         $this->url->query = [
-            'user_uid'      => $userUi,
-            'trigger_event' => true,
+            'user_uid' => $userUi,
         ];
+        if ($sort) {
+            $this->url->query[key($sort)] = reset($sort);
+        }
 
         $this->init();
     }

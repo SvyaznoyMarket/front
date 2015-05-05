@@ -3,7 +3,6 @@
 namespace EnterQuery\MainMenu;
 
 use Enter\Curl\Query;
-use EnterQuery\CmsQueryTrait;
 use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 
