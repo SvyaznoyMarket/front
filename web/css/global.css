@@ -2443,12 +2443,13 @@ body.noScroll {
 }
 .productDescTab_item:hover,
 .productDescTab_item-active {
+  border-bottom: none;
   text-decoration: none;
   color: #262626;
   background-color: #ffffff;
 }
 .productDescTab_item:last-child {
-  border-right: none;
+  border-right: 1px solid #b1b1b1;
 }
 .productDescTab .tabText {
   display: inline-block;
@@ -2518,20 +2519,23 @@ body.noScroll {
     border-top-color: #d8d8d8;
   }
   .productDescTab_item {
-    display: inline-block;
+    font-size: 14px;
+    float: none;
+    display: table-cell;
+    width: 1%;
     padding-right: 15px;
     padding-left: 15px;
     text-align: left;
     color: #000000;
     border-right: none;
     border-bottom: 1px solid #d8d8d8;
-    background: #ffffff;
+    background: #f6f6f6;
     background-image: none;
     background-repeat: no-repeat;
   }
   .productDescTab_item:hover,
   .productDescTab_item-active {
-    background-color: #f6f6f6;
+    background-color: #ffffff;
     border-bottom: none;
   }
   .productDescTab::-webkit-scrollbar {
