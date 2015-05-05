@@ -97,25 +97,26 @@ define(
                     $('textarea[name="extract"]')
                 ];
                 var firstErrorField;
-                var emailCorrect = false;
+
+                function markErrorField(field) {
+                    field.addClass('fieldError');
+                    field.parents('.js-input-group').append(
+                        '<span class="error-message">' +
+                        getErrorMessage(field.prop('name')) +
+                        '</span>');
+                    errors.push(field);
+
+                    if (!firstErrorField) firstErrorField = field;
+                }
 
                 for (var i = 0, ll = fields.length; i < ll; i++) {
                     if (fields[i].prop('name') == 'email') {
                         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                        if (re.test(fields[i].val())) {
-                            emailCorrect = true;
+                        if (!re.test(fields[i].val())) {
+                            markErrorField(fields[i]);
                         }
-                    }
-
-                    if (fields[i].val() === '' || !emailCorrect) {
-                        fields[i].addClass('fieldError');
-                        fields[i].parents('.js-input-group').append(
-                        '<span class="error-message">' +
-                            getErrorMessage(fields[i].prop('name')) +
-                        '</span>');
-                        errors.push(fields[i]);
-
-                        if (!firstErrorField) firstErrorField = fields[i];
+                    } else if (fields[i].val() === '') {
+                        markErrorField(fields[i]);
                     } else {
                         fields[i].removeClass('fieldError');
                         fields[i].parents('.js-input-group').find('.error-message').remove();
