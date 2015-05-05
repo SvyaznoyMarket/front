@@ -34,6 +34,9 @@ class HandleResponse {
                 $config->clientId = is_scalar($request->query['clientId']) ? $request->query['clientId'] : null;
                 if ($config->clientId) {
                     $config->coreService->clientId = $config->clientId;
+                    $config->searchService->clientId = $config->clientId;
+                    $config->crmService->clientId = $config->clientId;
+                    $config->eventService->clientId = $config->clientId;
                 }
             }
 
