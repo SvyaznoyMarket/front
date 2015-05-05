@@ -27,6 +27,7 @@ require.config({
         'jquery.scrollTo'       : 'plugin/jquery.scrollTo',
         'jquery.maskedinput'    : 'plugin/jquery.maskedinput',
         'jquery.smartbanner'    : 'plugin/jquery.smartbanner',
+        'jquery.slick'         : 'plugin/slick.min',
 
         'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
         'mustache'           : 'vendor/mustache-0.8.2',

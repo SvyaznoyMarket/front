@@ -1,8 +1,8 @@
 define(
     [
         'require', 'jquery', 'underscore', 'mustache', 'module/util',
-        'jquery.enterslide', 'jquery.photoswipe', 'module/product.card.tab', 
-        'module/product.card.fullimg', 'module/product.card.kit'
+        'jquery.photoswipe', 'module/product.card.tab',
+        'module/product.card.fullimg', 'module/product.card.kit', 'jquery.slick'
     ],
     function (
         require, $, _, mustache, util
@@ -48,11 +48,55 @@ define(
                 });
 
                 $('.js-productSliderList').each(function(){
-                    var scrollGa = $(this).parents('.js-productSlider').data('ga');
+                    var dataGa = $(this).parents('.js-productSlider').data('ga');
 
-                    $(this).enterslide({
-                        scrollGa: scrollGa
+                    $(this).slick({
+                        mobileFirst: true,
+                        infinite: false,
+                        slidesToShow: 6,
+                        slidesToScroll: 6,
+                        nextArrow: '<span class="sliderControls_btn sliderControls_btn__right js-ga-click"></span>',
+                        prevArrow: '<span class="sliderControls_btn sliderControls_btn__left js-ga-click"></span>',
+                        responsive: [
+                            {
+                                breakpoint: 800,
+                                settings: {
+                                    slidesToShow: 6,
+                                    slidesToScroll: 6
+                                }
+                            },
+                            {
+                                breakpoint: 700,
+                                settings: {
+                                    slidesToShow: 5,
+                                    slidesToScroll: 5
+                                }
+                            },
+                            {
+                                breakpoint: 600,
+                                settings: {
+                                    slidesToShow: 4,
+                                    slidesToScroll: 4
+                                }
+                            },
+                            {
+                                breakpoint: 500,
+                                settings: {
+                                    slidesToShow: 3,
+                                    slidesToScroll: 3
+                                }
+                            },
+                            {
+                                breakpoint: 300,
+                                settings: {
+                                    slidesToShow: 2,
+                                    slidesToScroll: 2
+                                }
+                            }
+                        ]
                     });
+
+                    $(this).find('.sliderControls_btn').data('gaClick', dataGa);
                 });
             });
         });
