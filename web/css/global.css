@@ -2614,7 +2614,7 @@ body.noScroll {
   font-size: 0;
 }
 .tabContent {
-  display: inline-block;
+  float: left;
   margin: 0 0 30px;
   vertical-align: top;
   font-size: 12px;
