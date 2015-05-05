@@ -49,7 +49,7 @@ namespace EnterAggregator\Controller {
 
             // запрос пользователя
             $userItemQuery = null;
-            if ($request->userToken && ($request->config->favourite)) {
+            if ($request->userToken && (0 !== strpos($request->userToken, 'anonymous-')) && ($request->config->favourite)) {
                 $userItemQuery = new Query\User\GetItemByToken($request->userToken);
                 $curl->prepare($userItemQuery);
             }
