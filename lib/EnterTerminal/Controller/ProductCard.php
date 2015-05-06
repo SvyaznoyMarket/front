@@ -38,6 +38,7 @@ namespace EnterTerminal\Controller {
             $controllerRequest = $controller->createRequest();
             $controllerRequest->config->mainMenu = false;
             $controllerRequest->config->delivery = false; // TERMINALS-971
+            $controllerRequest->config->authorizedEvent = false; // SITE-5487
             $controllerRequest->regionId = $regionId;
             $controllerRequest->productCriteria = ['id' => $productId];
             // ответ от контроллера

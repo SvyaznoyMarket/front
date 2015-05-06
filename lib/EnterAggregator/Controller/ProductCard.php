@@ -80,7 +80,13 @@ namespace EnterAggregator\Controller {
             }
 
             $productViewEventQuery = null;
-            if ($config->eventService->enabled) {
+            if (
+                $config->eventService->enabled
+                && (
+                    ($request->config->authorizedEvent && $user) // или авторизованные события с пользователем, ...
+                    || !$request->config->authorizedEvent // ... или неавторизованные события
+                )
+            ) {
                 $productViewEventQuery = new Query\Event\PushProductView($response->product->ui, $user ? $user->ui : null);
                 $curl->prepare($productViewEventQuery);
             }
@@ -376,10 +382,16 @@ namespace EnterAggregator\Controller\ProductCard\Request {
          */
         public $delivery = true;
         /**
-         * Проверять товары в избранном?
+         * Проверять товары в избранном
          *
          * @var bool
          */
         public $favourite = false;
+        /**
+         * Посылать event-запросы только для авторизованного пользователя
+         *
+         * @var bool
+         */
+        public $authorizedEvent = true;
     }
 }
