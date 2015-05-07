@@ -47,7 +47,7 @@ namespace EnterMobileApplication\Controller\Order {
 
             // запрос пользователя
             $userItemQuery = null;
-            if ($userToken) {
+            if ($userToken && (0 !== strpos($userToken, 'anonymous-'))) {
                 $userItemQuery = new Query\User\GetItemByToken($userToken);
                 $curl->prepare($userItemQuery);
             }

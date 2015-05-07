@@ -106,7 +106,7 @@ class Create {
      * @return Query\User\GetItemByToken|null
      */
     private function prepareUserItemQuery($userToken) {
-        if ($userToken) {
+        if ($userToken && (0 !== strpos($userToken, 'anonymous-'))) {
             $userItemQuery =  new Query\User\GetItemByToken($userToken);
             $this->getCurl()->prepare($userItemQuery);
             return $userItemQuery;
