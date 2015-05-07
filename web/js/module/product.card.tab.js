@@ -81,7 +81,11 @@ define(
 
                 var $self = $(this),
                     tabLinkId = $self.data('tab'),
-                    tabId = tab.filter('[data-desc="tab-' + tabLinkId + '"]');
+                    tabId = tab.filter('[data-desc="tab-' + tabLinkId + '"]'),
+                    $tabs = $('.js-tabs-item'),
+                    $tabsContainer = $('.js-tabs'),
+                    tabIndex = $tabs.index($self)
+                    ;
 
                 if (tabLinkId == 0) {
                     posLeft = 0;
@@ -106,8 +110,35 @@ define(
                     'height': tabId.height()
                 });
 
+                // если таб не виден пользователю нужно его проскролить
+                if ( !isTabVisible($self) ) {
+                    var scrollAmount = 0;
+
+                    for (var i = 0; i < tabIndex; i++) {
+                        scrollAmount += $tabs.eq(i).width();
+                    }
+
+                    $tabsContainer.animate({
+                        scrollLeft: scrollAmount
+                    }, 400);
+                }
+
                 console.log(tabId);
-            };
+            },
+
+            isTabVisible = function($tab) {
+                var tab = $tab[0];
+
+                var rect = tab.getBoundingClientRect();
+
+                return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
+            }
+            ;
         //end of function
 
         addData();
