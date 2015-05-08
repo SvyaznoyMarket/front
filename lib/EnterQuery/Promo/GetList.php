@@ -3,25 +3,24 @@
 namespace EnterQuery\Promo;
 
 use Enter\Curl\Query;
-use EnterQuery\CoreQueryTrait;
+use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
 class GetList extends Query {
-    use CoreQueryTrait;
+    use ScmsQueryTrait;
 
     /** @var array */
     protected $result;
 
     /**
-     * @param string $regionId
+     * @param array $tags
      */
-    public function __construct($regionId) {
+    public function __construct(array $tags = []) {
         $this->url = new Url();
-        $this->url->path = 'v2/promo/get';
+        $this->url->path = 'api/promo/get';
         $this->url->query = [
-            'geo_id'    => $regionId,
-            'client_id' => 'site', // FIXME, please FIME!!!
+            'tags' => $tags,
         ];
 
         $this->init();
@@ -33,6 +32,6 @@ class GetList extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]['id']) ? $data : [];
+        $this->result = isset($data['result'][0]['uid']) ? $data['result'] : [];
     }
 }
