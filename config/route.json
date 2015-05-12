@@ -128,6 +128,10 @@
         "name": "Оформление заказа",
         "pattern": "/orders/new"
     },
+    "Order\\Delivey": {
+        "name": "Оформление заказа - выбор доставки",
+        "pattern": "/orders/delivery"
+    },
 
     "Product\\Review\\GetList": {
         "name": "Отзывы товара",
