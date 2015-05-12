@@ -24,14 +24,10 @@ class Promo {
      * @return Model\Promo[]
      */
     public function getObjectListByQuery(Query $query) {
-        $config = $this->getConfig();
         $promos = [];
 
         try {
             foreach ($query->getResult() as $item) {
-                $typeId = isset($item['type_id']) ? (int)$item['type_id'] : null;
-                if ($typeId != $config->promo->typeId) continue;
-
                 $promos[] = new Model\Promo($item);
             }
         } catch (\Exception $e) {

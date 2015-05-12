@@ -38,7 +38,7 @@ class Index {
         $curl->prepare($categoryTreeQuery);
 
         // запрос баннеров
-        $promoListQuery = new Query\Promo\GetList();
+        $promoListQuery = new Query\Promo\GetList($config->applicationTags);
         $curl->prepare($promoListQuery);
 
         // запрос меню

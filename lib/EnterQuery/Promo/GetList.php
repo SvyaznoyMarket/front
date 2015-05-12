@@ -19,9 +19,12 @@ class GetList extends Query {
     public function __construct(array $tags = []) {
         $this->url = new Url();
         $this->url->path = 'api/promo/get';
-        $this->url->query = [
-            'tags' => $tags,
-        ];
+
+        if ($tags) {
+            $this->url->query = [
+                'tags' => $tags,
+            ];
+        }
 
         $this->init();
     }

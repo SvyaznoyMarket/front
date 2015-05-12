@@ -20,6 +20,7 @@ namespace EnterMobileApplication\Controller {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
+            $config = $this->getConfig();
             $curl = $this->getCurl();
 
             $promoRepository = new \EnterRepository\Promo();
@@ -40,7 +41,7 @@ namespace EnterMobileApplication\Controller {
             $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
             // запрос баннеров
-            $promoListQuery = new Query\Promo\GetList($region->id);
+            $promoListQuery = new Query\Promo\GetList($config->applicationTags);
             $curl->prepare($promoListQuery);
 
             $curl->execute();

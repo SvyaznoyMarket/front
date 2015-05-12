@@ -13,36 +13,28 @@ namespace EnterModel {
         /** @var string */
         public $url;
         /** @var string */
-        public $image;
+        public $urlType;
 
         /**
          * @param array $data
          */
         public function __construct(array $data = []) {
-            if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+            $this->media = new Model\Product\Category\Media();
+
+            if (array_key_exists('uid', $data)) $this->id = (string)$data['uid'];
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
-            if (array_key_exists('media_image', $data)) $this->image = (string)$data['media_image'];
             if (array_key_exists('url', $data)) $this->url = $data['url'] ? (string)$data['url'] : null;
+            if (array_key_exists('url_type', $data)) $this->urlType = $data['url_type'] ? (string)$data['url_type'] : null;
+            if (isset($data['medias'][0])) {
+                foreach ($data['medias'] as $mediaItem) {
+                    if (!isset($mediaItem['sources'][0])) continue;
 
-            if (0 === strpos($this->url, '/slices/')) {
-                $this->type = 'ProductCatalog/Slice';
-            } else if (0 === strpos($this->url, '/catalog/')) {
-                $this->type = 'ProductCatalog/Category';
-            } else if (0 === strpos($this->url, '/product/')) {
-                $this->type = 'ProductCard';
-            } else if (0 === strpos($this->url, '/products/set')) {
-                $this->type = 'ProductSet';
-            } else {
-                $this->type = 'Content';
+                    $media = new Model\Media($mediaItem);
 
-                // FIXME
-                try {
-                    if (preg_match('/[a-z0-9._-]+\/slices\/(\w+)/', $this->url, $matches)) {
-                        if (!empty($matches[1])) {
-                            $this->type = 'ProductCatalog/Slice';
-                        }
+                    if ('image' == $media->type) {
+                        $this->media->photos[] = new Model\Media($mediaItem);
                     }
-                } catch (\Exception $e) {}
+                }
             }
         }
     }
