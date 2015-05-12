@@ -15,70 +15,69 @@
 
 <div class="content">
     <div class="contentBox640">
-	    <section class="orderCnt">
-	        <h1 class="orderCnt_t">Оформление заказа</h1>
+	    <section class="checkout">
+	        <h1 class="checkout__tl">Оформление заказа</h1>
 
-	        <form class="orderU" action="" method="" accept-charset="utf-8">
-	        	<fieldset class="orderU_flds fl-r">
-		            <div class="orderAuth">
-			            <div class="orderAuth_t">Уже заказывали у нас?</div>
-			            <button class="orderAuth_btn btn1">Войти с паролем</button>
+	        <form class="checkout-form checkout-control clearfix" action="" method="" accept-charset="utf-8">
+	        	<fieldset class="order-authorize__container">
+		            <div class="order-authorize">
+			            <div class="order-authorize__t">Уже заказывали у нас?</div>
+			            <button class="order-authorize__btn btn1"><span class="btn-inner">Войти с паролем</span></button>
 			        </div>
 		        </fieldset>
 
-	            <fieldset class="orderU_flds">
-	                <div class="orderU_fld">
-	                    <label class="orderU_lbl orderU_lbl-str" for="">Телефон</label>
-	                    <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
-	                    <span class="orderU_hint">Для смс о состоянии заказа</span>
+	            <fieldset class="checkout-control__container">
+	                <div class="checkout-control-group">
+	                    <input class="checkout-control-group__tx textfield" type="text" name="" value="" placeholder="">
+	                    <label class="checkout-control-group__lbl required" for="">Телефон</label>
+	                    <span class="checkout-control-group__hint">Для смс о состоянии заказа</span>
+	                </div>
+					
+					<div class="checkout-control-group">
+	                    <input class="checkout-control-group__tx textfield" type="text" name="" value="" placeholder="">
+	                    <label class="checkout-control-group__lbl required" for="">E-mail</label>
 	                </div>
 
-	                <div class="orderU_fld">
-	                    <label class="orderU_lbl" for="">Имя</label>
-	                    <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
-	                    <span class="orderU_hint">Как к вам обращаться?</span>
+	                <div class="checkout-control-group">
+	                    <input class="checkout-control-group__tx textfield" type="text" name="" value="" placeholder="">
+	                    <label class="checkout-control-group__lbl" for="">Имя</label>
+	                    <span class="checkout-control-group__hint">Как к вам обращаться?</span>
 	                </div>
 
-	                <div class="orderU_fld">
-	                    <label class="orderU_lbl" for="">E-mail</label>
-	                    <input class="orderU_tx textfield" type="text" name="" value="" placeholder="">
-	                </div>
+	                
 	            </fieldset>
 
-	            <fieldset class="orderU_flds">
-	                <div class="bonusCnt">
-	                    <div class="bonusCnt_t">Начислить баллы</div>
+	            <fieldset class="checkout-control__container">
+	                {{! Чтобы показать/скрыть поле с картой, надо добавить/убрать класс active: }}
+	                <div class="bonus-cnt active">
+	                	<div class="bonus-cnt__head">Начислить баллы</div>
+						<div class="bonus-cnt-card">
+							<img class="bonus-cnt-card__img" src="/css/modules/order/img/m-mnogoru.png">
 
-	                    <div class="bonusCnt_lst">
-	                        <div class="bonusCnt_i bonusCnt_i-act">
-	                            <img class="bonusCnt_img" src="/css/modules/order/img/sClub.png" alt="" />
-	                            <span class="bonusCnt_tx">Связной Клуб</span>
-	                        </div>
-
-	                        {{! <div class="bonusCnt_i">
-	                            <img class="bonusCnt_img" src="/css/modules/order/img/sBank.png" alt="" />
-	                            <span class="bonusCnt_tx">Спасибо от Сбербанка</span>
-	                        </div> }}
+							<span class="bonus-cnt-card__tl">Карта Много.ру</span>
+						</div>
+						<div class="checkout-control-group">
+		                    <input class="checkout-control-group__tx textfield jsOrderV3MnogoRuCardField" type="text" name="user_info[mnogo_ru_number]" value="" placeholder="xxxx xxxx" data-mask="xxxx xxxx">
+		                    <label class="checkout-control-group__lbl" for="">Карта</label>
 	                    </div>
+	                </div>
+	                <div class="bonus-cnt">
+	                	<div class="bonus-cnt__head">Начислить баллы</div>
+						<div class="bonus-cnt-card">
+							<img class="bonus-cnt-card__img" src="/css/modules/order/img/m-mnogoru.png">
 
-	                    <div class="bonusCnt_it clearfix" style="display: block;">
-	                        <div class="bonusCnt_it_fld">
-	                            <div class="orderU_fld">
-	                                <label class="orderU_lbl" for="">Карта</label>
-	                                <input class="orderU_tx textfield" type="text" name="" value="" placeholder="2 98xxxx xxxxx">
-	                            </div>
-
-	                            <div class="bonusCnt_descr">Номер карты «Связной-Клуб» расположен на обороте, под штрихкодом.</div>
-	                        </div>
-
-	                        <img class="bonusCnt_it_img" src="/css/modules/order/img/sClubBig.png" alt="" />
+							<span class="bonus-cnt-card__tl">Карта Много.ру</span>
+						</div>
+						<div class="checkout-control-group">
+		                    <input class="checkout-control-group__tx textfield jsOrderV3MnogoRuCardField" type="text" name="user_info[mnogo_ru_number]" value="" placeholder="xxxx xxxx" data-mask="xxxx xxxx">
+		                    <label class="checkout-control-group__lbl" for="">Карта</label>
 	                    </div>
 	                </div>
 	            </fieldset>
 	        </form>
 
-	        <div class="orderCompl clearfix">
-	            <button class="orderCompl_btn btnsubmit">Далее</button>
+	        <div class="btn-container clearfix">
+	            <button class="btn btn--submit btn--checkout">Далее</button>
 	        </div>
 	    </section>
 
