@@ -11,7 +11,7 @@ define(
     		deliveryTypeBox = $('.js-delivery-type');
     	// end of vars
 
-    	var 
+    	var
     		// открываем блоки в оформлении заказа
 	    	orderBoxSwitch = function orderBoxSwitch( event ) {
 				event.preventDefault();
@@ -59,11 +59,11 @@ define(
 				var $self = $(this),
 					typeId = $self.attr('data-type');
 
-				deliveryType.removeClass('orderCol_mode_i-act');
+				deliveryType.removeClass('active');
 				deliveryTypeBox.removeClass('box-show');
 
-				$self.addClass('orderCol_mode_i-act');
-				$("#"+typeId).addClass('box-show');		
+				$self.addClass('active');
+				$("#"+typeId).addClass('box-show');
 			};
 		// end of functions
 
@@ -73,4 +73,4 @@ define(
 
 		$body.on('click', '.js-popup-link', showPopupBox);
 		$body.on('click', '.js-popup-box-celendar-link', showPopupBoxCelendar);
-}); 
+});
