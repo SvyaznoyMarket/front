@@ -41,7 +41,7 @@ namespace EnterMobileApplication\Controller {
             $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
             // запрос баннеров
-            $promoListQuery = new Query\Promo\GetList($config->applicationTags);
+            $promoListQuery = new Query\Promo\GetList(['app-mobile']);
             $curl->prepare($promoListQuery);
 
             $curl->execute();
