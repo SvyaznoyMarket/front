@@ -336,20 +336,22 @@
     	                <div class="orderCol_opt_t">Магазин</div>
 
     	                <div class="order-shop-address table">
-    	                	<span class="table_cell">
+    	                	<div class="order-shop-address__img table_cell">
     	                		<img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg">
-    	                	</span>
+    	                	</div>
 
-	    					<span class="table_cell">
-	    						<span class="orderCol_addrs_blt" style="background: red;"></span>
-	    						<span>м. Петровско-Разумовская</span>
-								<span>ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span><br/>
-								<span>с 9.00 до 22.00</span>
-	    					</span>
+	    					<div class="order-shop-address__desc table_cell">
+	    						<div class="order-shop-address__metro">
+	    							<span class="orderCol_addrs_blt" style="background: red;"></span>
+	    							<span>м. Петровско-Разумовская</span>
+	    						</div>
 
-	    					<span class="table_cell ta-r">
-	    						<span class="bb-dotted">изменить место</span>
-							</span>
+								<div class="order-shop-address__details">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2<br/>с 9.00 до 22.00</div>
+	    					</div>
+
+	    					<div class="order-shop-address__right table_cell ta-r">
+	    						<span class="bb-dotted">Изменить место</span>
+							</div>
     	                </div>
     	            </div>
 				</div>
@@ -460,27 +462,11 @@
 	        </div>
 	        <!--/ блок разбиения заказа -->
 
-	        <div class="orderComment">
-	            <div class="orderComment_t js-order-btn" data-btn="order-comment">Дополнительные пожелания</div>
+	        <div class="orderCompl">
+                <input type="checkbox" class="customInput customInput-checkbox" id="accept" name="" value="" />
+                <label class="order-accept customLabel" for="accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
 
-	            <textarea class="orderComment_fld textarea js-order-box" data-box="data-order-comment"></textarea>
-	        </div>
-
-	        <div class="orderComplSumm">
-	            <span class="l">Итого <strong>3</strong> заказов <span class="mdb">на общую сумму <strong>123 000 <span class="rubl">p</span></strong></span></span>
-	        </div>
-
-	        <div class="orderCompl clearfix">
-	            <div class="orderCompl_l orderCheck-str">
-	                <input type="checkbox" class="customInput customInput-checkbox" id="accept" name="" value="" />
-
-	                <label  class="customLabel" for="accept">
-	                    Я ознакомлен и согласен с информацией<br/>
-	                    о продавце и его офертой
-	                </label>
-	            </div>
-
-	            <button class="orderCompl_btn orderCompl_btn-r btnsubmit">Оформить</button>
+	            <button class="orderCompl_btn btnsubmit">Оформить</button>
 	        </div>
 	    </section>
 

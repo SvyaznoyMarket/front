@@ -6698,6 +6698,55 @@ body.noScroll {
 .order-cart .table:last-child {
   border: none;
 }
+.order-shop-address {
+  vertical-align: top;
+}
+.order-shop-address__img {
+  width: 95px;
+  padding-right: 10px;
+  text-align: center;
+}
+.order-shop-address__img > img {
+  max-width: 90%;
+  max-height: 90%;
+}
+.order-shop-address > div {
+  vertical-align: top;
+}
+.order-shop-address__right {
+  white-space: nowrap;
+}
+.order-shop-address__desc {
+  padding: 0 10px 0 15px;
+}
+.order-shop-address__details {
+  font-size: 12px;
+  color: #616161;
+}
+.customInput-checkbox + .order-accept {
+  font-size: 12px;
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 10px 10px 10px 50px;
+  background-color: #ffffff;
+  background-position: 20px 50%;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.customInput-checkbox + .order-accept:before {
+  font-size: 14px;
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  content: '*';
+  color: #f99b1c;
+}
+.customInput-checkbox:checked + .order-accept {
+  background-position: 20px 50%;
+}
 .order-sale__title {
   margin-bottom: 10px;
 }
