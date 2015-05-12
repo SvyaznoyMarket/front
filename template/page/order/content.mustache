@@ -92,7 +92,7 @@
 
 	            <div class="orderInf_l">От региона зависят доступные способы получения и оплаты заказов.</div>
 
-	            <button class="orderInf_r btn1">Изменить регион</button>
+	            <button class="orderInf_r btn-transparent btn-transparent--normal"><span class="bb-dotted">Изменить регион</span></button>
 	        </div>
 
 	        <!-- блок разбиения заказа -->
@@ -103,117 +103,23 @@
                     <a class="orderCol_hd_r" href="">Информация и оферта</a>
                     <span class="orderCol_hd_c">продавец: ООО «Связной»</span>
                 </div>
-				
+
 				<div class="orderCol_b orderCol_b-np">
 	                <!-- информация о доставке -->
-	                <menu class="orderCol_mode clearfix">
-	                    <li class="orderCol_mode_i orderCol_mode_i-act js-delivery-type-name" data-type="delivery-type-self">
-	                    	Самовывоз
-	                    	<span class="orderCol_mode_i_brdr"></span>		
+	                <menu class="order-delivery-type clearfix">
+	                    <li class="order-delivery-type__item active js-delivery-type-name" data-type="delivery-type-self">
+	                    	<span class="order-delivery-type__text">Самовывоз</span>
 	                    </li>
 
-	                    <li class="orderCol_mode_i js-delivery-type-name" data-type="delivery-type-buy">
-	                    	Доставка
-	                    	<div class="s">21.22.2223</div>
-	                    	<span class="orderCol_mode_i_brdr"></span>	
+	                    <li class="order-delivery-type__item js-delivery-type-name" data-type="delivery-type-buy">
+	                    	<span class="order-delivery-type__text">Доставка</span>
 	                    </li>
 	                </menu>
-					
-					<div class="box-show js-delivery-type" id="delivery-type-self">
-		                <div class="orderCol_opt">
-			                <div class="orderCol_opt_btn">
-				                <div class="orderCol_opt_i btn1 js-order-btn" data-btn="select-shop">Магазин Enter</div>
-				                <div class="orderCol_opt_i btn1">Магазин Связной</div>
-				                <div class="orderCol_opt_i btn1">Постамат PickPoint</div>
-			                </div>
 
-			                <div class="orderCol_slb js-order-box" data-box="data-select-shop">
-								<div class="orderCol_slb_h clearfix">
-									<div class="orderCol_slb_t">Магазины Enter</div>
-									<div class="orderCol_slb_cnsl js-order-box-closer">Отмена</div>
-								</div>
-
-		                        <ul class="shopLst">
-		                            <li class="shopLst_i js-order-box-closer">
-										<div class="shopLst_mtr">
-											<span class="shopLst_bul" style="background: green;"></span>
-											м. Петровско-Разумовская
-										</div>
-
-										<div class="shopLst_addr">
-	    									<span class="shopLst_addr_l">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
-											
-											<span class="shopLst_addr_r">с 9.00 до 22.00</span>
-										</div>
-		                            </li>
-
-		                            <li class="shopLst_i js-order-box-closer">
-										<div class="shopLst_mtr">
-											<span class="shopLst_bul" style="background: red;"></span>
-											м. Петровско-Разумовская
-										</div>
-
-										<div class="shopLst_addr">
-	    									<span class="shopLst_addr_l">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
-											
-											<span class="shopLst_addr_r">с 9.00 до 22.00</span>
-										</div>
-		                            </li>
-
-		                            <li class="shopLst_i js-order-box-closer">
-										<div class="shopLst_mtr">
-											<span class="shopLst_bul" style="background: blue;"></span>
-											м. Петровско-Разумовская
-										</div>
-
-										<div class="shopLst_addr">
-	    									<span class="shopLst_addr_l">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
-											
-											<span class="shopLst_addr_r">с 9.00 до 22.00</span>
-										</div>
-		                            </li>
-
-		                            <li class="shopLst_i js-order-box-closer">
-										<div class="shopLst_mtr">
-											<span class="shopLst_bul" style="background: orange;"></span>
-											м. Петровско-Разумовская
-										</div>
-
-										<div class="shopLst_addr">
-	    									<span class="shopLst_addr_l">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
-											
-											<span class="shopLst_addr_r">с 9.00 до 22.00</span>
-										</div>
-		                            </li>
-
-		                            <li class="shopLst_i js-order-box-closer">
-										<div class="shopLst_mtr">
-											<span class="shopLst_bul" style="background: green;"></span>
-											м. Петровско-Разумовская
-										</div>
-
-										<div class="shopLst_addr">
-	    									<span class="shopLst_addr_l">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
-											
-											<span class="shopLst_addr_r">с 9.00 до 22.00</span>
-										</div>
-		                            </li>
-
-		                            <li class="shopLst_i js-order-box-closer">
-										<div class="shopLst_mtr">
-											<span class="shopLst_bul" style="background: green;"></span>
-											м. Петровско-Разумовская
-										</div>
-
-										<div class="shopLst_addr">
-	    									<span class="shopLst_addr_l">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2</span>
-											
-											<span class="shopLst_addr_r">с 9.00 до 22.00</span>
-										</div>
-		                            </li>
-		                        </ul>
-			                </div>
-		                </div>
+					<div class="orderCol_inn box-show js-delivery-type" id="delivery-type-self">
+			            <button class="order-shop-btn btn-transparent btn-transparent--normal js-order-btn" data-btn="select-shop">
+			            	<span class="bb-dotted">Выбрать точку самовывоза</span>
+			            </button>
 	                </div>
 
 	                <div class="orderCol_inn js-delivery-type" id="delivery-type-buy">
@@ -260,14 +166,14 @@
 		                </div>
 		            </div>
                 </div>
-				
-				<div class="orderCol_b orderCol_b-wht">
-	                <div class="orderCol_cnt table">
-	                    <a class="table_cell" href="">
-	                        <img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" class="orderCol_img">
+
+				<div class="order-cart orderCol_b orderCol_b-wht">
+	                <div class="table">
+	                    <a class="order-cart__img table_cell" href="">
+	                        <img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg">
 	                    </a>
-						
-						<div class="table_cell table_cell-w100">
+
+						<div class="table_cell order-cart__desc">
 		                    <a class="orderCol_n" href="">
 		                        Самокат<br>
 		                        JD Bug Classic MS-305 синий
@@ -279,12 +185,12 @@
 	                    </div>
 	                </div>
 
-	                <div class="orderCol_cnt table">
-	                    <a class="table_cell" href="">
-	                        <img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg" class="orderCol_img">
+	                <div class="table">
+	                    <a class="order-cart__img table_cell" href="">
+	                        <img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg">
 	                    </a>
-						
-						<div class="table_cell table_cell-w100">
+
+						<div class="table_cell order-cart__desc">
 		                    <a class="orderCol_n" href="">
 		                        Самокат<br>
 		                        JD Bug Classic MS-305 синий
@@ -297,57 +203,60 @@
 	                </div>
                 </div>
 
-                <div class="orderCol_b orderCol_b-t">Скидки</div>
+                <div class="order-sale orderCol_b">
+                	<div class="order-sale__title"><strong>Скидки</strong></div>
 
-                <div class="orderCol_b table">
-                	<div class="table_cell">
-	                	<span class="orderCol_sale_t js-order-btn" data-btn="select-fishk">Фишки EnterPrize</span> 
-	                	<span class="orderCol_sale_count">54</span>
+					<div class="table">
+	                	<div class="table_cell">
+		                	<span class="bb-dotted js-order-btn" data-btn="select-fishk">Фишки EnterPrize</span>
+	                	</div>
+
+	                	<div class="table_cell ta-r">
+	                		<span class="bb-dotted js-order-btn" data-btn="select-sale">Ввести код скидки</span>
+	                	</div>
                 	</div>
-
-                	<div class="table_cell ta-r"><span class="orderCol_sale_t js-order-btn" data-btn="select-sale">Ввести код скидки</span></div>
                 </div>
 
                 <div class="orderCol_b orderCol_b-wht orderCol_scrll js-order-box" data-box="data-select-fishk">
 	                <a href="" class="orderCol_cnt table js-order-btn"  data-btn="selected-sale">
 	                	<div class="table_cell"><img src="/css/modules/order/img/fishka.png" alt=""></div>
-						
+
 						<span class="table_cell table_cell-w100">- 2% на категорию Электроника</span>
 	                </a>
 
 	                <a href="" class="orderCol_cnt table js-order-btn"  data-btn="selected-sale">
 	                	<div class="table_cell"><img src="/css/modules/order/img/fishka.png" alt=""></div>
-						
+
 						<span class="table_cell table_cell-w100">- 2% на категорию Электроника</span>
 	                </a>
 
 	                <a href="" class="orderCol_cnt table js-order-btn"  data-btn="selected-sale">
 	                	<div class="table_cell"><img src="/css/modules/order/img/fishka.png" alt=""></div>
-						
+
 						<span class="table_cell table_cell-w100">- 2% на категорию Электроника</span>
 	                </a>
 
 	                <a href="" class="orderCol_cnt table js-order-btn"  data-btn="selected-sale">
 	                	<div class="table_cell"><img src="/css/modules/order/img/fishka.png" alt=""></div>
-						
+
 						<span class="table_cell table_cell-w100">- 2% на категорию Электроника</span>
 	                </a>
 
 	                <a href="" class="orderCol_cnt table js-order-btn"  data-btn="selected-sale">
 	                	<div class="table_cell"><img src="/css/modules/order/img/fishka.png" alt=""></div>
-						
+
 						<span class="table_cell table_cell-w100">- 2% на категорию Электроника</span>
 	                </a>
 
 	                <a href="" class="orderCol_cnt table js-order-btn"  data-btn="selected-sale">
 	                	<div class="table_cell"><img src="/css/modules/order/img/fishka.png" alt=""></div>
-						
+
 						<span class="table_cell table_cell-w100">- 2% на категорию Электроника</span>
 	                </a>
 
 	                <a href="" class="orderCol_cnt table js-order-btn"  data-btn="selected-sale">
 	                	<div class="table_cell"><img src="/css/modules/order/img/fishka.png" alt=""></div>
-						
+
 						<span class="table_cell table_cell-w100">- 2% на категорию Электроника</span>
 	                </a>
 				</div>
@@ -362,14 +271,14 @@
 					</div>
 
 					<button class="orderCol_code_btn btn1 js-order-btn"  data-btn="selected-sale">Применить</button>
-                </div> 
+                </div>
 
                 <div class="orderCol_b orderCol_b-wht js-order-box" data-box="data-selected-sale">
 	                <div class="orderCol_cnt table">
 	                    <div class="table_cell">
 	                        <img alt="" src="/css/modules/order/img/fishka_act.png" class="orderCol_img">
 	                    </div>
-						
+
 						<div class="table_cell table_cell-w100">
 		                    <div class="orderCol_n">
 		                        - 2% на категорию Электроника<br>
@@ -386,7 +295,7 @@
 	                    <div class="table_cell">
 	                        <img alt="" src="/css/modules/order/img/sale_act.png" class="orderCol_img">
 	                    </div>
-						
+
 						<div class="table_cell table_cell-w100">
 		                    <div class="orderCol_n">
 		                        Подарочный сертификат<br>
@@ -432,11 +341,11 @@
 	                            <li class="customSel_i">12:00…18:00</li>
 	                        </ul>
 	                    </div-->
- 
+
 	                    <span class="orderCol_now">Сегодня</span>
 
     	                <div class="orderCol_opt_t">Магазин</div>
-    
+
     	                <div class="orderCol_addrs">
 	    					<span class="orderCol_addrs_tx">
 	    						<span class="orderCol_addrs_blt" style="background: red;"></span>
@@ -594,14 +503,14 @@
                 <div class="orderLn_b orderLn_b-bg">
                 	<div class="orderLn_col2 orderLn_col2-r clearfix">
                 		<div class="orderLn_col2_l">Покупка в кредит</div>
-                	
+
 						<div class="orderLn_col2_r">
 							<a href="" class="btn1"><strong>Заполнить заявку</strong></a>
 						</div>
 					</div>
                 </div>
-                
-                <div class="orderLn_b orderLn_b-wht">    
+
+                <div class="orderLn_b orderLn_b-wht">
                 	<div class="orderLn_col2 orderLn_col2 clearfix">
                 		<div class="orderLn_col2_l">
 							<ul class="orderLn_lst">
@@ -610,7 +519,7 @@
 		                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
 		                    </ul>
                 		</div>
-                	
+
 						<div class="orderLn_col2_r">
 							<div>Доставка 11 июл. 2014 9:00…18:00</div>
 							<div>Оплата при получении: наличные, банковская карта</div>
@@ -622,7 +531,7 @@
                     <span class="orderLn_f_t">Сумма заказа:</span>
                     <span class="orderLn_f_tx">42 740 <span class="rubl">p</span></span>
                 </div>
-            </div> 
+            </div>
 
             <div class="orderLn clearfix">
                 <div class="orderLn_b">
@@ -633,7 +542,7 @@
                 <div class="orderLn_b orderLn_b-bg">
                 	<div class="orderLn_col2 orderLn_col2-r clearfix">
                 		<div class="orderLn_col2_l">Требуется предоплата</div>
-                	
+
 						<div class="orderLn_col2_r">
 							<a href="" class="orderLn_btn btn1 js-popup-link">
                                 <strong class="btn5">Оплатить онлайн</strong><br/>
@@ -645,8 +554,8 @@
 						</div>
 					</div>
                 </div>
-                
-                <div class="orderLn_b orderLn_b-wht">    
+
+                <div class="orderLn_b orderLn_b-wht">
                 	<div class="orderLn_col2 orderLn_col2 clearfix">
                 		<div class="orderLn_col2_l">
 							<ul class="orderLn_lst">
@@ -655,7 +564,7 @@
 		                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
 		                    </ul>
                 		</div>
-                	
+
 						<div class="orderLn_col2_r">
 							<div>Доставка 11 июл. 2014 9:00…18:00</div>
 							<div>Оплата при получении: наличные, банковская карта</div>
@@ -667,7 +576,7 @@
                     <span class="orderLn_f_t">Сумма заказа:</span>
                     <span class="orderLn_f_tx">42 740 <span class="rubl">p</span></span>
                 </div>
-            </div> 
+            </div>
 
             <div class="orderLn clearfix">
                 <div class="orderLn_b">
@@ -675,8 +584,8 @@
 	                <a href="" class="orderLn_mgnr">COXD-305176</a>
 	                <strong class="l">оформлен</strong>
                 </div>
-                
-                <div class="orderLn_b orderLn_b-wht">    
+
+                <div class="orderLn_b orderLn_b-wht">
                 	<div class="orderLn_col2 orderLn_col2 clearfix">
                 		<div class="orderLn_col2_l">
 							<ul class="orderLn_lst">
@@ -685,7 +594,7 @@
 		                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
 		                    </ul>
                 		</div>
-                	
+
 						<div class="orderLn_col2_r">
 							<div>Доставка 11 июл. 2014 9:00…18:00</div>
 							<div>Оплата при получении: наличные, банковская карта</div>
@@ -705,7 +614,7 @@
                     <img width="43" src="/css/modules/order/img/paypal.png" alt="" />
                     <img width="16" src="/css/modules/order/img/psb.png" alt="" />
                 </div>
-            </div>  
+            </div>
 
 	        <div class="orderCompl clearfix">
 	            <button class="orderCompl_btn btnsubmit">Продолжить покупки</button>

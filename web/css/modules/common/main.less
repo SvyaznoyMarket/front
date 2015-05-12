@@ -226,7 +226,8 @@ textarea[contenteditable] {
     color: @lightGrey2;
 }
 
-.borderBd {
+.borderBd,
+.bb-dotted {
     border-bottom: 1px dotted;
 }
 
@@ -619,15 +620,6 @@ textarea[contenteditable] {
     &_cell {
         display: table-cell;
         vertical-align: middle;
-        padding-right: 10px;
-
-        &:last-child {
-            padding-right: 0;
-        }
-
-        &-w100 {
-            width: 100%;
-        }
     }
 }
 
