@@ -3218,12 +3218,12 @@ body.noScroll {
   background-repeat: no-repeat;
   background-position: 0 1px;
 }
-.custom-input--defradio._big + .custom-label {
+.custom-input--defradio-big + .custom-label {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABJElEQVQ4Ea2UP2qEQBSHZwY7tVFhL5BOa6+RLnVOkD7XyAlSp9tbiIWV00gusKA2aqOimS9sQAML6yQPBPX9vjfP90cpfpnW2uv7/nlZlkcpZWzcobmadV21Uursed57HMf9FpPbhzzPnwz8FgTBKYoi4bqucBxHzPMshmEQdV2Ltm0vJthLmqYfW/b7Psuy16IoVpOFOfS24UeHfheEDHCM43ib3njQoYcjkKQGXdd9JklyIv17jc8ry/Li+/6DoojU4EgADkIPB6/oAkW0MTh4RRuPZvFzIBy8Mi9C2mhjVy4kSMMc2NiVa5TpnKbSNgYHb4ZPnZlEG4ODV+wCo3w0G/Rw8IplYheqqhLTNN2VEDr0cLtl/Mvu/MsW74LwLTb/ky/UMjqOI7dwdgAAAABJRU5ErkJggg==');
   background-repeat: no-repeat;
   background-position: 0 1px;
 }
-.custom-input--defradio._big:checked + .custom-label {
+.custom-input--defradio-big:checked + .custom-label {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABvklEQVQ4EaWUvUvDUBTF73tNBGm6tIGCH5uLtODW0UH/AMFBFwcnHQR3/w3Bwc1Vt85+DE6lQ0FoluKmDoW2SxMEGxvf79FAK7aUeqBpknfOfffde26U/EIQBF4YhsfD4XBPKVUyywXz6yZJEmitq57n3ZRKpXBcpsYf6vX6gRFf5vP5ou/7ks1mxXEcieNYoiiSTqcjvV6vbYKdVyqVu3Gtva/VaheNRiMxWZhNp4N1ePDTIDYTMjA73pbLZXFdVyR8l++XKxm+PYl8dkSWfdHrO5LZOhPx1mQwGEiz2STDQzJS1KDf77+aAEXSTz6eJX48leRr4th2U7XkibN7LWp12x7PBGrncrkNTRGpAQHIIH44+TMAUQjMBvDgo0Ov6QJFBBwhGUT2ftqFQPAAOvSaNtoszEtbA7s8+5Ly0KHXhl6gjRYUcR6MeCNdgSBdfGBhujAXRryRrquNIwKMBGjjPEh56NAb8+kqTgT4gDbOAuvWL4aEDr1mFrCyzcYYyfpgSqDUJxgOPjr0mmFiFlqtlnUiRnL37yWzeSTKWxGVWbL/PPOedRwLH93EMP57dtIaLDrFE58Cgi3yPfkBSX9N3yVcCkkAAAAASUVORK5CYII=');
   background-repeat: no-repeat;
   background-position: 0 1px;
@@ -7390,11 +7390,20 @@ body.noScroll {
   margin-bottom: 10px;
 }
 .checkout-done-order-cnt .discount-list-i__txt {
-  width: 170px;
+  width: 130px;
   display: inline-block;
   vertical-align: top;
   *zoom: 1;
   *display: inline;
+}
+.checkout-done-order-cnt .discount-list-i__sum {
+  max-width: 60px;
+  display: inline-block;
+  vertical-align: top;
+  *zoom: 1;
+  *display: inline;
+  margin-left: 20px;
+  white-space: nowrap;
 }
 .checkout-done-order-cnt .payment-opt {
   margin-bottom: 15px;
@@ -7487,7 +7496,7 @@ body.noScroll {
   border-radius: 0px;
 }
 .online-pay-popup-lst__i {
-  padding: 12px 15px;
+  padding: 14px 15px;
   border-bottom: 1px solid #e6e6e6;
 }
 .online-pay-popup-lst__i .custom-label {
@@ -7499,6 +7508,7 @@ body.noScroll {
 }
 .online-pay-popup-lst__i .custom-label_tx {
   margin-left: 10px;
+  font-size: 14px;
 }
 .online-pay-popup-lst__desc {
   font-size: 12px;
@@ -7530,10 +7540,12 @@ body.noScroll {
   text-align: center;
 }
 .online-pay-popup .popup-title {
-  margin-left: 50px;
   font-size: 18px;
   text-align: center;
   display: block;
+}
+.online-pay-popup .btn-container {
+  margin-top: 0;
 }
 .bonusCnt_t {
   font-size: 14px;
