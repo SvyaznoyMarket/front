@@ -94,7 +94,7 @@
     font-size: 12px;
     &__tl {
         font-size: 20px;
-        margin-left: 10px;
+        margin: 15px 0 15px 10px;
     }
     &-control {
         .box-sizing(border-box);
@@ -379,7 +379,7 @@
     }
 }
 .online-pay-popup{
-    width: 320px;
+    width: 100%;
     padding: 0;
     .rounded(0px);
     &-lst{
@@ -403,6 +403,31 @@
     }
     &__icon-wrap{
         float: right;
+    }
+    &__head{
+        background: #000;
+        color: #fff;
+        width: 100%;
+        .box-sizing(border-box);
+        height: 50px;
+        line-height: 50px;
+        position: relative;
+    }
+    .popup-close{
+        font-size: 12px;
+        position: absolute;
+        width: 60px;
+        top:50%;
+        margin-top: -25px;
+        left:0px;
+        text-align: center;
+    }
+    .popup-title{
+       
+        margin-left: 50px;
+        font-size: 18px;
+        text-align: center;
+        display: block;
     }
 }
 

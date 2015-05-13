@@ -1,14 +1,11 @@
-.btn
-{
-    &-container
-    {
+.btn {
+    &-container {
         width: 100%;
         margin-top: 25px;
 
         text-align: center;
     }
-    &--big
-    {
+    &--big {
         overflow: visible;
 
         width: auto;
@@ -17,24 +14,27 @@
         text-align: center;
         text-align: center;
         text-decoration: none;
-        .inline-block();
 
+        .inline-block();
         .box-sizing();
     }
-    &--medium{
+    &--medium {
+        font-size: 16px;
+        line-height: 38px;
+
         display: block;
         overflow: visible;
+
         width: 120px;
-        text-align: center;
         height: 38px;
-        line-height: 38px;
-        font-size: 16px;
+        padding: 0;
+
+        text-align: center;
+
         .rounded(4px);
         .inline-block();
-        padding:0px;
     }
-    &--slot
-    {
+    &--slot {
         font-size: 18px;
 
         min-width: 145px;
@@ -43,37 +43,34 @@
         border: 1px solid #ccd594;
         border-bottom: 3px solid #b8c64b;
         background: #cbdf59;
+
         .rounded(5px);
-
-
-        &:hover
-        {
+        &:hover {
             background-color: #cee062;
         }
-        &:active
-        {
+        &:active {
             margin-top: 2px;
 
-            background-color: #cee062;
-
             border-bottom: 1px solid #b8c64b;
+            background-color: #cee062;
         }
     }
-    &--close{
-        background: @white;
-        color: #666666;
+    &--close {
+        color: #666;
         border: 1px solid;
-
+        background: @white;
     }
-    &--submit{
-        background: #fcaa2a;
+    &--submit {
         color: #fff;
         border: 1px solid #ea7900;
+        background: #fcaa2a;
     }
+
     &--orange{
         border: 0;
         background: #fcaa2a;
         border-bottom: 2px solid #e26500;
+
         color: #fff;
         text-align: center;
         height: 34px;
@@ -85,6 +82,8 @@
             border-bottom: 0;
             margin-top: 2px;
             margin-bottom: -2px;
+
+            border-bottom: 0;
         }
         &:hover{
             color: #fff;
@@ -113,8 +112,26 @@
 }
 
 .btn-transparent {
-    background: rgba(255, 255, 255, 0.75);
     padding: 7px 15px;
+
     border: none;
+    background: rgba(255, 255, 255, .75);
+
     .rounded(3px);
+}
+
+.btn-stretch {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    .box-sizing();
+
+    &--default {
+        background: #f7f7f7;
+    }
+
+    &__link {
+        border-bottom: 1px solid;
+        .opacity(.6);
+    }
 }
