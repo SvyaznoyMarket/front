@@ -4,8 +4,6 @@
 // }
 
 .orderHd {
-    line-height: 49px;
-
     position: fixed;
     z-index: 1010;
     top: 0;
@@ -23,31 +21,44 @@
     &_stps {
         font-size: 16px;
 
-        padding-left: 75px;
+        display: flex;
 
-        text-align: center;
+        height: 54px;
 
         color: #bababa;
+
+        align-items: center;
+        flex-flow: row nowrap;
+        align-content: center;
+        justify-content: center;
         &_i {
             position: relative;
 
-            margin: 0 50px 0 0;
+            display: flex;
 
-            .inline-block();
+            height: 48px;
+            margin-right: 47px;
+
+            border-bottom: 5px solid transparent;
+
+            align-items: center;
             &:after {
                 position: absolute;
-                top: 0;
-                right: -45px;
+                top: 50%;
+                right: -29px;
 
-                width: 24px;
-                height: 54px;
+                width: 9px;
+                height: 17px;
+                margin-top: -8px;
 
                 content: '';
 
-                background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAA2CAYAAABNwiBxAAAACXBIWXMAAAsTAAALEwEAmpwYAAABsElEQVRYCe2Yv0vDQBTHvSSkBiUgzk6OTk66xYKTg5uji4Pu6tKQX43QbCmO+heIuuvgkn9DHMWtW8AQaOs7uCFUXnJXbujwCiXX9969+97nvoGkbD6fr63Kx1gVIVwHicFOg8gQGYwAFifPEBmMABYnzxAZjAAWJ88QGYwAFl8pz1iYStV4HMdn8HC/W5blfZ7nv6rzeb0WMlEU7THGng3DyFzXfe33+0ttUouYuq6/YWM/gsaJ53kPYqx0YarvTUCAJUnCFleZTqf7kCrgu8Fz0PduOBxGi3Vtv6XFDAaDLdu232Cxg7aGzdxsNrtK0/SxGWsbSx8TCDlSEcIXBQ+Nfd/fbhPQzEkbraqqD8dx3mHyIRzBv2MSTTdBsMnHUMPfmy9Go9FE5Dov0sfU1SkMw1PTNF+gzua1oOUaPDPumtfMaxETBMGOZVmf0HhdNM/B5DfNhWTG0p5pawZ3Ug9I9ETNExC5bavHclrEZFn2BXfOMQi6LIriHK5L/c+i5ZiwnarGtZBRXRSrJzFEBiOAxckzRAYjgMXJM0QGI4DFyTNEBiOAxckzRAYjgMX/AE/icbo6WShdAAAAAElFTkSuQmCC) no-repeat 100% 50%;
+                background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAgCAQAAAC1deB6AAAAjElEQVR4AWNgYPjP+p+PAT/4z/f//P93/43xK6r4DwQElP1n/7+bGGWcxCrb8P83UNn7/3b/memnbP1QV8ZBmrIPQGVM+CzdClQEUqaHWxUzw0koSwuXOTzAJPQPbE4xbiXlWJSMKpH83wVW8uB/MgVKRDCVYCry+f8XpgS3Ir3/p/7fQSjB7SYd/CoAZZIjFIGubncAAAAASUVORK5CYII=') no-repeat 100% 50%;
+                background-size: 9px 17px;
             }
             &:last-child {
                 margin-right: 20px;
+                padding-right: 0;
                 &:after {
                     background: none;
                 }
@@ -59,6 +70,11 @@
             &-pass {
                 color: @white;
             }
+        }
+        &_tx {
+            line-height: 1.2;
+
+            display: block;
         }
     }
 }
@@ -110,7 +126,7 @@
 
 .orderCheck {
     clear: both;
-    .custom-label {
+    .customLabel {
         padding: 3px 0 2px 26px;
     }
     &-credit {

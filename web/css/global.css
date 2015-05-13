@@ -6158,7 +6158,6 @@ body.noScroll {
 }
 /*---------Оформление заказа 3.0----------*/
 .orderHd {
-  line-height: 49px;
   position: fixed;
   z-index: 1010;
   top: 0;
@@ -6173,29 +6172,36 @@ body.noScroll {
 }
 .orderHd_stps {
   font-size: 16px;
-  padding-left: 75px;
-  text-align: center;
+  display: flex;
+  height: 54px;
   color: #bababa;
+  align-items: center;
+  flex-flow: row nowrap;
+  align-content: center;
+  justify-content: center;
 }
 .orderHd_stps_i {
   position: relative;
-  margin: 0 50px 0 0;
-  display: inline-block;
-  vertical-align: top;
-  *zoom: 1;
-  *display: inline;
+  display: flex;
+  height: 48px;
+  margin-right: 47px;
+  border-bottom: 5px solid transparent;
+  align-items: center;
 }
 .orderHd_stps_i:after {
   position: absolute;
-  top: 0;
-  right: -45px;
-  width: 24px;
-  height: 54px;
+  top: 50%;
+  right: -29px;
+  width: 9px;
+  height: 17px;
+  margin-top: -8px;
   content: '';
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAA2CAYAAABNwiBxAAAACXBIWXMAAAsTAAALEwEAmpwYAAABsElEQVRYCe2Yv0vDQBTHvSSkBiUgzk6OTk66xYKTg5uji4Pu6tKQX43QbCmO+heIuuvgkn9DHMWtW8AQaOs7uCFUXnJXbujwCiXX9969+97nvoGkbD6fr63Kx1gVIVwHicFOg8gQGYwAFifPEBmMABYnzxAZjAAWJ88QGYwAFl8pz1iYStV4HMdn8HC/W5blfZ7nv6rzeb0WMlEU7THGng3DyFzXfe33+0ttUouYuq6/YWM/gsaJ53kPYqx0YarvTUCAJUnCFleZTqf7kCrgu8Fz0PduOBxGi3Vtv6XFDAaDLdu232Cxg7aGzdxsNrtK0/SxGWsbSx8TCDlSEcIXBQ+Nfd/fbhPQzEkbraqqD8dx3mHyIRzBv2MSTTdBsMnHUMPfmy9Go9FE5Dov0sfU1SkMw1PTNF+gzua1oOUaPDPumtfMaxETBMGOZVmf0HhdNM/B5DfNhWTG0p5pawZ3Ug9I9ETNExC5bavHclrEZFn2BXfOMQi6LIriHK5L/c+i5ZiwnarGtZBRXRSrJzFEBiOAxckzRAYjgMXJM0QGI4DFyTNEBiOAxckzRAYjgMX/AE/icbo6WShdAAAAAElFTkSuQmCC) no-repeat 100% 50%;
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAgCAQAAAC1deB6AAAAjElEQVR4AWNgYPjP+p+PAT/4z/f//P93/43xK6r4DwQElP1n/7+bGGWcxCrb8P83UNn7/3b/memnbP1QV8ZBmrIPQGVM+CzdClQEUqaHWxUzw0koSwuXOTzAJPQPbE4xbiXlWJSMKpH83wVW8uB/MgVKRDCVYCry+f8XpgS3Ir3/p/7fQSjB7SYd/CoAZZIjFIGubncAAAAASUVORK5CYII=') no-repeat 100% 50%;
+  background-size: 9px 17px;
 }
 .orderHd_stps_i:last-child {
   margin-right: 20px;
+  padding-right: 0;
 }
 .orderHd_stps_i:last-child:after {
   background: none;
@@ -6206,6 +6212,10 @@ body.noScroll {
 }
 .orderHd_stps_i-pass {
   color: #ffffff;
+}
+.orderHd_stps_tx {
+  line-height: 1.2;
+  display: block;
 }
 .orderCnt {
   font-size: 14px;
@@ -6247,7 +6257,7 @@ body.noScroll {
 .orderCheck {
   clear: both;
 }
-.orderCheck .custom-label {
+.orderCheck .customLabel {
   padding: 3px 0 2px 26px;
 }
 .orderCheck-credit {
@@ -6265,32 +6275,26 @@ body.noScroll {
   display: block;
   color: #5e5e5e;
 }
-@media only screen and (max-width: 550px) {
+@media only screen and (max-width: 560px) {
   .orderHd {
-    height: 50px;
-    line-height: 1.2;
+    font-size: 14px;
     width: 100%;
   }
   .orderHd_lg {
-    display: inline-block;
-    vertical-align: top;
-    *zoom: 1;
-    *display: inline;
-    margin: 10px 0 0 2px;
     width: 50px;
+    margin: 10px 0 0 0;
+  }
+  .orderHd_stps {
+    font-size: 14px;
   }
   .orderHd_stps_i {
-    margin: 0 30px 0 0;
-    padding: 7px 0 6px;
-    vertical-align: middle;
-    max-width: 75px;
+    margin-right: 20px;
   }
   .orderHd_stps_i:after {
-    background: none;
+    right: -15px;
   }
   .orderHd_stps_i:last-child {
-    margin-right: 10px;
-    width: auto;
+    margin-right: 0;
   }
   .orderInf_l {
     float: none;
@@ -6300,9 +6304,9 @@ body.noScroll {
     float: none;
   }
 }
-@media only screen and (max-width: 350px) {
-  .orderHd_stps_i {
-    margin: 0 15px 0 0;
+@media only screen and (max-width: 390px) {
+  .orderHd .block {
+    display: block;
   }
 }
 /*---------Оформление заказа 3.0 ----------*/
