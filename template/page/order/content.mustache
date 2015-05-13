@@ -77,7 +77,7 @@
 	        </form>
 
 	        <div class="btn-container">
-	            <button class="btn btn--submit btn--checkout">Далее</button>
+	            <button class="btn btn--submit btn--orange btn--checkout">Далее</button>
 	        </div>
 	    </section>
 
@@ -465,7 +465,7 @@
                 <input type="checkbox" class="custom-input custom-input--check" id="accept" name="" value="" />
                 <label class="order-accept custom-label" for="accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
 
-	            <button class="btn btn--submit btn--checkout">Оформить</button>
+	            <button class="btn btn--submit btn--orange btn--checkout">Оформить</button>
 	        </div>
 	    </section>
 
@@ -560,42 +560,113 @@
             </div>
 
 	        <div class="btn-container">
-	            <button class="btn btn--submit btn--checkout">Продолжить покупки</button>
+	            <button class="btn btn--submit btn--orange btn--checkout">Продолжить покупки</button>
 	        </div>
 
 	    </section>
+
+	    <section class="checkout checkout-done">
+		    <h1 class="checkout__tl">Оформлен заказ<br>№ COXD-1234567</h1>
+		    <div class="checkout-done-order-cnt">
+		    	<span class="checkout-done-order-cnt__tl">Ждём Вас 27.12.2014</span>
+		    	<div class="checkout-done-order-cnt__place clearfix">
+		    		<div class="checkout-done-order-cnt__logo-col">
+		    			<img class="checkout-done-order-cnt__logo" src="/css/modules/order/img/enter-logo.png">
+		    			<span class="checkout-done-order-cnt__logo-tl">Магазин Enter</span>
+		    		</div>
+		    		<div class="checkout-done-order-cnt__location-col">
+		    			<div class="checkout-done-order-cnt__subway" style="background:#2b8c3d;">
+		    				<span class="checkout-done-order-cnt__subway-tl">м. Белорусская</span>
+		    			</div>
+		    			<div class="checkout-done-order-cnt__addr">
+		    				ул. Грузинский вал, д. 28/45
+		    			</div>
+		    			<div class="checkout-done-order-cnt__time">c 9.00 до 22.00</div>
+		    		</div>
+		    	</div>
+		    	<span class="checkout-done-order-cnt__place-link">Как добраться</span>
+		    	<div class="checkout-done-order-cnt__info">Оплата при получении — наличными или картой.</div>
+		    </div>
+		    <div class="checkout-done-order-cnt checkout-done-order-cnt-online-payment">
+		    	<span class="checkout-done-order-cnt__tl">Скидка 5%</span>
+		    	<ul class="discount-list">
+		    		<li class="discount-list-i">
+		    			<span class="discount-list-i__txt">Сумма заказа:</span>
+		    			<span class="discount-list-i__sum">47 767 <span class="rubl">p</span></span>
+		    		</li>
+		    		<li class="discount-list-i">
+		    			<span class="discount-list-i__txt">При оплате онлайн:</span>
+		    			<span class="discount-list-i__sum">46 167 <span class="rubl">p</span></span>
+		    		</li>
+		    	</ul>
+		    	<div class="payment-opt">
+		    		<button class="btn btn--submit btn--orange btn--pay-online">Оплатить сейчас</button>
+		    		<span class="confirm-payment__types">
+		    			<img class="confirm-payment__card" width="25" src="/css/modules/order/img/visa2.png" alt="">
+						<img class="confirm-payment__card" width="25" src="/css/modules/order/img/mcard.png" alt="">
+                        <img class="confirm-payment__card" width="16" src="/css/modules/order/img/psb.png" alt="">
+					</span>
+		    	</div>
+		    </div>
+		    <div class="checkout-done-order-cnt">
+		    	<span class="checkout-done-order-cnt__tl">Онлайн-оплата в два клика</span>
+		    	<div class="payment-opt">
+		    		<button class="btn btn--submit btn--orange btn--pay-online">Оплатить сейчас</button>
+		    		<span class="confirm-payment__types">
+		    			<img class="confirm-payment__card" width="25" src="/css/modules/order/img/visa2.png" alt="">
+						<img class="confirm-payment__card" width="25" src="/css/modules/order/img/mcard.png" alt="">
+                        <img class="confirm-payment__card" width="16" src="/css/modules/order/img/psb.png" alt="">
+					</span>
+		    	</div>
+		    </div>
+		
+			<div class="return-to-main-link__wrap">
+				<a class="return-to-main-link" href="#">Вернуться на главную</a>
+			</div>
+			
+		</section>
+
 	</div>
 </div>
 
-<div class="popupBox popupFl popupFl_pay js-popup-box">
-	<div class="popupFl_clsr"></div>
-	<div class="popupFl_pay_h">
-		Оплатить онлайн без комиссии
-		<div><strong>Заказ</strong> COXD-305176 </div>
-	</div>
 
-	<ul class="popupFl_pay_lst">
-		<li class="popupFl_pay_lst_i">
-			<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio" checked>
-			<label class="custom-label" for="pay1"><span class="custom-label_tx">Банковская карта</span> <img src="/css/modules/order/img/mcard.png" height="23" alt=""> <img src="/css/modules/order/img/visa2.png" alt=""></label>
-			<p class="popupFl_pay_lst_desc">А также Maestro, Diners Club, JCB.</p>
+
+
+<div class="popupBox online-pay-popup js-popup-box">
+
+	<ul class="online-pay-popup-lst">
+		<li class="online-pay-popup-lst__i">
+			<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio _big" checked>
+			<label class="custom-label" for="pay1">
+				<span class="custom-label_tx">Банковская карта</span>
+				<span class="online-pay-popup__icon-wrap">
+					<img src="/css/modules/order/img/visa2.png" alt="">
+					<img src="/css/modules/order/img/mcard.png" alt="">
+				</span>
+			</label>
 		</li>
 
-		<li class="popupFl_pay_lst_i">
-			<input type="radio" id="pay2" name="paynow" class="custom-input custom-input--defradio">
-			<label class="custom-label" for="pay2"><span class="custom-label_tx">Платёжная система</span> <img src="/css/modules/order/img/payPal2.png" height="23" alt=""></label>
+		<li class="online-pay-popup-lst__i">
+			<input type="radio" id="pay2" name="paynow" class="custom-input custom-input--defradio _big">
+			<label class="custom-label" for="pay2"><span class="custom-label_tx">Pay Pal</span>
+			<span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/paypal3.png" height="23" alt=""></span></label>
+		</li>
+		<li class="online-pay-popup-lst__i">
+			<input type="radio" id="pay3" name="paynow" class="custom-input custom-input--defradio _big">
+			<label class="custom-label" for="pay3"><span class="custom-label_tx">Яндекс.деньги</span><span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/yandexmoney.png" height="23" alt=""></span></label>
 		</li>
 
-		<li class="popupFl_pay_lst_i">
-			<input type="radio" id="pay3" name="paynow" class="custom-input custom-input--defradio">
-			<label class="custom-label" for="pay3"><span class="custom-label_tx">Интернет-банк</span> <img src="/css/modules/order/img/psb2.png" height="23" alt=""></label>
-			<p class="popupFl_pay_lst_desc">Только для клиентов Промсвязьбанка.</p>
+		<li class="online-pay-popup-lst__i">
+			<input type="radio" id="pay4" name="paynow" class="custom-input custom-input--defradio _big">
+			<label class="custom-label" for="pay4"><span class="custom-label_tx">Интернет-банк</span><span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/psbfull.png" height="23" alt=""></span></label>
 		</li>
 	</ul>
 
-	<p class="popupFl_pay_desc">Вы будете автоматически перемещены на сайт платежной системы.</p>
+	<div class="btn-container"><a href="" class="btn btn--orange btn--pay">Оплатить</a></div>
 
-	<a href="" class="popupFl_pay_btn btnsubmit">Оплатить</a>
+	<p class="online-pay-popup-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
+
+	
 </div>
 
 
