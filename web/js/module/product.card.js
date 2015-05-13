@@ -103,7 +103,7 @@ define(
         });
 
         // слайдер основного изображения
-        $('.js-detail-slider').slick({
+        $('.js-detailSlider').slick({
             infinite: false,
             dots: true,
             nextArrow: '<span class="sliderControls_btn sliderControls_btn__right js-ga-click"></span>',
