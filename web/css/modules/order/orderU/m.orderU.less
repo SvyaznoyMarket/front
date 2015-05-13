@@ -41,3 +41,29 @@
 		display: block;
 	}
 }
+
+@media screen and (max-width: 480px) {
+    .checkout-control-group__hint {
+        text-align: right;
+    }
+}
+@media screen and (min-width: 640px) {
+    .checkout-control__container {
+        margin-right: 230px;
+    }
+    .order-authorize {
+        &__container {
+            float: right;
+
+            width: 220px;
+            margin-right: 0;
+            margin-left: -220px;
+        }
+    }
+    .return-to-main-link__wrap{
+        margin-top: 50px;
+    }
+    .online-pay-popup{
+        width: 388px;
+    }
+}

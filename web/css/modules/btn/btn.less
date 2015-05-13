@@ -65,24 +65,49 @@
         border: 1px solid #ea7900;
         background: #fcaa2a;
     }
-    &--checkout {
-        font-size: 20px;
-        line-height: 30px;
 
-        width: 200px;
-        height: 34px;
-
-        color: #fff;
+    &--orange{
         border: 0;
+        background: #fcaa2a;
         border-bottom: 2px solid #e26500;
 
-        .rounded(6px);
-        &:active {
+        color: #fff;
+        text-align: center;
+        height: 34px;
+        line-height: 30px;
+        max-width: 100%;
+        .inline-block();
+        
+        &:active{
+            border-bottom: 0;
             margin-top: 2px;
             margin-bottom: -2px;
 
             border-bottom: 0;
         }
+        &:hover{
+            color: #fff;
+        }
+    }
+    &--checkout{
+        width: auto;
+        padding: 0 50px;
+        font-size: 20px;
+        .rounded(6px);
+    }
+    &--pay-online{
+        width: auto;
+        padding: 0px 6px;
+        font-size: 14px;
+        .rounded(4px);
+    }
+    &--pay{
+        width: 120px;
+        .rounded(3px);
+        margin: 20px auto;
+        height: 40px;
+        line-height: 40px;
+        font-size: 18px;
     }
 }
 
