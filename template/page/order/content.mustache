@@ -699,17 +699,15 @@
 					</span>
 		    	</div>
 		    </div>
-		
+
 			<div class="return-to-main-link__wrap">
 				<a class="return-to-main-link" href="#">Вернуться на главную</a>
 			</div>
-			
+
 		</section>
 
 	</div>
 </div>
-
-
 
 {{! Нужно убрать свойство данного блока max-width: 300px, которое ставится js-ом }}
 <div class="popupBox online-pay-popup js-popup-box">
@@ -717,10 +715,12 @@
 		<span class="popup-close js-popup-close">Отмена</span>
 		<span class="popup-title">Оплатить онлайн</span>
 	</div>
+
 	<ul class="online-pay-popup-lst">
 		<li class="online-pay-popup-lst__i">
-			<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio-big" checked>
-			<label class="custom-label" for="pay1">
+			<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio" checked>
+
+			<label class="flex-hor-vertical custom-label " for="pay1">
 				<span class="custom-label_tx">Банковская карта</span>
 				<span class="online-pay-popup__icon-wrap">
 					<img src="/css/modules/order/img/visa2.png" alt="">
@@ -730,18 +730,30 @@
 		</li>
 
 		<li class="online-pay-popup-lst__i">
-			<input type="radio" id="pay2" name="paynow" class="custom-input custom-input--defradio-big">
-			<label class="custom-label" for="pay2"><span class="custom-label_tx">Pay Pal</span>
-			<span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/paypal3.png" alt=""></span></label>
-		</li>
-		<li class="online-pay-popup-lst__i">
-			<input type="radio" id="pay3" name="paynow" class="custom-input custom-input--defradio-big">
-			<label class="custom-label" for="pay3"><span class="custom-label_tx">Яндекс.деньги</span><span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/yandexmoney.png" alt=""></span></label>
+			<input type="radio" id="pay2" name="paynow" class="custom-input custom-input--defradio">
+
+			<label class="custom-label flex-hor-vertical" for="pay2">
+				<span class="custom-label_tx">Pay Pal</span>
+				<span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/paypal3.png" alt=""></span>
+			</label>
 		</li>
 
-		<li class="online-pay-popup-lst__i">
-			<input type="radio" id="pay4" name="paynow" class="custom-input custom-input--defradio-big">
-			<label class="custom-label" for="pay4"><span class="custom-label_tx">Интернет-банк</span><span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/psbfull.png" alt=""></span></label>
+		<li class="online-pay-popup-lst__i flex-hor-vertical">
+			<input type="radio" id="pay3" name="paynow" class="custom-input custom-input--defradio">
+
+			<label class="custom-label" for="pay3">
+				<span class="custom-label_tx">Яндекс.деньги</span>
+				<span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/yandexmoney.png" alt=""></span>
+			</label>
+		</li>
+
+		<li class="online-pay-popup-lst__i flex-hor-vertical">
+			<input type="radio" id="pay4" name="paynow" class="custom-input custom-input--defradio">
+
+			<label class="custom-label" for="pay4">
+				<span class="custom-label_tx">Интернет-банк</span>
+				<span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/psbfull.png" alt=""></span>
+			</label>
 		</li>
 	</ul>
 
@@ -749,7 +761,7 @@
 
 	<p class="online-pay-popup-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
 
-	
+
 </div>
 
 
