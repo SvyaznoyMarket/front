@@ -43,8 +43,6 @@
 	                    <label class="checkout-control-group__lbl" for="">Имя</label>
 	                    <span class="checkout-control-group__hint">Как к вам обращаться?</span>
 	                </div>
-
-
 	            </fieldset>
 
 	            <fieldset class="checkout-control__container">
@@ -96,34 +94,34 @@
 	        </div>
 
 	        <!-- блок разбиения заказа -->
-	        <div class="orderCol">
+	        <div class="checkout-order">
 	            <!-- информация о заказе -->
-                <div class="orderCol_b orderCol_hd">
-                    <strong class="orderCol_hd_l">Заказ №1</strong>
-                    <a class="orderCol_hd_r" href="">Информация и оферта</a>
-                    <span class="orderCol_hd_c">продавец: ООО «Связной»</span>
+                <div class="checkout-order-head checkout-order__box checkout-order__box--head">
+                    <strong class="checkout-order-head__title">Заказ №1</strong>
+                    <a class="checkout-order-head__info checkout-order-head__right" href=""><span class="bb-dotted">Информация и оферта</span></a>
+                    <span class="checkout-order-head__vendor checkout-order-head__right">продавец: ООО «Связной»</span>
                 </div>
 
-				<div class="orderCol_b orderCol_b-np">
+				<div class="checkout-order__box checkout-order__box--stretch">
 	                <!-- информация о доставке -->
-	                <menu class="order-delivery-type clearfix">
-	                    <li class="order-delivery-type__item active js-delivery-type-name" data-type="delivery-type-self">
-	                    	<span class="order-delivery-type__text">Самовывоз</span>
+	                <menu class="checkout-delivery-type clearfix">
+	                    <li class="checkout-delivery-type__item active js-delivery-type-name" data-type="delivery-type-self">
+	                    	<span class="checkout-delivery-type__text">Самовывоз</span>
 	                    </li>
 
-	                    <li class="order-delivery-type__item js-delivery-type-name" data-type="delivery-type-buy">
-	                    	<span class="order-delivery-type__text">Доставка</span>
+	                    <li class="checkout-delivery-type__item js-delivery-type-name" data-type="delivery-type-buy">
+	                    	<span class="checkout-delivery-type__text">Доставка</span>
 	                    </li>
 	                </menu>
 
-					<div class="orderCol_inn box-show js-delivery-type" id="delivery-type-self">
-			            <button class="order-shop-btn btn-transparent btn-transparent--normal js-order-btn" data-btn="select-shop">
+					<div class="checkout-order__inn box-show js-delivery-type" id="delivery-type-self">
+			            <button class="btn-transparent btn-transparent--normal js-order-btn" data-btn="select-shop">
 			            	<span class="bb-dotted">Выбрать точку самовывоза</span>
 			            </button>
 	                </div>
 
-	                <div class="orderCol_inn js-delivery-type" id="delivery-type-buy">
-						<div class="orderCol_date js-popup-box-celendar-link">15 сентября 2014</div>
+	                <div class="checkout-order__inn js-delivery-type" id="delivery-type-buy">
+						<div class="checkout-order_date js-popup-box-celendar-link">15 сентября 2014</div>
 
 		                <div class="customSel">
 	                        <span class="customSel_def js-order-btn" data-btn="select-time">10:00…18:00</span>
@@ -135,7 +133,7 @@
 	                        </ul>
 	                    </div>
 
-		                <div class="orderCol_opt_t">
+		                <div class="checkout-order_opt_t">
 							Адрес <span style="font-weight: normal;">для всех заказов с доставкой</span>
 						</div>
 
@@ -167,44 +165,44 @@
 		            </div>
                 </div>
 
-				<div class="order-cart orderCol_b orderCol_b-wht">
-	                <div class="table">
-	                    <a class="order-cart__img table_cell" href="">
+				<div class="order-cart checkout-order__box checkout-order__box--light">
+	                <div class="checkout-order-items flex-hor-vertical">
+	                    <div class="checkout-order-items__left">
 	                        <img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg">
-	                    </a>
+	                    </div>
 
-						<div class="table_cell order-cart__desc">
-		                    <a class="orderCol_n" href="">
+						<div class="checkout-order-items__right">
+		                    <a class="checkout-order_n" href="">
 		                        Самокат<br>
 		                        JD Bug Classic MS-305 синий
 		                    </a>
 
-		                    <span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
-		                    <span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
-		                    <span class="orderCol_data orderCol_data-count">1 шт.</span>
+		                    <span class="checkout-order_data checkout-order_data-summ">5 200 <span class="rubl">p</span></span>
+		                    <span class="checkout-order_data checkout-order_data-price">5 200 <span class="rubl">p</span></span>
+		                    <span class="checkout-order_data checkout-order_data-count">1 шт.</span>
 	                    </div>
 	                </div>
 
-	                <div class="table">
-	                    <a class="order-cart__img table_cell" href="">
+	                <div class="checkout-order-items flex-hor-vertical">
+	                    <div class="checkout-order-items__left">
 	                        <img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg">
-	                    </a>
+	                    </div>
 
-						<div class="table_cell order-cart__desc">
-		                    <a class="orderCol_n" href="">
+						<div class="checkout-order-items__right">
+		                    <a class="checkout-order_n" href="">
 		                        Самокат<br>
 		                        JD Bug Classic MS-305 синий
 		                    </a>
 
-		                    <span class="orderCol_data orderCol_data-summ">5 200 <span class="rubl">p</span></span>
-		                    <span class="orderCol_data orderCol_data-price">5 200 <span class="rubl">p</span></span>
-		                    <span class="orderCol_data orderCol_data-count">1 шт.</span>
+		                    <span class="checkout-order_data checkout-order_data-summ">5 200 <span class="rubl">p</span></span>
+		                    <span class="checkout-order_data checkout-order_data-price">5 200 <span class="rubl">p</span></span>
+		                    <span class="checkout-order_data checkout-order_data-count">1 шт.</span>
 	                    </div>
 	                </div>
                 </div>
 
-                <div class="order-sale orderCol_b">
-                	<div class="order-sale__title"><strong>Скидки</strong></div>
+                <div class="checkout-sale checkout-order__box">
+                	<div class="checkout-sale__title"><strong>Скидки</strong></div>
 
 					<div class="table">
 	                	<div class="table_cell">
@@ -217,104 +215,116 @@
                 	</div>
                 </div>
 
-                <div class="orderCol_b orderCol_b-wht orderCol_scrll js-order-box" data-box="data-select-fishk">
-	                <a href="" class="orderCol_cnt table js-order-btn"  data-btn="selected-sale">
-	                	<div class="table_cell"><img src="/css/modules/order/img/fishka.png" alt=""></div>
+				{{! выбрать фишку enter prize }}
+                <div class="sale-select checkout-order__box checkout-order__box--light js-order-box" data-box="data-select-fishk">
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
 
-						<span class="table_cell table_cell-w100">- 2% на категорию Электроника</span>
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
 	                </a>
 
-	                <a href="" class="orderCol_cnt table js-order-btn"  data-btn="selected-sale">
-	                	<div class="table_cell"><img src="/css/modules/order/img/fishka.png" alt=""></div>
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
 
-						<span class="table_cell table_cell-w100">- 2% на категорию Электроника</span>
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
 	                </a>
 
-	                <a href="" class="orderCol_cnt table js-order-btn"  data-btn="selected-sale">
-	                	<div class="table_cell"><img src="/css/modules/order/img/fishka.png" alt=""></div>
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
 
-						<span class="table_cell table_cell-w100">- 2% на категорию Электроника</span>
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
 	                </a>
 
-	                <a href="" class="orderCol_cnt table js-order-btn"  data-btn="selected-sale">
-	                	<div class="table_cell"><img src="/css/modules/order/img/fishka.png" alt=""></div>
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
 
-						<span class="table_cell table_cell-w100">- 2% на категорию Электроника</span>
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
 	                </a>
 
-	                <a href="" class="orderCol_cnt table js-order-btn"  data-btn="selected-sale">
-	                	<div class="table_cell"><img src="/css/modules/order/img/fishka.png" alt=""></div>
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
 
-						<span class="table_cell table_cell-w100">- 2% на категорию Электроника</span>
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
 	                </a>
 
-	                <a href="" class="orderCol_cnt table js-order-btn"  data-btn="selected-sale">
-	                	<div class="table_cell"><img src="/css/modules/order/img/fishka.png" alt=""></div>
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
 
-						<span class="table_cell table_cell-w100">- 2% на категорию Электроника</span>
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
 	                </a>
 
-	                <a href="" class="orderCol_cnt table js-order-btn"  data-btn="selected-sale">
-	                	<div class="table_cell"><img src="/css/modules/order/img/fishka.png" alt=""></div>
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
 
-						<span class="table_cell table_cell-w100">- 2% на категорию Электроника</span>
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
 	                </a>
 				</div>
+				{{! выбрать фишку enter prize }}
 
-                <div class="orderCol_b orderCol_code js-order-box" data-box="data-select-sale">
-					<div class="orderCol_code_t">Код скидки или подарочный сертификат</div>
+				{{! ввести код скидки или сертефиката }}
+                <div class="checkout-order__box checkout-order__box--light js-order-box" data-box="data-select-sale">
+					<div class="checkout-order_code_t">Код скидки или подарочный сертификат</div>
 
-					<input type="text" class="orderCol_code_it textfield">
-					<div class="orderCol_code_opt">
-						<span class="orderCol_code_pinlbl">PIN-код</span>
-						<input type="text" class="orderCol_code_pin textfield">
+					<input type="text" class="checkout-order_code_it textfield">
+					<div class="checkout-order_code_opt">
+						<span class="checkout-order_code_pinlbl">PIN-код</span>
+						<input type="text" class="checkout-order_code_pin textfield">
 					</div>
 
-					<button class="orderCol_code_btn btn1 js-order-btn"  data-btn="selected-sale">Применить</button>
+					<button class="checkout-order_code_btn btn1 js-order-btn"  data-btn="selected-sale">Применить</button>
                 </div>
+				{{! ввести код скидки или сертефиката }}
 
-                <div class="orderCol_b orderCol_b-wht js-order-box" data-box="data-selected-sale">
-	                <div class="orderCol_cnt table">
-	                    <div class="table_cell">
-	                        <img alt="" src="/css/modules/order/img/fishka_act.png" class="orderCol_img">
+				{{! примененные скидки }}
+                <div class="checkout-order__box checkout-order__box--light js-order-box" data-box="data-selected-sale">
+	                <div class="checkout-order-items flex-hor-vertical">
+	                    <div class="checkout-order-items__left">
+	                        <img alt="" src="/css/modules/order/img/fishka_act.png">
 	                    </div>
 
-						<div class="table_cell table_cell-w100">
-		                    <div class="orderCol_n">
+						<div class="checkout-order-items__right">
+		                    <div class="checkout-order_n">
 		                        - 2% на категорию Электроника<br>
 		                        Минимальная сумма заказа 6999 руб
 		                    </div>
 
-		                    <span class="orderCol_data orderCol_data-sale">-5 200 <span class="rubl">p</span></span>
+		                    <span class="checkout-order_data checkout-order_data-sale">-5 200 <span class="rubl">p</span></span>
 
-		                    <span class="orderCol_data orderCol_data-dlt"><span class="borderBd">удалить</span></span>
+		                    <span class="checkout-order_data checkout-order_data-dlt"><span class="borderBd">удалить</span></span>
 	                    </div>
 	                </div>
 
-	                <div class="orderCol_cnt table">
-	                    <div class="table_cell">
-	                        <img alt="" src="/css/modules/order/img/sale_act.png" class="orderCol_img">
+	                <div class="checkout-order-items flex-hor-vertical">
+	                    <div class="checkout-order-items__left">
+	                        <img alt="" src="/css/modules/order/img/sale_act.png">
 	                    </div>
 
-						<div class="table_cell table_cell-w100">
-		                    <div class="orderCol_n">
+						<div class="checkout-order-items__right">
+		                    <div class="checkout-order_n">
 		                        Подарочный сертификат<br>
 		                        5000 руб
 		                    </div>
 
-		                    <span class="orderCol_data orderCol_data-sale">-5 200 <span class="rubl">p</span></span>
+		                    <span class="checkout-order_data checkout-order_data-sale">-5 200 <span class="rubl">p</span></span>
 
-		                    <span class="orderCol_data orderCol_data-dlt"><span class="borderBd">удалить</span></span>
+		                    <span class="checkout-order_data checkout-order_data-dlt"><span class="borderBd">удалить</span></span>
 	                    </div>
 	                </div>
                 </div>
+                {{! примененные скидки }}
 
-                <div class="orderCol_b ta-r">
-                    <span class="orderCol_summ">150 <span class="rubl">p</span></span>
-                    <span class="orderCol_summt orderCol_summt-m">Доставка:</span>
+                <div class="checkout-order__box ta-r">
+                    <span class="checkout-order_summ">150 <span class="rubl">p</span></span>
+                    <span class="checkout-order_summt checkout-order_summt-m">Доставка:</span>
 
-                    <span class="orderCol_summ">2 334 <span class="rubl">p</span></span>
-                    <span class="orderCol_summt">Итого:</span>
+                    <span class="checkout-order_summ">2 334 <span class="rubl">p</span></span>
+                    <span class="checkout-order_summt">Итого:</span>
 
                     <div class="orderCheck orderCheck-credit clearfix">
 	                    <input type="checkbox" class="custom-input custom-input--check" id="credit" name="" value="" />
@@ -326,13 +336,13 @@
 	        <!--/ блок разбиения заказа -->
 
 	        <!-- блок разбиения заказа -->
-            <div class="orderCol">
+            <div class="checkout-order">
                 <!-- информация о доставке -->
-	            <div class="orderCol_b orderCol_b-np orderCol_b-confrm">
-					<div class="orderCol_inn">
-						<div class="orderCol_date">15 сентября 2014, воскресенье</div>
+	            <div class="checkout-order__box checkout-order__box-np checkout-order__box-confrm">
+					<div class="checkout-order__inn">
+						<div class="checkout-order_date">15 сентября 2014, воскресенье</div>
 
-    	                <div class="orderCol_opt_t">Магазин</div>
+    	                <div class="checkout-order_opt_t">Магазин</div>
 
     	                <div class="shop-snippet clearfix">
 							<div class="shop-snippet-name">
@@ -355,11 +365,11 @@
 	        <!--/ блок разбиения заказа -->
 
 	        <!-- блок разбиения заказа -->
-            <div class="orderCol">
+            <div class="checkout-order">
                 <!-- информация о доставке -->
-                <div class="orderCol_b orderCol_b-np">
-	                <div class="orderCol_inn">
-						<div class="orderCol_date">15 сентября 2014</div>
+                <div class="checkout-order__box checkout-order__box-np">
+	                <div class="checkout-order__inn">
+						<div class="checkout-order_date">15 сентября 2014</div>
 
 		                <div class="customSel">
 	                        <span class="customSel_def">10:00…18:00</span>
@@ -371,7 +381,7 @@
 	                        </ul>
 	                    </div>
 
-		                <div class="orderCol_opt_t">
+		                <div class="checkout-order_opt_t">
 							Адрес <span style="font-weight: normal;">для всех заказов с доставкой</span>
 						</div>
 
@@ -408,11 +418,11 @@
 	        <!--/ блок разбиения заказа -->
 
 	        <!-- блок разбиения заказа -->
-            <div class="orderCol">
+            <div class="checkout-order">
                 <!-- информация о доставке -->
-	            <div class="orderCol_b orderCol_b-np orderCol_b-confrm">
-	                <div class="orderCol_inn">
-						<div class="orderCol_date">15 сентября 2014</div>
+	            <div class="checkout-order__box checkout-order__box-np checkout-order__box-confrm">
+	                <div class="checkout-order__inn">
+						<div class="checkout-order_date">15 сентября 2014</div>
 
 		                <div class="customSel">
 	                        <span class="customSel_def">10:00…18:00</span>
@@ -424,7 +434,7 @@
 	                        </ul>
 	                    </div>
 
-    	                <div class="orderCol_opt_t">
+    	                <div class="checkout-order_opt_t">
 							Адрес <span style="font-weight: normal;">для всех заказов с доставкой</span>
 						</div>
 
@@ -722,7 +732,7 @@
 		<li class="online-pay-popup-lst__i">
 			<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio" checked>
 
-			<label class="flex-hor-vertical custom-label " for="pay1">
+			<label class="custom-label flex-hor-vertical-between" for="pay1">
 				<span class="custom-label_tx">Банковская карта</span>
 				<span class="online-pay-popup__icon-wrap">
 					<img src="/css/modules/order/img/visa2.png" alt="">
@@ -734,13 +744,13 @@
 		<li class="online-pay-popup-lst__i">
 			<input type="radio" id="pay2" name="paynow" class="custom-input custom-input--defradio">
 
-			<label class="custom-label flex-hor-vertical" for="pay2">
+			<label class="custom-label flex-hor-vertical-between" for="pay2">
 				<span class="custom-label_tx">Pay Pal</span>
 				<span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/paypal3.png" alt=""></span>
 			</label>
 		</li>
 
-		<li class="online-pay-popup-lst__i flex-hor-vertical">
+		<li class="online-pay-popup-lst__i flex-hor-vertical-between">
 			<input type="radio" id="pay3" name="paynow" class="custom-input custom-input--defradio">
 
 			<label class="custom-label" for="pay3">
@@ -749,7 +759,7 @@
 			</label>
 		</li>
 
-		<li class="online-pay-popup-lst__i flex-hor-vertical">
+		<li class="online-pay-popup-lst__i flex-hor-vertical-between">
 			<input type="radio" id="pay4" name="paynow" class="custom-input custom-input--defradio">
 
 			<label class="custom-label" for="pay4">
