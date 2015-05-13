@@ -7199,6 +7199,9 @@ body.noScroll {
   font-size: 20px;
   margin: 15px 0 10px;
 }
+.checkout__tl .order-lnk {
+  border-bottom: 1px solid;
+}
 .checkout__sum {
   font-size: 20px;
   margin: 10px 0 15px;
@@ -7294,7 +7297,7 @@ body.noScroll {
 .checkout-done-order-cnt__place-link {
   font-size: 14px;
   margin-top: 15px;
-  border-bottom: 1px dashed;
+  border-bottom: 1px dotted;
   display: inline-block;
   vertical-align: top;
   *zoom: 1;
@@ -7399,17 +7402,6 @@ body.noScroll {
 .checkout-done-order-cnt .payment-opt .confirm-payment__types {
   line-height: 34px;
   float: right;
-}
-.return-to-main-link {
-  font-size: 14px;
-  text-decoration: none;
-  border-bottom: 1px solid;
-}
-.return-to-main-link__wrap {
-  width: 100%;
-  padding: 10px 0;
-  text-align: center;
-  background: #f7f7f7;
 }
 .textfield-err + .checkout-control-group__lbl {
   color: #ffffff;
