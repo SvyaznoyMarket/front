@@ -1,13 +1,13 @@
 <!-- шапка оформления заказа -->
-<header class="orderHd">
+<header class="checkout-head">
 	<div class="contentBox640">
-	    <img class="orderHd_lg" src="/css/modules/order/img/logo.png" />
+	    <img class="checkout-head__logo" src="/css/modules/order/img/logo.png" />
 
-	    <ul class="orderHd_stps">
-	        <!-- если шаг пройден то orderHd_stps_i-pass, текущий шаг orderHd_stps_i-act -->
-	        <li class="orderHd_stps_i orderHd_stps_i-pass"><span class="orderHd_stps_tx">Получатель</span></li>
-	        <li class="orderHd_stps_i orderHd_stps_i-act"><span class="orderHd_stps_tx">Самовывоз <i class="block"></i>и доставка</span></li>
-	        <li class="orderHd_stps_i"><span class="orderHd_stps_tx">Оплата</span></li>
+	    <ul class="checkout-head-steps">
+	        <!-- если шаг пройден то passive, текущий шаг active -->
+	        <li class="checkout-head-steps__item passive"><span class="checkout-head-steps__text">Получатель</span></li>
+	        <li class="checkout-head-steps__item active"><span class="checkout-head-steps__text">Самовывоз <i class="block"></i>и доставка</span></li>
+	        <li class="checkout-head-steps__item"><span class="checkout-head-steps__text">Оплата</span></li>
 	    </ul>
     </div>
 </header>
@@ -639,6 +639,8 @@
 					</div>
                 </div>
             </div>
+
+            <div class="btn-stretch btn-stretch--default"><a class="btn-stretch__link" href="" title="">Вернуться на главную</a></div>
 	    </section>
 	</div>
 </div>

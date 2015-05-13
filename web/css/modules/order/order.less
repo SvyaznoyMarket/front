@@ -1,9 +1,4 @@
-
-// .header {
-// 	display: none;
-// }
-
-.orderHd {
+.checkout-head {
     position: fixed;
     z-index: 1010;
     top: 0;
@@ -13,12 +8,12 @@
     height: 54px;
 
     background: @black;
-    &_lg {
+    &__logo {
         float: left;
 
         margin-top: 5px;
     }
-    &_stps {
+    &-steps {
         font-size: 16px;
 
         display: flex;
@@ -31,7 +26,7 @@
         flex-flow: row nowrap;
         align-content: center;
         justify-content: center;
-        &_i {
+        &__item {
             position: relative;
 
             display: flex;
@@ -63,15 +58,15 @@
                     background: none;
                 }
             }
-            &-act {
+            &.active {
                 color: @white;
                 border-bottom: 5px solid #fb9c00;
             }
-            &-pass {
+            &.passive {
                 color: @white;
             }
         }
-        &_tx {
+        &__text {
             line-height: 1.2;
 
             display: block;
