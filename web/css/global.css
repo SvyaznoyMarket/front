@@ -7205,6 +7205,10 @@ body.noScroll {
 .checkout__tl {
   font-size: 20px;
   margin: 15px 0 15px 10px;
+  margin: 15px 0 10px;
+}
+.checkout__tl .order-lnk {
+  border-bottom: 1px solid;
 }
 .checkout__sum {
   font-size: 20px;
@@ -7301,7 +7305,7 @@ body.noScroll {
 .checkout-done-order-cnt__place-link {
   font-size: 14px;
   margin-top: 15px;
-  border-bottom: 1px dashed;
+  border-bottom: 1px dotted;
   display: inline-block;
   vertical-align: top;
   *zoom: 1;
