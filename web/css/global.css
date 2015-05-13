@@ -7272,6 +7272,8 @@ body.noScroll {
 }
 .checkout-done .checkout__tl {
   text-align: center;
+  width: 170px;
+  margin: 15px auto 10px;
 }
 .checkout-done-order-cnt {
   max-width: 310px;
@@ -7657,6 +7659,9 @@ body.noScroll {
   }
   .online-pay-popup {
     width: 388px;
+  }
+  .checkout-done .checkout__tl {
+    width: auto;
   }
 }
 .confirm {
