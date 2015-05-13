@@ -2,10 +2,10 @@
    Base styles: opinionated defaults
    ========================================================================== */
 
-html,
-button,
-input,
-select,
+html ,
+button ,
+input ,
+select ,
 textarea {
     color: #222;
 }
@@ -20,7 +20,6 @@ a {
     text-decoration: none;
 
     color: @black;
-
     &:hover {
         text-decoration: none;
 
@@ -63,18 +62,16 @@ textarea {
 /* Prevent callout */
 
 .nocallout {
-
     -webkit-touch-callout: none;
 }
 
 .pressed {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, .7);
 }
 
 /* A hack for HTML5 contenteditable attribute on mobile */
 
 textarea[contenteditable] {
-
     -webkit-appearance: none;
 }
 
@@ -140,7 +137,7 @@ textarea[contenteditable] {
  * when navigated to via the keyboard: h5bp.com/p
  */
 
-.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:active ,
 .visuallyhidden.focusable:focus {
     position: static;
 
@@ -165,11 +162,11 @@ textarea[contenteditable] {
  * Used to contain floats: h5bp.com/q
  */
 
-.clearfix:before,
+.clearfix:before ,
 .clearfix:after {
     display: table;
 
-    content: "";
+    content: '';
 }
 
 .clearfix:after {
@@ -185,7 +182,7 @@ textarea[contenteditable] {
  * Include this rule to trigger hasLayout and contain floats.
  */
 .s {
-    font-size: 12px
+    font-size: 12px;
 }
 
 .m {
@@ -197,7 +194,6 @@ textarea[contenteditable] {
 }
 
 .clearfix {
-
     *zoom: 1;
 }
 
@@ -226,7 +222,7 @@ textarea[contenteditable] {
     color: @lightGrey2;
 }
 
-.borderBd,
+.borderBd ,
 .bb-dotted {
     border-bottom: 1px dotted;
 }
@@ -256,27 +252,27 @@ textarea[contenteditable] {
 }
 
 .btnStyle {
-    .gradient(#ffc000, #ffaa01, #ffc000);
-    .rounded(4px);
+    font-size: 14px;
+    line-height: 34px;
+
     display: block;
 
     height: 35px;
 
     text-align: center;
 
-    color: #ffffff;
+    color: #fff;
     border: 1px solid #fb9c00;
 
-    font-size: 14px;
-    line-height: 34px;
-
+    .gradient(#ffc000, #ffaa01, #ffc000);
+    .rounded(4px);
     &:hover {
-        .gradient(#ffa200, #f79200, #ffa200);
         text-decoration: none;
 
         color: @white;
-    }
 
+        .gradient(#ffa200, #f79200, #ffa200);
+    }
     &:active {
         text-decoration: none;
 
@@ -292,27 +288,27 @@ textarea[contenteditable] {
 }
 
 .btnStyleOrange {
-    .rounded(4px);
+    font-size: 14px;
+    line-height: 34px;
+
     display: block;
 
     height: 35px;
 
     text-align: center;
 
-    color: #ffffff;
+    color: #fff;
     border: 1px solid #e26500;
     background: #f89b1c;
 
-    font-size: 14px;
-    line-height: 34px;
-
+    .rounded(4px);
     &:hover {
-        .gradient(#ffa200, #f79200, #ffa200);
         text-decoration: none;
 
         color: @white;
-    }
 
+        .gradient(#ffa200, #f79200, #ffa200);
+    }
     &:active {
         text-decoration: none;
 
@@ -321,7 +317,9 @@ textarea[contenteditable] {
 }
 
 .btnStyleBlack {
-    .rounded(4px);
+    font-size: 14px;
+    line-height: 34px;
+
     display: block;
 
     height: 35px;
@@ -332,12 +330,13 @@ textarea[contenteditable] {
     border: 1px solid @black;
     background: @black;
 
-    font-size: 14px;
-    line-height: 34px;
+    .rounded(4px);
 }
 
 .btnStyleGrey {
-    .rounded(4px);
+    font-size: 14px;
+    line-height: 34px;
+
     display: block;
 
     height: 35px;
@@ -348,20 +347,17 @@ textarea[contenteditable] {
     border: 1px solid @tabLightGreyBorder;
     background: @tabGrey;
 
-    font-size: 14px;
-    line-height: 34px;
-
+    .rounded(4px);
     &:hover {
         text-decoration: none;
     }
 }
 
 .btn1 {
-    .rounded(4px);
-    .inline-block();
-    .grayGradLight();
-    padding: 0 10px;
+    font-size: 14px;
     line-height: 31px;
+
+    padding: 0 10px;
 
     cursor: pointer;
     text-align: center;
@@ -369,17 +365,19 @@ textarea[contenteditable] {
     color: @black;
     border: 1px solid @lightGrey1;
 
-    font-size: 14px;
-
+    .rounded(4px);
+    .inline-block();
+    .grayGradLight();
     &:hover {
         text-decoration: none;
     }
 }
 
 .btn2 {
-    .blackGrad();
-    .inline-block();
-    .rounded(4px);
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.9;
+
     padding: 0 10px;
 
     cursor: pointer;
@@ -388,10 +386,9 @@ textarea[contenteditable] {
     color: @white;
     border: 1px solid #a1a1a1;
 
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 1.9;
-
+    .blackGrad();
+    .inline-block();
+    .rounded(4px);
     &:hover {
         color: @white;
         background: @black;
@@ -399,28 +396,27 @@ textarea[contenteditable] {
 }
 
 .btn3 {
-    .gradient(#ffc000, #ffaa01, #ffc000);
-    .rounded(5px);
-    .inline-block();
-    padding: 0 10px;
+    font-size: 21px;
+    line-height: 38px;
 
     height: 38px;
+    padding: 0 10px;
 
     text-align: center;
 
     color: @white;
     border: 1px solid #fb9c00;
 
-    font-size: 21px;
-    line-height: 38px;
-
+    .gradient(#ffc000, #ffaa01, #ffc000);
+    .rounded(5px);
+    .inline-block();
     &:hover {
-        .gradient(#ffa200, #f79200, #ffa200);
         text-decoration: none;
 
         color: @white;
-    }
 
+        .gradient(#ffa200, #f79200, #ffa200);
+    }
     &:active {
         text-decoration: none;
 
@@ -429,11 +425,11 @@ textarea[contenteditable] {
 }
 
 .btn4 {
-    color: @white;
-    padding-left: 32px;
     padding-right: 5px;
-    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNElEQVQ4EbWUsWoCQRCGT5FAUEExkEJsfIMQ8AXSJvZiE6xSpBBb8wZ5jISkCBGCfYoQCDZaCGIdCDaCBBJTeef3y204rG7Xc+Bj5paZudnd2UkFQeAlKekwWQVdBvPt/I8MkXdQBx9a8AJnUAAbmeI89thyVK75KMI8uhjTfsLPU4U30ABVOIEF1CALNjKTc0pZkxRVeA6qcAW3MIaDEFRsWeLpK2E/EjLA/oR3OI6sxzF7OF0p4QhOwogf9B88QClci6s+5KgzzKOVUJei5L/gLDs38vafVeGQRbPlS+xH6MAR2Ii2/KwzNMkUnINDaILtpSh2k/ACw7TNG/Y3nIJax0Y2Z7+Xxu5Shnl6bexXqILL05vvZTjcU40ZX1/YOkNV7DK+/oeDBqwaWxND2lkSv5Q18LLgXSSy53IAAAAASUVORK5CYII=") no-repeat 5px 50%;
+    padding-left: 32px;
 
+    color: @white;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNElEQVQ4EbWUsWoCQRCGT5FAUEExkEJsfIMQ8AXSJvZiE6xSpBBb8wZ5jISkCBGCfYoQCDZaCGIdCDaCBBJTeef3y204rG7Xc+Bj5paZudnd2UkFQeAlKekwWQVdBvPt/I8MkXdQBx9a8AJnUAAbmeI89thyVK75KMI8uhjTfsLPU4U30ABVOIEF1CALNjKTc0pZkxRVeA6qcAW3MIaDEFRsWeLpK2E/EjLA/oR3OI6sxzF7OF0p4QhOwogf9B88QClci6s+5KgzzKOVUJei5L/gLDs38vafVeGQRbPlS+xH6MAR2Ii2/KwzNMkUnINDaILtpSh2k/ACw7TNG/Y3nIJax0Y2Z7+Xxu5Shnl6bexXqILL05vvZTjcU40ZX1/YOkNV7DK+/oeDBqwaWxND2lkSv5Q18LLgXSSy53IAAAAASUVORK5CYII=') no-repeat 5px 50%;
     &:hover {
         color: @white;
     }
@@ -447,38 +443,46 @@ textarea[contenteditable] {
 }
 
 .btn6 {
-    background: #c1d837;
+    font-size: 18px;
+    line-height: 1.1;
+
+    height: auto;
+    padding: 5px 10px;
+
+    text-align: center;
+
+    color: #000;
     border: none;
     border-bottom: 3px solid #abbe18;
-    color: #000;
-    font-size: 18px;
-    height: auto;
-    text-align: center;
-    line-height: 1.1;
+    background: #c1d837;
+
     .rounded(3px);
-    padding: 5px 10px;
 }
 
 .clsr1 {
-    background: url("@{base-url}/common/img/clsr1.png") no-repeat 0 0;
     position: absolute;
     top: 10px;
     right: 10px;
+
     width: 35px;
     height: 35px;
+
+    background: url('@{base-url}/common/img/clsr1.png') no-repeat 0 0;
 }
 
 .backLn {
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAYAAACQN/8FAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAuElEQVQoFYXR3QnCMBSG4XOlRfBGvA/1ZwQXcAjH6BiCFnUQdQq9EeoSjiAiFIX4nsIJsa148dA235c0JOK9lzYi0sUYiea/SgMKS9wxby0S9JHjjStco8hgDxlKXDDT0leRwQRbPHDAyEqhyGAHK2jpDBeX4uKE8IkbFvVSXNQV19AVT3D1cjgeQt3jDlreo7lHm004xAYvHJGGzF7sSRifY8G30yz82orVoMj/m7EJrKR3PUV11x/05fDNuFCCQAAAAABJRU5ErkJggg==) no-repeat 10px 50%;
-    padding: 0 0 0 30px;
-    line-height: 40px;
-    border-bottom: 1px solid @lightGrey1;
     font-size: 16px;
+    line-height: 40px;
+
+    padding: 0 0 0 30px;
+
+    border-bottom: 1px solid @lightGrey1;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAYAAACQN/8FAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAuElEQVQoFYXR3QnCMBSG4XOlRfBGvA/1ZwQXcAjH6BiCFnUQdQq9EeoSjiAiFIX4nsIJsa148dA235c0JOK9lzYi0sUYiea/SgMKS9wxby0S9JHjjStco8hgDxlKXDDT0leRwQRbPHDAyEqhyGAHK2jpDBeX4uKE8IkbFvVSXNQV19AVT3D1cjgeQt3jDlreo7lHm004xAYvHJGGzF7sSRifY8G30yz82orVoMj/m7EJrKR3PUV11x/05fDNuFCCQAAAAABJRU5ErkJggg==) no-repeat 10px 50%;
 }
 // основные стили элементов форм
 .textfield {
-    .rounded(4px);
-    .box-sizing();
+    line-height: 35px;
+
     display: block;
 
     height: 35px;
@@ -487,76 +491,80 @@ textarea[contenteditable] {
 
     border: 1px solid @inputBorder;
 
-    line-height: 35px;
-
+    .rounded(4px);
+    .box-sizing();
     &-err {
-        border-color: @redErr;
         border-width: 3px;
+        border-color: @redErr;
     }
 }
 
 .btnsubmit {
-    .rounded(4px);
-    .inline-block();
-    padding: 5px 15px;
+    font-size: 14px;
     font-weight: bold;
+
+    padding: 5px 15px;
 
     color: @white;
     border: 1px solid #ff6c00;
     background: @submitBg;
 
-    font-size: 14px;
-
+    .rounded(4px);
+    .inline-block();
     &:hover {
         color: @white;
     }
 }
 
 .labeltext {
+    font-size: 12px;
+    line-height: 1.5;
+
     display: block;
 
     margin: 0 0 5px;
-
-    font-size: 12px;
-    line-height: 1.5;
 }
 
 .legend {
-    margin: 10px 0 15px;
-
     font-size: 18px;
+
+    margin: 10px 0 15px;
 }
 
 .fieldError {
-    border-color: #ff0000;
+    border-color: #f00;
 }
 
 .errorText {
-    background: @white;
-    color: #ff0000;
     font-size: 12px;
-    left: 10px;
     line-height: 1;
+
+    position: absolute;
+    left: 10px;
+
     margin-top: -62px;
     padding: 0 2px;
-    position: absolute;
+
+    color: #f00;
+    background: @white;
 }
 
 
 .txEvnt {
-    display: block;
     font-size: 14px;
-    left: 10px;
     line-height: 1.1;
-    margin: 0 0 10px;
+
     position: absolute;
     top: 3px;
-    width: 300px;
+    left: 10px;
 
+    display: block;
+
+    width: 300px;
+    margin: 0 0 10px;
     &-err {
         color: #ec434f;
     }
-
     &-complt {
         color: #0bb010;
     }
@@ -564,8 +572,8 @@ textarea[contenteditable] {
 
 // кастомный селект
 .customSel {
-    .inline-block();
-    .rounded(4px);
+    font-size: 14px;
+
     position: relative;
 
     height: 33px;
@@ -577,24 +585,21 @@ textarea[contenteditable] {
     border: 1px solid @lightGrey1;
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAYElEQVQIHWMMDw/fysDw34sBAzBuYwKKFQLxLzQ5EL+QacWKFbeYmBgnIkuC+GBxkCAnJ3czkHoBVfACymcAGcswd+7cz0xMzBUgNogG8UFshv///8MwI9Bxk4B8RpgYAKNoKpNJevrLAAAAAElFTkSuQmCC) no-repeat 95% 50% @white;
 
-    font-size: 14px;
-
+    .inline-block();
+    .rounded(4px);
     &_def {
         line-height: 33px;
     }
-
     &_lst {
         //display: none;
         width: 100%;
     }
-
     &_i {
         padding: 4px 5px;
 
         cursor: pointer;
 
         border-bottom: 1px solid @lightGrey1;
-
         &:last-child {
             border-bottom: none;
         }
@@ -602,26 +607,31 @@ textarea[contenteditable] {
 }
 
 .errtx {
-    bottom: -7px;
-    color: @redErr;
-    display: block;
     font-size: 12px;
-    margin: 0;
+
     position: absolute;
+    bottom: -7px;
+
+    display: block;
+
+    margin: 0;
+
     white-space: nowrap;
     word-wrap: normal;
+
+    color: @redErr;
 }
 
 .table {
     display: table;
-    width: 100%;
-    box-sizing: border-box;
 
+    box-sizing: border-box;
+    width: 100%;
     &_cell {
         display: table-cell;
+
         vertical-align: middle;
     }
-
     &--2col {
         .table_cell {
             width: 50%;
@@ -631,23 +641,24 @@ textarea[contenteditable] {
 
 .lst-tree {
     margin: 0 0 20px;
-
     &__i {
         margin-left: 10px;
-
         &--tl {
             font-size: 14px;
+
             margin: 0 0 2px;
         }
     }
-
     &__bul {
-        .inline-block();
-        height: 6px;
-        vertical-align: middle;
         width: 6px;
-        .rounded(50%);
-        background-color: @black;
+        height: 6px;
         margin-right: 2px;
+
+        vertical-align: middle;
+
+        background-color: @black;
+
+        .inline-block();
+        .rounded(50%);
     }
 }
