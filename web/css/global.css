@@ -7150,7 +7150,7 @@ body.noScroll {
 }
 .checkout__tl {
   font-size: 20px;
-  margin-left: 10px;
+  margin: 15px 0 15px 10px;
 }
 .checkout-control {
   -webkit-box-sizing: border-box;
@@ -7485,126 +7485,24 @@ body.noScroll {
   *zoom: 1;
   *display: inline;
 }
-@media only screen and (max-width: 550px) {
-  .orderLn_col2 {
-    line-height: 1.2;
-  }
-  .orderLn_col2_l {
+@media only screen and (max-width: 480px) {
+  .confirm .table {
     display: block;
-    width: auto;
-    margin: 0 0 5px;
   }
-  .orderLn_col2_r {
+  .confirm .table_cell {
     display: block;
-    width: auto;
+    width: 100%;
   }
-  .orderLn_col2-r {
-    text-align: center;
-  }
-  .orderLn_col2-r .orderCol_col2_l {
-    text-align: left;
-    line-height: 1.4;
-  }
-  .orderLn_f {
-    font-size: 16px;
-  }
-  .orderLn_f_t {
-    display: inline-block;
-    vertical-align: top;
-    *zoom: 1;
-    *display: inline;
-  }
-  .orderLn_f_tx {
-    display: inline-block;
-    vertical-align: top;
-    *zoom: 1;
-    *display: inline;
-    text-align: right;
-    width: 90px;
-  }
-  .orderLn_box {
-    position: relative;
-  }
-  .orderLn_box .customSel_i {
-    padding: 10px;
-  }
-  .orderLn_box-pay .popupFl {
-    top: 17px;
-  }
-  .orderLn_l {
-    float: left;
-    width: 350px;
-  }
-  .orderLn_r {
-    float: right;
-  }
-  .orderLn_c {
-    float: left;
-    width: 350px;
-    padding: 37px 0 0;
-  }
-  .orderLn_row {
-    margin: 0 0 10px;
-    position: relative;
-  }
-  .orderLn_row:last-child {
-    margin-bottom: 0;
-  }
-  .orderLn_row_imgpay {
-    display: inline-block;
-    vertical-align: top;
-    *zoom: 1;
-    *display: inline;
-  }
-  .orderLn_row .customSel_lst-pay {
-    right: 0;
-    text-align: left;
-    top: 26px;
-    width: 500px;
-  }
-  .orderLn_row-t {
-    font-size: 20px;
-  }
-  .orderLn_row-summ {
-    text-align: right;
-    font-size: 16px;
-  }
-  .orderLn_row-bg {
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    width: 200px;
-    padding: 5px 5px 10px;
-    text-align: center;
-    background: rgba(252, 171, 47, 0.2);
-  }
-  .orderLn_row-bg-grey {
-    padding: 5px;
-  }
-  .orderLn_row-pay {
-    width: 200px;
-    margin: 0;
-    padding: 10px 5px 15px;
-    text-align: center;
-    border-radius: 4px;
-    font-size: 14px;
-    line-height: 1.1;
-  }
-  .orderLn_row-pay .payT {
-    font-size: 14px;
-  }
-  .orderLn_btn {
-    line-height: 1.3;
-    padding: 3px 10px 5px;
-  }
-  .orderLn_lst {
-    color: #474747;
+  .confirm-items {
     border-bottom: 1px solid #e6e6e6;
     padding: 0 0 8px;
+    margin: 0 0 5px;
   }
-  .orderLn_lst_lk {
-    color: #474747;
-    border-bottom: 1px dotted;
+  .confirm-payment__cell {
+    display: block;
+  }
+  .confirm-payment__title {
+    margin: 0 0 3px;
   }
 }
 .popupFl {
