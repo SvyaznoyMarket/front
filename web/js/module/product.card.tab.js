@@ -13,8 +13,7 @@ define(
             tab = tabList.find('.js-cont'),
             tabCount = tab.length,
 
-            $w = $(window),
-            $wwidth = $w.width();
+            $w = $(window);
         // end of vars
 
         var
@@ -165,9 +164,7 @@ define(
          * Проверка изменения ширины страницы
          */
         $w.on('resize', function() {
-            if ($(this).width() != $wwidth) {
-                tabsToggle();
-            }
+            setTimeout(tabsToggle, 200);
         });
     }
 );
