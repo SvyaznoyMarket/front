@@ -240,7 +240,7 @@
 
         <div class="prodDescr clearfix">
             <!-- Изображение товара -->
-            <div class="prodDescr_l slider js-slider-wpar">
+            <div class="prodDescr_l slider">
                 {{#product.labels.0}}
                     <div class="sticker left">
                         <img src="{{imageUrl}}" alt="{{name}}" />
@@ -252,19 +252,14 @@
                         <img src="{{product.brand.image}}" alt="{{product.brand.name}}" />
                     </div>
                 {{/product.brand.image}}
-
-                <ul class="slider_lst js-slider-list clearfix">
+                <div class="detail-slider js-detailSlider">
                     {{#product.photos}}
-                        <li class="slider_lst_i js-slider-list-item">
-                            <img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}" />
-                        </li>
+                        <div class="slide-item">
+                            <img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}"/>
+                        </div>
                     {{/product.photos}}
-                </ul>
-
-                <div class="slider_btn slider_btn-l js-slider-btn-left"></div>
-                <div class="slider_btn slider_btn-r js-slider-btn-right"></div>
-
-                <ul class="slider_pag js-slider-pag"></ul>
+                </div>
+                <ul class="slider_pag"></ul>
             </div>
             <!--/ Изображение товара -->
 

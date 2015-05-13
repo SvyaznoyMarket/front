@@ -53,17 +53,13 @@
                     </div>
                 {{/product.brand.image}}
 
-                <ul class="slider_lst js-slider-list clearfix">
+                <div class="detail-slider js-detailSlider">
                     {{#product.photos}}
-                        <li class="slider_lst_i js-slider-list-item">
-                            <img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}" />
-                        </li>
+                        <div class="slide-item">
+                            <img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}"/>
+                        </div>
                     {{/product.photos}}
-                </ul>
-
-                <div class="slider_btn slider_btn-l js-slider-btn-left"></div>
-                <div class="slider_btn slider_btn-r js-slider-btn-right"></div>
-
+                </div>
                 <ul class="slider_pag js-slider-pag"></ul>
             </div>
             <!--/ Изображение товара -->

@@ -93,7 +93,8 @@ define(
                                     slidesToScroll: 2
                                 }
                             }
-                        ]
+                        ],
+                        adaptiveHeight: true
                     });
 
                     $(this).find('.sliderControls_btn').data('gaClick', dataGa);
@@ -101,7 +102,17 @@ define(
             });
         });
 
-
+        // слайдер основного изображения
+        $('.js-detailSlider').slick({
+            infinite: false,
+            dots: true,
+            nextArrow: '<span class="sliderControls_btn sliderControls_btn__right js-ga-click"></span>',
+            prevArrow: '<span class="sliderControls_btn sliderControls_btn__left js-ga-click"></span>',
+            customPaging: function(slider, i) {
+                return '<span class="slider_pag_i"></span>';
+            },
+            appendDots: '.slider_pag'
+        });
 
 
         // direct-credit
