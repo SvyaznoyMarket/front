@@ -649,21 +649,21 @@
 		    <h1 class="checkout__tl">Оформлен заказ<br>№ COXD-1234567</h1>
 		    <div class="checkout-done-order-cnt">
 		    	<span class="checkout-done-order-cnt__tl">Ждём Вас 27.12.2014</span>
-		    	<div class="checkout-done-order-cnt__place clearfix">
-		    		<div class="checkout-done-order-cnt__logo-col">
-		    			<img class="checkout-done-order-cnt__logo" src="/css/modules/order/img/enter-logo.png">
-		    			<span class="checkout-done-order-cnt__logo-tl">Магазин Enter</span>
-		    		</div>
-		    		<div class="checkout-done-order-cnt__location-col">
-		    			<div class="checkout-done-order-cnt__subway" style="background:#2b8c3d;">
-		    				<span class="checkout-done-order-cnt__subway-tl">м. Белорусская</span>
-		    			</div>
-		    			<div class="checkout-done-order-cnt__addr">
-		    				ул. Грузинский вал, д. 28/45
-		    			</div>
-		    			<div class="checkout-done-order-cnt__time">c 9.00 до 22.00</div>
-		    		</div>
-		    	</div>
+		    	<div class="shop-snippet">
+					<div class="shop-snippet-name">
+						<img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
+						<span class="shop-snippet-name__text">Магазин Enter</span>
+					</div>
+
+					<div class="shop-snippet-info">
+						<div class="shop-snippet-metro">
+							<span class="shop-snippet-metro__bullet" style="background: green;"></span>
+							<span class="shop-snippet-metro__text">м. Белорусская</span>
+						</div>
+
+						<div class="shop-snippet-address">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2 <br/>c 9.00 до 22.00</div>
+					</div>
+				</div>
 		    	<span class="checkout-done-order-cnt__place-link">Как добраться</span>
 		    	<div class="checkout-done-order-cnt__info">Оплата при получении — наличными или картой.</div>
 		    </div>
@@ -719,7 +719,7 @@
 	</div>
 	<ul class="online-pay-popup-lst">
 		<li class="online-pay-popup-lst__i">
-			<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio _big" checked>
+			<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio-big" checked>
 			<label class="custom-label" for="pay1">
 				<span class="custom-label_tx">Банковская карта</span>
 				<span class="online-pay-popup__icon-wrap">
@@ -730,18 +730,18 @@
 		</li>
 
 		<li class="online-pay-popup-lst__i">
-			<input type="radio" id="pay2" name="paynow" class="custom-input custom-input--defradio _big">
+			<input type="radio" id="pay2" name="paynow" class="custom-input custom-input--defradio-big">
 			<label class="custom-label" for="pay2"><span class="custom-label_tx">Pay Pal</span>
-			<span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/paypal3.png" height="23" alt=""></span></label>
+			<span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/paypal3.png" alt=""></span></label>
 		</li>
 		<li class="online-pay-popup-lst__i">
-			<input type="radio" id="pay3" name="paynow" class="custom-input custom-input--defradio _big">
-			<label class="custom-label" for="pay3"><span class="custom-label_tx">Яндекс.деньги</span><span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/yandexmoney.png" height="23" alt=""></span></label>
+			<input type="radio" id="pay3" name="paynow" class="custom-input custom-input--defradio-big">
+			<label class="custom-label" for="pay3"><span class="custom-label_tx">Яндекс.деньги</span><span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/yandexmoney.png" alt=""></span></label>
 		</li>
 
 		<li class="online-pay-popup-lst__i">
-			<input type="radio" id="pay4" name="paynow" class="custom-input custom-input--defradio _big">
-			<label class="custom-label" for="pay4"><span class="custom-label_tx">Интернет-банк</span><span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/psbfull.png" height="23" alt=""></span></label>
+			<input type="radio" id="pay4" name="paynow" class="custom-input custom-input--defradio-big">
+			<label class="custom-label" for="pay4"><span class="custom-label_tx">Интернет-банк</span><span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/psbfull.png" alt=""></span></label>
 		</li>
 	</ul>
 

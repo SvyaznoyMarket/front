@@ -270,11 +270,14 @@
                     margin-bottom: 10px;
 
                     &__txt{
-                        width: 170px;
+                        width: 130px;
                         .inline-block();
                     }
                     &__sum{
-
+                        max-width: 60px;
+                        .inline-block();
+                        margin-left: 20px;
+                        white-space: nowrap;
                     }
                 }
             }
@@ -384,7 +387,7 @@
     .rounded(0px);
     &-lst{
         &__i{
-            padding: 12px 15px;
+            padding: 14px 15px;
             border-bottom: 1px solid #e6e6e6;
             .custom-label{
                 
@@ -392,6 +395,7 @@
                 .box-sizing(border-box);
                 &_tx{
                     margin-left: 10px;
+                    font-size: 14px;
                 }
             }
         }
@@ -423,11 +427,12 @@
         text-align: center;
     }
     .popup-title{
-       
-        margin-left: 50px;
         font-size: 18px;
         text-align: center;
         display: block;
+    }
+    .btn-container{
+        margin-top: 0;
     }
 }
 
