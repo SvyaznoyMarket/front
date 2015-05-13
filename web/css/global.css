@@ -7197,7 +7197,12 @@ body.noScroll {
 }
 .checkout__tl {
   font-size: 20px;
-  margin: 15px 0 15px 10px;
+  margin: 15px 0 10px;
+}
+.checkout__sum {
+  font-size: 20px;
+  margin: 10px 0 15px;
+  text-align: center;
 }
 .checkout-control {
   -webkit-box-sizing: border-box;
