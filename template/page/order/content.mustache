@@ -76,13 +76,13 @@
 	            </fieldset>
 	        </form>
 
-	        <div class="btn-container clearfix">
+	        <div class="btn-container">
 	            <button class="btn btn--submit btn--checkout">Далее</button>
 	        </div>
 	    </section>
 
-	    <section class="orderCnt">
-	        <h1 class="orderCnt_t">Самовывоз и доставка</h1>
+	    <section class="checkout">
+	        <h1 class="checkout__tl">Самовывоз и доставка</h1>
 	        <!-- заголовок страницы -->
 
 	        <p class="orderInf">Товары будут оформлены как  <strong class="mdb">3 отдельных заказа</strong></p>
@@ -461,7 +461,7 @@
 	        </div>
 	        <!--/ блок разбиения заказа -->
 
-	        <div class="orderCompl">
+	        <div class="btn-container">
                 <input type="checkbox" class="custom-input custom-input--check" id="accept" name="" value="" />
                 <label class="order-accept custom-label" for="accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
 
@@ -469,134 +469,100 @@
 	        </div>
 	    </section>
 
-	    <section class="orderCnt">
-	        <h1 class="orderCnt_t">Ваши заказы</h1>
+	    <section class="checkout">
+	        <h1 class="checkout__tl">Ваши заказы</h1>
 
-            <div class="orderLn clearfix">
-                <div class="orderLn_b">
-	                <strong class="l orderLn_mgnr">Заказ</strong>
-	                <a href="" class="orderLn_mgnr">COXD-305176</a>
+            <div class="confirm">
+                <div class="confirm__box confirm__box--normal">
+	                <strong class="confirm__title">Заказ</strong>
+	                <a href="" class="confirm__number">COXD-305176</a>
                 </div>
 
-                <div class="orderLn_b orderLn_b-bg">
-                	<div class="orderLn_col2 orderLn_col2-r clearfix">
-                		<div class="orderLn_col2_l">Покупка в кредит</div>
+                <div class="confirm__box confirm__box--items table table--2col">
+            		<div class="table_cell">
+						<ul class="confirm-items">
+	                        <li class="confirm-items__i">Бумажный конструктор 3 шт.</li>
+	                        <li class="confirm-items__i">Батарейки AAAA 18 шт.</li>
+	                        <li class="confirm-items__i"><a class="confirm-items__lk" href="">и ещё 3 товара</a></li>
+	                    </ul>
+            		</div>
 
-						<div class="orderLn_col2_r">
-							<a href="" class="btn1"><strong>Заполнить заявку</strong></a>
-						</div>
+					<div class="table_cell">
+						<div>Доставка 11 июл. 2014 9:00…18:00</div>
+						<div>Оплата при получении: наличные, банковская карта</div>
 					</div>
                 </div>
 
-                <div class="orderLn_b orderLn_b-wht">
-                	<div class="orderLn_col2 orderLn_col2 clearfix">
-                		<div class="orderLn_col2_l">
-							<ul class="orderLn_lst">
-		                        <li class="orderLn_lst_i">Бумажный конструктор 3 шт.</li>
-		                        <li class="orderLn_lst_i">Батарейки AAAA 18 шт.</li>
-		                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
-		                    </ul>
-                		</div>
+                <div class="confirm__box confirm__box--payment confirm-payment">
+            		<div class="confirm-payment__title confirm-payment__cell">Требуется предоплата</div>
 
-						<div class="orderLn_col2_r">
-							<div>Доставка 11 июл. 2014 9:00…18:00</div>
-							<div>Оплата при получении: наличные, банковская карта</div>
-						</div>
+					<div class="confirm-payment__cell">
+						<button class="confirm-payment__btn btn-transparent btn-transparent--normal js-popup-link">
+							<span class="bb-dotted m">Оплатить онлайн</span>
+						</button>
+
+						<span class="confirm-payment__types">
+							<img class="confirm-payment__card" width="25" src="/css/modules/order/img/master.png" alt="" />
+                            <img class="confirm-payment__card" width="25" src="/css/modules/order/img/Visa.png" alt="" />
+                            <img class="confirm-payment__card" width="16" src="/css/modules/order/img/psb.png" alt="" />
+						</span>
 					</div>
                 </div>
 
-                <div class="orderLn_b orderLn_f">
-                    <span class="orderLn_f_t">Сумма заказа:</span>
-                    <span class="orderLn_f_tx">42 740 <span class="rubl">p</span></span>
+                <div class="confirm__box confirm__box--normal comfirm-summary">
+                    <span class="comfirm-summary__title">Сумма заказа:</span>
+                    <span class="comfirm-summary__price">42 740 <span class="rubl">p</span></span>
                 </div>
             </div>
 
-            <div class="orderLn clearfix">
-                <div class="orderLn_b">
-	                <strong class="l orderLn_mgnr">Заказ</strong>
-	                <a href="" class="orderLn_mgnr">COXD-305176</a>
+            <div class="confirm">
+                <div class="confirm__box confirm__box--normal">
+	                <strong class="confirm__title">Заказ</strong>
+	                <a href="" class="confirm__number">COXD-305176</a>
+	                <strong class="confirm__status">оформлен</strong>
                 </div>
 
-                <div class="orderLn_b orderLn_b-bg">
-                	<div class="orderLn_col2 orderLn_col2-r clearfix">
-                		<div class="orderLn_col2_l">Требуется предоплата</div>
+                <div class="confirm__box confirm__box--items table table--2col">
+            		<div class="table_cell">
+						<ul class="confirm-items">
+	                        <li class="confirm-items__i">Бумажный конструктор 3 шт.</li>
+	                        <li class="confirm-items__i">Батарейки AAAA 18 шт.</li>
+	                        <li class="confirm-items__i"><a class="confirm-items__lk" href="">и ещё 3 товара</a></li>
+	                    </ul>
+            		</div>
 
-						<div class="orderLn_col2_r">
-							<a href="" class="orderLn_btn btn1 js-popup-link">
-                                <strong class="btn5">Оплатить онлайн</strong><br/>
-                                <img width="25" src="/css/modules/order/img/master.png" alt="" />
-                                <img width="25" src="/css/modules/order/img/Visa.png" alt="" />
-                                <img width="43" src="/css/modules/order/img/paypal.png" alt="" />
-                                <img width="16" src="/css/modules/order/img/psb.png" alt="" />
-                            </a>
-						</div>
+					<div class="table_cell">
+						<div>Доставка 11 июл. 2014 9:00…18:00</div>
+						<div>Оплата при получении: наличные, банковская карта</div>
 					</div>
                 </div>
 
-                <div class="orderLn_b orderLn_b-wht">
-                	<div class="orderLn_col2 orderLn_col2 clearfix">
-                		<div class="orderLn_col2_l">
-							<ul class="orderLn_lst">
-		                        <li class="orderLn_lst_i">Бумажный конструктор 3 шт.</li>
-		                        <li class="orderLn_lst_i">Батарейки AAAA 18 шт.</li>
-		                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
-		                    </ul>
-                		</div>
-
-						<div class="orderLn_col2_r">
-							<div>Доставка 11 июл. 2014 9:00…18:00</div>
-							<div>Оплата при получении: наличные, банковская карта</div>
-						</div>
-					</div>
+                <div class="confirm__box confirm__box--normal comfirm-summary">
+                    <span class="comfirm-summary__title">Сумма заказа:</span>
+                    <span class="comfirm-summary__price">42 740 <span class="rubl">p</span></span>
                 </div>
 
-                <div class="orderLn_b orderLn_f">
-                    <span class="orderLn_f_t">Сумма заказа:</span>
-                    <span class="orderLn_f_tx">42 740 <span class="rubl">p</span></span>
+                <div class="confirm__box confirm__box--payment confirm-payment">
+            		<div class="confirm-payment__title confirm-payment__cell">Требуется предоплата</div>
+
+					<div class="confirm-payment__cell">
+						<button class="confirm-payment__btn btn-transparent btn-transparent--normal js-popup-link">
+							<span class="bb-dotted m">Оплатить онлайн</span>
+						</button>
+
+						<span class="confirm-payment__types">
+							<img class="confirm-payment__card" width="25" src="/css/modules/order/img/master.png" alt="" />
+                            <img class="confirm-payment__card" width="25" src="/css/modules/order/img/Visa.png" alt="" />
+                            <img class="confirm-payment__card" width="16" src="/css/modules/order/img/psb.png" alt="" />
+						</span>
+					</div>
                 </div>
             </div>
 
-            <div class="orderLn clearfix">
-                <div class="orderLn_b">
-	                <strong class="l orderLn_mgnr">Заказ</strong>
-	                <a href="" class="orderLn_mgnr">COXD-305176</a>
-	                <strong class="l">оформлен</strong>
-                </div>
-
-                <div class="orderLn_b orderLn_b-wht">
-                	<div class="orderLn_col2 orderLn_col2 clearfix">
-                		<div class="orderLn_col2_l">
-							<ul class="orderLn_lst">
-		                        <li class="orderLn_lst_i">Бумажный конструктор 3 шт.</li>
-		                        <li class="orderLn_lst_i">Батарейки AAAA 18 шт.</li>
-		                        <li class="orderLn_lst_i"><a class="orderLn_lst_lk" href="">и ещё 3 товара</a></li>
-		                    </ul>
-                		</div>
-
-						<div class="orderLn_col2_r">
-							<div>Доставка 11 июл. 2014 9:00…18:00</div>
-							<div>Оплата при получении: наличные, банковская карта</div>
-						</div>
-					</div>
-                </div>
-
-                <div class="orderLn_b orderLn_f">
-                    <span class="orderLn_f_t">Сумма заказа:</span>
-                    <span class="orderLn_f_tx">42 740 <span class="rubl">p</span></span>
-                </div>
-
-                <div class="orderLn_b">
-					<a href="" class="btn5 orderLn_mgnr js-popup-link"><span class="borderBd">Оплатить онлайн</span></a>
-                    <img width="25" src="/css/modules/order/img/master.png" alt="" />
-                    <img width="25" src="/css/modules/order/img/Visa.png" alt="" />
-                    <img width="43" src="/css/modules/order/img/paypal.png" alt="" />
-                    <img width="16" src="/css/modules/order/img/psb.png" alt="" />
-                </div>
-            </div>
-
-	        <div class="orderCompl clearfix">
+	        <div class="btn-container">
 	            <button class="btn btn--submit btn--checkout">Продолжить покупки</button>
 	        </div>
+
 	    </section>
 	</div>
 </div>
