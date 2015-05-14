@@ -827,61 +827,61 @@
 </div>
 
 {{! Нужно убрать свойство данного блока max-width: 300px, которое ставится js-ом }}
-<div class="popupBox order-popup online-pay-popup js-popup-box">
-	<div class="online-pay-popup__head">
+<div class="popupBox order-popup order-popup js-popup-box">
+	<div class="order-popup__head">
 		<span class="popup-close js-popup-close">Отмена</span>
 		<span class="popup-title">Оплатить онлайн</span>
 	</div>
 
-	<ul class="online-pay-popup-lst">
-		<li class="online-pay-popup-lst__i">
+	<ul class="order-popup-lst">
+		<li class="order-popup-lst__i">
 			<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio" checked>
 
 			<label class="custom-label flex-hor-vertical-between" for="pay1">
 				<span class="custom-label_tx">Банковская карта</span>
-				<span class="online-pay-popup__icon-wrap">
+				<span class="order-popup__icon-wrap">
 					<img src="/css/modules/order/img/visa2.png" alt="">
 					<img src="/css/modules/order/img/mcard.png" alt="">
 				</span>
 			</label>
 		</li>
 
-		<li class="online-pay-popup-lst__i">
+		<li class="order-popup-lst__i">
 			<input type="radio" id="pay2" name="paynow" class="custom-input custom-input--defradio">
 
 			<label class="custom-label flex-hor-vertical-between" for="pay2">
 				<span class="custom-label_tx">Pay Pal</span>
-				<span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/paypal3.png" alt=""></span>
+				<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/paypal3.png" alt=""></span>
 			</label>
 		</li>
 
-		<li class="online-pay-popup-lst__i flex-hor-vertical-between">
+		<li class="order-popup-lst__i flex-hor-vertical-between">
 			<input type="radio" id="pay3" name="paynow" class="custom-input custom-input--defradio">
 
 			<label class="custom-label" for="pay3">
 				<span class="custom-label_tx">Яндекс.деньги</span>
-				<span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/yandexmoney.png" alt=""></span>
+				<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/yandexmoney.png" alt=""></span>
 			</label>
 		</li>
 
-		<li class="online-pay-popup-lst__i flex-hor-vertical-between">
+		<li class="order-popup-lst__i flex-hor-vertical-between">
 			<input type="radio" id="pay4" name="paynow" class="custom-input custom-input--defradio">
 
 			<label class="custom-label" for="pay4">
 				<span class="custom-label_tx">Интернет-банк</span>
-				<span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/psbfull.png" alt=""></span>
+				<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/psbfull.png" alt=""></span>
 			</label>
 		</li>
 	</ul>
 
 	<div class="btn-container"><a href="" class="btn btn--orange btn--pay">Оплатить</a></div>
 
-	<p class="online-pay-popup-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
+	<p class="order-popup-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
 
 
 </div>
 <div class="order-popup clearfix">
-	<div class="online-pay-popup__head">
+	<div class="order-popup__head">
 		<span class="popup-close js-popup-close">Отмена</span>
 		<span class="popup-title">Адрес доставки</span>
 	</div>
@@ -896,17 +896,18 @@
 			<form>
 				<div class="form-control__container">
 	                <div class="form-control-group suggest-open">
+	                {{! без класса suggest-open - саджест будет скрыт}}
 	                    <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
 	                    <label class="form-control-group__lbl" for="">Улица</label>
 	                    <div class="form-control-group__suggest suggest-control">
-	                    <ul class="suggest-control-lst">
-	                    	<li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
-	                    	<li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
-	                    	<li class="suggest-control-lst-i">Улица Мочалок Командира</li>
-	                    	<li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
-	                    	<li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
-	                    	<li class="suggest-control-lst-i">Улица Мочалок Командира</li>
-	                    </ul>
+		                    <ul class="suggest-control-lst">
+		                    	<li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
+		                    	<li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
+		                    	<li class="suggest-control-lst-i">Улица Мочалок Командира</li>
+		                    	<li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
+		                    	<li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
+		                    	<li class="suggest-control-lst-i">Улица Мочалок Командира</li>
+		                    </ul>
 	                    </div>
 	                </div>
 
@@ -930,8 +931,29 @@
 	</div>
 </div>
 <div class="order-popup clearfix">
-	<div class="online-pay-popup__head">
+	<div class="order-popup__head">
 		<span class="popup-close js-popup-close"><i class="icon-close">×</i></span>
+	</div>
+	<div class="order-popup__top-block">
+		<form>
+			<div class="search-control {{! suggest-open }}">
+				<i class="sprite-icon sprite-icon--search"></i>
+				
+				<input class="search-control__input" type="text" placeholder="Искать по улице, метро">
+				<input class="search-control__submit" type="submit" value="">
+				<div class="form-control-group__suggest suggest-control">
+                    <ul class="suggest-control-lst">
+                    	<li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
+                    	<li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
+                    	<li class="suggest-control-lst-i">Улица Мочалок Командира</li>
+                    	<li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
+                    	<li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
+                    	<li class="suggest-control-lst-i">Улица Мочалок Командира</li>
+                    </ul>
+                </div>
+			</div>
+			<div class="btn btn--white btn--medium"><span class="map-link">Карта</span></div>
+		</form>
 	</div>
 </div>
 
