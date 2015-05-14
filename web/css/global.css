@@ -1948,6 +1948,9 @@ body.noScroll {
 =======
 .btn--checkout {
   font-size: 20px;
+<<<<<<< HEAD
+>>>>>>> d83feeaa7bab12536b8dfa3010cb79cf2c7f2fa1
+=======
 >>>>>>> d83feeaa7bab12536b8dfa3010cb79cf2c7f2fa1
   width: auto;
   padding: 0 50px;
@@ -1956,9 +1959,13 @@ body.noScroll {
   border-radius: 6px;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 .btn--orange.btn--medium {
   width: auto;
   padding: 0px 6px;
+=======
+.btn--pay-online {
+>>>>>>> d83feeaa7bab12536b8dfa3010cb79cf2c7f2fa1
 =======
 .btn--pay-online {
 >>>>>>> d83feeaa7bab12536b8dfa3010cb79cf2c7f2fa1
