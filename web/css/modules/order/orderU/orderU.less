@@ -441,6 +441,9 @@
 
         .box-sizing(border-box);
     }
+}
+.order-popup{
+    margin-bottom: 50px; //временно
     .popup-close {
         font-size: 12px;
 
@@ -463,8 +466,39 @@
     .btn-container {
         margin-top: 0;
     }
-}
 
+}
+.address-pick-snippet {
+    position: relative;
+    &__form{
+        padding: 15px 0 10px;
+        background-color: rgba(255, 255, 255, 0.8);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
+    .order-popup-map{
+        height: 570px;
+        width: 100%;
+        background-color: darkgreen;
+    }
+    .checkout-control__container{
+        width: 360px;
+        margin: 0 auto;
+    }
+    .checkout-control-group {
+        width: 360px;
+        &.half-wide {
+            width: 167px;
+            margin-right: 20px;
+            .inline-block();
+            &:nth-child(2n-1) {
+                margin-right: 0;
+            }
+        }
+    }
+}
 .bonusCnt {
     &_t {
         font-size: 14px;

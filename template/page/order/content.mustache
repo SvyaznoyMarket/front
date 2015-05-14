@@ -77,7 +77,7 @@
 	        </form>
 
 	        <div class="btn-container">
-	            <button class="btn btn--submit btn--orange btn--checkout">Далее</button>
+	            <button class="btn btn--submit btn--orange btn--big">Далее</button>
 	        </div>
 	    </section>
 
@@ -462,7 +462,7 @@
                 <input type="checkbox" class="custom-input custom-input--check" id="accept" name="" value="" />
                 <label class="order-accept custom-label" for="accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
 
-	            <button class="btn btn--submit btn--orange btn--checkout">Оформить</button>
+	            <button class="btn btn--submit btn--orange btn--big">Оформить</button>
 	        </div>
 	    </section>
 
@@ -598,7 +598,7 @@
                 </div>
             </div>
 	        <div class="btn-container">
-	            <button class="btn btn--submit btn--orange btn--checkout">Продолжить покупки</button>
+	            <button class="btn btn--submit btn--orange btn--big">Продолжить покупки</button>
 	        </div>
             <div class="confirm">
                 <div class="confirm__box confirm__box--normal">
@@ -682,7 +682,7 @@
 		    		</li>
 		    	</ul>
 		    	<div class="payment-opt">
-		    		<button class="btn btn--submit btn--orange btn--pay-online">Оплатить сейчас</button>
+		    		<button class="btn btn--submit btn--orange btn--medium">Оплатить сейчас</button>
 		    		<span class="confirm-payment__types">
 		    			<img class="confirm-payment__card" width="25" src="/css/modules/order/img/visa2.png" alt="">
 						<img class="confirm-payment__card" width="25" src="/css/modules/order/img/mcard.png" alt="">
@@ -693,7 +693,7 @@
 		    <div class="checkout-done-order-cnt">
 		    	<span class="checkout-done-order-cnt__tl">Онлайн-оплата в два клика</span>
 		    	<div class="payment-opt">
-		    		<button class="btn btn--submit btn--orange btn--pay-online">Оплатить сейчас</button>
+		    		<button class="btn btn--submit btn--orange btn--medium">Оплатить сейчас</button>
 		    		<span class="confirm-payment__types">
 		    			<img class="confirm-payment__card" width="25" src="/css/modules/order/img/visa2.png" alt="">
 						<img class="confirm-payment__card" width="25" src="/css/modules/order/img/mcard.png" alt="">
@@ -712,7 +712,7 @@
 </div>
 
 {{! Нужно убрать свойство данного блока max-width: 300px, которое ставится js-ом }}
-<div class="popupBox online-pay-popup js-popup-box">
+<div class="popupBox order-popup online-pay-popup js-popup-box">
 	<div class="online-pay-popup__head">
 		<span class="popup-close js-popup-close">Отмена</span>
 		<span class="popup-title">Оплатить онлайн</span>
@@ -765,7 +765,41 @@
 
 
 </div>
+<div class="order-popup clearfix">
+	<div class="online-pay-popup__head">
+		<span class="popup-close js-popup-close">Отмена</span>
+		<span class="popup-title">Адрес доставки</span>
+	</div>
+	
+	<div class="address-pick-snippet">
+		<div class="order-popup-map"></div>
+		<div class="address-pick-snippet__form">
+			<form>
+				<fieldset class="checkout-control__container">
+	                <div class="checkout-control-group">
+	                    <input class="checkout-control-group__tx textfield" type="text" name="" value="" placeholder="">
+	                    <label class="checkout-control-group__lbl" for="">Улица</label>
+	                </div>
 
+					<div class="checkout-control-group half-wide">
+	                    <input class="checkout-control-group__tx textfield" type="text" name="" value="" placeholder="">
+	                    <label class="checkout-control-group__lbl" for="">Дом</label>
+	                </div>
+
+	                <div class="checkout-control-group half-wide">
+	                    <input class="checkout-control-group__tx textfield" type="text" name="" value="" placeholder="">
+	                    <label class="checkout-control-group__lbl" for="">Квартира</label>
+	                </div>
+	                <div class="btn-container">
+	                	<button class="btn btn--submit btn--orange btn--medium">Готово</button>
+	                </div>
+	                
+
+	            </fieldset>
+			</form>
+		</div>
+	</div>
+</div>
 
 <div style="" class="popupBox popupFl js-popup-box-celendar celedr">
 	<div class="popupFl_clsr"></div>

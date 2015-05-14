@@ -1973,7 +1973,7 @@ body.noScroll {
 .btn--orange:hover {
   color: #fff;
 }
-.btn--checkout {
+.btn--orange.btn--big {
   width: auto;
   padding: 0 50px;
   font-size: 20px;
@@ -1981,13 +1981,14 @@ body.noScroll {
   -moz-border-radius: 6px;
   border-radius: 6px;
 }
-.btn--pay-online {
+.btn--orange.btn--medium {
   width: auto;
   padding: 0px 6px;
   font-size: 14px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
+  min-width: 100px;
 }
 .btn--pay {
   width: 120px;
@@ -7512,7 +7513,10 @@ body.noScroll {
   box-sizing: border-box;
   -ms-box-sizing: border-box;
 }
-.online-pay-popup .popup-close {
+.order-popup {
+  margin-bottom: 50px;
+}
+.order-popup .popup-close {
   font-size: 12px;
   position: absolute;
   top: 50%;
@@ -7521,13 +7525,47 @@ body.noScroll {
   margin-top: -25px;
   text-align: center;
 }
-.online-pay-popup .popup-title {
+.order-popup .popup-title {
   font-size: 18px;
   display: block;
   text-align: center;
 }
-.online-pay-popup .btn-container {
+.order-popup .btn-container {
   margin-top: 0;
+}
+.address-pick-snippet {
+  position: relative;
+}
+.address-pick-snippet__form {
+  padding: 15px 0 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.address-pick-snippet .order-popup-map {
+  height: 570px;
+  width: 100%;
+  background-color: darkgreen;
+}
+.address-pick-snippet .checkout-control__container {
+  width: 360px;
+  margin: 0 auto;
+}
+.address-pick-snippet .checkout-control-group {
+  width: 360px;
+}
+.address-pick-snippet .checkout-control-group.half-wide {
+  width: 167px;
+  margin-right: 20px;
+  display: inline-block;
+  vertical-align: top;
+  *zoom: 1;
+  *display: inline;
+}
+.address-pick-snippet .checkout-control-group.half-wide:nth-child(2n-1) {
+  margin-right: 0;
 }
 .bonusCnt_t {
   font-size: 14px;
