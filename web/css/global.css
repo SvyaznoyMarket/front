@@ -2749,10 +2749,13 @@ body.noScroll {
 }
 .fullImgCnt_img_load {
   min-height: 100%;
-  height: 100%;
-  width: 100%;
   margin: 0 0 10px;
   background: #ffffff url("modules/common/img/ajaxnoti.gif") 50% 50% no-repeat;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .fullImgCnt_thmb {
   overflow: hidden;
@@ -2795,9 +2798,15 @@ body.noScroll {
   text-align: center;
   border: 1px solid #e3e3e3;
   width: 50px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .fullImgCnt_thmb_img {
-  width: 50px;
+  max-width: 100%;
+  max-height: 100%;
 }
 .fullImgCnt_thmb_btn {
   width: 30px;
@@ -3227,6 +3236,21 @@ body.noScroll {
 }
 .detail-slider .slide-item {
   float: left;
+  width: 357px;
+  height: 321px;
+}
+.detail-slider .slide-item .slider_lst_img {
+  max-width: 90%;
+  max-height: 100%;
+  width: auto;
+  margin: auto;
+}
+.detail-slider .slide-item .slider_lst_img__container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .sliderBox {
   position: relative;
@@ -4717,7 +4741,12 @@ body.noScroll {
 }
 .catalogList .img {
   margin: 0 0 15px;
+  height: 200px;
   text-align: center;
+}
+.catalogList .img img {
+  max-width: 100%;
+  max-height: 100%;
 }
 /* ==========================================================================
    Каталог -> листинг товаров .catalogList
@@ -4779,12 +4808,22 @@ body.noScroll {
     float: left;
     width: 40%;
     position: relative;
+    max-height: 200px;
+    height: auto;
   }
   .catalogList .img img {
-    width: 90%;
+    max-width: 90%;
+    max-height: 90%;
   }
   .catalogList .name {
     height: auto;
+  }
+}
+@media screen and (min-width: 601px) {
+  .catalogList .img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 /** фильтры .filter .filterBox .filterTags .filterChecked **/
