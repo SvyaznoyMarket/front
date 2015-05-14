@@ -113,6 +113,16 @@
                 {{/product.hasPhoto3d}}
             </li>
 
+            <li class="productDescTab_item js-tabs-item">
+                <span class="tabText">Отзывы</span>
+                <span class="tabImg reviews">
+                    {{#product.rating}}
+                        {{>partial/rating/star-list}}
+                    {{/product.rating}}
+                    <span class="reviewsCount">{{product.rating.reviewCount}}</span>
+                </span>
+            </li>
+
             {{#product.accessorySlider}}
                 <li class="productDescTab_item js-tabs-item">
                     Аксессуары
@@ -303,6 +313,29 @@
                     </div>
                 </div>
                 <!--/ Таб - Подробнее -->
+
+                <!-- Таб - Отзывы -->
+
+                <div class="tabContent js-cont">
+                    <div class="tabContent_title">Отзывы</div>
+                    <div class="reviews-add js-reviews-add"
+                         data-product-name="{{#product.namePrefix}}{{product.namePrefix}}{{/product.namePrefix}}
+                             {{product.name}}" data-product-id="{{product.id}}">
+                        <span class="reviews-add-icon">+</span>
+                        <span class="reviews-add-title">Добавить отзыв</span>
+                    </div>
+                    {{#product.reviewBlock}}
+                        <div class="js-productReviewList-container" data-url="{{url}}" data-value="{{&dataValue}}">
+                            {{>page/product-card/review-list}}
+                        </div>
+                    {{/product.reviewBlock}}
+
+                    {{#moreLink}}
+                        <a href="#" data-container-selector=".js-productReviewList-container" class="js-productReviewList-more catalogMore btnStyleGrey">{{name}}</a>
+                    {{/moreLink}}
+                </div>
+
+                <!--/ Таб - Отзывы -->
 
                 <!-- Таб - Аксессуары -->
                 <div class="tabContent js-container js-cont" {{^product.accessorySlider.count}}style="display: none;"{{/product.accessorySlider.count}}>
