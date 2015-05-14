@@ -5,10 +5,9 @@
 
         <div class="fullImgCnt_img_load js-fullimg-img-loader">
             {{#product.mainPhoto}}
-                <img class="fullImgCnt_img js-fullimg-img" src="{{product.mainPhoto.originalUrl}}" alt="{{&product.name}}" />
+               <img class="fullImgCnt_img js-fullimg-img" src="{{product.mainPhoto.originalUrl}}" alt="{{&product.name}}" />
             {{/product.mainPhoto}}
         </div>
-
         <div class="fullImgCnt_thmb js-fullimg-thmb-wrap">
             <ul class="fullImgCnt_thmb_w js-fullimg-thmb">
             {{#product.photos}}
@@ -255,7 +254,7 @@
                 <div class="detail-slider js-detailSlider">
                     {{#product.photos}}
                         <div class="slide-item">
-                            <img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}"/>
+                            <div class="slider_lst_img__container"><img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}"/></div>
                         </div>
                     {{/product.photos}}
                 </div>
