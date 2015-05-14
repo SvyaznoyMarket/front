@@ -3240,15 +3240,24 @@ body.noScroll {
   height: 280px;
 }
 .detail-slider .slide-item .slider_lst_img {
+  width: auto;
   max-width: 90%;
   max-height: 100%;
-  width: auto;
   margin: auto;
 }
 .detail-slider .slide-item .slider_lst_img__container {
   width: 100%;
   height: 100%;
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (doesn't work very well) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
   display: flex;
+  /* NEW, Spec - Opera 12.1, Firefox 20+ */
   align-items: center;
   justify-content: center;
 }
@@ -3270,7 +3279,7 @@ body.noScroll {
   right: 0;
   width: 67px;
   height: 101%;
-  background: url("modules/sliderBox/img/trans.png") no-repeat 100% 0;
+  background: url('modules/sliderBox/img/trans.png') no-repeat 100% 0;
 }
 .sliderBox .productDesc {
   font-size: 14px;
@@ -3281,25 +3290,25 @@ body.noScroll {
 }
 .sliderBox .productDesc_img {
   display: inline-block;
+  max-height: 73px;
   margin: 0 0 10px;
   vertical-align: top;
-  max-height: 73px;
 }
 .sliderBox .productPrice {
-  margin: 5px 0;
   font-size: 18px;
+  margin: 5px 0;
 }
 .sliderBox .btnBuy {
-  height: 26px;
-  margin: 0 auto;
   font-size: 14px;
   line-height: 26px;
+  height: 26px;
+  margin: 0 auto;
 }
 .sliderBoxItems {
+  font-size: 0;
   position: relative;
   left: 0;
   width: 10000px;
-  font-size: 0;
 }
 .sliderBoxItems_item {
   float: left;
@@ -3320,10 +3329,10 @@ body.noScroll {
   height: 280px;
 }
 .sliderCat .sliderCatList_item {
+  font-size: 14px;
   display: block;
   padding: 5px;
   cursor: pointer;
-  font-size: 14px;
 }
 .sliderCat .sliderCatList_item:hover,
 .sliderCat .sliderCatList_item__active {
@@ -3333,26 +3342,26 @@ body.noScroll {
   border-left: 1px solid #d8d8d8;
 }
 .alsoBoughtContainer {
-  display: none;
   position: relative;
+  display: none;
 }
 .alsoBoughtContainer .alsoBoughtTitle {
   padding-left: 10px;
 }
 .alsoBoughtContainer .sliderBoxItems_item {
-  padding: 0 25px;
   width: 100px;
+  padding: 0 25px;
 }
 .sliderBox .productDesc {
   font-size: 11px;
 }
 .sliderBox .productDesc_name {
-  max-height: 60px;
   overflow: hidden;
+  max-height: 60px;
 }
 .sliderBox .productDesc_img {
-  max-height: 80px;
   max-width: 73px;
+  max-height: 80px;
 }
 .sliderBox .btnBuy {
   font-size: 12px;
