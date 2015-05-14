@@ -81,7 +81,6 @@
 
 	    <section class="checkout">
 	        <h1 class="checkout__tl">Самовывоз и доставка</h1>
-	        <!-- заголовок страницы -->
 
 	        <p class="orderInf">Товары будут оформлены как  <strong class="mdb">3 отдельных заказа</strong></p>
 
@@ -93,9 +92,8 @@
 	            <button class="orderInf_r btn-transparent btn-transparent--normal"><span class="bb-dotted">Изменить регион</span></button>
 	        </div>
 
-	        <!-- блок разбиения заказа -->
+	        {{! разбиение заказа, адрес доставки не выбран }}
 	        <div class="checkout-order">
-	            <!-- информация о заказе -->
                 <div class="checkout-order-head checkout-order__box checkout-order__box--head">
                     <strong class="checkout-order-head__title">Заказ №1</strong>
                     <a class="checkout-order-head__info checkout-order-head__right" href=""><span class="bb-dotted">Информация и оферта</span></a>
@@ -103,7 +101,6 @@
                 </div>
 
 				<div class="checkout-order__box checkout-order__box--stretch">
-	                <!-- информация о доставке -->
 	                <menu class="checkout-delivery-type clearfix">
 	                    <li class="checkout-delivery-type__item active js-delivery-type-name" data-type="delivery-type-self">
 	                    	<span class="checkout-delivery-type__text">Самовывоз</span>
@@ -256,15 +253,20 @@
 
 				{{! ввести код скидки или сертефиката }}
                 <div class="checkout-order__box checkout-order__box--light js-order-box" data-box="data-select-sale">
-					<div class="checkout-order_code_t">Код скидки или подарочный сертификат</div>
+                	<div class="checkout-sale-code">
+						<div class="checkout-sale-code__title">Код скидки или подарочный сертификат</div>
 
-					<input type="text" class="checkout-order_code_it textfield">
-					<div class="checkout-order_code_opt">
-						<span class="checkout-order_code_pinlbl">PIN-код</span>
-						<input type="text" class="checkout-order_code_pin textfield">
+						<div class="checkout-sale-code__fields">
+							<input type="text" class="checkout-sale-code__it textfield">
+
+							<div class="checkout-sale-code-pin">
+								<label class="checkout-sale-code-pin__label">PIN-код</label>
+								<input type="text" class="checkout-sale-code__it checkout-sale-code__it--pin textfield">
+							</div>
+						</div>
+
+						<button class="checkout-sale-code__button btn-type btn-type--default js-order-btn" data-btn="selected-sale">Применить</button>
 					</div>
-
-					<button class="checkout-order_code_btn btn1 js-order-btn"  data-btn="selected-sale">Применить</button>
                 </div>
 				{{! ввести код скидки или сертефиката }}
 
@@ -276,14 +278,14 @@
 	                    </div>
 
 						<div class="checkout-order-items__right">
-		                    <div class="checkout-order_n">
+							<div class="checkout-order-items__name">
 		                        - 2% на категорию Электроника<br>
 		                        Минимальная сумма заказа 6999 руб
 		                    </div>
 
-		                    <span class="checkout-order_data checkout-order_data-sale">-5 200 <span class="rubl">p</span></span>
-
-		                    <span class="checkout-order_data checkout-order_data-dlt"><span class="borderBd">удалить</span></span>
+							<div class="checkout-order-items__data">&nbsp;</div>
+							<div class="checkout-order-items__data ta-c"><span class="bb-dotted">удалить</span></div>
+		                    <div class="checkout-order-items__data checkout-order-items__data--sale l ta-r">5 200 <span class="rubl">p</span></div>
 	                    </div>
 	                </div>
 
@@ -293,14 +295,14 @@
 	                    </div>
 
 						<div class="checkout-order-items__right">
-		                    <div class="checkout-order_n">
+		                    <div class="checkout-order-items__name">
 		                        Подарочный сертификат<br>
 		                        5000 руб
 		                    </div>
 
-		                    <span class="checkout-order_data checkout-order_data-sale">-5 200 <span class="rubl">p</span></span>
-
-		                    <span class="checkout-order_data checkout-order_data-dlt"><span class="borderBd">удалить</span></span>
+							<div class="checkout-order-items__data">&nbsp;</div>
+							<div class="checkout-order-items__data ta-c"><span class="bb-dotted">удалить</span></div>
+		                    <div class="checkout-order-items__data checkout-order-items__data--sale l ta-r">5 200 <span class="rubl">p</span></div>
 	                    </div>
 	                </div>
                 </div>
@@ -316,14 +318,13 @@
                 </div>
             	{{! общая стоимость заказа }}
 	        </div>
-	        <!--/ блок разбиения заказа -->
+	        {{! разбиение заказа, адрес доставки не выбран }}
 
 
 
 
-	        <!-- блок разбиения заказа -->
+	        {{! разбиение заказа, адрес доставки выбран }}
 	        <div class="checkout-order">
-	            <!-- информация о заказе -->
                 <div class="checkout-order-head checkout-order__box checkout-order__box--head">
                     <strong class="checkout-order-head__title">Заказ №1</strong>
                     <a class="checkout-order-head__info checkout-order-head__right" href=""><span class="bb-dotted">Информация и оферта</span></a>
@@ -331,7 +332,6 @@
                 </div>
 
 				<div class="checkout-order__box checkout-order__box--stretch complete">
-	                <!-- информация о доставке -->
 	                <menu class="checkout-delivery-type clearfix">
 	                    <li class="checkout-delivery-type__item active js-delivery-type-name" data-type="delivery-type-self-1">
 	                    	<span class="checkout-delivery-type__text">Самовывоз</span>
@@ -504,15 +504,20 @@
 
 				{{! ввести код скидки или сертефиката }}
                 <div class="checkout-order__box checkout-order__box--light js-order-box" data-box="data-select-sale">
-					<div class="checkout-order_code_t">Код скидки или подарочный сертификат</div>
+                	<div class="checkout-sale-code">
+						<div class="checkout-sale-code__title">Код скидки или подарочный сертификат</div>
 
-					<input type="text" class="checkout-order_code_it textfield">
-					<div class="checkout-order_code_opt">
-						<span class="checkout-order_code_pinlbl">PIN-код</span>
-						<input type="text" class="checkout-order_code_pin textfield">
+						<div class="checkout-sale-code__fields">
+							<input type="text" class="checkout-sale-code__it textfield">
+
+							<div class="checkout-sale-code-pin">
+								<label class="checkout-sale-code-pin__label">PIN-код</label>
+								<input type="text" class="checkout-sale-code__it checkout-sale-code__it--pin textfield">
+							</div>
+						</div>
+
+						<button class="checkout-sale-code__button btn-type btn-type--default js-order-btn" data-btn="selected-sale">Применить</button>
 					</div>
-
-					<button class="checkout-order_code_btn btn1 js-order-btn"  data-btn="selected-sale">Применить</button>
                 </div>
 				{{! ввести код скидки или сертефиката }}
 
@@ -524,14 +529,14 @@
 	                    </div>
 
 						<div class="checkout-order-items__right">
-		                    <div class="checkout-order_n">
+							<div class="checkout-order-items__name">
 		                        - 2% на категорию Электроника<br>
 		                        Минимальная сумма заказа 6999 руб
 		                    </div>
 
-		                    <span class="checkout-order_data checkout-order_data-sale">-5 200 <span class="rubl">p</span></span>
-
-		                    <span class="checkout-order_data checkout-order_data-dlt"><span class="borderBd">удалить</span></span>
+							<div class="checkout-order-items__data">&nbsp;</div>
+							<div class="checkout-order-items__data ta-c"><span class="bb-dotted">удалить</span></div>
+		                    <div class="checkout-order-items__data checkout-order-items__data--sale l ta-r">5 200 <span class="rubl">p</span></div>
 	                    </div>
 	                </div>
 
@@ -541,14 +546,14 @@
 	                    </div>
 
 						<div class="checkout-order-items__right">
-		                    <div class="checkout-order_n">
+		                    <div class="checkout-order-items__name">
 		                        Подарочный сертификат<br>
 		                        5000 руб
 		                    </div>
 
-		                    <span class="checkout-order_data checkout-order_data-sale">-5 200 <span class="rubl">p</span></span>
-
-		                    <span class="checkout-order_data checkout-order_data-dlt"><span class="borderBd">удалить</span></span>
+							<div class="checkout-order-items__data">&nbsp;</div>
+							<div class="checkout-order-items__data ta-c"><span class="bb-dotted">удалить</span></div>
+		                    <div class="checkout-order-items__data checkout-order-items__data--sale l ta-r">5 200 <span class="rubl">p</span></div>
 	                    </div>
 	                </div>
                 </div>
@@ -564,7 +569,7 @@
                 </div>
             	{{! общая стоимость заказа }}
 	        </div>
-	        <!--/ блок разбиения заказа -->
+	        {{! разбиение заказа, адрес доставки выбран }}
 
 	        <div class="btn-container">
                 <input type="checkbox" class="custom-input custom-input--check" id="accept" name="" value="" />

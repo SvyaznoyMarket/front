@@ -43,37 +43,6 @@
         background: #feebd2;
     }
 
-    &_code {
-        &_t {
-            margin: 0 0 8px;
-        }
-        &_it {
-            width: 160px;
-            margin: 0;
-
-            .inline-block();
-        }
-        &_opt {
-            .inline-block();
-        }
-        &_pinlbl {
-            margin: 0 15px 0 25px;
-
-            .inline-block();
-        }
-        &_pin {
-            width: 60px;
-            margin: 0;
-
-            .inline-block();
-        }
-        &_btn {
-            float: right;
-
-            width: 160px;
-        }
-    }
-
     .shopLst {
         position: relative;
 
@@ -167,6 +136,9 @@
         width: 33%;
 
         color: #777;
+        &--sale {
+            color: #e8303c;
+        }
     }
 }
 
@@ -213,29 +185,39 @@
     }
 }
 
-.order-cart {
-    padding-bottom: 0;
-    &__img {
-        width: 70px;
-        min-width: 70px;
-        max-width: 70px;
-        padding: 0 10px 0 0;
-        & > img {
-            max-width: 100%;
-            max-height: 100%;
-            padding-right: 10px;
-        }
-    }
-    &__desc {
-        width: 100%;
-    }
-    .table {
-        padding: 5px 0;
+.checkout-sale-code {
+    display: flex;
 
-        border-bottom: 1px solid #e6e6e6;
-        &:last-child {
-            border: none;
+    flex-flow: row wrap;
+    &__title {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+    &__it {
+        width: 125px;
+        margin: 0;
+        padding: 0;
+
+        text-align: center;
+
+        border-color: #c7c7c7;
+        &--pin {
+            width: 60px;
         }
+    }
+    &-pin {
+        &__label {
+            margin: 0 10px 0 20px;
+        }
+    }
+    &__button {
+        width: 150px;
+    }
+    &__fields {
+        flex-grow: 1;
+    }
+    & * {
+        .inline-block-middle();
     }
 }
 
