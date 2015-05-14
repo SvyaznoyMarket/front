@@ -2737,9 +2737,9 @@ body.noScroll {
 }
 /** контент табов описания товара .tabContentWrap .tabContentInner .tabContent **/
 .fullImgCnt {
+  position: relative;
   display: none;
   overflow: hidden;
-  position: relative;
   padding: 30px 0 5px;
   text-align: center;
 }
@@ -2748,37 +2748,46 @@ body.noScroll {
   height: auto;
 }
 .fullImgCnt_img_load {
-  min-height: 100%;
-  margin: 0 0 10px;
-  background: #ffffff url("modules/common/img/ajaxnoti.gif") 50% 50% no-repeat;
   width: 100%;
   height: 100%;
+  min-height: 100%;
+  margin: 0 0 10px;
+  background: #ffffff url('modules/common/img/ajaxnoti.gif') 50% 50% no-repeat;
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (doesn't work very well) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
   display: flex;
+  /* NEW, Spec - Opera 12.1, Firefox 20+ */
   align-items: center;
   justify-content: center;
 }
 .fullImgCnt_thmb {
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
   width: 100%;
-  text-align: center;
   margin: 0 auto;
   padding: 3px 0;
+  text-align: center;
 }
 .fullImgCnt_thmb_w {
-  position: relative;
   font-size: 0;
-  margin: 0 auto;
+  position: relative;
   left: 0;
+  margin: 0 auto;
 }
 .fullImgCnt_thmb_i {
-  display: inline-block;
-  *zoom: 1;
-  *display: inline;
   width: 52px;
   height: 52px;
   margin: 0 4px;
   vertical-align: top;
+  display: inline-block;
+  *zoom: 1;
+  *display: inline;
 }
 .fullImgCnt_thmb_i-act .fullImgCnt_thmb_i_w {
   width: 48px;
@@ -2789,18 +2798,27 @@ body.noScroll {
   margin: -1px 0 0 -1px;
 }
 .fullImgCnt_thmb_i_w {
+  display: block;
+  overflow: hidden;
+  width: 50px;
+  width: 100%;
+  height: 50px;
+  height: 100%;
+  text-align: center;
+  border: 1px solid #e3e3e3;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
-  display: block;
-  overflow: hidden;
-  height: 50px;
-  text-align: center;
-  border: 1px solid #e3e3e3;
-  width: 50px;
-  width: 100%;
-  height: 100%;
+  display: -webkit-box;
+  /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;
+  /* OLD - Firefox 19- (doesn't work very well) */
+  display: -ms-flexbox;
+  /* TWEENER - IE 10 */
+  display: -webkit-flex;
+  /* NEW - Chrome */
   display: flex;
+  /* NEW, Spec - Opera 12.1, Firefox 20+ */
   align-items: center;
   justify-content: center;
 }
@@ -2809,14 +2827,14 @@ body.noScroll {
   max-height: 100%;
 }
 .fullImgCnt_thmb_btn {
+  position: absolute;
+  top: 3px;
   width: 30px;
   height: 52px;
   background: #ffffff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  top: 3px;
-  position: absolute;
-  background-position: 50% 50%;
   background-repeat: no-repeat;
+  background-position: 50% 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 .fullImgCnt_thmb_btn-l {
   left: 0;
@@ -4830,7 +4848,16 @@ body.noScroll {
 }
 @media screen and (min-width: 601px) {
   .catalogList .img {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (doesn't work very well) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
+    /* NEW, Spec - Opera 12.1, Firefox 20+ */
     align-items: center;
     justify-content: center;
   }
