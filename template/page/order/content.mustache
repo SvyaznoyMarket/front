@@ -121,7 +121,7 @@
 	                </div>
 
 	                <div class="checkout-order__inn js-delivery-type" id="delivery-type-buy">
-						<div class="checkout-order_date js-popup-box-celendar-link">15 сентября 2014, воскресенье</div>
+						<div class="checkout-celendar js-popup-box-celendar-link">15 сентября 2014, воскресенье</div>
 
 		                <div class="custom-select custom-select--button">
 	                        <span class="custom-select__value js-order-btn" data-btn="select-time">10:00…18:00 <i class="caret"></i></span>
@@ -159,14 +159,14 @@
 	                    </div>
 
 						<div class="checkout-order-items__right">
-		                    <a class="checkout-order_n" href="">
+		                    <a class="checkout-order-items__name" href="">
 		                        Самокат<br>
 		                        JD Bug Classic MS-305 синий
 		                    </a>
 
-		                    <span class="checkout-order_data checkout-order_data-summ">5 200 <span class="rubl">p</span></span>
-		                    <span class="checkout-order_data checkout-order_data-price">5 200 <span class="rubl">p</span></span>
-		                    <span class="checkout-order_data checkout-order_data-count">1 шт.</span>
+		                    <span class="checkout-order-items__data l">5 200 <span class="rubl">p</span></span>
+		                    <span class="checkout-order-items__data l ta-c">1 шт.</span>
+		                    <span class="checkout-order-items__data l ta-r">5 200 <span class="rubl">p</span></span>
 	                    </div>
 	                </div>
 
@@ -176,14 +176,14 @@
 	                    </div>
 
 						<div class="checkout-order-items__right">
-		                    <a class="checkout-order_n" href="">
+		                    <a class="checkout-order-items__name" href="">
 		                        Самокат<br>
 		                        JD Bug Classic MS-305 синий
 		                    </a>
 
-		                    <span class="checkout-order_data checkout-order_data-summ">5 200 <span class="rubl">p</span></span>
-		                    <span class="checkout-order_data checkout-order_data-price">5 200 <span class="rubl">p</span></span>
-		                    <span class="checkout-order_data checkout-order_data-count">1 шт.</span>
+		                    <span class="checkout-order-items__data l">5 200 <span class="rubl">p</span></span>
+		                    <span class="checkout-order-items__data l ta-c">1 шт.</span>
+		                    <span class="checkout-order-items__data l ta-r">5 200 <span class="rubl">p</span></span>
 	                    </div>
 	                </div>
                 </div>
@@ -306,33 +306,44 @@
                 </div>
                 {{! примененные скидки }}
 
-                <div class="checkout-order__box ta-r">
-                    <div class="checkout-order__summary">150 <span class="rubl">p</span></div>
-                    <div class="checkout-order__summary">Доставка:</div>
+				{{! общая стоимость заказа }}
+                <div class="checkout-summary checkout-order__box clearfix ta-r">
+                    <div class="checkout-summary__item">150 <span class="rubl">p</span></div>
+                    <div class="checkout-summary__item">Доставка:</div>
 
-                    <div class="checkout-order__summary">2 334 <span class="rubl">p</span></div>
-                    <div class="checkout-order__summary">Итого:</div>
+                    <div class="checkout-summary__item clear-r l">2 334 <span class="rubl">p</span></div>
+                    <div class="checkout-summary__item l">Итого:</div>
                 </div>
-            	<!--/ информация о заказе -->
+            	{{! общая стоимость заказа }}
 	        </div>
 	        <!--/ блок разбиения заказа -->
 
+
+
+
 	        <!-- блок разбиения заказа -->
-            <div class="checkout-order">
-                <!-- информация о доставке -->
-	            <div class="checkout-order__box checkout-order__box--stretch checkout-order__box-confrm">
-					<div class="checkout-order__inn">
-						<div class="checkout-order_date">15 сентября 2014, воскресенье</div>
+	        <div class="checkout-order">
+	            <!-- информация о заказе -->
+                <div class="checkout-order-head checkout-order__box checkout-order__box--head">
+                    <strong class="checkout-order-head__title">Заказ №1</strong>
+                    <a class="checkout-order-head__info checkout-order-head__right" href=""><span class="bb-dotted">Информация и оферта</span></a>
+                    <span class="checkout-order-head__vendor checkout-order-head__right">продавец: ООО «Связной»</span>
+                </div>
 
-						<div class="custom-select">
-	                        <span class="custom-select__value">10:00…18:00</span>
+				<div class="checkout-order__box checkout-order__box--stretch complete">
+	                <!-- информация о доставке -->
+	                <menu class="checkout-delivery-type clearfix">
+	                    <li class="checkout-delivery-type__item active js-delivery-type-name" data-type="delivery-type-self-1">
+	                    	<span class="checkout-delivery-type__text">Самовывоз</span>
+	                    </li>
 
-	                        <ul class="custom-select-list popupFl" style="display: none;">
-	                            <li class="custom-select-list__item">10:00…18:00</li>
-	                            <li class="custom-select-list__item">8:00…12:00</li>
-	                            <li class="custom-select-list__item">12:00…18:00</li>
-	                        </ul>
-	                    </div>
+	                    <li class="checkout-delivery-type__item js-delivery-type-name" data-type="delivery-type-buy-1">
+	                    	<span class="checkout-delivery-type__text">Доставка</span>
+	                    </li>
+	                </menu>
+
+					<div class="checkout-order__inn box-show js-delivery-type" id="delivery-type-self-1">
+						<div class="checkout-celendar">15 сентября 2014, воскресенье</div>
 
     	                <div class="checkout-order_opt_t">Магазин</div>
 
@@ -350,9 +361,208 @@
 
 								<div class="shop-snippet-address">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2 <br/>c 9.00 до 22.00</div>
 							</div>
+
+							<a href="" class="bb-dotted">Изменить</a>
 						</div>
-    	            </div>
+	                </div>
+
+	                <div class="checkout-order__inn js-delivery-type" id="delivery-type-buy-1">
+						<div class="checkout-celendar js-popup-box-celendar-link">15 сентября 2014, воскресенье</div>
+
+		                <div class="custom-select custom-select--button">
+	                        <span class="custom-select__value js-order-btn" data-btn="select-time">10:00…18:00 <i class="caret"></i></span>
+
+	                        <ul class="custom-select-list js-order-box" data-box="data-select-time">
+	                            <li class="custom-select-list__item">10:00…18:00</li>
+	                            <li class="custom-select-list__item">8:00…12:00</li>
+	                            <li class="custom-select-list__item">12:00…18:00</li>
+	                        </ul>
+	                    </div>
+
+		                <div class="checkout-address">
+							<div class="checkout-address__title"><strong>Адрес</strong> для всех заказов с доставкой</div>
+
+							<p class="checkout-address__selected">ул. Линии Октябрьской Железной Дороги, 12/1, кв.23</p>
+
+							<div class="checkout-address__select custom-select">
+    	                        <span class="custom-select__value js-order-btn" data-btn="select-address">
+	    	                        <span class="bb-dotted">Указать адрес</span>
+	    	                        <i class="caret"></i>
+    	                        </span>
+
+    	                        <ul class="custom-select-list js-order-box" data-box="data-select-address">
+    	                            <li class="custom-select-list__item">ул. Линии Октябрьской Железной Дороги, 12/1, 23</li>
+    	                            <li class="custom-select-list__item">ул. Орджоникидзе, 10</li>
+    	                            <li class="custom-select-list__item custom-select-list__item--add"><span class="icon-plus">+</span> <span class="bb-dotted">Добавить адрес</span></li>
+    	                        </ul>
+    	                    </div>
+						</div>
+		            </div>
+                </div>
+
+				<div class="checkout-order__box checkout-order__box--light">
+	                <div class="checkout-order-items flex-hor-vertical">
+	                    <div class="checkout-order-items__left">
+	                        <img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg">
+	                    </div>
+
+						<div class="checkout-order-items__right">
+		                    <a class="checkout-order-items__name" href="">
+		                        Самокат<br>
+		                        JD Bug Classic MS-305 синий
+		                    </a>
+
+		                    <span class="checkout-order-items__data l">5 200 <span class="rubl">p</span></span>
+		                    <span class="checkout-order-items__data l ta-c">1 шт.</span>
+		                    <span class="checkout-order-items__data l ta-r">5 200 <span class="rubl">p</span></span>
+	                    </div>
+	                </div>
+
+	                <div class="checkout-order-items flex-hor-vertical">
+	                    <div class="checkout-order-items__left">
+	                        <img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg">
+	                    </div>
+
+						<div class="checkout-order-items__right">
+		                    <a class="checkout-order-items__name" href="">
+		                        Самокат<br>
+		                        JD Bug Classic MS-305 синий
+		                    </a>
+
+		                    <span class="checkout-order-items__data l">5 200 <span class="rubl">p</span></span>
+		                    <span class="checkout-order-items__data l ta-c">1 шт.</span>
+		                    <span class="checkout-order-items__data l ta-r">5 200 <span class="rubl">p</span></span>
+	                    </div>
+	                </div>
+                </div>
+
+                <div class="checkout-sale checkout-order__box">
+                	<div class="checkout-sale__title"><strong>Скидки</strong></div>
+
+					<div class="table">
+	                	<div class="table_cell">
+		                	<span class="bb-dotted js-order-btn" data-btn="select-fishk">Фишки EnterPrize</span>
+	                	</div>
+
+	                	<div class="table_cell ta-r">
+	                		<span class="bb-dotted js-order-btn" data-btn="select-sale">Ввести код скидки</span>
+	                	</div>
+                	</div>
+                </div>
+
+				{{! выбрать фишку enter prize }}
+                <div class="sale-select checkout-order__box checkout-order__box--light js-order-box" data-box="data-select-fishk">
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
 				</div>
+				{{! выбрать фишку enter prize }}
+
+				{{! ввести код скидки или сертефиката }}
+                <div class="checkout-order__box checkout-order__box--light js-order-box" data-box="data-select-sale">
+					<div class="checkout-order_code_t">Код скидки или подарочный сертификат</div>
+
+					<input type="text" class="checkout-order_code_it textfield">
+					<div class="checkout-order_code_opt">
+						<span class="checkout-order_code_pinlbl">PIN-код</span>
+						<input type="text" class="checkout-order_code_pin textfield">
+					</div>
+
+					<button class="checkout-order_code_btn btn1 js-order-btn"  data-btn="selected-sale">Применить</button>
+                </div>
+				{{! ввести код скидки или сертефиката }}
+
+				{{! примененные скидки }}
+                <div class="checkout-order__box checkout-order__box--light js-order-box" data-box="data-selected-sale">
+	                <div class="checkout-order-items flex-hor-vertical">
+	                    <div class="checkout-order-items__left">
+	                        <img alt="" src="/css/modules/order/img/fishka_act.png">
+	                    </div>
+
+						<div class="checkout-order-items__right">
+		                    <div class="checkout-order_n">
+		                        - 2% на категорию Электроника<br>
+		                        Минимальная сумма заказа 6999 руб
+		                    </div>
+
+		                    <span class="checkout-order_data checkout-order_data-sale">-5 200 <span class="rubl">p</span></span>
+
+		                    <span class="checkout-order_data checkout-order_data-dlt"><span class="borderBd">удалить</span></span>
+	                    </div>
+	                </div>
+
+	                <div class="checkout-order-items flex-hor-vertical">
+	                    <div class="checkout-order-items__left">
+	                        <img alt="" src="/css/modules/order/img/sale_act.png">
+	                    </div>
+
+						<div class="checkout-order-items__right">
+		                    <div class="checkout-order_n">
+		                        Подарочный сертификат<br>
+		                        5000 руб
+		                    </div>
+
+		                    <span class="checkout-order_data checkout-order_data-sale">-5 200 <span class="rubl">p</span></span>
+
+		                    <span class="checkout-order_data checkout-order_data-dlt"><span class="borderBd">удалить</span></span>
+	                    </div>
+	                </div>
+                </div>
+                {{! примененные скидки }}
+
+				{{! общая стоимость заказа }}
+                <div class="checkout-summary checkout-order__box clearfix ta-r">
+                    <div class="checkout-summary__item">150 <span class="rubl">p</span></div>
+                    <div class="checkout-summary__item">Доставка:</div>
+
+                    <div class="checkout-summary__item clear-r l">2 334 <span class="rubl">p</span></div>
+                    <div class="checkout-summary__item l">Итого:</div>
+                </div>
+            	{{! общая стоимость заказа }}
 	        </div>
 	        <!--/ блок разбиения заказа -->
 
@@ -495,9 +705,7 @@
 					</div>
                 </div>
             </div>
-	        <div class="btn-container">
-	            <button class="btn btn--submit btn--orange btn--checkout">Продолжить покупки</button>
-	        </div>
+
             <div class="confirm">
                 <div class="confirm__box confirm__box--normal">
 	                <strong class="confirm__title">Заказ</strong>
