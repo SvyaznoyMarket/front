@@ -3264,7 +3264,6 @@ body.noScroll {
 }
 .custom-select-list {
   position: absolute;
-  z-index: 99;
   top: 0;
   left: 0;
   width: 100%;
@@ -3292,6 +3291,9 @@ body.noScroll {
 .custom-select-list__item:first-child {
   border-top: 1px solid #c7c7c7;
 }
+.custom-select-list.box-show {
+  z-index: 99;
+}
 .custom-select__kit {
   width: 100%;
   max-width: 500px;
@@ -3310,7 +3312,6 @@ body.noScroll {
   white-space: nowrap;
 }
 .custom-select__kit .custom-select__value {
-  width: 100%;
   text-align: center;
 }
 .caret {
