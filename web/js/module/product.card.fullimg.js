@@ -17,8 +17,8 @@ define(
         // end of vars
 
             thmbW.css({ 'width' : wrap.width() });
-            img.css({ 'width' : wrap.width() });
-            imgLoad.css({ 'min-height' : wrap.width(), 'width' : wrap.width() });
+            
+            imgLoad.css({ 'width' : wrap.width() });
 
             $('.js-fullimg-thmb-i').first().addClass(actClass);
 
@@ -28,8 +28,8 @@ define(
             */
             imgScale = function imgScale() {
                 thmbW.css({ 'width' : wrap.width() });
-                img.css({ 'width' : wrap.width() });
-                imgLoad.css({ 'min-height' : wrap.width(), 'width' : wrap.width() });
+                
+                imgLoad.css({ 'height' : wrap.width(), 'width' : wrap.width() });
             },
 
             /*  
