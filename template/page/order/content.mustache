@@ -18,7 +18,7 @@
 	    <section class="checkout">
 	        <h1 class="checkout__tl">Оформление заказа</h1>
 
-	        <form class="checkout-form checkout-control clearfix" action="" method="" accept-charset="utf-8">
+	        <form class="checkout-form form-control clearfix" action="" method="" accept-charset="utf-8">
 	        	<fieldset class="order-authorize__container">
 		            <div class="order-authorize">
 			            <div class="order-authorize__t">Уже заказывали у нас?</div>
@@ -26,26 +26,26 @@
 			        </div>
 		        </fieldset>
 
-	            <fieldset class="checkout-control__container">
-	                <div class="checkout-control-group">
-	                    <input class="checkout-control-group__tx textfield" type="text" name="" value="" placeholder="">
-	                    <label class="checkout-control-group__lbl required" for="">Телефон</label>
-	                    <span class="checkout-control-group__hint">Для смс о состоянии заказа</span>
+	            <fieldset class="form-control__container">
+	                <div class="form-control-group">
+	                    <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
+	                    <label class="form-control-group__lbl required" for="">Телефон</label>
+	                    <span class="form-control-group__hint">Для смс о состоянии заказа</span>
 	                </div>
 
-					<div class="checkout-control-group">
-	                    <input class="checkout-control-group__tx textfield" type="text" name="" value="" placeholder="">
-	                    <label class="checkout-control-group__lbl required" for="">E-mail</label>
+					<div class="form-control-group">
+	                    <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
+	                    <label class="form-control-group__lbl required" for="">E-mail</label>
 	                </div>
 
-	                <div class="checkout-control-group">
-	                    <input class="checkout-control-group__tx textfield" type="text" name="" value="" placeholder="">
-	                    <label class="checkout-control-group__lbl" for="">Имя</label>
-	                    <span class="checkout-control-group__hint">Как к вам обращаться?</span>
+	                <div class="form-control-group">
+	                    <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
+	                    <label class="form-control-group__lbl" for="">Имя</label>
+	                    <span class="form-control-group__hint">Как к вам обращаться?</span>
 	                </div>
 	            </fieldset>
 
-	            <fieldset class="checkout-control__container">
+	            <fieldset class="form-control__container">
 	                {{! Чтобы показать/скрыть поле с картой, надо добавить/убрать класс active: }}
 	                <div class="bonus-cnt active">
 	                	<div class="bonus-cnt__head">Начислить баллы</div>
@@ -54,9 +54,9 @@
 
 							<span class="bonus-cnt-card__tl">Карта Много.ру</span>
 						</div>
-						<div class="checkout-control-group">
-		                    <input class="checkout-control-group__tx textfield jsOrderV3MnogoRuCardField" type="text" name="user_info[mnogo_ru_number]" value="" placeholder="xxxx xxxx" data-mask="xxxx xxxx">
-		                    <label class="checkout-control-group__lbl" for="">Карта</label>
+						<div class="form-control-group">
+		                    <input class="form-control-group__tx textfield jsOrderV3MnogoRuCardField" type="text" name="user_info[mnogo_ru_number]" value="" placeholder="xxxx xxxx" data-mask="xxxx xxxx">
+		                    <label class="form-control-group__lbl" for="">Карта</label>
 	                    </div>
 	                </div>
 	                <div class="bonus-cnt">
@@ -66,16 +66,16 @@
 
 							<span class="bonus-cnt-card__tl">Карта Много.ру</span>
 						</div>
-						<div class="checkout-control-group">
-		                    <input class="checkout-control-group__tx textfield jsOrderV3MnogoRuCardField" type="text" name="user_info[mnogo_ru_number]" value="" placeholder="xxxx xxxx" data-mask="xxxx xxxx">
-		                    <label class="checkout-control-group__lbl" for="">Карта</label>
+						<div class="form-control-group">
+		                    <input class="form-control-group__tx textfield jsOrderV3MnogoRuCardField" type="text" name="user_info[mnogo_ru_number]" value="" placeholder="xxxx xxxx" data-mask="xxxx xxxx">
+		                    <label class="form-control-group__lbl" for="">Карта</label>
 	                    </div>
 	                </div>
 	            </fieldset>
 	        </form>
 
 	        <div class="btn-container">
-	            <button class="btn btn--submit btn--orange btn--checkout">Далее</button>
+	            <button class="btn btn--submit btn--orange btn--big">Далее</button>
 	        </div>
 	    </section>
 
@@ -585,7 +585,7 @@
                 <input type="checkbox" class="custom-input custom-input--check" id="accept" name="" value="" />
                 <label class="order-accept custom-label" for="accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
 
-	            <button class="btn btn--submit btn--orange btn--checkout">Оформить</button>
+	            <button class="btn btn--submit btn--orange btn--big">Оформить</button>
 	        </div>
 	    </section>
 
@@ -721,6 +721,10 @@
                 </div>
             </div>
 
+	        <div class="btn-container">
+	            <button class="btn btn--submit btn--orange btn--big">Продолжить покупки</button>
+	        </div>
+
             <div class="confirm">
                 <div class="confirm__box confirm__box--normal">
 	                <strong class="confirm__title">Заказ</strong>
@@ -803,7 +807,7 @@
 		    		</li>
 		    	</ul>
 		    	<div class="payment-opt">
-		    		<button class="btn btn--submit btn--orange btn--pay-online">Оплатить сейчас</button>
+		    		<button class="btn btn--submit btn--orange btn--medium">Оплатить сейчас</button>
 		    		<span class="confirm-payment__types">
 		    			<img class="confirm-payment__card" width="25" src="/css/modules/order/img/visa2.png" alt="">
 						<img class="confirm-payment__card" width="25" src="/css/modules/order/img/mcard.png" alt="">
@@ -814,7 +818,7 @@
 		    <div class="checkout-done-order-cnt">
 		    	<span class="checkout-done-order-cnt__tl">Онлайн-оплата в два клика</span>
 		    	<div class="payment-opt">
-		    		<button class="btn btn--submit btn--orange btn--pay-online">Оплатить сейчас</button>
+		    		<button class="btn btn--submit btn--orange btn--medium">Оплатить сейчас</button>
 		    		<span class="confirm-payment__types">
 		    			<img class="confirm-payment__card" width="25" src="/css/modules/order/img/visa2.png" alt="">
 						<img class="confirm-payment__card" width="25" src="/css/modules/order/img/mcard.png" alt="">
@@ -833,60 +837,292 @@
 </div>
 
 {{! Нужно убрать свойство данного блока max-width: 300px, которое ставится js-ом }}
-<div class="popupBox online-pay-popup js-popup-box">
-	<div class="online-pay-popup__head">
+<div class="popupBox order-popup order-popup js-popup-box">
+	<div class="order-popup__head">
 		<span class="popup-close js-popup-close">Отмена</span>
 		<span class="popup-title">Оплатить онлайн</span>
 	</div>
 
-	<ul class="online-pay-popup-lst">
-		<li class="online-pay-popup-lst__i">
+	<ul class="order-popup-lst">
+		<li class="order-popup-lst__i">
 			<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio" checked>
 
 			<label class="custom-label flex-hor-vertical-between" for="pay1">
 				<span class="custom-label_tx">Банковская карта</span>
-				<span class="online-pay-popup__icon-wrap">
+				<span class="order-popup__icon-wrap">
 					<img src="/css/modules/order/img/visa2.png" alt="">
 					<img src="/css/modules/order/img/mcard.png" alt="">
 				</span>
 			</label>
 		</li>
 
-		<li class="online-pay-popup-lst__i">
+		<li class="order-popup-lst__i">
 			<input type="radio" id="pay2" name="paynow" class="custom-input custom-input--defradio">
 
 			<label class="custom-label flex-hor-vertical-between" for="pay2">
 				<span class="custom-label_tx">Pay Pal</span>
-				<span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/paypal3.png" alt=""></span>
+				<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/paypal3.png" alt=""></span>
 			</label>
 		</li>
 
-		<li class="online-pay-popup-lst__i flex-hor-vertical-between">
+		<li class="order-popup-lst__i flex-hor-vertical-between">
 			<input type="radio" id="pay3" name="paynow" class="custom-input custom-input--defradio">
 
 			<label class="custom-label" for="pay3">
 				<span class="custom-label_tx">Яндекс.деньги</span>
-				<span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/yandexmoney.png" alt=""></span>
+				<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/yandexmoney.png" alt=""></span>
 			</label>
 		</li>
 
-		<li class="online-pay-popup-lst__i flex-hor-vertical-between">
+		<li class="order-popup-lst__i flex-hor-vertical-between">
 			<input type="radio" id="pay4" name="paynow" class="custom-input custom-input--defradio">
 
 			<label class="custom-label" for="pay4">
 				<span class="custom-label_tx">Интернет-банк</span>
-				<span class="online-pay-popup__icon-wrap"><img src="/css/modules/order/img/psbfull.png" alt=""></span>
+				<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/psbfull.png" alt=""></span>
 			</label>
 		</li>
 	</ul>
 
 	<div class="btn-container"><a href="" class="btn btn--orange btn--pay">Оплатить</a></div>
 
-	<p class="online-pay-popup-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
+	<p class="order-popup-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
 
 
 </div>
+<div class="order-popup clearfix">
+	<div class="order-popup__head">
+		<span class="popup-close js-popup-close">Отмена</span>
+		<span class="popup-title">Адрес доставки</span>
+	</div>
+	
+	<div class="address-pick-snippet">
+		<div class="order-popup-map">
+			<div class="order-popup-map-ctrl pointer"><i class="map-icon map-icon-pointer"></i></div>
+			<div class="order-popup-map-ctrl zoom-in">+</div>
+			<div class="order-popup-map-ctrl zoom-out">−</div>
+		</div>
+		<div class="address-pick-snippet__form">
+			<form>
+				<div class="form-control__container">
+	                <div class="form-control-group suggest-open">
+	                {{! без класса suggest-open - саджест будет скрыт}}
+	                    <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
+	                    <label class="form-control-group__lbl" for="">Улица</label>
+	                    <div class="form-control-group__suggest suggest-control">
+		                    <ul class="suggest-control-lst">
+		                    	<li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
+		                    	<li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
+		                    	<li class="suggest-control-lst-i">Улица Мочалок Командира</li>
+		                    	<li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
+		                    	<li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
+		                    	<li class="suggest-control-lst-i">Улица Мочалок Командира</li>
+		                    </ul>
+	                    </div>
+	                </div>
 
+					<div class="form-control-group half-wide">
+	                    <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
+	                    <label class="form-control-group__lbl" for="">Дом</label>
+	                </div>
+
+	                <div class="form-control-group half-wide">
+	                    <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
+	                    <label class="form-control-group__lbl" for="">Квартира</label>
+	                </div>
+	                <div class="btn-container">
+	                	<button class="btn btn--submit btn--orange btn--medium">Готово</button>
+	                </div>
+	                
+
+	            </div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="order-popup clearfix">
+	<div class="order-popup__head">
+		<span class="popup-close js-popup-close"><i class="icon-close"></i></span>
+	</div>
+	<div class="order-popup__top-block search">
+		<form class="search__section">
+			<div class="search-control {{! suggest-open }}">
+				<i class="sprite-icon sprite-icon--search"></i>
+				
+				<input class="search-control__input" type="text" placeholder="Искать по улице, метро">
+				<input class="search-control__submit" type="submit" value="">
+				<div class="form-control-group__suggest suggest-control">
+                    <ul class="suggest-control-lst">
+                    	<li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
+                    	<li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
+                    	<li class="suggest-control-lst-i">Улица Мочалок Командира</li>
+                    	<li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
+                    	<li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
+                    	<li class="suggest-control-lst-i">Улица Мочалок Командира</li>
+                    </ul>
+                </div>
+			</div>
+			<div class="btn btn--white btn--medium"><span class="map-link">Карта</span></div>
+		</form>
+	</div>
+	<div class="custom-select__kit">
+		<div class="custom-select">
+            <span class="custom-select__value js-order-btn" data-btn="select-point-type">
+                <span class="bb-dotted">Все точки</span>
+                <i class="caret"></i>
+            </span>
+
+            <ul class="custom-select-list js-order-box" data-box="data-select-point-type">
+                <li class="custom-select-list__item">
+                	<input type="checkbox" id="shop1" name="paynow" class="custom-input custom-input--square-check" checked>
+
+					<label class="custom-label flex-hor-vertical-between" for="shop1">
+					<span class="custom-label_tx">Магазины Enter.ru</span>
+                </li>
+                <li class="custom-select-list__item">
+                	<input type="checkbox" id="shop2" name="paynow" class="custom-input custom-input--square-check" >
+
+					<label class="custom-label flex-hor-vertical-between" for="shop2">
+					<span class="custom-label_tx">Постаматы Pick-Point</span>
+                </li>
+                <li class="custom-select-list__item">
+                	<input type="checkbox" id="shop3" name="paynow" class="custom-input custom-input--square-check" >
+
+					<label class="custom-label flex-hor-vertical-between" for="shop3">
+					<span class="custom-label_tx">Почта России</span>
+				</li>
+                <li class="custom-select-list__item">
+                	<input type="checkbox" id="shop4" name="paynow" class="custom-input custom-input--square-check" >
+
+					<label class="custom-label flex-hor-vertical-between" for="shop4">
+					<span class="custom-label_tx">HermesDhd</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="custom-select">
+            <span class="custom-select__value js-order-btn" data-btn="select-price">
+                <span class="bb-dotted">Стоимость</span>
+                <i class="caret"></i>
+            </span>
+
+            <ul class="custom-select-list js-order-box" data-box="data-select-price">
+                <li class="custom-select-list__item">
+					<input type="checkbox" id="price1" name="paynow" class="custom-input custom-input--square-check" >
+
+					<label class="custom-label flex-hor-vertical-between" for="price1">
+					<span class="custom-label_tx">Бесплатно</span>
+                </li>
+                <li class="custom-select-list__item">
+					<input type="checkbox" id="price2" name="paynow" class="custom-input custom-input--square-check">
+
+					<label class="custom-label flex-hor-vertical-between" for="price2">
+					<span class="custom-label_tx">100 <span class="rubl">p</span></span>
+				</li>
+            </ul>
+        </div>
+
+        <div class="custom-select">
+            <span class="custom-select__value js-order-btn" data-btn="select-date">
+                <span class="bb-dotted">Дата</span>
+                <i class="caret"></i>
+            </span>
+
+            <ul class="custom-select-list js-order-box" data-box="data-select-date">
+                <li class="custom-select-list__item">
+					<input type="checkbox" id="date1" name="paynow" class="custom-input custom-input--square-check">
+
+					<label class="custom-label flex-hor-vertical-between" for="date1">
+					<span class="custom-label_tx">Сегодня</span>
+                </li>
+                <li class="custom-select-list__item">
+                	<input type="checkbox" id="date2" name="paynow" class="custom-input custom-input--square-check" >
+
+					<label class="custom-label flex-hor-vertical-between" for="date2">
+					<span class="custom-label_tx">Завтра</span>
+                </li>
+                <li class="custom-select-list__item">
+                	<input type="checkbox" id="date3" name="paynow" class="custom-input custom-input--square-check">
+
+					<label class="custom-label flex-hor-vertical-between" for="date3">
+					<span class="custom-label_tx">Послезавтра</span>
+                </li>
+            </ul>
+        </div>
+	</div>
+	<div class="pick-point">
+		<table class="pick-point-list">
+		<tbody>
+			<tr class="pick-point-list-i shop-snippet">
+
+					<td class="shop-snippet-name">
+						<img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
+						<span class="shop-snippet-name__text">Магазин Enter</span>
+					</td>
+
+					<td class="shop-snippet-info">
+						<div class="shop-snippet-metro">
+							<span class="shop-snippet-metro__bullet" style="background: green;"></span>
+							<span class="shop-snippet-metro__text">м. Белорусская</span>
+						</div>
+
+						<div class="shop-snippet-address">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2 <br/>c 9.00 до 22.00</div>
+					</td>
+
+					<td class="deliv-info-snippet">
+							<span class="deliv-info-snippet__date">Сегодня</span>
+							<span class="deliv-info-snippet__price">100 <span class="rubl">p</span></span>
+					</td>
+
+			</tr>
+			<tr class="pick-point-list-i shop-snippet">
+
+					<td class="shop-snippet-name">
+						<img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
+						<span class="shop-snippet-name__text">Магазин Enter</span>
+					</td>
+
+					<td class="shop-snippet-info">
+						<div class="shop-snippet-metro">
+							<span class="shop-snippet-metro__bullet" style="background: green;"></span>
+							<span class="shop-snippet-metro__text">м. Белорусская</span>
+						</div>
+
+						<div class="shop-snippet-address">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2 <br/>c 9.00 до 22.00</div>
+					</td>
+
+					<td class="deliv-info-snippet">
+						<span class="deliv-info-snippet__date">Послезавтра</span>
+						<span class="deliv-info-snippet__price">100 <span class="rubl">p</span></span>
+					</td>
+
+			</tr>
+			<tr class="pick-point-list-i shop-snippet">
+
+					<td class="shop-snippet-name">
+						<img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
+						<span class="shop-snippet-name__text">Магазин Enter</span>
+					</td>
+
+					<td class="shop-snippet-info">
+						<div class="shop-snippet-metro">
+							<span class="shop-snippet-metro__bullet" style="background: green;"></span>
+							<span class="shop-snippet-metro__text">м. Белорусская</span>
+						</div>
+
+						<div class="shop-snippet-address">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2 <br/>c 9.00 до 22.00</div>
+					</td>
+
+					<td class="deliv-info-snippet">
+						<span class="deliv-info-snippet__date">22.05.2015</span>
+						<span class="deliv-info-snippet__price">100 <span class="rubl">p</span></span>
+					</td>
+
+			</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
 
 <div style="" class="popupBox popupFl js-popup-box-celendar celedr">
 	<div class="popupFl_clsr"></div>
