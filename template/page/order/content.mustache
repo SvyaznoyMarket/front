@@ -932,10 +932,10 @@
 </div>
 <div class="order-popup clearfix">
 	<div class="order-popup__head">
-		<span class="popup-close js-popup-close"><i class="icon-close">×</i></span>
+		<span class="popup-close js-popup-close"><i class="icon-close"></i></span>
 	</div>
-	<div class="order-popup__top-block">
-		<form>
+	<div class="order-popup__top-block search">
+		<form class="search__section">
 			<div class="search-control {{! suggest-open }}">
 				<i class="sprite-icon sprite-icon--search"></i>
 				
@@ -954,6 +954,51 @@
 			</div>
 			<div class="btn btn--white btn--medium"><span class="map-link">Карта</span></div>
 		</form>
+	</div>
+	<div class="custom-select__kit">
+		<div class="custom-select">
+            <span class="custom-select__value js-order-btn" data-btn="select-point-type">
+                <span class="bb-dotted">Все точки</span>
+                <i class="caret"></i>
+            </span>
+
+            <ul class="custom-select-list js-order-box" data-box="data-select-point-type">
+                <li class="custom-select-list__item">
+                	<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio" checked>
+
+					<label class="custom-label flex-hor-vertical-between" for="pay1">
+					<span class="custom-label_tx">Магазины Enter.ru</span>
+                </li>
+                <li class="custom-select-list__item">Постаматы Pick-Point</li>
+                <li class="custom-select-list__item">Почта России</li>
+                <li class="custom-select-list__item">HermesDhd</li>
+            </ul>
+        </div>
+
+        <div class="custom-select">
+            <span class="custom-select__value js-order-btn" data-btn="select-price">
+                <span class="bb-dotted">Стоимость</span>
+                <i class="caret"></i>
+            </span>
+
+            <ul class="custom-select-list js-order-box" data-box="data-select-price">
+                <li class="custom-select-list__item">Бесплатно</li>
+                <li class="custom-select-list__item">100 <span class="rubl">p</span></li>
+            </ul>
+        </div>
+
+        <div class="custom-select">
+            <span class="custom-select__value js-order-btn" data-btn="select-date">
+                <span class="bb-dotted">Дата</span>
+                <i class="caret"></i>
+            </span>
+
+            <ul class="custom-select-list js-order-box" data-box="data-select-date">
+                <li class="custom-select-list__item">Сегодня</li>
+                <li class="custom-select-list__item">Завтра</li>
+                <li class="custom-select-list__item">Послезавтра</li>
+            </ul>
+        </div>
 	</div>
 </div>
 
