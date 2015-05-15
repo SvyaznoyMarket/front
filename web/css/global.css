@@ -4765,7 +4765,13 @@ body.noScroll {
 .catalogList .img {
   margin: 0 0 15px;
   height: 200px;
-  text-align: center;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .catalogList .img img {
   max-width: 100%;
@@ -4831,8 +4837,7 @@ body.noScroll {
     position: relative;
     float: left;
     width: 40%;
-    height: auto;
-    max-height: 200px;
+    height: 120px;
   }
   .catalogList .img img {
     max-width: 90%;
