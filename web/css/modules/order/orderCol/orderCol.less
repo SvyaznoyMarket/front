@@ -38,11 +38,10 @@
         }
     }
     &__inn {
-        padding: 12px 15px;
+        padding: 12px 10px;
 
         background: #feebd2;
     }
-
     .shopLst {
         position: relative;
 
@@ -86,14 +85,13 @@
 
     max-height: 260px;
     &__item {
-        display: flex;
-
         padding: 5px 0;
 
         border-bottom: 1px solid #e6e6e6;
 
+        .flexbox();
         flex-flow: row nowrap;
-        align-items: center;
+        .align-items();
         &:last-child {
             border: none;
         }
@@ -116,24 +114,24 @@
         padding-top: 0;
     }
     &__left {
-        padding-right: 15px;
+        padding-right: 10px;
+        width: 70px;
         & > img {
             max-width: 70px;
+            max-height: 70px;
         }
     }
     &__right {
-        flex-grow: 1;
     }
     &__name {
-        display: block;
-        overflow: hidden;
+        line-height: 1.2;
 
-        height: 52px;
+        min-height: 37px;
+        margin: 0 0 11px;
     }
     &__data {
         float: left;
-
-        width: 33%;
+        width: 33.3%;
 
         color: #777;
         &--sale {
@@ -186,8 +184,7 @@
 }
 
 .checkout-sale-code {
-    display: flex;
-
+    .flexbox();
     flex-flow: row wrap;
     &__title {
         width: 100%;

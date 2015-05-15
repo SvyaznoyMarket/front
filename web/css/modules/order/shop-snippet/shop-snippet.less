@@ -1,12 +1,11 @@
 .shop-snippet {
-    display: flex;
-    flex-direction: row;
-
-    align-items: center;
+    display: table;
     &-name {
         padding: 5px 20px 0 0;
 
         text-align: center;
+        display: table-cell;
+        vertical-align: middle;
 
         flex-basis: 70px;
         &__img {
@@ -45,7 +44,9 @@
 
         color: #616161;
     }
+
     &-info {
-        flex-grow: 1;
+        display: table-cell;
+        vertical-align: middle;
     }
 }
