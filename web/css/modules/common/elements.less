@@ -233,6 +233,8 @@
 .align-content(@property) {
     -webkit-align-content: @property;
        -moz-align-content: @property;
+            box-align: @property;
+    -webkit-box-align: @property;
             align-content: @property;
 }
 
@@ -244,11 +246,11 @@
 }
 
 .flex(@grow, @shrink, @basis) {
-  -webkit-box-flex: @grow @shrink @basis;
-        -webkit-flex: @grow @shrink @basis;
-           -moz-box-flex: @grow @shrink @basis;
-            -ms-flex: @grow @shrink @basis;
-                flex: @grow @shrink @basis;
+    -webkit-box-flex: @grow @shrink @basis;
+    -webkit-flex: @grow @shrink @basis;
+       -moz-box-flex: @grow @shrink @basis;
+        -ms-flex: @grow @shrink @basis;
+            flex: @grow @shrink @basis;
 }
 
 /* sprties */
