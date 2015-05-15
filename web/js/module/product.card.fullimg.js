@@ -27,9 +27,17 @@ define(
              * адаптивная ширина большого изображения
             */
             imgScale = function imgScale() {
+
+                var wh = w.innerHeight();
+                var ww = w.innerWidth();
+                var dh = thmbW.height();
+                // вычисляем vmin
+                var cw = (wh > ww) ? wrap.width() : wh - dh*2;
+                
+                 img.css({'max-height': cw, 'max-width': cw });
                 thmbW.css({ 'width' : wrap.width() });
                 
-                imgLoad.css({ 'height' : wrap.width(), 'width' : wrap.width() });
+                imgLoad.css({ 'height' : cw, 'width' : cw });
             },
 
             /*  
@@ -62,6 +70,8 @@ define(
                 var $self = $(this),
                     ww = w.width();
 
+                imgLoad.removeClass('nobg');
+
                 if ( ww <= 800 ) {
                     src = $self.data('middleimg');
 
@@ -79,6 +89,8 @@ define(
                 img.fadeOut(100, function(){
                     img.attr("src", src).hide().load( function() { img.fadeIn(100) })
                 });
+
+                imgLoad.addClass('nobg');
             },
 
             /*  

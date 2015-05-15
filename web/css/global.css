@@ -2746,11 +2746,14 @@ body.noScroll {
 .fullImgCnt_img {
   max-width: 100%;
   max-height: 100%;
+  display: inline-block;
+  *zoom: 1;
+  *display: inline;
 }
 .fullImgCnt_img_load {
   width: 100%;
   height: 100%;
-  margin: 0 0 10px;
+  margin: 0 auto 10px;
   background: #ffffff url('modules/common/img/ajaxnoti.gif') 50% 50% no-repeat;
   display: -webkit-box;
   display: -moz-box;
@@ -2765,6 +2768,9 @@ body.noScroll {
   -webkit-justify-content: center;
   -moz-justify-content: center;
   justify-content: center;
+}
+.fullImgCnt_img_load.nobg {
+  background: none;
 }
 .fullImgCnt_thmb {
   position: relative;
