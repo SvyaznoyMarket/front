@@ -678,7 +678,57 @@
         }
     }
 }
+.pick-point{
+    max-width: 640px;
+    margin: auto;
+    &-list{
+        width: 100%;
+        list-style: none;
+        &-i{
+            padding: 10px 0;
 
+        }
+    }
+    .shop-snippet{
+        &-name{
+
+        }
+        &-info{
+            width: 100%;
+            min-width: 0;
+        }
+    }
+}
+.deliv-info-snippet{
+
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    
+    width: 80px;
+    
+    padding: 0 3px;
+
+    &__date{
+        background-color: rgba(249,155,28,0.25);
+        padding: 2px 5px;
+        .rounded(3px);
+        margin-bottom: 5px;
+        font-size: 12px;
+        color: #424242;
+        text-align: center;
+        .inline-block();
+        white-space: nowrap;
+    }
+    &__price{
+        white-space: nowrap;
+        color: #424242;
+        font-size: 12px;
+        display: block;
+        min-width: 74px;
+        text-align: center;
+    }
+}
 
 .textfield-err + .orderU_lbl {
     color: @white;
