@@ -13,16 +13,18 @@
 
 
 .flex-hor-vertical-between {
-    display: flex;
+    .flexbox();
 
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    align-items: center;
+    .justify-content(space-between);
+    .align-items();
+    width: 100%;
+    max-width: 100%;
 }
 
 .flex-hor-vertical {
-    display: flex;
+    .flexbox();
 
-    flex-flow: row nowrap;
-    align-items: center;
+    .align-items();
+    width: 100%;
+    max-width: 100%;
 }

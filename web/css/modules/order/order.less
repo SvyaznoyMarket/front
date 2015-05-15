@@ -16,27 +16,24 @@
     &-steps {
         font-size: 16px;
 
-        display: flex;
-
         height: 54px;
 
         color: #bababa;
 
-        align-items: center;
-        flex-flow: row nowrap;
-        align-content: center;
-        justify-content: center;
+        .flexbox();
+        .align-items();
+        .align-content(center);
+        .justify-content(center);
         &__item {
             position: relative;
-
-            display: flex;
 
             height: 48px;
             margin-right: 47px;
 
             border-bottom: 5px solid transparent;
 
-            align-items: center;
+            .flexbox();
+            .align-items();
             &:after {
                 position: absolute;
                 top: 50%;
