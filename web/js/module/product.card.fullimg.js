@@ -27,17 +27,11 @@ define(
              * адаптивная ширина большого изображения
             */
             imgScale = function imgScale() {
-
-                var wh = w.innerHeight();
-                var ww = w.innerWidth();
-                var dh = thmbW.height();
-                // вычисляем vmin
-                var cw = (wh > ww) ? wrap.width() : wh - dh*2;
                 
-                 img.css({'max-height': cw, 'max-width': cw });
+                img.css({'max-height': wrap.width(), 'max-width': wrap.width() });
                 thmbW.css({ 'width' : wrap.width() });
                 
-                imgLoad.css({ 'height' : cw, 'width' : cw });
+                imgLoad.css({ 'height' : wrap.width(), 'width' : wrap.width() });
             },
 
             /*  
