@@ -88,6 +88,18 @@
         }
     }
 }
+.custom-input--square-check {
+    & + .custom-label {
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAzElEQVRIDe2WwQnEIBBFNXgNWIWWsA3kZkNbwnaTkzcb2BK0ioVcBXd+1oCHgCEmp3VAEozz/vARfjijstaqGOOLXidaI/YaaqFeJ4R4GmMCz/A3bcoG6F7rh0QeIk8ulVJMa80453uHD++llJj3noUQJNgDdcKWS+DgYEAMmmuCwOp56+QbEc+CNULg1uoCVXu7Rd2iqgPVA/0W/YlFyFCGJLqqCtaCW+QARswVH05rbZGZAe720B/wa4H0J8WZ1mrX6fF/jWDMYIL9BSacRhLVnKKDAAAAAElFTkSuQmCC');
+        background-position: 0 50%;
+        .background-size(12px 12px);
+    }
+    &:checked {
+        & + .custom-label {
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABcUlEQVRIDd2WMU7DQBBFZ60FGgKuqaCxbwBVOjfIQlwHTgBn4BJRhCwad0hI5AZ2Q6rQAqGBWFrmGydaR57FspOGkaJsdv/+N5lkMlHEkSRJUBTFLS8jfgyw1yPmfDfVWl/FcZyryvyZN/0epk1X3xhypqvM/SAIKAxDUko1iVvvGWMoyzLK89yHt8c3UZaNmMMHCSLRKiIAypr3zXzpiGfLawDAVkM73T9eqJjckJk9kvn+rEnV7j6poyHp02uig5Pamf1CBrD5YnxB5uvd1q/WAJrpAy1en2jn8l6EiCUqMxfMVxReIAFopRABKEvbcGllwFrNXbD1z8fWigBb1Gf9jwH4nrcNl1YsEZqobbi0IgAdqvYO/2RAU3azoBQBaH90qHd8Tk0lwB7OXF0MpvxTgVOG6OgOq84hv4POlvWLAGCGEibRpsLymgOQwhhjzjrozFqOzMog3frQ9/DXAtOfiSN+lOXqnP7vRXiM4AnvH18vfaW3pae2AAAAAElFTkSuQmCC');
+        }
+    }
+}
 
 // кастомный селект
 .custom-select {
@@ -116,7 +128,6 @@
     }
     &-list {
         position: absolute;
-        z-index: 99;
         top: 0;
         left: 0;
 
@@ -139,6 +150,28 @@
             }
             &:first-child {
                 border-top: 1px solid #c7c7c7;
+            }
+        }
+    }
+    &__kit{
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .custom-select{
+            width: 100%;
+            &-list{
+                width: auto;
+                
+                min-width: 100%;
+                white-space: nowrap;
+            }
+            &__value{
+                text-align: center;
             }
         }
     }
