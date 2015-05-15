@@ -964,14 +964,29 @@
 
             <ul class="custom-select-list js-order-box" data-box="data-select-point-type">
                 <li class="custom-select-list__item">
-                	<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio" checked>
+                	<input type="checkbox" id="shop1" name="paynow" class="custom-input custom-input--square-check" checked>
 
-					<label class="custom-label flex-hor-vertical-between" for="pay1">
+					<label class="custom-label flex-hor-vertical-between" for="shop1">
 					<span class="custom-label_tx">Магазины Enter.ru</span>
                 </li>
-                <li class="custom-select-list__item">Постаматы Pick-Point</li>
-                <li class="custom-select-list__item">Почта России</li>
-                <li class="custom-select-list__item">HermesDhd</li>
+                <li class="custom-select-list__item">
+                	<input type="checkbox" id="shop2" name="paynow" class="custom-input custom-input--square-check" >
+
+					<label class="custom-label flex-hor-vertical-between" for="shop2">
+					<span class="custom-label_tx">Постаматы Pick-Point</span>
+                </li>
+                <li class="custom-select-list__item">
+                	<input type="checkbox" id="shop3" name="paynow" class="custom-input custom-input--square-check" >
+
+					<label class="custom-label flex-hor-vertical-between" for="shop3">
+					<span class="custom-label_tx">Почта России</span>
+				</li>
+                <li class="custom-select-list__item">
+                	<input type="checkbox" id="shop4" name="paynow" class="custom-input custom-input--square-check" >
+
+					<label class="custom-label flex-hor-vertical-between" for="shop4">
+					<span class="custom-label_tx">HermesDhd</span>
+                </li>
             </ul>
         </div>
 
@@ -982,8 +997,18 @@
             </span>
 
             <ul class="custom-select-list js-order-box" data-box="data-select-price">
-                <li class="custom-select-list__item">Бесплатно</li>
-                <li class="custom-select-list__item">100 <span class="rubl">p</span></li>
+                <li class="custom-select-list__item">
+					<input type="checkbox" id="price1" name="paynow" class="custom-input custom-input--square-check" >
+
+					<label class="custom-label flex-hor-vertical-between" for="price1">
+					<span class="custom-label_tx">Бесплатно</span>
+                </li>
+                <li class="custom-select-list__item">
+					<input type="checkbox" id="price2" name="paynow" class="custom-input custom-input--square-check">
+
+					<label class="custom-label flex-hor-vertical-between" for="price2">
+					<span class="custom-label_tx">100 <span class="rubl">p</span></span>
+				</li>
             </ul>
         </div>
 
@@ -994,14 +1019,30 @@
             </span>
 
             <ul class="custom-select-list js-order-box" data-box="data-select-date">
-                <li class="custom-select-list__item">Сегодня</li>
-                <li class="custom-select-list__item">Завтра</li>
-                <li class="custom-select-list__item">Послезавтра</li>
+                <li class="custom-select-list__item">
+					<input type="checkbox" id="date1" name="paynow" class="custom-input custom-input--square-check">
+
+					<label class="custom-label flex-hor-vertical-between" for="date1">
+					<span class="custom-label_tx">Сегодня</span>
+                </li>
+                <li class="custom-select-list__item">
+                	<input type="checkbox" id="date2" name="paynow" class="custom-input custom-input--square-check" >
+
+					<label class="custom-label flex-hor-vertical-between" for="date2">
+					<span class="custom-label_tx">Завтра</span>
+                </li>
+                <li class="custom-select-list__item">
+                	<input type="checkbox" id="date3" name="paynow" class="custom-input custom-input--square-check">
+
+					<label class="custom-label flex-hor-vertical-between" for="date3">
+					<span class="custom-label_tx">Послезавтра</span>
+                </li>
             </ul>
         </div>
 	</div>
 	<div class="pick-point">
 		<table class="pick-point-list">
+		<tbody>
 			<tr class="pick-point-list-i shop-snippet">
 
 					<td class="shop-snippet-name">
@@ -1019,8 +1060,8 @@
 					</td>
 
 					<td class="deliv-info-snippet">
-						<span class="deliv-info-snippet__date">Сегодня</span>
-						<span class="deliv-info-snippet__price">100 <span class="rubl">p</span></span>
+							<span class="deliv-info-snippet__date">Сегодня</span>
+							<span class="deliv-info-snippet__price">100 <span class="rubl">p</span></span>
 					</td>
 
 			</tr>
@@ -1068,6 +1109,7 @@
 					</td>
 
 			</tr>
+			</tbody>
 		</table>
 	</div>
 </div>

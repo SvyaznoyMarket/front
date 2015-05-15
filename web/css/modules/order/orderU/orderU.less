@@ -682,20 +682,28 @@
     max-width: 640px;
     margin: auto;
     &-list{
-        width: 100%;
-        list-style: none;
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: block;
+        border-collapse: collapse;
         &-i{
             padding: 10px 0;
 
         }
     }
     .shop-snippet{
+        display: block;
         &-name{
-
+            width: 70px;
+            position: relative;
+            padding-left: 5px;
+            vertical-align: middle;
         }
         &-info{
             width: 100%;
             min-width: 0;
+            position: relative;
+            vertical-align: middle;
         }
     }
 }
@@ -704,14 +712,13 @@
     text-align: center;
     vertical-align: middle;
     white-space: nowrap;
-    
-    width: 80px;
+    position: relative;
     
     padding: 0 3px;
 
     &__date{
         background-color: rgba(249,155,28,0.25);
-        padding: 2px 5px;
+        padding: 2px 3px;
         .rounded(3px);
         margin-bottom: 5px;
         font-size: 12px;
@@ -719,6 +726,7 @@
         text-align: center;
         .inline-block();
         white-space: nowrap;
+        width: 70px;
     }
     &__price{
         white-space: nowrap;
