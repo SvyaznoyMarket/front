@@ -2744,8 +2744,8 @@ body.noScroll {
   text-align: center;
 }
 .fullImgCnt_img {
-  width: 100%;
-  height: auto;
+  max-width: 100%;
+  max-height: 100%;
 }
 .fullImgCnt_img_load {
   width: 100%;
@@ -2790,17 +2790,16 @@ body.noScroll {
   *display: inline;
 }
 .fullImgCnt_thmb_i-act .fullImgCnt_thmb_i_w {
-  width: 48px;
-  height: 48px;
   border: 2px solid #f99b1c;
-}
-.fullImgCnt_thmb_i-act .fullImgCnt_thmb_img {
-  margin: -1px 0 0 -1px;
+  margin: 0;
 }
 .fullImgCnt_thmb_i_w {
   display: block;
   overflow: hidden;
+  width: 48px;
+  height: 48px;
   border: 1px solid #e3e3e3;
+  margin: 1px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
