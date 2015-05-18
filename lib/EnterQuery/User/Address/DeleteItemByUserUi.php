@@ -18,7 +18,7 @@ class DeleteItemByUserUi extends Query {
         $this->url->path = 'api/address/delete';
         $this->data = [
             'user_uid' => $userUi,
-            'uid'      => $id,
+            'id'      => $id,
         ];
 
         $this->init();

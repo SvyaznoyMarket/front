@@ -132,3 +132,11 @@
 
     border: 1px solid transparent;
 }
+.slide-item:not(:first-child) {
+  display: none;
+}
+.slick-initialized {
+  .slide-item {
+    display: block;
+  }
+}

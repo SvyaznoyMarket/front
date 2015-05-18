@@ -236,6 +236,11 @@
         }
     },
 
+    "Git\\Pull": {
+        "name": "Git pull",
+        "pattern": "/git/pull"
+    },
+
     "Content": {
         "name": "Контентные страницы",
         "pattern": "/{contentToken}"

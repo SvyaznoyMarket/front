@@ -14,8 +14,6 @@ class Address {
     /** @var int */
     public $type;
     /** @var string */
-    public $name;
-    /** @var string */
     public $kladrId;
     /** @var string */
     public $regionId;
@@ -37,7 +35,6 @@ class Address {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('user_uid', $data)) $this->userUi = (string)$data['user_uid'];
         if (array_key_exists('type', $data)) $this->type = (int)$data['type'];
-        if (array_key_exists('title', $data)) $this->name = (string)$data['title'];
         if (array_key_exists('kladr_id', $data)) $this->kladrId = (string)$data['kladr_id'];
         if (array_key_exists('geo_id', $data)) $this->regionId = (string)$data['geo_id'];
         if (array_key_exists('zip_code', $data)) $this->zipCode = (string)$data['zip_code'];
