@@ -3311,6 +3311,12 @@ body.noScroll {
 .custom-select__kit .custom-select__value {
   text-align: center;
 }
+.custom-select.active .custom-select__value {
+  z-index: 102;
+}
+.custom-select.active .custom-select-list {
+  z-index: 101;
+}
 .caret {
   width: 7px;
   height: 6px;
@@ -6786,6 +6792,7 @@ body.noScroll {
 }
 .box-show {
   display: block;
+  z-index: 1;
 }
 @media only screen and (max-width: 480px) {
   .checkout-order-head__vendor {
