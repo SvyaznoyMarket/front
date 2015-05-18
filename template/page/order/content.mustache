@@ -74,7 +74,7 @@
 	            </fieldset>
 	        </form>
 
-	        <div class="btn-container">
+	        <div class="btn-container btn-container--orange">
 	            <button class="btn btn--submit btn--orange btn--big">Далее</button>
 	        </div>
 	    </section>
@@ -112,9 +112,11 @@
 	                </menu>
 
 					<div class="checkout-order__inn box-show js-delivery-type" id="delivery-type-self">
-			            <button class="btn-transparent btn-transparent--normal js-order-btn" data-btn="select-shop">
-			            	<span class="bb-dotted">Выбрать точку самовывоза</span>
-			            </button>
+			            <div class="btn-container">
+				            <button class="btn-transparent btn-transparent--normal js-order-btn" data-btn="select-shop">
+				            	<span class="bb-dotted">Выбрать точку самовывоза</span>
+				            </button>
+			            </div>
 	                </div>
 
 	                <div class="checkout-order__inn js-delivery-type" id="delivery-type-buy">
@@ -179,70 +181,10 @@
                 </div>
 
                 <div class="checkout-sale checkout-order__box">
-                	<div class="checkout-sale__title"><strong>Скидки</strong></div>
-
-					<div class="table">
-	                	<div class="table_cell">
-		                	<span class="bb-dotted js-order-btn" data-btn="select-fishk">Фишки EnterPrize</span>
-	                	</div>
-
-	                	<div class="table_cell ta-r">
-	                		<span class="bb-dotted js-order-btn" data-btn="select-sale">Ввести код скидки</span>
-	                	</div>
-                	</div>
+	                <div class="btn-container">
+	                	<button class="orderInf_r btn-transparent btn-transparent--normal"><span class="bb-dotted js-order-btn" data-btn="select-sale">Выбрать скидку</span></button>
+	                </div>
                 </div>
-
-				{{! выбрать фишку enter prize }}
-                <div class="sale-select checkout-order__box checkout-order__box--light js-order-box" data-box="data-select-fishk">
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-				</div>
-				{{! выбрать фишку enter prize }}
 
 				{{! ввести код скидки или сертефиката }}
                 <div class="checkout-order__box checkout-order__box--light js-order-box" data-box="data-select-sale">
@@ -260,6 +202,53 @@
 
 						<button class="checkout-sale-code__button btn-type btn-type--default js-order-btn" data-btn="selected-sale">Применить</button>
 					</div>
+					<a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
                 </div>
 				{{! ввести код скидки или сертефиката }}
 
@@ -310,9 +299,37 @@
                     <div class="checkout-summary__item l">Итого:</div>
                 </div>
             	{{! общая стоимость заказа }}
+            	{{! Оплата }}
+            	<div class="checkout-checkbox">
+            		<ul class="checkout-checkbox-lst">
+            			<li class="checkout-checkbox-lst__i">
+				            <input type="radio" id="type1" name="paynow" class="custom-input custom-input--defradio" checked>
+							<label class="custom-label" for="type1">
+								<span class="custom-label_tx">При получении</span>
+								
+							</label>
+            			</li>
+            			<li class="checkout-checkbox-lst__i">
+				            <input type="radio" id="type2" name="paynow" class="custom-input custom-input--defradio" checked>
+							<label class="custom-label" for="type2" checked>
+								<span class="custom-label_tx">Онлайн-оплата
+									<span class="custom-label_tx--gray custom-label_tx--small">Банковская карта, Яндекс.Деньги, PayPal и др.</span>
+									
+								</span>
+								
+							</label>
+            			</li>
+            		</ul>
+            	</div>
+            	{{! Оплата - end }}
 	        </div>
 	        {{! разбиение заказа, адрес доставки не выбран }}
+	        <div class="btn-container btn-container--orange">
+                <input type="checkbox" class="custom-input custom-input--check" id="accept" name="" value="" />
+                <label class="order-accept custom-label custom-label--top" for="accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
 
+	            <button class="btn btn--submit btn--orange btn--big">Оформить</button>
+	        </div>
 
 
 
@@ -436,70 +453,10 @@
                 </div>
 
                 <div class="checkout-sale checkout-order__box">
-                	<div class="checkout-sale__title"><strong>Скидки</strong></div>
-
-					<div class="table">
-	                	<div class="table_cell">
-		                	<span class="bb-dotted js-order-btn" data-btn="select-fishk">Фишки EnterPrize</span>
-	                	</div>
-
-	                	<div class="table_cell ta-r">
-	                		<span class="bb-dotted js-order-btn" data-btn="select-sale">Ввести код скидки</span>
-	                	</div>
-                	</div>
+	                <div class="btn-container">
+	                	<button class="orderInf_r btn-transparent btn-transparent--normal"><span class="bb-dotted js-order-btn" data-btn="select-sale">Выбрать скидку</span></button>
+	                </div>
                 </div>
-
-				{{! выбрать фишку enter prize }}
-                <div class="sale-select checkout-order__box checkout-order__box--light js-order-box" data-box="data-select-fishk">
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-
-	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-						<span class="sale-select__right">- 2% на категорию Электроника</span>
-	                </a>
-				</div>
-				{{! выбрать фишку enter prize }}
 
 				{{! ввести код скидки или сертефиката }}
                 <div class="checkout-order__box checkout-order__box--light js-order-box" data-box="data-select-sale">
@@ -517,6 +474,53 @@
 
 						<button class="checkout-sale-code__button btn-type btn-type--default js-order-btn" data-btn="selected-sale">Применить</button>
 					</div>
+					<a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
+
+	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+	                	<img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
+
+						<span class="sale-select__right">- 2% на категорию Электроника</span>
+	                </a>
                 </div>
 				{{! ввести код скидки или сертефиката }}
 
@@ -567,10 +571,33 @@
                     <div class="checkout-summary__item l">Итого:</div>
                 </div>
             	{{! общая стоимость заказа }}
+	            {{! Оплата }}
+	        	<div class="checkout-checkbox">
+	        		<ul class="checkout-checkbox-lst">
+	        			<li class="checkout-checkbox-lst__i">
+				            <input type="radio" id="type1" name="paynow" class="custom-input custom-input--defradio" checked>
+							<label class="custom-label" for="type1">
+								<span class="custom-label_tx">При получении</span>
+								
+							</label>
+	        			</li>
+	        			<li class="checkout-checkbox-lst__i">
+				            <input type="radio" id="type2" name="paynow" class="custom-input custom-input--defradio" checked>
+							<label class="custom-label" for="type2" checked>
+								<span class="custom-label_tx">Онлайн-оплата
+									<span class="custom-label_tx--gray custom-label_tx--small">Банковская карта, Яндекс.Деньги, PayPal и др.</span>
+									
+								</span>
+								
+							</label>
+	        			</li>
+	        		</ul>
+	        	</div>
+	        	{{! Оплата - end }}
 	        </div>
 	        {{! разбиение заказа, адрес доставки выбран }}
 
-	        <div class="btn-container">
+	        <div class="btn-container btn-container--orange">
                 <input type="checkbox" class="custom-input custom-input--check" id="accept" name="" value="" />
                 <label class="order-accept custom-label custom-label--top" for="accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
 
@@ -822,41 +849,47 @@
 </div>
 
 {{! Нужно убрать свойство данного блока max-width: 300px, которое ставится js-ом }}
-<div class="popupBox order-popup order-popup js-popup-box">
+<div class="popupBox order-popup js-popup-box">
 	<div class="order-popup__head">
 		<span class="popup-close js-popup-close">Отмена</span>
 		<span class="popup-title">Адрес доставки</span>
 	</div>
 
-	<ul class="order-popup-lst">
-		<li class="order-popup-lst__i">
-			<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio" checked>
+	<ul class="checkout-checkbox-lst">
+		<li class="checkout-checkbox-lst__i">
+			<input type="radio" id="adr1" name="paynow" class="custom-input custom-input--defradio" checked>
 
-			<label class="custom-label" for="pay1">
+			<label class="custom-label" for="adr1">
 				<span class="custom-label_tx">ул. Линии Октябрьской Железной Дороги, 12/1, 23</span>
 			</label>
 		</li>
 
-		<li class="order-popup-lst__i">
-			<input type="radio" id="pay2" name="paynow" class="custom-input custom-input--defradio">
+		<li class="checkout-checkbox-lst__i">
+			<input type="radio" id="adr2" name="adrnow" class="custom-input custom-input--defradio">
 
-			<label class="custom-label" for="pay2">
+			<label class="custom-label" for="adr2">
 				<span class="custom-label_tx">ул. Орджоникидзе, 10</span>
 			</label>
 		</li>
 
-		<li class="order-popup-lst__i">
-			<input type="radio" id="pay3" name="paynow" class="custom-input custom-input--defradio">
+		<li class="checkout-checkbox-lst__i">
+			<input type="radio" id="adr3" name="adrnow" class="custom-input custom-input--defradio">
 
-			<label class="custom-label" for="pay3">
+			<label class="custom-label" for="adr3">
 				<span class="custom-label_tx">Улицв Умывальников Начальника</span>
 			</label>
 		</li>
+		<li class="checkout-checkbox-lst__i">
+			<input type="radio" id="adr3" name="adrnow" class="custom-input custom-input--defradio">
 
-		<li class="order-popup-lst__i">
-			<input type="radio" id="pay4" name="paynow" class="custom-input custom-input--defradio">
+			<label class="custom-label" for="adr3">
+				<span class="custom-label_tx"><span class="custom-label_tx--gray">Другой адрес</span></span>
+			</label>
+		</li>
+		<li class="checkout-checkbox-lst__i">
+			<input type="radio" id="adr4" name="adrnow" class="custom-input custom-input--defradio">
 
-			<label class="custom-label" for="pay4">
+			<label class="custom-label" for="adr4">
 
 				<span class="custom-label_tx"><span class="custom-label_tx--gray">Изменить адрес</span>
 					Улица Мочалок Командира</span>
@@ -867,56 +900,56 @@
 	<div class="btn-container"><a href="" class="btn btn--orange btn--pay">Выбрать</a></div>
 
 </div>
-<div class="popupBox order-popup order-popup js-popup-box">
+<div class="popupBox order-popup js-popup-box">
 	<div class="order-popup__head">
 		<span class="popup-close js-popup-close">Отмена</span>
 		<span class="popup-title">Оплатить онлайн</span>
 	</div>
 
-	<ul class="order-popup-lst">
-		<li class="order-popup-lst__i">
+	<ul class="checkout-checkbox-lst">
+		<li class="checkout-checkbox-lst__i">
 			<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio" checked>
 
 			<label class="custom-label" for="pay1">
 				<span class="custom-label_tx">Банковская карта</span>
-				<span class="order-popup__icon-wrap">
+				<span class="checkout-payment__icon-wrap">
 					<img src="/css/modules/order/img/visa2.png" alt="">
 					<img src="/css/modules/order/img/mcard.png" alt="">
 				</span>
 			</label>
 		</li>
 
-		<li class="order-popup-lst__i">
+		<li class="checkout-checkbox-lst__i">
 			<input type="radio" id="pay2" name="paynow" class="custom-input custom-input--defradio">
 
 			<label class="custom-label" for="pay2">
 				<span class="custom-label_tx">Pay Pal</span>
-				<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/paypal3.png" alt=""></span>
+				<span class="checkout-payment__icon-wrap"><img src="/css/modules/order/img/paypal3.png" alt=""></span>
 			</label>
 		</li>
 
-		<li class="order-popup-lst__i">
+		<li class="checkout-checkbox-lst__i">
 			<input type="radio" id="pay3" name="paynow" class="custom-input custom-input--defradio">
 
 			<label class="custom-label" for="pay3">
 				<span class="custom-label_tx">Яндекс.деньги</span>
-				<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/yandexmoney.png" alt=""></span>
+				<span class="checkout-payment__icon-wrap"><img src="/css/modules/order/img/yandexmoney.png" alt=""></span>
 			</label>
 		</li>
 
-		<li class="order-popup-lst__i">
+		<li class="checkout-checkbox-lst__i">
 			<input type="radio" id="pay4" name="paynow" class="custom-input custom-input--defradio">
 
 			<label class="custom-label" for="pay4">
 				<span class="custom-label_tx">Интернет-банк</span>
-				<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/psbfull.png" alt=""></span>
+				<span class="checkout-payment__icon-wrap"><img src="/css/modules/order/img/psbfull.png" alt=""></span>
 			</label>
 		</li>
 	</ul>
 
 	<div class="btn-container"><a href="" class="btn btn--orange btn--pay">Оплатить</a></div>
 
-	<p class="order-popup-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
+	<p class="checkout-checkbox-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
 
 
 </div>
@@ -927,6 +960,27 @@
 	</div>
 
 	<div class="address-pick-snippet">
+		<div class="order-popup__top-block search">
+    		<form class="search__section">
+    			<div class="search-control ">
+    				<i class="sprite-icon sprite-icon--search"></i>
+    
+    				<input class="search-control__input" type="text" placeholder="Искать по улице, метро">
+    				<input class="search-control__submit" type="submit" value="">
+    				<div class="form-control-group__suggest suggest-control">
+                        <ul class="suggest-control-lst">
+                        	<li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
+                        	<li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
+                        	<li class="suggest-control-lst-i">Улица Мочалок Командира</li>
+                        	<li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
+                        	<li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
+                        	<li class="suggest-control-lst-i">Улица Мочалок Командира</li>
+                        </ul>
+                    </div>
+    			</div>
+    			<div class="btn btn--white btn--medium"><span class="map-link">Список</span></div>
+    		</form>
+    	</div>
 		<div class="order-popup-map">
 			<div class="order-popup-map-ctrl pointer"><i class="map-icon map-icon-pointer"></i></div>
 			<div class="order-popup-map-ctrl zoom-in">+</div>
@@ -1076,6 +1130,12 @@
 
 					<label class="custom-label flex-hor-vertical-between" for="date3">
 					<span class="custom-label_tx">Послезавтра</span>
+                </li>
+                <li class="custom-select-list__item">
+                	<input type="checkbox" id="date3" name="paynow" class="custom-input custom-input--square-check">
+
+					<label class="custom-label flex-hor-vertical-between" for="date3">
+					<span class="custom-label_tx">с 23.05 по 24.06</span>
                 </li>
             </ul>
         </div>

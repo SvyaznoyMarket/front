@@ -3355,9 +3355,6 @@ body.noScroll {
   align-items: center;
   justify-content: space-between;
 }
-.custom-select__kit .custom-select {
-  width: 100%;
-}
 .custom-select__kit .custom-select-list {
   width: auto;
   min-width: 100%;
@@ -3380,6 +3377,34 @@ body.noScroll {
   vertical-align: middle;
   *zoom: 1;
   *display: inline;
+}
+.checkout-checkbox-lst__i {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.checkout-checkbox-lst__i .custom-label {
+  width: 100%;
+  height: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+.checkout-checkbox-lst__i .custom-label_tx {
+  font-size: 14px;
+  margin-left: 10px;
+}
+.checkout-checkbox-lst__i .custom-label_tx--gray {
+  color: #616161;
+  display: block;
+}
+.checkout-checkbox-lst__i .custom-label_tx--small {
+  font-size: 12px;
+}
+.checkout-checkbox-lst__desc {
+  font-size: 12px;
+  text-align: center;
+  color: #616161;
 }
 /* ==========================================================================
    Пользовательских input[type=radio], input[type=checkbox] .customInput
@@ -6584,7 +6609,7 @@ body.noScroll {
 }
 .checkout-order {
   font-size: 14px;
-  margin: 0 0 20px;
+  margin: 0px;
   border-width: 1px 1px 0 5px;
   border-style: solid;
   border-color: #a6a6a6;
@@ -7086,12 +7111,14 @@ body.noScroll {
 }
 .checkout .btn-container {
   margin: 0;
-  padding: 10px;
-  background: rgba(252, 141, 47, 0.2);
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+}
+.checkout .btn-container--orange {
+  background: rgba(252, 141, 47, 0.2);
+  padding: 10px;
 }
 .checkout-done .checkout__tl {
   width: 170px;
@@ -7505,33 +7532,7 @@ body.noScroll {
   -moz-border-radius: 0px;
   border-radius: 0px;
 }
-.order-popup-lst__i {
-  height: 55px;
-  padding: 12px 15px;
-  border-bottom: 1px solid #e6e6e6;
-}
-.order-popup-lst__i .custom-label {
-  width: 100%;
-  height: 100%;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -ms-box-sizing: border-box;
-}
-.order-popup-lst__i .custom-label_tx {
-  font-size: 14px;
-  margin-left: 10px;
-}
-.order-popup-lst__i .custom-label_tx--gray {
-  color: #616161;
-  display: block;
-}
-.order-popup-lst__desc {
-  font-size: 12px;
-  text-align: center;
-  color: #616161;
-}
-.order-popup__icon-wrap {
+.order-popup .checkout-payment__icon-wrap {
   float: right;
 }
 .order-popup__head {
