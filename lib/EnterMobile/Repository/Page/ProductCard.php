@@ -116,7 +116,7 @@ class ProductCard {
                 $shopState = new Page\Content\Product\ShopStateBlock\State();
 
                 $shopState->name = $shopStateModel->shop->name;
-                $shopState->address = $shopStateModel->shop->address;
+                $shopState->address = ($request->region->id !== $shopStateModel->shop->regionId) ? $shopStateModel->shop->name : $shopStateModel->shop->address;
                 $shopState->url = $shopStateModel->shop->region
                     ? $router->getUrlByRoute(new Routing\ShopCard\Get($shopStateModel->shop->token, $shopStateModel->shop->region->token))
                     : $router->getUrlByRoute(new Routing\Shop\Index());
