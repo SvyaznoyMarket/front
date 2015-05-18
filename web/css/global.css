@@ -3414,6 +3414,19 @@ body.noScroll {
     font-size: 12px;
   }
 }
+.custom-select__kit.custom-filter__kit .custom-select__value {
+  border: 1px solid transparent;
+  border-bottom: 0px;
+}
+.custom-select__kit.custom-filter__kit .custom-select-list {
+  top: 34px;
+  padding-top: 0px;
+  border: 1px solid #c7c7c7;
+}
+.custom-select__kit.custom-filter__kit .custom-select.active .custom-select__value {
+  border-color: #c7c7c7;
+  background-color: #fff;
+}
 /* ==========================================================================
    Стили цен .buyInfoPrice, .buyInfoLess
    ========================================================================== */
