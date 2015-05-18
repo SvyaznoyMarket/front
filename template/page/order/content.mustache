@@ -133,18 +133,7 @@
 		                <div class="checkout-address">
 							<div class="checkout-address__title"><strong>Адрес</strong> для всех заказов с доставкой</div>
 
-							<div class="checkout-address__select custom-select">
-    	                        <span class="custom-select__value js-order-btn" data-btn="select-address">
-	    	                        <span class="bb-dotted">Указать адрес</span>
-	    	                        <i class="caret"></i>
-    	                        </span>
-
-    	                        <ul class="custom-select-list js-order-box" data-box="data-select-address">
-    	                            <li class="custom-select-list__item">ул. Линии Октябрьской Железной Дороги, 12/1, 23</li>
-    	                            <li class="custom-select-list__item">ул. Орджоникидзе, 10</li>
-    	                            <li class="custom-select-list__item custom-select-list__item--add"><span class="icon-plus">+</span> <span class="bb-dotted">Добавить адрес</span></li>
-    	                        </ul>
-    	                    </div>
+							<button class="orderInf_r btn-transparent btn-transparent--normal"><span class="bb-dotted">Указать адрес</span></button>
 						</div>
 		            </div>
                 </div>
@@ -583,7 +572,7 @@
 
 	        <div class="btn-container">
                 <input type="checkbox" class="custom-input custom-input--check" id="accept" name="" value="" />
-                <label class="order-accept custom-label" for="accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
+                <label class="order-accept custom-label custom-label--top" for="accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
 
 	            <button class="btn btn--submit btn--orange btn--big">Оформить</button>
 	        </div>
@@ -833,6 +822,51 @@
 </div>
 
 {{! Нужно убрать свойство данного блока max-width: 300px, которое ставится js-ом }}
+<div class="popupBox order-popup order-popup js-popup-box">
+	<div class="order-popup__head">
+		<span class="popup-close js-popup-close">Отмена</span>
+		<span class="popup-title">Адрес доставки</span>
+	</div>
+
+	<ul class="order-popup-lst">
+		<li class="order-popup-lst__i">
+			<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio" checked>
+
+			<label class="custom-label" for="pay1">
+				<span class="custom-label_tx">ул. Линии Октябрьской Железной Дороги, 12/1, 23</span>
+			</label>
+		</li>
+
+		<li class="order-popup-lst__i">
+			<input type="radio" id="pay2" name="paynow" class="custom-input custom-input--defradio">
+
+			<label class="custom-label" for="pay2">
+				<span class="custom-label_tx">ул. Орджоникидзе, 10</span>
+			</label>
+		</li>
+
+		<li class="order-popup-lst__i">
+			<input type="radio" id="pay3" name="paynow" class="custom-input custom-input--defradio">
+
+			<label class="custom-label" for="pay3">
+				<span class="custom-label_tx">Улицв Умывальников Начальника</span>
+			</label>
+		</li>
+
+		<li class="order-popup-lst__i">
+			<input type="radio" id="pay4" name="paynow" class="custom-input custom-input--defradio">
+
+			<label class="custom-label" for="pay4">
+
+				<span class="custom-label_tx"><span class="custom-label_tx--gray">Изменить адрес</span>
+					Улица Мочалок Командира</span>
+			</label>
+		</li>
+	</ul>
+
+	<div class="btn-container"><a href="" class="btn btn--orange btn--pay">Выбрать</a></div>
+
+</div>
 <div class="popupBox order-popup order-popup js-popup-box">
 	<div class="order-popup__head">
 		<span class="popup-close js-popup-close">Отмена</span>
