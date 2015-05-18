@@ -6879,13 +6879,10 @@ body.noScroll {
 }
 .checkout-summary__item {
   float: right;
+  line-height: 1.3;
 }
-.checkout-summary__item:nth-child(2n+1) {
+.checkout-summary__item--val {
   width: 90px;
-}
-.checkout-summary__item:nth-child(4),
-.checkout-summary__item:nth-child(3) {
-  margin-top: 5px;
 }
 .js-order-box,
 .js-delivery-type {
@@ -6897,9 +6894,18 @@ body.noScroll {
 }
 @media only screen and (max-width: 480px) {
   .checkout-order-head__vendor {
+    display: block;
     float: none;
     clear: both;
+  }
+  .checkout-summary .table_cell {
     display: block;
+  }
+  .checkout-summary .table_cell:first-child {
+    margin: 0 -10px 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    border-bottom: 1px solid #a6a6a6;
   }
 }
 .orderComment {
@@ -7499,11 +7505,20 @@ body.noScroll {
   height: 55px;
   padding: 0 15px;
   border-bottom: 1px solid #e6e6e6;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-align: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
 }
 .order-popup-lst__i .custom-label {
   width: 100%;
   height: 100%;
-  line-height: 52px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -7512,6 +7527,23 @@ body.noScroll {
 .order-popup-lst__i .custom-label_tx {
   font-size: 14px;
   margin-left: 10px;
+}
+.order-popup-lst__i .custom-label-box {
+  height: 100%;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-align-content: center;
+  -moz-align-content: center;
+  box-align: center;
+  -webkit-box-align: center;
+  align-content: center;
 }
 .order-popup-lst__desc {
   font-size: 12px;
@@ -8558,6 +8590,18 @@ body.noScroll {
 }
 .clear {
   clear: both;
+}
+.mb-5 {
+  margin-bottom: 5px;
+}
+.mb-10 {
+  margin-bottom: 10px;
+}
+.mb-15 {
+  margin-bottom: 15px;
+}
+.grey-light {
+  color: #777777;
 }
 .flex-hor-vertical-between {
   display: -webkit-box;

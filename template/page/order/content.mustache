@@ -132,19 +132,6 @@
 
 		                <div class="checkout-address">
 							<div class="checkout-address__title"><strong>Адрес</strong> для всех заказов с доставкой</div>
-
-							<div class="checkout-address__select custom-select">
-    	                        <span class="custom-select__value js-order-btn" data-btn="select-address">
-	    	                        <span class="bb-dotted">Указать адрес</span>
-	    	                        <i class="caret"></i>
-    	                        </span>
-
-    	                        <ul class="custom-select-list js-order-box" data-box="data-select-address">
-    	                            <li class="custom-select-list__item">ул. Линии Октябрьской Железной Дороги, 12/1, 23</li>
-    	                            <li class="custom-select-list__item">ул. Орджоникидзе, 10</li>
-    	                            <li class="custom-select-list__item custom-select-list__item--add"><span class="icon-plus">+</span> <span class="bb-dotted">Добавить адрес</span></li>
-    	                        </ul>
-    	                    </div>
 						</div>
 		            </div>
                 </div>
@@ -187,20 +174,6 @@
 		                    <div class="checkout-order-items__data l ta-r">5 200 <span class="rubl">p</span></div>
 	                    </div>
 	                </div>
-                </div>
-
-                <div class="checkout-sale checkout-order__box">
-                	<div class="checkout-sale__title"><strong>Скидки</strong></div>
-
-					<div class="table">
-	                	<div class="table_cell">
-		                	<span class="bb-dotted js-order-btn" data-btn="select-fishk">Фишки EnterPrize</span>
-	                	</div>
-
-	                	<div class="table_cell ta-r">
-	                		<span class="bb-dotted js-order-btn" data-btn="select-sale">Ввести код скидки</span>
-	                	</div>
-                	</div>
                 </div>
 
 				{{! выбрать фишку enter prize }}
@@ -312,20 +285,25 @@
                 </div>
                 {{! примененные скидки }}
 
-				{{! общая стоимость заказа }}
-                <div class="checkout-summary checkout-order__box clearfix ta-r">
-                    <div class="checkout-summary__item">150 <span class="rubl">p</span></div>
-                    <div class="checkout-summary__item">Доставка:</div>
+            	{{! общая стоимость заказа }}
+                <div class="checkout-summary checkout-order__box table">
+            		<div class="table_cell">
+            			<button class="btn-transparent btn-transparent--normal"><span class="bb-dotted">Добавить скидку</span></button>
+            		</div>
 
-                    <div class="checkout-summary__item clear-r l">2 334 <span class="rubl">p</span></div>
-                    <div class="checkout-summary__item l">Итого:</div>
+            		<div class="table_cell ta-r">
+            			<div class="checkout-summary__item checkout-summary__item--val mb-10">150 <span class="rubl">p</span></div>
+	                    <div class="checkout-summary__item mb-10">Доставка:</div>
+
+	                    <div class="checkout-summary__item checkout-summary__item--val mb-5 grey-light clear-r l">42 334 <span class="rubl">p</span></div>
+
+	                    <div class="checkout-summary__item checkout-summary__item--val clear-r l">2 334 <span class="rubl">p</span></div>
+	                    <div class="checkout-summary__item l">Итого:</div>
+            		</div>
                 </div>
             	{{! общая стоимость заказа }}
 	        </div>
 	        {{! разбиение заказа, адрес доставки не выбран }}
-
-
-
 
 	        {{! разбиение заказа, адрес доставки выбран }}
 	        <div class="checkout-order">
@@ -446,20 +424,6 @@
 	                </div>
                 </div>
 
-                <div class="checkout-sale checkout-order__box">
-                	<div class="checkout-sale__title"><strong>Скидки</strong></div>
-
-					<div class="table">
-	                	<div class="table_cell">
-		                	<span class="bb-dotted js-order-btn" data-btn="select-fishk">Фишки EnterPrize</span>
-	                	</div>
-
-	                	<div class="table_cell ta-r">
-	                		<span class="bb-dotted js-order-btn" data-btn="select-sale">Ввести код скидки</span>
-	                	</div>
-                	</div>
-                </div>
-
 				{{! выбрать фишку enter prize }}
                 <div class="sale-select checkout-order__box checkout-order__box--light js-order-box" data-box="data-select-fishk">
 	                <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
@@ -570,12 +534,18 @@
                 {{! примененные скидки }}
 
 				{{! общая стоимость заказа }}
-                <div class="checkout-summary checkout-order__box clearfix ta-r">
-                    <div class="checkout-summary__item">150 <span class="rubl">p</span></div>
-                    <div class="checkout-summary__item">Доставка:</div>
+                <div class="checkout-summary checkout-order__box table">
+            		<div class="table_cell">
+            			<button class="btn-transparent btn-transparent--normal"><span class="bb-dotted">Добавить скидку</span></button>
+            		</div>
 
-                    <div class="checkout-summary__item clear-r l">2 334 <span class="rubl">p</span></div>
-                    <div class="checkout-summary__item l">Итого:</div>
+            		<div class="table_cell ta-r">
+            			<div class="checkout-summary__item checkout-summary__item--val mb-10">150 <span class="rubl">p</span></div>
+	                    <div class="checkout-summary__item mb-10">Доставка:</div>
+
+	                    <div class="checkout-summary__item checkout-summary__item--val clear-r l">2 334 <span class="rubl">p</span></div>
+	                    <div class="checkout-summary__item l">Итого:</div>
+            		</div>
                 </div>
             	{{! общая стоимость заказа }}
 	        </div>
@@ -844,11 +814,13 @@
 			<input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio" checked>
 
 			<label class="custom-label" for="pay1">
-				<span class="custom-label_tx">Банковская карта</span>
-				<span class="order-popup__icon-wrap">
-					<img src="/css/modules/order/img/visa2.png" alt="">
-					<img src="/css/modules/order/img/mcard.png" alt="">
-				</span>
+				<div class="custom-label-box">
+					<span class="custom-label_tx">Банковская карта</span>
+					<span class="order-popup__icon-wrap">
+						<img src="/css/modules/order/img/visa2.png" alt="">
+						<img src="/css/modules/order/img/mcard.png" alt="">
+					</span>
+				</div>
 			</label>
 		</li>
 
@@ -856,17 +828,22 @@
 			<input type="radio" id="pay2" name="paynow" class="custom-input custom-input--defradio">
 
 			<label class="custom-label" for="pay2">
-				<span class="custom-label_tx">Pay Pal</span>
-				<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/paypal3.png" alt=""></span>
+				<div class="custom-label-box">
+					<span class="custom-label_tx">Pay Pal</span>
+					<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/paypal3.png" alt=""></span>
+				</div>
 			</label>
 		</li>
 
 		<li class="order-popup-lst__i">
+			<div class="custom-label-box">
 			<input type="radio" id="pay3" name="paynow" class="custom-input custom-input--defradio">
 
 			<label class="custom-label" for="pay3">
-				<span class="custom-label_tx">Яндекс.деньги</span>
-				<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/yandexmoney.png" alt=""></span>
+				<div class="custom-label-box">
+					<span class="custom-label_tx">Яндекс.деньги</span>
+					<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/yandexmoney.png" alt=""></span>
+				</div>
 			</label>
 		</li>
 
@@ -874,8 +851,10 @@
 			<input type="radio" id="pay4" name="paynow" class="custom-input custom-input--defradio">
 
 			<label class="custom-label" for="pay4">
-				<span class="custom-label_tx">Интернет-банк</span>
-				<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/psbfull.png" alt=""></span>
+				<div class="custom-label-box">
+					<span class="custom-label_tx">Интернет-банк</span>
+					<span class="order-popup__icon-wrap"><img src="/css/modules/order/img/psbfull.png" alt=""></span>
+				</div>
 			</label>
 		</li>
 	</ul>
@@ -883,9 +862,8 @@
 	<div class="btn-container"><a href="" class="btn btn--orange btn--pay">Оплатить</a></div>
 
 	<p class="order-popup-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
-
-
 </div>
+
 <div class="order-popup clearfix">
 	<div class="order-popup__head">
 		<span class="popup-close js-popup-close">Отмена</span>
@@ -929,13 +907,12 @@
 	                <div class="btn-container">
 	                	<button class="btn btn--submit btn--orange btn--medium">Готово</button>
 	                </div>
-
-
 	            </div>
 			</form>
 		</div>
 	</div>
 </div>
+
 <div class="order-popup clearfix">
 	<div class="order-popup__head">
 		<span class="popup-close js-popup-close"><i class="icon-close"></i></span>
@@ -1048,9 +1025,8 @@
 	</div>
 	<div class="pick-point">
 		<table class="pick-point-list">
-		<tbody>
-			<tr class="pick-point-list-i shop-snippet">
-
+			<tbody>
+				<tr class="pick-point-list-i shop-snippet">
 					<td class="shop-snippet-name">
 						<img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
 						<span class="shop-snippet-name__text">Магазин Enter</span>
@@ -1066,13 +1042,12 @@
 					</td>
 
 					<td class="deliv-info-snippet">
-							<span class="deliv-info-snippet__date">Сегодня</span>
-							<span class="deliv-info-snippet__price">100 <span class="rubl">p</span></span>
+						<span class="deliv-info-snippet__date">Сегодня</span>
+						<span class="deliv-info-snippet__price">100 <span class="rubl">p</span></span>
 					</td>
+				</tr>
 
-			</tr>
-			<tr class="pick-point-list-i shop-snippet">
-
+				<tr class="pick-point-list-i shop-snippet">
 					<td class="shop-snippet-name">
 						<img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
 						<span class="shop-snippet-name__text">Магазин Enter</span>
@@ -1091,10 +1066,9 @@
 						<span class="deliv-info-snippet__date">Послезавтра</span>
 						<span class="deliv-info-snippet__price">100 <span class="rubl">p</span></span>
 					</td>
+				</tr>
 
-			</tr>
-			<tr class="pick-point-list-i shop-snippet">
-
+				<tr class="pick-point-list-i shop-snippet">
 					<td class="shop-snippet-name">
 						<img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
 						<span class="shop-snippet-name__text">Магазин Enter</span>
@@ -1113,8 +1087,7 @@
 						<span class="deliv-info-snippet__date">22.05.2015</span>
 						<span class="deliv-info-snippet__price">100 <span class="rubl">p</span></span>
 					</td>
-
-			</tr>
+				</tr>
 			</tbody>
 		</table>
 	</div>

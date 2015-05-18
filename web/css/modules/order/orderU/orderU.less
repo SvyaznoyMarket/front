@@ -537,16 +537,25 @@
 
             border-bottom: 1px solid #e6e6e6;
 
+            .flexbox();
+            .align-items();
             .custom-label {
                 width: 100%;
                 height: 100%;
-                line-height: 52px;
+
                 .box-sizing(border-box);
                 &_tx {
                     font-size: 14px;
 
                     margin-left: 10px;
                 }
+            }
+            .custom-label-box {
+                height: 100%;
+
+                .flexbox();
+                .align-items();
+                .align-content(center);
             }
         }
         &__desc {
