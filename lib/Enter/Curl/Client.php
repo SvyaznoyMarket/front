@@ -294,6 +294,7 @@ class Client {
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_HEADER, true);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($connection, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
         curl_setopt($connection, CURLOPT_IPRESOLVE, CURL_IPRESOLVE_V4);
         curl_setopt($connection, CURLOPT_URL, $query->getUrl());
 
