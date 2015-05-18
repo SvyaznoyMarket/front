@@ -20,7 +20,6 @@ class CreateItemByUserUi extends Query {
         $this->data = [
             'user_uid'    => $userUi,
             'type'        => $address->type,
-            'title'       => $address->name,
             'kladr_id'    => $address->kladrId,
             'geo_id'      => $address->regionId,
             'zip_code'    => $address->zipCode,

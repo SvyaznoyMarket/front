@@ -68,7 +68,7 @@ namespace EnterMobileApplication\Controller\User\Address {
                 foreach ($addressListResult as $item) {
                     if (!isset($item['id'])) continue;
 
-                    $response->addresses = new Model\Address($item);
+                    $response->addresses[] = new Model\Address($item);
                 }
             } catch (\Exception $e) {
                 if ($config->debugLevel) $this->getDebugContainer()->error = $e;
