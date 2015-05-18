@@ -93,8 +93,7 @@ define(
                                     slidesToScroll: 2
                                 }
                             }
-                        ],
-                        adaptiveHeight: true
+                        ]
                     });
 
                     $(this).find('.sliderControls_btn').data('gaClick', dataGa);
