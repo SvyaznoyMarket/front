@@ -128,7 +128,7 @@
         "name": "Оформление заказа",
         "pattern": "/orders/new"
     },
-    "Order\\Delivey": {
+    "Order\\Delivery": {
         "name": "Оформление заказа - выбор доставки",
         "pattern": "/orders/delivery"
     },
