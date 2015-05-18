@@ -338,25 +338,21 @@
                 <!--/ Таб - Отзывы -->
 
                 <!-- Таб - Аксессуары -->
+                {{#product.accessorySlider}}
                 <div class="tabContent js-container js-cont" {{^product.accessorySlider.count}}style="display: none;"{{/product.accessorySlider.count}}>
-
                     <div class="tabContent_title">Аксессуары</div>
-
-                    {{#product.accessorySlider}}
-                        {{>partial/product-slider/default}}
-                    {{/product.accessorySlider}}
+                    {{>partial/product-slider/default}}
                 </div>
+                {{/product.accessorySlider}}
                 <!--/ Таб - Аксессуары -->
 
                 <!-- Таб - С этим товаром покупают -->
+                {{#product.alsoBoughtSlider}}
                 <div class="tabContent js-container js-cont" data-tab-selector="#id-product-alsoBoughtTab" style="display: none;">
-
                     <div class="tabContent_title">С этим товаром покупают</div>
-
-                    {{#product.alsoBoughtSlider}}
-                        {{>partial/product-slider/default}}
-                    {{/product.alsoBoughtSlider}}
+                    {{>partial/product-slider/default}}
                 </div>
+                {{/product.alsoBoughtSlider}}
                 <!--/ Таб - С этим товаром покупают -->
             </div>
         </div>
