@@ -4,6 +4,7 @@ define(
     	console.log('order.common!');
 
     	var $body = $('body'),
+            orderWrapPrent = $('.custom-select');
     		orderWrap = $('.js-order-box'),
     		orderClsr = $('.js-order-box-closer'),
     		orderBtn = $('.js-order-btn'),
@@ -21,8 +22,9 @@ define(
 					orderBox = orderWrap.filter('[data-box="data-'+orderBtnData+'"]');
 					orderBoxNot = orderWrap.not('[data-box="data-'+orderBtnData+'"]');
 
-				orderBoxNot.removeClass('box-show');
-				orderBox.toggleClass('box-show');
+				orderBoxNot.removeClass('box-show').closest(orderWrapPrent).removeClass('active');
+
+				orderBox.toggleClass('box-show').closest(orderWrapPrent).toggleClass('active');
 			},
 
 			// закрываем блоки в оформлении заказа
@@ -60,10 +62,10 @@ define(
 					typeId = $self.attr('data-type');
 
 				deliveryType.removeClass('active');
-				deliveryTypeBox.removeClass('box-show');
+				deliveryTypeBox.removeClass('box-show').closest(orderWrapPrent).removeClass('active');
 
 				$self.addClass('active');
-				$("#"+typeId).addClass('box-show');
+				$("#"+typeId).addClass('box-show').closest(orderWrapPrent).addClass('active');
 			};
 		// end of functions
 
