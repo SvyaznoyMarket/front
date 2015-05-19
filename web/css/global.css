@@ -3333,6 +3333,10 @@ body.noScroll {
   -moz-justify-content: center;
   justify-content: center;
 }
+.detail-slider .slide-item--slot {
+  width: 450px;
+  height: 450px;
+}
 .sliderBox {
   position: relative;
   z-index: 150;
