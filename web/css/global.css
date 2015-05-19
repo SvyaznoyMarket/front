@@ -3466,6 +3466,9 @@ body.noScroll {
   .alsoBoughtContainer .sliderBoxItems_item {
     padding: 0 20px;
   }
+  .detail-slider .slide-item--slot {
+    height: 320px;
+  }
 }
 /* ==========================================================================
    Подвал сайта .footer .socLink .publicInfoList .publicInfoText .footerCopy
