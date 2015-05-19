@@ -112,11 +112,11 @@
 	                </menu>
 
 					<div class="checkout-order__inn box-show js-delivery-type" id="delivery-type-self">
-			            <div class="btn-container">
+			          
 				            <button class="btn-transparent btn-transparent--normal js-order-btn" data-btn="select-shop">
 				            	<span class="bb-dotted">Выбрать точку самовывоза</span>
 				            </button>
-			            </div>
+			           
 	                </div>
 
 	                <div class="checkout-order__inn js-delivery-type" id="delivery-type-buy">
@@ -141,7 +141,7 @@
                 </div>
 
 				<div class="checkout-order__box checkout-order__box--light">
-	                <div class="checkout-order-items table">
+	                <div class="checkout-order-items table error">
 	                    <div class="checkout-order-items__left table_cell">
 	                        <img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg">
 	                    </div>
@@ -179,6 +179,8 @@
 	                    </div>
 	                </div>
                 </div>
+
+
 
 				{{! ввести код скидки или сертефиката }}
                 <div class="checkout-order__box checkout-order__box--light js-order-box" data-box="data-select-sale">
@@ -303,6 +305,10 @@
                 </div>
             	{{! общая стоимость заказа }}
 
+            	<div class="checkout-order-err">
+                	<span class="checkout-order-err__msg">Требуется предоплата.</span>
+                	<span class="checkout-order-err__info">В заказе товар, <span class="bb-dotted">требующий предоплаты</span></span>
+                </div>
             	{{! Оплата }}
             	<div class="checkout-checkbox">
             		<ul class="checkout-checkbox-lst">
@@ -1057,8 +1063,12 @@
 			<div class="btn btn--white btn--medium"><span class="map-link">Карта</span></div>
 		</form>
 	</div>
-	<div class="custom-select__kit">
-		<div class="custom-select">
+
+	
+
+
+	<div class="custom-select__kit custom-filter__kit">
+		<div class="custom-select custom-filter">
             <span class="custom-select__value js-order-btn" data-btn="select-point-type">
                 <span class="bb-dotted">Все точки</span>
                 <i class="caret"></i>
@@ -1092,7 +1102,7 @@
             </ul>
         </div>
 
-        <div class="custom-select">
+        <div class="custom-select custom-filter">
             <span class="custom-select__value js-order-btn" data-btn="select-price">
                 <span class="bb-dotted">Стоимость</span>
                 <i class="caret"></i>
@@ -1114,7 +1124,7 @@
             </ul>
         </div>
 
-        <div class="custom-select">
+        <div class="custom-select custom-filter">
             <span class="custom-select__value js-order-btn" data-btn="select-date">
                 <span class="bb-dotted">Дата</span>
                 <i class="caret"></i>

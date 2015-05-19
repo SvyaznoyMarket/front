@@ -16,6 +16,7 @@ define(
         $window.on('orientationchange', function(){
             setTimeout(function(){
                 setContainerHeight({tabIndex: activeTab});
+                scrollTabsMenuIfNotVisible($tabMenuItem.eq(activeTab));
             }, 200);
         });
         $tabMenuItem.on('click', tabChange);
