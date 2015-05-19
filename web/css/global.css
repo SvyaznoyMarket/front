@@ -3417,15 +3417,72 @@ body.noScroll {
 .custom-select__kit.custom-filter__kit .custom-select__value {
   border: 1px solid transparent;
   border-bottom: 0px;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  background-clip: padding-box;
+  -webkit-border-top-left-radius: 4px;
+  -moz-border-radius-topleft: 4px;
+  border-top-left-radius: 4px;
+  -webkit-border-top-right-radius: 4px;
+  -moz-border-radius-topright: 4px;
+  border-top-right-radius: 4px;
+  -webkit-border-bottom-right-radius: 0px;
+  -moz-border-radius-bottomright: 0px;
+  border-bottom-right-radius: 0px;
+  -webkit-border-bottom-left-radius: 0px;
+  -moz-border-radius-bottomleft: 0px;
+  border-bottom-left-radius: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: #686868;
 }
 .custom-select__kit.custom-filter__kit .custom-select-list {
   top: 34px;
+  left: auto;
+  right: 0;
   padding-top: 0px;
   border: 1px solid #c7c7c7;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  background-clip: padding-box;
+  -webkit-border-top-left-radius: 0px;
+  -moz-border-radius-topleft: 0px;
+  border-top-left-radius: 0px;
+  -webkit-border-top-right-radius: 0px;
+  -moz-border-radius-topright: 0px;
+  border-top-right-radius: 0px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-bottom-right-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-bottom-left-radius: 3px;
+  -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+.custom-select__kit.custom-filter__kit .custom-select-list__item {
+  border-top: 0;
+  color: #686868;
 }
 .custom-select__kit.custom-filter__kit .custom-select.active .custom-select__value {
   border-color: #c7c7c7;
   background-color: #fff;
+}
+.custom-select__kit.custom-filter__kit .custom-select:first-child .custom-select-list {
+  left: 0;
+  right: auto;
+}
+@media screen and (max-width: 640px) {
+  .custom-select__kit.custom-filter__kit .custom-select__value {
+    font-size: 12px;
+  }
+  .custom-select__kit.custom-filter__kit .custom-select-list {
+    top: 32px;
+  }
+  .custom-select__kit.custom-filter__kit .custom-select-list__item {
+    font-size: 12px;
+  }
 }
 /* ==========================================================================
    Стили цен .buyInfoPrice, .buyInfoLess
