@@ -102,7 +102,7 @@
         "pattern": "/cart"
     },
     "User\\Get": {
-        "name": "Информация о пользователе, его корзине, ...",
+        "name": "Инфо пользователя",
         "pattern": "/ajax/user"
     },
     "User\\Cart\\Product\\Set": {
@@ -127,6 +127,10 @@
     "Order\\Index": {
         "name": "Оформление заказа",
         "pattern": "/orders/new"
+    },
+    "Order\\SetUser": {
+        "name": "Оформление заказа - инфо пользователя",
+        "pattern": "/orders/set-user"
     },
     "Order\\Delivery": {
         "name": "Оформление заказа - выбор доставки",

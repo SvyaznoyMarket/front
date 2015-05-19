@@ -353,8 +353,21 @@ namespace EnterAggregator\Config {
     }
 
     class Order {
-        /** @var string */
+        /**
+         * Ключ сессии, в котором хранится предыдущее разбиение корзины
+         * @var string
+         */
         public $splitSessionKey;
+        /**
+         * Ключ сессии, в котором хранятся данные пользователя
+         * @var string
+         */
+        public $userSessionKey;
+        /**
+         * Кука, в которой хранятся данные о последнем созданном заказе
+         * @var string
+         */
+        public $cookieName;
     }
 
     class Product {

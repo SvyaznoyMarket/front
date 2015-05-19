@@ -124,6 +124,8 @@ return function(\EnterAggregator\Config $config) {
     ];
 
     $config->order->splitSessionKey = 'order_split';
+    $config->order->userSessionKey = 'order_user';
+    $config->order->cookieName = 'last_order';
 
     $config->product->itemPerPage = 19;
     $config->product->itemsInSlider = 60;
