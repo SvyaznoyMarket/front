@@ -1,34 +1,38 @@
 <a href="{{url}}" class="catalogList_item">
-    {{#labels.0}}
-        <div class="sticker left">
-            <img src="{{imageUrl}}" alt="{{name}}" />
+    <div class="availability availability--top availability--instock">В наличии</div>
+
+    {{#brand.image}}
+        <div class="sticker right">
+            <img src="{{brand.image}}" alt="{{brand.name}}" />
         </div>
-    {{/labels.0}}
-
-
+    {{/brand.image}}
 
     <div class="img">
         <img src="{{image}}" />
-        {{#brand.image}}
-            <div class="sticker right">
-                <img src="{{brand.image}}" alt="{{brand.name}}" />
+        {{#labels.0}}
+            <div class="sticker left">
+                <img src="{{imageUrl}}" alt="{{name}}" />
             </div>
-        {{/brand.image}}
+        {{/labels.0}}
     </div>
 
     <div class="catalogList_desc">
         <span class="name">{{name}}</span>
 
-        <div class="reviews">
+        <div class="rating">
             {{#rating}}
                 {{>partial/rating/star-list}}
             {{/rating}}
-            <span class="reviews_count">{{rating.reviewCount}}</span>
+            <span class="rating__reviews-count">{{rating.reviewCount}}</span>
+        </div>
+        <div class="availability availability--instock">В наличии</div>
+        <div class="bottom-info">
+            <div class="price">
+                {{#oldPrice}}<div class="price_old">{{shownOldPrice}} <span class="rubl">p</span></div>{{/oldPrice}}
+                {{#price}}<div class="price_now{{#oldPrice}} price_now-sale{{/oldPrice}}">{{shownPrice}} <span class="rubl">p</span></div>{{/price}}
+            </div>
+            <div class="btn btn--lstn btn--buy-lst">Купить</div>
         </div>
 
-        <div class="price">
-            {{#oldPrice}}<div class="price_old">{{shownOldPrice}} <span class="rubl">p</span></div>{{/oldPrice}}
-            {{#price}}<div class="price_now{{#oldPrice}} price_now-sale{{/oldPrice}}">{{shownPrice}} <span class="rubl">p</span></div>{{/price}}
-        </div>
     </div>
 </a>

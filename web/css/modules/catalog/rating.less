@@ -1,0 +1,36 @@
+.rating {
+        margin: 0 0 10px;
+        text-align: center;
+
+        &__star {
+            font-size: 14px;
+            color: @typ-orange;
+            vertical-align: middle;
+            margin-right: 2px;
+        }
+        &__reviews-count {
+            margin: 0 0 0 5px;
+
+            vertical-align: middle;
+
+            color: #6b6b6b;
+
+            font-size: 14px;
+        }
+        &--product{
+            float: right;
+        }
+    }
+
+@media only screen and (max-width: 700px) { 
+.catalogList .rating {
+        text-align: left;
+        &__star{
+            font-size: 10px;
+            margin-right: 1px;
+        }
+        &__reviews-count{
+            font-size: 10px;
+        }
+    }
+}
