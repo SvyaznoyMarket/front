@@ -112,11 +112,11 @@
 	                </menu>
 
 					<div class="checkout-order__inn box-show js-delivery-type" id="delivery-type-self">
-			            <div class="btn-container">
+			          
 				            <button class="btn-transparent btn-transparent--normal js-order-btn" data-btn="select-shop">
 				            	<span class="bb-dotted">Выбрать точку самовывоза</span>
 				            </button>
-			            </div>
+			           
 	                </div>
 
 	                <div class="checkout-order__inn js-delivery-type" id="delivery-type-buy">
@@ -141,7 +141,7 @@
                 </div>
 
 				<div class="checkout-order__box checkout-order__box--light">
-	                <div class="checkout-order-items table">
+	                <div class="checkout-order-items table error">
 	                    <div class="checkout-order-items__left table_cell">
 	                        <img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg">
 	                    </div>
@@ -180,9 +180,10 @@
 	                </div>
                 </div>
 
+
                 <div class="checkout-sale checkout-order__box">
 	                <div class="btn-container">
-	                	<button class="btn-transparent btn-transparent--normal"><span class="bb-dotted js-order-btn" data-btn="select-sale">Выбрать скидку</span></button>
+	                	<button class="btn-transparent btn-transparent--normal"><span class="bb-dotted js-order-btn" data-btn="select-sale">Добавить скидку</span></button>
 	                </div>
                 </div>
 
@@ -299,6 +300,10 @@
                     <div class="checkout-summary__item l">Итого:</div>
                 </div>
             	{{! общая стоимость заказа }}
+            	<div class="checkout-order-err">
+                	<span class="checkout-order-err__msg">Требуется предоплата.</span>
+                	<span class="checkout-order-err__info">В заказе товар, <span class="bb-dotted">требующий предоплаты</span></span>
+                </div>
             	{{! Оплата }}
             	<div class="checkout-checkbox">
             		<ul class="checkout-checkbox-lst">
@@ -454,7 +459,7 @@
 
                 <div class="checkout-sale checkout-order__box">
 	                <div class="btn-container">
-	                	<button class="orderInf_r btn-transparent btn-transparent--normal"><span class="bb-dotted js-order-btn" data-btn="select-sale">Выбрать скидку</span></button>
+	                	<button class="btn-transparent btn-transparent--normal"><span class="bb-dotted js-order-btn" data-btn="select-sale">Выбрать скидку</span></button>
 	                </div>
                 </div>
 

@@ -9,7 +9,7 @@
     border-style: solid;
     border-color: @typGray;
     &__box {
-        padding: 10px;
+        padding: 0;
 
         border-bottom: 1px solid @typGray;
         background: @lightGrey6;
@@ -102,7 +102,7 @@
 }
 
 .checkout-order-items {
-    padding: 5px 0;
+    padding: 10px 10px 5px;
 
     border-bottom: 1px solid #e6e6e6;
     &:last-child {
@@ -138,8 +138,30 @@
             color: #e8303c;
         }
     }
+    &.error{
+        border-top: 1px solid #ef404a;
+        border-bottom: 1px solid #ef404a;
+        background-color: #fdebec;
+        margin-top: -1px;
+    }
 }
+.checkout-order-err{
+    border-top: 1px solid #ef404a;
+    border-bottom: 1px solid #ef404a;
+    background-color: #fdebec;
+    font-size: 12px;
+    .flexbox();
+    .justify-content(space-between);
+    padding: 5px 10px;
+    margin-top: -1px;
 
+    &__info{
+
+    }
+    &__msg{
+        font-weight: bold;
+    }
+}
 .checkout-delivery-type {
     font-size: 16px;
 
@@ -350,6 +372,7 @@
 }
 
 .checkout-sale {
+    padding: 10px 0;
     &__title {
         margin-bottom: 10px;
     }
