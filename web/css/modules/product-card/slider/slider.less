@@ -29,9 +29,13 @@
 
 		&_img {
             display: inline;
-			width: 90%;
-			max-width: 350px;
-            max-height: 100%;
+			max-width: 90%;
+            max-height: 90%;
+            &__container{
+            	.flexbox();
+				.align-items();
+				.justify-content(center);
+            }
 		}
 	}
 
