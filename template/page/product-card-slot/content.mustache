@@ -55,8 +55,10 @@
 
                 <div class="detail-slider js-detailSlider">
                     {{#product.photos}}
-                        <div class="slide-item">
-                            <img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}"/>
+                        <div class="slide-item slide-item--slot">
+                            <div class="slider_lst_img__container">
+                                <img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}"/>
+                            </div>
                         </div>
                     {{/product.photos}}
                 </div>
