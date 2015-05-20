@@ -69,7 +69,7 @@ class SetUser {
 
             $session->set($config->order->userSessionKey, $userData);
         } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order', 'critical']]);
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'errors' => $errors, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order', 'critical']]);
         }
 
         // http-ответ
@@ -79,6 +79,10 @@ class SetUser {
                 'errors' => $errors,
             ]);
         } else {
+            if ($errors) {
+                $session->flashBag->set('orderForm.error', $errors);
+            }
+
             $response = (new \EnterAggregator\Controller\Redirect())->execute(
                 $router->getUrlByRoute(
                     $errors

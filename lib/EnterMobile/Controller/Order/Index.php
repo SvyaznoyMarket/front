@@ -5,6 +5,7 @@ namespace EnterMobile\Controller\Order;
 use Enter\Http;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
+use EnterAggregator\SessionTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\DebugContainerTrait;
 use EnterAggregator\MustacheRendererTrait;
@@ -15,7 +16,7 @@ use EnterMobile\Repository;
 use EnterMobile\Model\Page\Order\Index as Page;
 
 class Index {
-    use ConfigTrait, CurlTrait, LoggerTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, MustacheRendererTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -24,6 +25,7 @@ class Index {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
+        $session = $this->getSession();
 
         // запрос пользователя
         $userItemQuery = null;
@@ -48,6 +50,7 @@ class Index {
         $pageRequest = new Repository\Page\Order\Index\Request();
         $pageRequest->httpRequest = $request;
         $pageRequest->user = $user;
+        $pageRequest->formErrors = (array)$session->flashBag->get('orderForm.error');
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница

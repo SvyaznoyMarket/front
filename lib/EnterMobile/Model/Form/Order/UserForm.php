@@ -13,8 +13,11 @@ class UserForm {
     public $firstName;
     /** @var string */
     public $mnogoruNumber;
-    /** @var string[] */
-    public $errors = [];
+    /**
+     * Json-строка с ошибками формы
+     * @var string
+     */
+    public $errorDataValue;
 
     /**
      * @param array $data

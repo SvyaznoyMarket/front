@@ -23,6 +23,7 @@ class Index {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
         $router = $this->getRouter();
+        $templateHelper = $this->getTemplateHelper();
 
         $userModel = $request->user;
 
@@ -32,6 +33,7 @@ class Index {
         $page->dataModule = 'order';
 
         $page->content->form->url = $router->getUrlByRoute(new Routing\Order\SetUser());
+        $page->content->form->errorDataValue = $templateHelper->json($request->formErrors);
         if ($userModel) {
             $page->content->form->email = $userModel->email;
             $page->content->form->phone = $userModel->phone;
