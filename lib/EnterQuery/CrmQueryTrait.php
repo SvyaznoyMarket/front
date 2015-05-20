@@ -45,8 +45,8 @@ trait CrmQueryTrait {
             if (array_key_exists('error', $response)) {
                 $response = array_merge(['code' => 0, 'message' => null, 'detail' => []], $response['error']);
 
-                $e = new CoreQueryException($response['message'], $response['code']); // FIXME: CrmQueryException
-                $e->setDetail((array)$response['detail']);
+                $e = new CrmQueryException($response['message'], $response['code']);
+                //$e->setDetail((array)$response['detail']);
 
                 throw $e;
             } else if (array_key_exists('result', $response)) {

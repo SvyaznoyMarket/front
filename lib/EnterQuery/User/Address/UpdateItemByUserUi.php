@@ -21,7 +21,6 @@ class UpdateItemByUserUi extends Query {
             'user_uid'    => $userUi,
             'id'          => $address->id,
             'type'        => $address->type,
-            'title'       => $address->name,
             'kladr_id'    => $address->kladrId,
             'geo_id'      => $address->regionId,
             'zip_code'    => $address->zipCode,

@@ -5,10 +5,9 @@
 
         <div class="fullImgCnt_img_load js-fullimg-img-loader">
             {{#product.mainPhoto}}
-                <img class="fullImgCnt_img js-fullimg-img" src="{{product.mainPhoto.originalUrl}}" alt="{{&product.name}}" />
+               <img class="fullImgCnt_img js-fullimg-img" src="{{product.mainPhoto.originalUrl}}" alt="{{&product.name}}" />
             {{/product.mainPhoto}}
         </div>
-
         <div class="fullImgCnt_thmb js-fullimg-thmb-wrap">
             <ul class="fullImgCnt_thmb_w js-fullimg-thmb">
             {{#product.photos}}
@@ -240,7 +239,7 @@
 
         <div class="prodDescr clearfix">
             <!-- Изображение товара -->
-            <div class="prodDescr_l slider js-slider-wpar">
+            <div class="prodDescr_l slider">
                 {{#product.labels.0}}
                     <div class="sticker left">
                         <img src="{{imageUrl}}" alt="{{name}}" />
@@ -252,19 +251,14 @@
                         <img src="{{product.brand.image}}" alt="{{product.brand.name}}" />
                     </div>
                 {{/product.brand.image}}
-
-                <ul class="slider_lst js-slider-list clearfix">
+                <div class="detail-slider js-detailSlider">
                     {{#product.photos}}
-                        <li class="slider_lst_i js-slider-list-item">
-                            <img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}" />
-                        </li>
+                        <div class="slide-item">
+                            <div class="slider_lst_img__container"><img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}"/></div>
+                        </div>
                     {{/product.photos}}
-                </ul>
-
-                <div class="slider_btn slider_btn-l js-slider-btn-left"></div>
-                <div class="slider_btn slider_btn-r js-slider-btn-right"></div>
-
-                <ul class="slider_pag js-slider-pag"></ul>
+                </div>
+                <ul class="slider_pag"></ul>
             </div>
             <!--/ Изображение товара -->
 
@@ -619,25 +613,21 @@
                 <!--/ Таб - Отзывы -->
 
                 <!-- Таб - Аксессуары -->
+                {{#product.accessorySlider}}
                 <div class="tabContent js-container js-cont" {{^product.accessorySlider.count}}style="display: none;"{{/product.accessorySlider.count}}>
-
                     <div class="tabContent_title">Аксессуары</div>
-
-                    {{#product.accessorySlider}}
-                        {{>partial/product-slider/default}}
-                    {{/product.accessorySlider}}
+                    {{>partial/product-slider/default}}
                 </div>
+                {{/product.accessorySlider}}
                 <!--/ Таб - Аксессуары -->
 
                 <!-- Таб - Похожие товары -->
+                {{#product.similarSlider}}
                 <div class="tabContent js-container js-cont" data-tab-selector="#id-product-similarTab" style="display: none;">
-
                     <div class="tabContent_title">Похожие товары</div>
-
-                    {{#product.similarSlider}}
-                        {{>partial/product-slider/default}}
-                    {{/product.similarSlider}}
+                    {{>partial/product-slider/default}}
                 </div>
+                {{/product.similarSlider}}
                 <!--/ Таб - Похожие товары -->
             </div>
         </div>

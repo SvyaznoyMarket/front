@@ -17,8 +17,8 @@ define(
         // end of vars
 
             thmbW.css({ 'width' : wrap.width() });
-            img.css({ 'width' : wrap.width() });
-            imgLoad.css({ 'min-height' : wrap.width(), 'width' : wrap.width() });
+            
+            imgLoad.css({ 'width' : wrap.width() });
 
             $('.js-fullimg-thmb-i').first().addClass(actClass);
 
@@ -27,9 +27,11 @@ define(
              * адаптивная ширина большого изображения
             */
             imgScale = function imgScale() {
+                
+                img.css({'max-height': wrap.width(), 'max-width': wrap.width() });
                 thmbW.css({ 'width' : wrap.width() });
-                img.css({ 'width' : wrap.width() });
-                imgLoad.css({ 'min-height' : wrap.width(), 'width' : wrap.width() });
+                
+                imgLoad.css({ 'height' : wrap.width(), 'width' : wrap.width() });
             },
 
             /*  
@@ -62,6 +64,8 @@ define(
                 var $self = $(this),
                     ww = w.width();
 
+                imgLoad.removeClass('nobg');
+
                 if ( ww <= 800 ) {
                     src = $self.data('middleimg');
 
@@ -79,6 +83,8 @@ define(
                 img.fadeOut(100, function(){
                     img.attr("src", src).hide().load( function() { img.fadeIn(100) })
                 });
+
+                imgLoad.addClass('nobg');
             },
 
             /*  

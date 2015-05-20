@@ -3,9 +3,10 @@
    ========================================================================== */
 
 .tabContentWrap {
-	overflow: hidden;
+  overflow: hidden;
+  position: relative;
 
-	min-height: 350px;
+  min-height: 350px;
 }
 
 .tabContentInner {
@@ -13,22 +14,27 @@
 	top: 0;
 	left: 0;
 
-	width: 10000px;
-
 	font-size: 0;
 }
 
 .tabContent {
-    float: left;
-    margin: 0 0 30px;
+  opacity: 0;
+  background: #fff;
+  z-index: -1;
+  margin: 0 0 30px;
 
-    vertical-align: top;
+  vertical-align: top;
 
-    font-size: 12px;
+  font-size: 12px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: z-index 1s;
 
-    &_title {
-    	display: none;
-    }
+  &_title {
+    display: none;
+  }
 }
 
 .tabTitle {

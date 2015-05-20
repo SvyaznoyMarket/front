@@ -53,17 +53,15 @@
                     </div>
                 {{/product.brand.image}}
 
-                <ul class="slider_lst js-slider-list clearfix">
+                <div class="detail-slider js-detailSlider">
                     {{#product.photos}}
-                        <li class="slider_lst_i js-slider-list-item">
-                            <img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}" />
-                        </li>
+                        <div class="slide-item slide-item--slot">
+                            <div class="slider_lst_img__container">
+                                <img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}"/>
+                            </div>
+                        </div>
                     {{/product.photos}}
-                </ul>
-
-                <div class="slider_btn slider_btn-l js-slider-btn-left"></div>
-                <div class="slider_btn slider_btn-r js-slider-btn-right"></div>
-
+                </div>
                 <ul class="slider_pag js-slider-pag"></ul>
             </div>
             <!--/ Изображение товара -->
@@ -115,6 +113,16 @@
                 {{#product.hasPhoto3d}}
                     <!--<img class="tabImg tabImg_view" src="/css/modules/productDescTab/img/grad260.png" />-->
                 {{/product.hasPhoto3d}}
+            </li>
+
+            <li class="productDescTab_item js-tabs-item">
+                <span class="tabText">Отзывы</span>
+                <span class="tabImg reviews">
+                    {{#product.rating}}
+                        {{>partial/rating/star-list}}
+                    {{/product.rating}}
+                    <span class="reviewsCount">{{product.rating.reviewCount}}</span>
+                </span>
             </li>
 
             {{#product.accessorySlider}}
@@ -308,26 +316,45 @@
                 </div>
                 <!--/ Таб - Подробнее -->
 
-                <!-- Таб - Аксессуары -->
-                <div class="tabContent js-container js-cont" {{^product.accessorySlider.count}}style="display: none;"{{/product.accessorySlider.count}}>
+                <!-- Таб - Отзывы -->
 
-                    <div class="tabContent_title">Аксессуары</div>
+                <div class="tabContent js-cont">
+                    <div class="tabContent_title">Отзывы</div>
+                    <div class="reviews-add js-reviews-add"
+                         data-product-name="{{#product.namePrefix}}{{product.namePrefix}}{{/product.namePrefix}}
+                             {{product.name}}" data-product-id="{{product.id}}">
+                        <span class="reviews-add-icon">+</span>
+                        <span class="reviews-add-title">Добавить отзыв</span>
+                    </div>
+                    {{#product.reviewBlock}}
+                        <div class="js-productReviewList-container" data-url="{{url}}" data-value="{{&dataValue}}">
+                            {{>page/product-card/review-list}}
+                        </div>
+                    {{/product.reviewBlock}}
 
-                    {{#product.accessorySlider}}
-                        {{>partial/product-slider/default}}
-                    {{/product.accessorySlider}}
+                    {{#moreLink}}
+                        <a href="#" data-container-selector=".js-productReviewList-container" class="js-productReviewList-more catalogMore btnStyleGrey">{{name}}</a>
+                    {{/moreLink}}
                 </div>
+
+                <!--/ Таб - Отзывы -->
+
+                <!-- Таб - Аксессуары -->
+                {{#product.accessorySlider}}
+                <div class="tabContent js-container js-cont" {{^product.accessorySlider.count}}style="display: none;"{{/product.accessorySlider.count}}>
+                    <div class="tabContent_title">Аксессуары</div>
+                    {{>partial/product-slider/default}}
+                </div>
+                {{/product.accessorySlider}}
                 <!--/ Таб - Аксессуары -->
 
                 <!-- Таб - С этим товаром покупают -->
+                {{#product.alsoBoughtSlider}}
                 <div class="tabContent js-container js-cont" data-tab-selector="#id-product-alsoBoughtTab" style="display: none;">
-
                     <div class="tabContent_title">С этим товаром покупают</div>
-
-                    {{#product.alsoBoughtSlider}}
-                        {{>partial/product-slider/default}}
-                    {{/product.alsoBoughtSlider}}
+                    {{>partial/product-slider/default}}
                 </div>
+                {{/product.alsoBoughtSlider}}
                 <!--/ Таб - С этим товаром покупают -->
             </div>
         </div>
