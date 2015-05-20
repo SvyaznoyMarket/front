@@ -35,7 +35,7 @@ namespace EnterAggregator\Controller\Cart {
             $curl->execute();
 
             // регион
-            $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+            $response->region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
             // магазин
             $shop = $shopItemQuery ? (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery) : null;
@@ -46,7 +46,7 @@ namespace EnterAggregator\Controller\Cart {
             // запрос на разбиение корзины
             $splitQuery = new Query\Cart\Split\GetItem(
                 $request->cart,
-                $region,
+                $response->region,
                 $shop,
                 null,
                 (array)$request->previousSplitData,
@@ -94,7 +94,7 @@ namespace EnterAggregator\Controller\Cart {
                 }
 
                 $response->split = new Model\Cart\Split($splitData);
-                $response->split->region = $region;
+                $response->split->region = $response->region;
 
                 // MAPI-4
                 $productIds = [];
@@ -106,7 +106,7 @@ namespace EnterAggregator\Controller\Cart {
                     }
                 }
 
-                $productListQuery = new Query\Product\GetListByIdList($productIds, $region->id);
+                $productListQuery = new Query\Product\GetListByIdList($productIds, $response->region->id);
                 $curl->prepare($productListQuery);
 
                 $curl->execute();
@@ -227,10 +227,14 @@ namespace EnterAggregator\Controller\Cart\Split {
         public $errors = [];
         /** @var array */
         public $split;
+        /** @var Model\Region|null */
+        public $region;
      }
 }
 
 namespace EnterAggregator\Controller\Cart\Split\Request {
+    use EnterModel as Model;
+
     class SplitReceivedSuccessfullyCallback {
         /** @var callable|null */
         public $handler;
