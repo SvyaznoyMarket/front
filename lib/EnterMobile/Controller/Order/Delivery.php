@@ -11,7 +11,7 @@ use EnterModel as Model;
 use EnterQuery as Query;
 use EnterMobile\Controller;
 use EnterMobile\Repository;
-use EnterMobile\Model\Page\Order\Index as Page;
+use EnterMobile\Model\Page\Order\Delivery as Page;
 
 class Delivery {
     use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
@@ -36,29 +36,17 @@ class Delivery {
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
-        // запрос категорий
-        $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
-        $curl->prepare($categoryTreeQuery);
-
-        // запрос меню
-        $mainMenuQuery = new Query\MainMenu\GetItem();
-        $curl->prepare($mainMenuQuery);
-
         $curl->execute();
 
-        // меню
-        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
-
         // запрос для получения страницы
-        $pageRequest = new Repository\Page\Order\Index\Request();
+        $pageRequest = new Repository\Page\Order\Delivery\Request();
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $region;
-        $pageRequest->mainMenu = $mainMenu;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница
         $page = new Page();
-        (new Repository\Page\Order\Index())->buildObjectByRequest($page, $pageRequest);
+        (new Repository\Page\Order\Delivery())->buildObjectByRequest($page, $pageRequest);
 
         // debug
         if ($config->debugLevel) $this->getDebugContainer()->page = $page;

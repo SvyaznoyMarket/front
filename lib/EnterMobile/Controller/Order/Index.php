@@ -45,6 +45,16 @@ class Index {
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
         }
+        if (!$user) {
+            $user = new Model\User();
+        }
+
+        $userData = $session->get($config->order->userSessionKey);
+        foreach (['firstName', 'phone', 'email'] as $v) {
+            if (!empty($userData[$v])) {
+                $user->{$v} = $userData[$v];
+            }
+        }
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Order\Index\Request();

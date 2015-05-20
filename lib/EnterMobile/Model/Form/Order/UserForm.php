@@ -25,7 +25,7 @@ class UserForm {
     public function __construct(array $data = []) {
         if (isset($data['phone'])) $this->phone = (string)$data['phone'];
         if (isset($data['email'])) $this->email = (string)$data['email'];
-        if (isset($data['first_name'])) $this->firstName = (string)$data['first_name'];
-        if (isset($data['mnogoru_number'])) $this->mnogoruNumber = (string)$data['mnogoru_number'];
+        if (isset($data['firstName'])) $this->firstName = (string)$data['firstName'];
+        if (isset($data['mnogoruNumber'])) $this->mnogoruNumber = (string)$data['mnogoruNumber'];
     }
 }
