@@ -5,6 +5,8 @@ namespace EnterMobile\Controller\Order;
 use Enter\Http;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
+use EnterAggregator\SessionTrait;
+use EnterAggregator\LoggerTrait;
 use EnterAggregator\DebugContainerTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterModel as Model;
@@ -14,7 +16,7 @@ use EnterMobile\Repository;
 use EnterMobile\Model\Page\Order\Delivery as Page;
 
 class Delivery {
-    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, MustacheRendererTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -22,21 +24,43 @@ class Delivery {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurl();
+        $session = $this->getSession();
+        $cartRepository = new \EnterRepository\Cart();
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
-        // запрос региона
-        $regionQuery = new Query\Region\GetItemById($regionId);
-        $curl->prepare($regionQuery);
+        // изменения
+        $changeData = $request->data['change'] ?: null;
 
-        $curl->execute();
+        // предыдущее разбиение
+        $previousSplitData = null;
+        if ($changeData) {
+            $previousSplitData = $session->get($config->order->splitSessionKey);
+        }
 
-        // регион
-        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+        // корзина
+        $cart = $cartRepository->getObjectByHttpSession($session);
 
-        $curl->execute();
+        // контроллер
+        $controller = new \EnterAggregator\Controller\Cart\Split();
+        // запрос для контроллера
+        $controllerRequest = $controller->createRequest();
+        $controllerRequest->regionId = $regionId;
+        $controllerRequest->shopId = null;
+        $controllerRequest->changeData = $changeData;
+        $controllerRequest->previousSplitData = $previousSplitData;
+        $controllerRequest->cart = $cart;
+        // при получении данных о разбиении корзины - записать их в сессию немедленно
+        $controllerRequest->splitReceivedSuccessfullyCallback->handler = function() use (&$controllerRequest, &$config, &$session) {
+            $session->set($config->order->splitSessionKey, $controllerRequest->splitReceivedSuccessfullyCallback->splitData);
+        };
+        // ответ от контроллера
+        $controllerResponse = $controller->execute($controllerRequest);
+
+        $region = $controllerResponse->region;
+        $errors = $controllerResponse->errors;
+        $split = $controllerResponse->split;
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Order\Delivery\Request();

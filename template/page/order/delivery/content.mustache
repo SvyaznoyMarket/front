@@ -16,6 +16,7 @@
                 <button class="jsSelectCity orderInf_r btn-transparent btn-transparent--normal"><span class="bb-dotted">Изменить регион</span></button>
             </div>
 
+            <!--
             {{! разбиение заказа, адрес доставки не выбран }}
             <div class="checkout-order">
                 <div class="checkout-order-head checkout-order__box checkout-order__box--head">
@@ -264,6 +265,7 @@
 
                 <button class="btn btn--submit btn--orange btn--big">Оформить</button>
             </div>
+            -->
 
             {{! разбиение заказа, адрес доставки выбран }}
             <div class="checkout-order">
@@ -285,8 +287,14 @@
                     </menu>
 
                     <div class="checkout-order__inn box-show js-delivery-type" id="delivery-type-self-1">
-                        <div class="checkout-celendar">15 сентября 2014, воскресенье</div>
+                        {{#pointSelected}}
+                        <button class="btn-transparent btn-transparent--normal js-order-btn" data-btn="select-shop">
+                            <span class="bb-dotted">Выбрать точку самовывоза</span>
+                        </button>
+                        {{/pointSelected}}
 
+                        {{^pointSelected}}
+                        <div class="checkout-celendar">15 сентября 2014, воскресенье</div>
                         <div class="checkout-address">
                             <div class="checkout-address__title"><strong>Магазин</strong></div>
 
@@ -308,6 +316,7 @@
                                 <div class="table_cell"><a href="" class="bb-dotted">Изменить</a></div>
                             </div>
                         </div>
+                        {{/pointSelected}}
                     </div>
 
                     <div class="checkout-order__inn js-delivery-type" id="delivery-type-buy-1">
