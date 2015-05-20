@@ -67,7 +67,7 @@ class Index {
         // рендер
         $renderer = $this->getRenderer();
         $renderer->setPartials([
-            'content' => 'page/order/content',
+            'content' => 'page/order/index/content',
         ]);
         $content = $renderer->render('layout/simple', $page);
 
