@@ -188,7 +188,7 @@ class Product {
                         ];
                     }
 
-                    $this->media->photos[] = $media = new Model\Media($item);
+                    $this->media->photos[] = new Model\Media($item);
                 }
             });
         }
