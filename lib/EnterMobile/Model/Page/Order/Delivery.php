@@ -23,6 +23,8 @@ namespace EnterMobile\Model\Page\Order\Delivery {
     class Content extends Page\DefaultPage\Content {
         /** @var Form\Order\DeliveryForm */
         public $form;
+        /** @var array */
+        public $region;
 
         public function __construct() {
             parent::__construct();

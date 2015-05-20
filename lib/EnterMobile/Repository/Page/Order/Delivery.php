@@ -30,6 +30,10 @@ class Delivery {
 
         $page->dataModule = 'order';
 
+        $page->content->region = [
+            'name' => $request->region->name,
+        ];
+
         $page->content->form->url = $router->getUrlByRoute(new Routing\Order\SetUser());
         $page->content->form->errorDataValue = $templateHelper->json($request->formErrors);
     }
