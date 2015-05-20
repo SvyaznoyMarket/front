@@ -21,5 +21,27 @@ class Index {
      */
     public function buildObjectByRequest(Page $page, Index\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
+
+        $router = $this->getRouter();
+
+        $userModel = $request->user;
+
+        // заголовок
+        $page->title = 'Оформление заказа - Enter';
+
+        $page->dataModule = 'order';
+
+        $page->content->form->url = $router->getUrlByRoute(new Routing\Order\SetUser());
+        if ($userModel) {
+            $page->content->form->email = $userModel->email;
+            $page->content->form->phone = $userModel->phone;
+            $page->content->form->firstName = $userModel->firstName;
+        }
+
+        $page->content->isUserAuthenticated = (bool)$userModel;
+        $page->content->authUrl = $router->getUrlByRoute(
+            new Routing\User\Login(),
+            ['redirect_to' => $router->getUrlByRoute(new Routing\Order\Index())]
+        );
     }
 }

@@ -5,6 +5,7 @@ namespace EnterMobile\Controller\Order;
 use Enter\Http;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
+use EnterAggregator\LoggerTrait;
 use EnterAggregator\DebugContainerTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterModel as Model;
@@ -14,7 +15,7 @@ use EnterMobile\Repository;
 use EnterMobile\Model\Page\Order\Index as Page;
 
 class Index {
-    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, CurlTrait, LoggerTrait, MustacheRendererTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -24,36 +25,29 @@ class Index {
         $config = $this->getConfig();
         $curl = $this->getCurl();
 
-        // ид региона
-        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
-
-        // запрос региона
-        $regionQuery = new Query\Region\GetItemById($regionId);
-        $curl->prepare($regionQuery);
-
-        $curl->execute();
-
-        // регион
-        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
-
-        // запрос категорий
-        $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
-        $curl->prepare($categoryTreeQuery);
-
-        // запрос меню
-        $mainMenuQuery = new Query\MainMenu\GetItem();
-        $curl->prepare($mainMenuQuery);
+        // запрос пользователя
+        $userItemQuery = null;
+        if ($userToken = (new \EnterRepository\User())->getTokenByHttpRequest($request)) {
+            $userItemQuery = new Query\User\GetItemByToken($userToken);
+            $curl->prepare($userItemQuery);
+        }
 
         $curl->execute();
 
-        // меню
-        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
+        // пользователь
+        $user = null;
+        try {
+            if ($userItemQuery) {
+                $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
+            }
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+        }
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Order\Index\Request();
         $pageRequest->httpRequest = $request;
-        $pageRequest->region = $region;
-        $pageRequest->mainMenu = $mainMenu;
+        $pageRequest->user = $user;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница

@@ -6,65 +6,7 @@
 	    <section class="checkout">
 	        <h1 class="checkout__tl">Оформление заказа</h1>
 
-	        <form class="checkout-form form-control clearfix" action="" method="" accept-charset="utf-8">
-	        	<fieldset class="order-authorize__container">
-		            <div class="order-authorize">
-			            <div class="order-authorize__t">Уже заказывали у нас?</div>
-			            <button class="order-authorize__btn btn1"><span class="btn-inner">Войти с паролем</span></button>
-			        </div>
-		        </fieldset>
-
-	            <fieldset class="form-control__container">
-	                <div class="form-control-group">
-	                    <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
-	                    <label class="form-control-group__lbl required" for="">Телефон</label>
-	                    <span class="form-control-group__hint">Для смс о состоянии заказа</span>
-	                </div>
-
-					<div class="form-control-group">
-	                    <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
-	                    <label class="form-control-group__lbl required" for="">E-mail</label>
-	                </div>
-
-	                <div class="form-control-group">
-	                    <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
-	                    <label class="form-control-group__lbl" for="">Имя</label>
-	                    <span class="form-control-group__hint">Как к вам обращаться?</span>
-	                </div>
-	            </fieldset>
-
-	            <fieldset class="form-control__container">
-	                {{! Чтобы показать/скрыть поле с картой, надо добавить/убрать класс active: }}
-	                <div class="bonus-cnt active">
-	                	<div class="bonus-cnt__head">Начислить баллы</div>
-						<div class="bonus-cnt-card">
-							<img class="bonus-cnt-card__img" src="/css/modules/order/img/m-mnogoru.png">
-
-							<span class="bonus-cnt-card__tl">Карта Много.ру</span>
-						</div>
-						<div class="form-control-group">
-		                    <input class="form-control-group__tx textfield jsOrderV3MnogoRuCardField" type="text" name="user_info[mnogo_ru_number]" value="" placeholder="xxxx xxxx" data-mask="xxxx xxxx">
-		                    <label class="form-control-group__lbl" for="">Карта</label>
-	                    </div>
-	                </div>
-	                <div class="bonus-cnt">
-	                	<div class="bonus-cnt__head">Начислить баллы</div>
-						<div class="bonus-cnt-card">
-							<img class="bonus-cnt-card__img" src="/css/modules/order/img/m-mnogoru.png">
-
-							<span class="bonus-cnt-card__tl">Карта Много.ру</span>
-						</div>
-						<div class="form-control-group">
-		                    <input class="form-control-group__tx textfield jsOrderV3MnogoRuCardField" type="text" name="user_info[mnogo_ru_number]" value="" placeholder="xxxx xxxx" data-mask="xxxx xxxx">
-		                    <label class="form-control-group__lbl" for="">Карта</label>
-	                    </div>
-	                </div>
-	            </fieldset>
-	        </form>
-
-	        <div class="btn-container btn-container--orange">
-	            <button class="btn btn--submit btn--orange btn--big">Далее</button>
-	        </div>
+			{{>page/order/index/form}}
 	    </section>
 
 	</div>

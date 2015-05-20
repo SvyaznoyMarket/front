@@ -98,7 +98,7 @@ class DefaultPage {
         }
 
         // регион
-        $page->regionBlock->regionName = $request->region->name;
+        $page->regionBlock->regionName = $request->region ? $request->region->name : null;
         $page->regionBlock->setUrl = $router->getUrlByRoute(new Routing\Region\SetByName());
         $page->regionBlock->autocompleteUrl = $router->getUrlByRoute(new Routing\Region\Autocomplete());
         foreach ([ // TODO: вынести в конфиг
@@ -135,7 +135,9 @@ class DefaultPage {
                 }
             }
         };
-        $walkByMenu($request->mainMenu->elements);
+        if ($request->mainMenu) {
+            $walkByMenu($request->mainMenu->elements);
+        }
 
         // partner
         try {
