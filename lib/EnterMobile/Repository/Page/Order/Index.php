@@ -40,7 +40,7 @@ class Index {
             $page->content->form->firstName = $userModel->firstName;
         }
 
-        $page->content->isUserAuthenticated = (bool)$userModel;
+        $page->content->isUserAuthenticated = (bool)$userModel->id;
         $page->content->authUrl = $router->getUrlByRoute(
             new Routing\User\Login(),
             ['redirect_to' => $router->getUrlByRoute(new Routing\Order\Index())]

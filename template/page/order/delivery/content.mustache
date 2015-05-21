@@ -267,33 +267,34 @@
             </div>
             -->
 
+            {{#orders}}
             {{! разбиение заказа, адрес доставки выбран }}
             <div class="checkout-order">
                 <div class="checkout-order-head checkout-order__box checkout-order__box--head">
-                    <strong class="checkout-order-head__title">Заказ №1</strong>
-                    <a class="checkout-order-head__info checkout-order-head__right" href=""><span class="bb-dotted">Информация и оферта</span></a>
-                    <span class="checkout-order-head__vendor checkout-order-head__right">продавец: ООО «Связной»</span>
+                    <strong class="checkout-order-head__title">{{name}}</strong>
+                    {{#seller}}
+                        <a class="checkout-order-head__info checkout-order-head__right" href="{{url}}" target="_blank"><span class="bb-dotted">Информация и оферта</span></a>
+                        <span class="checkout-order-head__vendor checkout-order-head__right">продавец: {{name}}</span>
+                    {{/seller}}
                 </div>
 
                 <div class="checkout-order__box checkout-order__box--stretch complete">
                     <menu class="checkout-delivery-type clearfix">
-                        <li class="checkout-delivery-type__item active js-delivery-type-name" data-type="delivery-type-self-1">
-                            <span class="checkout-delivery-type__text">Самовывоз</span>
+                    {{#deliveries}}
+                        <li class="checkout-delivery-type__item js-orderForm-control {{#active}}active{{/active}}" data-value="{{&dataValue}}">
+                            <span class="checkout-delivery-type__text">{{name}}</span>
                         </li>
-
-                        <li class="checkout-delivery-type__item js-delivery-type-name" data-type="delivery-type-buy-1">
-                            <span class="checkout-delivery-type__text">Доставка</span>
-                        </li>
+                    {{/deliveries}}
                     </menu>
 
                     <div class="checkout-order__inn box-show js-delivery-type" id="delivery-type-self-1">
-                        {{#pointSelected}}
+                        {{^pointSelected}}
                         <button class="btn-transparent btn-transparent--normal js-order-btn" data-btn="select-shop">
                             <span class="bb-dotted">Выбрать точку самовывоза</span>
                         </button>
                         {{/pointSelected}}
 
-                        {{^pointSelected}}
+                        {{#pointSelected}}
                         <div class="checkout-celendar">15 сентября 2014, воскресенье</div>
                         <div class="checkout-address">
                             <div class="checkout-address__title"><strong>Магазин</strong></div>
@@ -420,42 +421,6 @@
 
                         <span class="sale-select__right">- 2% на категорию Электроника</span>
                     </a>
-
-                    <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-                        <img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-                        <span class="sale-select__right">- 2% на категорию Электроника</span>
-                    </a>
-
-                    <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-                        <img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-                        <span class="sale-select__right">- 2% на категорию Электроника</span>
-                    </a>
-
-                    <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-                        <img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-                        <span class="sale-select__right">- 2% на категорию Электроника</span>
-                    </a>
-
-                    <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-                        <img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-                        <span class="sale-select__right">- 2% на категорию Электроника</span>
-                    </a>
-
-                    <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-                        <img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-                        <span class="sale-select__right">- 2% на категорию Электроника</span>
-                    </a>
-
-                    <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-                        <img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-                        <span class="sale-select__right">- 2% на категорию Электроника</span>
-                    </a>
                 </div>
                 {{! ввести код скидки или сертефиката }}
 
@@ -507,7 +472,7 @@
                         <div class="checkout-summary__item checkout-summary__item--val mb-10">150 <span class="rubl">p</span></div>
                         <div class="checkout-summary__item mb-10">Доставка:</div>
 
-                        <div class="checkout-summary__item checkout-summary__item--val clear-r l">2 334 <span class="rubl">p</span></div>
+                        <div class="checkout-summary__item checkout-summary__item--val clear-r l">{{sum.name}} <span class="rubl">p</span></div>
                         <div class="checkout-summary__item l">Итого:</div>
                     </div>
                 </div>
@@ -537,12 +502,15 @@
                 {{! Оплата - end }}
             </div>
             {{! разбиение заказа, адрес доставки выбран }}
+            {{/orders}}
 
             <div class="btn-container btn-container--orange">
-                <input type="checkbox" class="custom-input custom-input--check" id="accept" name="" value="" />
-                <label class="order-accept custom-label custom-label--top" for="accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
+                <form action="{{form.url}}" method="post">
+                    <input type="checkbox" class="custom-input custom-input--check" id="id-orderForm-accept" name="accept" value="1" />
+                    <label class="order-accept custom-label custom-label--top" for="id-orderForm-accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
 
-                <button class="btn btn--submit btn--orange btn--big">Оформить</button>
+                    <button type="submit" class="btn btn--submit btn--orange btn--big">Оформить</button>
+                </form>
             </div>
         </section>
 

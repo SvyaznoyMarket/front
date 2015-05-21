@@ -136,6 +136,10 @@
         "name": "Оформление заказа - выбор доставки",
         "pattern": "/orders/delivery"
     },
+    "Order\\Create": {
+        "name": "Оформление заказа - создание",
+        "pattern": "/orders/create"
+    },
 
     "Product\\Review\\GetList": {
         "name": "Отзывы товара",
