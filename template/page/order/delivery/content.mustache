@@ -6,7 +6,9 @@
         <section class="checkout">
             <h1 class="checkout__tl">Самовывоз и доставка</h1>
 
-            <p class="orderInf">Товары будут оформлены как  <strong class="mdb">3 отдельных заказа</strong></p>
+            {{#orderCountMessage}}
+                <p class="orderInf">Товары будут оформлены как <strong class="mdb">{{orderCountMessage}}</strong></p>
+            {{/orderCountMessage}}
 
             <div class="orderInf clearfix">
                 <div class="orderInf_tx">Ваш регион: <strong>{{region.name}}</strong></div>

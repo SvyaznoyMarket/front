@@ -7,6 +7,7 @@ use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\PriceHelperTrait;
+use EnterAggregator\TranslateHelperTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
@@ -14,7 +15,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\Order\Delivery as Page;
 
 class Delivery {
-    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, PriceHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, PriceHelperTrait, TranslateHelperTrait;
 
     /**
      * @param Page $page
@@ -26,6 +27,7 @@ class Delivery {
         $router = $this->getRouter();
         $templateHelper = $this->getTemplateHelper();
         $priceHelper = $this->getPriceHelper();
+        $translateHelper = $this->getTranslateHelper();
 
         // заголовок
         $page->title = 'Оформление заказа - Способ получения - Enter';
@@ -139,5 +141,12 @@ class Delivery {
 
             $i++;
         }
+
+        $orderCount = count($splitModel->orders);
+        $page->content->orderCountMessage =
+            $orderCount > 1
+            ? ($orderCount . ' ' . $translateHelper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']))
+            : false
+        ;
     }
 }

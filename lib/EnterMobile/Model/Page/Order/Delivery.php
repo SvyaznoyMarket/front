@@ -27,6 +27,8 @@ namespace EnterMobile\Model\Page\Order\Delivery {
         public $region;
         /** @var array */
         public $orders = [];
+        /** @var string|bool */
+        public $orderCountMessage;
 
         public function __construct() {
             parent::__construct();
