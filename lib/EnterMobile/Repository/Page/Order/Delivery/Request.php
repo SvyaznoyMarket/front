@@ -9,4 +9,6 @@ use EnterMobile\Repository;
 class Request extends Repository\Page\DefaultPage\Request {
     /** @var array */
     public $formErrors;
+    /** @var \EnterModel\Cart\Split */
+    public $split;
 }

@@ -25,6 +25,8 @@ namespace EnterMobile\Model\Page\Order\Delivery {
         public $form;
         /** @var array */
         public $region;
+        /** @var array */
+        public $orders = [];
 
         public function __construct() {
             parent::__construct();

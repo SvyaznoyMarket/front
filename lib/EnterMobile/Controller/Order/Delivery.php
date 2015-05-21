@@ -58,14 +58,12 @@ class Delivery {
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);
 
-        $region = $controllerResponse->region;
-        $errors = $controllerResponse->errors;
-        $split = $controllerResponse->split;
-
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Order\Delivery\Request();
         $pageRequest->httpRequest = $request;
-        $pageRequest->region = $region;
+        $pageRequest->region = $controllerResponse->region;
+        $pageRequest->split = $controllerResponse->split;
+        //$pageRequest->formErrors = $controllerResponse->errors; // TODO
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница
