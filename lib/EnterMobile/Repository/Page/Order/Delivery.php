@@ -51,6 +51,19 @@ class Delivery {
 
         $i = 1;
         foreach ($splitModel->orders as $orderModel) {
+            /** @var \EnterModel\Cart\Split\DeliveryGroup|null $deliveryGroupModel */
+            $deliveryGroupModel = call_user_func(function() use (&$splitModel, &$orderModel, &$deliveryMethodTokensByGroupToken) {
+                foreach ($splitModel->deliveryGroups as $deliveryGroupModel) {
+                    if (
+                        isset($deliveryMethodTokensByGroupToken[$deliveryGroupModel->id])
+                        && in_array($orderModel->delivery->methodToken, $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id])
+                    ) {
+                        return $deliveryGroupModel;
+                    }
+                }
+            });
+            if (!$deliveryGroupModel) continue;
+
             $order = [
                 'name'          => sprintf('Заказ №%s', $i),
                 'seller'        =>
@@ -64,25 +77,18 @@ class Delivery {
                     'name'  => $priceHelper->format($orderModel->sum),
                     'value' => $orderModel->sum,
                 ],
-                'pointSelected' => $orderModel->delivery && $orderModel->delivery->point, // TODO: удалить
                 'delivery'      =>
                     $orderModel->delivery
                     ? [
-                        'name'  => call_user_func(function() use (&$splitModel, &$orderModel, &$deliveryMethodTokensByGroupToken) {
-                            foreach ($splitModel->deliveryGroups as $deliveryGroupModel) {
-                                if (
-                                    isset($deliveryMethodTokensByGroupToken[$deliveryGroupModel->id])
-                                    && in_array($orderModel->delivery->methodToken, $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id])
-                                ) {
-                                    return $deliveryGroupModel->name;
-                                }
-                            }
-                        }),
-                        'price' => [
+                        'isStandart' => 2 == $deliveryGroupModel->id,
+                        'isSelf'     => 1 == $deliveryGroupModel->id,
+                        'name'       => $deliveryGroupModel->name,
+                        'price'      => [
                             'isCurrency' => $orderModel->delivery->price > 0,
                             'name'       => ($orderModel->delivery->price > 0) ? $priceHelper->format($orderModel->delivery->price) : 'Бесплатно',
                             'value'      => $orderModel->delivery->price,
-                        ]
+                        ],
+                        'point'      => $orderModel->delivery && $orderModel->delivery->point,
                     ]
                     : false
                 ,
@@ -98,11 +104,11 @@ class Delivery {
                         if (!$deliveryMethodToken) continue;
 
                         $deliveries[] = [
-                            'dataValue' => $templateHelper->json([
+                            'dataValue'  => $templateHelper->json([
                                 'methodToken' => $deliveryMethodToken,
                             ]),
-                            'name'      => $deliveryGroupModel->name,
-                            'isActive'  => $orderModel->delivery && in_array($orderModel->delivery->methodToken, $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id]),
+                            'name'       => $deliveryGroupModel->name,
+                            'isActive'   => $orderModel->delivery && in_array($orderModel->delivery->methodToken, $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id]),
                         ];
                     }
 

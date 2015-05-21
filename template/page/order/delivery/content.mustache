@@ -253,70 +253,14 @@
                     {{/deliveries}}
                     </menu>
 
-                    <div class="checkout-order__inn box-show js-delivery-type" id="delivery-type-self-1">
-                        {{^pointSelected}}
-                        <button class="btn-transparent btn-transparent--normal js-order-btn" data-btn="select-shop">
-                            <span class="bb-dotted">Выбрать точку самовывоза</span>
-                        </button>
-                        {{/pointSelected}}
+                    <div>
+                        {{#delivery.isSelf}}
+                            {{>page/order/delivery/group/self}}
+                        {{/delivery.isSelf}}
 
-                        {{#pointSelected}}
-                        <div class="checkout-celendar">15 сентября 2014, воскресенье</div>
-                        <div class="checkout-address">
-                            <div class="checkout-address__title"><strong>Магазин</strong></div>
-
-                            <div class="shop-snippet clearfix">
-                                <div class="shop-snippet-name">
-                                    <img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
-                                    <span class="shop-snippet-name__text">Магазин Enter</span>
-                                </div>
-
-                                <div class="shop-snippet-info">
-                                    <div class="shop-snippet-metro">
-                                        <span class="shop-snippet-metro__bullet" style="background: green;"></span>
-                                        <span class="shop-snippet-metro__text">м. Белорусская</span>
-                                    </div>
-
-                                    <div class="shop-snippet-address">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2 <br/>c 9.00 до 22.00</div>
-                                </div>
-
-                                <div class="table_cell"><a href="" class="bb-dotted">Изменить</a></div>
-                            </div>
-                        </div>
-                        {{/pointSelected}}
-                    </div>
-
-                    <div class="checkout-order__inn js-delivery-type" id="delivery-type-buy-1">
-                        <div class="checkout-celendar js-popup-box-celendar-link">15 сентября 2014, воскресенье</div>
-
-                        <div class="custom-select custom-select--button">
-                            <span class="custom-select__value js-order-btn" data-btn="select-time">10:00…18:00 <i class="caret"></i></span>
-
-                            <ul class="custom-select-list js-order-box" data-box="data-select-time">
-                                <li class="custom-select-list__item">10:00…18:00</li>
-                                <li class="custom-select-list__item">8:00…12:00</li>
-                                <li class="custom-select-list__item">12:00…18:00</li>
-                            </ul>
-                        </div>
-
-                        <div class="checkout-address">
-                            <div class="checkout-address__title"><strong>Адрес</strong> для всех заказов с доставкой</div>
-
-                            <p class="checkout-address__selected">ул. Линии Октябрьской Железной Дороги, 12/1, кв.23</p>
-
-                            <div class="checkout-address__select custom-select">
-    	                        <span class="custom-select__value js-order-btn" data-btn="select-address">
-	    	                        <span class="bb-dotted">Указать адрес</span>
-	    	                        <i class="caret"></i>
-    	                        </span>
-
-                                <ul class="custom-select-list js-order-box" data-box="data-select-address">
-                                    <li class="custom-select-list__item">ул. Линии Октябрьской Железной Дороги, 12/1, 23</li>
-                                    <li class="custom-select-list__item">ул. Орджоникидзе, 10</li>
-                                    <li class="custom-select-list__item custom-select-list__item--add"><span class="icon-plus">+</span> <span class="bb-dotted">Добавить адрес</span></li>
-                                </ul>
-                            </div>
-                        </div>
+                        {{#delivery.isStandart}}
+                            {{>page/order/delivery/group/standart}}
+                        {{/delivery.isStandart}}
                     </div>
                 </div>
 
