@@ -135,42 +135,6 @@
 
                         <span class="sale-select__right">- 2% на категорию Электроника</span>
                     </a>
-
-                    <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-                        <img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-                        <span class="sale-select__right">- 2% на категорию Электроника</span>
-                    </a>
-
-                    <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-                        <img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-                        <span class="sale-select__right">- 2% на категорию Электроника</span>
-                    </a>
-
-                    <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-                        <img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-                        <span class="sale-select__right">- 2% на категорию Электроника</span>
-                    </a>
-
-                    <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-                        <img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-                        <span class="sale-select__right">- 2% на категорию Электроника</span>
-                    </a>
-
-                    <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-                        <img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-                        <span class="sale-select__right">- 2% на категорию Электроника</span>
-                    </a>
-
-                    <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-                        <img class="sale-select__left" src="/css/modules/order/img/fishka.png" alt="">
-
-                        <span class="sale-select__right">- 2% на категорию Электроника</span>
-                    </a>
                 </div>
                 {{! ввести код скидки или сертефиката }}
 
@@ -281,7 +245,7 @@
                 <div class="checkout-order__box checkout-order__box--stretch complete">
                     <menu class="checkout-delivery-type clearfix">
                     {{#deliveries}}
-                        <li class="checkout-delivery-type__item js-orderForm-control {{#active}}active{{/active}}" data-value="{{&dataValue}}">
+                        <li class="checkout-delivery-type__item js-orderForm-control {{#isActive}}active{{/isActive}}" data-value="{{&dataValue}}">
                             <span class="checkout-delivery-type__text">{{name}}</span>
                         </li>
                     {{/deliveries}}
@@ -354,45 +318,7 @@
                     </div>
                 </div>
 
-                <div class="checkout-order__box checkout-order__box--light">
-                    <div class="checkout-order-items table">
-                        <div class="checkout-order-items__left table_cell">
-                            <img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg">
-                        </div>
-
-                        <div class="checkout-order-items__right table_cell">
-                            <div class="checkout-order-items__name">
-                                <a href="">
-                                    Самокат<br>
-                                    JD Bug Classic MS-305 синий JD Bug Classic MS-305 синий
-                                </a>
-                            </div>
-
-                            <div class="checkout-order-items__data l">5 200 <span class="rubl">p</span></div>
-                            <div class="checkout-order-items__data l ta-c">1 шт.</div>
-                            <div class="checkout-order-items__data l ta-r">5 200 <span class="rubl">p</span></div>
-                        </div>
-                    </div>
-
-                    <div class="checkout-order-items table">
-                        <div class="checkout-order-items__left table_cell">
-                            <img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg">
-                        </div>
-
-                        <div class="checkout-order-items__right table_cell">
-                            <div class="checkout-order-items__name">
-                                <a href="">
-                                    Самокат<br>
-                                    JD Bug Classic MS-305 синий JD Bug Classic MS-305 синий
-                                </a>
-                            </div>
-
-                            <div class="checkout-order-items__data l">5 200 <span class="rubl">p</span></div>
-                            <div class="checkout-order-items__data l ta-c">1 шт.</div>
-                            <div class="checkout-order-items__data l ta-r">5 200 <span class="rubl">p</span></div>
-                        </div>
-                    </div>
-                </div>
+                {{>page/order/delivery/product-list}}
 
                 {{! ввести код скидки или сертефиката }}
                 <div class="checkout-order__box checkout-order__box--light js-order-box" data-box="data-select-sale">
@@ -469,8 +395,10 @@
                     </div>
 
                     <div class="table_cell ta-r">
-                        <div class="checkout-summary__item checkout-summary__item--val mb-10">150 <span class="rubl">p</span></div>
-                        <div class="checkout-summary__item mb-10">Доставка:</div>
+                        <div class="checkout-summary__item checkout-summary__item--val mb-10">
+                            {{delivery.price.name}} {{#delivery.price.isCurrency}}<span class="rubl">p</span>{{/delivery.price.isCurrency}}
+                        </div>
+                        <div class="checkout-summary__item mb-10">{{delivery.name}}:</div>
 
                         <div class="checkout-summary__item checkout-summary__item--val clear-r l">{{sum.name}} <span class="rubl">p</span></div>
                         <div class="checkout-summary__item l">Итого:</div>

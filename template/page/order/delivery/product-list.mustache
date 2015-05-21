@@ -1,0 +1,24 @@
+<div class="checkout-order__box checkout-order__box--light">
+{{#products}}
+    <div class="checkout-order-items table">
+        <div class="checkout-order-items__left table_cell">
+            <img alt="{{name}}" src="{{image}}">
+        </div>
+
+        <div class="checkout-order-items__right table_cell">
+            <div class="checkout-order-items__name">
+                <a href="{{url}}" target="_blank">
+                    {{#namePrefix}}
+                        {{namePrefix}}<br>
+                    {{/namePrefix}}
+                    {{name}}
+                </a>
+            </div>
+
+            <div class="checkout-order-items__data l">{{price.name}} <span class="rubl">p</span></div>
+            <div class="checkout-order-items__data l ta-c">{{quantity}} шт.</div>
+            <div class="checkout-order-items__data l ta-r">{{sum.name}} <span class="rubl">p</span></div>
+        </div>
+    </div>
+{{/products}}
+</div>

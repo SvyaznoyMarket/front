@@ -62,8 +62,29 @@ class Delivery {
                     'name'  => $priceHelper->format($orderModel->sum),
                     'value' => $orderModel->sum,
                 ],
-                'pointSelected' => $orderModel->delivery && $orderModel->delivery->point,
-                'deliveries'    => call_user_func(function() use (&$splitModel, &$templateHelper, &$orderModel, &$deliveryMethodTokensByGroupToken) {
+                'pointSelected' => $orderModel->delivery && $orderModel->delivery->point, // TODO: удалить
+                'delivery'      =>
+                    $orderModel->delivery
+                    ? [
+                        'name'  => call_user_func(function() use (&$splitModel, &$orderModel, &$deliveryMethodTokensByGroupToken) {
+                            foreach ($splitModel->deliveryGroups as $deliveryGroupModel) {
+                                if (
+                                    isset($deliveryMethodTokensByGroupToken[$deliveryGroupModel->id])
+                                    && in_array($orderModel->delivery->methodToken, $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id])
+                                ) {
+                                    return $deliveryGroupModel->name;
+                                }
+                            }
+                        }),
+                        'price' => [
+                            'isCurrency' => $orderModel->delivery->price > 0,
+                            'name'       => ($orderModel->delivery->price > 0) ? $priceHelper->format($orderModel->delivery->price) : 'Бесплатно',
+                            'value'      => $orderModel->delivery->price,
+                        ]
+                    ]
+                    : false
+                ,
+                'deliveries'    => call_user_func(function() use (&$templateHelper, &$priceHelper, &$splitModel, &$orderModel, &$deliveryMethodTokensByGroupToken) {
                     $deliveries = [];
 
                     foreach ($splitModel->deliveryGroups as $deliveryGroupModel) {
@@ -79,11 +100,38 @@ class Delivery {
                                 'methodToken' => $deliveryMethodToken,
                             ]),
                             'name'      => $deliveryGroupModel->name,
-                            'active'    => $orderModel->delivery && in_array($orderModel->delivery->methodToken, $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id]),
+                            'isActive'  => $orderModel->delivery && in_array($orderModel->delivery->methodToken, $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id]),
                         ];
                     }
 
                     return $deliveries;
+                }),
+                'products'    => call_user_func(function() use (&$templateHelper, &$priceHelper, &$splitModel, &$orderModel) {
+                    $products = [];
+
+                    foreach ($orderModel->products as $productModel) {
+                        $products[] = [
+                            'namePrefix' => $productModel->namePrefix,
+                            'name'       => $productModel->webName,
+                            'quantity'   => $productModel->quantity,
+                            'price'      => [
+                                'name'  => $priceHelper->format($productModel->price),
+                                'value' => $productModel->price,
+                            ],
+                            'sum'        => [
+                                'name'  => $priceHelper->format($productModel->sum),
+                                'value' => $productModel->sum,
+                            ],
+                            'url'        => $productModel->url,
+                            'image'      =>
+                                isset($productModel->media->photos[0])
+                                ? (string)(new Routing\Product\Media\GetPhoto($productModel->media->photos[0], 'product_160'))
+                                : null
+                            ,
+                        ];
+                    }
+
+                    return $products;
                 }),
             ];
 

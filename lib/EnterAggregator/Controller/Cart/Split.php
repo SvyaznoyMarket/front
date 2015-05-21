@@ -141,7 +141,7 @@ namespace EnterAggregator\Controller\Cart {
 
                     foreach ($response->split->orders as $order) {
                         foreach ($order->products as $product) {
-                            $product->media = isset($productsById[$product->id]) ? $productsById[$product->id]->media : []; // FIXME
+                            $product->media = isset($productsById[$product->id]) ? $productsById[$product->id]->media : [];
                         }
                     }
                 }
