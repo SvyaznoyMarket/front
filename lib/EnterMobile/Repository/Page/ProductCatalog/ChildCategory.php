@@ -88,7 +88,7 @@ class ChildCategory {
             foreach ($request->products as $productModel) {
                 $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel), $request->category);
 
-            $page->content->productBlock->products[] = $productCard;
+                $page->content->productBlock->products[] = $productCard;
         }
 
         $page->content->sortingBlock = (new Repository\Partial\ProductSortingBlock())->getObject(

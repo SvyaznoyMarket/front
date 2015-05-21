@@ -67,6 +67,14 @@ class ProductCard {
             $card->brand = $product->brand;
         }
 
+        // состояние товара
+        $card->states['isBuyable'] = $product->isBuyable;
+        $card->states['isInShopOnly'] = $product->isInShopOnly;
+        $card->states['isInShopStockOnly'] = $product->isInShopStockOnly;
+        $card->states['isInShopShowroomOnly'] = $product->isInShopShowroomOnly;
+        $card->states['isInWarehouse'] = $product->isInWarehouse;
+        $card->states['isKitLocked'] = $product->isKitLocked;
+
         // шильдики
         foreach ($product->labels as $label) {
             $label->imageUrl = (string)(new Routing\Product\Label\Get($label->id, $label->image, 0)); // FIXME

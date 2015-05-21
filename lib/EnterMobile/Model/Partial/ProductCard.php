@@ -33,4 +33,13 @@ class ProductCard {
     public $brand;
     /** @var \EnterModel\Product\Label[] */
     public $labels = [];
+    /** @var array */
+    public $states = [
+        'isBuyable'             => false,
+        'isInShopOnly'          => false,
+        'isInShopStockOnly'     => false,
+        'isInShopShowroomOnly'  => false,
+        'isInWarehouse'         => false,
+        'isKitLocked'           => false
+    ];
 }
