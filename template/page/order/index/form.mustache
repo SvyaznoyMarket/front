@@ -1,4 +1,4 @@
-<form class="js-userForm checkout-form form-control clearfix" action="{{form.url}}" method="post" accept-charset="utf-8" data-error="{{&form.errorDataValue}}">
+<form class="js-order-user-form checkout-form form-control clearfix" action="{{form.url}}" method="post" accept-charset="utf-8" data-error="{{&form.errorDataValue}}">
     {{^isUserAuthenticated}}
     <fieldset class="order-authorize__container">
         <div class="order-authorize">
@@ -10,13 +10,13 @@
 
     <fieldset class="form-control__container">
         <div class="form-control-group">
-            <input class="form-control-group__tx textfield" id="id-userForm-phone" type="text" name="user[phone]" value="{{form.phone}}" placeholder="">
+            <input class="form-control-group__tx textfield js-order-user-field" id="id-userForm-phone" type="text" data-field-name="phone" name="user[phone]" value="{{form.phone}}" placeholder="">
             <label class="form-control-group__lbl required" for="id-userForm-phone">Телефон</label>
             <span class="form-control-group__hint">Для смс о состоянии заказа</span>
         </div>
 
         <div class="form-control-group">
-            <input class="form-control-group__tx textfield" id="id-userForm-email" type="text" name="user[email]" value="{{form.email}}" placeholder="">
+            <input class="form-control-group__tx textfield js-order-user-field" id="id-userForm-email" type="text" data-field-name="email" name="user[email]" value="{{form.email}}" placeholder="">
             <label class="form-control-group__lbl required" for="id-userForm-email">E-mail</label>
         </div>
 
@@ -25,6 +25,8 @@
             <label class="form-control-group__lbl" for="id-userForm-firstName">Имя</label>
             <span class="form-control-group__hint">Как к вам обращаться?</span>
         </div>
+
+        <div class="error"></div>
     </fieldset>
 
     <fieldset class="form-control__container">
@@ -43,6 +45,6 @@
     </fieldset>
 
     <div class="btn-container btn-container--orange">
-        <button type="submit" class="btn btn--submit btn--orange btn--big">Далее</button>
+        <button type="submit" class="btn btn--submit btn--orange btn--big js-order-user-submit">Далее</button>
     </div>
 </form>
