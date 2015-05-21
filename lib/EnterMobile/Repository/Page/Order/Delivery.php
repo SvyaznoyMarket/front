@@ -8,6 +8,7 @@ use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\PriceHelperTrait;
 use EnterAggregator\TranslateHelperTrait;
+use EnterAggregator\DateHelperTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
@@ -15,7 +16,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\Order\Delivery as Page;
 
 class Delivery {
-    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, PriceHelperTrait, TranslateHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, PriceHelperTrait, TranslateHelperTrait, DateHelperTrait;
 
     /**
      * @param Page $page
@@ -28,6 +29,7 @@ class Delivery {
         $templateHelper = $this->getTemplateHelper();
         $priceHelper = $this->getPriceHelper();
         $translateHelper = $this->getTranslateHelper();
+        $dateHelper = $this->getDateHelper();
 
         // заголовок
         $page->title = 'Оформление заказа - Способ получения - Enter';
@@ -49,6 +51,16 @@ class Delivery {
             $deliveryMethodTokensByGroupToken[$deliveryMethodModel->groupId][] = $deliveryMethodModel->token;
         }
 
+        // индексация групп точек и точек самовывоза
+        $pointGroupByTokenIndex = [];
+        $pointByGroupAndIdIndex = [];
+        foreach ($splitModel->pointGroups as $groupIndex => $pointGroupModel) {
+            $pointGroupByTokenIndex[$pointGroupModel->token] = $groupIndex;
+            foreach ($pointGroupModel->points as $pointIndex => $pointModel) {
+                $pointByGroupAndIdIndex[$pointGroupModel->token][$pointModel->id] = $pointIndex;
+            }
+        }
+
         $i = 1;
         foreach ($splitModel->orders as $orderModel) {
             /** @var \EnterModel\Cart\Split\DeliveryGroup|null $deliveryGroupModel */
@@ -65,6 +77,7 @@ class Delivery {
             if (!$deliveryGroupModel) continue;
 
             $order = [
+                'id'            => $orderModel->blockName,
                 'name'          => sprintf('Заказ №%s', $i),
                 'seller'        =>
                     $orderModel->seller
@@ -140,6 +153,46 @@ class Delivery {
                     }
 
                     return $products;
+                }),
+                'points'      => call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
+                    $points = [];
+
+                    foreach ($orderModel->possiblePoints as $possiblePointModel) {
+                        $point = $splitModel
+                            ->pointGroups[$pointGroupByTokenIndex[$possiblePointModel->groupToken]]
+                            ->points[$pointByGroupAndIdIndex[$possiblePointModel->groupToken][$possiblePointModel->id]]
+                        ;
+
+                        $date = null;
+                        try {
+                            $date = new \DateTime($possiblePointModel->nearestDay);
+                        } catch (\Exception $e) {}
+
+                        $points[] = [
+                            'id'         => $possiblePointModel->id,
+                            'name'       => $point->name,
+                            'type'       => [
+                                'token' => $possiblePointModel->groupToken,
+                                'name'  => isset($splitModel->pointGroups),
+                            ],
+                            'date'       =>
+                                $date
+                                ? $dateHelper->humanizeDate($date)
+                                : false,
+                            'cost'       => $possiblePointModel->cost ? $possiblePointModel->cost : false,
+                            'subway'     =>
+                                isset($point->subway[0])
+                                ? [
+                                    'name'  => $point->subway[0]->name,
+                                    'color' => isset($point->subway[0]->line) ? $point->subway[0]->line->color : false,
+                                ]
+                                : false
+                            ,
+                            'regime'     => $point->regime,
+                        ];
+                    }
+
+                    return $points;
                 }),
             ];
 

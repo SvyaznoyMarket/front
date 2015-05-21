@@ -390,3 +390,13 @@
 
     </div>
 </div>
+
+{{#orders}}
+    {{#delivery.isSelf}}
+        {{>page/order/delivery/point-popup}}
+    {{/delivery.isSelf}}
+
+    {{#delivery.isStandart}}
+        {{>page/order/delivery/address-popup}}
+    {{/delivery.isStandart}}
+{{/orders}}

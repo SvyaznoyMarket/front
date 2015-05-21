@@ -164,14 +164,6 @@ namespace EnterAggregator\Controller\Cart {
                 } catch (\Exception $e) {
                     $this->getLogger()->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
                 }
-
-                // type fix
-                foreach ($response->split->orders as $order) {
-                    if (!(bool)$order->groupedPossiblePointIds) {
-                        $order->groupedPossiblePointIds = null;
-                    }
-                }
-
             } catch (Query\CoreQueryException $e) {
                 $response->errors = $orderRepository->getErrorList($e);
             }
