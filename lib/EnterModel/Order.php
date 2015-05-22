@@ -2,9 +2,12 @@
 
 namespace EnterModel;
 
+use EnterAggregator\PriceHelperTrait;
 use EnterModel as Model;
 
 class Order {
+    use PriceHelperTrait;
+
     const TYPE_ORDER = 1;
     const TYPE_PREORDER = 2;
     const TYPE_CUSTOM = 3;
@@ -39,7 +42,7 @@ class Order {
     public $numberErp;
     /** @var string|null */
     public $token;
-    /** @var int */
+    /** @var float */
     public $sum;
     /** @var string */
     public $shopId;
@@ -59,9 +62,9 @@ class Order {
     public $updatedAt;
     /** @var Model\Order\Product[] */
     public $product = [];
-    /** @var int */
+    /** @var float */
     public $paySum;
-    /** @var int */
+    /** @var float */
     public $discountSum;
     /** @var string */
     public $subwayId;
@@ -95,7 +98,7 @@ class Order {
         if (array_key_exists('number', $data)) $this->number = (string)$data['number'];
         if (array_key_exists('number_erp', $data)) $this->numberErp = (string)$data['number_erp'];
         if (array_key_exists('access_token', $data)) $this->token = $data['access_token'] ? (string)$data['access_token'] : null;
-        if (array_key_exists('sum', $data)) $this->sum = $data['sum'];
+        if (array_key_exists('sum', $data)) $this->sum = $this->getPriceHelper()->removeZeroFraction($data['sum']);
         if (array_key_exists('shop_id', $data)) $this->shopId = (string)$data['shop_id'];
         if (array_key_exists('geo_id', $data)) $this->regionId = (string)$data['geo_id'];
         if (isset($data['geo']['id'])) $this->region = new Model\Region($data['geo']);
@@ -117,8 +120,8 @@ class Order {
                 $this->product[] = new Model\Order\Product($productData);
             }
         }
-        if (array_key_exists('pay_sum', $data)) $this->paySum = $data['pay_sum'];
-        if (array_key_exists('discount_sum', $data)) $this->discountSum = $data['discount_sum'];
+        if (array_key_exists('pay_sum', $data)) $this->paySum = $this->getPriceHelper()->removeZeroFraction($data['pay_sum']);
+        if (array_key_exists('discount_sum', $data)) $this->discountSum = $this->getPriceHelper()->removeZeroFraction($data['discount_sum']);
         if (array_key_exists('subway_id', $data)) $this->subwayId = (string)$data['subway_id'];
         if (array_key_exists('payment_id', $data)) $this->paymentMethodId = (string)$data['payment_id'];
         if (array_key_exists('payment_status_id', $data)) $this->paymentStatusId = $data['payment_status_id']? (string)$data['payment_status_id'] : null;

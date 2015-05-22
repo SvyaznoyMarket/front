@@ -225,7 +225,7 @@ namespace EnterAggregator\Controller\Cart\Split {
     class Response {
         /** @var array */
         public $errors = [];
-        /** @var array */
+        /** @var Model\Cart\Split */
         public $split;
         /** @var Model\Region|null */
         public $region;

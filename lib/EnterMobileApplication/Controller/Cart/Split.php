@@ -70,11 +70,43 @@ namespace EnterMobileApplication\Controller\Cart {
             // ответ от контроллера
             $controllerResponse = $controller->execute($controllerRequest);
 
+            // MAPI-25
+            $this->setPointImageUrls($controllerResponse->split->pointGroups);
+
             $response->errors = $controllerResponse->errors;
             $response->split = $controllerResponse->split;
 
             // response
             return new Http\JsonResponse($response);
+        }
+
+        /**
+         * @param Model\Cart\Split\PointGroup[] $pointGroups
+         */
+        private function setPointImageUrls($pointGroups) {
+            foreach ($pointGroups as $pointGroup) {
+                // Возможные типы см. в коде https://github.com/SvyaznoyMarket/core/blob/euroset/application/models/V2/PickupPoint/Repository.php#L10
+                switch ($pointGroup->token) {
+                    case 'shops':
+                        $image = 'enter.png';
+                        break;
+                    case 'self_partner_pickpoint':
+                        $image = 'pickpoint.png';
+                        break;
+                    case 'self_partner_svyaznoy':
+                        $image = 'svyaznoy.png';
+                        break;
+                    case 'self_partner_euroset':
+                        $image = 'euroset.png';
+                        break;
+                    default:
+                        $image = '';
+                        break;
+                }
+                if ($image) {
+                    $pointGroup->imageUrl = 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/' . $image;
+                }
+            }
         }
     }
 }
@@ -85,7 +117,7 @@ namespace EnterMobileApplication\Controller\Cart\Split {
     class Response {
         /** @var array */
         public $errors = [];
-        /** @var array */
+        /** @var Model\Cart\Split */
         public $split;
-     }
+    }
 }
