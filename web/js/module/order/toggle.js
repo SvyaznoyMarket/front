@@ -10,7 +10,7 @@ define(
 
     	$toggleWrap.removeClass(toggleClass);
 
-    	$toggleLink.click( function() {
+    	$('.js-toggle-link').click( function() {
             console.log('toggle');
     		$(this).closest('.js-toggle-wrap').toggleClass(toggleClass);
     	})

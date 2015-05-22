@@ -7696,7 +7696,6 @@ body.noScroll {
   display: block;
 }
 .bonus-cnt .form-control-group {
-  display: none;
   margin-bottom: 0;
 }
 .order-popup {
@@ -8797,4 +8796,10 @@ body.noScroll {
   align-items: center;
   width: 100%;
   max-width: 100%;
+}
+.toggle--active .toggle-box {
+  display: block;
+}
+.toggle-box {
+  display: none;
 }
