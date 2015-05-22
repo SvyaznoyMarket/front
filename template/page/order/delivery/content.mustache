@@ -8,10 +8,8 @@
 
 {{#orders}}
     {{#delivery.isSelf}}
-        {{>page/order/delivery/point-popup}}
+        <div class="id-order-{{id}}-map" data-value="{{&pointDataValue}}"></div>
     {{/delivery.isSelf}}
-
-    {{#delivery.isStandart}}
-        {{>page/order/delivery/address-popup}}
-    {{/delivery.isStandart}}
 {{/orders}}
+
+{{>page/order/delivery/address-popup}}

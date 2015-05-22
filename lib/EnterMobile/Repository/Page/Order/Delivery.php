@@ -169,50 +169,52 @@ class Delivery {
 
                     return $products;
                 }),
-                'points'      => call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
-                    $points = [];
+                'pointDataValue' => $templateHelper->json(
+                    call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
+                        $points = [];
 
-                    foreach ($orderModel->possiblePoints as $possiblePointModel) {
-                        $pointGroupIndex = isset($pointGroupByTokenIndex[$possiblePointModel->groupToken]) ? $pointGroupByTokenIndex[$possiblePointModel->groupToken] : null;
-                        $pointIndex = isset($pointByGroupAndIdIndex[$possiblePointModel->groupToken][$possiblePointModel->id]) ? $pointByGroupAndIdIndex[$possiblePointModel->groupToken][$possiblePointModel->id] : null;
+                        foreach ($orderModel->possiblePoints as $possiblePointModel) {
+                            $pointGroupIndex = isset($pointGroupByTokenIndex[$possiblePointModel->groupToken]) ? $pointGroupByTokenIndex[$possiblePointModel->groupToken] : null;
+                            $pointIndex = isset($pointByGroupAndIdIndex[$possiblePointModel->groupToken][$possiblePointModel->id]) ? $pointByGroupAndIdIndex[$possiblePointModel->groupToken][$possiblePointModel->id] : null;
 
-                        $point = ($pointGroupIndex && $pointIndex) ? $splitModel->pointGroups[$pointGroupIndex]->points[$pointIndex] : null;
-                        if (!$point) {
-                            $this->getLogger()->push(['type' => 'warn', 'message' => 'Точка не найдена', 'pointId' => $possiblePointModel->id, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split', 'critical']]);
-                            continue;
+                            $point = ($pointGroupIndex && $pointIndex) ? $splitModel->pointGroups[$pointGroupIndex]->points[$pointIndex] : null;
+                            if (!$point) {
+                                $this->getLogger()->push(['type' => 'warn', 'message' => 'Точка не найдена', 'pointId' => $possiblePointModel->id, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split', 'critical']]);
+                                continue;
+                            }
+
+                            $date = null;
+                            try {
+                                $date = new \DateTime($possiblePointModel->nearestDay);
+                            } catch (\Exception $e) {}
+
+                            $points[] = [
+                                'id'         => $possiblePointModel->id,
+                                'name'       => $point->name,
+                                'type'       => [
+                                    'token' => $possiblePointModel->groupToken,
+                                    'name'  => isset($splitModel->pointGroups),
+                                ],
+                                'date'       =>
+                                    $date
+                                        ? $dateHelper->humanizeDate($date)
+                                        : false,
+                                'cost'       => $possiblePointModel->cost ? $possiblePointModel->cost : false,
+                                'subway'     =>
+                                    isset($point->subway[0])
+                                        ? [
+                                        'name'  => $point->subway[0]->name,
+                                        'color' => isset($point->subway[0]->line) ? $point->subway[0]->line->color : false,
+                                    ]
+                                        : false
+                                ,
+                                'regime'     => $point->regime,
+                            ];
                         }
 
-                        $date = null;
-                        try {
-                            $date = new \DateTime($possiblePointModel->nearestDay);
-                        } catch (\Exception $e) {}
-
-                        $points[] = [
-                            'id'         => $possiblePointModel->id,
-                            'name'       => $point->name,
-                            'type'       => [
-                                'token' => $possiblePointModel->groupToken,
-                                'name'  => isset($splitModel->pointGroups),
-                            ],
-                            'date'       =>
-                                $date
-                                ? $dateHelper->humanizeDate($date)
-                                : false,
-                            'cost'       => $possiblePointModel->cost ? $possiblePointModel->cost : false,
-                            'subway'     =>
-                                isset($point->subway[0])
-                                ? [
-                                    'name'  => $point->subway[0]->name,
-                                    'color' => isset($point->subway[0]->line) ? $point->subway[0]->line->color : false,
-                                ]
-                                : false
-                            ,
-                            'regime'     => $point->regime,
-                        ];
-                    }
-
-                    return $points;
-                }),
+                        return $points;
+                    })
+                ),
             ];
 
             $page->content->orders[] = $order;
@@ -226,5 +228,16 @@ class Delivery {
             ? ($orderCount . ' ' . $translateHelper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']))
             : false
         ;
+
+        // шаблоны mustache
+        (new Repository\Template())->setListForPage($page, [
+            [
+                'id'       => 'tpl-order-delivery-point-popup',
+                'name'     => 'page/order/delivery/point-popup',
+                'partials' => [
+                    'partial/cart/button',
+                ],
+            ],
+        ]);
     }
 }
