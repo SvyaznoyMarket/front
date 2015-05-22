@@ -1,24 +1,17 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'jquery.maskedinput'
+        'require', 'jquery', 'underscore', 'mustache', 'module/util'
     ],
     function(
         require, $, _, mustache, util
     ) {
-        console.log('order');
-
-        // устанавливаем маску в поле номера телефона
-        $.mask.definitions['x'] = "[0-9]";
-        $('.js-field-phone').mask("+7(xxx)xxx-xx-xx", {
-            placeholder: "+7(xxx)xxx-xx-xx"
-        });
 
         var $field   = $('.js-user-field'),
-            errClass = 'textfield-err',
-            massage,
-            index,
-            tmpl,
-            i;
+                errClass = 'textfield-err',
+                massage,
+                index,
+                tmpl,
+                i;
 
         // убираем маркер ошибки при фокусе на поле
         $field.focus(function() {
@@ -82,5 +75,5 @@ define(
 
             return false;
         });
-    }
+    };
 );
