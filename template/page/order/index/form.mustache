@@ -1,4 +1,6 @@
 <form class="js-user-form checkout-form form-control clearfix" action="{{form.url}}" method="post" accept-charset="utf-8" data-error="{{&form.errorDataValue}}">
+    <div class="global-error js-global-error"></div>
+
     {{^isUserAuthenticated}}
     <fieldset class="order-authorize__container">
         <div class="order-authorize">
@@ -31,13 +33,14 @@
 
     <fieldset class="form-control__container">
         {{! Чтобы показать/скрыть поле с картой, надо добавить/убрать класс active: }}
-        <div class="bonus-cnt active">
+        <div class="bonus-cnt toggle js-toggle-wrap">
             <div class="bonus-cnt__head">Начислить баллы</div>
             <div class="bonus-cnt-card">
                 <img class="bonus-cnt-card__img" src="/css/modules/order/img/m-mnogoru.png">
-                <span class="bonus-cnt-card__tl">Карта Много.ру</span>
+                <span class="bonus-cnt-card__tl toggle-link js-toggle-link">Карта Много.ру</span>
             </div>
-            <div class="form-control-group">
+
+            <div class="form-control-group toggle-box js-toggle-box">
                 <input class="form-control-group__tx textfield js-field-mnogoru" id="id-userForm-mnogoruNumber" type="text" name="user[mnogoruNumber]" value="{{form.mnogoruNumber}}" placeholder="xxxx xxxx">
                 <label class="form-control-group__lbl" for="id-userForm-mnogoruNumber">Карта</label>
             </div>

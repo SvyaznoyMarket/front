@@ -905,6 +905,10 @@ textarea[contenteditable] {
   word-wrap: normal;
   color: #ec434f;
 }
+.global-error {
+  color: #ec434f;
+  margin: 0 0 5px;
+}
 .table {
   display: table;
   box-sizing: border-box;

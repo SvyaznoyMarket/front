@@ -1,17 +1,27 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util'
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'jquery.maskedinput'
     ],
     function(
         require, $, _, mustache, util
     ) {
+        // устанавливаем маску в поле номера телефона
+        $.mask.definitions['x'] = "[0-9]";
+        $('.js-field-phone').mask("+7(xxx)xxx-xx-xx", {
+            placeholder: "+7(xxx)xxx-xx-xx"
+        });
 
-        var $field   = $('.js-user-field'),
-                errClass = 'textfield-err',
-                massage,
-                index,
-                tmpl,
-                i;
+        $('.js-field-mnogoru').mask("xxxx xxxx", {
+            placeholder: "xxxx xxxx"
+        });
+
+        var $field       = $('.js-user-field'),
+            $globalError = $('.js-global-error'),
+            errClass     = 'textfield-err',
+            massage,
+            index,
+            tmpl,
+            i;
 
         // убираем маркер ошибки при фокусе на поле
         $field.focus(function() {
@@ -35,7 +45,7 @@ define(
                         index = result.errors[i].field;
                         massage = result.errors[i].name;
 
-                        if ( $(this).data('field-name') == index ) {
+                        if ( $(this).data('field-name') == index && !( $(this).hasClass(errClass) ) ) {
                             tmpl = '<div class="error-text js-field-error">' + massage + '</div>';
 
                             $(this)
@@ -44,6 +54,11 @@ define(
                         }
                     }
                 })
+            }
+
+            // если ошибок нет переход на следущий шаг
+            if ( result.redirect.length ) {
+                window.location.href = result.redirect;
             }
 
             return false;
