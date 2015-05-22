@@ -118,13 +118,20 @@ class Delivery {
 
         // рендер
         $renderer = $this->getRenderer();
-        $renderer->setPartials([
-            'content' => 'page/order/delivery/content',
-        ]);
-        $content = $renderer->render('layout/simple', $page);
 
-        // http-ответ
-        $response = new Http\Response($content);
+        if ($request->isXmlHttpRequest()) {
+            $content = $renderer->render('page/order/delivery/form', $page->content);
+
+            $response = new Http\Response($content);
+        } else {
+            $renderer->setPartials([
+                'content' => 'page/order/delivery/content',
+            ]);
+            $content = $renderer->render('layout/simple', $page);
+
+            // http-ответ
+            $response = new Http\Response($content);
+        }
 
         return $response;
     }

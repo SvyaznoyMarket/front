@@ -24,6 +24,10 @@ namespace EnterMobile\Model\Page\Order\Delivery {
         /** @var Form\Order\DeliveryForm */
         public $form;
         /** @var array */
+        public $deliveryForm = [
+            'url' => null,
+        ];
+        /** @var array */
         public $region;
         /** @var array */
         public $orders = [];

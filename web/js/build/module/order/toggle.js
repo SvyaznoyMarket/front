@@ -1,1 +1,1 @@
-define(["require","jquery"],function(e){var g=e(".js-toggle-wrap"),l=g.find(".js-toggle-link"),o=(g.find(".js-toggle-box"),"toggle--active");g.removeClass(o),l.click(function(){e(this).closest(".js-toggle-wrap").toggleClass(o)})});
+define(["jquery"],function(g){var e=g(".js-toggle-wrap"),l=(e.find(".js-toggle-link"),e.find(".js-toggle-box"),"toggle--active");e.removeClass(l),g(".js-toggle-link").click(function(){console.log("toggle"),g(this).closest(".js-toggle-wrap").toggleClass(l)})});

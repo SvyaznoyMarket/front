@@ -40,6 +40,8 @@ class Delivery {
             'name' => $request->region->name,
         ];
 
+        $page->content->deliveryForm['url'] = $router->getUrlByRoute(new Routing\Order\Delivery());
+
         $page->content->form->url = $router->getUrlByRoute(new Routing\Order\Create());
         $page->content->form->errorDataValue = $templateHelper->json($request->formErrors);
 
@@ -110,7 +112,10 @@ class Delivery {
 
                     foreach ($splitModel->deliveryGroups as $deliveryGroupModel) {
                         $deliveryMethodToken =
-                            isset($deliveryMethodTokensByGroupToken[$deliveryGroupModel->id][0])
+                            (
+                                isset($deliveryMethodTokensByGroupToken[$deliveryGroupModel->id][0])
+                                && (bool)array_intersect($orderModel->possibleDeliveryMethodTokens, $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id])
+                            )
                             ? $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id][0]
                             : null
                         ;
@@ -118,7 +123,16 @@ class Delivery {
 
                         $deliveries[] = [
                             'dataValue'  => $templateHelper->json([
-                                'methodToken' => $deliveryMethodToken,
+                                'change' => [
+                                    'orders' => [
+                                        [
+                                            'blockName' => $orderModel->blockName,
+                                            'delivery'  => [
+                                                'methodToken' => $deliveryMethodToken,
+                                            ],
+                                        ]
+                                    ],
+                                ],
                             ]),
                             'name'       => $deliveryGroupModel->name,
                             'isActive'   => $orderModel->delivery && in_array($orderModel->delivery->methodToken, $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id]),
@@ -158,10 +172,14 @@ class Delivery {
                     $points = [];
 
                     foreach ($orderModel->possiblePoints as $possiblePointModel) {
-                        $point = $splitModel
-                            ->pointGroups[$pointGroupByTokenIndex[$possiblePointModel->groupToken]]
-                            ->points[$pointByGroupAndIdIndex[$possiblePointModel->groupToken][$possiblePointModel->id]]
-                        ;
+                        $pointGroupIndex = isset($pointGroupByTokenIndex[$possiblePointModel->groupToken]) ? $pointGroupByTokenIndex[$possiblePointModel->groupToken] : null;
+                        $pointIndex = isset($pointByGroupAndIdIndex[$possiblePointModel->groupToken][$possiblePointModel->id]) ? $pointByGroupAndIdIndex[$possiblePointModel->groupToken][$possiblePointModel->id] : null;
+
+                        $point = ($pointGroupIndex && $pointIndex) ? $splitModel->pointGroups[$pointGroupIndex]->points[$pointIndex] : null;
+                        if (!$point) {
+                            $this->getLogger()->push(['type' => 'warn', 'message' => 'Точка не найдена', 'pointId' => $possiblePointModel->id, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split', 'critical']]);
+                            continue;
+                        }
 
                         $date = null;
                         try {

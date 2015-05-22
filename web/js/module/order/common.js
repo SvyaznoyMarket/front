@@ -4,7 +4,8 @@ define(
     	console.log('order.common!');
 
     	var $body = $('body'),
-            orderWrapPrent = $('.custom-select');
+			$deliveryForm = $('.js-order-delivery-form'),
+            orderWrapPrent = $('.custom-select'),
     		orderWrap = $('.js-order-box'),
     		orderClsr = $('.js-order-box-closer'),
     		orderBtn = $('.js-order-btn'),
@@ -66,6 +67,27 @@ define(
 
 				$self.addClass('active');
 				$("#"+typeId).addClass('box-show').closest(orderWrapPrent).addClass('active');
+			},
+
+			changeSplit = function changeSplit(e) {
+				e.stopPropagation();
+
+				var
+					$el = $(this)
+				;
+
+				$.ajax({
+					url: $deliveryForm.attr('action'),
+					data: $el.data('value'),
+					type: 'post',
+					timeout: 30000
+				}).done(function(response) {
+					$($deliveryForm.data('containerSelector')).html(response)
+				}).always(function() {
+					console.info('unblock screen');
+				});
+
+				e.preventDefault();
 			};
 		// end of functions
 
@@ -73,6 +95,7 @@ define(
 		orderClsr.on('click', orderBoxClose);
 		deliveryType.on('click', changeDeliveryType);
 
+		$body.on('click', '.js-order-delivery-form-control', changeSplit);
 		$body.on('click', '.js-popup-link', showPopupBox);
 		$body.on('click', '.js-popup-box-celendar-link', showPopupBoxCelendar);
 });
