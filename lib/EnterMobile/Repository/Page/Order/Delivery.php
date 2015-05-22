@@ -111,14 +111,15 @@ class Delivery {
                     $deliveries = [];
 
                     foreach ($splitModel->deliveryGroups as $deliveryGroupModel) {
-                        $deliveryMethodToken =
-                            (
-                                isset($deliveryMethodTokensByGroupToken[$deliveryGroupModel->id][0])
-                                && (bool)array_intersect($orderModel->possibleDeliveryMethodTokens, $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id])
+                        // схождение методов доставок для данной группы доставок и данного заказа
+                        $intersectTokens = array_values(
+                            array_intersect(
+                                $orderModel->possibleDeliveryMethodTokens,
+                                $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id]
                             )
-                            ? $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id][0]
-                            : null
-                        ;
+                        );
+
+                        $deliveryMethodToken = isset($intersectTokens[0]) ? $intersectTokens[0] : null;
                         if (!$deliveryMethodToken) continue;
 
                         $deliveries[] = [
