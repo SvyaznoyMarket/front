@@ -51,6 +51,11 @@ namespace EnterMobileApplication\Controller {
             // баннеры
             $promos = $promoRepository->getObjectListByQuery($promoListQuery);
 
+            // Мобильными приложениями URL не используется
+            foreach ($promos as $promo) {
+                unset($promo->target->url);
+            }
+
             // ответ
             $response = new Response();
             $response->promos = $promos;
