@@ -37,7 +37,7 @@ namespace EnterModel\Search {
                 $source->height = 163; // FIXME!!!
                 $source->type = 'category_163x163'; // FIXME!!!
 
-                return $source;
+                return [$source];
             }, $data['image']);
             $this->media->photos[] = $media;
         }
