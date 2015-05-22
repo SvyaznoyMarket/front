@@ -120,6 +120,8 @@ require(
         'module/user.common', // инфо о пользователе
         'module/cart.common', // кнопка купить, спиннер
         'module/order/order.common',
+        'module/order/order',
+        'module/order/user.form',
         'module/product.catalog.common',
 		'module/siteVersionSwitcher',
 		'module/slotButton',

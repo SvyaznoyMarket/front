@@ -75,5 +75,5 @@ define(
 
             return false;
         });
-    };
+    }
 );

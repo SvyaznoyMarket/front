@@ -16,5 +16,5 @@ define(
         $('.js-field-mnogoru').mask("xxxx xxxx", {
             placeholder: "xxxx xxxx"
         });
-    };
+    }
 );
