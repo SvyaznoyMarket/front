@@ -7,40 +7,81 @@ use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\SessionTrait;
 use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
 use EnterAggregator\DebugContainerTrait;
 use EnterAggregator\MustacheRendererTrait;
-use EnterModel as Model;
-use EnterQuery as Query;
+use EnterMobile\Model;
 use EnterMobile\Controller;
 use EnterMobile\Repository;
+use EnterMobile\Routing;
 use EnterMobile\Model\Page\Order\Delivery as Page;
 
 class Delivery {
-    use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, RouterTrait, MustacheRendererTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
      * @return Http\Response
+     * @throws \Exception
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $session = $this->getSession();
+        $router = $this->getRouter();
         $cartRepository = new \EnterRepository\Cart();
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
+        // корзина
+        $cart = $cartRepository->getObjectByHttpSession($session);
+        // проверяет наличие товаров в корзине
+        if (!$cart->product) {
+            $this->getLogger()->push(['type' => 'error', 'message' => 'Пустая корзина', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split', 'critical']]);
+
+            $url = $router->getUrlByRoute(new Routing\Cart\Index());
+
+            return
+                $request->isXmlHttpRequest()
+                    ? new Http\JsonResponse([
+                    'redirect' => $url,
+                ])
+                : (new \EnterAggregator\Controller\Redirect())->execute($url, 302)
+            ;
+        }
+
         // изменения
         $changeData = $request->data['change'] ?: null;
+        // если это первый запрос на разбиение, то подставляет данные пользователя
+        $userFromSplit = null;
+        if (!$changeData) {
+            $userForm = new Model\Form\Order\UserForm((array)$session->get($config->order->userSessionKey));
+            if (!$userForm->isValid()) {
+                $this->getLogger()->push(['type' => 'error', 'message' => 'Нет данных о пользователе', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split', 'critical']]);
+
+                $url = $router->getUrlByRoute(new Routing\Order\Index());
+
+                return
+                    $request->isXmlHttpRequest()
+                    ? new Http\JsonResponse([
+                        'redirect' => $url,
+                    ])
+                    : (new \EnterAggregator\Controller\Redirect())->execute($url, 302)
+                ;
+            }
+
+            $userFromSplit = new \EnterModel\Cart\Split\User();
+            $userFromSplit->email = $userForm->email;
+            $userFromSplit->phone = $userForm->phone;
+            $userFromSplit->firstName = $userForm->firstName;
+            $userFromSplit->bonusCardNumber = $userForm->mnogoruNumber;
+        }
 
         // предыдущее разбиение
         $previousSplitData = null;
         if ($changeData) {
             $previousSplitData = $session->get($config->order->splitSessionKey);
         }
-
-        // корзина
-        $cart = $cartRepository->getObjectByHttpSession($session);
 
         // контроллер
         $controller = new \EnterAggregator\Controller\Cart\Split();
@@ -51,6 +92,7 @@ class Delivery {
         $controllerRequest->changeData = $changeData;
         $controllerRequest->previousSplitData = $previousSplitData;
         $controllerRequest->cart = $cart;
+        $controllerRequest->user = $userFromSplit;
         // при получении данных о разбиении корзины - записать их в сессию немедленно
         $controllerRequest->splitReceivedSuccessfullyCallback->handler = function() use (&$controllerRequest, &$config, &$session) {
             $session->set($config->order->splitSessionKey, $controllerRequest->splitReceivedSuccessfullyCallback->splitData);

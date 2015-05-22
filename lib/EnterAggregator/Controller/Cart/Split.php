@@ -50,7 +50,8 @@ namespace EnterAggregator\Controller\Cart {
                 $shop,
                 null,
                 (array)$request->previousSplitData,
-                $request->changeData ? $cartRepository->dumpSplitChange($request->changeData, $request->previousSplitData) : []
+                $request->changeData ? $cartRepository->dumpSplitChange($request->changeData, $request->previousSplitData) : [],
+                $request->user
             );
             $splitQuery->setTimeout(10 * $config->coreService->timeout);
             $curl->prepare($splitQuery);
@@ -202,6 +203,8 @@ namespace EnterAggregator\Controller\Cart\Split {
          * @var array
          */
         public $changeData;
+        /** @var Model\Cart\Split\User */
+        public $user;
         /**
          * Обработчик, который вызывается немедленно при получении разбиения от ядра
          *

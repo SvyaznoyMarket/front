@@ -51,8 +51,6 @@ class SetUser {
                 $userData[$field] = trim($userData[$field]);
             }
 
-            $userData['phone'] = preg_replace('/^\+7/', '8', $userData['phone']);
-
             if (!$userData['firstName']) {
                 //$errors[] = ['field' => 'firstName', 'name' => 'Не указано имя'];
             }

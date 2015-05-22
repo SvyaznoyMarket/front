@@ -28,4 +28,14 @@ class UserForm {
         if (isset($data['firstName'])) $this->firstName = (string)$data['firstName'];
         if (isset($data['mnogoruNumber'])) $this->mnogoruNumber = (string)$data['mnogoruNumber'];
     }
+
+    /**
+     * @return bool
+     */
+    public function isValid() {
+        return
+            !empty($this->phone)
+            && !empty($this->email)
+        ;
+    }
 }
