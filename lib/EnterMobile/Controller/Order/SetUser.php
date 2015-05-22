@@ -75,9 +75,14 @@ class SetUser {
         // http-ответ
         $response = null;
         if ($request->isXmlHttpRequest()) {
-            $response = new Http\JsonResponse([
+            $responseData = [
                 'errors' => $errors,
-            ]);
+            ];
+            if (!$errors) {
+                $responseData['redirect'] = $router->getUrlByRoute(new Routing\Order\Delivery());
+            }
+
+            $response = new Http\JsonResponse($responseData);
         } else {
             if ($errors) {
                 $session->flashBag->set('orderForm.error', $errors);
