@@ -5,10 +5,11 @@ namespace EnterRepository;
 use Enter\Http;
 use Enter\Curl\Query;
 use EnterAggregator\ConfigTrait;
+use EnterAggregator\LoggerTrait;
 use EnterModel as Model;
 
 class Cart {
-    use ConfigTrait;
+    use ConfigTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request
@@ -234,5 +235,167 @@ class Cart {
         }
 
         return $return;
+    }
+
+    /**
+     * @param $changeData
+     * @param $previousSplitData
+     * @return array
+     */
+    public function dumpSplitChange($changeData, $previousSplitData) {
+        $dump = [];
+
+        // заказ
+        if (!empty($changeData['orders']) && is_array($changeData['orders'])) {
+            foreach ($changeData['orders'] as $orderItem) {
+                $blockName = isset($orderItem['blockName']) ? $orderItem['blockName'] : null;
+
+                if (!$blockName || !isset($previousSplitData['orders'][$blockName])) {
+                    $this->getLogger()->push(['type' => 'warn', 'message' => 'Передан несуществующий блок заказа', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                    continue;
+                }
+
+                $dump['orders'][$blockName] = $previousSplitData['orders'][$blockName] + [
+                        'products'  => [],
+                        'discounts' => [],
+                    ];
+
+                // метод получения
+                if (isset($orderItem['delivery']['methodToken'])) {
+                    $dump['orders'][$blockName]['delivery'] = [
+                        'delivery_method_token' => $orderItem['delivery']['methodToken'],
+                    ];
+                }
+
+                // точка получения
+                if (isset($orderItem['delivery']['point']['id']) && isset($orderItem['delivery']['point']['groupToken'])) {
+                    $dump['orders'][$blockName]['delivery']['point'] = [
+                        'id'    => $orderItem['delivery']['point']['id'],
+                        'token' => $orderItem['delivery']['point']['groupToken'],
+
+                    ];
+                }
+
+                // дата получения
+                if (isset($orderItem['delivery']['date'])) {
+                    $dump['orders'][$blockName]['delivery']['date'] = $orderItem['delivery']['date'];
+                }
+
+                // интервал
+                if (isset($orderItem['delivery']['interval'])) {
+                    $dump['orders'][$blockName]['delivery']['interval'] = $orderItem['delivery']['interval'];
+                }
+
+                // комментарий
+                if (array_key_exists('comment', $orderItem)) {
+                    $dump['orders'][$blockName]['comment'] = $orderItem['comment'];
+                }
+
+                // способ оплаты
+                if (array_key_exists('paymentMethodId', $orderItem)) {
+                    $dump['orders'][$blockName]['payment_method_id'] = $orderItem['paymentMethodId'];
+                }
+
+                // количество товаров
+                if (isset($orderItem['products'][0])) {
+                    $quantitiesByProductId = [];
+                    foreach ($orderItem['products'] as $productItem) {
+                        if (empty($productItem['id']) || !isset($productItem['quantity'])) {
+                            $this->getLogger()->push(['type' => 'warn', 'message' => 'Не указан ид или не найден товар', 'product' => $productItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                            continue;
+                        }
+
+                        $quantitiesByProductId[$productItem['id']] = (int)$productItem['quantity'];
+                    }
+
+                    $productItem = null;
+                    foreach ($dump['orders'][$blockName]['products'] as &$productItem) {
+                        if (!isset($productItem['id']) || !isset($quantitiesByProductId[$productItem['id']])) {
+                            $this->getLogger()->push(['type' => 'warn', 'message' => 'Не указан ид или не найден товар', 'product' => $productItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                            continue;
+                        }
+
+                        $productItem['quantity'] = $quantitiesByProductId[$productItem['id']];
+                    }
+                    unset($productItem);
+                }
+
+                // скидки
+                if (isset($orderItem['discounts'][0])) {
+                    $discountItem = null;
+                    foreach ($orderItem['discounts'] as $discountItem) {
+                        $this->getLogger()->push(['message' => 'Применение купона', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+
+                        if (empty($discountItem['number'])) {
+                            $this->getLogger()->push(['type' => 'warn', 'message' => 'Не передан номер купона', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                            continue;
+                        }
+
+                        if (isset($discountItem['delete']) && $discountItem['delete']) { // удаление купона
+                            $isDeleted = false;
+                            // поиск существующей скидки
+                            foreach ($dump['orders'][$blockName]['discounts'] as $i => $existsDiscountItem) {
+                                if ($existsDiscountItem['number'] == $discountItem['number']) {
+                                    // удаление найденной скидки
+                                    unset($dump['orders'][$blockName]['discounts'][$i]);
+                                }
+                            }
+                            if (!$isDeleted) {
+                                $this->getLogger()->push(['type' => 'warn', 'message' => 'Купон не найден', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                            }
+                        } else { // добавление купона
+                            $dump['orders'][$blockName]['discounts'][] = ['number' => $discountItem['number'], 'name' => null, 'type' => null, 'discount' => null];
+                        }
+                    }
+                    unset($discountItem);
+                }
+            }
+        }
+
+        // инфо пользователя
+        if (!empty($changeData['user'])) {
+            $dump['user_info'] = $previousSplitData['user_info'];
+
+            if (array_key_exists('phone', $changeData['user'])) {
+                $dump['user_info']['phone'] = $changeData['user']['phone'];
+            }
+            if (array_key_exists('lastName', $changeData['user'])) {
+                $dump['user_info']['last_name'] = $changeData['user']['lastName'];
+            }
+            if (array_key_exists('firstName', $changeData['user'])) {
+                $dump['user_info']['first_name'] = $changeData['user']['firstName'];
+            }
+            if (array_key_exists('email', $changeData['user'])) {
+                $dump['user_info']['email'] = !empty($changeData['user']['email']) ? $changeData['user']['email'] : null;
+            }
+            if (array_key_exists('bonusCardNumber', $changeData['user'])) {
+                $dump['user_info']['bonus_card_number'] = $changeData['user']['bonusCardNumber'];
+            }
+            if (array_key_exists('address', $changeData['user'])) {
+                if (array_key_exists('street', $changeData['user']['address'])) {
+                    $dump['user_info']['address']['street'] = $changeData['user']['address']['street'];
+                }
+                if (array_key_exists('building', $changeData['user']['address'])) {
+                    $dump['user_info']['address']['building'] = $changeData['user']['address']['building'];
+                }
+                if (array_key_exists('number', $changeData['user']['address'])) {
+                    $dump['user_info']['address']['number'] = $changeData['user']['address']['number'];
+                }
+                if (array_key_exists('apartment', $changeData['user']['address'])) {
+                    $dump['user_info']['address']['apartment'] = $changeData['user']['address']['apartment'];
+                }
+                if (array_key_exists('floor', $changeData['user']['address'])) {
+                    $dump['user_info']['address']['floor'] = $changeData['user']['address']['floor'];
+                }
+                if (array_key_exists('subwayName', $changeData['user']['address'])) {
+                    $dump['user_info']['address']['metro_station'] = $changeData['user']['address']['subwayName'];
+                }
+                if (array_key_exists('kladrId', $changeData['user']['address'])) {
+                    $dump['user_info']['address']['kladr_id'] = $changeData['user']['address']['kladrId'];
+                }
+            }
+        }
+
+        return $dump;
     }
 }
