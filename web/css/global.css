@@ -945,6 +945,12 @@ textarea[contenteditable] {
   -moz-border-radius: 50%;
   border-radius: 50%;
 }
+.toggle--active .toggle-box {
+  display: block;
+}
+.toggle-box {
+  display: none;
+}
 /** цвета **/
 /* ==========================================================================
    Стили используемых цветов
