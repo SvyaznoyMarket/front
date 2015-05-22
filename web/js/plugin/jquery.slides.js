@@ -30,7 +30,7 @@
                 index = 0,
 
                 // id баннера
-                id,
+                ui,
                 // url ссылки баннера
                 itemUrl,
                 // адрес картики
@@ -49,11 +49,11 @@
 
                     //заполняем слайдер данными
                     item.each(function() {
-                        id = slidesData[i].id;
+                        ui = slidesData[i].ui;
                         itemUrl = slidesData[i].url;
                         contSrc = slidesData[i].image;
 
-                        $(this).attr('data-ga-click', '{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + id + '&quot;]}');
+                        $(this).attr('data-ga-click', '{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + ui + '&quot;]}');
                         $(this).attr('href', itemUrl);
                         $(this).find(cont).attr('src', contSrc);
 
@@ -79,7 +79,7 @@
                     index = Math.round( ( index / slidesLength - Math.floor( index / slidesLength ) ) * slidesLength );
                     indexLeft = Math.round( ( ( index + 2 ) / slidesLength - Math.floor( ( index + 2 ) / slidesLength ) ) * slidesLength );
 
-                    id = $self.data('value')[indexLeft].id;
+                    ui = $self.data('value')[indexLeft].ui;
                     itemUrl = $self.data('value')[indexLeft].url;
                     contSrc = $self.data('value')[indexLeft].image;
 
@@ -87,7 +87,7 @@
                     slidesImgCenter.removeClass(centerClass).addClass(leftClass);
                     slidesImgCenter.next().removeClass(rightClass).addClass(centerClass);
 
-                    slides.append('<a href="' + itemUrl + '" class="js-ga-click js-slides-img-item slidesImg_item slidesImg_item-right" data-ga-click="{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + id + '&quot;]}"><img src="' + contSrc + '" class="js-slides-img-cont slidesImg_cont"></a>');
+                    slides.append('<a href="' + itemUrl + '" class="js-ga-click js-slides-img-item slidesImg_item slidesImg_item-right" data-ga-click="{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + ui + '&quot;]}"><img src="' + contSrc + '" class="js-slides-img-cont slidesImg_cont"></a>');
                     $('.slidesImg_item-left').prev().remove();
 
                     pagerCustom();
@@ -97,7 +97,7 @@
                     index--;
                     index = Math.round( ( index / slidesLength - Math.floor( index / slidesLength ) ) * slidesLength );
 
-                    id = $self.data('value')[index].id;
+                    ui = $self.data('value')[index].ui;
                     itemUrl = $self.data('value')[index].url;
                     contSrc = $self.data('value')[index].image;
 
@@ -105,7 +105,7 @@
                     slidesImgCenter.removeClass(centerClass).addClass(rightClass);
                     slidesImgCenter.prev().removeClass(leftClass).addClass(centerClass);
 
-                    slides.prepend('<a href="' + itemUrl + '" class="js-ga-click js-slides-img-item slidesImg_item slidesImg_item-left" data-ga-click="{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + id + '&quot;]}"><img src="' + contSrc + '" class="js-slides-img-cont slidesImg_cont"></a>');
+                    slides.prepend('<a href="' + itemUrl + '" class="js-ga-click js-slides-img-item slidesImg_item slidesImg_item-left" data-ga-click="{&quot;default&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_carousel_click&quot;,&quot;' + ui + '&quot;]}"><img src="' + contSrc + '" class="js-slides-img-cont slidesImg_cont"></a>');
                     $('.slidesImg_item-right').next().remove();
 
                     pagerCustom();
