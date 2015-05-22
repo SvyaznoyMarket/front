@@ -1,6 +1,6 @@
 define(
     [
-        'require', 'jquery'
+        'jquery'
     ],
     function($) {
     	var $toggleWrap = $('.js-toggle-wrap'),
@@ -11,6 +11,7 @@ define(
     	$toggleWrap.removeClass(toggleClass);
 
     	$toggleLink.click( function() {
+            console.log('toggle');
     		$(this).closest('.js-toggle-wrap').toggleClass(toggleClass);
     	})
     }

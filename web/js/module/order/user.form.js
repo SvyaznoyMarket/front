@@ -57,7 +57,7 @@ define(
             }
 
             // если ошибок нет переход на следущий шаг
-            if ( result.redirect.length ) {
+            if ( result.redirect !=null && result.redirect.length ) {
                 window.location.href = result.redirect;
             }
 
