@@ -1,0 +1,1 @@
+define(["require","jquery","underscore","mustache","module/util","jquery.maskedinput","module/order/user.form","module/order/common"],function(x,e){console.log("order"),e.mask.definitions.x="[0-9]",e(".js-field-phone").mask("+7(xxx)xxx-xx-xx",{placeholder:"+7(xxx)xxx-xx-xx"}),e(".js-field-mnogoru").mask("xxxx xxxx",{placeholder:"xxxx xxxx"})});
