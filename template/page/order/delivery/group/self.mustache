@@ -1,0 +1,32 @@
+<div class="checkout-order__inn box-show js-delivery-type" id="delivery-type-self-1">
+    {{^point}}
+        <button class="btn-transparent btn-transparent--normal js-order-btn" data-btn="select-shop">
+            <span class="bb-dotted">Выбрать точку самовывоза</span>
+        </button>
+    {{/point}}
+
+    {{#point}}
+        <div class="checkout-celendar">15 сентября 2014, воскресенье</div>
+        <div class="checkout-address">
+            <div class="checkout-address__title"><strong>Магазин</strong></div>
+
+            <div class="shop-snippet clearfix">
+                <div class="shop-snippet-name">
+                    <img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
+                    <span class="shop-snippet-name__text">Магазин Enter</span>
+                </div>
+
+                <div class="shop-snippet-info">
+                    <div class="shop-snippet-metro">
+                        <span class="shop-snippet-metro__bullet" style="background: green;"></span>
+                        <span class="shop-snippet-metro__text">м. Белорусская</span>
+                    </div>
+
+                    <div class="shop-snippet-address">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2 <br/>c 9.00 до 22.00</div>
+                </div>
+
+                <div class="table_cell"><a href="" class="bb-dotted">Изменить</a></div>
+            </div>
+        </div>
+    {{/point}}
+</div>

@@ -7,6 +7,8 @@ use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\PriceHelperTrait;
+use EnterAggregator\TranslateHelperTrait;
+use EnterAggregator\DateHelperTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
@@ -14,7 +16,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\Order\Delivery as Page;
 
 class Delivery {
-    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, PriceHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, PriceHelperTrait, TranslateHelperTrait, DateHelperTrait;
 
     /**
      * @param Page $page
@@ -26,6 +28,8 @@ class Delivery {
         $router = $this->getRouter();
         $templateHelper = $this->getTemplateHelper();
         $priceHelper = $this->getPriceHelper();
+        $translateHelper = $this->getTranslateHelper();
+        $dateHelper = $this->getDateHelper();
 
         // заголовок
         $page->title = 'Оформление заказа - Способ получения - Enter';
@@ -47,9 +51,33 @@ class Delivery {
             $deliveryMethodTokensByGroupToken[$deliveryMethodModel->groupId][] = $deliveryMethodModel->token;
         }
 
+        // индексация групп точек и точек самовывоза
+        $pointGroupByTokenIndex = [];
+        $pointByGroupAndIdIndex = [];
+        foreach ($splitModel->pointGroups as $groupIndex => $pointGroupModel) {
+            $pointGroupByTokenIndex[$pointGroupModel->token] = $groupIndex;
+            foreach ($pointGroupModel->points as $pointIndex => $pointModel) {
+                $pointByGroupAndIdIndex[$pointGroupModel->token][$pointModel->id] = $pointIndex;
+            }
+        }
+
         $i = 1;
         foreach ($splitModel->orders as $orderModel) {
+            /** @var \EnterModel\Cart\Split\DeliveryGroup|null $deliveryGroupModel */
+            $deliveryGroupModel = call_user_func(function() use (&$splitModel, &$orderModel, &$deliveryMethodTokensByGroupToken) {
+                foreach ($splitModel->deliveryGroups as $deliveryGroupModel) {
+                    if (
+                        isset($deliveryMethodTokensByGroupToken[$deliveryGroupModel->id])
+                        && in_array($orderModel->delivery->methodToken, $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id])
+                    ) {
+                        return $deliveryGroupModel;
+                    }
+                }
+            });
+            if (!$deliveryGroupModel) continue;
+
             $order = [
+                'id'            => $orderModel->blockName,
                 'name'          => sprintf('Заказ №%s', $i),
                 'seller'        =>
                     $orderModel->seller
@@ -62,8 +90,22 @@ class Delivery {
                     'name'  => $priceHelper->format($orderModel->sum),
                     'value' => $orderModel->sum,
                 ],
-                'pointSelected' => $orderModel->delivery && $orderModel->delivery->point,
-                'deliveries'    => call_user_func(function() use (&$splitModel, &$templateHelper, &$orderModel, &$deliveryMethodTokensByGroupToken) {
+                'delivery'      =>
+                    $orderModel->delivery
+                    ? [
+                        'isStandart' => 2 == $deliveryGroupModel->id,
+                        'isSelf'     => 1 == $deliveryGroupModel->id,
+                        'name'       => $deliveryGroupModel->name,
+                        'price'      => [
+                            'isCurrency' => $orderModel->delivery->price > 0,
+                            'name'       => ($orderModel->delivery->price > 0) ? $priceHelper->format($orderModel->delivery->price) : 'Бесплатно',
+                            'value'      => $orderModel->delivery->price,
+                        ],
+                        'point'      => $orderModel->delivery && $orderModel->delivery->point,
+                    ]
+                    : false
+                ,
+                'deliveries'    => call_user_func(function() use (&$templateHelper, &$priceHelper, &$splitModel, &$orderModel, &$deliveryMethodTokensByGroupToken) {
                     $deliveries = [];
 
                     foreach ($splitModel->deliveryGroups as $deliveryGroupModel) {
@@ -75,15 +117,82 @@ class Delivery {
                         if (!$deliveryMethodToken) continue;
 
                         $deliveries[] = [
-                            'dataValue' => $templateHelper->json([
+                            'dataValue'  => $templateHelper->json([
                                 'methodToken' => $deliveryMethodToken,
                             ]),
-                            'name'      => $deliveryGroupModel->name,
-                            'active'    => $orderModel->delivery && in_array($orderModel->delivery->methodToken, $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id]),
+                            'name'       => $deliveryGroupModel->name,
+                            'isActive'   => $orderModel->delivery && in_array($orderModel->delivery->methodToken, $deliveryMethodTokensByGroupToken[$deliveryGroupModel->id]),
                         ];
                     }
 
                     return $deliveries;
+                }),
+                'products'    => call_user_func(function() use (&$templateHelper, &$priceHelper, &$splitModel, &$orderModel) {
+                    $products = [];
+
+                    foreach ($orderModel->products as $productModel) {
+                        $products[] = [
+                            'namePrefix' => $productModel->namePrefix,
+                            'name'       => $productModel->webName,
+                            'quantity'   => $productModel->quantity,
+                            'price'      => [
+                                'name'  => $priceHelper->format($productModel->price),
+                                'value' => $productModel->price,
+                            ],
+                            'sum'        => [
+                                'name'  => $priceHelper->format($productModel->sum),
+                                'value' => $productModel->sum,
+                            ],
+                            'url'        => $productModel->url,
+                            'image'      =>
+                                isset($productModel->media->photos[0])
+                                ? (string)(new Routing\Product\Media\GetPhoto($productModel->media->photos[0], 'product_160'))
+                                : null
+                            ,
+                        ];
+                    }
+
+                    return $products;
+                }),
+                'points'      => call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
+                    $points = [];
+
+                    foreach ($orderModel->possiblePoints as $possiblePointModel) {
+                        $point = $splitModel
+                            ->pointGroups[$pointGroupByTokenIndex[$possiblePointModel->groupToken]]
+                            ->points[$pointByGroupAndIdIndex[$possiblePointModel->groupToken][$possiblePointModel->id]]
+                        ;
+
+                        $date = null;
+                        try {
+                            $date = new \DateTime($possiblePointModel->nearestDay);
+                        } catch (\Exception $e) {}
+
+                        $points[] = [
+                            'id'         => $possiblePointModel->id,
+                            'name'       => $point->name,
+                            'type'       => [
+                                'token' => $possiblePointModel->groupToken,
+                                'name'  => isset($splitModel->pointGroups),
+                            ],
+                            'date'       =>
+                                $date
+                                ? $dateHelper->humanizeDate($date)
+                                : false,
+                            'cost'       => $possiblePointModel->cost ? $possiblePointModel->cost : false,
+                            'subway'     =>
+                                isset($point->subway[0])
+                                ? [
+                                    'name'  => $point->subway[0]->name,
+                                    'color' => isset($point->subway[0]->line) ? $point->subway[0]->line->color : false,
+                                ]
+                                : false
+                            ,
+                            'regime'     => $point->regime,
+                        ];
+                    }
+
+                    return $points;
                 }),
             ];
 
@@ -91,5 +200,12 @@ class Delivery {
 
             $i++;
         }
+
+        $orderCount = count($splitModel->orders);
+        $page->content->orderCountMessage =
+            $orderCount > 1
+            ? ($orderCount . ' ' . $translateHelper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']))
+            : false
+        ;
     }
 }
