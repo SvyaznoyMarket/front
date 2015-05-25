@@ -93,21 +93,73 @@ class Delivery {
                     'name'  => $priceHelper->format($orderModel->sum),
                     'value' => $orderModel->sum,
                 ],
-                'delivery'       =>
-                    $orderModel->delivery
-                    ? [
-                        'isStandart' => 2 == $deliveryGroupModel->id,
-                        'isSelf'     => 1 == $deliveryGroupModel->id,
-                        'name'       => $deliveryGroupModel->name,
-                        'price'      => [
-                            'isCurrency' => $orderModel->delivery->price > 0,
-                            'name'       => ($orderModel->delivery->price > 0) ? $priceHelper->format($orderModel->delivery->price) : 'Бесплатно',
-                            'value'      => $orderModel->delivery->price,
-                        ],
-                        'point'      => $orderModel->delivery && $orderModel->delivery->point,
-                    ]
-                    : false
-                ,
+                'delivery'       => call_user_func(function() use (&$priceHelper, &$splitModel, &$orderModel, &$deliveryGroupModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
+                    $delivery = false;
+
+                    if ($orderModel->delivery) {
+                        // группа точки
+                        $pointGroup = null;
+                        // точка
+                        $point = null;
+                        // если выбрана точка получения заказа ...
+                        if ($orderModel->delivery->point) {
+                            $pointGroup =
+                                isset($pointGroupByTokenIndex[$orderModel->delivery->point->groupToken])
+                                ? $splitModel->pointGroups[
+                                    $pointGroupByTokenIndex[$orderModel->delivery->point->groupToken]
+                                ]
+                                : null
+                            ;
+                            $point =
+                                ($pointGroup && isset($pointByGroupAndIdIndex[$pointGroup->token][$orderModel->delivery->point->id]))
+                                ? $pointGroup->points[
+                                    $pointByGroupAndIdIndex[$orderModel->delivery->point->groupToken][$orderModel->delivery->point->id]
+                                ]
+                                : null
+                            ;
+                            if (!$point) {
+                                $this->getLogger()->push(['type' => 'error', 'message' => 'Точка не найдена', 'pointId' => $orderModel->delivery->point->id, 'group' => $orderModel->delivery->point->groupToken, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
+                            }
+                        }
+
+                        $delivery = [
+                            'isStandart' => 2 == $deliveryGroupModel->id,
+                            'isSelf'     => 1 == $deliveryGroupModel->id,
+                            'name'       => $deliveryGroupModel->name,
+                            'price'      => [
+                                'isCurrency' => $orderModel->delivery->price > 0,
+                                'name'       => ($orderModel->delivery->price > 0) ? $priceHelper->format($orderModel->delivery->price) : 'Бесплатно',
+                                'value'      => $orderModel->delivery->price,
+                            ],
+                            'point'      =>
+                                $point
+                                ? [
+                                    'id'     => $point->id,
+                                    'name'   => $point->name,
+                                    'group'  => [
+                                        'token' => $pointGroup->token,
+                                        'name'  => $pointGroup->blockName,
+                                    ],
+                                    'subway' =>
+                                        isset($point->subway[0])
+                                            ? [
+                                            'name'  => $point->subway[0]->name,
+                                            'color' => isset($point->subway[0]->line) ? $point->subway[0]->line->color : false,
+                                        ]
+                                            : false
+                                    ,
+                                    'regime' => $point->regime,
+                                    'order'  => [
+                                        'id' => $orderModel->blockName,
+                                    ],
+                                ]
+                                : false
+                            ,
+                        ];
+                    }
+
+                    return $delivery;
+                }),
                 'deliveries'     => call_user_func(function() use (&$templateHelper, &$priceHelper, &$splitModel, &$orderModel, &$deliveryMethodTokensByGroupToken) {
                     $deliveries = [];
 
@@ -179,6 +231,7 @@ class Delivery {
                     ];
 
                     foreach ($orderModel->possiblePoints as $possiblePointModel) {
+                        // группа точки
                         $pointGroup =
                             isset($pointGroupByTokenIndex[$possiblePointModel->groupToken])
                             ? $splitModel->pointGroups[
@@ -186,6 +239,7 @@ class Delivery {
                             ]
                             : null
                         ;
+                        // точка
                         $point =
                             ($pointGroup && isset($pointByGroupAndIdIndex[$pointGroup->token][$possiblePointModel->id]))
                             ? $pointGroup->points[
@@ -210,7 +264,7 @@ class Delivery {
                         $points[] = [
                             'id'        => $possiblePointModel->id,
                             'name'      => $point->name,
-                            'type'      => $pointGroup->blockName,
+                            'group'     => $pointGroup->blockName,
                             'date'      => $date ?: false,
                             'cost'      => $possiblePointModel->cost ?: false,
                             'subway'    =>
@@ -224,6 +278,21 @@ class Delivery {
                             'regime' => $point->regime,
                             'lat'    => $point->latitude,
                             'lng'    => $point->longitude,
+                            'dataValue'  => $templateHelper->json([ // FIXME - вынести в js
+                                'change' => [
+                                    'orders' => [
+                                        [
+                                            'blockName' => $orderModel->blockName,
+                                            'delivery'  => [
+                                                'point' => [
+                                                    'id'         => $possiblePointModel->id,
+                                                    'groupToken' => $possiblePointModel->groupToken,
+                                                ],
+                                            ],
+                                        ]
+                                    ],
+                                ],
+                            ]),
                         ];
 
                         // фильтр по типу точки
@@ -259,6 +328,7 @@ class Delivery {
                 'messages'       => call_user_func(function() use (&$config, &$orderModel, &$priceHelper) {
                     $messages = [];
 
+                    // предоплата
                     if (
                         $config->order->prepayment->enabled
                         && ($orderModel->sum >= $config->order->prepayment->priceLimit)
