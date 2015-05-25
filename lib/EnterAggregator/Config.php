@@ -394,6 +394,7 @@ namespace EnterAggregator\Config {
 
     class Promo {
         /**
+         * @deprecated
          * @var int
          */
         public $typeId;

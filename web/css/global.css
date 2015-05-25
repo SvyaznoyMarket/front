@@ -3333,6 +3333,10 @@ body.noScroll {
   -moz-justify-content: center;
   justify-content: center;
 }
+.detail-slider .slide-item--slot {
+  width: 450px;
+  height: 450px;
+}
 .sliderBox {
   position: relative;
   z-index: 150;
@@ -3461,6 +3465,9 @@ body.noScroll {
 @media only screen and (max-width: 400px) {
   .alsoBoughtContainer .sliderBoxItems_item {
     padding: 0 20px;
+  }
+  .detail-slider .slide-item--slot {
+    height: 320px;
   }
 }
 /* ==========================================================================

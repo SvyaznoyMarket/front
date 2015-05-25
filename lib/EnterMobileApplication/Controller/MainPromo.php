@@ -20,16 +20,18 @@ namespace EnterMobileApplication\Controller {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
+            $config = $this->getConfig();
             $curl = $this->getCurl();
 
             $promoRepository = new \EnterRepository\Promo();
 
-            // ид региона
+            // В будущей планируется ввести таргетирование по регионам, поэтому заранее закладываем получение региона от мобильных приложений
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
             if (!$regionId) {
                 throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
+            /*
             // запрос региона
             $regionQuery = new Query\Region\GetItemById($regionId);
             $curl->prepare($regionQuery);
@@ -38,15 +40,21 @@ namespace EnterMobileApplication\Controller {
 
             // регион
             $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+            */
 
             // запрос баннеров
-            $promoListQuery = new Query\Promo\GetList($region->id);
+            $promoListQuery = new Query\Promo\GetList(['app-mobile']);
             $curl->prepare($promoListQuery);
 
             $curl->execute();
 
             // баннеры
             $promos = $promoRepository->getObjectListByQuery($promoListQuery);
+
+            // Мобильными приложениями URL не используется
+            foreach ($promos as $promo) {
+                unset($promo->target->url);
+            }
 
             // ответ
             $response = new Response();

@@ -33,14 +33,22 @@ class Index {
 
         $promoData = [];
         foreach ($request->promos as $promoModel) {
-            if (!$promoModel->image) {
-                $this->getLogger()->push(['type' => 'warn', 'error' => sprintf('Нет картинки у промо #', $promoModel->id), 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['promo']]);
+            $image = null;
+            foreach ($promoModel->media as $media) {
+                if (in_array('main', $media->tags) && !empty($media->sources[0]->url)) {
+                    $image = $media->sources[0]->url;
+                    break;
+                }
+            }
+
+            if (!$image) {
+                $this->getLogger()->push(['type' => 'warn', 'error' => sprintf('Нет картинки у промо #', $promoModel->ui), 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['promo']]);
                 continue;
             }
             $promoItem = [
-                'id'    => $promoModel->id,
-                'url'   => $router->getUrlByRoute(new Routing\Promo\Redirect($promoModel->id)),
-                'image' => $host . $config->promo->urlPaths[1] . $promoModel->image,
+                'ui'    => $promoModel->ui,
+                'url'   => $promoModel->target->url,
+                'image' => $image,
             ];
 
             $promoData[] = $promoItem;
