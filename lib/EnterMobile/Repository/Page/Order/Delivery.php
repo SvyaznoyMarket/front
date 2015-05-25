@@ -123,15 +123,15 @@ class Delivery {
                         }
 
                         $delivery = [
-                            'isStandart' => 2 == $deliveryGroupModel->id,
-                            'isSelf'     => 1 == $deliveryGroupModel->id,
-                            'name'       => $deliveryGroupModel->name,
-                            'price'      => [
+                            'isStandart'  => 2 == $deliveryGroupModel->id,
+                            'isSelf'      => 1 == $deliveryGroupModel->id,
+                            'name'        => $deliveryGroupModel->name,
+                            'price'       => [
                                 'isCurrency' => $orderModel->delivery->price > 0,
                                 'name'       => ($orderModel->delivery->price > 0) ? $priceHelper->format($orderModel->delivery->price) : 'Бесплатно',
                                 'value'      => $orderModel->delivery->price,
                             ],
-                            'point'      =>
+                            'point'       =>
                                 $point
                                 ? [
                                     'id'     => $point->id,
@@ -154,6 +154,10 @@ class Delivery {
                                     ],
                                 ]
                                 : false
+                            ,
+                            'isCompleted' =>
+                                ((bool)$point && (1 == $deliveryGroupModel->id))
+                                || (2 == $deliveryGroupModel->id)
                             ,
                         ];
                     }

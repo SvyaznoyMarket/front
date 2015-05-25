@@ -241,7 +241,7 @@
                 {{/seller}}
             </div>
 
-            <div class="checkout-order__box checkout-order__box--stretch complete">
+            <div class="checkout-order__box checkout-order__box--stretch{{#delivery.isCompleted}} complete{{/delivery.isCompleted}}">
                 <menu class="checkout-delivery-type clearfix">
                     {{#deliveries}}
                         <li class="checkout-delivery-type__item js-order-delivery-form-control {{#isActive}}active{{/isActive}}" data-value="{{&dataValue}}">
