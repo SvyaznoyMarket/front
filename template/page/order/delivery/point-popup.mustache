@@ -32,30 +32,14 @@
             </span>
 
             <ul class="custom-select-list" data-box="data-select-point-type">
+            {{#filters.type}}
                 <li class="custom-select-list__item">
                     <input type="checkbox" id="shop1" name="paynow" class="custom-input custom-input--square-check" checked>
 
                     <label class="custom-label flex-hor-vertical-between" for="shop1"></label>
-                    <span class="custom-label_tx">Магазины Enter.ru</span>
+                    <span class="custom-label_tx">{{.}}</span>
                 </li>
-                <li class="custom-select-list__item">
-                    <input type="checkbox" id="shop2" name="paynow" class="custom-input custom-input--square-check" >
-
-                    <label class="custom-label flex-hor-vertical-between" for="shop2"></label>
-                    <span class="custom-label_tx">Постаматы Pick-Point</span>
-                </li>
-                <li class="custom-select-list__item">
-                    <input type="checkbox" id="shop3" name="paynow" class="custom-input custom-input--square-check" >
-
-                    <label class="custom-label flex-hor-vertical-between" for="shop3"></label>
-                    <span class="custom-label_tx">Почта России</span>
-                </li>
-                <li class="custom-select-list__item">
-                    <input type="checkbox" id="shop4" name="paynow" class="custom-input custom-input--square-check" >
-
-                    <label class="custom-label flex-hor-vertical-between" for="shop4"></label>
-                    <span class="custom-label_tx">HermesDhd</span>
-                </li>
+            {{/filters.type}}
             </ul>
         </div>
 
@@ -66,18 +50,14 @@
             </span>
 
             <ul class="custom-select-list" data-box="data-select-price">
+            {{#filters.cost}}
                 <li class="custom-select-list__item">
                     <input type="checkbox" id="price1" name="paynow" class="custom-input custom-input--square-check" >
 
                     <label class="custom-label flex-hor-vertical-between" for="price1"></label>
-                    <span class="custom-label_tx">Бесплатно</span>
+                    <span class="custom-label_tx">{{^.}}Бесплатно{{/.}}{{#.}}{{.}} <span class="rubl">p</span>{{/.}}</span>
                 </li>
-                <li class="custom-select-list__item">
-                    <input type="checkbox" id="price2" name="paynow" class="custom-input custom-input--square-check">
-
-                    <label class="custom-label flex-hor-vertical-between" for="price2"></label>
-                    <span class="custom-label_tx">100 <span class="rubl">p</span></span>
-                </li>
+            {{/filters.cost}}
             </ul>
         </div>
 
@@ -88,30 +68,14 @@
             </span>
 
             <ul class="custom-select-list" data-box="data-select-date">
+            {{#filters.date}}
                 <li class="custom-select-list__item">
                     <input type="checkbox" id="date1" name="paynow" class="custom-input custom-input--square-check">
 
                     <label class="custom-label flex-hor-vertical-between" for="date1"></label>
-                    <span class="custom-label_tx">Сегодня</span>
+                    <span class="custom-label_tx">{{.}}</span>
                 </li>
-                <li class="custom-select-list__item">
-                    <input type="checkbox" id="date2" name="paynow" class="custom-input custom-input--square-check" >
-
-                    <label class="custom-label flex-hor-vertical-between" for="date2"></label>
-                    <span class="custom-label_tx">Завтра</span>
-                </li>
-                <li class="custom-select-list__item">
-                    <input type="checkbox" id="date3" name="paynow" class="custom-input custom-input--square-check">
-
-                    <label class="custom-label flex-hor-vertical-between" for="date3"></label>
-                    <span class="custom-label_tx">Послезавтра</span>
-                </li>
-                <li class="custom-select-list__item">
-                    <input type="checkbox" id="date3" name="paynow" class="custom-input custom-input--square-check">
-
-                    <label class="custom-label flex-hor-vertical-between" for="date3"></label>
-                    <span class="custom-label_tx">с 23.05 по 24.06</span>
-                </li>
+            {{/filters.date}}
             </ul>
         </div>
     </div>

@@ -173,7 +173,9 @@ class Delivery {
                 'pointDataValue' => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
                     $points = [];
                     $filtersByToken = [
-                        ''
+                        'type' => [],
+                        'cost' => [],
+                        'date' => [],
                     ];
 
                     foreach ($orderModel->possiblePoints as $possiblePointModel) {
@@ -192,13 +194,16 @@ class Delivery {
                             : null
                         ;
                         if (!$point) {
-                            $this->getLogger()->push(['type'    => 'error', 'message' => 'Точка не найдена', 'pointId' => $possiblePointModel->id, 'group'   => $possiblePointModel->groupToken, 'sender'  => __FILE__ . ' ' . __LINE__, 'tag'     => ['order.split', 'critical']]);
+                            $this->getLogger()->push(['type' => 'error', 'message' => 'Точка не найдена', 'pointId' => $possiblePointModel->id, 'group' => $possiblePointModel->groupToken, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
                             continue;
                         }
 
+                        // дата
                         $date = null;
                         try {
-                            $date = new \DateTime($possiblePointModel->nearestDay);
+                            $date = $dateHelper->humanizeDate(
+                                new \DateTime($possiblePointModel->nearestDay)
+                            );
                         } catch (\Exception $e) {
                         }
 
@@ -206,8 +211,8 @@ class Delivery {
                             'id'        => $possiblePointModel->id,
                             'name'      => $point->name,
                             'type'      => $pointGroup->blockName,
-                            'date'      => $date ? $dateHelper->humanizeDate($date) : false,
-                            'cost'      => $possiblePointModel->cost ? $possiblePointModel->cost : false,
+                            'date'      => $date ?: false,
+                            'cost'      => $possiblePointModel->cost ?: false,
                             'subway'    =>
                                 isset($point->subway[0])
                                 ? [
@@ -220,7 +225,31 @@ class Delivery {
                             'lat'    => $point->latitude,
                             'lng'    => $point->longitude,
                         ];
+
+                        // фильтр по типу точки
+                        if (!isset($filtersByToken['type'][$pointGroup->blockName])) {
+                            $filtersByToken['type'][$pointGroup->blockName] = null;
+                        }
+                        // фильтр по цене
+                        if (!isset($filtersByToken['cost'][$possiblePointModel->cost])) {
+                            $filtersByToken['cost'][$possiblePointModel->cost] = null;
+                        }
+                        // фильтр по дате
+                        if (!isset($filtersByToken['date'][$date])) {
+                            $filtersByToken['date'][$date] = null;
+                        }
                     }
+
+                    // convert filter format
+                    $filtersByToken = array_map(
+                        function($filter) {
+                            return array_keys($filter);
+                        },
+                        $filtersByToken
+                    );
+
+                    // cost filter fix
+                    array_walk($filtersByToken['cost'], function(&$v) { if (!$v) $v = false; });
 
                     return [
                         'points'  => $points,
