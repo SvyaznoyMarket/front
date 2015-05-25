@@ -80,20 +80,20 @@ class Delivery {
             if (!$deliveryGroupModel) continue;
 
             $order = [
-                'id'            => $orderModel->blockName,
-                'name'          => sprintf('Заказ №%s', $i),
-                'seller'        =>
+                'id'             => $orderModel->blockName,
+                'name'           => sprintf('Заказ №%s', $i),
+                'seller'         =>
                     $orderModel->seller
                     ? [
                         'name' => $orderModel->seller->name,
                         'url'  => $orderModel->seller->offerUrl,
                     ]
                     : false,
-                'sum'          => [
+                'sum'            => [
                     'name'  => $priceHelper->format($orderModel->sum),
                     'value' => $orderModel->sum,
                 ],
-                'delivery'      =>
+                'delivery'       =>
                     $orderModel->delivery
                     ? [
                         'isStandart' => 2 == $deliveryGroupModel->id,
@@ -108,7 +108,7 @@ class Delivery {
                     ]
                     : false
                 ,
-                'deliveries'    => call_user_func(function() use (&$templateHelper, &$priceHelper, &$splitModel, &$orderModel, &$deliveryMethodTokensByGroupToken) {
+                'deliveries'     => call_user_func(function() use (&$templateHelper, &$priceHelper, &$splitModel, &$orderModel, &$deliveryMethodTokensByGroupToken) {
                     $deliveries = [];
 
                     foreach ($splitModel->deliveryGroups as $deliveryGroupModel) {
@@ -143,7 +143,7 @@ class Delivery {
 
                     return $deliveries;
                 }),
-                'products'    => call_user_func(function() use (&$templateHelper, &$priceHelper, &$splitModel, &$orderModel) {
+                'products'       => call_user_func(function() use (&$templateHelper, &$priceHelper, &$splitModel, &$orderModel) {
                     $products = [];
 
                     foreach ($orderModel->products as $productModel) {
@@ -170,59 +170,64 @@ class Delivery {
 
                     return $products;
                 }),
-                'pointDataValue' => json_encode([
-                    'points' => call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
-                        $points = [];
+                'pointDataValue' => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
+                    $points = [];
+                    $filtersByToken = [
+                        ''
+                    ];
 
-                        foreach ($orderModel->possiblePoints as $possiblePointModel) {
-                            $pointGroupIndex = isset($pointGroupByTokenIndex[$possiblePointModel->groupToken]) ? $pointGroupByTokenIndex[$possiblePointModel->groupToken] : null;
-                            $pointIndex = isset($pointByGroupAndIdIndex[$possiblePointModel->groupToken][$possiblePointModel->id]) ? $pointByGroupAndIdIndex[$possiblePointModel->groupToken][$possiblePointModel->id] : null;
-
-                            $point =
-                                ((null !== $pointGroupIndex) && (null !== $pointIndex))
-                                ? $splitModel->pointGroups[$pointGroupIndex]->points[$pointIndex]
-                                : null
-                            ;
-                            if (!$point) {
-                                $this->getLogger()->push(['type' => 'error', 'message' => 'Точка не найдена', 'pointId' => $possiblePointModel->id, 'group' => $possiblePointModel->groupToken, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split', 'critical']]);
-                                continue;
-                            }
-
-                            $date = null;
-                            try {
-                                $date = new \DateTime($possiblePointModel->nearestDay);
-                            } catch (\Exception $e) {}
-
-                            $points[] = [
-                                'id'         => $possiblePointModel->id,
-                                'name'       => $point->name,
-                                'type'       => [
-                                    'token' => $possiblePointModel->groupToken,
-                                    'name'  => $splitModel->pointGroups[$pointGroupIndex]->blockName,
-                                ],
-                                'date'       =>
-                                    $date
-                                    ? $dateHelper->humanizeDate($date)
-                                    : false,
-                                'cost'       => $possiblePointModel->cost ? $possiblePointModel->cost : false,
-                                'subway'     =>
-                                    isset($point->subway[0])
-                                    ? [
-                                        'name'  => $point->subway[0]->name,
-                                        'color' => isset($point->subway[0]->line) ? $point->subway[0]->line->color : false,
-                                    ]
-                                    : false
-                                ,
-                                'regime'     => $point->regime,
-                                'latitude'   => $point->latitude,
-                                'longitude'  => $point->longitude,
-                            ];
+                    foreach ($orderModel->possiblePoints as $possiblePointModel) {
+                        $pointGroup =
+                            isset($pointGroupByTokenIndex[$possiblePointModel->groupToken])
+                            ? $splitModel->pointGroups[
+                                $pointGroupByTokenIndex[$possiblePointModel->groupToken]
+                            ]
+                            : null
+                        ;
+                        $point =
+                            ($pointGroup && isset($pointByGroupAndIdIndex[$pointGroup->token][$possiblePointModel->id]))
+                            ? $pointGroup->points[
+                                $pointByGroupAndIdIndex[$possiblePointModel->groupToken][$possiblePointModel->id]
+                            ]
+                            : null
+                        ;
+                        if (!$point) {
+                            $this->getLogger()->push(['type'    => 'error', 'message' => 'Точка не найдена', 'pointId' => $possiblePointModel->id, 'group'   => $possiblePointModel->groupToken, 'sender'  => __FILE__ . ' ' . __LINE__, 'tag'     => ['order.split', 'critical']]);
+                            continue;
                         }
 
-                        return $points;
-                    })
-                ], JSON_UNESCAPED_UNICODE),
-                'messages' => call_user_func(function() use (&$config, &$orderModel, &$priceHelper) {
+                        $date = null;
+                        try {
+                            $date = new \DateTime($possiblePointModel->nearestDay);
+                        } catch (\Exception $e) {
+                        }
+
+                        $points[] = [
+                            'id'        => $possiblePointModel->id,
+                            'name'      => $point->name,
+                            'type'      => $pointGroup->blockName,
+                            'date'      => $date ? $dateHelper->humanizeDate($date) : false,
+                            'cost'      => $possiblePointModel->cost ? $possiblePointModel->cost : false,
+                            'subway'    =>
+                                isset($point->subway[0])
+                                ? [
+                                    'name'  => $point->subway[0]->name,
+                                    'color' => isset($point->subway[0]->line) ? $point->subway[0]->line->color : false,
+                                ]
+                                : false
+                            ,
+                            'regime' => $point->regime,
+                            'lat'    => $point->latitude,
+                            'lng'    => $point->longitude,
+                        ];
+                    }
+
+                    return [
+                        'points'  => $points,
+                        'filters' => $filtersByToken,
+                    ];
+                }), JSON_UNESCAPED_UNICODE),
+                'messages'       => call_user_func(function() use (&$config, &$orderModel, &$priceHelper) {
                     $messages = [];
 
                     if (
