@@ -25,6 +25,7 @@ class Delivery {
     public function buildObjectByRequest(Page $page, Delivery\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
+        $config = $this->getConfig();
         $router = $this->getRouter();
         $templateHelper = $this->getTemplateHelper();
         $priceHelper = $this->getPriceHelper();
@@ -217,6 +218,21 @@ class Delivery {
                         return $points;
                     })
                 ], JSON_UNESCAPED_UNICODE),
+                'messages' => call_user_func(function() use (&$config, &$orderModel, &$priceHelper) {
+                    $messages = [];
+
+                    if (
+                        $config->order->prepayment->enabled
+                        && ($orderModel->sum >= $config->order->prepayment->priceLimit)
+                    ) {
+                        $messages[] = [
+                            'cost'         => $priceHelper->format($config->order->prepayment->priceLimit),
+                            'isPrepayment' => true,
+                        ];
+                    }
+
+                    return $messages;
+                }),
             ];
 
             $page->content->orders[] = $order;

@@ -126,6 +126,8 @@ return function(\EnterAggregator\Config $config) {
     $config->order->splitSessionKey = 'order_split';
     $config->order->userSessionKey = 'order_user';
     $config->order->cookieName = 'last_order';
+    $config->order->prepayment->enabled = true;
+    $config->order->prepayment->priceLimit = 100000;
 
     $config->product->itemPerPage = 19;
     $config->product->itemsInSlider = 60;

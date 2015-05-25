@@ -368,6 +368,12 @@ namespace EnterAggregator\Config {
          * @var string
          */
         public $cookieName;
+        /** @var Order\Prepayment */
+        public $prepayment;
+
+        public function __construct() {
+            $this->prepayment = new Order\Prepayment();
+        }
     }
 
     class Product {
@@ -432,6 +438,18 @@ namespace EnterAggregator\Config\Logger {
     class FileAppender extends BaseAppender {
         /** @var string */
         public $file;
+    }
+}
+
+namespace EnterAggregator\Config\Order {
+    class Prepayment {
+        /** @var bool */
+        public $enabled;
+        /**
+         * Если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
+         * @var int|null
+         */
+        public $priceLimit;
     }
 }
 
