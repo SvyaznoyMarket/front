@@ -83,6 +83,7 @@ class ChildCategory {
         $pageRequest->category = $controllerResponse->category;
         $pageRequest->catalogConfig = $controllerResponse->catalogConfig;
         $pageRequest->products = $controllerResponse->products;
+        $pageRequest->buyBtnListing = $controllerResponse->buyBtnListing;
 
         // страница
         $page = new Page();
