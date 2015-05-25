@@ -178,9 +178,13 @@ class Delivery {
                             $pointGroupIndex = isset($pointGroupByTokenIndex[$possiblePointModel->groupToken]) ? $pointGroupByTokenIndex[$possiblePointModel->groupToken] : null;
                             $pointIndex = isset($pointByGroupAndIdIndex[$possiblePointModel->groupToken][$possiblePointModel->id]) ? $pointByGroupAndIdIndex[$possiblePointModel->groupToken][$possiblePointModel->id] : null;
 
-                            $point = ($pointGroupIndex && $pointIndex) ? $splitModel->pointGroups[$pointGroupIndex]->points[$pointIndex] : null;
+                            $point =
+                                ((null !== $pointGroupIndex) && (null !== $pointIndex))
+                                ? $splitModel->pointGroups[$pointGroupIndex]->points[$pointIndex]
+                                : null
+                            ;
                             if (!$point) {
-                                $this->getLogger()->push(['type' => 'warn', 'message' => 'Точка не найдена', 'pointId' => $possiblePointModel->id, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split', 'critical']]);
+                                $this->getLogger()->push(['type' => 'error', 'message' => 'Точка не найдена', 'pointId' => $possiblePointModel->id, 'group' => $possiblePointModel->groupToken, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split', 'critical']]);
                                 continue;
                             }
 
