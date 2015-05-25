@@ -5,12 +5,13 @@ namespace EnterAggregator\Controller {
     use EnterAggregator\ConfigTrait;
     use EnterAggregator\CurlTrait;
     use EnterAggregator\LoggerTrait;
+    use EnterAggregator\AbTestTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterRepository as Repository;
 
     class ProductList {
-        use ConfigTrait, CurlTrait, LoggerTrait;
+        use ConfigTrait, CurlTrait, LoggerTrait, AbTestTrait;
 
         /**
          * @param ProductList\Request $request
@@ -343,6 +344,16 @@ namespace EnterAggregator\Controller {
                     }
                 }
             }
+
+            // AB тест
+            $chosenListingType = $this->getAbTest()->getObjectByToken('product_listing')->chosenItem->token;
+
+            if ($chosenListingType == 'old_listing') {
+                $response->buyBtnListing = false;
+            } else if ($chosenListingType == 'new_listing') {
+                $response->buyBtnListing = true;
+            }
+
             $response->filters = array_values($response->filters);
 
             return $response;
@@ -415,6 +426,8 @@ namespace EnterAggregator\Controller\ProductList {
         public $products = [];
         /** @var Model\Product\UiPager|null */
         public $productUiPager;
+        /** @var bool */
+        public $buyBtnListing;
     }
 }
 

@@ -1,9 +1,16 @@
 <!-- листинг товаров  -->
 <div class="js-productList-container catalogList {{#isProductSet}}productSet{{/isProductSet}}" data-url="{{url}}" data-value="{{&dataValue}}" data-reset="{{&dataReset}}">
-    {{#products}}
-        {{!>partial/product-card/default}}
-        {{>partial/product-card/product_with_buy_button}}
-    {{/products}}
+    {{#buyBtnListing}}
+        {{#products}}
+            {{>partial/product-card/product_with_buy_button}}
+        {{/products}}
+    {{/buyBtnListing}}
+
+    {{^buyBtnListing}}
+        {{#products}}
+            {{>partial/product-card/default}}
+        {{/products}}
+    {{/buyBtnListing}}
 </div>
 
 {{^products}}
