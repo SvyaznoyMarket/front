@@ -22,10 +22,8 @@ namespace EnterTerminal\Controller\Cart\Split {
          */
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
-            $curl = $this->getCurl();
             $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
-            $orderRepository = new \EnterRepository\Order();
 
             // ответ
             $response = new Response();
@@ -59,72 +57,24 @@ namespace EnterTerminal\Controller\Cart\Split {
             // ид магазина
             $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
 
-            // запрос магазина
-            $shopItemQuery = null;
-            if ($shopId) {
-                $shopItemQuery = new Query\Shop\GetItemById($shopId);
-                $curl->prepare($shopItemQuery);
-            }
+            $controller = new \EnterAggregator\Controller\Cart\Split();
+            // запрос для контроллера
+            $controllerRequest = $controller->createRequest();
+            $controllerRequest->regionId = $regionId;
+            $controllerRequest->shopId = $shopId;
+            $controllerRequest->changeData = $change;
+            $controllerRequest->previousSplitData = $splitData;
+            $controllerRequest->cart = $cart;
+            // при получении данных о разбиении корзины - записать их в сессию немедленно
+            $controllerRequest->splitReceivedSuccessfullyCallback->handler = function() use (&$controllerRequest, &$config, &$session) {
+                $session->set($config->order->splitSessionKey, $controllerRequest->splitReceivedSuccessfullyCallback->splitData);
+            };
+            // ответ от контроллера
+            $controllerResponse = $controller->execute($controllerRequest);
 
-            $curl->execute();
-
-            // магазин
-            $shop = $shopItemQuery ? (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery) : null;
-            if ($shopId && !$shop) {
-                throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
-            }
-
-            // запрос региона
-            $regionItemQuery = new Query\Region\GetItemById($regionId);
-            $curl->prepare($regionItemQuery);
-
-            // запрос на разбиение корзины
-            $splitQuery = new Query\Cart\Split\GetItem(
-                $cart,
-                new Model\Region(['id' => $regionId]),
-                $shop,
-                null,
-                $splitData,
-                $change
-            );
-            $splitQuery->setTimeout($config->coreService->timeout * 3);
-            $curl->prepare($splitQuery);
-
-            $curl->execute();
-
-            // регион
-            $region = null;
-            try {
-                $region = (new \EnterRepository\Region())->getObjectByQuery($regionItemQuery);
-            } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['critical', 'cart.split', 'controller']]);
-            }
-
-            // разбиение
-            $splitData = [];
-            try {
-                $splitData = $splitQuery->getResult();
-            } catch (Query\CoreQueryException $e) {
-                $response->errors = $orderRepository->getErrorList($e);
-            }
-
-            // добавление данных о корзине
-            $splitData['cart'] = [
-                'product_list' => array_map(function(Model\Cart\Product $product) { return [
-                    'id'       => $product->id,
-                    'quantity' => $product->quantity,
-                ]; }, $cart->product),
-            ];
-
-            // добавление региона
-            if ($region) {
-                $response->region = $region;
-            }
-
-            // сохранение в сессии
-            $session->set($config->order->splitSessionKey, $splitData);
-
-            $response->split = $splitData;
+            $response->errors = $controllerResponse->errors;
+            $response->split = $controllerResponse->split;
+            $response->region = $controllerResponse->region;
 
             // response
             return new Http\JsonResponse($response);
