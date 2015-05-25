@@ -193,22 +193,24 @@ class Delivery {
                                 'name'       => $point->name,
                                 'type'       => [
                                     'token' => $possiblePointModel->groupToken,
-                                    'name'  => isset($splitModel->pointGroups),
+                                    'name'  => $splitModel->pointGroups[$pointGroupIndex]->blockName,
                                 ],
                                 'date'       =>
                                     $date
-                                        ? $dateHelper->humanizeDate($date)
-                                        : false,
+                                    ? $dateHelper->humanizeDate($date)
+                                    : false,
                                 'cost'       => $possiblePointModel->cost ? $possiblePointModel->cost : false,
                                 'subway'     =>
                                     isset($point->subway[0])
-                                        ? [
+                                    ? [
                                         'name'  => $point->subway[0]->name,
                                         'color' => isset($point->subway[0]->line) ? $point->subway[0]->line->color : false,
                                     ]
-                                        : false
+                                    : false
                                 ,
                                 'regime'     => $point->regime,
+                                'latitude'   => $point->latitude,
+                                'longitude'  => $point->longitude,
                             ];
                         }
 

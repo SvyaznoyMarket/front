@@ -42,7 +42,6 @@ define(
 
                 var $popup = $('<div />').appendTo($body); // TODO: реализовать модальное окно
                 $popup.append(mustache.render($template.html(), data));
-                console.info($popup);
 
                 e.preventDefault();
             }
