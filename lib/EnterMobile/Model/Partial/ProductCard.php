@@ -42,4 +42,6 @@ class ProductCard {
         'isInWarehouse'         => false,
         'isKitLocked'           => false
     ];
+    /** @var array */
+    public $stateLabel = [];
 }
