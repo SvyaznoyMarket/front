@@ -67,11 +67,33 @@ class ProductCard {
             $card->brand = $product->brand;
         }
 
+        // состояние товара
+        $card->states['isBuyable'] = $product->isBuyable;
+        $card->states['isInShopOnly'] = $product->isInShopOnly;
+        $card->states['isInShopStockOnly'] = $product->isInShopStockOnly;
+        $card->states['isInShopShowroomOnly'] = $product->isInShopShowroomOnly;
+        $card->states['isInWarehouse'] = $product->isInWarehouse;
+        $card->states['isKitLocked'] = $product->isKitLocked;
+        $card->states['isFurnitureItem'] = $product->category->isFurniture;
+
         // шильдики
         foreach ($product->labels as $label) {
             $label->imageUrl = (string)(new Routing\Product\Label\Get($label->id, $label->image, 0)); // FIXME
         }
         $card->labels = $product->labels;
+
+        // значки со склада, в магазинах, на витрине
+        if (!$product->isInShopOnly &&
+            $product->category->isFurniture &&
+            $product->isStore &&
+            !$product->getSlotPartnerOffer()
+        ) {
+            $card->stateLabel = ['name' => 'Товар со склада', 'cssClassName' => 'availability--instock'];
+        } elseif($product->isInShopOnly && $product->isInShopStockOnly) {
+            $card->stateLabel = ['name' => 'Только в магазинах', 'cssClassName' => 'availability--on-display'];
+        } elseif($product->isInShopShowroomOnly) {
+            $card->stateLabel = ['name' => 'Только на витрине', 'cssClassName' => 'availability--on-display'];
+        }
 
         return $card;
     }
