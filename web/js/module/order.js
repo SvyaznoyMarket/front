@@ -15,7 +15,7 @@ define(
 
                 var
                     $el = $(this)
-                    ;
+                ;
 
                 $.ajax({
                     url: $deliveryForm.attr('action'),
