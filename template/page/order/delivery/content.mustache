@@ -6,10 +6,4 @@
     </div>
 </div>
 
-{{#orders}}
-    {{#delivery.isSelf}}
-        <div class="id-order-{{id}}-map" data-value="{{&pointDataValue}}"></div>
-    {{/delivery.isSelf}}
-{{/orders}}
-
 {{>page/order/delivery/address-popup}}

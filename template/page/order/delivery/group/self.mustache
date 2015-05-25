@@ -1,6 +1,10 @@
-<div class="checkout-order__inn box-show js-delivery-type" id="delivery-type-self-1">
+<div class="checkout-order__inn box-show js-delivery-type id-order-{{id}}-delivery">
+    <script id="order-{{id}}-map-data" type="application/json">
+        {{&pointDataValue}}
+    </script>
+
     {{^point}}
-        <button class="btn-transparent btn-transparent--normal js-order-btn" data-btn="select-shop">
+        <button class="btn-transparent btn-transparent--normal js-order-delivery-pointPopup-link" data-map-data-selector="#order-{{id}}-map-data" data-btn="select-shop">
             <span class="bb-dotted">Выбрать точку самовывоза</span>
         </button>
     {{/point}}

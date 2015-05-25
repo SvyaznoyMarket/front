@@ -169,8 +169,8 @@ class Delivery {
 
                     return $products;
                 }),
-                'pointDataValue' => $templateHelper->json(
-                    call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
+                'pointDataValue' => json_encode([
+                    'points' => call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
                         $points = [];
 
                         foreach ($orderModel->possiblePoints as $possiblePointModel) {
@@ -214,7 +214,7 @@ class Delivery {
 
                         return $points;
                     })
-                ),
+                ], JSON_UNESCAPED_UNICODE),
             ];
 
             $page->content->orders[] = $order;

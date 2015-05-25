@@ -10,7 +10,7 @@ define(
             $body = $('body'),
             $deliveryForm = $('.js-order-delivery-form'),
 
-            changeSplit = function changeSplit(e) {
+            changeSplit = function(e) {
                 e.stopPropagation();
 
                 var
@@ -29,9 +29,26 @@ define(
                 });
 
                 e.preventDefault();
+            },
+
+            showPointPopup = function(e) {
+                e.stopPropagation();
+
+                var
+                    $el = $(this),
+                    $template = $('#tpl-order-delivery-point-popup'),
+                    data = $.parseJSON($($el.data('mapDataSelector')).html())
+                ;
+
+                var $popup = $('<div />').appendTo($body); // TODO: реализовать модальное окно
+                $popup.append(mustache.render($template.html(), data));
+                console.info($popup);
+
+                e.preventDefault();
             }
         ;
 
         $body.on('click', '.js-order-delivery-form-control', changeSplit);
+        $body.on('click', '.js-order-delivery-pointPopup-link', showPointPopup);
     }
 );
