@@ -36,7 +36,19 @@
         .rounded(4px);
         .inline-block();
     }
-    &--slot {
+    &--lstn{
+        display: inline-block;
+        width: auto;
+        height: 30px;
+        line-height: 30px;
+        padding: 0 15px;
+        .rounded(3px);
+        .box-sizing();
+        border-bottom: 2px solid;
+        font-size: 14px;
+    }
+    &--slot
+    {
         font-size: 18px;
 
         min-width: 145px;
@@ -118,6 +130,27 @@
     &--white{
         background-color: rgba(255,255,255,0.75);
         color: #5c5c5c;
+    }
+
+    &--buy{
+        &-lst{
+            background: @typ-orange;
+            border-bottom: 2px solid @typ-orange-shadow;
+            color: #fff;
+            font-weight: bold;
+
+            &:hover{
+                color: #fff;
+            }
+        }
+    }
+    &--show{
+        border: 1px solid #8a8a8a;
+        border-bottom: 2px;
+        color: #8a8a8a;
+        &:hover{
+            color: #8a8a8a;
+        }
     }
 }
 

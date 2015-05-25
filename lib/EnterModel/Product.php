@@ -96,6 +96,8 @@ class Product {
     public $sender;
     /** @var array|null */
     public $ga;
+    /** @var bool */
+    public $isStore;
 
     /**
      * @param array $data
@@ -234,6 +236,11 @@ class Product {
         ) {
             $this->wikimartId = $this->partnerOffers[0]->productId;
         }
+
+        if (array_key_exists('state', $data)) {
+            $this->isStore = (isset($data['state']['is_store'])) ? $data['state']['is_store'] : false;
+        }
+
     }
 
     /**

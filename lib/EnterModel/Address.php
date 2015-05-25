@@ -20,7 +20,11 @@ class Address {
     /** @var string */
     public $zipCode;
     /** @var string */
+    public $address;
+    /** @var string */
     public $street;
+    /** @var string */
+    public $streetType;
     /** @var string */
     public $building;
     /** @var string */
@@ -38,7 +42,9 @@ class Address {
         if (array_key_exists('kladr_id', $data)) $this->kladrId = (string)$data['kladr_id'];
         if (array_key_exists('geo_id', $data)) $this->regionId = (string)$data['geo_id'];
         if (array_key_exists('zip_code', $data)) $this->zipCode = (string)$data['zip_code'];
+        if (array_key_exists('address', $data)) $this->address = (string)$data['address'];
         if (array_key_exists('street', $data)) $this->street = (string)$data['street'];
+        if (array_key_exists('street_type', $data)) $this->streetType = (string)$data['street_type'];
         if (array_key_exists('building', $data)) $this->building = (string)$data['building'];
         if (array_key_exists('apartment', $data)) $this->apartment = (string)$data['apartment'];
         if (array_key_exists('description', $data)) $this->description = (string)$data['description'];

@@ -24,37 +24,13 @@ class Promo {
      * @return Model\Promo[]
      */
     public function getObjectListByQuery(Query $query) {
-        $config = $this->getConfig();
         $promos = [];
 
         try {
             foreach ($query->getResult() as $item) {
-                $typeId = isset($item['type_id']) ? (int)$item['type_id'] : null;
-                if ($typeId != $config->promo->typeId) continue;
-
-                $promos[] = new Model\Promo($item);
-            }
-        } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
-            //trigger_error($e, E_USER_ERROR);
-        }
-
-        return $promos;
-    }
-
-    /**
-     * @param $id
-     * @param Query $query
-     * @return Model\Promo|null
-     */
-    public function getObjectByIdAndQuery($id, Query $query) {
-        $promo = null;
-
-        try {
-            foreach ($query->getResult() as $item) {
-                if (isset($item['id']) && ($id == $item['id'])) {
-                    $promo = new Model\Promo($item);
-                    break;
+                $promo = new Model\Promo($item);
+                if ($promo->target && $promo->media) {
+                    $promos[] = $promo;
                 }
             }
         } catch (\Exception $e) {
@@ -62,6 +38,6 @@ class Promo {
             //trigger_error($e, E_USER_ERROR);
         }
 
-        return $promo;
+        return $promos;
     }
 }

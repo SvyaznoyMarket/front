@@ -44,7 +44,7 @@ namespace EnterTerminal\Controller {
             }
 
             // запрос баннеров
-            $promoListQuery = new Query\Promo\GetList($region->id);
+            $promoListQuery = new Query\Promo\GetList(['app-terminal']);
             $curl->prepare($promoListQuery);
 
             $curl->execute();
