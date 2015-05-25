@@ -28,6 +28,8 @@ class Product {
     public $stockQuantity;
     /** @var array */
     public $sender;
+    /** @var \EnterModel\Product\Media */
+    public $media;
 
     /**
      * @param array $data

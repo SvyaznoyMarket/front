@@ -55,15 +55,35 @@ namespace EnterTerminal\Controller\Cart {
             $controllerRequest->previousSplitData = [];
             $controllerRequest->cart = $cart;
             // при получении данных о разбиении корзины - записать их в сессию немедленно
-            $controllerRequest->splitReceivedSuccessfullyCallback->handler = function() use (&$controllerRequest, &$config, &$session) {
+            $controllerRequest->splitReceivedSuccessfullyCallback->handler = function() use (&$controllerRequest, &$config, &$session, &$response) {
                 $session->set($config->order->splitSessionKey, $controllerRequest->splitReceivedSuccessfullyCallback->splitData);
+
+                // Терминалы пока используют сырые данные, не изменённые моделями API агрегатора
+                // TODO: удалить при переходе терминалов на формат элемента "split", соответствующий моделям в API агрегаторе
+                $response->split = $controllerRequest->splitReceivedSuccessfullyCallback->splitData;
             };
             // ответ от контроллера
             $controllerResponse = $controller->execute($controllerRequest);
 
             $response->errors = $controllerResponse->errors;
-            $response->split = $controllerResponse->split;
             $response->region = $controllerResponse->region;
+
+            // TODO: заменить на "$response->split = $controllerResponse->split;" при переходе терминалов на формат элемента "split", соответствующий моделям в API агрегаторе
+            call_user_func(function() use(&$response, &$controllerResponse) {
+                if (isset($response->split['orders'])) {
+                    $orderNum = 0;
+                    foreach ($response->split['orders'] as &$order) {
+                        if (isset($order['products'])) {
+                            foreach ($order['products'] as $productNum => &$product) {
+                                $product['media'] = $controllerResponse->split->orders[$orderNum]->products[$productNum]->media;
+                                unset($product['image']);
+                            }
+                        }
+
+                        $orderNum++;
+                    }
+                }
+            });
 
             // response
             return new Http\JsonResponse($response);
