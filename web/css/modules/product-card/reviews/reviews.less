@@ -122,11 +122,23 @@
 		}
 		&__item{
 			.inline-block();
-			width: 14px;
-			height: 14px;
-			background: url("@{base-url}/product-card/reviews/images/star_empty.png") no-repeat;
+			display: inline-block;
+            font: normal normal normal 14px/1 'stars';
+            font-size: inherit;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transform: translate(0, 0);
+            color: @firmOrange;
+            margin-top: 3px;
+
+            &:before {
+                content: "\f006";
+            }
 			&.mark-full{
-				background-image: url("@{base-url}/product-card/reviews/images/star_full.png");
+				&:before {
+                    content: "\f005";
+                }
 			}
 		}
 

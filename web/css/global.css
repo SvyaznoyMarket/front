@@ -3059,16 +3059,24 @@ body.noScroll {
   *display: inline;
 }
 .reviews-mark__item {
-  display: inline-block;
   vertical-align: top;
   *zoom: 1;
   *display: inline;
-  width: 14px;
-  height: 14px;
-  background: url("modules/product-card/reviews/images/star_empty.png") no-repeat;
+  display: inline-block;
+  font: normal normal normal 14px/1 'stars';
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+  color: #ffa901;
+  margin-top: 3px;
 }
-.reviews-mark__item.mark-full {
-  background-image: url("modules/product-card/reviews/images/star_full.png");
+.reviews-mark__item:before {
+  content: "\f006";
+}
+.reviews-mark__item.mark-full:before {
+  content: "\f005";
 }
 .reviews-added-success {
   font-size: 15px;
@@ -3764,13 +3772,6 @@ body.noScroll {
   .sprite-icon {
     background-image: url("modules/header/img/menu-sprite1024@2x.png");
     background-size: 207px 31px;
-  }
-  .reviews-mark__item {
-    background: url("modules/product-card/reviews/images/star_empty@2x.png") no-repeat 0 0;
-    background-size: 14px 14px;
-  }
-  .reviews-mark__item.mark-full {
-    background-image: url("modules/product-card/reviews/images/star_full@2x.png");
   }
 }
 /* ==========================================================================
