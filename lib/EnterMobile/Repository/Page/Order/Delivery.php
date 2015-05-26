@@ -158,7 +158,7 @@ class Delivery {
                             ,
                             'isCompleted' =>
                                 ((bool)$point && (1 == $deliveryGroupModel->id))
-                                || (2 == $deliveryGroupModel->id)
+                                || ($splitModel->user && $splitModel->user->address && $splitModel->user->address->street && (2 == $deliveryGroupModel->id))
                             ,
                             'interval'    =>
                                 $orderModel->delivery->interval
@@ -393,6 +393,8 @@ class Delivery {
             ? ($orderCount . ' ' . $translateHelper->numberChoice($orderCount, ['отдельный заказ', 'отдельных заказа', 'отдельных заказов']))
             : false
         ;
+
+        $page->content->isUserAuthenticated = (bool)$request->user;
 
         // шаблоны mustache
         (new Repository\Template())->setListForPage($page, [

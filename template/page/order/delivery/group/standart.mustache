@@ -14,10 +14,19 @@
     </div>
 
     <div class="checkout-address">
-        <div class="checkout-address__title"><strong>Адрес</strong> для всех заказов с доставкой</div>
+        {{#user.address}}
+            <p class="checkout-address__selected">ул. Линии Октябрьской Железной Дороги, 12/1, кв.23</p>
+        {{/user.address}}
 
-        <p class="checkout-address__selected">ул. Линии Октябрьской Железной Дороги, 12/1, кв.23</p>
+        {{^isUserAuthenticated}}
+        <div class="checkout-address">
+            <div class="checkout-address__title"><strong>Адрес</strong> для всех заказов с доставкой</div>
 
+            <button class="orderInf_r btn-transparent btn-transparent--normal"><span class="bb-dotted">Указать адрес</span></button>
+        </div>
+        {{/isUserAuthenticated}}
+
+        {{#isUserAuthenticated}}
         <div class="checkout-address__select custom-select">
             <span class="custom-select__value js-order-btn" data-btn="select-address">
                 <span class="bb-dotted">Указать адрес</span>
@@ -31,5 +40,6 @@
                     <span class="bb-dotted">Добавить адрес</span></li>
             </ul>
         </div>
+        {{/isUserAuthenticated}}
     </div>
 </div>
