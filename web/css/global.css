@@ -4364,7 +4364,6 @@ body.noScroll {
 .modal {
   position: fixed;
   z-index: 1011;
-  display: none;
   top: 0;
   left: 0;
   width: 100%;

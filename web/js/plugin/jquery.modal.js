@@ -1,36 +1,49 @@
-; (function( $ ){
+define(
+    [
+        'jquery', 'underscore', 'mustache'
+    ],
+    function (
+        $, _, mustache
+    ) {
 
-    $.fn.modal = function( options ) {
-    	console.log("modal");
+        $.fn.modal = function( options ) {
+        	console.log("modal");
 
-  		return this.each(function() {
-  			var options = $.extend(
-							{},
-							$.fn.enterPopup.defaults,
-							options),
-				$this  = $(this),
-                $html  = $('html'),
+      		return this.each(function() {
+      			var options = $.extend(
+    							{},
+    							$.fn.enterPopup.defaults,
+    							options),
+    				$this    = $(this),
+                    $html    = $('html'),
+                    $body    = $('body'),
+                    $overlay = $('.js-modal-overlay'),
+                    $tamplate;
+    			// end of vars
 
-                $open  = $('.js-modal-show'),
-                $modal = $('.js-modal'),
-                $close = $modal.find('.js-modal-close'),
-                $tamplate;
-			// end of vars
+                //show modal
+                function showModal() {
+                    $html.css({'overflow':'hidden'});
+                    $template = $('#tpl-modalWindow');
+                    $body.append(mustache.render($template.html()));
+                }
 
-            function showModal() {
-                var target = $this.data('modal');
+                // close modal
+                function destroyModal() {
+                    var $modal = $('.js-modal');
 
-                $html.css({'overflow':'hidden'});
+                    $modal.remove();
+                    $html.css({'overflow':'auto'});
+                }
 
-            }
+                showModal();
+                $body.on('click', '.js-modal-close', destroyModal);
+      		});
+        };
 
-            $open.on('click', showModal);
-  		});
-    };
+        $.fn.modal.defaults = {
 
-    $.fn.modal.defaults = {
+    	};
+    }
+);
 
-	};
-    $('.js-modal-show').modal();
-
-})( jQuery );

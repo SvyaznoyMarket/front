@@ -1,116 +1,110 @@
-<div class="order-popup modal js-modal">
-    <div class="modal-head order-popup__head">
-        <span class="popup-close js-modal-close"><i class="icon-close"></i></span>
-    </div>
+<div class="order-popup__top-block search">
+    <form class="search__section">
+        <div class="search-control {{! suggest-open }}">
+            <i class="sprite-icon sprite-icon--search"></i>
 
-    <div class="order-popup__top-block search">
-        <form class="search__section">
-            <div class="search-control {{! suggest-open }}">
-                <i class="sprite-icon sprite-icon--search"></i>
-
-                <input class="search-control__input" type="text" placeholder="Искать по улице, метро">
-                <input class="search-control__submit" type="submit" value="">
-                <div class="form-control-group__suggest suggest-control">
-                    <ul class="suggest-control-lst">
-                        <li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
-                        <li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
-                        <li class="suggest-control-lst-i">Улица Мочалок Командира</li>
-                        <li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
-                        <li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
-                        <li class="suggest-control-lst-i">Улица Мочалок Командира</li>
-                    </ul>
-                </div>
+            <input class="search-control__input" type="text" placeholder="Искать по улице, метро">
+            <input class="search-control__submit" type="submit" value="">
+            <div class="form-control-group__suggest suggest-control">
+                <ul class="suggest-control-lst">
+                    <li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
+                    <li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
+                    <li class="suggest-control-lst-i">Улица Мочалок Командира</li>
+                    <li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
+                    <li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
+                    <li class="suggest-control-lst-i">Улица Мочалок Командира</li>
+                </ul>
             </div>
-            <div class="btn btn--white btn--medium"><span class="map-link">Карта</span></div>
-        </form>
+        </div>
+        <div class="btn btn--white btn--medium"><span class="map-link">Карта</span></div>
+    </form>
+</div>
+
+<div class="custom-select__kit custom-filter__kit">
+    <div class="custom-select custom-filter">
+        <span class="custom-select__value" data-btn="select-point-type">
+            <span class="bb-dotted">Все точки</span>
+            <i class="caret"></i>
+        </span>
+
+        <ul class="custom-select-list" data-box="data-select-point-type">
+        {{#filters.type}}
+            <li class="custom-select-list__item">
+                <input type="checkbox" id="shop1" name="paynow" class="custom-input custom-input--square-check" checked>
+
+                <label class="custom-label flex-hor-vertical-between" for="shop1"></label>
+                <span class="custom-label_tx">{{.}}</span>
+            </li>
+        {{/filters.type}}
+        </ul>
     </div>
 
-    <div class="custom-select__kit custom-filter__kit">
-        <div class="custom-select custom-filter">
-            <span class="custom-select__value" data-btn="select-point-type">
-                <span class="bb-dotted">Все точки</span>
-                <i class="caret"></i>
-            </span>
+    <div class="custom-select custom-filter">
+        <span class="custom-select__value" data-btn="select-price">
+            <span class="bb-dotted">Стоимость</span>
+            <i class="caret"></i>
+        </span>
 
-            <ul class="custom-select-list" data-box="data-select-point-type">
-            {{#filters.type}}
-                <li class="custom-select-list__item">
-                    <input type="checkbox" id="shop1" name="paynow" class="custom-input custom-input--square-check" checked>
+        <ul class="custom-select-list" data-box="data-select-price">
+        {{#filters.cost}}
+            <li class="custom-select-list__item">
+                <input type="checkbox" id="price1" name="paynow" class="custom-input custom-input--square-check" >
 
-                    <label class="custom-label flex-hor-vertical-between" for="shop1"></label>
-                    <span class="custom-label_tx">{{.}}</span>
-                </li>
-            {{/filters.type}}
-            </ul>
-        </div>
-
-        <div class="custom-select custom-filter">
-            <span class="custom-select__value" data-btn="select-price">
-                <span class="bb-dotted">Стоимость</span>
-                <i class="caret"></i>
-            </span>
-
-            <ul class="custom-select-list" data-box="data-select-price">
-            {{#filters.cost}}
-                <li class="custom-select-list__item">
-                    <input type="checkbox" id="price1" name="paynow" class="custom-input custom-input--square-check" >
-
-                    <label class="custom-label flex-hor-vertical-between" for="price1"></label>
-                    <span class="custom-label_tx">{{^.}}Бесплатно{{/.}}{{#.}}{{.}} <span class="rubl">p</span>{{/.}}</span>
-                </li>
-            {{/filters.cost}}
-            </ul>
-        </div>
-
-        <div class="custom-select custom-filter">
-            <span class="custom-select__value" data-btn="select-date">
-                <span class="bb-dotted">Дата</span>
-                <i class="caret"></i>
-            </span>
-
-            <ul class="custom-select-list" data-box="data-select-date">
-            {{#filters.date}}
-                <li class="custom-select-list__item">
-                    <input type="checkbox" id="date1" name="paynow" class="custom-input custom-input--square-check">
-
-                    <label class="custom-label flex-hor-vertical-between" for="date1"></label>
-                    <span class="custom-label_tx">{{.}}</span>
-                </li>
-            {{/filters.date}}
-            </ul>
-        </div>
+                <label class="custom-label flex-hor-vertical-between" for="price1"></label>
+                <span class="custom-label_tx">{{^.}}Бесплатно{{/.}}{{#.}}{{.}} <span class="rubl">p</span>{{/.}}</span>
+            </li>
+        {{/filters.cost}}
+        </ul>
     </div>
 
-    <div class="pick-point modal-content">
-        <div class="pick-point-list table">
-            {{#points}}
+    <div class="custom-select custom-filter">
+        <span class="custom-select__value" data-btn="select-date">
+            <span class="bb-dotted">Дата</span>
+            <i class="caret"></i>
+        </span>
 
-            <div class="pick-point-list-i shop-snippet table_row js-order-delivery-form-control" data-value="{{&dataValue}}">
-                <div class="shop-snippet-name table_cell">
-                    <img src="/img/points/{{icon}}.png" alt="" class="shop-snippet-name__img">
-                    <span class="shop-snippet-name__text">{{group}}</span>
-                </div>
+        <ul class="custom-select-list" data-box="data-select-date">
+        {{#filters.date}}
+            <li class="custom-select-list__item">
+                <input type="checkbox" id="date1" name="paynow" class="custom-input custom-input--square-check">
 
-                <div class="shop-snippet-info table_cell">
-                    {{#subway}}
-                    <div class="shop-snippet-metro">
-                        <span class="shop-snippet-metro__bullet" style="background: {{color}};"></span>
-                        <span class="shop-snippet-metro__text">{{name}}</span>
-                    </div>
-                    {{/subway}}
+                <label class="custom-label flex-hor-vertical-between" for="date1"></label>
+                <span class="custom-label_tx">{{.}}</span>
+            </li>
+        {{/filters.date}}
+        </ul>
+    </div>
+</div>
 
-                    <div class="shop-snippet-address">{{name}} <br/>{{regime}}</div>
-                </div>
+<div class="pick-point modal-content">
+    <div class="pick-point-list table">
+        {{#points}}
 
-                <div class="deliv-info-snippet table_cell">
-                    <span class="deliv-info-snippet__date">{{date}}</span>
-                    <span class="deliv-info-snippet__price">
-                        {{#cost}}{{cost}} <span class="rubl">p</span>{{/cost}}
-                        {{^cost}}Бесплатно{{/cost}}
-                    </span>
-                </div>
+        <div class="pick-point-list-i shop-snippet table_row js-order-delivery-form-control" data-value="{{&dataValue}}">
+            <div class="shop-snippet-name table_cell">
+                <img src="/img/points/{{icon}}.png" alt="" class="shop-snippet-name__img">
+                <span class="shop-snippet-name__text">{{group}}</span>
             </div>
-            {{/points}}
+
+            <div class="shop-snippet-info table_cell">
+                {{#subway}}
+                <div class="shop-snippet-metro">
+                    <span class="shop-snippet-metro__bullet" style="background: {{color}};"></span>
+                    <span class="shop-snippet-metro__text">{{name}}</span>
+                </div>
+                {{/subway}}
+
+                <div class="shop-snippet-address">{{name}} <br/>{{regime}}</div>
+            </div>
+
+            <div class="deliv-info-snippet table_cell">
+                <span class="deliv-info-snippet__date">{{date}}</span>
+                <span class="deliv-info-snippet__price">
+                    {{#cost}}{{cost}} <span class="rubl">p</span>{{/cost}}
+                    {{^cost}}Бесплатно{{/cost}}
+                </span>
+            </div>
         </div>
+        {{/points}}
     </div>
 </div>
