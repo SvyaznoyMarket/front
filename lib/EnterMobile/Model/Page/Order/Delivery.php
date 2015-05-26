@@ -33,6 +33,8 @@ namespace EnterMobile\Model\Page\Order\Delivery {
         public $orders = [];
         /** @var string|bool */
         public $orderCountMessage;
+        /** @var bool */
+        public $isUserAuthenticated; // TODO: перенести на уровень выше
 
         public function __construct() {
             parent::__construct();

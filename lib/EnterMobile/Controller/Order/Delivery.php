@@ -33,6 +33,9 @@ class Delivery {
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
+        // токен пользователя
+        $userToken = (new \EnterRepository\User())->getTokenByHttpRequest($request);
+
         // корзина
         $cart = $cartRepository->getObjectByHttpSession($session);
         // проверяет наличие товаров в корзине
@@ -88,11 +91,12 @@ class Delivery {
         // запрос для контроллера
         $controllerRequest = $controller->createRequest();
         $controllerRequest->regionId = $regionId;
+        $controllerRequest->userToken = $userToken;
         $controllerRequest->shopId = null;
         $controllerRequest->changeData = $changeData;
         $controllerRequest->previousSplitData = $previousSplitData;
         $controllerRequest->cart = $cart;
-        $controllerRequest->user = $userFromSplit;
+        $controllerRequest->userFromSplit = $userFromSplit;
         // при получении данных о разбиении корзины - записать их в сессию немедленно
         $controllerRequest->splitReceivedSuccessfullyCallback->handler = function() use (&$controllerRequest, &$config, &$session) {
             $session->set($config->order->splitSessionKey, $controllerRequest->splitReceivedSuccessfullyCallback->splitData);
@@ -104,6 +108,7 @@ class Delivery {
         $pageRequest = new Repository\Page\Order\Delivery\Request();
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $controllerResponse->region;
+        $pageRequest->user = $controllerResponse->user;
         $pageRequest->split = $controllerResponse->split;
         //$pageRequest->formErrors = $controllerResponse->errors; // TODO
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));

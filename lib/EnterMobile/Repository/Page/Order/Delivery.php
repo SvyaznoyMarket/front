@@ -158,7 +158,7 @@ class Delivery {
                             ,
                             'isCompleted' =>
                                 ((bool)$point && (1 == $deliveryGroupModel->id))
-                                || (2 == $deliveryGroupModel->id)
+                                || ($splitModel->user && $splitModel->user->address && $splitModel->user->address->street && (2 == $deliveryGroupModel->id))
                             ,
                             'interval'    =>
                                 $orderModel->delivery->interval
@@ -394,14 +394,19 @@ class Delivery {
             : false
         ;
 
+        $page->content->isUserAuthenticated = (bool)$request->user;
+
         // шаблоны mustache
         (new Repository\Template())->setListForPage($page, [
             [
                 'id'       => 'tpl-order-delivery-point-popup',
                 'name'     => 'page/order/delivery/point-popup',
-                'partials' => [
-                    'partial/cart/button',
-                ],
+                'partials' => [],
+            ],
+            [
+                'id'       => 'tpl-order-delivery-calendar',
+                'name'     => 'page/order/delivery/calendar',
+                'partials' => [],
             ],
         ]);
     }

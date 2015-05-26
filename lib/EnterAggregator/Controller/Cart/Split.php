@@ -7,6 +7,7 @@ namespace EnterAggregator\Controller\Cart {
     use EnterAggregator\LoggerTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
+    use EnterRepository as Repository;
 
     class Split {
         use ConfigTrait, LoggerTrait, CurlTrait;
@@ -14,9 +15,9 @@ namespace EnterAggregator\Controller\Cart {
         public function execute(Split\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            $cartRepository = new \EnterRepository\Cart();
-            $orderRepository = new \EnterRepository\Order();
-            $productRepository = new \EnterRepository\Product();
+            $cartRepository = new Repository\Cart();
+            $orderRepository = new Repository\Order();
+            $productRepository = new Repository\Product();
 
             // ответ
             $response = new Split\Response();
@@ -32,6 +33,13 @@ namespace EnterAggregator\Controller\Cart {
                 $curl->prepare($shopItemQuery)->execute();
             }
 
+            // запрос пользователя
+            $userItemQuery = null;
+            if ($request->userToken && (0 !== strpos($request->userToken, 'anonymous-'))) {
+                $userItemQuery = new Query\User\GetItemByToken($request->userToken);
+                $curl->prepare($userItemQuery);
+            }
+
             $curl->execute();
 
             // регион
@@ -43,6 +51,16 @@ namespace EnterAggregator\Controller\Cart {
                 $this->getLogger()->push(['type' => 'warn', 'message' => 'Магазин не найден', 'shopId' => $request->shopId, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
             }
 
+            // пользователь
+            $user = null;
+            try {
+                if ($userItemQuery) {
+                    $response->user = (new Repository\User())->getObjectByQuery($userItemQuery);
+                }
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+            }
+
             // запрос на разбиение корзины
             $splitQuery = new Query\Cart\Split\GetItem(
                 $request->cart,
@@ -51,7 +69,7 @@ namespace EnterAggregator\Controller\Cart {
                 null,
                 (array)$request->previousSplitData,
                 $request->changeData ? $cartRepository->dumpSplitChange($request->changeData, $request->previousSplitData) : [],
-                $request->user
+                $request->userFromSplit
             );
             $splitQuery->setTimeout(10 * $config->coreService->timeout);
             $curl->prepare($splitQuery);
@@ -186,6 +204,8 @@ namespace EnterAggregator\Controller\Cart\Split {
 
     class Request {
         /** @var string|null */
+        public $userToken;
+        /** @var string|null */
         public $regionId;
         /** @var string|null */
         public $shopId;
@@ -204,7 +224,7 @@ namespace EnterAggregator\Controller\Cart\Split {
          */
         public $changeData;
         /** @var Model\Cart\Split\User */
-        public $user;
+        public $userFromSplit;
         /**
          * Обработчик, который вызывается немедленно при получении разбиения от ядра
          *
@@ -224,6 +244,8 @@ namespace EnterAggregator\Controller\Cart\Split {
         public $split;
         /** @var Model\Region|null */
         public $region;
+        /** @var Model\User|null */
+        public $user;
      }
 }
 

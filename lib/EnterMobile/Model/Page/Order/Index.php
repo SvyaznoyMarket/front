@@ -24,7 +24,7 @@ namespace EnterMobile\Model\Page\Order\Index {
         /** @var Form\Order\UserForm */
         public $form;
         /** @var bool */
-        public $isUserAuthenticated;
+        public $isUserAuthenticated; // TODO: перенести на уровень выше
         /** @var string */
         public $authUrl;
 
