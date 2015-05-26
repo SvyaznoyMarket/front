@@ -18,7 +18,7 @@ class Split {
         ];
 
         foreach ($split->deliveryGroups as $deliveryGroup) {
-            $result['delivery_groups'][$deliveryGroup->id] = [
+            $result['delivery_groups'][] = [
                 'delivery_group' => [
                     'id' => $deliveryGroup->id,
                     'name' => $deliveryGroup->name,
@@ -27,7 +27,7 @@ class Split {
         }
 
         foreach ($split->deliveryMethods as $deliveryMethod) {
-            $result['delivery_methods'][$deliveryMethod->token] = [
+            $result['delivery_methods'][] = [
                 'delivery_method' => [
                     'token' => $deliveryMethod->token,
                     'type_id' => $deliveryMethod->typeId,
@@ -41,7 +41,7 @@ class Split {
         }
 
         foreach ($split->paymentMethods as $paymentMethod) {
-            $result['payment_methods'][$paymentMethod->id] = [
+            $result['payment_methods'][] = [
                 'payment_method' => [
                     'id' => $paymentMethod->id,
                     'ui' => $paymentMethod->ui,
@@ -95,10 +95,10 @@ class Split {
                     $pointItem['point']['subway'][] = $subwayItem;
                 }
 
-                $pointGroupItem['point_group']['points'][$point->id] = $pointItem;
+                $pointGroupItem['point_group']['points'][] = $pointItem;
             }
 
-            $result['point_groups'][$pointGroup->token] = $pointGroupItem;
+            $result['point_groups'][] = $pointGroupItem;
         }
 
         foreach ($split->orders as $order) {
@@ -240,19 +240,19 @@ class Split {
 
         foreach ($result['delivery_methods'] as $key => $item) {
             if ($item['delivery_method']['point_token'] != null) {
-                $result['delivery_methods'][$key]['delivery_method']['point_groups'][] = $result['point_groups'][$item['delivery_method']['point_token']];
+                $result['delivery_methods'][$key]['delivery_method']['point_groups'][] = $this->getPointGroupByToken($result['point_groups'], $item['delivery_method']['point_token']);
                 unset($result['delivery_methods'][$key]['delivery_method']['point_token']);
             }
 
             if ($item['delivery_method']['group_id'] != null) {
-                $result['delivery_methods'][$key]['delivery_method']['group'] = $result['delivery_groups'][$item['delivery_method']['group_id']]['delivery_group'];
+                $result['delivery_methods'][$key]['delivery_method']['group'] = $this->getDeliveryGroupById($result['delivery_groups'], $item['delivery_method']['group_id'])['delivery_group'];
                 unset($result['delivery_methods'][$key]['delivery_method']['group_id']);
             }
         }
 
         foreach ($result['orders'] as $key => $item) {
             if ($item['order']['delivery']['delivery_method_token'] != null) {
-                $result['orders'][$key]['order']['delivery']['delivery_method'] = $result['delivery_methods'][$item['order']['delivery']['delivery_method_token']]['delivery_method'];
+                $result['orders'][$key]['order']['delivery']['delivery_method'] = $this->getDeliveryMethodByToken($result['delivery_methods'], $item['order']['delivery']['delivery_method_token'])['delivery_method'];
                 unset($result['orders'][$key]['order']['delivery']['delivery_method_token']);
             }
 
@@ -260,32 +260,32 @@ class Split {
                 $token = $item['order']['delivery']['point']['token'];
                 $id = $item['order']['delivery']['point']['id'];
 
-                $pointGroup = $result['point_groups'][$token];
+                $pointGroup = $this->getPointGroupByToken($result['point_groups'], $token);
                 unset($pointGroup['point_group']['points']);
-                $pointGroup['point_group']['points'][] = $result['point_groups'][$token]['point_group']['points'][$id];
+                $pointGroup['point_group']['points'][] = $this->getPointById($this->getPointGroupByToken($result['point_groups'], $token)['point_group']['points'], $id);
                 $result['orders'][$key]['order']['delivery']['point_groups'][] = $pointGroup;
 
                 unset($result['orders'][$key]['order']['delivery']['point']);
             }
 
             if ($item['order']['payment_method_id'] != null) {
-                $result['orders'][$key]['order']['payment_method'] = $result['payment_methods'][$item['order']['payment_method_id']]['payment_method'];
+                $result['orders'][$key]['order']['payment_method'] = $this->getPaymentMethodById($result['payment_methods'], $item['order']['payment_method_id'])['payment_method'];
                 unset($result['orders'][$key]['order']['payment_method_id']);
             }
 
             foreach ($item['order']['possible_deliveries'] as $deliveryKey => $deliveryItem) {
-                $result['orders'][$key]['order']['possible_deliveries'][$deliveryKey]['delivery'] = $result['delivery_methods'][$deliveryItem['delivery']]['delivery_method'];
+                $result['orders'][$key]['order']['possible_deliveries'][$deliveryKey]['delivery'] = $this->getDeliveryMethodByToken($result['delivery_methods'], $deliveryItem['delivery'])['delivery_method'];
             }
 
             foreach ($item['order']['possible_payment_methods'] as $paymentKey => $paymentItem) {
-                $result['orders'][$key]['order']['possible_payment_methods'][$paymentKey]['payment_method'] = $result['payment_methods'][$paymentItem['payment_method']]['payment_method'];
+                $result['orders'][$key]['order']['possible_payment_methods'][$paymentKey]['payment_method'] = $this->getPaymentMethodById($result['payment_methods'], $paymentItem['payment_method'])['payment_method'];
             }
 
             foreach ($item['order']['possible_points'] as $groupToken => $pointIds) {
-                $possiblePointGroup = $result['point_groups'][$groupToken];
+                $possiblePointGroup = $this->getPointGroupByToken($result['point_groups'], $groupToken);
                 unset($possiblePointGroup['point_group']['points']);
                 foreach ($pointIds as $pointId) {
-                    $possiblePointGroup['point_group']['points'][] = $result['point_groups'][$groupToken]['point_group']['points'][$pointId];
+                    $possiblePointGroup['point_group']['points'][] = $this->getPointById($this->getPointGroupByToken($result['point_groups'], $groupToken)['point_group']['points'], $pointId);
                 }
 
                 $result['orders'][$key]['order']['possible_points'][] = $possiblePointGroup;
@@ -293,18 +293,57 @@ class Split {
             }
         }
 
-        // Изменение ключей массивов на числовые для корректной последующей обработки XML конвертором
+        return $result;
+    }
 
-        $result['delivery_groups'] = array_values($result['delivery_groups']);
-        $result['delivery_methods'] = array_values($result['delivery_methods']);
-        $result['payment_methods'] = array_values($result['payment_methods']);
-        $result['point_groups'] = array_values($result['point_groups']);
-
-        foreach ($result['point_groups'] as $key => $group) {
-            $result['point_groups'][$key]['point_group']['points'] = array_values($group['point_group']['points']);
+    private function getDeliveryMethodByToken(&$deliveryMethods, $token) {
+        foreach ($deliveryMethods as $key => $deliveryMethod) {
+            if ($deliveryMethod['delivery_method']['token'] === $token) {
+                return $deliveryMethods[$key];
+            }
         }
 
-        return $result;
+        return [];
+    }
+
+    private function getPointGroupByToken(&$pointGroups, $token) {
+        foreach ($pointGroups as $key => $pointGroup) {
+            if ($pointGroup['point_group']['token'] === $token) {
+                return $pointGroups[$key];
+            }
+        }
+
+        return [];
+    }
+
+    private function getPointById(&$points, $id) {
+        foreach ($points as $key => $point) {
+            if ($point['point']['id'] === $id) {
+                return $points[$key];
+            }
+        }
+
+        return [];
+    }
+
+    private function getPaymentMethodById(&$paymentMethods, $id) {
+        foreach ($paymentMethods as $key => $paymentMethod) {
+            if ($paymentMethod['payment_method']['id'] === $id) {
+                return $paymentMethods[$key];
+            }
+        }
+
+        return [];
+    }
+
+    private function getDeliveryGroupById(&$deliveryGroups, $id) {
+        foreach ($deliveryGroups as $key => $deliveryGroup) {
+            if ($deliveryGroup['delivery_group']['id'] === $id) {
+                return $deliveryGroups[$key];
+            }
+        }
+
+        return [];
     }
 
     public function convertXmlArrayToCoreArray($split) {
