@@ -65,9 +65,19 @@ class ProductButton {
             ],
         ];
 
-        $ga = [
-            ['send', 'event', 'm_add_to_basket', $product->name, $product->article, '{product.sum}'],
-        ];
+        if ($product->atListingPage) {
+            $ga = [
+                ['send', 'event', 'm_add_to_basket', 'listing', $product->article, '{product.sum}'],
+            ];
+        } elseif($product->atProductPage) {
+            $ga = [
+                ['send', 'event', 'm_add_to_basket', 'product', $product->article, '{product.sum}'],
+            ];
+        } else {
+            $ga = [
+                ['send', 'event', 'm_add_to_basket', $product->name, $product->article, '{product.sum}'],
+            ];
+        }
 
         if ($product->ga) {
             $ga[] = [

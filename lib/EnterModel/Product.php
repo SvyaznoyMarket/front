@@ -98,6 +98,10 @@ class Product {
     public $ga;
     /** @var bool */
     public $isStore;
+    /** @var bool */
+    public $atListingPage;
+    /** @var bool */
+    public $atProductPage;
 
     /**
      * @param array $data
