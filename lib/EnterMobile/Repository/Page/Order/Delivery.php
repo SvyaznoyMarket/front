@@ -93,7 +93,7 @@ class Delivery {
                     'name'  => $priceHelper->format($orderModel->sum),
                     'value' => $orderModel->sum,
                 ],
-                'delivery'       => call_user_func(function() use (&$priceHelper, &$splitModel, &$orderModel, &$deliveryGroupModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
+                'delivery'       => call_user_func(function() use (&$templateHelper, &$priceHelper, &$splitModel, &$orderModel, &$deliveryGroupModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
                     $delivery = false;
 
                     if ($orderModel->delivery) {
@@ -160,6 +160,39 @@ class Delivery {
                                 ((bool)$point && (1 == $deliveryGroupModel->id))
                                 || (2 == $deliveryGroupModel->id)
                             ,
+                            'interval'    =>
+                                $orderModel->delivery->interval
+                                ? [
+                                    'from' => $orderModel->delivery->interval->from,
+                                    'to'   => $orderModel->delivery->interval->to,
+                                ]
+                                : false
+                            ,
+                            'intervals'   => array_map(
+                                function(\EnterModel\Cart\Split\Interval $interval) use (&$templateHelper, &$orderModel) {
+                                    return [
+                                        'from'      => $interval->from,
+                                        'to'        => $interval->to,
+                                        //'isActive'  => ($interval->from === $orderModel->delivery->interval->from) && ($interval->to === $orderModel->delivery->interval->to),
+                                        'dataValue' => $templateHelper->json([
+                                            'change' => [
+                                                'orders' => [
+                                                    [
+                                                        'blockName' => $orderModel->blockName,
+                                                        'delivery'  => [
+                                                            'interval' => [
+                                                                'from' => $interval->from,
+                                                                'to'   => $interval->to,
+                                                            ],
+                                                        ],
+                                                    ],
+                                                ],
+                                            ],
+                                        ]),
+                                    ];
+                                },
+                                $orderModel->possibleIntervals
+                            ),
                         ];
                     }
 
