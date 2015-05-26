@@ -37,6 +37,7 @@ define(
                 $(this).modal();
 
                 var
+                    $el       = $(this),
                     $content  = $('.js-modal-content'),
                     $template = $('#tpl-order-delivery-point-popup'),
                     data      = $.parseJSON($($el.data('mapDataSelector')).html());

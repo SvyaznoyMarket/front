@@ -26,6 +26,8 @@ define(
                     $html.css({'overflow':'hidden'});
                     $template = $('#tpl-modalWindow');
                     $body.append(mustache.render($template.html()));
+
+                    console.log($this);
                 }
 
                 // close modal
