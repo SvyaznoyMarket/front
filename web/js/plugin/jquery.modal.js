@@ -18,7 +18,7 @@ define(
                     $html     = $('html'),
                     $body     = $('body'),
                     $position = $this.data('modal-position'),
-                    $title = $this.data('modal-title'),
+                    $title    = $this.data('modal-title'),
                     $tamplate,
                     data = {};
     			// end of vars
@@ -30,7 +30,7 @@ define(
 
                     data = {
                         position: $position,
-                        title : $title
+                        title: $title
                     }
 
                     $body.append(mustache.render( $template.html(), data ));

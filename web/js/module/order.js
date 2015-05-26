@@ -45,10 +45,24 @@ define(
                 $content.append(mustache.render($template.html(), data));
 
                 e.preventDefault();
-            }
-        ;
+            },
+
+            // показать календарь
+            showCelendar = function(e) {
+                e.stopPropagation();
+
+                $(this).modal();
+
+                var
+                    $el       = $(this),
+                    $content  = $('.js-modal-content'),
+                    $template = $('#tpl-order-delivery-calendar');
+
+                $content.append(mustache.render($template.html()));
+            };
 
         $body.on('click', '.js-order-delivery-form-control', changeSplit);
         $body.on('click', '.js-order-delivery-pointPopup-link', showPointPopup);
+        $body.on('click', '.js-order-delivery-celendar-link', showCelendar);
     }
 );
