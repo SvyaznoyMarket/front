@@ -140,6 +140,7 @@ class Delivery {
                                         'token' => $pointGroup->token,
                                         'name'  => $pointGroup->blockName,
                                     ],
+                                    'icon'   => $this->getPointIcon($pointGroup->token),
                                     'subway' =>
                                         isset($point->subway[0])
                                             ? [
@@ -188,7 +189,7 @@ class Delivery {
                                             'delivery'  => [
                                                 'methodToken' => $deliveryMethodToken,
                                             ],
-                                        ]
+                                        ],
                                     ],
                                 ],
                             ]),
@@ -269,6 +270,7 @@ class Delivery {
                             'id'        => $possiblePointModel->id,
                             'name'      => $point->name,
                             'group'     => $pointGroup->blockName,
+                            'icon'      => $this->getPointIcon($pointGroup->token),
                             'date'      => $date ?: false,
                             'cost'      => $possiblePointModel->cost ?: false,
                             'subway'    =>
@@ -293,7 +295,7 @@ class Delivery {
                                                     'groupToken' => $possiblePointModel->groupToken,
                                                 ],
                                             ],
-                                        ]
+                                        ],
                                     ],
                                 ],
                             ]),
@@ -369,5 +371,29 @@ class Delivery {
                 ],
             ],
         ]);
+    }
+
+    /**
+     * @param string $groupToken
+     * @return string
+     */
+    private function getPointIcon($groupToken) {
+        $icon = null;
+
+        switch ($groupToken) {
+            case 'self_partner_pickpoint_pred_supplier':
+            case 'self_partner_pickpoint':
+                $icon = 'pickpoint';
+                break;
+            case 'self_partner_svyaznoy_pred_supplier':
+            case 'self_partner_svyaznoy':
+            case 'shops_svyaznoy':
+                $icon = 'svyaznoy';
+                break;
+            default:
+                $icon = 'enter';
+        }
+
+        return $icon;
     }
 }

@@ -13,14 +13,15 @@
 
                 $open  = $('.js-modal-show'),
                 $modal = $('.js-modal'),
-                $close = $modal.find('.js-modal-close');
+                $close = $modal.find('.js-modal-close'),
+                $tamplate;
 			// end of vars
 
             function showModal() {
                 var target = $this.data('modal');
 
                 $html.css({'overflow':'hidden'});
-                console.log($modal.filter('[data-modal="' + target + '"]'));
+
             }
 
             $open.on('click', showModal);
