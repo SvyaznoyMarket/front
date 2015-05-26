@@ -58,6 +58,7 @@ class ChildCategory {
         $controllerRequest->filterRepository = $filterRepository;
         $controllerRequest->baseRequestFilters = $baseRequestFilters;
         $controllerRequest->requestFilters = $requestFilters;
+
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);
 
