@@ -4363,11 +4363,12 @@ body.noScroll {
 }
 .modal {
   position: fixed;
-  z-index: 1011;
+  z-index: 1015;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
   background-color: #fff;
 }
 .modal-head {
@@ -4378,8 +4379,30 @@ body.noScroll {
   overflow: auto;
   max-height: 100%;
 }
-.modal.show {
-  display: block;
+.modal.center {
+  max-width: 320px;
+  left: 0;
+  right: 0;
+  top: 20px;
+  bottom: 20px;
+  height: auto;
+  margin: auto;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  opacity: 0.75;
+  -moz-opacity: 0.75;
+  -khtml-opacity: 0.75;
+  -webkit-opacity: 0.75;
+  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=75);
+  filter: alpha(opacity=75);
+  z-index: 1014;
 }
 /* ==========================================================================
    Попапы .popupOverlay, .popupBox

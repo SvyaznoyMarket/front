@@ -14,32 +14,46 @@ define(
     							{},
     							$.fn.enterPopup.defaults,
     							options),
-    				$this    = $(this),
-                    $html    = $('html'),
-                    $body    = $('body'),
-                    $overlay = $('.js-modal-overlay'),
-                    $tamplate;
+    				$this     = $(this),
+                    $html     = $('html'),
+                    $body     = $('body'),
+                    $position = $this.data('modal-position'),
+                    $title = $this.data('modal-title'),
+                    $tamplate,
+                    data = {};
     			// end of vars
 
                 //show modal
-                function showModal() {
+                function show() {
                     $html.css({'overflow':'hidden'});
                     $template = $('#tpl-modalWindow');
-                    $body.append(mustache.render($template.html()));
 
-                    console.log($this);
+                    data = {
+                        position: $position,
+                        title : $title
+                    }
+
+                    $body.append(mustache.render( $template.html(), data ));
+
+                    var $modal    = $('.js-modal'),
+                        $overlay  = $('.js-modal-overlay'),
+                        $content  = $('.js-modal-content');
+
+                    $overlay.show();
                 }
 
                 // close modal
-                function destroyModal() {
-                    var $modal = $('.js-modal');
+                function destroy() {
+                    var $modal    = $('.js-modal'),
+                        $overlay  = $('.js-modal-overlay');
 
                     $modal.remove();
+                    $overlay.remove();
                     $html.css({'overflow':'auto'});
                 }
 
-                showModal();
-                $body.on('click', '.js-modal-close', destroyModal);
+                show();
+                $body.on('click', '.js-modal-close', destroy);
       		});
         };
 
