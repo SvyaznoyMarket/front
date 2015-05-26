@@ -61,4 +61,18 @@ class Date {
 
         return $formatted;
     }
+
+    /**
+     * @param string $format
+     * @param int $timestamp
+     * @return string
+     */
+    public static function strftimeRu($format, $timestamp) {
+        if (false !== strpos($format, '%B2')) {
+            $months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+            $format = str_replace('%B2', $months[date('n', $timestamp) - 1], $format);
+        }
+
+        return strftime($format, $timestamp);
+    }
 }

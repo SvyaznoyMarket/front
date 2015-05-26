@@ -93,32 +93,32 @@ class Delivery {
                     'name'  => $priceHelper->format($orderModel->sum),
                     'value' => $orderModel->sum,
                 ],
-                'delivery'       => call_user_func(function() use (&$templateHelper, &$priceHelper, &$splitModel, &$orderModel, &$deliveryGroupModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
+                'delivery'       => call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$deliveryGroupModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
                     $delivery = false;
 
-                    if ($orderModel->delivery) {
+                    if ($deliveryModel = $orderModel->delivery) {
                         // группа точки
                         $pointGroup = null;
                         // точка
                         $point = null;
                         // если выбрана точка получения заказа ...
-                        if ($orderModel->delivery->point) {
+                        if ($deliveryModel->point) {
                             $pointGroup =
-                                isset($pointGroupByTokenIndex[$orderModel->delivery->point->groupToken])
+                                isset($pointGroupByTokenIndex[$deliveryModel->point->groupToken])
                                 ? $splitModel->pointGroups[
-                                    $pointGroupByTokenIndex[$orderModel->delivery->point->groupToken]
+                                    $pointGroupByTokenIndex[$deliveryModel->point->groupToken]
                                 ]
                                 : null
                             ;
                             $point =
-                                ($pointGroup && isset($pointByGroupAndIdIndex[$pointGroup->token][$orderModel->delivery->point->id]))
+                                ($pointGroup && isset($pointByGroupAndIdIndex[$pointGroup->token][$deliveryModel->point->id]))
                                 ? $pointGroup->points[
-                                    $pointByGroupAndIdIndex[$orderModel->delivery->point->groupToken][$orderModel->delivery->point->id]
+                                    $pointByGroupAndIdIndex[$deliveryModel->point->groupToken][$deliveryModel->point->id]
                                 ]
                                 : null
                             ;
                             if (!$point) {
-                                $this->getLogger()->push(['type' => 'error', 'message' => 'Точка не найдена', 'pointId' => $orderModel->delivery->point->id, 'group' => $orderModel->delivery->point->groupToken, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
+                                $this->getLogger()->push(['type' => 'error', 'message' => 'Точка не найдена', 'pointId' => $deliveryModel->point->id, 'group' => $deliveryModel->point->groupToken, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
                             }
                         }
 
@@ -127,9 +127,9 @@ class Delivery {
                             'isSelf'      => 1 == $deliveryGroupModel->id,
                             'name'        => $deliveryGroupModel->name,
                             'price'       => [
-                                'isCurrency' => $orderModel->delivery->price > 0,
-                                'name'       => ($orderModel->delivery->price > 0) ? $priceHelper->format($orderModel->delivery->price) : 'Бесплатно',
-                                'value'      => $orderModel->delivery->price,
+                                'isCurrency' => $deliveryModel->price > 0,
+                                'name'       => ($deliveryModel->price > 0) ? $priceHelper->format($deliveryModel->price) : 'Бесплатно',
+                                'value'      => $deliveryModel->price,
                             ],
                             'point'       =>
                                 $point
@@ -160,11 +160,16 @@ class Delivery {
                                 ((bool)$point && (1 == $deliveryGroupModel->id))
                                 || ($splitModel->user && $splitModel->user->address && $splitModel->user->address->street && (2 == $deliveryGroupModel->id))
                             ,
+                            'date'        =>
+                                $deliveryModel->date
+                                ? mb_strtolower($dateHelper->strftimeRu('%e %B2 %G, %A', $deliveryModel->date))
+                                : 'Выбрать'
+                            ,
                             'interval'    =>
-                                $orderModel->delivery->interval
+                                $deliveryModel->interval
                                 ? [
-                                    'from' => $orderModel->delivery->interval->from,
-                                    'to'   => $orderModel->delivery->interval->to,
+                                    'from' => $deliveryModel->interval->from,
+                                    'to'   => $deliveryModel->interval->to,
                                 ]
                                 : false
                             ,
@@ -173,7 +178,7 @@ class Delivery {
                                     return [
                                         'from'      => $interval->from,
                                         'to'        => $interval->to,
-                                        //'isActive'  => ($interval->from === $orderModel->delivery->interval->from) && ($interval->to === $orderModel->delivery->interval->to),
+                                        //'isActive'  => ($interval->from === $deliveryModel->interval->from) && ($interval->to === $deliveryModel->interval->to),
                                         'dataValue' => $templateHelper->json([
                                             'change' => [
                                                 'orders' => [

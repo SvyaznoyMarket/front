@@ -2,6 +2,7 @@
 
 return function(\EnterAggregator\Config $config) {
     mb_internal_encoding('UTF-8');
+    setlocale(LC_TIME, 'ru_RU', 'ru_RU.utf8');
 
     $config->dir = realpath(__DIR__ . '/..');
 
