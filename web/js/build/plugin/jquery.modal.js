@@ -1,0 +1,1 @@
+!function(o){o.fn.modal=function(){return console.log("modal"),this.each(function(){function a(){var o=l.data("model");n.css({overflow:"hidden"}),s.filter('[data-modal="'+o+'"]').addClass("show")}{var d=o.extend({},o.fn.enterPopup.defaults,d),l=o(this),n=o("html"),e=o(".js-modal-show"),s=o(".js-modal");s.find(".js-modal-close")}e.on("click",a)})},o.fn.modal.defaults={}}(jQuery);

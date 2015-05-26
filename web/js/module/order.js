@@ -1,7 +1,7 @@
 define(
     [
         'require', 'jquery', 'underscore', 'mustache', 'module/util', 'jquery.maskedinput',
-        'module/order/user.form', 'module/order/common', 'module/order/toggle'
+        'module/order/user.form', 'module/order/common', 'module/order/toggle', 'jquery.modal'
     ],
     function(
         require, $, _, mustache, util
@@ -34,14 +34,15 @@ define(
             showPointPopup = function(e) {
                 e.stopPropagation();
 
-                var
-                    $el = $(this),
-                    $template = $('#tpl-order-delivery-point-popup'),
-                    data = $.parseJSON($($el.data('mapDataSelector')).html())
-                ;
+                $(this).modal();
 
-                var $popup = $('<div />').appendTo($body); // TODO: реализовать модальное окно
-                $popup.append(mustache.render($template.html(), data));
+                var
+                    $el       = $(this),
+                    $content  = $('.js-modal-content'),
+                    $template = $('#tpl-order-delivery-point-popup'),
+                    data      = $.parseJSON($($el.data('mapDataSelector')).html());
+
+                $content.append(mustache.render($template.html(), data));
 
                 e.preventDefault();
             }
