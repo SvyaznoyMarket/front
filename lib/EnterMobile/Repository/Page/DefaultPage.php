@@ -168,6 +168,10 @@ class DefaultPage {
                 'id'   => 'tpl-cart-slot-form-result',
                 'name' => 'partial/cart/slot/form/result',
             ],
+            [
+                'id'   => 'tpl-modalWindow',
+                'name' => 'partial/modalWindow',
+            ],
         ]);
     }
 }
