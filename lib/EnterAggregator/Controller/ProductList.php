@@ -264,12 +264,8 @@ namespace EnterAggregator\Controller {
 
             // товары по ui
             $productsByUi = [];
-            call_user_func(function() use (&$productsById, &$productsByUi, &$request) {
+            call_user_func(function() use (&$productsById, &$productsByUi) {
                 foreach ($productsById as $product) {
-                    if ($request->isListingPage) {
-                        $product->atListingPage = true;
-                    }
-
                     $productsByUi[$product->ui] = $product;
                 }
             });
@@ -399,8 +395,6 @@ namespace EnterAggregator\Controller\ProductList {
         public $filterRequestFilters = [];
         /** @var string|null */
         public $userToken;
-        /** @var bool */
-        public $isListingPage;
 
         public function __construct() {
             $this->config = new Request\Config();

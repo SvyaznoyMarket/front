@@ -58,7 +58,7 @@ class ChildCategory {
         $controllerRequest->filterRepository = $filterRepository;
         $controllerRequest->baseRequestFilters = $baseRequestFilters;
         $controllerRequest->requestFilters = $requestFilters;
-        $controllerRequest->isListingPage = true;
+
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);
 

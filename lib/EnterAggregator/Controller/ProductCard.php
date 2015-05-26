@@ -62,10 +62,6 @@ namespace EnterAggregator\Controller {
                 return $response;
             }
 
-            if ($request->isProductPage) {
-                $response->product->atProductPage = true;
-            }
-
             // пользователь
             $user = null;
             try {
@@ -343,8 +339,6 @@ namespace EnterAggregator\Controller\ProductCard {
         public $config;
         /** @var string|null */
         public $userToken;
-        /** @var bool */
-        public $isProductPage;
 
         public function __construct() {
             $this->config = new Request\Config();
