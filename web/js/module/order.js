@@ -40,7 +40,8 @@ define(
                     $el       = $(this),
                     $content  = $('.js-modal-content'),
                     $template = $('#tpl-order-delivery-point-popup'),
-                    data      = $.parseJSON($($el.data('mapDataSelector')).html());
+                    data      = $.parseJSON($($el.data('dataSelector')).html())
+                ;
 
                 $content.append(mustache.render($template.html(), data));
 
@@ -48,7 +49,7 @@ define(
             },
 
             // показать календарь
-            showCelendar = function(e) {
+            showCalendar = function(e) {
                 e.stopPropagation();
 
                 $(this).modal();
@@ -56,13 +57,15 @@ define(
                 var
                     $el       = $(this),
                     $content  = $('.js-modal-content'),
-                    $template = $('#tpl-order-delivery-calendar');
+                    $template = $('#tpl-order-delivery-calendar'),
+                    data      = {}//$.parseJSON($($el.data('dataSelector')).html())
+                ;
 
                 $content.append(mustache.render($template.html()));
             };
 
         $body.on('click', '.js-order-delivery-form-control', changeSplit);
         $body.on('click', '.js-order-delivery-pointPopup-link', showPointPopup);
-        $body.on('click', '.js-order-delivery-celendar-link', showCelendar);
+        $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
     }
 );

@@ -154,6 +154,10 @@
                 </menu>
 
                 <div>
+                    <script id="order-{{id}}-date-data" type="application/json">
+                        {{&dateDataValue}}
+                    </script>
+
                     {{#delivery.isSelf}}
                         {{>page/order/delivery/group/self}}
                     {{/delivery.isSelf}}
