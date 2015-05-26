@@ -59,3 +59,25 @@
         display: none;
     }
 }
+
+.table {
+    display: table;
+
+    box-sizing: border-box;
+    width: 100%;
+    &_cell {
+        display: table-cell;
+
+        vertical-align: middle;
+    }
+    &_row {
+        display: table-row;
+
+        vertical-align: middle;
+    }
+    &--2col {
+        .table_cell {
+            width: 50%;
+        }
+    }
+}

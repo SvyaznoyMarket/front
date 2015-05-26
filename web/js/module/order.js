@@ -1,6 +1,6 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'jquery.maskedinput',
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'jquery.maskedinput', 'jquery.modal',
         'module/order/user.form', 'module/order/common', 'module/order/toggle'
     ],
     function(

@@ -1,7 +1,8 @@
-<div class="order-popup clearfix">
-    <div class="order-popup__head">
-        <span class="popup-close"><i class="icon-close"></i></span>
+<div class="order-popup modal js-modal">
+    <div class="modal-head order-popup__head">
+        <span class="popup-close js-modal-close"><i class="icon-close"></i></span>
     </div>
+
     <div class="order-popup__top-block search">
         <form class="search__section">
             <div class="search-control {{! suggest-open }}">
@@ -80,17 +81,16 @@
         </div>
     </div>
 
-    <div class="pick-point">
-        <table class="pick-point-list">
-            <tbody>
+    <div class="pick-point modal-content">
+        <div class="pick-point-list table">
             {{#points}}
-            <tr class="pick-point-list-i shop-snippet js-order-delivery-form-control" data-value="{{&dataValue}}">
-                <td class="shop-snippet-name">
+            <div class="pick-point-list-i shop-snippet table_row js-order-delivery-form-control" data-value="{{&dataValue}}">
+                <div class="shop-snippet-name table_cell">
                     <img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
                     <span class="shop-snippet-name__text">{{group}}</span>
-                </td>
+                </div>
 
-                <td class="shop-snippet-info">
+                <div class="shop-snippet-info table_cell">
                     {{#subway}}
                     <div class="shop-snippet-metro">
                         <span class="shop-snippet-metro__bullet" style="background: {{color}};"></span>
@@ -99,62 +99,17 @@
                     {{/subway}}
 
                     <div class="shop-snippet-address">{{name}} <br/>{{regime}}</div>
-                </td>
+                </div>
 
-                <td class="deliv-info-snippet">
+                <div class="deliv-info-snippet table_cell">
                     <span class="deliv-info-snippet__date">{{date}}</span>
                     <span class="deliv-info-snippet__price">
                         {{#cost}}{{cost}} <span class="rubl">p</span>{{/cost}}
                         {{^cost}}Бесплатно{{/cost}}
                     </span>
-                </td>
-            </tr>
+                </div>
+            </div>
             {{/points}}
-
-            <!--
-            <tr class="pick-point-list-i shop-snippet">
-                <td class="shop-snippet-name">
-                    <img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
-                    <span class="shop-snippet-name__text">Магазин Enter</span>
-                </td>
-
-                <td class="shop-snippet-info">
-                    <div class="shop-snippet-metro">
-                        <span class="shop-snippet-metro__bullet" style="background: green;"></span>
-                        <span class="shop-snippet-metro__text">м. Белорусская</span>
-                    </div>
-
-                    <div class="shop-snippet-address">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2 <br/>c 9.00 до 22.00</div>
-                </td>
-
-                <td class="deliv-info-snippet">
-                    <span class="deliv-info-snippet__date">Послезавтра</span>
-                    <span class="deliv-info-snippet__price">100 <span class="rubl">p</span></span>
-                </td>
-            </tr>
-
-            <tr class="pick-point-list-i shop-snippet">
-                <td class="shop-snippet-name">
-                    <img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
-                    <span class="shop-snippet-name__text">Магазин Enter</span>
-                </td>
-
-                <td class="shop-snippet-info">
-                    <div class="shop-snippet-metro">
-                        <span class="shop-snippet-metro__bullet" style="background: green;"></span>
-                        <span class="shop-snippet-metro__text">м. Белорусская</span>
-                    </div>
-
-                    <div class="shop-snippet-address">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2 <br/>c 9.00 до 22.00</div>
-                </td>
-
-                <td class="deliv-info-snippet">
-                    <span class="deliv-info-snippet__date">22.05.2015</span>
-                    <span class="deliv-info-snippet__price">100 <span class="rubl">p</span></span>
-                </td>
-            </tr>
-            -->
-            </tbody>
-        </table>
+        </div>
     </div>
 </div>
