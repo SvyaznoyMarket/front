@@ -10,7 +10,6 @@ namespace EnterTerminal\Controller\Cart {
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterTerminal\Controller;
-    use EnterTerminal\Controller\Cart\Split\Response;
 
     class Split {
         use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
@@ -26,7 +25,7 @@ namespace EnterTerminal\Controller\Cart {
             $cartRepository = new \EnterRepository\Cart();
 
             // ответ
-            $response = new Response();
+            $response = new \EnterTerminal\Model\ControllerResponse\Cart\Split();
 
             // ид региона
             $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
@@ -59,7 +58,6 @@ namespace EnterTerminal\Controller\Cart {
                 $session->set($config->order->splitSessionKey, $controllerRequest->splitReceivedSuccessfullyCallback->splitData);
 
                 // Терминалы пока используют сырые данные, не изменённые моделями API агрегатора
-                // TODO: удалить при переходе терминалов на формат элемента "split", соответствующий моделям в API агрегаторе
                 $response->split = $controllerRequest->splitReceivedSuccessfullyCallback->splitData;
             };
             // ответ от контроллера
@@ -68,38 +66,10 @@ namespace EnterTerminal\Controller\Cart {
             $response->errors = $controllerResponse->errors;
             $response->region = $controllerResponse->region;
 
-            // TODO: заменить на "$response->split = $controllerResponse->split;" при переходе терминалов на формат элемента "split", соответствующий моделям в API агрегаторе
-            call_user_func(function() use(&$response, &$controllerResponse) {
-                if (isset($response->split['orders'])) {
-                    $orderNum = 0;
-                    foreach ($response->split['orders'] as &$order) {
-                        if (isset($order['products'])) {
-                            foreach ($order['products'] as $productNum => &$product) {
-                                $product['media'] = $controllerResponse->split->orders[$orderNum]->products[$productNum]->media;
-                                unset($product['image']);
-                            }
-                        }
-
-                        $orderNum++;
-                    }
-                }
-            });
+            (new \EnterTerminal\Repository\Cart\Split)->correctResponse($response, $controllerResponse->split);
 
             // response
             return new Http\JsonResponse($response);
         }
-    }
-}
-
-namespace EnterTerminal\Controller\Cart\Split {
-    use EnterModel as Model;
-
-    class Response {
-        /** @var array */
-        public $errors = [];
-        /** @var array */
-        public $split;
-        /** @var Model\Region|null */
-        public $region;
     }
 }
