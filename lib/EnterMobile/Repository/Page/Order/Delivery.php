@@ -401,9 +401,12 @@ class Delivery {
             [
                 'id'       => 'tpl-order-delivery-point-popup',
                 'name'     => 'page/order/delivery/point-popup',
-                'partials' => [
-                    'partial/cart/button',
-                ],
+                'partials' => [],
+            ],
+            [
+                'id'       => 'tpl-order-delivery-calendar',
+                'name'     => 'page/order/delivery/calendar',
+                'partials' => [],
             ],
         ]);
     }
