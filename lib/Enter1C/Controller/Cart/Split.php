@@ -48,14 +48,19 @@ class Split {
         $split = new Model\Cart\Split($splitQuery->getResult());
 
         // CAPI-1
-        if (isset($requestData['point']['token']) && isset($requestData['point']['id'])) {
+        if ((isset($requestData['point']['token']) && isset($requestData['point']['id'])) || isset($requestData['point']['ui'])) {
             $splitQuery = new Query\Cart\Split\GetItem(
                 $cart,
                 new Model\Region(['code' => $requestData['geo_code']]),
                 new Model\Shop(['ui' => $requestData['shop_ui']]),
                 new Model\PaymentMethod(['ui' => $requestData['payment_method_ui']]),
                 $split->dump(),
-                $this->getChangesWithPoint($split->dump(), $requestData['point']['token'], $requestData['point']['id'])
+                $this->getChangesWithPoint(
+                    $split->dump(),
+                    isset($requestData['point']['token']) ? $requestData['point']['token'] : null,
+                    isset($requestData['point']['id']) ? $requestData['point']['id'] : null,
+                    isset($requestData['point']['ui']) ? $requestData['point']['ui'] : null
+                )
             );
 
             $splitQuery->setTimeout($config->coreService->timeout * 2);
@@ -68,12 +73,18 @@ class Split {
         return new XmlResponse($splitRepository->convertObjectToXmlArray($split));
     }
 
-    private function getChangesWithPoint(array $splitDump, $pointToken, $pointId) {
+    private function getChangesWithPoint(array $splitDump, $pointToken, $pointId, $pointUi) {
         foreach ($splitDump['orders'] as $orderToken => $order) {
-            $splitDump['orders'][$orderToken]['delivery']['point'] = [
-                'token' => $pointToken,
-                'id' => $pointId,
-            ];
+            if (isset($pointToken) && isset($pointId)) {
+                $splitDump['orders'][$orderToken]['delivery']['point'] = [
+                    'token' => $pointToken,
+                    'id' => $pointId,
+                ];
+            } else {
+                $splitDump['orders'][$orderToken]['delivery']['point'] = [
+                    'ui' => $pointUi,
+                ];
+            }
         }
         return $splitDump;
     }

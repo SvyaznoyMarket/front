@@ -264,9 +264,9 @@ class Split {
                 unset($pointGroup['point_group']['points']);
                 $pointGroup['point_group']['points'][] = $this->getPointById($this->getPointGroupByToken($result['point_groups'], $token)['point_group']['points'], $id);
                 $result['orders'][$key]['order']['delivery']['point_groups'][] = $pointGroup;
-
-                unset($result['orders'][$key]['order']['delivery']['point']);
             }
+
+            unset($result['orders'][$key]['order']['delivery']['point']);
 
             if ($item['order']['payment_method_id'] != null) {
                 $result['orders'][$key]['order']['payment_method'] = $this->getPaymentMethodById($result['payment_methods'], $item['order']['payment_method_id'])['payment_method'];
