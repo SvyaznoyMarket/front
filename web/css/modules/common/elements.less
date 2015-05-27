@@ -199,9 +199,9 @@
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#23480d', endColorstr='#458021',GradientType=0 ); // IE6-9
 }
 
-.inline-block() {
+.inline-block(@valign: top) {
   display: inline-block;
-  vertical-align: top;
+  vertical-align: @valign;
 
   *zoom: 1;
   *display: inline;
