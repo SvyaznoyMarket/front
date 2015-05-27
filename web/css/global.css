@@ -8088,7 +8088,7 @@ body.noScroll {
 .order-popup {
   width: 100%;
   margin-bottom: 50px;
-  padding: 0;
+  padding: 54px 0 0;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
@@ -8097,10 +8097,12 @@ body.noScroll {
   float: right;
 }
 .order-popup__head {
-  line-height: 50px;
-  position: relative;
+  line-height: 54px;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 50px;
+  height: 54px;
   color: #fff;
   background: #000;
   -webkit-box-sizing: border-box;
