@@ -16,7 +16,7 @@
                 </ul>
             </div>
         </div>
-        <div class="btn btn--white btn--medium"><span class="map-link">Карта</span></div>
+        <div class="js-order-delivery-map-link btn btn--white btn--medium" data-container-id="order-{{order.id}}-map-container" data-map-data="{{&mapDataValue}}"><span class="map-link">Карта</span></div>
     </form>
 </div>
 
@@ -77,6 +77,8 @@
 </div>
 
 <div class="pick-point modal-content">
+    <div id="order-{{order.id}}-map-container" class="order-popup-map" style="width: 600px; height: 400px"></div>
+
     <div class="pick-point-list table">
         {{#points}}
 

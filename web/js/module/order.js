@@ -46,6 +46,8 @@ define(
                 $content.append(mustache.render($template.html(), data));
 
                 e.preventDefault();
+
+                require(['yandexmaps'], function(ymaps) {});
             },
 
             // показать календарь
@@ -62,10 +64,43 @@ define(
                 ;
 
                 $content.append(mustache.render($template.html(), data));
-            };
+            },
+
+            showMap = function(e) {
+                e.stopPropagation();
+
+                var
+                    $el = $(e.currentTarget),
+                    containerId = $el.data('containerId'),
+                    map = $el.data('map'),
+                    mapData = $el.data('mapData')
+                ;
+
+                require(['yandexmaps'], function(ymaps) {
+                    if (!map) {
+                        ymaps.ready(function() {
+                            console.info(containerId);
+                            map = new ymaps.Map(
+                                containerId,
+                                {
+                                    center: [mapData.center.lat, mapData.center.lng],
+                                    zoom: mapData.zoom
+                                },
+                                {
+                                    autoFitToViewport: 'always'
+                                }
+                            );
+
+                            $el.data('map', map);
+                        });
+                    }
+                });
+            }
+        ;
 
         $body.on('click', '.js-order-delivery-form-control', changeSplit);
         $body.on('click', '.js-order-delivery-pointPopup-link', showPointPopup);
+        $body.on('click', '.js-order-delivery-map-link', showMap);
         $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
     }
 );

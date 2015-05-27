@@ -38,6 +38,8 @@ require.config({
         'browserstate.history'         : 'vendor/browserstate.history-1.8b2',
         'browserstate.history.adapter' : 'vendor/browserstate.history.adapter.jquery-1.8b2',
 
+        'yandexmaps' : (debug) ? 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=debug' : 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=release',
+
         'direct-credit' : 'http://direct-credit.ru/widget/api_script_utf'
     },
 
@@ -90,6 +92,10 @@ require.config({
         'browserstate.history': [],
         'browserstate.history.adapter': {
             deps: ['browserstate.history', 'jquery']
+        },
+
+        'yandexmaps': {
+            exports: 'ymaps'
         },
 
         'direct-credit': []

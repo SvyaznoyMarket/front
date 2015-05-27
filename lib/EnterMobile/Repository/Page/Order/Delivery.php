@@ -46,6 +46,7 @@ class Delivery {
         $page->content->form->url = $router->getUrlByRoute(new Routing\Order\Create());
         $page->content->form->errorDataValue = $templateHelper->json($request->formErrors);
 
+        $regionModel = $request->region;
         $splitModel = $request->split;
 
         // индексация токенов методов доставки по группам доставки
@@ -265,7 +266,7 @@ class Delivery {
 
                     return $products;
                 }),
-                'pointJson'      => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
+                'pointJson'      => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$regionModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
                     $points = [];
                     $filtersByToken = [
                         'type' => [],
@@ -365,8 +366,18 @@ class Delivery {
                     array_walk($filtersByToken['cost'], function(&$v) { if (!$v) $v = false; });
 
                     return [
-                        'points'  => $points,
-                        'filters' => $filtersByToken,
+                        'points'       => $points,
+                        'filters'      => $filtersByToken,
+                        'order'        => [
+                            'id' => $orderModel->blockName,
+                        ],
+                        'mapDataValue' => $templateHelper->json([
+                            'center' => [
+                                'lat' => $regionModel->latitude,
+                                'lng' => $regionModel->longitude,
+                            ],
+                            'zoom'   => 14,
+                        ]),
                     ];
                 }), JSON_UNESCAPED_UNICODE),
                 'dateJson'       => json_encode(call_user_func(function() use (&$templateHelper, &$dateHelper, &$splitModel, &$orderModel) {
