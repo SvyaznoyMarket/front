@@ -93,7 +93,7 @@ class Index {
         // рендер
         $renderer = $this->getRenderer();
         $renderer->setPartials([
-            'content' => $config->wikimart->enabled ? 'page/cart/content-wikimart' : 'page/cart/content',
+            'content' => 'page/cart/content',
         ]);
         $content = $renderer->render('layout/default', $page);
 

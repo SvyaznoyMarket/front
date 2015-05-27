@@ -36,15 +36,6 @@ define(
             }
         ;
 
-        console.info({'window.WikimartAffiliate': window.WikimartAffiliate});
-        try {
-            if (window.WikimartAffiliate) {
-                window.WikimartAffiliate.createCheckoutIFrame('wikimart-checkout-block');
-            }
-        } catch (error) {
-            console.error(error);
-        }
-
         $body.on('render', '.js-cart-total', getCreditPayment);
 
         getCreditPayment();

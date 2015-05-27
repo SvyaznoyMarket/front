@@ -10,7 +10,6 @@ namespace EnterTerminal\Controller\Cart\Split {
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterTerminal\Controller;
-    use EnterTerminal\Controller\Cart\Split\Update\Response;
 
     class Update {
         use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
@@ -26,7 +25,7 @@ namespace EnterTerminal\Controller\Cart\Split {
             $cartRepository = new \EnterRepository\Cart();
 
             // ответ
-            $response = new Response();
+            $response = new \EnterTerminal\Model\ControllerResponse\Cart\Split();
 
             // ид региона
             $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
@@ -66,31 +65,22 @@ namespace EnterTerminal\Controller\Cart\Split {
             $controllerRequest->previousSplitData = $splitData;
             $controllerRequest->cart = $cart;
             // при получении данных о разбиении корзины - записать их в сессию немедленно
-            $controllerRequest->splitReceivedSuccessfullyCallback->handler = function() use (&$controllerRequest, &$config, &$session) {
+            $controllerRequest->splitReceivedSuccessfullyCallback->handler = function() use (&$controllerRequest, &$config, &$session, &$response) {
                 $session->set($config->order->splitSessionKey, $controllerRequest->splitReceivedSuccessfullyCallback->splitData);
+
+                // Терминалы пока используют сырые данные, не изменённые моделями API агрегатора
+                $response->split = $controllerRequest->splitReceivedSuccessfullyCallback->splitData;
             };
             // ответ от контроллера
             $controllerResponse = $controller->execute($controllerRequest);
 
             $response->errors = $controllerResponse->errors;
-            $response->split = $controllerResponse->split;
             $response->region = $controllerResponse->region;
+
+            (new \EnterTerminal\Repository\Cart\Split)->correctResponse($response, $controllerResponse->split);
 
             // response
             return new Http\JsonResponse($response);
         }
-    }
-}
-
-namespace EnterTerminal\Controller\Cart\Split\Update {
-    use EnterModel as Model;
-
-    class Response {
-        /** @var array */
-        public $errors = [];
-        /** @var array */
-        public $split;
-        /** @var Model\Region|null */
-        public $region;
     }
 }

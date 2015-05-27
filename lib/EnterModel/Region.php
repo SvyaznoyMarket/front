@@ -12,8 +12,6 @@ class Region {
     /** @var string */
     public $kladrId;
     /** @var string */
-    public $wikimartId;
-    /** @var string */
     public $code;
     /** @var string */
     public $parentId;
@@ -39,7 +37,6 @@ class Region {
         if (array_key_exists('kladr_id', $data)) $this->kladrId = !empty($data['kladr_id'])
             ? substr((string)$data['kladr_id'], 0, 13) // согласно спецификации КЛАДР код населенного пункта состоит из 13 символов
             : null;
-        if (array_key_exists('wikimart_id', $data)) $this->wikimartId = (string)$data['wikimart_id'];
         if (array_key_exists('code', $data)) $this->code = (string)$data['code'];
         if (array_key_exists('parent_id', $data)) $this->parentId = (string)$data['parent_id'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];

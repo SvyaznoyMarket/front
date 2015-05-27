@@ -17,9 +17,6 @@ return function(\EnterAggregator\Config $config) {
 
     $config->userToken->authName = '_token';
 
-    $config->wikimart->enabled = false;
-    $config->wikimart->jsUrl = 'http://checkout.wikimart.ru/js/enter/script/';
-
     $config->googleAnalytics->enabled = true;
     $config->googleAnalytics->id = 'UA-25485956-5';
 

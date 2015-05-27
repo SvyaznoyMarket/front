@@ -29,7 +29,7 @@ class Promo {
         try {
             foreach ($query->getResult() as $item) {
                 $promo = new Model\Promo($item);
-                if ($promo->target && $promo->media) {
+                if ($promo->target && $promo->media && $promo->media->photos) {
                     $promos[] = $promo;
                 }
             }

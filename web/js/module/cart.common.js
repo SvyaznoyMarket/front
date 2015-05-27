@@ -12,35 +12,12 @@ define(
 
                 var $el = $(e.target),
                     data = $el.data(),
-                    $widget = $el.data('widgetSelector') ? $($el.data('widgetSelector')) : null,
-                    isWm = false
+                    $widget = $el.data('widgetSelector') ? $($el.data('widgetSelector')) : null
                 ;
 
                 console.info('addProductToCart', {'$el': $el, '$widget': $widget, 'data': data});
 
-                try {
-                    if (data.url) {
-                        _.each(data.value.product, function(product) {
-                            if (product.wmId) {
-                                window.WikimartAffiliate.addGoodToCart(product.wmId);
-                                $el.text('В корзине');
-                                $el.attr('href', '/cart');
-                                $el.data('url', null);
-                                isWm = true;
-                            }
-                        });
-                    }
-                } catch (error) {
-                    console.error(error);
-                }
-
-                if (isWm) {
-                    e.preventDefault();
-                }
-
-                console.info({isWm: isWm});
-
-                if (!isWm && data.url) {
+                if (data.url) {
                     $.post(data.url, data.value, function(response) {
                         if (_.isObject(response.result.widgets)) {
                             _.each(response.result.widgets, function(templateData, selector) {

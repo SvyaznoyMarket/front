@@ -88,6 +88,37 @@ class Cart {
         return $products;
     }
 
+    public function getPointImageUrl($pointToken) {
+        // Возможные типы см. в коде https://github.com/SvyaznoyMarket/core/blob/euroset/application/models/V2/PickupPoint/Repository.php#L10
+        switch ($pointToken) {
+            case 'shops':
+                $image = 'enter.png';
+                break;
+            case 'self_partner_pickpoint_pred_supplier':
+            case 'self_partner_pickpoint':
+                $image = 'pickpoint.png';
+                break;
+            case 'self_partner_svyaznoy_pred_supplier':
+            case 'self_partner_svyaznoy':
+            case 'shops_svyaznoy':
+                $image = 'svyaznoy.png';
+                break;
+            case 'self_partner_euroset_pred_supplier':
+            case 'self_partner_euroset':
+                $image = 'euroset.png';
+                break;
+            default:
+                $image = '';
+                break;
+        }
+
+        if ($image) {
+            $image = 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/' . $image;
+        }
+
+        return $image;
+    }
+
     /**
      * @param Http\Session $session
      * @return Model\Cart
