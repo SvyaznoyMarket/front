@@ -7139,7 +7139,7 @@ body.noScroll {
   border-color: #a6a6a6;
 }
 .checkout-order__box {
-  padding: 0;
+  padding: 10px 10px 5px;
   border-bottom: 1px solid #a6a6a6;
   background: #f7f7f7;
 }
