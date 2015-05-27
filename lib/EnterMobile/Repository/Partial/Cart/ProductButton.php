@@ -54,7 +54,6 @@ class ProductButton {
             'product' => [
                 $product->id => [
                     'id'       => $product->id,
-                    'wmId'     => $product->wikimartId,
                     'article'  => $product->article,
                     'name'     => $product->name,
                     'token'    => $product->token,
