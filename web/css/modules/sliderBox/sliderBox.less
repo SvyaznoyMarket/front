@@ -116,12 +116,30 @@
 
         margin: 5px 0;
     }
-    .btnBuy {
-        font-size: 14px;
+    .btn--buy{
+        display: inline-block;
+        font-size: 12px;
         line-height: 26px;
-
+        width: 80px;
         height: 26px;
-        margin: 0 auto;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .productDesc {
+        font-size: 11px;
+        &_name {
+            overflow: hidden;
+
+            max-height: 60px;
+        }
+        &_img {
+            max-width: 73px;
+            max-height: 80px;
+        }
+    }
+    .productPrice {
+        font-size: 14px;
     }
 }
 
@@ -190,28 +208,5 @@
             width: 100px;
             padding: 0 25px;
         }
-    }
-}
-
-.sliderBox {
-    .productDesc {
-        font-size: 11px;
-        &_name {
-            overflow: hidden;
-
-            max-height: 60px;
-        }
-        &_img {
-            max-width: 73px;
-            max-height: 80px;
-        }
-    }
-    .btnBuy {
-        font-size: 12px;
-
-        width: 80px;
-    }
-    .productPrice {
-        font-size: 14px;
     }
 }
