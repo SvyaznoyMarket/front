@@ -10,49 +10,8 @@
     </div>
 
     <div class="celedr_row clearfix">
-        <div class="celedr_month">Октябрь</div>
-        <div class="celedr_col celedr_col-disbl">6</div>
-        <div class="celedr_col celedr_col-disbl">7</div>
-        <div class="celedr_col celedr_col-disbl">8</div>
-        <div class="celedr_col celedr_col-disbl">9</div>
-        <div class="celedr_col celedr_col-disbl">10</div>
-        <div class="celedr_col celedr_col-cur">11</div>
-        <div class="celedr_col">12</div>
-        <div class="celedr_col">13</div>
-        <div class="celedr_col">14</div>
-        <div class="celedr_col">15</div>
-        <div class="celedr_col">16</div>
-        <div class="celedr_col">17</div>
-        <div class="celedr_col">18</div>
-        <div class="celedr_col">19</div>
-        <div class="celedr_col">20</div>
-        <div class="celedr_col">21</div>
-        <div class="celedr_col">22</div>
-        <div class="celedr_col">23</div>
-        <div class="celedr_col">24</div>
-        <div class="celedr_col">25</div>
-        <div class="celedr_col">26</div>
-        <div class="celedr_col">27</div>
-        <div class="celedr_col">28</div>
-        <div class="celedr_col">29</div>
-        <div class="celedr_col">30</div>
-        <div class="celedr_col">31</div>
-        <div class="celedr_col celedr_col-disbl"></div>
-        <div class="celedr_col celedr_col-disbl"></div>
-        <div class="celedr_month">Ноябрь</div>
-        <div class="celedr_col celedr_col-disbl"></div>
-        <div class="celedr_col celedr_col-disbl"></div>
-        <div class="celedr_col celedr_col-disbl"></div>
-        <div class="celedr_col celedr_col-disbl"></div>
-        <div class="celedr_col celedr_col-disbl"></div>
-        <div class="celedr_col">1</div>
-        <div class="celedr_col">2</div>
-        <div class="celedr_col">3</div>
-        <div class="celedr_col">4</div>
-        <div class="celedr_col">5</div>
-        <div class="celedr_col">6</div>
-        <div class="celedr_col">7</div>
-        <div class="celedr_col celedr_col-disbl">8</div>
-        <div class="celedr_col celedr_col-disbl">9</div>
+    {{#items}}
+        <div class="{{^isMonth}}celedr_col{{/isMonth}}{{#isMonth}}celedr_month{{/isMonth}}{{#isDisabled}} celedr_col-disbl{{/isDisabled}}{{#dataValue}} js-order-delivery-form-control{{/dataValue}}" data-value="{{&dataValue}}">{{name}}</div>
+    {{/items}}
     </div>
 </div>

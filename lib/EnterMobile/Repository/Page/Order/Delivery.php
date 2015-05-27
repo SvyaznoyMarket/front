@@ -369,6 +369,75 @@ class Delivery {
                         'filters' => $filtersByToken,
                     ];
                 }), JSON_UNESCAPED_UNICODE),
+                'dateDataValue'  => json_encode(call_user_func(function() use (&$templateHelper, &$dateHelper, &$splitModel, &$orderModel) {
+                    $items = [];
+
+                    try {
+                        $possibleDays = $orderModel->possibleDays;
+                        $lastAvailableDay = \DateTime::createFromFormat('U', (string)end($possibleDays));
+                        $firstAvailableDay = \DateTime::createFromFormat('U', (string)reset($possibleDays));
+                        $week = (0 == $firstAvailableDay->format('w')) ?  'previous week' : 'this week';
+                        $firstDayOfAvailableWeek = \DateTime::createFromFormat('U', strtotime($week, $firstAvailableDay->format('U')));
+                        $lastDayOfAvailableMonth = \DateTime::createFromFormat('U', strtotime('Monday next week', $lastAvailableDay->format('U')));
+                        $days = new \DatePeriod($firstDayOfAvailableWeek, new \DateInterval('P1D'), $lastDayOfAvailableMonth);
+                        $currentMonth = null;
+
+                        foreach ($days as $day) {
+                            /** @var $day \DateTime */
+                            if ($currentMonth != $day->format('F')) {
+                                $isMonday = $day->format('N') == 1;
+                                if (!$isMonday) { // TODO: выяснить зачем это нужно
+                                    for ($i = 0; $i < 8 - $day->format('N'); $i++) {
+                                        $items[] = [
+                                            'isDisabled' => true,
+                                        ];
+                                    }
+                                }
+                                $items[] = [
+                                    'isMonth' => true,
+                                    'name'    => strftime('%B', $day->format('U')),
+                                ];
+
+                                $currentMonth = $day->format('F');
+                                if (!$isMonday) { // TODO: выяснить зачем это нужно
+                                    for ($i = 1; $i < $day->format('N'); $i++) {
+                                        $items[] = [
+                                            'isDisabled' => true,
+                                        ];
+                                    }
+                                }
+                            }
+
+                            $item = [
+                                'name' => $day->format('d'),
+                            ];
+                            if (in_array((int)$day->format('U'), $possibleDays)) {
+                                $item['dataValue'] = $templateHelper->json([ // FIXME - вынести в js
+                                'change' => [
+                                    'orders' => [
+                                        [
+                                            'blockName' => $orderModel->blockName,
+                                                'delivery'  => [
+                                                    'date' => $day->format('U'),
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ]);
+                            } else {
+                                $item['isDisabled'] = true;
+                            }
+                            $items[] = $item;
+                        }
+
+                    } catch (\Exception $e) {
+                        $this->getLogger()->push(['type' => 'error', 'error' => $e, 'order.blockName' => $orderModel->blockName, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
+                    }
+
+                    return [
+                        'items' => $items,
+                    ];
+                }), JSON_UNESCAPED_UNICODE),
                 'messages'       => call_user_func(function() use (&$config, &$orderModel, &$priceHelper) {
                     $messages = [];
 

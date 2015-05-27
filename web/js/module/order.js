@@ -58,10 +58,10 @@ define(
                     $el       = $(this),
                     $content  = $('.js-modal-content'),
                     $template = $('#tpl-order-delivery-calendar'),
-                    data      = {}//$.parseJSON($($el.data('dataSelector')).html())
+                    data      = $.parseJSON($($el.data('dataSelector')).html())
                 ;
 
-                $content.append(mustache.render($template.html()));
+                $content.append(mustache.render($template.html(), data));
             };
 
         $body.on('click', '.js-order-delivery-form-control', changeSplit);
