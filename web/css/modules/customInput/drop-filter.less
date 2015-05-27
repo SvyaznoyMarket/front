@@ -23,17 +23,22 @@
             border: 1px solid #c7c7c7;
             .border-radius(0px,3px,3px,0px);
             .box-shadow(0 3px 5px rgba(0, 0, 0, .3));
+            display: none;
            
             &__item {
                 border-top: 0;
                 color: #686868;
             }
         }
-        &.active{
+        &.open{
             .custom-select{
                 &__value {
                     border-color: #c7c7c7;
                     background-color: #fff;
+                }
+                &-list{
+                    display: block;
+                    z-index: 1;
                 }
             }
         }
