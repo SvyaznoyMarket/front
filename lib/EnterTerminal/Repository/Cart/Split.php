@@ -3,21 +3,22 @@
 namespace EnterTerminal\Repository\Cart;
 
 class Split {
-    public function correctResponse(\EnterTerminal\Model\ControllerResponse\Cart\Split $response, \EnterModel\Cart\Split $splitModel) {
+    public function correctResponse(\EnterTerminal\Model\ControllerResponse\Cart\Split $response, \EnterModel\Cart\Split $splitModel = null) {
         if (isset($response->split['orders'])) {
             $orderNum = -1;
             foreach ($response->split['orders'] as $orderToken => &$order) {
                 $orderNum++;
 
-                // Добавляем элемент media с новыми картинками товаров вместо элемента image
-                call_user_func(function() use(&$order, &$orderNum, &$splitModel) {
-                    if (isset($order['products'])) {
-                        foreach ($order['products'] as $productNum => &$product) {
-                            $product['media'] = $splitModel->orders[$orderNum]->products[$productNum]->media;
-                            unset($product['image']);
+                if ($splitModel) {
+                    // Добавляем элемент media с новыми картинками товаров вместо элемента image
+                    call_user_func(function() use(&$order, &$orderNum, &$splitModel) {
+                        if (isset($order['products'])) {
+                            foreach ($order['products'] as $productNum => &$product) {
+                                $product['media'] = $splitModel->orders[$orderNum]->products[$productNum]->media;
+                            }
                         }
-                    }
-                });
+                    });
+                }
 
                 // Подмешиваем URL картинок для типов точек самовывоза
                 call_user_func(function() use(&$response) {
@@ -90,5 +91,19 @@ class Split {
                 });
             }
         }
+    }
+
+    public function dumpSplitChange($change) {
+        if (isset($change['orders'])) {
+            foreach ($change['orders'] as &$order) {
+                if (isset($order['products'])) {
+                    foreach ($order['products'] as &$product) {
+                        unset($product['media']);
+                    }
+                }
+            }
+        }
+
+        return $change;
     }
 }

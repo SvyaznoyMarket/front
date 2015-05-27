@@ -23,6 +23,7 @@ namespace EnterTerminal\Controller\Cart\Split {
             $config = $this->getConfig();
             $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
+            $cartSplitRepository = new \EnterTerminal\Repository\Cart\Split();
 
             // ответ
             $response = new \EnterTerminal\Model\ControllerResponse\Cart\Split();
@@ -61,7 +62,7 @@ namespace EnterTerminal\Controller\Cart\Split {
             $controllerRequest = $controller->createRequest();
             $controllerRequest->regionId = $regionId;
             $controllerRequest->shopId = $shopId;
-            $controllerRequest->changeData = $change;
+            $controllerRequest->changeData = $cartSplitRepository->dumpSplitChange($change);
             $controllerRequest->previousSplitData = $splitData;
             $controllerRequest->cart = $cart;
             // при получении данных о разбиении корзины - записать их в сессию немедленно
@@ -77,7 +78,7 @@ namespace EnterTerminal\Controller\Cart\Split {
             $response->errors = $controllerResponse->errors;
             $response->region = $controllerResponse->region;
 
-            (new \EnterTerminal\Repository\Cart\Split)->correctResponse($response, $controllerResponse->split);
+            $cartSplitRepository->correctResponse($response, $controllerResponse->split);
 
             // response
             return new Http\JsonResponse($response);
