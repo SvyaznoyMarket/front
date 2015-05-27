@@ -265,7 +265,7 @@ class Delivery {
 
                     return $products;
                 }),
-                'pointDataValue' => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
+                'pointJson'      => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
                     $points = [];
                     $filtersByToken = [
                         'type' => [],
@@ -369,7 +369,7 @@ class Delivery {
                         'filters' => $filtersByToken,
                     ];
                 }), JSON_UNESCAPED_UNICODE),
-                'dateDataValue'  => json_encode(call_user_func(function() use (&$templateHelper, &$dateHelper, &$splitModel, &$orderModel) {
+                'dateJson'       => json_encode(call_user_func(function() use (&$templateHelper, &$dateHelper, &$splitModel, &$orderModel) {
                     $items = [];
 
                     try {
