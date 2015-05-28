@@ -23,20 +23,13 @@
                 </div>
             {{/labels.0}}
         </div>
-
-        <div class="rating rating-beforeItemName">
-            {{#rating}}
-                {{>partial/rating/star-list}}
-            {{/rating}}
-            <span class="rating__reviews-count">{{rating.reviewCount}}</span>
-        </div>
     </a>
 
         <!-- width < 490 -->
         <div class="catalogListItemWrapper">
             <div class="catalogList_desc">
                 <span class="name">{{name}}</span>
-                <div class="rating rating-afterItemName">
+                <div class="rating">
                     {{#rating}}
                         {{>partial/rating/star-list}}
                     {{/rating}}

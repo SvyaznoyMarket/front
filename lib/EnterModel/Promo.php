@@ -42,5 +42,24 @@ namespace EnterModel {
                 }
             }
         }
+
+        /**
+         * @param string $mediaTag
+         * @param string $sourceType
+         * @return Media\ImageSource|Media\SvgSource|null
+         */
+        public function getPhotoMediaSource($mediaTag, $sourceType) {
+            foreach ($this->media->photos as $media) {
+                if (in_array($mediaTag, $media->tags)) {
+                    foreach ($media->sources as $source) {
+                        if ($source->type === $sourceType) {
+                            return $source;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
     }
 }
