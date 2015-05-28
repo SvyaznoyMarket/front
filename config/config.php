@@ -108,6 +108,10 @@ return function(\EnterAggregator\Config $config) {
     $config->mustacheRenderer->templateClassPrefix = preg_replace('/[^\w]/', '_', $config->hostname . '_v2' . '-');
     $config->mustacheRenderer->checkEscape = false;
 
+    $config->kladr->token = '52b04de731608f2773000000';
+    $config->kladr->key = 'c20b52a7dc6f6b28023e3d8ef81b9dbdb51ff74b';
+    $config->kladr->limit = 20;
+
     $config->mediaHosts = [
         0 => 'http://fs01.enter.ru',
         1 => 'http://fs02.enter.ru',

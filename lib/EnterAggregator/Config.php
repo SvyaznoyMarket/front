@@ -74,6 +74,8 @@ namespace EnterAggregator {
         public $retailRocketService;
         /** @var Config\MustacheRenderer */
         public $mustacheRenderer;
+        /** @var Config\Kladr */
+        public $kladr;
         /** @var array */
         public $mediaHosts = [];
         /** @var Config\Order */
@@ -124,6 +126,8 @@ namespace EnterAggregator {
             $this->retailRocketService = new Config\RetailRocketService();
 
             $this->mustacheRenderer = new Config\MustacheRenderer();
+
+            $this->kladr = new Config\Kladr();
 
             $this->order = new Config\Order();
             $this->product = new Config\Product();
@@ -339,6 +343,15 @@ namespace EnterAggregator\Config {
          * @var bool
          */
         public $checkEscape;
+    }
+
+    class Kladr {
+        /** @var string */
+        public $token;
+        /** @var string */
+        public $key;
+        /** @var int */
+        public $limit;
     }
 
     class Order {

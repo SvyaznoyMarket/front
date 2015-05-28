@@ -40,6 +40,8 @@ require.config({
 
         'yandexmaps' : (debug) ? 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=debug' : 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=release',
 
+        'kladr' : 'vendor/kladr/core',
+
         'direct-credit' : 'http://direct-credit.ru/widget/api_script_utf'
     },
 
@@ -96,6 +98,10 @@ require.config({
 
         'yandexmaps': {
             exports: 'ymaps'
+        },
+
+        'kladr': {
+            deps: ['jquery']
         },
 
         'direct-credit': []

@@ -33,6 +33,8 @@ namespace EnterMobile\Model\Page\Order\Delivery {
         public $orders = [];
         /** @var string|bool */
         public $orderCountMessage;
+        /** @var string */
+        public $kladrDataValue;
         /** @var bool */
         public $isUserAuthenticated; // TODO: перенести на уровень выше
 

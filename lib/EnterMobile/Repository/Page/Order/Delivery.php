@@ -486,6 +486,13 @@ class Delivery {
 
         $page->content->isUserAuthenticated = (bool)$request->user;
 
+        // КЛАДР
+        $page->content->kladrDataValue = $templateHelper->json([
+            'token' => $config->kladr->token,
+            'key'   => $config->kladr->key,
+            'limit' => $config->kladr->limit,
+        ]);
+
         // шаблоны mustache
         (new Repository\Template())->setListForPage($page, [
             // модальное окно с точками самовывоза
