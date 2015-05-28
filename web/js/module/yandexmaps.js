@@ -7,7 +7,7 @@ define(
 
         return {
             ymaps: ymaps,
-            initMap: function($container, data) {
+            initMap: function($container, data, init) {
                 var defer = $.Deferred();
 
                 if (!$container.length) {
@@ -34,6 +34,8 @@ define(
                                     autoFitToViewport: 'always'
                                 }
                             );
+
+                            init(map);
 
                             defer.resolve(map, $container);
                         } catch (error) {

@@ -10,6 +10,21 @@ define(
             $body = $('body'),
             $deliveryForm = $('.js-order-delivery-form'),
             $map = $('#yandexMap'),
+            $mapContainer = $('#yandexMap-container'),
+
+            initMap = function(map) {
+                map.geoObjects.events.remove('click'); // TODO: можно убрать
+                map.geoObjects.events.add('click', function (e) {
+                    var
+                        placemark = e.get('target'),
+                        $template = $('#tpl-order-delivery-marker-balloon')
+                    ;
+
+                    console.info('placemark', placemark, placemark.properties.get('point'));
+
+                    map.balloon.open(e.get('coords'), mustache.render($template.html(), placemark.properties.get('point')));
+                });
+            },
 
             changeSplit = function(e) {
                 e.stopPropagation();
@@ -44,6 +59,8 @@ define(
                     data      = $.parseJSON($($el.data('dataSelector')).html()) // TODO: выполнять один раз, результат записывать в переменную
                 ;
 
+                // TODO: modal.onClose($mapContainer.append($map)) !!!
+
                 $content.append(mustache.render($template.html(), data));
 
                 e.preventDefault();
@@ -77,13 +94,14 @@ define(
                 ;
 
                 require(['module/yandexmaps'], function(maps) {
-                    maps.initMap($map, mapData).done(function(map) {
+                    maps.initMap($map, mapData, initMap).done(function(map) {
                         var
                             placemark,
                             points = $.parseJSON($($el.data('dataSelector')).html()).points // TODO: выполнять один раз, результат записывать в переменную
                         ;
 
                         map.setCenter([mapData.center.lat, mapData.center.lng], mapData.zoom);
+                        map.balloon.close();
                         map.geoObjects.removeAll();
                         map.container.fitToViewport();
 
@@ -92,6 +110,7 @@ define(
                                 placemark = new maps.ymaps.Placemark(
                                     [point.lat, point.lng],
                                     {
+                                        point: point,
                                         hintContent: point.name
                                     },
                                     {
@@ -110,7 +129,7 @@ define(
                             }
                         });
 
-                        $container.append($map.show());
+                        $container.append($map);
                     });
                 });
             }

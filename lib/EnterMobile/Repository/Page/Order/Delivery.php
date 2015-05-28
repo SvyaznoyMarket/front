@@ -135,14 +135,15 @@ class Delivery {
                             'point'       =>
                                 $point
                                 ? [
-                                    'id'     => $point->id,
-                                    'name'   => $point->name,
-                                    'group'  => [
+                                    'id'      => $point->id,
+                                    'name'    => $point->name,
+                                    'group'   => [
                                         'token' => $pointGroup->token,
                                         'name'  => $pointGroup->blockName,
                                     ],
-                                    'icon'   => $this->getPointIcon($pointGroup->token),
-                                    'subway' =>
+                                    'address' => $point->address,
+                                    'icon'    => $this->getPointIcon($pointGroup->token),
+                                    'subway'  =>
                                         isset($point->subway[0])
                                             ? [
                                             'name'  => $point->subway[0]->name,
@@ -150,8 +151,8 @@ class Delivery {
                                         ]
                                             : false
                                     ,
-                                    'regime' => $point->regime,
-                                    'order'  => [
+                                    'regime'  => $point->regime,
+                                    'order'   => [
                                         'id' => $orderModel->blockName,
                                     ],
                                 ]
@@ -487,14 +488,22 @@ class Delivery {
 
         // шаблоны mustache
         (new Repository\Template())->setListForPage($page, [
+            // модальное окно с точками самовывоза
             [
                 'id'       => 'tpl-order-delivery-point-popup',
                 'name'     => 'page/order/delivery/point-popup',
                 'partials' => [],
             ],
+            // календарь
             [
                 'id'       => 'tpl-order-delivery-calendar',
                 'name'     => 'page/order/delivery/calendar',
+                'partials' => [],
+            ],
+            // исплываюшка для маркера
+            [
+                'id'       => 'tpl-order-delivery-marker-balloon',
+                'name'     => 'page/order/delivery/marker-balloon',
                 'partials' => [],
             ],
         ]);
