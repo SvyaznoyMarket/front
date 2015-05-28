@@ -2,9 +2,7 @@
 
 namespace EnterMobile\Repository\Page;
 
-use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
-use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
@@ -13,7 +11,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\Index as Page;
 
 class Index {
-    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait;
+    use LoggerTrait, TemplateHelperTrait;
 
     /**
      * @param Page $page
@@ -22,36 +20,24 @@ class Index {
     public function buildObjectByRequest(Page $page, Index\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
-        $config = $this->getConfig();
-        $router = $this->getRouter();
         $templateHelper = $this->getTemplateHelper();
 
         $page->dataModule = 'index';
 
-        $hosts = $config->mediaHosts;
-        $host = reset($hosts);
-
         $promoData = [];
         foreach ($request->promos as $promoModel) {
-            $image = null;
-            foreach ($promoModel->media as $media) {
-                if (in_array('main', $media->tags) && !empty($media->sources[0]->url)) {
-                    $image = $media->sources[0]->url;
-                    break;
-                }
-            }
+            $source = $promoModel->getPhotoMediaSource('mobile', 'original');
 
-            if (!$image) {
+            if (!$source || !$source->url) {
                 $this->getLogger()->push(['type' => 'warn', 'error' => sprintf('Нет картинки у промо #', $promoModel->ui), 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['promo']]);
                 continue;
             }
-            $promoItem = [
+
+            $promoData[] = [
                 'ui'    => $promoModel->ui,
                 'url'   => $promoModel->target->url,
-                'image' => $image,
+                'image' => $source->url,
             ];
-
-            $promoData[] = $promoItem;
         }
         $page->content->promoDataValue = $templateHelper->json($promoData);
 
