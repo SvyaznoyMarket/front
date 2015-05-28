@@ -507,10 +507,16 @@ class Delivery {
                 'name'     => 'page/order/delivery/calendar',
                 'partials' => [],
             ],
-            // исплываюшка для маркера
+            // всплываюшка для маркера
             [
                 'id'       => 'tpl-order-delivery-marker-balloon',
                 'name'     => 'page/order/delivery/marker-balloon',
+                'partials' => [],
+            ],
+            // всплываюшка для маркера
+            [
+                'id'       => 'tpl-order-delivery-address-popup',
+                'name'     => 'page/order/delivery/address-popup',
                 'partials' => [],
             ],
         ]);
