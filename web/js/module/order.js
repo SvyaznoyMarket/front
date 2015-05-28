@@ -9,6 +9,7 @@ define(
         var
             $body = $('body'),
             $deliveryForm = $('.js-order-delivery-form'),
+            $map = $('#yandexMap'),
 
             changeSplit = function(e) {
                 e.stopPropagation();
@@ -71,29 +72,14 @@ define(
 
                 var
                     $el = $(e.currentTarget),
-                    containerId = $el.data('containerId'),
-                    map = $el.data('map'),
+                    $container = $($el.data('containerSelector')),
                     mapData = $el.data('mapData')
                 ;
 
-                require(['yandexmaps'], function(ymaps) {
-                    if (!map) {
-                        ymaps.ready(function() {
-                            console.info(containerId);
-                            map = new ymaps.Map(
-                                containerId,
-                                {
-                                    center: [mapData.center.lat, mapData.center.lng],
-                                    zoom: mapData.zoom
-                                },
-                                {
-                                    autoFitToViewport: 'always'
-                                }
-                            );
-
-                            $el.data('map', map);
-                        });
-                    }
+                require(['module/yandexmaps'], function(ymaps) {
+                    ymaps.initMap($map, mapData).done(function(map) {
+                        $container.append($map.show());
+                    });
                 });
             }
         ;
