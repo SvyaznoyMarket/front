@@ -67,11 +67,11 @@ class ProductButton {
             ],
         ];
 
-        if ($context && $context['position'] && $context['position'] == 'listing') {
+        if (isset($context['position']) && $context['position'] == 'listing') {
             $ga = [
                 ['send', 'event', 'm_add_to_basket', 'listing', $product->article, '{product.sum}'],
             ];
-        } elseif ($context && $context['position'] && $context['position'] == 'product') {
+        } elseif (isset($context['position']) && $context['position'] == 'product') {
             $ga = [
                 ['send', 'event', 'm_add_to_basket', 'product', $product->article, '{product.sum}'],
             ];
