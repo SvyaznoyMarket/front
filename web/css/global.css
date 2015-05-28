@@ -5481,15 +5481,22 @@ body.noScroll {
   .catalogList .price {
     margin: 15px 0 0;
     text-align: left;
+    display: block;
+    width: 50%;
   }
   .catalogList .price_old {
     display: block;
-    margin-right: 0px;
+    margin-right: 0;
   }
   .catalogList .btn--lstn {
     position: absolute;
     right: 10px;
     bottom: 7px;
+  }
+  .buyButtonWrapper {
+    float: right;
+    display: block;
+    margin-top: -30px;
   }
 }
 @media screen and (min-width: 601px) {
@@ -5533,11 +5540,6 @@ body.noScroll {
     float: none;
     width: auto;
   }
-  .catalogList .catalogListItemWrapper .price {
-    display: table-cell;
-    vertical-align: bottom;
-    width: 50%;
-  }
   .catalogList .item {
     background: none;
   }
@@ -5546,9 +5548,6 @@ body.noScroll {
   }
   .catalogList .rating-beforeItemName {
     display: none;
-  }
-  .catalogList .rating-afterItemName {
-    display: block;
   }
   .catalogList .bottom-info {
     float: left;
@@ -5567,8 +5566,6 @@ body.noScroll {
   }
   .catalogList .priceWrapper {
     bottom: 0;
-    position: absolute;
-    display: table;
     width: 100%;
     overflow: hidden;
   }
@@ -5672,6 +5669,11 @@ body.noScroll {
 /* ==========================================================================
    Каталог -> фильтры .filter .filterBox .filterTags .filterChecked
    ========================================================================== */
+@media only screen and (max-width: 1024px) {
+  .filter {
+    margin-bottom: 0px;
+  }
+}
 @media only screen and (max-width: 770px) {
   .filter .priceRange_slider {
     width: 300px;
@@ -6100,16 +6102,19 @@ body.noScroll {
 .rating--product {
   float: right;
 }
-@media only screen and (max-width: 700px) {
+.rating-beforeItemName {
+  display: none;
+}
+@media only screen and (max-width: 767px) {
   .catalogList .rating {
     text-align: left;
   }
   .catalogList .rating__star {
     font-size: 10px;
-    margin-right: 1px;
+    margin-right: 2px;
   }
   .catalogList .rating__reviews-count {
-    font-size: 10px;
+    display: none;
   }
 }
 /* ==========================================================================

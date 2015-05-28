@@ -60,7 +60,7 @@ namespace EnterMobileApplication\Controller\Cart {
             $controllerRequest = $controller->createRequest();
             $controllerRequest->regionId = $regionId;
             $controllerRequest->shopId = $shopId;
-            $controllerRequest->changeData = $changeData;
+            $controllerRequest->changeData = (new \EnterRepository\Cart())->dumpSplitChange($changeData, $previousSplitData);
             $controllerRequest->previousSplitData = $previousSplitData;
             $controllerRequest->cart = $cart;
             // при получении данных о разбиении корзины - записать их в сессию немедленно

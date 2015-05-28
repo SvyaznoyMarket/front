@@ -6,6 +6,8 @@ namespace EnterMobile\Model\Page\ProductCatalog {
     class ChildCategory extends Page\DefaultPage {
         /** @var ChildCategory\Content */
         public $content;
+        /** @var bool */
+        public $buyBtnListing;
 
         public function __construct() {
             parent::__construct();

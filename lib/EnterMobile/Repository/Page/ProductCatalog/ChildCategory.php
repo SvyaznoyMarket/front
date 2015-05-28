@@ -86,7 +86,11 @@ class ChildCategory {
         $page->content->productBlock->dataReset = $templateHelper->json($dataReset);
 
             foreach ($request->products as $productModel) {
-                $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel), $request->category);
+                $productCard = $productCardRepository->getObject(
+                    $productModel,
+                    $cartProductButtonRepository->getObject($productModel, null, false, true, ['position' => 'listing']),
+                    $request->category
+                );
 
                 $page->content->productBlock->products[] = $productCard;
         }
@@ -128,6 +132,11 @@ class ChildCategory {
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
         }
+
+
+        // AB test
+        $page->buyBtnListing = $request->buyBtnListing;
+
 
         // шаблоны mustache
         (new Repository\Template())->setListForPage($page, [

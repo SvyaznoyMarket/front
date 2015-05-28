@@ -37,6 +37,7 @@ class ProductCard {
         $controllerRequest->config->review = true;
         $controllerRequest->regionId = $regionId;
         $controllerRequest->productCriteria = ['token' => $productToken];
+
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);
 
