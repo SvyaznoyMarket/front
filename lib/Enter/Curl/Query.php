@@ -295,6 +295,13 @@ abstract class Query implements \JsonSerializable {
     }
 
     /**
+     * @param string $response
+     */
+    public function setResponse($response) {
+        $this->response = $response;
+    }
+
+    /**
      * @param array $responseHeaders
      */
     public function setResponseHeaders(array $responseHeaders) {
