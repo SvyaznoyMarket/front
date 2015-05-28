@@ -25,9 +25,8 @@
     display: none;
 }
 
-@media only screen and (max-width: 767px) { 
+@media only screen and (max-width: 700px) { 
     .catalogList .rating {
-        text-align: left;
         &__star{
             font-size: 10px;
             margin-right: 2px;
@@ -35,6 +34,16 @@
         &__reviews-count{
             display: none;
         }
+    }    
+}
+@media only screen and (min-width: 700px) { 
+    .catalogList {
+        
+        .rating {
+            text-align: center;
+            position: absolute;
+            top:0px;
+            left:0px;
+        }
     }
-    
 }

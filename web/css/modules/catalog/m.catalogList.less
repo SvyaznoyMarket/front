@@ -93,19 +93,19 @@
     	&_desc {
     		float: left;
 
-    		width: 60%;
+    		width: 55%;
     	}
 
     	.img {
 		    float: left;
             margin: 0;
             max-width: 100px;
-		    width: 40%;
+		    width: 45%;
             height: 120px;
 			position:relative;
 
 		    img {
-		    	max-width: 90%;
+		    	max-width: 80%;
 		    	max-height: 90%;
 		    }
     	}
@@ -232,4 +232,19 @@
       display: none;
     }
   }
+}
+@media screen and (min-width: 700px) {
+.catalogList{
+  &_desc{
+    padding-top: 20px;
+    position: relative;
+    .reviews{
+      position: absolute;
+      top:0px;
+      left:0px;
+      width: 100%;
+      text-align: center;
+    }
+  }
+}
 }
