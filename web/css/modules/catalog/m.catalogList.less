@@ -116,10 +116,12 @@
         .price{
             margin: 15px 0 0;
             text-align: left;
+            display: block;
+            width: 50%;
 
             &_old {
                 display: block;
-                margin-right: 0px;
+                margin-right: 0;
             }
         }
         .btn--lstn{
@@ -128,6 +130,12 @@
             bottom: 7px;
         }
 	}
+  .buyButtonWrapper{
+    float: right;
+    display: block;
+    margin-top: -30px;
+  }
+
 }
 
 @media screen and (min-width: 601px) {
@@ -176,11 +184,6 @@
             width: auto;
           }
 
-          .price {
-            display: table-cell;
-            vertical-align: bottom;
-            width: 50%;
-          }
       }
 
 
@@ -195,10 +198,6 @@
 
       .rating-beforeItemName {
         display: none;
-      }
-
-      .rating-afterItemName {
-        display: block;
       }
 
       .bottom-info{
@@ -222,8 +221,6 @@
 
       .priceWrapper {
         bottom: 0;
-        position: absolute;
-        display: table;
         width: 100%;
 //          float: right;
           overflow: hidden;
