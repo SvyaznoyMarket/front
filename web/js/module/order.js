@@ -41,7 +41,7 @@ define(
                     $el       = $(this),
                     $content  = $('.js-modal-content'),
                     $template = $('#tpl-order-delivery-point-popup'),
-                    data      = $.parseJSON($($el.data('dataSelector')).html())
+                    data      = $.parseJSON($($el.data('dataSelector')).html()) // TODO: выполнять один раз, результат записывать в переменную
                 ;
 
                 $content.append(mustache.render($template.html(), data));
@@ -76,8 +76,40 @@ define(
                     mapData = $el.data('mapData')
                 ;
 
-                require(['module/yandexmaps'], function(ymaps) {
-                    ymaps.initMap($map, mapData).done(function(map) {
+                require(['module/yandexmaps'], function(maps) {
+                    maps.initMap($map, mapData).done(function(map) {
+                        var
+                            placemark,
+                            points = $.parseJSON($($el.data('dataSelector')).html()).points // TODO: выполнять один раз, результат записывать в переменную
+                        ;
+
+                        map.setCenter([mapData.center.lat, mapData.center.lng], mapData.zoom);
+                        map.geoObjects.removeAll();
+                        map.container.fitToViewport();
+
+                        _.each(points, function(point){
+                            try {
+                                placemark = new maps.ymaps.Placemark(
+                                    [point.lat, point.lng],
+                                    {
+                                        hintContent: point.name
+                                    },
+                                    {
+                                        iconLayout: 'default#image',
+                                        iconImageHref: '/img/markers/' + point.icon,
+                                        iconImageSize: [28, 39],
+                                        iconImageOffset: [-14, -39],
+                                        //visible: visibility,
+                                        zIndex: ('shops' == point.group.token) ? 1000 : 0
+                                    }
+                                );
+
+                                map.geoObjects.add(placemark);
+                            } catch (e) {
+                                console.error(e);
+                            }
+                        });
+
                         $container.append($map.show());
                     });
                 });

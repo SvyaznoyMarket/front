@@ -6,6 +6,7 @@ define(
         ;
 
         return {
+            ymaps: ymaps,
             initMap: function($container, data) {
                 var defer = $.Deferred();
 
@@ -15,6 +16,8 @@ define(
                 if (!$container.attr('id')) {
                     throw {name: 'Не задан атрибут id для контейнера карты'};
                 }
+
+                console.info(['module/ymaps.initMap', map, $container]);
 
                 if (map) {
                     defer.resolve(map, $container);

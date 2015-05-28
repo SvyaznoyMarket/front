@@ -308,9 +308,13 @@ class Delivery {
                         $points[] = [
                             'id'        => $possiblePointModel->id,
                             'name'      => $point->name,
-                            'group'     => $pointGroup->blockName,
+                            'group'     => [
+                                'token' => $pointGroup->token,
+                                'name'  => $pointGroup->blockName,
+                            ],
                             'icon'      => $this->getPointIcon($pointGroup->token),
                             'date'      => $date ?: false,
+                            'address'   => $point->address,
                             'cost'      => $possiblePointModel->cost ?: false,
                             'subway'    =>
                                 isset($point->subway[0])
@@ -376,7 +380,7 @@ class Delivery {
                                 'lat' => $regionModel->latitude,
                                 'lng' => $regionModel->longitude,
                             ],
-                            'zoom'   => 14,
+                            'zoom'   => 10,
                         ]),
                     ];
                 }), JSON_UNESCAPED_UNICODE),
@@ -517,6 +521,6 @@ class Delivery {
                 $icon = 'enter';
         }
 
-        return $icon;
+        return $icon . '.png';
     }
 }

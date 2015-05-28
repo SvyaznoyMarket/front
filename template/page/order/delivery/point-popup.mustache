@@ -16,7 +16,7 @@
                 </ul>
             </div>
         </div>
-        <div class="js-order-delivery-map-link btn btn--white btn--medium" data-container-selector="#order-{{order.id}}-map-container" data-map-data="{{&mapDataValue}}"><span class="map-link">Карта</span></div>
+        <div class="js-order-delivery-map-link btn btn--white btn--medium" data-container-selector="#order-{{order.id}}-map-container" data-data-selector="#order-{{order.id}}-map-data" data-map-data="{{&mapDataValue}}"><span class="map-link">Карта</span></div>
     </form>
 </div>
 
@@ -84,8 +84,8 @@
 
         <div class="pick-point-list-i shop-snippet table_row js-order-delivery-form-control" data-value="{{&dataValue}}">
             <div class="shop-snippet-name table_cell">
-                <img src="/img/points/{{icon}}.png" alt="" class="shop-snippet-name__img">
-                <span class="shop-snippet-name__text">{{group}}</span>
+                <img src="/img/points/{{icon}}" alt="" class="shop-snippet-name__img">
+                <span class="shop-snippet-name__text">{{group.name}}</span>
             </div>
 
             <div class="shop-snippet-info table_cell">
