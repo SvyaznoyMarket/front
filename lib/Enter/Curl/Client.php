@@ -63,11 +63,6 @@ class Client {
                 throw new \RuntimeException(curl_error($connection), curl_errno($connection));
             }
 
-            if ($info['http_code'] >= 300) {
-                // TODO: обработка статуса
-                $query->setError(new \Exception('Неверный статус ответа', $info['http_code']));
-            }
-
             $headers = [];
             $this->parseResponse($connection, $response, $headers);
             $query->setResponseHeaders($headers);
@@ -76,11 +71,9 @@ class Client {
                 curl_close($connection);
             }
 
-            if (null === $response) {
-                throw new \Exception(sprintf('Пустой ответ от %s', $query->getUrl()));
-            }
-
             $query->setEndAt(microtime(true));
+
+            $this->handleHttpError($query, $info, $response);
 
             $query->callback($response);
 
@@ -161,31 +154,27 @@ class Client {
                         if (curl_errno($connection) > 0) {
                             throw new \RuntimeException(curl_error($connection), curl_errno($connection));
                         }
-                        if ($info['http_code'] >= 300) {
-                            // TODO: обработка статуса
-                            $this->queries[$queryId]->setError(new \Exception('Неверный статус ответа', $info['http_code']));
-                        }
 
                         $response = curl_multi_getcontent($connection);
-                        if (null === $response) {
-                            throw new \Exception(sprintf('Пустой ответ от %s', $this->queries[$queryId]->getUrl()));
-                        }
 
                         $headers = [];
                         $this->parseResponse($connection, $response, $headers);
                         $this->queries[$queryId]->setResponseHeaders($headers);
 
+                        if (is_resource($connection)) {
+                            curl_multi_remove_handle($this->multiConnection, $connection);
+                            curl_close($connection);
+                        }
+
                         $this->queries[$queryId]->setEndAt(microtime(true));
+
+                        $this->handleHttpError($this->queries[$queryId], $info, $response);
 
                         // TODO: отложенный запуск обработчиков
                         $this->queries[$queryId]->callback($response);
 
                         if ($this->logger) $this->logger->push(['sender' => __FILE__ . ' ' .  __LINE__, 'query' => $this->queries[$queryId], 'tag' => ['curl']]);
 
-                        if (is_resource($connection)) {
-                            curl_multi_remove_handle($this->multiConnection, $connection);
-                            curl_close($connection);
-                        }
                         unset($this->queries[$queryId]);
                     } catch (\Exception $e) {
                         $this->queries[$queryId]->setError($e);
@@ -362,5 +351,20 @@ class Client {
         }
 
         $response = mb_substr($response, $size);
+    }
+
+    /**
+     * @param array $info
+     * @param string $response
+     */
+    private function handleHttpError(Query $query, $info, $response) {
+        if ($info['http_code'] >= 300) {
+            $query->setResponse(preg_replace('/\r?\n/', ' ', mb_substr($response, 0, 1024)));
+            throw new \Exception('Неверный статус ответа', $info['http_code']);
+        }
+
+        if (null === $response) {
+            throw new \Exception(sprintf('Пустой ответ от %s', $query->getUrl()));
+        }
     }
 }
