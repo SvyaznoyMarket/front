@@ -33,7 +33,7 @@ class SendNumber {
 
         $sendQuery = new Query\Order\SendNumber($orderNumber, $notificationType, $phone, $token);
         $sendQuery->setTimeout(10 * $config->coreService->timeout);
-        $curl->prepare($sendQuery)->execute();
+        $curl->query($sendQuery);
 
         $responseData = [];
 

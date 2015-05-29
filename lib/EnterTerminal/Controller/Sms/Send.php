@@ -29,8 +29,7 @@ class Send {
             $request->query['phone'],
             $request->query['message']
         );
-        $curl->prepare($query);
-        $curl->execute();
+        $curl->query($query);
 
         // ответ
         return new Http\JsonResponse($query->getResult());
