@@ -35,7 +35,7 @@ define(
                 e.stopPropagation();
 
                 var
-                    $el = $(this)
+                    $el = $(e.currentTarget)
                 ;
 
                 if ($el.data('value')) {
