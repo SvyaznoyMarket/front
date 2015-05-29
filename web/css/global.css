@@ -7385,6 +7385,13 @@ body.noScroll {
 .sale-select__item {
   padding: 5px 0;
   border-bottom: 1px solid #e6e6e6;
+  border-right: 1px solid #e6e6e6;
+  background-color: #fff;
+  width: 50%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -7396,12 +7403,21 @@ body.noScroll {
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
+  float: left;
 }
-.sale-select__item:last-child {
-  border: none;
+.sale-select__item:nth-child(2n) {
+  border-right: none;
 }
 .sale-select__left {
   padding: 0 10px 0 5px;
+}
+.sale-select__tl {
+  font-weight: bold;
+  font-size: 14px;
+  padding-left: 20px;
+  line-height: 25px;
+  background-color: #fff;
+  border-bottom: 1px solid #e6e6e6;
 }
 .checkout-order-items {
   padding: 10px 10px 5px;
@@ -7500,6 +7516,7 @@ body.noScroll {
   display: -webkit-flex;
   display: flex;
   flex-flow: row wrap;
+  padding-bottom: 20px;
 }
 .checkout-sale-code__title {
   width: 100%;
@@ -7510,6 +7527,7 @@ body.noScroll {
   margin: 0;
   padding: 0;
   text-align: center;
+  background-color: #fff;
   border-color: #c7c7c7;
 }
 .checkout-sale-code__it--pin {
@@ -7520,7 +7538,6 @@ body.noScroll {
 }
 .checkout-sale-code__button {
   width: 150px;
-  margin-top: 10px;
 }
 .checkout-sale-code__fields {
   flex-grow: 1;
@@ -7992,6 +8009,9 @@ body.noScroll {
 }
 .order-popup .checkout-payment__icon-wrap {
   float: right;
+}
+.order-popup--gray {
+  background-color: #f7f7f7;
 }
 .order-popup__head {
   line-height: 54px;
