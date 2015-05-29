@@ -11,6 +11,8 @@ class Slice extends Model\Promo\Target {
     public $sliceId;
     /** @var string|null */
     public $categoryId;
+    /** @var string|null */
+    public $categoryToken;
 
     /**
      * @param array $data
@@ -19,5 +21,6 @@ class Slice extends Model\Promo\Target {
         parent::__construct($data);
         if (isset($data['token'])) $this->sliceId = (string)$data['token'];
         if (isset($data['category']['id'])) $this->categoryId = (string)$data['category']['id'];
+        if (isset($data['category']['slug'])) $this->categoryToken = (string)$data['category']['slug'];
     }
 }

@@ -36,6 +36,8 @@ class Index {
 
             if ($promoModel->target instanceof \EnterModel\Promo\Target\Content) {
                 $targetUrl = $this->getRouter()->getUrlByRoute(new \EnterMobile\Routing\Content($promoModel->target->contentId));
+            } else if ($promoModel->target instanceof \EnterModel\Promo\Target\Slice && $promoModel->target->sliceId && $promoModel->target->categoryToken) {
+                $targetUrl = $this->getRouter()->getUrlByRoute(new \EnterMobile\Routing\ProductSlice\GetCategory($promoModel->target->sliceId, $promoModel->target->categoryToken));
             } else {
                 $targetUrl = $promoModel->target->url;
             }
