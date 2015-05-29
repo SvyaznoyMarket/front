@@ -513,7 +513,7 @@ class Delivery {
                 'name'     => 'page/order/delivery/marker-balloon',
                 'partials' => [],
             ],
-            // всплываюшка для маркера
+            // всплываюшка для адреса
             [
                 'id'       => 'tpl-order-delivery-address-popup',
                 'name'     => 'page/order/delivery/address-popup',

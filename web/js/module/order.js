@@ -11,18 +11,20 @@ define(
             $deliveryForm = $('.js-order-delivery-form'),
             $map = $('#yandexMap'),
             $mapContainer = $('#yandexMap-container'),
+            $balloonTemplate = $('#tpl-order-delivery-marker-balloon'),
+            $pointPopupTemplate = $('#tpl-order-delivery-point-popup'),
+            $calendarTemplate = $('#tpl-order-delivery-calendar'),
 
             initMap = function(map) {
                 map.geoObjects.events.remove('click'); // TODO: можно убрать
                 map.geoObjects.events.add('click', function (e) {
                     var
-                        placemark = e.get('target'),
-                        $template = $('#tpl-order-delivery-marker-balloon')
+                        placemark = e.get('target')
                     ;
 
                     console.info('placemark', placemark, placemark.properties.get('point'));
 
-                    map.balloon.open(e.get('coords'), mustache.render($template.html(), placemark.properties.get('point')));
+                    map.balloon.open(e.get('coords'), mustache.render($balloonTemplate.html(), placemark.properties.get('point')));
                 });
             },
 
@@ -55,13 +57,12 @@ define(
                 var
                     $el       = $(this),
                     $content  = $('.js-modal-content'),
-                    $template = $('#tpl-order-delivery-point-popup'),
                     data      = $.parseJSON($($el.data('dataSelector')).html()) // TODO: выполнять один раз, результат записывать в переменную
                 ;
 
                 // TODO: modal.onClose($mapContainer.append($map)) !!!
 
-                $content.append(mustache.render($template.html(), data));
+                $content.append(mustache.render($pointPopupTemplate.html(), data));
 
                 e.preventDefault();
 
@@ -77,11 +78,10 @@ define(
                 var
                     $el       = $(this),
                     $content  = $('.js-modal-content'),
-                    $template = $('#tpl-order-delivery-calendar'),
                     data      = $.parseJSON($($el.data('dataSelector')).html())
                 ;
 
-                $content.append(mustache.render($template.html(), data));
+                $content.append(mustache.render($calendarTemplate.html(), data));
             },
 
             showMap = function(e) {
