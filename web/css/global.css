@@ -1958,7 +1958,7 @@ body.noScroll {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  font-size: 12px;
+  font-size: 14px;
   display: inline-block;
   vertical-align: top;
   *zoom: 1;
@@ -4943,7 +4943,7 @@ body.noScroll {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
-  font-size: 12px;
+  font-size: 14px;
 }
 .catalogList .btnBuy:hover {
   color: #fff;
@@ -4999,6 +4999,12 @@ body.noScroll {
   .catalogList_item:nth-child(2n),
   .catalogList_item:last-child {
     border-right: none;
+  }
+  .catalogList .btnBuy {
+    font-size: 12px;
+  }
+  .catalogList .btn--slot-lst {
+    font-size: 12px;
   }
 }
 @media only screen and (max-width: 600px) {
@@ -5696,9 +5702,6 @@ body.noScroll {
   .catalogList .rating__star {
     font-size: 10px;
     margin-right: 2px;
-  }
-  .catalogList .rating__reviews-count {
-    display: none;
   }
 }
 @media only screen and (min-width: 700px) {
