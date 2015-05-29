@@ -568,6 +568,12 @@ class Delivery {
                 'name'     => 'page/order/delivery/address-popup',
                 'partials' => [],
             ],
+            // всплываюшка для скидок
+            [
+                'id'       => 'tpl-order-delivery-discount-popup',
+                'name'     => 'page/order/delivery/discount-popup',
+                'partials' => [],
+            ],
         ]);
     }
 

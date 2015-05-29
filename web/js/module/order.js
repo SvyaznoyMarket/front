@@ -15,6 +15,7 @@ define(
             $pointPopupTemplate = $('#tpl-order-delivery-point-popup'),
             $calendarTemplate = $('#tpl-order-delivery-calendar'),
             $addressPopupTemplate = $('#tpl-order-delivery-address-popup'),
+            $discountPopupTemplate = $('#tpl-order-delivery-discount-popup'),
 
             initMap = function(map) {
                 map.geoObjects.events.remove('click'); // TODO: можно убрать
@@ -101,6 +102,16 @@ define(
                 });
             },
 
+            showDiscountPopup = function(e) {
+                var
+                    data = {}
+                ;
+
+                console.info('showDiscountPopup');
+
+                mustache.render($discountPopupTemplate.html(), data);
+            },
+
             showMap = function(e) {
                 e.stopPropagation();
 
@@ -155,6 +166,7 @@ define(
         $body.on('click', '.js-order-delivery-form-control', changeSplit);
         $body.on('click', '.js-order-delivery-pointPopup-link', showPointPopup);
         $body.on('click', '.js-order-delivery-addressPopup-link', showAddressPopup);
+        $body.on('click', '.js-order-delivery-discountPopup-link', showDiscountPopup);
         $body.on('click', '.js-order-delivery-map-link', showMap);
         $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
     }
