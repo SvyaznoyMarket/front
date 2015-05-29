@@ -53,17 +53,20 @@ define(
             showPointPopup = function(e) {
                 e.stopPropagation();
 
-                $(this).modal();
-
                 var
                     $el       = $(this),
-                    $content  = $('.js-modal-content'),
                     data      = $.parseJSON($($el.data('dataSelector')).html()) // TODO: выполнять один раз, результат записывать в переменную
                 ;
 
-                // TODO: modal.onClose($mapContainer.append($map)) !!!
+                $('.js-modal-open').lightbox_me({
+                    onLoad: function() {
+                        var
+                            $content  = $('.js-modal-content');
 
-                $content.append(mustache.render($pointPopupTemplate.html(), data));
+                        $content.append(mustache.render($pointPopupTemplate.html(), data));
+                    },
+                    showOverlay: false
+                });
 
                 e.preventDefault();
 
@@ -82,15 +85,18 @@ define(
             showCalendar = function(e) {
                 e.stopPropagation();
 
-                $(this).modal();
-
                 var
                     $el       = $(this),
-                    $content  = $('.js-modal-content'),
-                    data      = $.parseJSON($($el.data('dataSelector')).html())
-                ;
+                    data      = $.parseJSON($($el.data('dataSelector')).html());
 
-                $content.append(mustache.render($calendarTemplate.html(), data));
+                $('.js-modal-open').lightbox_me({
+                    onLoad: function() {
+                        var
+                            $content  = $('.js-modal-content');
+
+                        $content.append(mustache.render($calendarTemplate.html(), data));
+                    }
+                });
             },
 
             showMap = function(e) {
