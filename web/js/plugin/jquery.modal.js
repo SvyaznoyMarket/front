@@ -112,6 +112,7 @@
             /* Remove or hide all elements */
             function closeLightbox() {
                 var s = $self[0].style;
+                opts.beforeClose();
                 if (opts.destroyOnClose) {
                     $self.add($overlay).remove();
                 } else {
@@ -211,7 +212,7 @@
         closeEsc: true,
 
         // behavior
-        destroyOnClose: false,
+        destroyOnClose: true,
         showOverlay: true,
         parentLightbox: false,
         preventScroll: true,
@@ -219,6 +220,7 @@
         // callbacks
         onLoad: function() {},
         onClose: function() {},
+        beforeClose: function() {},
 
         // style
         classPrefix: 'lb',

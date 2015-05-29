@@ -1,7 +1,7 @@
 define(
     [
         'require', 'jquery', 'underscore', 'mustache', 'module/util', 'jquery.maskedinput',
-        'module/order/user.form', 'module/order/common', 'module/order/toggle', 'jquery.modal'
+        'module/order/user.form', 'module/order/common', 'module/order/toggle'
     ],
     function(
         require, $, _, mustache, util
@@ -15,6 +15,7 @@ define(
             $pointPopupTemplate = $('#tpl-order-delivery-point-popup'),
             $calendarTemplate = $('#tpl-order-delivery-calendar'),
             $addressPopupTemplate = $('#tpl-order-delivery-address-popup'),
+            $modalWindowTemplate = $('#tpl-modalWindow'),
 
             initMap = function(map) {
                 map.geoObjects.events.remove('click'); // TODO: можно убрать
@@ -55,17 +56,20 @@ define(
 
                 var
                     $el       = $(this),
-                    data      = $.parseJSON($($el.data('dataSelector')).html()) // TODO: выполнять один раз, результат записывать в переменную
+                    data      = $.parseJSON($($el.data('dataSelector')).html()), // TODO: выполнять один раз, результат записывать в переменную
+                    $modalWindow = $($modalWindowTemplate.html()).appendTo($body),
+                    modalTitle = $el.data('modal-title')
                 ;
 
-                $('.js-modal-open').lightbox_me({
-                    onLoad: function() {
-                        var
-                            $content  = $('.js-modal-content');
+                $modalWindow.find('.js-modal-title').text(modalTitle);
 
-                        $content.append(mustache.render($pointPopupTemplate.html(), data));
+                $modalWindow.lightbox_me({
+                    onLoad: function() {
+                        $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data));
                     },
-                    showOverlay: false
+                    beforeClose: function() {
+                        $mapContainer.append($map);
+                    }
                 });
 
                 e.preventDefault();
@@ -87,15 +91,19 @@ define(
 
                 var
                     $el       = $(this),
-                    data      = $.parseJSON($($el.data('dataSelector')).html());
+                    data      = $.parseJSON($($el.data('dataSelector')).html()),
+                    $modalWindow = $($modalWindowTemplate.html()).appendTo($body),
+                    modalTitle = $el.data('modal-title'),
+                    modalPosition = $el.data('modal-position');
 
-                $('.js-modal-open').lightbox_me({
+                $modalWindow.find('.js-modal-title').text(modalTitle);
+                $modalWindow.addClass(modalPosition);
+
+                $modalWindow.lightbox_me({
                     onLoad: function() {
-                        var
-                            $content  = $('.js-modal-content');
-
-                        $content.append(mustache.render($calendarTemplate.html(), data));
-                    }
+                        $modalWindow.find('.js-modal-content').append(mustache.render($calendarTemplate.html(), data));
+                    },
+                    centered: true
                 });
             },
 
