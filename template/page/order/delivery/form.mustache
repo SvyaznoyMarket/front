@@ -168,12 +168,49 @@
 
             {{>page/order/delivery/product-list}}
 
+
+
+        {{! примененные скидки }}
+
+        <div class="checkout-order-items table">
+            <div class="checkout-order-items__left table_cell">
+                <img alt="" src="/css/modules/order/img/fishka_act.png">
+            </div>
+
+            <div class="checkout-order-items__right table_cell">
+                <div class="checkout-order-items__name">
+                    - 2% на категорию Электроника<br>
+                    Минимальная сумма заказа 6999 руб
+                </div>
+
+                <div class="checkout-order-items__data">&nbsp;</div>
+                <div class="checkout-order-items__data ta-c"><span class="bb-dotted">удалить</span></div>
+                <div class="checkout-order-items__data checkout-order-items__data--sale l ta-r">-680 <span class="rubl">p</span></div>
+            </div>
+        </div>
+        <div class="checkout-order-items table">
+            <div class="checkout-order-items__left table_cell">
+                <img alt="" src="/css/modules/order/img/sertificate.png">
+            </div>
+
+            <div class="checkout-order-items__right table_cell">
+                <div class="checkout-order-items__name">
+                    Подарочный сертификат<br>
+                    5000 руб
+                </div>
+
+                <div class="checkout-order-items__data">&nbsp;</div>
+                <div class="checkout-order-items__data ta-c"><span class="bb-dotted">удалить</span></div>
+                <div class="checkout-order-items__data checkout-order-items__data--sale l ta-r">-5 000 <span class="rubl">p</span></div>
+            </div>
+        </div>
+        {{! END примененные скидки }}
             {{>page/order/delivery/discount}}
 
             {{! общая стоимость заказа }}
             <div class="checkout-summary checkout-order__box table">
                 <div class="table_cell">
-                    <button class="btn-transparent btn-transparent--normal"><span class="bb-dotted">Добавить скидку</span></button>
+                    <button class="btn-transparent btn-transparent--normal" data-btn="select-sale"><span class="bb-dotted">Добавить скидку</span></button>
                 </div>
 
                 <div class="table_cell ta-r">
