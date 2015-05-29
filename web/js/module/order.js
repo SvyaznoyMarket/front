@@ -50,18 +50,22 @@ define(
             showPointPopup = function(e) {
                 e.stopPropagation();
 
-                $(this).modal();
-
                 var
                     $el       = $(this),
-                    $content  = $('.js-modal-content'),
                     $template = $('#tpl-order-delivery-point-popup'),
-                    data      = $.parseJSON($($el.data('dataSelector')).html()) // TODO: выполнять один раз, результат записывать в переменную
-                ;
+                    data      = $.parseJSON($($el.data('dataSelector')).html()) // TODO: выполнять один раз, результат записывать в переменную;
+
+                $('.js-modal-open').lightbox_me({
+                    onLoad: function() {
+                        var
+                            $content  = $('.js-modal-content');
+
+                        $content.append(mustache.render($template.html(), data));
+                    },
+                    showOverlay: false
+                });
 
                 // TODO: modal.onClose($mapContainer.append($map)) !!!
-
-                $content.append(mustache.render($template.html(), data));
 
                 e.preventDefault();
 
@@ -72,16 +76,19 @@ define(
             showCalendar = function(e) {
                 e.stopPropagation();
 
-                $(this).modal();
-
                 var
                     $el       = $(this),
-                    $content  = $('.js-modal-content'),
                     $template = $('#tpl-order-delivery-calendar'),
-                    data      = $.parseJSON($($el.data('dataSelector')).html())
-                ;
+                    data      = $.parseJSON($($el.data('dataSelector')).html());
 
-                $content.append(mustache.render($template.html(), data));
+                $('.js-modal-open').lightbox_me({
+                    onLoad: function() {
+                        var
+                            $content  = $('.js-modal-content');
+
+                        $content.append(mustache.render($template.html(), data));
+                    }
+                });
             },
 
             showMap = function(e) {
