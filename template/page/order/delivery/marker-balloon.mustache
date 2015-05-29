@@ -1,5 +1,36 @@
-<b>Адрес:</b> {{address}}
+<!--b>Адрес:</b> {{address}}
 <br />
 <b>Время работы:</b> {{regime}}
+ -->
 
-<button class="js-order-delivery-form-control" data-value="{{&dataValue}}">Выбрать</button>
+<div class="map-baloon">
+ <div class="shop-snippet">
+    <div class="shop-snippet-name">
+        <img src="/img/points/{{icon}}" alt="" class="shop-snippet-name__img">
+        <span class="shop-snippet-name__text">{{group.name}}</span>
+    </div>
+
+    <div class="shop-snippet-info">
+        {{#subway}}
+        <div class="shop-snippet-metro">
+            <span class="shop-snippet-metro__bullet" style="background: {{color}};"></span>
+            <span class="shop-snippet-metro__text">{{name}}</span>
+        </div>
+        {{/subway}}
+
+        <div class="shop-snippet-address">{{name}} <br/>{{regime}}</div>
+    </div>
+
+</div>
+
+
+    <div class="deliv-info-snippet">
+        <span class="deliv-info-snippet__date">{{date}}</span>
+        <span class="deliv-info-snippet__price">
+            {{#cost}}{{cost}} <span class="rubl">p</span>{{/cost}}
+            {{^cost}}Бесплатно{{/cost}}
+        </span>
+    </div>
+
+    <button class="btn-choose-point js-order-delivery-form-control" data-value="{{&dataValue}}">Выбрать</button>
+</div>
