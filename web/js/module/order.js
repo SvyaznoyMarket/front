@@ -11,18 +11,21 @@ define(
             $deliveryForm = $('.js-order-delivery-form'),
             $map = $('#yandexMap'),
             $mapContainer = $('#yandexMap-container'),
+            $balloonTemplate = $('#tpl-order-delivery-marker-balloon'),
+            $pointPopupTemplate = $('#tpl-order-delivery-point-popup'),
+            $calendarTemplate = $('#tpl-order-delivery-calendar'),
+            $addressPopupTemplate = $('#tpl-order-delivery-address-popup'),
 
             initMap = function(map) {
                 map.geoObjects.events.remove('click'); // TODO: можно убрать
                 map.geoObjects.events.add('click', function (e) {
                     var
-                        placemark = e.get('target'),
-                        $template = $('#tpl-order-delivery-marker-balloon')
+                        placemark = e.get('target')
                     ;
 
                     console.info('placemark', placemark, placemark.properties.get('point'));
 
-                    map.balloon.open(e.get('coords'), mustache.render($template.html(), placemark.properties.get('point')));
+                    map.balloon.open(e.get('coords'), mustache.render($balloonTemplate.html(), placemark.properties.get('point')));
                 });
             },
 
@@ -53,7 +56,8 @@ define(
                 var
                     $el       = $(this),
                     $template = $('#tpl-order-delivery-point-popup'),
-                    data      = $.parseJSON($($el.data('dataSelector')).html()) // TODO: выполнять один раз, результат записывать в переменную;
+                    data      = $.parseJSON($($el.data('dataSelector')).html()) // TODO: выполнять один раз, результат записывать в переменную
+                ;
 
                 $('.js-modal-open').lightbox_me({
                     onLoad: function() {
@@ -65,11 +69,17 @@ define(
                     showOverlay: false
                 });
 
-                // TODO: modal.onClose($mapContainer.append($map)) !!!
-
                 e.preventDefault();
 
                 require(['yandexmaps'], function(ymaps) {});
+            },
+
+            showAddressPopup = function(e) {
+                var
+                    data = {}
+                ;
+
+                mustache.render($pointPopupTemplate.html(), data);
             },
 
             // показать календарь
@@ -144,6 +154,7 @@ define(
 
         $body.on('click', '.js-order-delivery-form-control', changeSplit);
         $body.on('click', '.js-order-delivery-pointPopup-link', showPointPopup);
+        $body.on('click', '.js-order-delivery-addressPopup-link', showAddressPopup);
         $body.on('click', '.js-order-delivery-map-link', showMap);
         $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
     }

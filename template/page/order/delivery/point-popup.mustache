@@ -30,10 +30,12 @@
         <ul class="custom-select-list" data-box="data-select-point-type">
         {{#filters.type}}
             <li class="custom-select-list__item">
-                <input type="checkbox" id="shop1" name="paynow" class="custom-input custom-input--square-check" checked>
+                <input type="checkbox" id="shop1" name="paynow" class="custom-input custom-input--square-check">
 
-                <label class="custom-label flex-hor-vertical-between" for="shop1"></label>
-                <span class="custom-label_tx">{{.}}</span>
+                <label class="custom-label flex-hor-vertical-between" for="shop1">
+                    <span class="custom-label_tx">{{.}}</span>
+                </label>
+                
             </li>
         {{/filters.type}}
         </ul>
@@ -50,8 +52,10 @@
             <li class="custom-select-list__item">
                 <input type="checkbox" id="price1" name="paynow" class="custom-input custom-input--square-check" >
 
-                <label class="custom-label flex-hor-vertical-between" for="price1"></label>
-                <span class="custom-label_tx">{{^.}}Бесплатно{{/.}}{{#.}}{{.}} <span class="rubl">p</span>{{/.}}</span>
+                <label class="custom-label flex-hor-vertical-between" for="price1">
+                    <span class="custom-label_tx">{{^.}}Бесплатно{{/.}}{{#.}}{{.}} <span class="rubl">p</span>{{/.}}</span>
+                </label>
+                
             </li>
         {{/filters.cost}}
         </ul>
@@ -68,15 +72,15 @@
             <li class="custom-select-list__item">
                 <input type="checkbox" id="date1" name="paynow" class="custom-input custom-input--square-check">
 
-                <label class="custom-label flex-hor-vertical-between" for="date1"></label>
-                <span class="custom-label_tx">{{.}}</span>
+                <label class="custom-label flex-hor-vertical-between" for="date1"><span class="custom-label_tx">{{.}}</span></label>
+                
             </li>
         {{/filters.date}}
         </ul>
     </div>
 </div>
-
-<div class="pick-point modal-content">
+{{! show-map показывает, что отображается в данный момент - если класс есть, то карта, если нет - список. }}
+<div class="pick-point modal-content show-map">
     <div id="order-{{order.id}}-map-container" class="order-popup-map" style="width: 600px; height: 400px"></div>
 
     <div class="pick-point-list table">
