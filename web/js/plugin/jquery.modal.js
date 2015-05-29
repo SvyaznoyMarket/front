@@ -184,7 +184,7 @@
                     // so the top offset is based on the user's scroll position.
                     var topOffset = $(document).scrollTop() + 40;
                     $self.css({position: 'absolute', top: topOffset + 'px', marginTop: 0})
-                } else if ($self.height()+ 80  < $(window).height()) {
+                } else if ($self.height() + 80  < $(window).height()) {
                     //if the height is less than the window height, then we're gonna make this thing position: fixed.
                     if (opts.centered) {
                         $self.css({ position: 'fixed', top: '50%', marginTop: ($self.outerHeight() / 2) * -1})

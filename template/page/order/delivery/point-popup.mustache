@@ -16,7 +16,9 @@
                 </ul>
             </div>
         </div>
-        <div class="js-order-delivery-map-link btn btn--white btn--medium" data-container-selector="#order-{{order.id}}-map-container" data-data-selector="#order-{{order.id}}-map-data" data-map-data="{{&mapDataValue}}"><span class="map-link">Карта</span></div>
+        <div class="js-order-delivery-map-link btn btn--white btn--medium" data-container-selector="#order-{{order.id}}-map-container" data-data-selector="#order-{{order.id}}-map-data" data-map-data="{{&mapDataValue}}">
+            <span class="map-link js-order-delivery-map-link-text">Карта</span>
+        </div>
     </form>
 </div>
 
@@ -79,38 +81,41 @@
         </ul>
     </div>
 </div>
+
 {{! show-map показывает, что отображается в данный момент - если класс есть, то карта, если нет - список. }}
-<div class="pick-point modal-content js-order-points-container">
-    <div id="order-{{order.id}}-map-container" class="order-popup-map" style="width: 600px; height: 400px"></div>
+<div class="pick-point js-order-points-container">
+    <div id="order-{{order.id}}-map-container" class="order-popup-map js-order-points-containet-type" data-order-points-type="Карта"></div>
 
-    <div class="pick-point-list table">
-        {{#points}}
+    <div class="content-csroll">
+        <div class="pick-point-list table js-order-points-containet-type" data-order-points-type="Список">
+            {{#points}}
 
-        <div class="pick-point-list-i shop-snippet table_row js-order-delivery-form-control" data-value="{{&dataValue}}">
-            <div class="shop-snippet-name table_cell">
-                <img src="/img/points/{{icon}}" alt="" class="shop-snippet-name__img">
-                <span class="shop-snippet-name__text">{{group.name}}</span>
-            </div>
-
-            <div class="shop-snippet-info table_cell">
-                {{#subway}}
-                <div class="shop-snippet-metro">
-                    <span class="shop-snippet-metro__bullet" style="background: {{color}};"></span>
-                    <span class="shop-snippet-metro__text">{{name}}</span>
+            <div class="pick-point-list-i shop-snippet table_row js-order-delivery-form-control" data-value="{{&dataValue}}">
+                <div class="shop-snippet-name table_cell">
+                    <img src="/img/points/{{icon}}" alt="" class="shop-snippet-name__img">
+                    <span class="shop-snippet-name__text">{{group.name}}</span>
                 </div>
-                {{/subway}}
 
-                <div class="shop-snippet-address">{{name}} <br/>{{regime}}</div>
-            </div>
+                <div class="shop-snippet-info table_cell">
+                    {{#subway}}
+                    <div class="shop-snippet-metro">
+                        <span class="shop-snippet-metro__bullet" style="background: {{color}};"></span>
+                        <span class="shop-snippet-metro__text">{{name}}</span>
+                    </div>
+                    {{/subway}}
 
-            <div class="deliv-info-snippet table_cell">
-                <span class="deliv-info-snippet__date">{{date}}</span>
-                <span class="deliv-info-snippet__price">
-                    {{#cost}}{{cost}} <span class="rubl">p</span>{{/cost}}
-                    {{^cost}}Бесплатно{{/cost}}
-                </span>
+                    <div class="shop-snippet-address">{{name}} <br/>{{regime}}</div>
+                </div>
+
+                <div class="deliv-info-snippet table_cell">
+                    <span class="deliv-info-snippet__date">{{date}}</span>
+                    <span class="deliv-info-snippet__price">
+                        {{#cost}}{{cost}} <span class="rubl">p</span>{{/cost}}
+                        {{^cost}}Бесплатно{{/cost}}
+                    </span>
+                </div>
             </div>
+            {{/points}}
         </div>
-        {{/points}}
     </div>
 </div>

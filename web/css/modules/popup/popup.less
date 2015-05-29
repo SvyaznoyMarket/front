@@ -275,6 +275,12 @@
     }
 }
 
+.content-csroll {
+	min-height: 100%;
+	height: auto;
+	overflow: auto;
+}
+
 .modal {
     position: fixed;
     z-index: 1015;
@@ -288,15 +294,7 @@
     height: 100%;
 
     background-color: #fff;
-    &-head {
-        position: fixed;
-        z-index: 10;
-    }
-    &-content {
-        overflow: auto;
 
-        max-height: 100%;
-    }
     &.center {
         top: 20px;
         right: 0;
@@ -306,25 +304,19 @@
         max-width: 320px;
         height: auto;
         margin: auto;
-
-        .modal-head {
-        	position: relative;
-        }
     }
-    &-overlay {
-        position: fixed;
-        z-index: 1014;
-        top: 0;
-        left: 0;
-
-        display: none;
-
-        width: 100%;
-        height: 100%;
-
-        background-color: @black;
-
-        .opacity(.75);
+    &.fixed {
+    	position: fixed !important;
+    	left: 0 !important;
+    	margin: 0 !important;
+    	top: 0 !important;
+    	.modal-head {
+        	position: fixed;
+        	top: 0;
+        }
+        .modal-content {
+	        height: 100%;
+	    }
     }
     &-title {
         font-size: 18px;

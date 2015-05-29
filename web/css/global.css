@@ -4462,6 +4462,11 @@ body.noScroll {
 .popupHint_cnt::-webkit-scrollbar {
   display: none;
 }
+.content-csroll {
+  min-height: 100%;
+  height: auto;
+  overflow: auto;
+}
 .modal {
   position: fixed;
   z-index: 1015;
@@ -4473,14 +4478,6 @@ body.noScroll {
   height: 100%;
   background-color: #fff;
 }
-.modal-head {
-  position: fixed;
-  z-index: 10;
-}
-.modal-content {
-  overflow: auto;
-  max-height: 100%;
-}
 .modal.center {
   top: 20px;
   right: 0;
@@ -4490,24 +4487,18 @@ body.noScroll {
   height: auto;
   margin: auto;
 }
-.modal.center .modal-head {
-  position: relative;
+.modal.fixed {
+  position: fixed !important;
+  left: 0 !important;
+  margin: 0 !important;
+  top: 0 !important;
 }
-.modal-overlay {
+.modal.fixed .modal-head {
   position: fixed;
-  z-index: 1014;
   top: 0;
-  left: 0;
-  display: none;
-  width: 100%;
+}
+.modal.fixed .modal-content {
   height: 100%;
-  background-color: #000000;
-  opacity: 0.75;
-  -moz-opacity: 0.75;
-  -khtml-opacity: 0.75;
-  -webkit-opacity: 0.75;
-  -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=75);
-  filter: alpha(opacity=75);
 }
 .modal-title {
   font-size: 18px;
@@ -8021,14 +8012,9 @@ body.noScroll {
 .order-popup .checkout-payment__icon-wrap {
   float: right;
 }
-.order-popup--gray {
-  background-color: #f7f7f7;
-}
 .order-popup__head {
   line-height: 54px;
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
   height: 54px;
   color: #fff;

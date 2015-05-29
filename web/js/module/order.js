@@ -61,10 +61,11 @@ define(
                     $el       = $(this),
                     data      = $.parseJSON($($el.data('dataSelector')).html()), // TODO: выполнять один раз, результат записывать в переменную
                     $modalWindow = $($modalWindowTemplate.html()).appendTo($body),
-                    modalTitle = $el.data('modal-title')
-                ;
+                    modalTitle = $el.data('modal-title'),
+                    modalPosition = $el.data('modal-position');
 
                 $modalWindow.find('.js-modal-title').text(modalTitle);
+                $modalWindow.addClass(modalPosition);
 
                 $modalWindow.lightbox_me({
                     onLoad: function() {
@@ -128,6 +129,7 @@ define(
 
                 var
                     $el = $(e.currentTarget),
+                    $elText = $el.find('.js-order-delivery-map-link-text'),
                     $container = $($el.data('containerSelector')),
                     $containerPoints = $('.js-order-points-container'),
                     mapData = $el.data('mapData'),
@@ -135,6 +137,7 @@ define(
                 ;
 
                 $containerPoints.toggleClass(showMapClass);
+                $elText.text( $('.js-order-points-containet-type:hidden').data('order-points-type') );
 
                 require(['module/yandexmaps'], function(maps) {
                     maps.initMap($map, mapData, initMap).done(function(map) {
