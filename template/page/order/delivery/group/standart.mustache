@@ -29,15 +29,17 @@
         {{#isUserAuthenticated}}
         <div class="checkout-address__select custom-select">
             <span class="custom-select__value js-order-btn" data-btn="select-address">
-                <span class="bb-dotted">Указать адрес</span>
+                <span class="bb-dotted js-order-delivery-addressPopup-link">Указать адрес</span>
                 <i class="caret"></i>
             </span>
 
             <ul class="custom-select-list js-order-box" data-box="data-select-address">
                 <li class="custom-select-list__item">ул. Линии Октябрьской Железной Дороги, 12/1, 23</li>
                 <li class="custom-select-list__item">ул. Орджоникидзе, 10</li>
-                <li class="custom-select-list__item custom-select-list__item--add"><span class="icon-plus">+</span>
-                    <span class="bb-dotted">Добавить адрес</span></li>
+                <li class="custom-select-list__item custom-select-list__item--add">
+                    <span class="icon-plus">+</span>
+                    <span class="bb-dotted">Добавить адрес</span>
+                </li>
             </ul>
         </div>
         {{/isUserAuthenticated}}
