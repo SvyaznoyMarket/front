@@ -20,7 +20,6 @@ class Content extends Model\Promo\Target {
         parent::__construct($data);
         if (isset($data['token'])) {
             $this->contentId = (string)$data['token'];
-            $this->url = '/' . $this->contentId;
         }
     }
 }

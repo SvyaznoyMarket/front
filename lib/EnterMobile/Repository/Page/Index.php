@@ -3,6 +3,7 @@
 namespace EnterMobile\Repository\Page;
 
 use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
@@ -11,7 +12,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\Index as Page;
 
 class Index {
-    use LoggerTrait, TemplateHelperTrait;
+    use LoggerTrait, TemplateHelperTrait, RouterTrait;
 
     /**
      * @param Page $page
@@ -33,9 +34,15 @@ class Index {
                 continue;
             }
 
+            if ($promoModel->target instanceof \EnterModel\Promo\Target\Content) {
+                $targetUrl = $this->getRouter()->getUrlByRoute(new \EnterMobile\Routing\Content($promoModel->target->contentId));
+            } else {
+                $targetUrl = $promoModel->target->url;
+            }
+
             $promoData[] = [
                 'ui'    => $promoModel->ui,
-                'url'   => $promoModel->target->url,
+                'url'   => $targetUrl,
                 'image' => $source->url,
             ];
         }
