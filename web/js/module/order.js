@@ -55,7 +55,6 @@ define(
 
                 var
                     $el       = $(this),
-                    $template = $('#tpl-order-delivery-point-popup'),
                     data      = $.parseJSON($($el.data('dataSelector')).html()) // TODO: выполнять один раз, результат записывать в переменную
                 ;
 
@@ -64,7 +63,7 @@ define(
                         var
                             $content  = $('.js-modal-content');
 
-                        $content.append(mustache.render($template.html(), data));
+                        $content.append(mustache.render($pointPopupTemplate.html(), data));
                     },
                     showOverlay: false
                 });
@@ -88,7 +87,6 @@ define(
 
                 var
                     $el       = $(this),
-                    $template = $('#tpl-order-delivery-calendar'),
                     data      = $.parseJSON($($el.data('dataSelector')).html());
 
                 $('.js-modal-open').lightbox_me({
@@ -96,7 +94,7 @@ define(
                         var
                             $content  = $('.js-modal-content');
 
-                        $content.append(mustache.render($template.html(), data));
+                        $content.append(mustache.render($calendarTemplate.html(), data));
                     }
                 });
             },
