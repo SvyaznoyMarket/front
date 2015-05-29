@@ -4,6 +4,7 @@
 
 .catalogList {
 	font-size: 0;
+    margin-top: 20px;
 
 	&.productSet {
 		margin-top: 25px;
@@ -87,7 +88,12 @@
 			text-align: center;
 		}
 	}//_item
-
+    &_lk{
+        display: block;
+    }
+    .list-img_lk{
+        width: 100%;
+    }
 	.name {
 		display: inline-block;
     	overflow: hidden;
@@ -100,34 +106,9 @@
 		font-size: 16px;
 	}
 
-	.reviews {
-		height: 15px;
-		margin: 0 0 10px;
-
-		&_star {
-			display: inline-block;
-
-		    height: 14px;
-		    margin: 0 2px 0 0;
-
-		    vertical-align: top;
-
-		    line-height: 14px;
-		}
-
-		&_count {
-			display: inline-block;
-
-		    margin: 0 0 0 5px;
-
-		    vertical-align: top;
-
-			color: #6b6b6b;
-
-			font-size: 14px;
-			line-height: 1;
-		}
-	}
+	.rating{
+        margin-bottom: 0px;
+    }
 
 	.price {
 		margin: 15px 0 10px;
@@ -172,7 +153,7 @@
 .catalogList {
 
   &_item {
-    height: 400px;
+    height: 370px;
   }
 
   .name {
@@ -187,20 +168,20 @@
       background: @typ-orange;
       border-bottom: 2px solid @typ-orange-shadow;
       color: #fff;
-      font-weight: bold;
-
-      &:hover{
-        color: #fff;
-      }
 
       display: inline-block;
       width: auto;
-      height: 30px;
+      height: 32px;
       line-height: 30px;
-      padding: 0 15px;
+      text-align: center;
+      width: 88px;
+
       .rounded(3px);
       .box-sizing();
       font-size: 14px;
+      &:hover{
+        color: #fff;
+      }
   }
 
   .price {
