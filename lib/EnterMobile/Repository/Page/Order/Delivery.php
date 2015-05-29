@@ -493,6 +493,9 @@ class Delivery {
                                         ],
                                     ],
                                 ]),
+                                'order'     => [
+                                    'id' => $orderModel->blockName,
+                                ],
                             ];
                         }
                     }
