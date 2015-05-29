@@ -14,6 +14,7 @@ define(
             $balloonTemplate = $('#tpl-order-delivery-marker-balloon'),
             $pointPopupTemplate = $('#tpl-order-delivery-point-popup'),
             $calendarTemplate = $('#tpl-order-delivery-calendar'),
+            $addressPopupTemplate = $('#tpl-order-delivery-address-popup'),
 
             initMap = function(map) {
                 map.geoObjects.events.remove('click'); // TODO: можно убрать
@@ -67,6 +68,14 @@ define(
                 e.preventDefault();
 
                 require(['yandexmaps'], function(ymaps) {});
+            },
+
+            showAddressPopup = function(e) {
+                var
+                    data = {}
+                ;
+
+                mustache.render($pointPopupTemplate.html(), data);
             },
 
             // показать календарь
@@ -137,6 +146,7 @@ define(
 
         $body.on('click', '.js-order-delivery-form-control', changeSplit);
         $body.on('click', '.js-order-delivery-pointPopup-link', showPointPopup);
+        $body.on('click', '.js-order-delivery-addressPopup-link', showAddressPopup);
         $body.on('click', '.js-order-delivery-map-link', showMap);
         $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
     }
