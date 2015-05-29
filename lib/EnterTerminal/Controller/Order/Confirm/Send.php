@@ -24,8 +24,7 @@ class Send {
         }
 
         $contentItemQuery = new Query\Order\Confirm\Send($request->query['phone']);
-        $curl->prepare($contentItemQuery);
-        $curl->execute();
+        $curl->query($contentItemQuery);
 
         return new Http\JsonResponse($contentItemQuery->getResult());
     }

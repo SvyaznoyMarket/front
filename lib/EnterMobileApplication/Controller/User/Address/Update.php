@@ -61,9 +61,7 @@ class Update {
 
             $addressItemQuery = new Query\User\Address\UpdateItemByUserUi($user->ui, $address);
             $addressItemQuery->setTimeout(3 * $config->crmService->timeout);
-            $curl->prepare($addressItemQuery);
-
-            $curl->execute();
+            $curl->query($addressItemQuery);
 
             $id = $addressItemQuery->getResult()['id'];
             $request->query['id'] = $id;

@@ -32,7 +32,7 @@ class SendShopContact {
 
         $sendQuery = new Query\User\SendShopContact($shopId, $email);
         $sendQuery->setTimeout(3 * $config->coreService->timeout);
-        $curl->prepare($sendQuery);
+        $curl->query($sendQuery);
 
         $subscribeQuery = null;
         if ($isSubscribe) {
@@ -42,10 +42,8 @@ class SendShopContact {
 
             $subscribeQuery = new Query\Subscribe\CreateItem($subscribe);
             $subscribeQuery->setTimeout(3 * $config->coreService->timeout);
-            $curl->prepare($subscribeQuery);
+            $curl->query($subscribeQuery);
         }
-
-        $curl->execute();
 
         try {
             if ($subscribeQuery) {

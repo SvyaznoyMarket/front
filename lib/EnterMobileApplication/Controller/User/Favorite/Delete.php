@@ -57,9 +57,7 @@ class Delete {
 
             $favoriteItemQuery = new Query\User\Favorite\DeleteItemByUserUi($user->ui, $product);
             $favoriteItemQuery->setTimeout(3 * $config->crmService->timeout);
-            $curl->prepare($favoriteItemQuery);
-
-            $curl->execute();
+            $curl->query($favoriteItemQuery);
 
             $favoriteItemQuery->getResult();
         } catch (\Exception $e) {
