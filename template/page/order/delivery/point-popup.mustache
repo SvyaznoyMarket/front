@@ -35,7 +35,7 @@
                 <label class="custom-label flex-hor-vertical-between" for="shop1">
                     <span class="custom-label_tx">{{.}}</span>
                 </label>
-                
+
             </li>
         {{/filters.type}}
         </ul>
@@ -55,7 +55,7 @@
                 <label class="custom-label flex-hor-vertical-between" for="price1">
                     <span class="custom-label_tx">{{^.}}Бесплатно{{/.}}{{#.}}{{.}} <span class="rubl">p</span>{{/.}}</span>
                 </label>
-                
+
             </li>
         {{/filters.cost}}
         </ul>
@@ -73,14 +73,14 @@
                 <input type="checkbox" id="date1" name="paynow" class="custom-input custom-input--square-check">
 
                 <label class="custom-label flex-hor-vertical-between" for="date1"><span class="custom-label_tx">{{.}}</span></label>
-                
+
             </li>
         {{/filters.date}}
         </ul>
     </div>
 </div>
 {{! show-map показывает, что отображается в данный момент - если класс есть, то карта, если нет - список. }}
-<div class="pick-point modal-content show-map">
+<div class="pick-point modal-content js-order-points-container">
     <div id="order-{{order.id}}-map-container" class="order-popup-map" style="width: 600px; height: 400px"></div>
 
     <div class="pick-point-list table">

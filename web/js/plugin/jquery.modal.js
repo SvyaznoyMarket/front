@@ -20,6 +20,7 @@
 (function($) {
 
     $.fn.lightbox_me = function(options) {
+        console.log('lightbox_me')
 
         return this.each(function() {
 
@@ -42,7 +43,7 @@
             /*----------------------------------------------------
                DOM Building
             ---------------------------------------------------- */
-            $('body').css({'overflow':'hidden'}).append($self.hide()).append($overlay);
+            $('body').append($self.hide()).append($overlay);
 
 
             /*----------------------------------------------------
@@ -215,7 +216,7 @@
         destroyOnClose: true,
         showOverlay: true,
         parentLightbox: false,
-        preventScroll: true,
+        preventScroll: false,
 
         // callbacks
         onLoad: function() {},

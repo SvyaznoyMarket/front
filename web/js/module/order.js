@@ -69,10 +69,13 @@ define(
                 $modalWindow.lightbox_me({
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data));
+                        $body.css({'overflow':'hidden'})
                     },
                     beforeClose: function() {
                         $mapContainer.append($map);
-                    }
+                        $body.css({'overflow':'auto'})
+                    },
+                    centered: false
                 });
 
                 e.preventDefault();
@@ -106,7 +109,7 @@ define(
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($calendarTemplate.html(), data));
                     },
-                    centered: true
+                    modalCSS: {top: '60px'},
                 });
             },
 
@@ -126,8 +129,12 @@ define(
                 var
                     $el = $(e.currentTarget),
                     $container = $($el.data('containerSelector')),
-                    mapData = $el.data('mapData')
+                    $containerPoints = $('.js-order-points-container'),
+                    mapData = $el.data('mapData'),
+                    showMapClass ='show-map'
                 ;
+
+                $containerPoints.toggleClass(showMapClass);
 
                 require(['module/yandexmaps'], function(maps) {
                     maps.initMap($map, mapData, initMap).done(function(map) {
