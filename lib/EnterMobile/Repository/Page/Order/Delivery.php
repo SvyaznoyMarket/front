@@ -49,10 +49,18 @@ class Delivery {
         $regionModel = $request->region;
         $splitModel = $request->split;
 
+        // все методы оплат
+
         // индексация токенов методов доставки по группам доставки
         $deliveryMethodTokensByGroupToken = [];
         foreach ($splitModel->deliveryMethods as $deliveryMethodModel) {
             $deliveryMethodTokensByGroupToken[$deliveryMethodModel->groupId][] = $deliveryMethodModel->token;
+        }
+
+        // индексация методов оплат
+        $paymentMethodsById = [];
+        foreach ($splitModel->paymentMethods as $paymentMethod) {
+            $paymentMethodsById[$paymentMethod->id] = $paymentMethod;
         }
 
         // индексация групп точек и точек самовывоза
@@ -328,7 +336,7 @@ class Delivery {
                             'regime' => $point->regime,
                             'lat'    => $point->latitude,
                             'lng'    => $point->longitude,
-                            'dataValue'  => $templateHelper->json([ // FIXME - вынести в js
+                            'dataValue'  => $templateHelper->json([
                                 'change' => [
                                     'orders' => [
                                         [
@@ -428,7 +436,7 @@ class Delivery {
                                 'name' => $day->format('d'),
                             ];
                             if (in_array((int)$day->format('U'), $possibleDays)) {
-                                $item['dataValue'] = $templateHelper->json([ // FIXME - вынести в js
+                                $item['dataValue'] = $templateHelper->json([
                                 'change' => [
                                     'orders' => [
                                         [
@@ -454,6 +462,47 @@ class Delivery {
                         'items' => $items,
                     ];
                 }), JSON_UNESCAPED_UNICODE),
+                'paymentMethods' => call_user_func(function() use (&$templateHelper, &$splitModel, &$orderModel, &$paymentMethodsById) {
+                    $paymentMethods = [];
+
+                    foreach ($orderModel->possiblePaymentMethodIds as $paymentMethodId) {
+                        /** @var \EnterModel\Cart\Split\PaymentMethod|null $paymentMethodModel */
+                        $paymentMethodModel = isset($paymentMethodsById[$paymentMethodId]) ? $paymentMethodsById[$paymentMethodId] : null;
+                        if (!$paymentMethodModel) {
+                            $this->getLogger()->push(['type' => 'error', 'message' => 'Метод оплаты не найден', 'paymentMethodId' => $paymentMethodId, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
+
+                            continue;
+                        }
+
+                        if (in_array($paymentMethodId, ['1', '2', '5'])) {
+                            $paymentMethods[] = [
+                                'id'        => $paymentMethodModel->id,
+                                'name'      => $paymentMethodModel->name,
+                                'isActive'  =>
+                                    $orderModel->paymentMethodId
+                                    ? ($orderModel->paymentMethodId == $paymentMethodModel->id)
+                                    : ('1' == $paymentMethodModel->id)
+                                ,
+                                'dataValue' => $templateHelper->json([
+                                    'change' => [
+                                        'orders' => [
+                                            [
+                                                'blockName'       => $orderModel->blockName,
+                                                'paymentMethodId' => $paymentMethodModel->id,
+                                            ],
+                                        ],
+                                    ],
+                                ]),
+                            ];
+                        }
+                    }
+
+                    if ($paymentMethod = reset($paymentMethods)) {
+                        $paymentMethod['isActive'] = true;
+                    }
+
+                    return $paymentMethods;
+                }),
                 'messages'       => call_user_func(function() use (&$config, &$orderModel, &$priceHelper) {
                     $messages = [];
 

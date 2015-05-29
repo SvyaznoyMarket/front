@@ -36,16 +36,18 @@ define(
                     $el = $(this)
                 ;
 
-                $.ajax({
-                    url: $deliveryForm.attr('action'),
-                    data: $el.data('value'),
-                    type: 'post',
-                    timeout: 30000
-                }).done(function(response) {
-                    $($deliveryForm.data('containerSelector')).html(response)
-                }).always(function() {
-                    console.info('unblock screen');
-                });
+                if ($el.data('value')) {
+                    $.ajax({
+                        url: $deliveryForm.attr('action'),
+                        data: $el.data('value'),
+                        type: 'post',
+                        timeout: 30000
+                    }).done(function(response) {
+                        $($deliveryForm.data('containerSelector')).html(response)
+                    }).always(function() {
+                        console.info('unblock screen');
+                    });
+                }
 
                 e.preventDefault();
             },
