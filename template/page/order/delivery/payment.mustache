@@ -1,6 +1,15 @@
 {{! Оплата }}
 <div class="checkout-checkbox">
     <ul class="checkout-checkbox-lst">
+    {{#paymentMethods}}
+        <li class="checkout-checkbox-lst__i">
+            <input type="radio" id="order-delivery-payment-method-{{id}}" name="paynow" class="js-order-delivery-form-control custom-input custom-input--defradio"{{#isActive}} checked{{/isActive}} data-value="{{&dataValue}}">
+            <label class="custom-label" for="order-delivery-payment-method-{{id}}">
+                <span class="custom-label_tx">{{name}}</span>
+            </label>
+        </li>
+    {{/paymentMethods}}
+    <!--
         <li class="checkout-checkbox-lst__i">
             <input type="radio" id="type1" name="paynow" class="custom-input custom-input--defradio" checked>
             <label class="custom-label" for="type1">
@@ -15,6 +24,7 @@
                 </span>
             </label>
         </li>
+    -->
     </ul>
 </div>
 {{! Оплата - end }}
