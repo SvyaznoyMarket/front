@@ -7516,7 +7516,7 @@ body.noScroll {
   display: -webkit-flex;
   display: flex;
   flex-flow: row wrap;
-  padding-bottom: 20px;
+  padding-bottom: 15px;
 }
 .checkout-sale-code__title {
   width: 100%;
@@ -7541,6 +7541,7 @@ body.noScroll {
 }
 .checkout-sale-code__fields {
   flex-grow: 1;
+  margin-right: 35px;
 }
 .checkout-sale-code * {
   display: inline-block;
@@ -7687,6 +7688,12 @@ body.noScroll {
     padding-bottom: 10px;
     text-align: center;
     border-bottom: 1px solid #a6a6a6;
+  }
+  .checkout-sale-code__button {
+    margin-top: 10px;
+  }
+  .sale-select__item {
+    width: 100%;
   }
 }
 .form-control {
