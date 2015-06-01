@@ -1,6 +1,46 @@
 <div>
     {{^isUserAuthenticated}}
+    <div class="address-pick-snippet">
+        <div class="order-popup-map">
+              
+        </div>
+        <div class="address-pick-snippet__form">
+            <form>
+                <div class="form-control__container">
+                    <div class="form-control-group suggest-open">
+                    {{! без класса suggest-open - саджест будет скрыт}}
+                        <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
+                        <label class="form-control-group__lbl" for="">Улица</label>
+                        <div class="form-control-group__suggest suggest-control">
+                            <ul class="suggest-control-lst">
+                                <li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
+                                <li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
+                                <li class="suggest-control-lst-i">Улица Мочалок Командира</li>
+                                <li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
+                                <li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
+                                <li class="suggest-control-lst-i">Улица Мочалок Командира</li>
+                            </ul>
+                        </div>
+                    </div>
 
+                    <div class="form-control-group half-wide">
+                        <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
+                        <label class="form-control-group__lbl" for="">Дом</label>
+                    </div>
+
+                    <div class="form-control-group half-wide">
+                        <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
+                        <label class="form-control-group__lbl" for="">Квартира</label>
+                    </div>
+                    <div class="btn-container">
+                        <button class="btn btn--submit btn--orange btn--medium">Готово</button>
+                    </div>
+
+
+                </div>
+            </form>
+        </div> 
+    </div>
     {{/isUserAuthenticated}}
 
     {{#isUserAuthenticated}}
