@@ -3,16 +3,26 @@ define(
         'jquery'
     ],
     function($) {
-    	var $toggleWrap = $('.js-toggle-wrap'),
-    		$toggleLink = $toggleWrap.find('.js-toggle-link'),
-    		$toggleBox  = $toggleWrap.find('.js-toggle-box'),
-    		toggleClass = 'toggle--active';
+        var
+            toggleBox = function toggleBox(e) {
+                var
+                    $el = $(e.target),
+                    $toggleWrap = $('.js-toggle-wrap'),
+                    toggleClass = 'toggle--active',
+                    isActive;
+                // end of vars
 
-    	$toggleWrap.removeClass(toggleClass);
+                isActive = $el.closest('.js-toggle-wrap').hasClass(toggleClass);
 
-    	$('.js-toggle-link').click( function() {
-            console.log('toggle');
-    		$(this).closest('.js-toggle-wrap').toggleClass(toggleClass);
-    	})
+                if ( !isActive ) {
+                    $toggleWrap.removeClass(toggleClass);
+                    $(this).closest('.js-toggle-wrap').addClass(toggleClass);
+                } else {
+                    $(this).closest('.js-toggle-wrap').removeClass(toggleClass);
+                }
+            }
+    	// end of functions
+
+    	$('body').on('click', '.js-toggle-link', toggleBox);
     }
 )

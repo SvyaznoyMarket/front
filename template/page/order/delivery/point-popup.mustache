@@ -23,13 +23,13 @@
 </div>
 
 <div class="custom-select__kit custom-filter__kit">
-    <div class="custom-select custom-filter open">
-        <span class="custom-select__value" data-btn="select-point-type">
+    <div class="custom-select custom-filter toggle js-toggle-wrap">
+        <span class="custom-select__value toggle-link js-toggle-link">
             <span class="bb-dotted">Все точки</span>
             <i class="caret"></i>
         </span>
 
-        <ul class="custom-select-list" data-box="data-select-point-type">
+        <ul class="custom-select-list toggle-box">
         {{#filters.type}}
             <li class="custom-select-list__item">
                 <input type="checkbox" id="shop1" name="paynow" class="custom-input custom-input--square-check">
@@ -43,13 +43,13 @@
         </ul>
     </div>
 
-    <div class="custom-select custom-filter">
-        <span class="custom-select__value" data-btn="select-price">
+    <div class="custom-select custom-filter toggle js-toggle-wrap">
+        <span class="custom-select__value toggle-link js-toggle-link">
             <span class="bb-dotted">Стоимость</span>
             <i class="caret"></i>
         </span>
 
-        <ul class="custom-select-list" data-box="data-select-price">
+        <ul class="custom-select-list toggle-box">
         {{#filters.cost}}
             <li class="custom-select-list__item">
                 <input type="checkbox" id="price1" name="paynow" class="custom-input custom-input--square-check" >
@@ -63,19 +63,18 @@
         </ul>
     </div>
 
-    <div class="custom-select custom-filter">
-        <span class="custom-select__value" data-btn="select-date">
+    <div class="custom-select custom-filter toggle js-toggle-wrap">
+        <span class="custom-select__value toggle-link js-toggle-link">
             <span class="bb-dotted">Дата</span>
             <i class="caret"></i>
         </span>
 
-        <ul class="custom-select-list" data-box="data-select-date">
+        <ul class="custom-select-list toggle-box">
         {{#filters.date}}
             <li class="custom-select-list__item">
                 <input type="checkbox" id="date1" name="paynow" class="custom-input custom-input--square-check">
 
                 <label class="custom-label flex-hor-vertical-between" for="date1"><span class="custom-label_tx">{{.}}</span></label>
-
             </li>
         {{/filters.date}}
         </ul>

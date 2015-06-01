@@ -3645,7 +3645,6 @@ body.noScroll {
   -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
-  display: none;
 }
 .custom-select__kit.custom-filter__kit .custom-select-list__item {
   border-top: 0;
