@@ -30,12 +30,7 @@ class ListByFilter {
         foreach ($request->products as $productModel) {
             $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel), $request->category);
 
-            if ($request->buyBtnListing) {
-                $page->productCards[] = $renderer->render('partial/product-card/product_with_buy_button', $productCard);
-            } else {
-                $page->productCards[] = $renderer->render('partial/product-card/default', $productCard);
-            }
-
+            $page->productCards[] = $renderer->render('partial/product-card/default', $productCard);
         }
 
         // виджеты

@@ -4930,7 +4930,7 @@ body.noScroll {
   background: #f99b1c;
   border-bottom: 2px solid #ea7900;
   color: #fff;
-  display: inline-block;
+  display: none;
   width: auto;
   height: 32px;
   line-height: 30px;
@@ -4961,6 +4961,9 @@ body.noScroll {
 }
 .catalogList .price_now-sale {
   color: #000;
+}
+.buyBtnListing .btnBuy {
+  display: inline-block;
 }
 .catalogList .catalogListItemWrapper {
   display: none;
