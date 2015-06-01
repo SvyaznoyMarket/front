@@ -81,7 +81,9 @@ define(
 
                 e.preventDefault();
 
-                require(['yandexmaps'], function(ymaps) {});
+                setTimeout(function() {
+                    require(['module/yandexmaps'], function() {});
+                }, 2500)
             },
 
             showAddressPopup = function(e) {
@@ -178,6 +180,8 @@ define(
                         map.geoObjects.removeAll();
                         map.container.fitToViewport();
 
+                        $container.append($map);
+
                         _.each(points, function(point){
                             try {
                                 placemark = new maps.ymaps.Placemark(
@@ -201,8 +205,6 @@ define(
                                 console.error(e);
                             }
                         });
-
-                        $container.append($map);
                     });
                 });
             }
