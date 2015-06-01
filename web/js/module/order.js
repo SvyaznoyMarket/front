@@ -61,19 +61,18 @@ define(
                     points = data.points,
                     newPoints = {};
 
+                newPoints.points = [];
+
                 for ( var j = 0; j < params.length; j++ ) {
 
                     for ( var i = 0; i < points.length; i++ ) {
                         if ( params[j] == points[i].group.value || params[j] == points[i].cost.name || params[j] == points[i].date.value ) {
-                            newPoints = {
-                                points: points[i]
-                            };
+                            newPoints.points.push(points[i]);
                         }
-                        $('.js-order-points-containet-type').html(mustache.render($pointPopupTemplate.html(), newPoints));
                     }
                 }
 
-
+                $('.js-order-points-container-type-points').html(mustache.render($pointPopupTemplate.html(), newPoints));
 
                 console.log(newPoints);
                 console.log(data);
@@ -84,8 +83,7 @@ define(
                 var
                     $filterList = $('.js-order-delivery-points-filter-params-list'),
                     $inputCheck = $filterList.find('input'),
-                    params = [],
-                    data = [];
+                    params = [];
 
                 $inputCheck.each(function() {
                     if ( $(this).prop('checked') == true ) {
@@ -260,7 +258,6 @@ define(
         $body.on('click', '.js-order-delivery-discountPopup-link', showDiscountPopup);
         $body.on('click', '.js-order-delivery-map-link', showMap);
         $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
-        //$body.on('click', '.js-modal-content', getPoints);
-        $body.on('click', '.js-order-delivery-points-filter-param', filterPoints);
+        $body.on('change', '.js-order-delivery-points-filter-params-list input', filterPoints);
     }
 );
