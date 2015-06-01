@@ -1,10 +1,9 @@
-{{! Нужно убрать свойство данного блока max-width: 300px, которое ставится js-ом }}
-<div class="popupBox order-popup">
-    <div class="order-popup__head">
-        <span class="popup-close">Отмена</span>
-        <span class="popup-title">Адрес доставки</span>
-    </div>
+<div>
+    {{^isUserAuthenticated}}
 
+    {{/isUserAuthenticated}}
+
+    {{#isUserAuthenticated}}
     <ul class="checkout-checkbox-lst">
         <li class="checkout-checkbox-lst__i">
             <input type="radio" id="adr1" name="paynow" class="custom-input custom-input--defradio" checked>
@@ -46,7 +45,7 @@
             </label>
         </li>
     </ul>
+    {{/isUserAuthenticated}}
 
     <div class="btn-container"><a href="" class="btn btn--orange btn--pay">Выбрать</a></div>
-
 </div>

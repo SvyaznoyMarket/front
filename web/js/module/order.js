@@ -86,10 +86,22 @@ define(
 
             showAddressPopup = function(e) {
                 var
-                    data = {}
+                    $el           = $(this),
+                    $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
+                    modalTitle    = $el.data('modal-title'),
+                    modalPosition = $el.data('modal-position'),
+                    data          = {}
                 ;
 
-                mustache.render($pointPopupTemplate.html(), data);
+                $modalWindow.find('.js-modal-title').text(modalTitle);
+                $modalWindow.addClass(modalPosition);
+
+                $modalWindow.lightbox_me({
+                    onLoad: function() {
+                        $modalWindow.find('.js-modal-content').append(mustache.render($addressPopupTemplate.html(), data));
+                    },
+                    modalCSS: {top: '60px'},
+                });
             },
 
             // показать календарь
