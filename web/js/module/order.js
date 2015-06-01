@@ -122,7 +122,7 @@ define(
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($calendarTemplate.html(), data));
                     },
-                    modalCSS: {top: '60px'},
+                    // modalCSS: {top: '60px'},
                 });
             },
 
