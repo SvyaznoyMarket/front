@@ -355,8 +355,10 @@ class Client {
     }
 
     /**
+     * @param Query $query
      * @param array $info
      * @param string $response
+     * @throws \Exception
      */
     private function handleHttpError(Query $query, $info, $response) {
         if ($info['http_code'] >= 300) {

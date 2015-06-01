@@ -74,7 +74,7 @@ namespace EnterAggregator\Controller\Cart {
             $splitQuery->setTimeout(10 * $config->coreService->timeout);
             $curl->prepare($splitQuery);
 
-            $curl->execute();
+            $curl->execute($splitQuery->getTimeout() / 2, 2);
 
             // индексация товаров из корзины по идентификатору
             /** @var Model\Cart\Product[] $cartProductsById */
