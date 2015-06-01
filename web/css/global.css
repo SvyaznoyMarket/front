@@ -7304,6 +7304,9 @@ body.noScroll {
   line-height: 34px;
   float: right;
 }
+.checkout-img-container {
+  text-align: center;
+}
 .checkout-order {
   font-size: 14px;
   margin: 0px;
@@ -7312,7 +7315,7 @@ body.noScroll {
   border-color: #a6a6a6;
 }
 .checkout-order__box {
-  padding: 10px 10px 5px;
+  padding: 10px 10px 5px 0;
   border-bottom: 1px solid #a6a6a6;
   background: #f7f7f7;
 }
