@@ -3650,11 +3650,11 @@ body.noScroll {
   border-top: 0;
   color: #686868;
 }
-.custom-select__kit.custom-filter__kit .custom-select.open .custom-select__value {
+.custom-select__kit.custom-filter__kit .custom-select.toggle--active .custom-select__value {
   border-color: #c7c7c7;
   background-color: #fff;
 }
-.custom-select__kit.custom-filter__kit .custom-select.open .custom-select-list {
+.custom-select__kit.custom-filter__kit .custom-select.toggle--active .custom-select-list {
   display: block;
   z-index: 1;
 }
