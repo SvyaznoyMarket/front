@@ -54,6 +54,50 @@ define(
                 e.preventDefault();
             },
 
+            getPoints = function( params ) {
+                var
+                    id = $('.js-delivery-type').data('data-selector'),
+                    data = $.parseJSON($(id).html()),
+                    points = data.points,
+                    newPoints = {};
+
+                for ( var j = 0; j < params.length; j++ ) {
+
+                    for ( var i = 0; i < points.length; i++ ) {
+                        if ( params[j] == points[i].group.value || params[j] == points[i].cost.name || params[j] == points[i].date.value ) {
+                            newPoints = {
+                                points: points[i]
+                            };
+                        }
+                        $('.js-order-points-containet-type').html(mustache.render($pointPopupTemplate.html(), newPoints));
+                    }
+                }
+
+
+
+                console.log(newPoints);
+                console.log(data);
+            },
+
+            filterPoints = function( e ) {
+                e.stopPropagation();
+                var
+                    $filterList = $('.js-order-delivery-points-filter-params-list'),
+                    $inputCheck = $filterList.find('input'),
+                    params = [],
+                    data = [];
+
+                $inputCheck.each(function() {
+                    if ( $(this).prop('checked') == true ) {
+                        params.push(this.value);
+                    }
+                })
+
+                getPoints(params);
+
+                console.log(params);
+            },
+
             showPointPopup = function(e) {
                 e.stopPropagation();
 
@@ -214,5 +258,7 @@ define(
         $body.on('click', '.js-order-delivery-discountPopup-link', showDiscountPopup);
         $body.on('click', '.js-order-delivery-map-link', showMap);
         $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
+        //$body.on('click', '.js-modal-content', getPoints);
+        $body.on('click', '.js-order-delivery-points-filter-param', filterPoints);
     }
 );
