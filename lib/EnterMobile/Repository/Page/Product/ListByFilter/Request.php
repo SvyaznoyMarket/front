@@ -23,4 +23,6 @@ class Request {
     public $count;
     /** @var \EnterModel\Product\Category|null */
     public $category;
+    /** @var bool */
+    public $buyBtnListing = false;
 }
