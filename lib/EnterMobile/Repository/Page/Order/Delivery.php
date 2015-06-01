@@ -308,9 +308,7 @@ class Delivery {
                         // дата
                         $date = null;
                         try {
-                            $date = $dateHelper->humanizeDate(
-                                new \DateTime($possiblePointModel->nearestDay)
-                            );
+                            $date = new \DateTime($possiblePointModel->nearestDay);
                         } catch (\Exception $e) {
                         }
 
@@ -318,13 +316,20 @@ class Delivery {
                             'id'        => $possiblePointModel->id,
                             'name'      => $point->name,
                             'group'     => [
-                                'token' => $pointGroup->token,
                                 'name'  => $pointGroup->blockName,
+                                'value' => $pointGroup->token,
                             ],
                             'icon'      => $this->getPointIcon($pointGroup->token),
-                            'date'      => $date ?: false,
+                            'date'      => [
+                                'name'  => $date ? $dateHelper->humanizeDate($date) : null,
+                                'value' => $date ? $date->getTimestamp() : null,
+                            ],
                             'address'   => $point->address,
-                            'cost'      => $possiblePointModel->cost ?: false,
+                            'cost'      => [
+                                'name'  => $possiblePointModel->cost ?: false,
+                                'value' => $possiblePointModel->cost,
+                            ]
+                            ,
                             'subway'    =>
                                 isset($point->subway[0])
                                 ? [
@@ -355,32 +360,38 @@ class Delivery {
 
                         // фильтр по типу точки
                         if (!isset($filtersByToken['type'][$pointGroup->blockName])) {
-                            $filtersByToken['type'][$pointGroup->blockName] = null;
+                            $filtersByToken['type'][$pointGroup->blockName] = [
+                                'name'  => $pointGroup->blockName,
+                                'value' => $pointGroup->token,
+                            ];
                         }
                         // фильтр по цене
                         if (!isset($filtersByToken['cost'][$possiblePointModel->cost])) {
-                            $filtersByToken['cost'][$possiblePointModel->cost] = null;
+                            $filtersByToken['cost'][$possiblePointModel->cost] = [
+                                'name'  => $possiblePointModel->cost ?: false,
+                                'value' => $possiblePointModel->cost,
+                            ];
                         }
                         // фильтр по дате
-                        if (!isset($filtersByToken['date'][$date])) {
-                            $filtersByToken['date'][$date] = null;
+                        if (!isset($filtersByToken['date'][$date->getTimestamp()])) {
+                            $filtersByToken['date'][$date->getTimestamp()] = [
+                                'name'  => $dateHelper->humanizeDate($date),
+                                'value' => $date->getTimestamp(),
+                            ];
                         }
                     }
 
                     // convert filter format
-                    $filtersByToken = array_map(
+                    $filters = array_map(
                         function($filter) {
-                            return array_keys($filter);
+                            return array_values($filter);
                         },
                         $filtersByToken
                     );
 
-                    // cost filter fix
-                    array_walk($filtersByToken['cost'], function(&$v) { if (!$v) $v = false; });
-
                     return [
                         'points'       => $points,
-                        'filters'      => $filtersByToken,
+                        'filters'      => $filters,
                         'order'        => [
                             'id' => $orderModel->blockName,
                         ],

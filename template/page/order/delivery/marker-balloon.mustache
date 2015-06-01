@@ -25,10 +25,10 @@
 
 
     <div class="deliv-info-snippet">
-        <span class="deliv-info-snippet__date">{{date}}</span>
+        <span class="deliv-info-snippet__date">{{date.name}}</span>
         <span class="deliv-info-snippet__price">
-            {{#cost}}{{cost}} <span class="rubl">p</span>{{/cost}}
-            {{^cost}}Бесплатно{{/cost}}
+            {{#cost.name}}{{cost.name}} <span class="rubl">p</span>{{/cost.name}}
+            {{^cost.name}}Бесплатно{{/cost.name}}
         </span>
     </div>
 

@@ -32,10 +32,10 @@
         <ul class="custom-select-list toggle-box">
         {{#filters.type}}
             <li class="custom-select-list__item">
-                <input type="checkbox" id="shop1" name="paynow" class="custom-input custom-input--square-check">
+                <input type="checkbox" id="order-{{order.id}}-delivery-filter-type-{{value}}" name="order-{{order.id}}-delivery-filter-type" class="custom-input custom-input--square-check" value="{{value}}" />
 
-                <label class="custom-label flex-hor-vertical-between" for="shop1">
-                    <span class="custom-label_tx">{{.}}</span>
+                <label class="custom-label flex-hor-vertical-between" for="order-{{order.id}}-delivery-filter-type-{{value}}">
+                    <span class="custom-label_tx">{{name}}</span>
                 </label>
 
             </li>
@@ -52,10 +52,10 @@
         <ul class="custom-select-list toggle-box">
         {{#filters.cost}}
             <li class="custom-select-list__item">
-                <input type="checkbox" id="price1" name="paynow" class="custom-input custom-input--square-check" >
+                <input type="checkbox" id="order-{{order.id}}-delivery-filter-cost-{{value}}" name="order-{{order.id}}-delivery-filter-cost" class="custom-input custom-input--square-check" value="{{value}}" />
 
-                <label class="custom-label flex-hor-vertical-between" for="price1">
-                    <span class="custom-label_tx">{{^.}}Бесплатно{{/.}}{{#.}}{{.}} <span class="rubl">p</span>{{/.}}</span>
+                <label class="custom-label flex-hor-vertical-between" for="order-{{order.id}}-delivery-filter-cost-{{value}}">
+                    <span class="custom-label_tx">{{^name}}Бесплатно{{/name}}{{#name}}{{name}} <span class="rubl">p</span>{{/name}}</span>
                 </label>
 
             </li>
@@ -72,9 +72,9 @@
         <ul class="custom-select-list toggle-box">
         {{#filters.date}}
             <li class="custom-select-list__item">
-                <input type="checkbox" id="date1" name="paynow" class="custom-input custom-input--square-check">
+                <input type="checkbox" id="order-{{order.id}}-delivery-filter-date-{{value}}" name="order-{{order.id}}-delivery-filter-date" class="custom-input custom-input--square-check"  value="{{value}}" />
 
-                <label class="custom-label flex-hor-vertical-between" for="date1"><span class="custom-label_tx">{{.}}</span></label>
+                <label class="custom-label flex-hor-vertical-between" for="order-{{order.id}}-delivery-filter-date-{{value}}"><span class="custom-label_tx">{{name}}</span></label>
             </li>
         {{/filters.date}}
         </ul>
@@ -107,10 +107,10 @@
                 </div>
 
                 <div class="deliv-info-snippet table_cell">
-                    <span class="deliv-info-snippet__date">{{date}}</span>
+                    <span class="deliv-info-snippet__date">{{date.name}}</span>
                     <span class="deliv-info-snippet__price">
-                        {{#cost}}{{cost}} <span class="rubl">p</span>{{/cost}}
-                        {{^cost}}Бесплатно{{/cost}}
+                        {{#cost.name}}{{cost.name}} <span class="rubl">p</span>{{/cost.name}}
+                        {{^cost.name}}Бесплатно{{/cost.name}}
                     </span>
                 </div>
             </div>
