@@ -168,14 +168,12 @@
 
             {{>page/order/delivery/product-list}}
 
-            {{>page/order/delivery/discount-list}}
-
             {{>page/order/delivery/discount}}
 
             {{! общая стоимость заказа }}
             <div class="checkout-summary checkout-order__box table">
                 <div class="table_cell">
-                    <button class="js-order-delivery-discountPopup-link btn-transparent btn-transparent--normal" data-btn="select-sale"><span class="bb-dotted">Добавить скидку</span></button>
+                    <button class="btn-transparent btn-transparent--normal js-order-delivery-discountPopup-link" data-modal-position="fixed" data-modal-title="Добавить скидку"><span class="bb-dotted">Добавить скидку</span></button>
                 </div>
 
                 <div class="table_cell ta-r">
