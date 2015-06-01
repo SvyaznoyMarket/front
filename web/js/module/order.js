@@ -114,28 +114,6 @@ define(
                 });
             },
 
-            // показать календарь
-            showDiscount = function(e) {
-                e.stopPropagation();
-
-                var
-                    $el       = $(this),
-                    //data      = $.parseJSON($($el.data('dataSelector')).html()),
-                    $modalWindow = $($modalWindowTemplate.html()).appendTo($body),
-                    modalTitle = $el.data('modal-title'),
-                    modalPosition = $el.data('modal-position');
-
-                $modalWindow.find('.js-modal-title').text(modalTitle);
-                $modalWindow.addClass(modalPosition);
-
-                $modalWindow.lightbox_me({
-                    onLoad: function() {
-                        //$modalWindow.find('.js-modal-content').append(mustache.render($calendarTemplate.html(), data));
-                    },
-                    centered: false
-                });
-            },
-
             showDiscountPopup = function(e) {
                 e.stopPropagation();
                 console.info('showDiscountPopup');
