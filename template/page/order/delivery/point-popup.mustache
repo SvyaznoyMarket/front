@@ -22,70 +22,71 @@
     </form>
 </div>
 
-<div class="custom-select__kit custom-filter__kit">
-    <div class="custom-select custom-filter toggle js-toggle-wrap">
-        <span class="custom-select__value toggle-link js-toggle-link">
-            <span class="bb-dotted">Все точки</span>
-            <i class="caret"></i>
-        </span>
+<div class="dropdowns">
+    <div class="custom-select__kit custom-filter__kit">
+        <div class="custom-select custom-filter toggle js-toggle-wrap">
+            <span class="custom-select__value toggle-link js-toggle-link">
+                <span class="bb-dotted">Все точки</span>
+                <i class="caret"></i>
+            </span>
 
-        <ul class="custom-select-list toggle-box">
-        {{#filters.type}}
-            <li class="custom-select-list__item">
-                <input type="checkbox" id="order-{{order.id}}-delivery-filter-type-{{value}}" name="order-{{order.id}}-delivery-filter-type" class="custom-input custom-input--square-check" value="{{value}}" />
+            <ul class="custom-select-list toggle-box">
+            {{#filters.type}}
+                <li class="custom-select-list__item">
+                    <input type="checkbox" id="order-{{order.id}}-delivery-filter-type-{{value}}" name="order-{{order.id}}-delivery-filter-type" class="custom-input custom-input--square-check" value="{{value}}" />
 
-                <label class="custom-label flex-hor-vertical-between" for="order-{{order.id}}-delivery-filter-type-{{value}}">
-                    <span class="custom-label_tx">{{name}}</span>
-                </label>
+                    <label class="custom-label flex-hor-vertical-between" for="order-{{order.id}}-delivery-filter-type-{{value}}">
+                        <span class="custom-label_tx">{{name}}</span>
+                    </label>
 
-            </li>
-        {{/filters.type}}
-        </ul>
-    </div>
+                </li>
+            {{/filters.type}}
+            </ul>
+        </div>
 
-    <div class="custom-select custom-filter toggle js-toggle-wrap">
-        <span class="custom-select__value toggle-link js-toggle-link">
-            <span class="bb-dotted">Стоимость</span>
-            <i class="caret"></i>
-        </span>
+        <div class="custom-select custom-filter toggle js-toggle-wrap">
+            <span class="custom-select__value toggle-link js-toggle-link">
+                <span class="bb-dotted">Стоимость</span>
+                <i class="caret"></i>
+            </span>
 
-        <ul class="custom-select-list toggle-box">
-        {{#filters.cost}}
-            <li class="custom-select-list__item">
-                <input type="checkbox" id="order-{{order.id}}-delivery-filter-cost-{{value}}" name="order-{{order.id}}-delivery-filter-cost" class="custom-input custom-input--square-check" value="{{value}}" />
+            <ul class="custom-select-list toggle-box">
+            {{#filters.cost}}
+                <li class="custom-select-list__item">
+                    <input type="checkbox" id="order-{{order.id}}-delivery-filter-cost-{{value}}" name="order-{{order.id}}-delivery-filter-cost" class="custom-input custom-input--square-check" value="{{value}}" />
 
-                <label class="custom-label flex-hor-vertical-between" for="order-{{order.id}}-delivery-filter-cost-{{value}}">
-                    <span class="custom-label_tx">{{^name}}Бесплатно{{/name}}{{#name}}{{name}} <span class="rubl">p</span>{{/name}}</span>
-                </label>
+                    <label class="custom-label flex-hor-vertical-between" for="order-{{order.id}}-delivery-filter-cost-{{value}}">
+                        <span class="custom-label_tx">{{^name}}Бесплатно{{/name}}{{#name}}{{name}} <span class="rubl">p</span>{{/name}}</span>
+                    </label>
 
-            </li>
-        {{/filters.cost}}
-        </ul>
-    </div>
+                </li>
+            {{/filters.cost}}
+            </ul>
+        </div>
 
-    <div class="custom-select custom-filter toggle js-toggle-wrap">
-        <span class="custom-select__value toggle-link js-toggle-link">
-            <span class="bb-dotted">Дата</span>
-            <i class="caret"></i>
-        </span>
+        <div class="custom-select custom-filter toggle js-toggle-wrap">
+            <span class="custom-select__value toggle-link js-toggle-link">
+                <span class="bb-dotted">Дата</span>
+                <i class="caret"></i>
+            </span>
 
-        <ul class="custom-select-list toggle-box">
-        {{#filters.date}}
-            <li class="custom-select-list__item">
-                <input type="checkbox" id="order-{{order.id}}-delivery-filter-date-{{value}}" name="order-{{order.id}}-delivery-filter-date" class="custom-input custom-input--square-check"  value="{{value}}" />
+            <ul class="custom-select-list toggle-box">
+            {{#filters.date}}
+                <li class="custom-select-list__item">
+                    <input type="checkbox" id="order-{{order.id}}-delivery-filter-date-{{value}}" name="order-{{order.id}}-delivery-filter-date" class="custom-input custom-input--square-check"  value="{{value}}" />
 
-                <label class="custom-label flex-hor-vertical-between" for="order-{{order.id}}-delivery-filter-date-{{value}}"><span class="custom-label_tx">{{name}}</span></label>
-            </li>
-        {{/filters.date}}
-        </ul>
+                    <label class="custom-label flex-hor-vertical-between" for="order-{{order.id}}-delivery-filter-date-{{value}}"><span class="custom-label_tx">{{name}}</span></label>
+                </li>
+            {{/filters.date}}
+            </ul>
+        </div>
     </div>
 </div>
-
 {{! show-map показывает, что отображается в данный момент - если класс есть, то карта, если нет - список. }}
 <div class="pick-point js-order-points-container">
     <div id="order-{{order.id}}-map-container" class="order-popup-map js-order-points-containet-type" data-order-points-type="Карта"></div>
 
-    <div class="content-csroll">
+    <div class="content-scroll">
         <div class="pick-point-list table js-order-points-containet-type" data-order-points-type="Список">
             {{#points}}
 

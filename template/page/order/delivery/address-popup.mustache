@@ -1,4 +1,4 @@
-<div>
+
     {{^isUserAuthenticated}}
     <div class="address-pick-snippet">
         <div class="order-popup-map">
@@ -7,8 +7,9 @@
         <div class="address-pick-snippet__form">
             <form>
                 <div class="form-control__container">
-                    <div class="form-control-group suggest-open">
-                    {{! без класса suggest-open - саджест будет скрыт}}
+                    <div class="form-control-group">
+                    {{! без класса suggest-open - саджест будет скрыт
+                    <div class="form-control-group suggest-open"> - а так - показан}}
                         <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
                         <label class="form-control-group__lbl" for="">Улица</label>
                         <div class="form-control-group__suggest suggest-control">
@@ -85,7 +86,7 @@
             </label>
         </li>
     </ul>
+    <div class="btn-container"><a href="" class="btn btn--orange btn--pay">Выбрать</a></div>
     {{/isUserAuthenticated}}
 
-    <div class="btn-container"><a href="" class="btn btn--orange btn--pay">Выбрать</a></div>
-</div>
+    
