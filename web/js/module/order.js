@@ -102,13 +102,14 @@ define(
                 e.preventDefault();
             },
 
+            // получаем точки доставки и фильтруем их по выбранным параметрам фильтрации getFilterPoints()
             getPoints = function() {
                 var
                     id = $('.js-delivery-type').data('data-selector'),
                     data = $.parseJSON($(id).html()),
                     points = data.points,
                     newPoints = {},
-                    params = getFilter(),
+                    params = getFilterPoints(),
                     key, pointAdd;
 
                 newPoints.points = [];
@@ -119,11 +120,8 @@ define(
 
                             pointAdd = params[key].indexOf(points[key].value.toString());
 
-                            console.log(params[key].indexOf(points[key].value.toString()));
-
                             if ( pointAdd === -1 ) {
                                 return false;
-                                console.log('no');
                             }
                         }
                     }
@@ -135,14 +133,14 @@ define(
                 return newPoints;
             },
 
-            getFilter = function() {
+            // формируем массив параметров фильтрации точек доставки
+            getFilterPoints = function() {
                 var
-                    $filterList = $('.js-order-delivery-points-filter-params-list'),
-                    $inputCheck = $filterList.find('input'),
-                    params      = {},
+                    $input = $('.js-order-filter-points-input'),
+                    params = {},
                     key;
 
-                $inputCheck.each(function(key) {
+                $input.each(function(key) {
                     var
                         $this = $(this);
 
@@ -160,14 +158,18 @@ define(
                 return params;
             },
 
+            // отображаем отфильтрованные точки доставки
             renderPoints = function() {
                 var
-                    points = getPoints();
+                    points          = getPoints(),
+                    partial         = $pointPopupTemplate.data('partial')['page/order/delivery/point-list'],
+                    containerPoints = $('.js-order-points-container-type-points');
 
-                $('.js-order-points-container-type-points').html(mustache.render($pointPopupTemplate.data('partial')['page/order/delivery/point-list'], points));
+                containerPoints.html(mustache.render(partial, points));
             },
 
-            filterChange = function() {
+            // фильтруем точки самовывоза
+            filterChangePoints = function() {
                 var
                     points = getPoints();
 
@@ -342,6 +344,6 @@ define(
         $body.on('click', '.js-order-delivery-discountPopup-link', showDiscountPopup);
         $body.on('click', '.js-order-delivery-map-link', showMap);
         $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
-        $body.on('change', '.js-order-delivery-points-filter-params-list input', filterChange);
+        $body.on('change', '.js-order-filter-points-input', filterChangePoints);
     }
 );
