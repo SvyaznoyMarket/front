@@ -66,7 +66,13 @@ class HandleResponse {
                 ] : null,
             ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
 
-            throw $e;
+            if ($request->isXmlHttpRequest() && ($e->getCode() > 300) && ($e->getCode() < 600)) {
+                $response = new Http\JsonResponse([
+                    'error' => ['code' => $e->getCode(), 'message' => $e->getMessage()],
+                ], $e->getCode());
+            } else {
+                throw $e;
+            }
         }
 
         $logger->push(['request' => [

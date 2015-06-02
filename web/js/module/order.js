@@ -232,7 +232,9 @@ define(
                     //data      = $.parseJSON($($el.data('dataSelector')).html()),
                     $modalWindow = $($modalWindowTemplate.html()).appendTo($body),
                     modalTitle = $el.data('modal-title'),
-                    modalPosition = $el.data('modal-position');
+                    modalPosition = $el.data('modal-position'),
+                    $discountContainer
+                ;
 
                 $modalWindow.find('.js-modal-title').text(modalTitle);
                 $modalWindow.addClass(modalPosition);
@@ -240,6 +242,14 @@ define(
                 $modalWindow.lightbox_me({
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($discountPopupTemplate.html(), data));
+
+                        $discountContainer = $('.js-user-discount-container');
+
+                        if ($discountContainer.length && $discountContainer.data('url')) {
+                            $.get($discountContainer.data('url')).done(function(response) {
+                                $discountContainer.html(response.content);
+                            })
+                        }
                     },
                     centered: false
                 });

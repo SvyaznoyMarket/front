@@ -1,0 +1,11 @@
+<div class="sale-select">
+    <div class="sale-select__tl">Ваши фишки EnterPrize</div>
+    <div class="sale-select__list">
+    {{#coupons}}
+        <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
+            <img class="sale-select__left" src="{{image}}" alt="">
+            <span class="sale-select__right">{{name}}</span>
+        </a>
+    {{/coupons}}
+    </div>
+</div>
