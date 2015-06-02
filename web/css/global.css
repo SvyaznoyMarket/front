@@ -8290,6 +8290,12 @@ body.noScroll {
 .pick-point-list-i {
   padding: 0;
 }
+.pick-point .order-popup-map {
+  display: none;
+}
+.pick-point.show-map .order-popup-map {
+  display: block;
+}
 .pick-point .shop-snippet-name {
   position: relative;
   width: 70px;
@@ -8383,9 +8389,6 @@ body.noScroll {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-}
-.show-map .order-popup-map {
-  display: block;
 }
 .map-baloon {
   width: 270px;
