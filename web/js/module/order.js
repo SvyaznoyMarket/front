@@ -54,56 +54,88 @@ define(
                 e.preventDefault();
             },
 
-            getPoints = function( params ) {
+            getPoints = function() {
                 var
                     id = $('.js-delivery-type').data('data-selector'),
                     data = $.parseJSON($(id).html()),
                     points = data.points,
-                    newPoints = {};
+                    newPoints = {},
+                    params = getFilter(),
+                    key, pointAdd;
 
                 newPoints.points = [];
 
-                for ( var j = 0; j < params.length; j++ ) {
+                function filterPoints( points ) {
+                    for ( key in points ) {
+                        if ( params[key] && params[key].length && points[key] && points[key].hasOwnProperty('value') ) {
 
-                    for ( var i = 0; i < points.length; i++ ) {
-                        if ( params[j] == points[i].group.value || params[j] == points[i].cost.name || params[j] == points[i].date.value ) {
-                            newPoints.points.push(points[i]);
+                            pointAdd = params[key].indexOf(points[key].value.toString());
+
+                            console.log(params[key].indexOf(points[key].value.toString()));
+
+                            if ( pointAdd === -1 ) {
+                                return false;
+                                console.log('no');
+                            }
                         }
                     }
-                }
+                    return true;
+                };
 
-                $('.js-order-points-container-type-points').html(mustache.render($pointPopupTemplate.html(), newPoints));
+                newPoints.points = points.filter(filterPoints);
 
-                console.log(newPoints);
-                console.log(data);
+                return newPoints;
             },
 
-            filterPoints = function( e ) {
-                e.stopPropagation();
+            getFilter = function() {
                 var
                     $filterList = $('.js-order-delivery-points-filter-params-list'),
                     $inputCheck = $filterList.find('input'),
-                    params = [];
+                    params      = {},
+                    key;
 
-                $inputCheck.each(function() {
-                    if ( $(this).prop('checked') == true ) {
-                        params.push(this.value);
+                $inputCheck.each(function(key) {
+                    var
+                        $this = $(this);
+
+                    key = $this.data('points-filter-type');
+
+                    if ( typeof params[key] === 'undefined' ) {
+                        params[key] = [];
                     }
-                })
 
-                getPoints(params);
+                    if ( $this.prop('checked') == true ) {
+                        params[key].push($this.val());
+                    }
+                });
 
-                console.log(params);
+                return params;
+            },
+
+            renderPoints = function() {
+                var
+                    points = getPoints();
+
+                $('.js-order-points-container-type-points').html(mustache.render($pointPopupTemplate.data('partial')['page/order/delivery/point-list'], points));
+            },
+
+            filterChange = function() {
+                var
+                    points = getPoints();
+
+                renderPoints(points);
+
+                return false;
             },
 
             showPointPopup = function(e) {
                 e.stopPropagation();
 
                 var
-                    $el       = $(this),
-                    data      = $.parseJSON($($el.data('dataSelector')).html()), // TODO: выполнять один раз, результат записывать в переменную
-                    $modalWindow = $($modalWindowTemplate.html()).appendTo($body),
-                    modalTitle = $el.data('modal-title'),
+                    $el           = $(this),
+                    $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
+                    data          = $.parseJSON($($el.data('dataSelector')).html()), // TODO: выполнять один раз, результат записывать в переменную
+                    modalTitle    = $el.data('modal-title'),
                     modalPosition = $el.data('modal-position');
 
                 $modalWindow.find('.js-modal-title').text(modalTitle);
@@ -208,7 +240,7 @@ define(
                 ;
 
                 $containerPoints.toggleClass(showMapClass);
-                $elText.text( $('.js-order-points-container-type:hidden').data('order-points-type') );
+                $elText.text( $('.js-order-points-containet-type:hidden').data('order-points-type') );
 
                 require(['module/yandexmaps'], function(maps) {
                     maps.initMap($map, mapData, initMap).done(function(map) {
@@ -258,6 +290,6 @@ define(
         $body.on('click', '.js-order-delivery-discountPopup-link', showDiscountPopup);
         $body.on('click', '.js-order-delivery-map-link', showMap);
         $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
-        $body.on('change', '.js-order-delivery-points-filter-params-list input', filterPoints);
+        $body.on('change', '.js-order-delivery-points-filter-params-list input', filterChange);
     }
 );
