@@ -12,7 +12,7 @@ namespace EnterTerminal\Controller\Cart {
     use EnterTerminal\Controller;
 
     class Split {
-        use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
+        use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait, CoreFixTrait;
 
         /**
          * @param Http\Request $request
@@ -56,6 +56,12 @@ namespace EnterTerminal\Controller\Cart {
             // при получении данных о разбиении корзины - записать их в сессию немедленно
             $controllerRequest->splitReceivedSuccessfullyCallback->handler = function() use (&$controllerRequest, &$config, &$session, &$response) {
                 $session->set($config->order->splitSessionKey, $controllerRequest->splitReceivedSuccessfullyCallback->splitData);
+
+                try {
+                    $this->fixCoreResponse($controllerRequest->splitReceivedSuccessfullyCallback->splitData);
+                } catch (\Exception $e) {
+                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
+                }
 
                 // Терминалы пока используют сырые данные, не изменённые моделями API агрегатора
                 $response->split = $controllerRequest->splitReceivedSuccessfullyCallback->splitData;
