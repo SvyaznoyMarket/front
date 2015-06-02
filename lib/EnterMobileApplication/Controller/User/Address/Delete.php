@@ -46,9 +46,7 @@ namespace EnterMobileApplication\Controller\User\Address {
 
                 $addressItemQuery = new Query\User\Address\DeleteItemByUserUi($user->ui, $id);
                 $addressItemQuery->setTimeout(3 * $config->crmService->timeout);
-                $curl->prepare($addressItemQuery);
-
-                $curl->execute();
+                $curl->query($addressItemQuery);
 
                 $addressItemQuery->getResult();
                 return new Http\JsonResponse(['success' => true, 'id' => $id]);

@@ -52,8 +52,7 @@ class AddReview {
                 $review
             );
 
-            $curl->prepare($createQuery);
-            $curl->execute();
+            $curl->query($createQuery);
 
             $createQuery->getResult();
 
