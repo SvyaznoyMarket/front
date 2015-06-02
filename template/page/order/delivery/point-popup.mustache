@@ -25,13 +25,13 @@
 
     <div class="dropdowns">
         <div class="custom-select__kit custom-filter__kit">
-            <div class="custom-select custom-filter toggle js-toggle-wrap">
+            <div class="custom-select custom-filter toggle js-toggle-wrap js-order-delivery-points-filter-params-list">
                 <span class="custom-select__value toggle-link js-toggle-link">
                     <span class="bb-dotted">Все точки</span>
                     <i class="caret"></i>
                 </span>
 
-                <ul class="custom-select-list toggle-box js-order-delivery-points-filter-params-list">
+                <ul class="custom-select-list toggle-box">
                 {{#filters.type}}
                     <li class="custom-select-list__item">
                         <input type="checkbox" id="order-{{order.id}}-delivery-filter-type-{{value}}" name="order-{{order.id}}-delivery-filter-type" class="custom-input custom-input--square-check js-order-filter-points-input" value="{{value}}" data-points-filter-type="group" />
@@ -44,13 +44,13 @@
                 </ul>
             </div>
 
-            <div class="custom-select custom-filter toggle js-toggle-wrap">
+            <div class="custom-select custom-filter toggle js-toggle-wrap js-order-delivery-points-filter-params-list">
                 <span class="custom-select__value toggle-link js-toggle-link">
                     <span class="bb-dotted">Стоимость</span>
                     <i class="caret"></i>
                 </span>
 
-                <ul class="custom-select-list toggle-box js-order-delivery-points-filter-params-list">
+                <ul class="custom-select-list toggle-box">
                 {{#filters.cost}}
                     <li class="custom-select-list__item">
                         <input type="checkbox" id="order-{{order.id}}-delivery-filter-cost-{{value}}" name="order-{{order.id}}-delivery-filter-cost" class="custom-input custom-input--square-check js-order-filter-points-input" value="{{value}}" data-points-filter-type="cost" />
@@ -64,13 +64,13 @@
                 </ul>
             </div>
 
-            <div class="custom-select custom-filter toggle js-toggle-wrap">
+            <div class="custom-select custom-filter toggle js-toggle-wrap js-order-delivery-points-filter-params-list">
                 <span class="custom-select__value toggle-link js-toggle-link">
                     <span class="bb-dotted">Дата</span>
                     <i class="caret"></i>
                 </span>
 
-                <ul class="custom-select-list toggle-box js-order-delivery-points-filter-params-list">
+                <ul class="custom-select-list toggle-box">
                 {{#filters.date}}
                     <li class="custom-select-list__item">
                         <input type="checkbox" id="order-{{order.id}}-delivery-filter-date-{{value}}" name="order-{{order.id}}-delivery-filter-date" class="custom-input custom-input--square-check js-order-filter-points-input" value="{{value}}" data-points-filter-type="date" />

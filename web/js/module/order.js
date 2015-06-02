@@ -168,13 +168,20 @@ define(
             },
 
             // фильтруем точки самовывоза
-            filterChangePoints = function() {
+            filterChangePoints = function( e ) {
                 var
-                    points = getPoints();
+                    points = getPoints(),
+                    $el         = $(e.target),
+                    $filter     = $el.closest('.js-order-delivery-points-filter-params-list'),
+                    activeClass = 'active';
 
                 renderPoints(points);
 
-                return false;
+                if ( $el.prop('checked') == true ) {
+                    $filter.addClass(activeClass);
+                } else {
+                    $filter.removeClass(activeClass);
+                }
             },
 
             showPointPopup = function(e) {
