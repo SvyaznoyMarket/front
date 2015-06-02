@@ -112,7 +112,7 @@ define(
                     params = getFilterPoints(),
                     key, pointAdd;
 
-                newPoints.points = [];
+                newPoints.points = [points];
 
                 function filterPoints( points ) {
                     for ( key in points ) {
@@ -159,13 +159,12 @@ define(
             },
 
             // отображаем отфильтрованные точки доставки
-            renderPoints = function() {
+            renderPoints = function( data ) {
                 var
-                    points          = getPoints(),
                     partial         = $pointPopupTemplate.data('partial')['page/order/delivery/point-list'],
                     containerPoints = $('.js-order-points-container-type-points');
 
-                containerPoints.html(mustache.render(partial, points));
+                containerPoints.html(mustache.render(partial, data));
             },
 
             // фильтруем точки самовывоза
@@ -289,7 +288,7 @@ define(
                     $elText = $el.find('.js-order-delivery-map-link-text'),
                     $container = $($el.data('containerSelector')),
                     $containerPoints = $('.js-order-points-container'),
-                    mapData = $el.data('mapData'),
+                    mapData = $el.data('map-data'),
                     showMapClass ='show-map'
                 ;
 
