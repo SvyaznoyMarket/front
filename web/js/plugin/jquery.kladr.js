@@ -569,7 +569,7 @@
                 var $container = $(document.getElementById('kladr_autocomplete'));
 
                 if (!$container.length) {
-                    $container = $('<div id="kladr_autocomplete"></div>').appendTo(document.body);
+                    $container = $('<div id="kladr_autocomplete"></div>').after($input);
                 }
 
                 var guid = get('guid');
