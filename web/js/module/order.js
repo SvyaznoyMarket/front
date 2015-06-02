@@ -102,56 +102,89 @@ define(
                 e.preventDefault();
             },
 
-            getPoints = function( params ) {
+            // получаем точки доставки и фильтруем их по выбранным параметрам фильтрации getFilterPoints()
+            getPoints = function() {
                 var
                     id = $('.js-delivery-type').data('data-selector'),
                     data = $.parseJSON($(id).html()),
                     points = data.points,
-                    newPoints = {};
+                    newPoints = {},
+                    params = getFilterPoints(),
+                    key, pointAdd;
 
-                newPoints.points = [];
+                newPoints.points = [points];
 
-                for ( var j = 0; j < params.length; j++ ) {
+                function filterPoints( points ) {
+                    for ( key in points ) {
+                        if ( params[key] && params[key].length && points[key] && points[key].hasOwnProperty('value') ) {
 
-                    for ( var i = 0; i < points.length; i++ ) {
-                        if ( params[j] == points[i].group.value || params[j] == points[i].cost.name || params[j] == points[i].date.value ) {
-                            newPoints.points.push(points[i]);
+                            pointAdd = params[key].indexOf(points[key].value.toString());
+
+                            if ( pointAdd === -1 ) {
+                                return false;
+                            }
                         }
                     }
-                }
+                    return true;
+                };
 
-                $('.js-order-points-container-type-points').html(mustache.render($pointPopupTemplate.html(), newPoints));
+                newPoints.points = points.filter(filterPoints);
 
-                console.log(newPoints);
-                console.log(data);
+                return newPoints;
             },
 
-            filterPoints = function( e ) {
-                e.stopPropagation();
+            // формируем массив параметров фильтрации точек доставки
+            getFilterPoints = function() {
                 var
-                    $filterList = $('.js-order-delivery-points-filter-params-list'),
-                    $inputCheck = $filterList.find('input'),
-                    params = [];
+                    $input = $('.js-order-filter-points-input'),
+                    params = {},
+                    key;
 
-                $inputCheck.each(function() {
-                    if ( $(this).prop('checked') == true ) {
-                        params.push(this.value);
+                $input.each(function(key) {
+                    var
+                        $this = $(this);
+
+                    key = $this.data('points-filter-type');
+
+                    if ( typeof params[key] === 'undefined' ) {
+                        params[key] = [];
+                    }
+
+                    if ( $this.prop('checked') == true ) {
+                        params[key].push($this.val());
                     }
                 });
 
-                getPoints(params);
+                return params;
+            },
 
-                console.log(params);
+            // отображаем отфильтрованные точки доставки
+            renderPoints = function( data ) {
+                var
+                    partial         = $pointPopupTemplate.data('partial')['page/order/delivery/point-list'],
+                    containerPoints = $('.js-order-points-container-type-points');
+
+                containerPoints.html(mustache.render(partial, data));
+            },
+
+            // фильтруем точки самовывоза
+            filterChangePoints = function() {
+                var
+                    points = getPoints();
+
+                renderPoints(points);
+
+                return false;
             },
 
             showPointPopup = function(e) {
                 e.stopPropagation();
 
                 var
-                    $el       = $(this),
-                    data      = $.parseJSON($($el.data('dataSelector')).html()), // TODO: выполнять один раз, результат записывать в переменную
-                    $modalWindow = $($modalWindowTemplate.html()).appendTo($body),
-                    modalTitle = $el.data('modal-title'),
+                    $el           = $(this),
+                    $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
+                    data          = $.parseJSON($($el.data('dataSelector')).html()), // TODO: выполнять один раз, результат записывать в переменную
+                    modalTitle    = $el.data('modal-title'),
                     modalPosition = $el.data('modal-position');
 
                 $modalWindow.find('.js-modal-title').text(modalTitle);
@@ -232,7 +265,9 @@ define(
                     //data      = $.parseJSON($($el.data('dataSelector')).html()),
                     $modalWindow = $($modalWindowTemplate.html()).appendTo($body),
                     modalTitle = $el.data('modal-title'),
-                    modalPosition = $el.data('modal-position');
+                    modalPosition = $el.data('modal-position'),
+                    $discountContainer
+                ;
 
                 $modalWindow.find('.js-modal-title').text(modalTitle);
                 $modalWindow.addClass(modalPosition);
@@ -240,6 +275,14 @@ define(
                 $modalWindow.lightbox_me({
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($discountPopupTemplate.html(), data));
+
+                        $discountContainer = $('.js-user-discount-container');
+
+                        if ($discountContainer.length && $discountContainer.data('url')) {
+                            $.get($discountContainer.data('url')).done(function(response) {
+                                $discountContainer.html(response.content);
+                            })
+                        }
                     },
                     centered: false
                 });
@@ -255,7 +298,7 @@ define(
                     $elText = $el.find('.js-order-delivery-map-link-text'),
                     $container = $($el.data('containerSelector')),
                     $containerPoints = $('.js-order-points-container'),
-                    mapData = $el.data('mapData'),
+                    mapData = $el.data('map-data'),
                     showMapClass ='show-map'
                 ;
 
@@ -310,6 +353,6 @@ define(
         $body.on('click', '.js-order-delivery-discountPopup-link', showDiscountPopup);
         $body.on('click', '.js-order-delivery-map-link', showMap);
         $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
-        $body.on('change', '.js-order-delivery-points-filter-params-list input', filterPoints);
+        $body.on('change', '.js-order-filter-points-input', filterChangePoints);
     }
 );

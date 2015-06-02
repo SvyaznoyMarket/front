@@ -533,6 +533,9 @@ class Delivery {
 
                     return $messages;
                 }),
+                'user'           => [
+                    'discountUrl' => $router->getUrlByRoute(new Routing\User\Coupon\Get()), // TODO: использовать
+                ],
             ];
 
             $page->content->orders[] = $order;

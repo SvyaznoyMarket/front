@@ -107,6 +107,10 @@
         "pattern": "/ajax/user/cart/product/delete",
         "method": ["POST"]
     },
+    "User\\Coupon\\Get": {
+        "name": "Купоны пользователя",
+        "pattern": "/ajax/user/coupons"
+    },
 
     "Order\\Slot\\Index": {
         "name": "Оформление заказа-слота",
