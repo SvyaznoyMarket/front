@@ -1,13 +1,4 @@
 <div class="catalogList_item catalogList_item_new">
-    
-    {{#stateLabel}}
-        <div class="availability availability--top {{cssClassName}}">
-            {{name}}
-        </div>
-    {{/stateLabel}}
-    {{^stateLabel}}
-        <div class="availability availability--top availability--nobg">&nbsp;</div>
-    {{/stateLabel}}
 
     <a class="list-img_lk" href="{{url}}">
         {{#labels.0}}
@@ -35,6 +26,15 @@
                     {{>partial/rating/star-list}}
                 {{/rating}}
             </div>
+
+            {{#stateLabel}}
+                <div class="availability {{cssClassName}}">
+                    {{name}}
+                </div>
+            {{/stateLabel}}
+            {{^stateLabel}}
+                <div class="availability availability--nobg">&nbsp;</div>
+            {{/stateLabel}}
 
             <div class="price">
                 <div class="price_old">{{#oldPrice}}{{shownOldPrice}} <span class="rubl">p</span>{{/oldPrice}}</div>
