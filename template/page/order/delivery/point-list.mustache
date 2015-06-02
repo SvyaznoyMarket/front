@@ -1,0 +1,27 @@
+{{#points}}
+    <div class="pick-point-list-i shop-snippet table_row js-order-delivery-form-control" data-value="{{&dataValue}}">
+        <div class="shop-snippet-name table_cell">
+            <img src="/img/points/{{icon}}" alt="" class="shop-snippet-name__img">
+            <span class="shop-snippet-name__text">{{group.name}}</span>
+        </div>
+
+        <div class="shop-snippet-info table_cell">
+            {{#subway}}
+                <div class="shop-snippet-metro">
+                    <span class="shop-snippet-metro__bullet" style="background: {{color}};"></span>
+                    <span class="shop-snippet-metro__text">{{name}}</span>
+                </div>
+            {{/subway}}
+
+            <div class="shop-snippet-address">{{name}} <br/>{{regime}}</div>
+        </div>
+
+        <div class="deliv-info-snippet table_cell">
+            <span class="deliv-info-snippet__date">{{date.name}}</span>
+                <span class="deliv-info-snippet__price">
+                    {{#cost.name}}{{cost.name}} <span class="rubl">p</span>{{/cost.name}}
+                    {{^cost.name}}Бесплатно{{/cost.name}}
+                </span>
+        </div>
+    </div>
+{{/points}}

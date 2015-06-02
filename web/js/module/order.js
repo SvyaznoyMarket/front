@@ -111,7 +111,7 @@ define(
 
                 $modalWindow.lightbox_me({
                     onLoad: function() {
-                        $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data));
+                        $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data, $pointPopupTemplate.data('partial')));
                         $body.css({'overflow':'hidden'})
                     },
                     beforeClose: function() {
@@ -144,7 +144,7 @@ define(
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($addressPopupTemplate.html(), data));
                     },
-                    modalCSS: {top: '60px'},
+                    modalCSS: {top: '60px'}
                 });
             },
 
@@ -165,7 +165,7 @@ define(
                 $modalWindow.lightbox_me({
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($calendarTemplate.html(), data));
-                    },
+                    }
                     // modalCSS: {top: '60px'},
                 });
             },

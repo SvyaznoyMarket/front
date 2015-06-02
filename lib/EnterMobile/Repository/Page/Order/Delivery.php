@@ -562,7 +562,9 @@ class Delivery {
             [
                 'id'       => 'tpl-order-delivery-point-popup',
                 'name'     => 'page/order/delivery/point-popup',
-                'partials' => [],
+                'partials' => [
+                    'page/order/delivery/point-list',
+                ],
             ],
             // календарь
             [
