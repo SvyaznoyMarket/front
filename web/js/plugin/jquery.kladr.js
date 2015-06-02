@@ -569,7 +569,7 @@
                 var $container = $(document.getElementById('kladr_autocomplete'));
 
                 if (!$container.length) {
-                    $container = $('<div id="kladr_autocomplete"></div>').after($input);
+                    $container = $('<div id="kladr_autocomplete" style="z-index: 1020;"></div>').appendTo('.order-popup');
                 }
 
                 var guid = get('guid');
@@ -588,7 +588,7 @@
 
                     $input.attr('autocomplete', 'off');
 
-                    $ac = $('<ul class="autocomplete' + guid + ' autocomplete" style="display: none;"></ul>')
+                    $ac = $('<ul class="suggest-control-lst autocomplete' + guid + ' autocomplete" style="display: none;"></ul>')
                         .appendTo($container);
 
                     $spinner = $('<div class="spinner' + guid + ' spinner" style="display: none;"></div>')
@@ -622,7 +622,7 @@
                     $a = $('<a data-val="' + value + '">' + label + '</a>');
                     $a.data('kladr-object', obj);
 
-                    $('<li></li>')
+                    $('<li class="suggest-control-lst-i"></li>')
                         .append($a)
                         .appendTo($ac);
                 }
