@@ -1,10 +1,10 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'jquery.maskedinput',
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'jquery.maskedinput',
         'module/order/user.form', 'module/order/common', 'module/order/toggle'
     ],
     function(
-        require, $, _, mustache, util
+        require, $, _, mustache, util, config
     ) {
         var
             $body = $('body'),
@@ -28,6 +28,54 @@ define(
                     console.info('placemark', placemark, placemark.properties.get('point'));
 
                     map.balloon.open(e.get('coords'), mustache.render($balloonTemplate.html(), placemark.properties.get('point')));
+                });
+            },
+
+            initSmartAddress = function($context) {
+                var
+                    $form = $context.find('.js-smartAddress-form')
+                ;
+
+                require(['jquery.kladr'], function() {
+                    $.kladr.setDefault({
+                        token: config.kladr.token,
+                        key: config.kladr.key,
+                        type: $.kladr.type.street,
+                        parentType: $.kladr.type.city,
+                        parentId: config.kladr.city.id,
+
+                        parentInput: '.js-smartAddress-form',
+                        verify: true,
+                        select: function (obj) {
+                            //setLabel($(this), obj.type);
+                            //$tooltip.hide();
+                        },
+                        check: function (obj) {
+                            var $input = $(this);
+
+                            if (obj) {
+                                //setLabel($input, obj.type);
+                                //$tooltip.hide();
+                            }
+                            else {
+                                //showError($input, 'Введено неверно');
+                            }
+                        },
+                        checkBefore: function () {
+                            var $input = $(this);
+
+                            if (!$.trim($input.val())) {
+                                //$tooltip.hide();
+                                return false;
+                            }
+                        }
+                    });
+
+                    $form.find('.js-smartAddress-input').each(function(k, el) {
+                        var $el = $(el);
+
+                        $el.kladr('type', $el.data('kladrType'));
+                    });
                 });
             },
 
@@ -89,7 +137,7 @@ define(
                     if ( $(this).prop('checked') == true ) {
                         params.push(this.value);
                     }
-                })
+                });
 
                 getPoints(params);
 
@@ -112,11 +160,11 @@ define(
                 $modalWindow.lightbox_me({
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data, $pointPopupTemplate.data('partial')));
-                        $body.css({'overflow':'hidden'})
+                        $body.css({'overflow':'hidden'});
                     },
                     beforeClose: function() {
                         $mapContainer.append($map);
-                        $body.css({'overflow':'auto'})
+                        $body.css({'overflow':'auto'});
                     },
                     centered: false
                 });
@@ -137,12 +185,16 @@ define(
                     data          = {}
                 ;
 
+                require(['jquery.kladr'], function() {});
+
                 $modalWindow.find('.js-modal-title').text(modalTitle);
                 $modalWindow.addClass(modalPosition);
 
                 $modalWindow.lightbox_me({
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($addressPopupTemplate.html(), data));
+
+                        initSmartAddress($modalWindow);
                     },
                     modalCSS: {top: '60px'}
                 });

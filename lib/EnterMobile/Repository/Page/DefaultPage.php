@@ -60,6 +60,17 @@ class DefaultPage {
                 'cookieName' => $config->siteVersionSwitcher->cookieName,
                 'cookieLifetime' => $config->siteVersionSwitcher->cookieLifetime,
             ],
+            'kladr' => [
+                'token'  => $config->kladr->token,
+                'key'    => $config->kladr->key,
+                'limit'  => $config->kladr->limit,
+                'city'   =>
+                    $request->region
+                    ? [
+                        'id' => $request->region->kladrId,
+                    ]
+                    : null,
+            ],
         ]);
 
         $page->googleAnalytics = false;

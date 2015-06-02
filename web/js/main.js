@@ -28,7 +28,8 @@ require.config({
         'jquery.scrollTo'       : 'plugin/jquery.scrollTo',
         'jquery.maskedinput'    : 'plugin/jquery.maskedinput',
         'jquery.smartbanner'    : 'plugin/jquery.smartbanner',
-        'jquery.slick'         : 'plugin/slick.min',
+        'jquery.slick'          : 'plugin/slick.min',
+        'jquery.kladr'          : 'plugin/jquery.kladr',
 
         'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
         'mustache'           : 'vendor/mustache-0.8.2',
@@ -81,6 +82,9 @@ require.config({
         },
         'jquery.smartbanner': {
             deps: ['jquery']
+        },
+        'jquery.kladr': {
+            deps: ['jquery', 'kladr']
         },
         'underscore': {
             exports: '_'
