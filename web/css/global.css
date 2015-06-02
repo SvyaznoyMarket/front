@@ -4851,7 +4851,7 @@ body.noScroll {
 .catalogList_item .availability {
   font-size: 12px;
   color: #807f7f;
-  margin: 10px 0 5px;
+  margin: 5px 0 5px;
   text-align: center;
 }
 .catalogList_item .availability--instock {
@@ -4892,7 +4892,7 @@ body.noScroll {
   margin-bottom: 0px;
 }
 .catalogList .price {
-  margin: 15px 0 10px;
+  margin: 5px 0 10px;
 }
 .catalogList .price_old {
   display: inline-block;
@@ -5048,7 +5048,7 @@ body.noScroll {
     width: 100%;
     height: auto;
     margin: 0;
-    padding: 15px 0;
+    padding: 30px 0 15px;
     border-right: none !important;
     border-bottom: 1px solid #e1e1e1;
   }
@@ -5060,10 +5060,10 @@ body.noScroll {
     background: transparent;
   }
   .catalogList_item .availability {
-    display: none;
-  }
-  .catalogList_item .availability--top {
-    display: block;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
   }
   .catalogList_item .rating {
     text-align: left;
@@ -5144,7 +5144,6 @@ body.noScroll {
   .catalogList_item_new {
     display: block;
     overflow: hidden;
-    padding: 5px 10px;
     width: auto;
   }
   .catalogList .catalogListItemWrapper {
