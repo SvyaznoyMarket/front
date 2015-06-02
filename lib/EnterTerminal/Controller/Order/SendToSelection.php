@@ -32,7 +32,7 @@ class SendToSelection {
 
         $sendQuery = new Query\Order\SendToSelection($orderNumber, $shopId);
         $sendQuery->setTimeout(10 * $config->coreService->timeout);
-        $curl->prepare($sendQuery)->execute();
+        $curl->query($sendQuery);
 
         $responseData = [];
 
