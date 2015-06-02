@@ -58,9 +58,7 @@ namespace EnterMobileApplication\Controller\Product\Review {
                 $product->ui,
                 $review
             );
-            $curl->prepare($createQuery);
-
-            $curl->execute();
+            $curl->query($createQuery);
 
             return new Http\JsonResponse($response);
         }

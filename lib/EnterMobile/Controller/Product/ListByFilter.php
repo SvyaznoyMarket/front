@@ -12,9 +12,10 @@ use EnterMobile\Repository;
 use EnterQuery as Query;
 use EnterMobile\Model;
 use EnterMobile\Model\Page\Product\ListByFilter as Page;
+use EnterAggregator\AbTestTrait;
 
 class ListByFilter {
-    use ConfigTrait, LoggerTrait, CurlTrait, MustacheRendererTrait;
+    use ConfigTrait, LoggerTrait, CurlTrait, MustacheRendererTrait, AbTestTrait;
 
     /**
      * @param Http\Request $request
@@ -183,6 +184,15 @@ class ListByFilter {
             }
         }
 
+
+        $chosenListingType = $this->getAbTest()->getObjectByToken('product_listing')->chosenItem->token;
+
+        if ($chosenListingType == 'new_listing') {
+            $buyBtnListing = true;
+        } else{
+            $buyBtnListing = false;
+        }
+
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Product\ListByFilter\Request();
         $pageRequest->pageNum = $pageNum + 1;
@@ -194,6 +204,7 @@ class ListByFilter {
         $pageRequest->products = $productsById;
         $pageRequest->count = $productUiPager->count;
         $pageRequest->category = $category;
+        $pageRequest->buyBtnListing = $buyBtnListing;
 
         // страница
         $page = new Page();

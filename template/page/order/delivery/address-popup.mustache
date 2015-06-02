@@ -1,16 +1,15 @@
-
     {{^isUserAuthenticated}}
     <div class="address-pick-snippet">
         <div class="order-popup-map">
               
         </div>
         <div class="address-pick-snippet__form">
-            <form>
+            <form class="js-smartAddress-form">
                 <div class="form-control__container">
                     <div class="form-control-group">
                     {{! без класса suggest-open - саджест будет скрыт
                     <div class="form-control-group suggest-open"> - а так - показан}}
-                        <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
+                        <input class="form-control-group__tx textfield js-smartAddress-input" type="text" name="street" autocomplete="off" data-kladr-type="street" />
                         <label class="form-control-group__lbl" for="">Улица</label>
                         <div class="form-control-group__suggest suggest-control">
                             <ul class="suggest-control-lst">
@@ -25,19 +24,17 @@
                     </div>
 
                     <div class="form-control-group half-wide">
-                        <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
+                        <input class="form-control-group__tx textfield js-smartAddress-input" type="text" name="building" autocomplete="off" data-kladr-type="building" />
                         <label class="form-control-group__lbl" for="">Дом</label>
                     </div>
 
                     <div class="form-control-group half-wide">
-                        <input class="form-control-group__tx textfield" type="text" name="" value="" placeholder="">
+                        <input class="form-control-group__tx textfield" type="text" name="apartment">
                         <label class="form-control-group__lbl" for="">Квартира</label>
                     </div>
                     <div class="btn-container">
                         <button class="btn btn--submit btn--orange btn--medium">Готово</button>
                     </div>
-
-
                 </div>
             </form>
         </div> 
@@ -80,7 +77,6 @@
             <input type="radio" id="adr4" name="adrnow" class="custom-input custom-input--defradio">
 
             <label class="custom-label" for="adr4">
-
 				<span class="custom-label_tx"><span class="custom-label_tx--gray">Изменить адрес</span>
 					Улица Мочалок Командира</span>
             </label>
@@ -88,5 +84,3 @@
     </ul>
     <div class="btn-container"><a href="" class="btn btn--orange btn--pay">Выбрать</a></div>
     {{/isUserAuthenticated}}
-
-    
