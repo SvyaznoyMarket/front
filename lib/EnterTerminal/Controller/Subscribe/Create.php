@@ -33,9 +33,7 @@ class Create {
         $query = new Query\Subscribe\CreateItem(
             $subscribe
         );
-        $curl->prepare($query);
-
-        $curl->execute();
+        $curl->query($query);
 
         $responseData = [];
         try {

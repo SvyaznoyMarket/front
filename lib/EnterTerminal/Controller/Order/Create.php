@@ -166,7 +166,7 @@ namespace EnterTerminal\Controller\Order {
                 }
 
                 if ((bool)$orderPutQueries) {
-                    $curl->execute();
+                    $curl->execute(null, 0);
 
                     foreach ($orderPutQueries as $orderPutQuery) {
                         try {
