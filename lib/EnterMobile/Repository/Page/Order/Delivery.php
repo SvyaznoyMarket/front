@@ -361,6 +361,7 @@ class Delivery {
                         // фильтр по типу точки
                         if (!isset($filtersByToken['type'][$pointGroup->blockName])) {
                             $filtersByToken['type'][$pointGroup->blockName] = [
+                                'id'        => $pointGroup->token,
                                 'name'      => $pointGroup->blockName,
                                 'dataValue' => $templateHelper->json([
                                     'name'  => 'group',
@@ -371,7 +372,8 @@ class Delivery {
                         // фильтр по цене
                         if (!isset($filtersByToken['cost'][$possiblePointModel->cost])) {
                             $filtersByToken['cost'][$possiblePointModel->cost] = [
-                                'name'  => $possiblePointModel->cost ?: false,
+                                'id'        => $possiblePointModel->cost ?: uniqid(),
+                                'name'      => $possiblePointModel->cost ?: false,
                                 'dataValue' => $templateHelper->json([
                                     'name'  => 'date',
                                     'value' => $possiblePointModel->cost,
@@ -381,8 +383,8 @@ class Delivery {
                         // фильтр по дате
                         if (!isset($filtersByToken['date'][$date->getTimestamp()])) {
                             $filtersByToken['date'][$date->getTimestamp()] = [
-                                'name'  => $dateHelper->humanizeDate($date),
-                                'value' => $date->getTimestamp(),
+                                'id'        => $date->getTimestamp(),
+                                'name'      => $dateHelper->humanizeDate($date),
                                 'dataValue' => $templateHelper->json([
                                     'name'  => 'cost',
                                     'value' => $date->getTimestamp(),
