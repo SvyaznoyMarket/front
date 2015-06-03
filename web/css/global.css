@@ -1970,7 +1970,7 @@ body.noScroll {
 }
 .btn--slot-lst {
   padding: 0;
-  width: 88px;
+  width: 100px;
   min-width: 0;
   text-align: center;
   height: 30px;
@@ -4957,7 +4957,7 @@ body.noScroll {
   height: 32px;
   line-height: 30px;
   text-align: center;
-  width: 88px;
+  width: 100px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -4971,6 +4971,7 @@ body.noScroll {
   color: #fff;
 }
 .catalogList .btn-container {
+  margin-top: 10px;
   margin-bottom: 20px;
 }
 .catalogList .price {
@@ -4979,6 +4980,9 @@ body.noScroll {
 .catalogList .price_old {
   color: #8a8a8a;
   font-size: 18px;
+}
+.catalogList .price_old:empty {
+  display: none;
 }
 .catalogList .price_now {
   font-size: 18px;
