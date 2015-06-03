@@ -545,8 +545,38 @@ class Delivery {
 
                     return $messages;
                 }),
+                'addressFormJson' => json_encode([
+                    'fields' => [
+                        'street'    => [
+                            'name' => 'change[user][address][street]',
+                        ],
+                        'building'  => [
+                            'name' => 'change[user][address][building]',
+                        ],
+                        'apartment' => [
+                            'name' => 'change[user][address][apartment]',
+                        ],
+                        'kladrId'   => [
+                            'name' => 'change[user][address][kladrId]',
+                        ],
+                    ],
+                    'order' => [
+                        'id' => $orderModel->blockName,
+                    ],
+                ], JSON_UNESCAPED_UNICODE),
                 'user'           => [
                     'discountUrl' => $router->getUrlByRoute(new Routing\User\Coupon\Get()), // TODO: использовать
+                    'address'     =>
+                        ($splitModel->user && $splitModel->user->address && $splitModel->user->address->street)
+                        ? [
+                            'name'      => implode(', ', [$splitModel->user->address->street, $splitModel->user->address->building, $splitModel->user->address->apartment]),
+                            'street'    => $splitModel->user->address->street,
+                            'building'  => $splitModel->user->address->building,
+                            'apartment' => $splitModel->user->address->apartment,
+                            'kladrId'   => $splitModel->user->address->kladrId,
+                        ]
+                        : false
+
                 ],
             ];
 

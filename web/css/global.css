@@ -1579,6 +1579,16 @@ body.noScroll {
 /* ==========================================================================
    Кнопка купить .btnBuy
    ========================================================================== */
+.inCart {
+  border-color: #000;
+  border: 1px solid;
+  border-bottom: 2px solid;
+  background: #fff;
+  color: #000;
+}
+.inCart:hover {
+  color: #000;
+}
 .btnBuy {
   background: #ffc000;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffaa01), color-stop(1, #ffc000));
@@ -1642,6 +1652,16 @@ body.noScroll {
 .btnBuy-disabled:hover {
   color: #a6a6a6;
 }
+.btnBuy-incart {
+  border-color: #000;
+  border: 1px solid;
+  border-bottom: 2px solid;
+  background: #fff;
+  color: #000;
+}
+.btnBuy-incart:hover {
+  color: #000;
+}
 .btnBuyOneClick {
   margin: 10px 0 0;
 }
@@ -1678,6 +1698,7 @@ body.noScroll {
   cursor: pointer;
 }
 .btn-container {
+  width: 100%;
   text-align: center;
 }
 .btn--big {
@@ -1752,7 +1773,7 @@ body.noScroll {
 }
 .btn--slot-lst {
   padding: 0;
-  width: 88px;
+  width: 100px;
   min-width: 0;
   text-align: center;
   height: 30px;
@@ -1937,12 +1958,15 @@ body.noScroll {
   background-repeat: no-repeat;
   background-position: 0 0;
 }
-.btn--show {
+.btn--buy.btn--inshop:after:hover {
+  color: #fff;
+}
+.btn--buy--show {
   border: 1px solid #8a8a8a;
   border-bottom: 2px;
   color: #8a8a8a;
 }
-.btn--show:hover {
+.btn--buy--show:hover {
   color: #8a8a8a;
 }
 .btn-type {
@@ -5300,7 +5324,7 @@ body.noScroll {
 .catalogList_item .availability {
   font-size: 12px;
   color: #807f7f;
-  margin: 10px 0 5px;
+  margin: 5px 0 5px;
   text-align: center;
 }
 .catalogList_item .availability--instock {
@@ -5341,7 +5365,7 @@ body.noScroll {
   margin-bottom: 0px;
 }
 .catalogList .price {
-  margin: 15px 0 10px;
+  margin: 5px 0 10px;
 }
 .catalogList .price_old {
   display: inline-block;
@@ -5349,9 +5373,11 @@ body.noScroll {
   *zoom: 1;
   *display: inline;
   margin-right: 15px;
-  text-decoration: line-through;
   color: #6b6b6b;
   font-size: 18px;
+}
+.catalogList .price_old .line-through {
+  text-decoration: line-through;
 }
 .catalogList .price_now {
   display: inline-block;
@@ -5387,19 +5413,18 @@ body.noScroll {
   max-height: 100%;
 }
 .catalogList_item {
-  height: 370px;
+  height: 360px;
 }
 .catalogList .name {
   height: 45px;
 }
 .catalogList .btn--buy {
-  font-weight: bold;
   display: inline-block;
   width: auto;
   height: 32px;
   line-height: 30px;
   text-align: center;
-  width: 88px;
+  width: 100px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -5412,12 +5437,19 @@ body.noScroll {
 .catalogList .btn--buy:hover {
   color: #fff;
 }
+.catalogList .btn-container {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
 .catalogList .price {
   text-align: center;
 }
 .catalogList .price_old {
   color: #8a8a8a;
   font-size: 18px;
+}
+.catalogList .price_old:empty {
+  display: none;
 }
 .catalogList .price_now {
   font-size: 18px;
@@ -5428,6 +5460,16 @@ body.noScroll {
 }
 .buyBtnListing .btnBuy {
   display: inline-block;
+}
+.buyBtnListing .btnBuy-incart {
+  border-color: #000;
+  border: 1px solid;
+  border-bottom: 2px solid;
+  background: #fff;
+  color: #000;
+}
+.buyBtnListing .btnBuy-incart:hover {
+  color: #000;
 }
 .catalogList .catalogListItemWrapper {
   display: none;
@@ -5440,8 +5482,8 @@ body.noScroll {
    ========================================================================== */
 @media only screen and (max-width: 959px) {
   .catalogList {
-    padding-left: 6px;
-    padding-right: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   .catalogList_item {
     width: 29%;
@@ -5467,7 +5509,7 @@ body.noScroll {
   .catalogList_item:last-child {
     border-right: none;
   }
-  .catalogList .btnBuy {
+  .catalogList .btn--buy {
     font-size: 12px;
   }
   .catalogList .btn--slot-lst {
@@ -5482,7 +5524,7 @@ body.noScroll {
     width: 100%;
     height: auto;
     margin: 0;
-    padding: 15px 0;
+    padding: 30px 0 15px;
     border-right: none !important;
     border-bottom: 1px solid #e1e1e1;
   }
@@ -5494,10 +5536,10 @@ body.noScroll {
     background: transparent;
   }
   .catalogList_item .availability {
-    display: none;
-  }
-  .catalogList_item .availability--top {
-    display: block;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
   }
   .catalogList_item .rating {
     text-align: left;
@@ -5573,12 +5615,12 @@ body.noScroll {
 }
 @media screen and (max-width: 490px) {
   .catalogList {
-    padding: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
   .catalogList_item_new {
     display: block;
     overflow: hidden;
-    padding: 5px 10px;
     width: auto;
   }
   .catalogList .catalogListItemWrapper {
@@ -7563,6 +7605,9 @@ body.noScroll {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
+  -webkit-flex-flow: row wrap;
+  -moz-flex-flow: row wrap;
+  -ms-flex-flow: row wrap;
   flex-flow: row wrap;
   padding-bottom: 15px;
 }
@@ -7596,6 +7641,19 @@ body.noScroll {
   vertical-align: middle;
   *zoom: 1;
   *display: inline;
+}
+.checkout-sale-code__form {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-align: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  width: 100%;
 }
 .checkout-order-head__title {
   font-size: 16px;
@@ -7739,6 +7797,9 @@ body.noScroll {
   }
   .checkout-sale-code__button {
     margin-top: 10px;
+  }
+  .checkout-sale-code__form {
+    display: block;
   }
   .sale-select__item {
     width: 100%;
@@ -8126,6 +8187,10 @@ body.noScroll {
   font-size: 18px;
   display: block;
   text-align: center;
+}
+.order-popup .popup-fixed-content {
+  max-width: 640px;
+  margin: auto;
 }
 .order-popup .btn-container {
   margin-top: 0;
@@ -9014,6 +9079,23 @@ body.noScroll {
 }
 .product-card-info--recall .btn-container {
   margin-top: 25px;
+}
+.product-card-info--recall .btn--slot-lst {
+  width: auto;
+  height: auto;
+  padding: 4px 23px 3px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  vertical-align: top;
+  *zoom: 1;
+  *display: inline;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  font-size: 18px;
+  line-height: 1.4;
 }
 .product-card .slider_lst_img {
   max-width: 450px;

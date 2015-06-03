@@ -79,27 +79,17 @@ define(
                 });
             },
 
-            changeSplit = function(e) {
-                e.stopPropagation();
-
-                var
-                    $el = $(e.currentTarget)
-                ;
-
-                if ($el.data('value')) {
-                    $.ajax({
-                        url: $deliveryForm.attr('action'),
-                        data: $el.data('value'),
-                        type: 'post',
-                        timeout: 30000
-                    }).done(function(response) {
-                        $($deliveryForm.data('containerSelector')).html(response)
-                    }).always(function() {
-                        console.info('unblock screen');
-                    });
-                }
-
-                e.preventDefault();
+            changeSplit = function(data) {
+                $.ajax({
+                    url: $deliveryForm.attr('action'),
+                    data: data,
+                    type: 'post',
+                    timeout: 30000
+                }).done(function(response) {
+                    $($deliveryForm.data('containerSelector')).html(response)
+                }).always(function() {
+                    console.info('unblock screen');
+                });
             },
 
             // получаем точки доставки и фильтруем их по выбранным параметрам фильтрации getFilterPoints()
@@ -296,7 +286,7 @@ define(
                     $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
                     modalTitle    = $el.data('modal-title'),
                     modalPosition = $el.data('modal-position'),
-                    data          = {}
+                    data          = $.parseJSON($($el.data('dataSelector')).html())
                 ;
 
                 require(['jquery.kladr'], function() {});
@@ -372,15 +362,10 @@ define(
             },
 
             applyDiscount = function(e) {
-                var
-                    $form = $(this)
-                ;
 
-                e.stopPropagation();
-                e.preventDefault();
 
                 $.ajax({
-                   'url': $form.attr('action'),
+                   'url': $deliveryForm.attr('action'),
                    'data': $form.serializeArray(),
                     type: 'post',
                     timeout: 30000
@@ -392,12 +377,35 @@ define(
             }
         ;
 
-        $body.on('click', '.js-order-delivery-form-control', changeSplit);
+        $body.on('click', '.js-order-delivery-form-control', function(e) {
+            var
+                $el = $(e.currentTarget),
+                data = $el.data('value')
+            ;
+
+            e.stopPropagation();
+            e.preventDefault();
+
+            if (data) {
+                changeSplit(data);
+            }
+        });
         $body.on('click', '.js-order-delivery-pointPopup-link', showPointPopup);
         $body.on('click', '.js-order-delivery-addressPopup-link', showAddressPopup);
         $body.on('click', '.js-order-delivery-discountPopup-link', showDiscountPopup);
         $body.on('click', '.js-order-delivery-map-link', showMap);
         $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
+        $body.on('submit', '.js-smartAddress-form', function(e) {
+            var
+                $form = $(this),
+                data = $form.serializeArray()
+            ;
+
+            e.stopPropagation();
+            e.preventDefault();
+
+            changeSplit(data);
+        });
         $body.on('submit', '.js-certificate-check', applyDiscount);
     }
 );
