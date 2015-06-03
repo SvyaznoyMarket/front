@@ -545,6 +545,25 @@ class Delivery {
 
                     return $messages;
                 }),
+                'addressFormJson' => json_encode([
+                    'fields' => [
+                        'street'    => [
+                            'name' => 'change[address][street]',
+                        ],
+                        'building'  => [
+                            'name' => 'change[address][building]',
+                        ],
+                        'apartment' => [
+                            'name' => 'change[address][apartment]',
+                        ],
+                        'kladrId'   => [
+                            'name' => 'change[address][kladrId]',
+                        ],
+                    ],
+                    'order' => [
+                        'id' => $orderModel->blockName,
+                    ],
+                ], JSON_UNESCAPED_UNICODE),
                 'user'           => [
                     'discountUrl' => $router->getUrlByRoute(new Routing\User\Coupon\Get()), // TODO: использовать
                 ],

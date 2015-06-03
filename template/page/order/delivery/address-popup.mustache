@@ -4,24 +4,25 @@
               
         </div>
         <div class="address-pick-snippet__form">
-            <form class="js-smartAddress-form" id="address-form">
+            <form class="js-smartAddress-form" action="#">
                 <div class="form-control__container">
                     <div class="form-control-group">
-                        <input class="form-control-group__tx textfield js-smartAddress-input" type="text" name="street" autocomplete="off" data-kladr-type="street" />
-                        <label class="form-control-group__lbl" for="">Улица</label>
+                        <input class="form-control-group__tx textfield js-smartAddress-input" id="order-delivery-address-street" type="text" name="{{fields.street.name}}" autocomplete="off" data-kladr-type="street" />
+                        <label class="form-control-group__lbl" for="order-delivery-address-street">Улица</label>
                     </div>
 
                     <div class="form-control-group half-wide">
-                        <input class="form-control-group__tx textfield js-smartAddress-input" type="text" name="building" autocomplete="off" data-kladr-type="building" />
-                        <label class="form-control-group__lbl" for="">Дом</label>
+                        <input class="form-control-group__tx textfield js-smartAddress-input" id="order-delivery-address-building" type="text" name="{{fields.building.name}}" autocomplete="off" data-kladr-type="building" />
+                        <label class="form-control-group__lbl" for="order-delivery-address-building">Дом</label>
                     </div>
 
                     <div class="form-control-group half-wide">
-                        <input class="form-control-group__tx textfield" type="text" name="apartment">
-                        <label class="form-control-group__lbl" for="">Квартира</label>
+                        <input class="form-control-group__tx textfield" id="order-delivery-address-apartment" type="text" name="{{fields.apartment.name}}">
+                        <label class="form-control-group__lbl" for="order-delivery-address-apartment">Квартира</label>
                     </div>
+
                     <div class="btn-container">
-                        <button class="btn btn--submit btn--orange btn--medium">Готово</button>
+                        <button class="btn btn--submit btn--orange btn--medium" type="submit">Готово</button>
                     </div>
                 </div>
             </form>
