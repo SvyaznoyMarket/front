@@ -8267,6 +8267,23 @@ body.noScroll {
   left: 0;
   content: '\2014';
 }
+.product-card-info--recall .btn--slot-lst {
+  width: auto;
+  height: auto;
+  padding: 4px 23px 3px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  vertical-align: top;
+  *zoom: 1;
+  *display: inline;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  font-size: 18px;
+  line-height: 1.4;
+}
 .product-card .slider_lst_img {
   max-width: 450px;
 }
