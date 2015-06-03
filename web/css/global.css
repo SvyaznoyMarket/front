@@ -3667,6 +3667,13 @@ body.noScroll {
   display: block;
   z-index: 1;
 }
+.custom-select__kit.custom-filter__kit .custom-select.toggle--active .caret {
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
 .custom-select__kit.custom-filter__kit .custom-select:first-child .custom-select-list {
   left: 0;
   right: auto;
