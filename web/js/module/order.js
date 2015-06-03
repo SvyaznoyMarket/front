@@ -105,7 +105,7 @@ define(
             // получаем точки доставки и фильтруем их по выбранным параметрам фильтрации getFilterPoints()
             getPoints = function() {
                 var
-                    id = $('.js-delivery-type').data('data-selector'),
+                    id = $('.js-delivery-type').data('dataSelector'),
                     data = $.parseJSON($(id).html()),
                     points = data.points,
                     newPoints = {},
@@ -140,21 +140,23 @@ define(
                     params = {},
                     key;
 
-                $input.each(function(key) {
+                $input.each(function( key ) {
                     var
-                        $this = $(this);
+                        $this = $(this),
+                        data  = $this.data('value');
 
-                    key = $this.data('points-filter-type');
+                    key = data.name;
 
                     if ( typeof params[key] === 'undefined' ) {
                         params[key] = [];
                     }
 
                     if ( $this.prop('checked') == true ) {
-                        params[key].push($this.val());
+                        params[key].push(data.value.toString());
                     }
                 });
 
+                console.log(params);
                 return params;
             },
 
