@@ -37,7 +37,7 @@
             {{/stateLabel}}
 
             <div class="price">
-                <div class="price_old">{{#oldPrice}}{{shownOldPrice}} <span class="rubl">p</span>{{/oldPrice}}</div>
+                <div class="price_old">{{#oldPrice}}<span class="line-through">{{shownOldPrice}}</span> <span class="rubl">p</span>{{/oldPrice}}</div>
                 {{#price}}<div class="price_now{{#oldPrice}} price_now-sale{{/oldPrice}}">{{shownPrice}} <span class="rubl">p</span></div>{{/price}}
             </div>
         </a>
