@@ -3656,7 +3656,7 @@ body.noScroll {
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
 }
 .custom-select__kit.custom-filter__kit .custom-select-list__item {
-  border-top: 0;
+  border: 0;
   color: #686868;
 }
 .custom-select__kit.custom-filter__kit .custom-select.toggle--active .custom-select__value {
