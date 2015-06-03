@@ -234,7 +234,7 @@ define(
                     $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
                     modalTitle    = $el.data('modal-title'),
                     modalPosition = $el.data('modal-position'),
-                    data          = {}
+                    data          = $.parseJSON($($el.data('dataSelector')).html())
                 ;
 
                 require(['jquery.kladr'], function() {});
@@ -366,6 +366,17 @@ define(
                 });
             },
 
+            applyAddress = function(e) {
+                var
+                    $form = $(this)
+                ;
+
+                e.stopPropagation();
+                e.preventDefault();
+
+
+            },
+
             applyDiscount = function(e) {
                 var
                     $form = $(this)
@@ -393,6 +404,7 @@ define(
         $body.on('click', '.js-order-delivery-discountPopup-link', showDiscountPopup);
         $body.on('click', '.js-order-delivery-map-link', showMap);
         $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
+        $body.on('submit', '.js-smartAddress-form', applyAddress);
         $body.on('submit', '.js-certificate-check', applyDiscount);
     }
 );
