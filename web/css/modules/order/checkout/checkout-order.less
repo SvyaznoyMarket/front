@@ -219,7 +219,7 @@
 
 .checkout-sale-code {
     .flexbox();
-    flex-flow: row wrap;
+    .flex-flow(row wrap);
     padding-bottom: 15px;
 
     &__title {
@@ -253,6 +253,11 @@
     }
     & * {
         .inline-block-middle();
+    }
+    &__form{
+        .flexbox();
+        .align-items(center);
+        width: 100%;
     }
 }
 
