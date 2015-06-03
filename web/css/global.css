@@ -4940,7 +4940,7 @@ body.noScroll {
   max-height: 100%;
 }
 .catalogList_item {
-  height: 370px;
+  height: 395px;
 }
 .catalogList .name {
   height: 45px;
@@ -4969,6 +4969,9 @@ body.noScroll {
 }
 .catalogList .btnBuy:hover {
   color: #fff;
+}
+.catalogList .btn-container {
+  margin-bottom: 20px;
 }
 .catalogList .price {
   text-align: center;
