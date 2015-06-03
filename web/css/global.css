@@ -8074,9 +8074,6 @@ body.noScroll {
 .order-popup .checkout-payment__icon-wrap {
   float: right;
 }
-.order-popup .checkout-order__box {
-  padding-left: 10px;
-}
 .order-popup__head {
   line-height: 54px;
   position: relative;
@@ -8139,6 +8136,16 @@ body.noScroll {
   background-color: #f7f7f7;
   z-index: 2;
   position: relative;
+}
+.dropdowns {
+  width: 100%;
+  background-color: #fff;
+  z-index: 2;
+  position: relative;
+}
+#yandexMap {
+  width: 100% !important;
+  height: 100% !important;
 }
 .confirm {
   margin: 0 0 20px;

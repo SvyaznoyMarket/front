@@ -185,14 +185,76 @@ define(
             filterChangePoints = function( e ) {
                 var
                     $el    = $(e.target),
-                    id     = $el.data('data-selector'),
+                    id     = $el.data('data-selector'), // TODO: прицепить обработчики по человечески к контексту
                     points = getPoints(id),
                     mark   = markerFilter.bind($el);
 
                 console.log('filter point done');
 
                 renderPoints(points);
+                mapInit(points);
                 mark();
+            },
+
+            showMap = function( e ) {
+                e.stopPropagation();
+
+                var
+                    $el = $(e.currentTarget),
+                    $elText = $el.find('.js-order-delivery-map-link-text'),
+                    $containerPoints = $('.js-order-points-container'),
+                    points = $.parseJSON($($el.data('dataSelector')).html()).points,
+                    showMapClass ='show-map';
+
+                $containerPoints.toggleClass(showMapClass);
+                $elText.text( $('.js-order-points-container-type:hidden').data('order-points-type') );
+
+                mapInit(points);
+            },
+
+            mapInit = function( points ) {
+                var
+                    $container = $('.js-order-points-container-type'),
+                    mapData = $('.js-order-delivery-map-link ').data('map-data');
+
+                $container.append($map);
+
+                console.log(points);
+                require(['module/yandexmaps'], function(maps) {
+                    maps.initMap($map, mapData, initMap).done(function(map) {
+                        var
+                            placemark
+                        ;
+
+                        map.setCenter([mapData.center.lat, mapData.center.lng], mapData.zoom);
+                        map.balloon.close();
+                        map.geoObjects.removeAll();
+                        map.container.fitToViewport();
+
+                        _.each(points.points, function(point){
+                            try {
+                                placemark = new maps.ymaps.Placemark(
+                                    [point.lat, point.lng],
+                                    {
+                                        point: point,
+                                        hintContent: point.name
+                                    },
+                                    {
+                                        iconLayout: 'default#image',
+                                        iconImageHref: '/img/markers/' + point.icon,
+                                        iconImageSize: [28, 39],
+                                        iconImageOffset: [-14, -39],
+                                        //visible: visibility,
+                                        zIndex: ('shops' == point.group.token) ? 1000 : 0
+                                    }
+                                );
+                                map.geoObjects.add(placemark);
+                            } catch (e) {
+                                console.error(e);
+                            }
+                        });
+                    });
+                });
             },
 
             showPointPopup = function(e) {
@@ -307,63 +369,6 @@ define(
                 });
 
                 e.preventDefault();
-            },
-
-            showMap = function(e) {
-                e.stopPropagation();
-                $map.css({'width' : '100%', 'height' : '100%' });
-
-                var
-                    $el = $(e.currentTarget),
-                    $elText = $el.find('.js-order-delivery-map-link-text'),
-                    $container = $($el.data('containerSelector')),
-                    $containerPoints = $('.js-order-points-container'),
-                    mapData = $el.data('map-data'),
-                    showMapClass ='show-map'
-                ;
-
-                $containerPoints.toggleClass(showMapClass);
-                $elText.text( $('.js-order-points-container-type:hidden').data('order-points-type') );
-
-                require(['module/yandexmaps'], function(maps) {
-                    maps.initMap($map, mapData, initMap).done(function(map) {
-                        var
-                            placemark,
-                            points = $.parseJSON($($el.data('dataSelector')).html()).points // TODO: выполнять один раз, результат записывать в переменную
-                        ;
-
-                        map.setCenter([mapData.center.lat, mapData.center.lng], mapData.zoom);
-                        map.balloon.close();
-                        map.geoObjects.removeAll();
-                        map.container.fitToViewport();
-
-                        $container.append($map);
-
-                        _.each(points, function(point){
-                            try {
-                                placemark = new maps.ymaps.Placemark(
-                                    [point.lat, point.lng],
-                                    {
-                                        point: point,
-                                        hintContent: point.name
-                                    },
-                                    {
-                                        iconLayout: 'default#image',
-                                        iconImageHref: '/img/markers/' + point.icon,
-                                        iconImageSize: [28, 39],
-                                        iconImageOffset: [-14, -39],
-                                        //visible: visibility,
-                                        zIndex: ('shops' == point.group.token) ? 1000 : 0
-                                    }
-                                );
-
-                                map.geoObjects.add(placemark);
-                            } catch (e) {
-                                console.error(e);
-                            }
-                        });
-                    });
-                });
             },
 
             applyDiscount = function(e) {
