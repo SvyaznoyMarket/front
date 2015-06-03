@@ -24,7 +24,7 @@
     </div>
 
     <div class="dropdowns">
-        <div class="custom-select__kit custom-filter__kit" data-data-selector="#order-{{order.id}}-map-data">
+        <div class="custom-select__kit custom-filter__kit">
             <div class="custom-select custom-filter toggle js-toggle-wrap js-order-delivery-points-filter-params-list">
                 <span class="custom-select__value toggle-link js-toggle-link">
                     <span class="bb-dotted">Все точки</span>
@@ -34,7 +34,7 @@
                 <ul class="custom-select-list toggle-box">
                 {{#filters.type}}
                     <li class="custom-select-list__item">
-                        <input type="checkbox" id="order-{{order.id}}-delivery-filter-type-{{id}}" name="order-{{order.id}}-delivery-filter-type" class="custom-input custom-input--square-check js-order-filter-points-input" data-value="{{&dataValue}}" />
+                        <input type="checkbox" id="order-{{order.id}}-delivery-filter-type-{{id}}" data-data-selector="#order-{{order.id}}-map-data" name="order-{{order.id}}-delivery-filter-type" class="custom-input custom-input--square-check js-order-filter-points-input" data-value="{{&dataValue}}" />
 
                         <label class="custom-label flex-hor-vertical-between js-order-delivery-points-filter-param" for="order-{{order.id}}-delivery-filter-type-{{id}}">
                             <span class="custom-label_tx">{{name}}</span>
@@ -53,7 +53,7 @@
                 <ul class="custom-select-list toggle-box">
                 {{#filters.cost}}
                     <li class="custom-select-list__item">
-                        <input type="checkbox" id="order-{{order.id}}-delivery-filter-cost-{{id}}" name="order-{{order.id}}-delivery-filter-cost" class="custom-input custom-input--square-check js-order-filter-points-input" data-value="{{&dataValue}}" />
+                        <input type="checkbox" id="order-{{order.id}}-delivery-filter-cost-{{id}}" data-data-selector="#order-{{order.id}}-map-data" name="order-{{order.id}}-delivery-filter-cost" class="custom-input custom-input--square-check js-order-filter-points-input" data-value="{{&dataValue}}" />
 
                         <label class="custom-label flex-hor-vertical-between js-order-delivery-points-filter-param" for="order-{{order.id}}-delivery-filter-cost-{{id}}">
                             <span class="custom-label_tx">{{^name}}Бесплатно{{/name}}{{#name}}{{name}} <span class="rubl">p</span>{{/name}}</span>
@@ -72,7 +72,7 @@
                 <ul class="custom-select-list toggle-box">
                 {{#filters.date}}
                     <li class="custom-select-list__item">
-                        <input type="checkbox" id="order-{{order.id}}-delivery-filter-date-{{id}}" name="order-{{order.id}}-delivery-filter-date" class="custom-input custom-input--square-check js-order-filter-points-input" data-value="{{&dataValue}}" />
+                        <input type="checkbox" id="order-{{order.id}}-delivery-filter-date-{{id}}" data-data-selector="#order-{{order.id}}-map-data" name="order-{{order.id}}-delivery-filter-date" class="custom-input custom-input--square-check js-order-filter-points-input" data-value="{{&dataValue}}" />
 
                         <label class="custom-label flex-hor-vertical-between js-order-delivery-points-filter-param" for="order-{{order.id}}-delivery-filter-date-{{id}}"><span class="custom-label_tx">{{name}}</span></label>
                     </li>

@@ -103,13 +103,12 @@ define(
             },
 
             // получаем точки доставки и фильтруем их по выбранным параметрам фильтрации getFilterPoints()
-            getPoints = function() {
+            getPoints = function( id ) {
                 var
-                    id = $('.js-delivery-type').data('dataSelector'),
                     data = $.parseJSON($(id).html()),
                     points = data.points,
                     newPoints = {},
-                    params = getFilterPoints(),
+                    params = getFilterPoints(id),
                     key, pointAdd;
 
                 newPoints.points = [points];
@@ -134,9 +133,9 @@ define(
             },
 
             // формируем массив параметров фильтрации точек доставки
-            getFilterPoints = function() {
+            getFilterPoints = function( id ) {
                 var
-                    $input = $('.js-order-filter-points-input'),
+                    $input = $('.js-order-filter-points-input').filter('[data-data-selector="' + id + '"]'),
                     params = {},
                     key;
 
@@ -156,7 +155,6 @@ define(
                     }
                 });
 
-                console.log(params);
                 return params;
             },
 
@@ -172,7 +170,7 @@ define(
             // маркируем активный фильтр
             markerFilter = function( el ) {
                 var
-                    $this         = $(this),
+                    $this       = $(this),
                     $filter     = $this.closest('.js-order-delivery-points-filter-params-list'),
                     activeClass = 'active';
 
@@ -187,8 +185,11 @@ define(
             filterChangePoints = function( e ) {
                 var
                     $el    = $(e.target),
-                    points = getPoints(),
+                    id     = $el.data('data-selector'),
+                    points = getPoints(id),
                     mark   = markerFilter.bind($el);
+
+                console.log('filter point done');
 
                 renderPoints(points);
                 mark();
@@ -211,6 +212,7 @@ define(
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data, $pointPopupTemplate.data('partial')));
                         $body.css({'overflow':'hidden'});
+                        $modalWindow.on('change', '.js-order-filter-points-input', filterChangePoints);
                     },
                     beforeClose: function() {
                         $mapContainer.append($map);
@@ -370,6 +372,5 @@ define(
         $body.on('click', '.js-order-delivery-discountPopup-link', showDiscountPopup);
         $body.on('click', '.js-order-delivery-map-link', showMap);
         $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
-        $body.on('change', '.js-order-filter-points-input', filterChangePoints);
     }
 );
