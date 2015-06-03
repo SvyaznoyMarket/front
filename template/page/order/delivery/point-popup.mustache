@@ -24,8 +24,8 @@
     </div>
 
     <div class="dropdowns">
-        <div class="custom-select__kit custom-filter__kit">
-            <div class="custom-select custom-filter toggle js-toggle-wrap js-order-delivery-points-filter-params-list" data-data-selector="#order-{{order.id}}-map-data">
+        <div class="custom-select__kit custom-filter__kit" data-data-selector="#order-{{order.id}}-map-data">
+            <div class="custom-select custom-filter toggle js-toggle-wrap js-order-delivery-points-filter-params-list">
                 <span class="custom-select__value toggle-link js-toggle-link">
                     <span class="bb-dotted">Все точки</span>
                     <i class="caret"></i>
@@ -58,7 +58,6 @@
                         <label class="custom-label flex-hor-vertical-between js-order-delivery-points-filter-param" for="order-{{order.id}}-delivery-filter-cost-{{id}}">
                             <span class="custom-label_tx">{{^name}}Бесплатно{{/name}}{{#name}}{{name}} <span class="rubl">p</span>{{/name}}</span>
                         </label>
-
                     </li>
                 {{/filters.cost}}
                 </ul>

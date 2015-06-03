@@ -375,7 +375,7 @@ class Delivery {
                                 'id'        => $possiblePointModel->cost ?: uniqid(),
                                 'name'      => $possiblePointModel->cost ?: false,
                                 'dataValue' => $templateHelper->json([
-                                    'name'  => 'date',
+                                    'name'  => 'cost',
                                     'value' => $possiblePointModel->cost,
                                 ]),
                             ];
@@ -386,7 +386,7 @@ class Delivery {
                                 'id'        => $date->getTimestamp(),
                                 'name'      => $dateHelper->humanizeDate($date),
                                 'dataValue' => $templateHelper->json([
-                                    'name'  => 'cost',
+                                    'name'  => 'date',
                                     'value' => $date->getTimestamp(),
                                 ]),
                             ];
