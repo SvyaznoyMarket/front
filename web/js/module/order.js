@@ -167,21 +167,29 @@ define(
                 containerPoints.html(mustache.render(partial, data));
             },
 
-            // фильтруем точки самовывоза
-            filterChangePoints = function( e ) {
+            // маркируем активный фильтр
+            markerFilter = function( el ) {
                 var
-                    points = getPoints(),
-                    $el         = $(e.target),
-                    $filter     = $el.closest('.js-order-delivery-points-filter-params-list'),
+                    $this         = $(this),
+                    $filter     = $this.closest('.js-order-delivery-points-filter-params-list'),
                     activeClass = 'active';
 
-                renderPoints(points);
-
-                if ( $el.prop('checked') == true ) {
+                if ( $this.prop('checked') == true ) {
                     $filter.addClass(activeClass);
                 } else {
                     $filter.removeClass(activeClass);
                 }
+            },
+
+            // фильтруем точки самовывоза
+            filterChangePoints = function( e ) {
+                var
+                    $el    = $(e.target),
+                    points = getPoints(),
+                    mark   = markerFilter.bind($el);
+
+                renderPoints(points);
+                mark();
             },
 
             showPointPopup = function(e) {
