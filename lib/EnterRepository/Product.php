@@ -246,7 +246,7 @@ class Product {
                         $day++;
                         if ($day > 7) break;
 
-                        if (in_array($deliveryItem['token'], ['self', 'now'])) {
+                        if (isset($dateItem['shop_list']) && in_array($deliveryItem['token'], ['self', 'now'])) {
                             foreach ($dateItem['shop_list'] as $shopIntervalItem) {
                                 $shopId = (string)$shopIntervalItem['id'];
                                 $shopItem = (!array_key_exists($shopId, $delivery->shopsById) && isset($shopData[$shopId]['id'])) ? $shopData[$shopId] : null;
@@ -316,7 +316,7 @@ class Product {
                     $accessoryItem['description'] = null;
                     $accessoryItem['property'] = [];
                     $accessoryItem['property_group'] = [];
-                    $accessoryItem['media'] = [reset($accessoryItem['media'])];
+                    $accessoryItem['media'] = (isset($accessoryItem['media']) && is_array($accessoryItem['media'])) ? [reset($accessoryItem['media'])] : [];
                     $product->relation->accessories[] = new Model\Product($accessoryItem);
                 }
             }
@@ -347,6 +347,24 @@ class Product {
                         if (!isset($trustfactorItem['uid'])) continue;
 
                         $product->trustfactors[] = new Model\Product\Trustfactor($trustfactorItem);
+                    }
+                }
+
+                // property groups
+                if (isset($descriptionItem['property_groups'][0])) {
+                    foreach ($descriptionItem['property_groups'] as $propertyGroupItem) {
+                        if (!isset($propertyGroupItem['uid'])) continue;
+
+                        $product->propertyGroups[] = new Model\Product\Property\Group($propertyGroupItem);
+                    }
+                }
+
+                // property
+                if (isset($descriptionItem['properties'][0])) {
+                    foreach ($descriptionItem['properties'] as $propertyItem) {
+                        if (!isset($propertyItem['uid'])) continue;
+
+                        $product->properties[] = new Model\Product\Property($propertyItem);
                     }
                 }
 

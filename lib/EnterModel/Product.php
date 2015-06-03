@@ -152,14 +152,14 @@ class Product {
 
         if (isset($data['brand']['id'])) $this->brand = new Model\Brand($data['brand']);
 
-        if (isset($data['property'][0])) {
-            foreach ($data['property'] as $propertyItem) {
+        if (isset($data['properties'][0])) {
+            foreach ($data['properties'] as $propertyItem) {
                 $this->properties[] = new Model\Product\Property((array)$propertyItem);
             }
         }
 
-        if (isset($data['property_group'][0])) {
-            foreach ($data['property_group'] as $propertyGroupItem) {
+        if (isset($data['property_groups'][0])) {
+            foreach ($data['property_groups'] as $propertyGroupItem) {
                 $this->propertyGroups[] = new Model\Product\Property\Group((array)$propertyGroupItem);
             }
         }
