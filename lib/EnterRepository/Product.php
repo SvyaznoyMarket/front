@@ -320,9 +320,8 @@ class Product {
     /**
      * @param Model\Product[] $productsByUi
      * @param Query $descriptionListQuery
-     * @param bool $forceDescriptionMedia
      */
-    public function setDescriptionForListByListQuery(array $productsByUi, Query $descriptionListQuery, $forceDescriptionMedia = false) {
+    public function setDescriptionForListByListQuery(array $productsByUi, Query $descriptionListQuery) {
         try {
             foreach ($descriptionListQuery->getResult() as $descriptionItem) {
                 /** @var Model\Product|null $product */
