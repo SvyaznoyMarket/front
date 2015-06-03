@@ -361,22 +361,34 @@ class Delivery {
                         // фильтр по типу точки
                         if (!isset($filtersByToken['type'][$pointGroup->blockName])) {
                             $filtersByToken['type'][$pointGroup->blockName] = [
-                                'name'  => $pointGroup->blockName,
-                                'value' => $pointGroup->token,
+                                'id'        => $pointGroup->token,
+                                'name'      => $pointGroup->blockName,
+                                'dataValue' => $templateHelper->json([
+                                    'name'  => 'group',
+                                    'value' => $pointGroup->token,
+                                ]),
                             ];
                         }
                         // фильтр по цене
                         if (!isset($filtersByToken['cost'][$possiblePointModel->cost])) {
                             $filtersByToken['cost'][$possiblePointModel->cost] = [
-                                'name'  => $possiblePointModel->cost ?: false,
-                                'value' => $possiblePointModel->cost,
+                                'id'        => $possiblePointModel->cost ?: uniqid(),
+                                'name'      => $possiblePointModel->cost ?: false,
+                                'dataValue' => $templateHelper->json([
+                                    'name'  => 'cost',
+                                    'value' => $possiblePointModel->cost,
+                                ]),
                             ];
                         }
                         // фильтр по дате
                         if (!isset($filtersByToken['date'][$date->getTimestamp()])) {
                             $filtersByToken['date'][$date->getTimestamp()] = [
-                                'name'  => $dateHelper->humanizeDate($date),
-                                'value' => $date->getTimestamp(),
+                                'id'        => $date->getTimestamp(),
+                                'name'      => $dateHelper->humanizeDate($date),
+                                'dataValue' => $templateHelper->json([
+                                    'name'  => 'date',
+                                    'value' => $date->getTimestamp(),
+                                ]),
                             ];
                         }
                     }

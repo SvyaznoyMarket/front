@@ -375,7 +375,10 @@ class Cart {
                                 $this->getLogger()->push(['type' => 'warn', 'message' => 'Купон не найден', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
                             }
                         } else { // добавление купона
-                            $dump['orders'][$blockName]['discounts'][] = ['number' => $discountItem['number'], 'name' => null, 'type' => null, 'discount' => null];
+                            $dump['orders'][$blockName]['discounts'][] =
+                                ['number' => $discountItem['number'], 'name' => null, 'type' => null, 'discount' => null]
+                                + (isset($discountItem['pin']) ? ['pin' => $discountItem['pin']] : [])
+                            ;
                         }
                     }
                     unset($discountItem);

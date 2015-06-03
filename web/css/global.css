@@ -3622,6 +3622,9 @@ body.noScroll {
 .custom-select__kit.custom-filter__kit {
   background-color: #fff;
 }
+.custom-select__kit.custom-filter__kit .custom-select {
+  margin-left: 5px;
+}
 .custom-select__kit.custom-filter__kit .custom-select__value {
   border: 1px solid transparent;
   border-bottom: 0px;
@@ -7645,7 +7648,7 @@ body.noScroll {
   padding: 10px 10px 10px 50px;
   text-align: left;
   background-color: #ffffff;
-  background-position: 20px 10px;
+  background-position: 20px 50%;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -7659,7 +7662,7 @@ body.noScroll {
   color: #f99b1c;
 }
 .custom-input--check:checked + .order-accept {
-  background-position: 20px 10px;
+  background-position: 20px 50%;
 }
 .checkout-address {
   margin-top: 10px;
@@ -8539,6 +8542,7 @@ body.noScroll {
 .dropdowns {
   width: 100%;
   z-index: 2;
+  background-color: #fff;
 }
 .popupFl {
   box-sizing: border-box;
