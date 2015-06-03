@@ -4900,9 +4900,11 @@ body.noScroll {
   *zoom: 1;
   *display: inline;
   margin-right: 15px;
-  text-decoration: line-through;
   color: #6b6b6b;
   font-size: 18px;
+}
+.catalogList .price_old .line-through {
+  text-decoration: line-through;
 }
 .catalogList .price_now {
   display: inline-block;
@@ -5006,8 +5008,8 @@ body.noScroll {
    ========================================================================== */
 @media only screen and (max-width: 959px) {
   .catalogList {
-    padding-left: 6px;
-    padding-right: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
   .catalogList_item {
     width: 29%;
@@ -5139,7 +5141,8 @@ body.noScroll {
 }
 @media screen and (max-width: 490px) {
   .catalogList {
-    padding: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
   .catalogList_item_new {
     display: block;
