@@ -359,6 +359,26 @@ define(
                         });
                     });
                 });
+            },
+
+            applyDiscount = function(e) {
+                var
+                    $form = $(this)
+                ;
+
+                e.stopPropagation();
+                e.preventDefault();
+
+                $.ajax({
+                   'url': $form.attr('action'),
+                   'data': $form.serializeArray(),
+                    type: 'post',
+                    timeout: 30000
+                }).done(function(response) {
+
+                }).always(function() {
+                    console.info('unblock screen');
+                });
             }
         ;
 
@@ -369,5 +389,6 @@ define(
         $body.on('click', '.js-order-delivery-map-link', showMap);
         $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
         $body.on('change', '.js-order-filter-points-input', filterChangePoints);
+        $body.on('submit', '.js-certificate-check', applyDiscount);
     }
 );

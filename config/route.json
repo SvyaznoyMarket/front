@@ -226,6 +226,12 @@
         }
     },
 
+    "Certificate\\Check": {
+        "name": "Проверить сертификат",
+        "pattern": "/ajax/certificate/check",
+        "method": ["POST"]
+    },
+
     "Router": {
         "name": "Маршрутизатор нескольких запросов",
         "pattern": "/ajax/router",
