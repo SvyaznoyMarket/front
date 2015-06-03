@@ -159,7 +159,7 @@ namespace EnterAggregator\Controller\Order {
                 });
 
                 // медиа для товаров
-                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery, true);
+                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
             }
 
             // запрос на проверку товаров в избранном

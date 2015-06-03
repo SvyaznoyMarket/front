@@ -2,6 +2,8 @@
 
 namespace EnterModel\Product;
 
+use EnterModel as Model;
+
 class Property {
     /** @var string */
     public $id;
@@ -36,55 +38,41 @@ class Property {
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
-        if (array_key_exists('unit', $data)) $this->unit = (string)$data['unit'];
-        if (array_key_exists('hint', $data)) $this->hint = (string)$data['hint'];
+        if (array_key_exists('unit', $data)) $this->unit = $data['unit'] ? (string)$data['unit'] : null;
+        if (array_key_exists('hint', $data)) $this->hint = $data['hint'] ? (string)$data['hint'] : null;
         if (array_key_exists('value_hint', $data)) $this->valueHint = (string)$data['value_hint'];
         if (array_key_exists('is_multiple', $data)) $this->isMultiple = (bool)$data['is_multiple'];
         if (array_key_exists('value', $data)) $this->value = $data['value'];
-        if (array_key_exists('group_id', $data)) $this->groupId = $data['group_id'] ? (string)$data['group_id'] : null;
-        if (array_key_exists('group_position', $data)) $this->groupPosition = (int)$data['group_position'];
+        if (array_key_exists('group_uid', $data)) {
+            $this->groupId = $data['group_uid'] ? (string)$data['group_uid'] : null;
+        }
+        if (array_key_exists('position_in_group', $data)) {
+            $this->groupPosition = (int)$data['position_in_group'];
+        }
         if (array_key_exists('position_in_list', $data)) {
             $this->position = (int)$data['position_in_list'];
-        } else if (array_key_exists('position', $data)) {
-            $this->position = (int)$data['position'];
         }
         if (array_key_exists('is_view_list', $data)) $this->isInList = (bool)$data['is_view_list'];
-        if (array_key_exists('option', $data) && is_array($data['option'])) {
-            foreach ($data['option'] as $option) {
-                $this->options[] = new Property\Option($option);
+        if (array_key_exists('options', $data) && is_array($data['options'])) {
+            foreach ($data['options'] as $optionItem) {
+                if (!isset($optionItem['value'])) continue;
+
+                $this->options[] = new Property\Option($optionItem);
             }
         }
 
-        if ($this->isMultiple && isset($data['option'][0])) {
-            foreach ($data['option'] as $optionItem) {
-                if (!isset($optionItem['hint'])) continue;
-                $this->valueHint .= $optionItem['hint'];
-            }
-        }
+        $this->shownValue = implode(
+            ', ',
+            array_map(
+                function(Model\Product\Property\Option $option) {
+                    return $option->value;
+                },
+                $this->options
+            )
+        );
 
-        if (null !== $this->value) {
-            if (in_array($this->value, ['false', false], true)) {
-                $this->shownValue = 'нет';
-            } else if (in_array($this->value, ['true', true], true)) {
-                $this->shownValue = 'да';
-            } else {
-                $this->shownValue = $this->value;
-            }
-        } else if (isset($data['option'][0])) {
-            $value = [];
-            foreach ($data['option'] as $optionItem) {
-                if (in_array($optionItem['value'], ['false', false], true)) {
-                    $value[] = 'нет';
-                } else if (in_array($optionItem['value'], ['true', true], true)) {
-                    $value[] = 'да';
-                } else {
-                    $value[] = $optionItem['value'];
-                }
-            }
-
-            $this->shownValue = implode(', ', $value);
-        } else {
-            $this->shownValue = null;
+        if ($this->shownValue && $this->unit) {
+            $this->shownValue .= (' ' . $this->unit);
         }
     }
 }
