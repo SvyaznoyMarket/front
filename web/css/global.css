@@ -4528,6 +4528,20 @@ body.noScroll {
   font-size: 18px;
   text-align: center;
 }
+.modal.fixed-untill-640 {
+  top: 0px!important;
+  left: 0px!important;
+  width: 100%!important;
+  height: 100%!important;
+  margin: 0px!important;
+}
+.modal.fixed-untill-640 .modal-head {
+  position: absolute;
+  top: 0;
+}
+.modal.fixed-untill-640 .modal-content {
+  height: 100%;
+}
 /* ==========================================================================
    Попапы .popupOverlay, .popupBox
    ========================================================================== */
@@ -4551,6 +4565,16 @@ body.noScroll {
   }
   .popupBox-bid__check .custom-input--check + .custom-label {
     background-position: 0 19px;
+  }
+}
+@media only screen and (min-width: 640px) {
+  .modal.fixed-untill-640 {
+    width: 320px!important;
+    height: 460px!important;
+    top: 50%!important;
+    margin-top: -230px !important;
+    left: 50%!important;
+    margin-left: -160px !important;
   }
 }
 /* ==========================================================================
@@ -7635,7 +7659,7 @@ body.noScroll {
   color: #f99b1c;
 }
 .custom-input--check:checked + .order-accept {
-  background-position: 20px 50%;
+  background-position: 20px 10px;
 }
 .checkout-address {
   margin-top: 10px;
@@ -8046,6 +8070,9 @@ body.noScroll {
 }
 .order-popup .checkout-payment__icon-wrap {
   float: right;
+}
+.order-popup .checkout-order__box {
+  padding-left: 10px;
 }
 .order-popup__head {
   line-height: 54px;
