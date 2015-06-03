@@ -161,15 +161,16 @@
         }
     }
     &__kit {
-        display: flex;
+        .flexbox();
 
         width: 100%;
-        max-width: 500px;
+        max-width: 640px;
         margin: 0 auto;
-        padding: 10px 0;
+        padding: 10px 0px;
 
-        align-items: center;
-        justify-content: space-between;
+        .align-items(center);
+        .justify-content(space-between);
+
         .custom-select {
             // width: 100%;
             &-list {
