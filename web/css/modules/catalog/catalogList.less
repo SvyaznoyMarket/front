@@ -174,7 +174,7 @@
       height: 32px;
       line-height: 30px;
       text-align: center;
-      width: 88px;
+      width: 100px;
 
       .rounded(3px);
       .box-sizing();
@@ -184,6 +184,7 @@
       }
   }
   .btn-container{
+    margin-top: 10px;
     margin-bottom: 20px;
   }
   .price {
@@ -193,6 +194,9 @@
     &_old {
       color: #8a8a8a;
       font-size: 18px;
+      &:empty{
+        display: none;
+      }
     }
 
     &_now {
