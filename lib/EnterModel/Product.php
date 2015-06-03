@@ -165,32 +165,15 @@ class Product {
         }
 
         // ядерные фотографии
-        if (isset($data['media'][0])) {
-            call_user_func(function() use (&$data, &$photoUrlSizes) {
-                // host
-                $hosts = $this->getConfig()->mediaHosts;
-                $index = !empty($photoId) ? ($photoId % count($hosts)) : rand(0, count($hosts) - 1);
-                $host = isset($hosts[$index]) ? $hosts[$index] : '';
+        if (!empty($data['medias']) && is_array($data['medias'])) {
+            // убеждаемся что есть именно картинки, а не другой медиа-контент
+            foreach ($data['medias'] as $mediaItem) {
+                if ('image' === $mediaItem['provider']) {
+                    $this->media = new Model\Product\Media($mediaItem);
 
-                foreach ($data['media'] as $mediaItem) {
-                    if (!$mediaItem['source'] || ($mediaItem['type_id'] != 1)) continue;
-                    // преобразование в формат scms
-                    $item = [
-                        'content_type' => 'image/jpeg',
-                        'provider'     => 'image',
-                        'tags'         => [],
-                        'sources'      => [],
-                    ];
-                    foreach ($photoUrlSizes as $type => $prefix) {
-                        $item['sources'][] = [
-                            'type' => $type,
-                            'url'  => $host . $prefix . $mediaItem['source'],
-                        ];
-                    }
-
-                    $this->media->photos[] = new Model\Media($item);
+                    break;
                 }
-            });
+            }
         }
 
         if (isset($data['label'][0])) {

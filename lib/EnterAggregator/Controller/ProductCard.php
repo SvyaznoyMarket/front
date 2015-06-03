@@ -301,7 +301,7 @@ namespace EnterAggregator\Controller {
                 $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
             }
 
-            // трастфакторы товара
+            // трастфакторы, свойства, медиа товара
             $productRepository->setDescriptionForListByListQuery(
                 [
                     $response->product->ui => $response->product

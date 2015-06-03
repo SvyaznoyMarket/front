@@ -91,10 +91,6 @@ class Product {
     public function getIndexedObjectListByQueryList(array $queries, $parser = null) {
         $parser = is_callable($parser) ? $parser : function(&$item) {
             // оптимизация по умолчанию для листинга
-            $item['description'] = null;
-            $item['property'] = [];
-            $item['property_group'] = [];
-            $item['media'] = [reset($item['media'])];
         };
 
         $products = [];
@@ -313,10 +309,6 @@ class Product {
             foreach ($productsById as $product) {
                 foreach ($accessoryListQuery->getResult() as $accessoryItem) {
                     // оптимизация
-                    $accessoryItem['description'] = null;
-                    $accessoryItem['property'] = [];
-                    $accessoryItem['property_group'] = [];
-                    $accessoryItem['media'] = (isset($accessoryItem['media']) && is_array($accessoryItem['media'])) ? [reset($accessoryItem['media'])] : [];
                     $product->relation->accessories[] = new Model\Product($accessoryItem);
                 }
             }
@@ -369,13 +361,7 @@ class Product {
                 }
 
                 // media
-                if (
-                    (!empty($descriptionItem['medias']) && is_array($descriptionItem['medias']))
-                    && (
-                        $forceDescriptionMedia
-                        || (count($descriptionItem['medias']) >= count($product->media->photos)) // SITE-5284
-                    )
-                ) {
+                if (!empty($descriptionItem['medias']) && is_array($descriptionItem['medias'])) {
                     // убеждаемся что есть именно картинки, а не другой медиа-контент
                     foreach ($descriptionItem['medias'] as $mediaItem) {
                         if ('image' === $mediaItem['provider']) {
