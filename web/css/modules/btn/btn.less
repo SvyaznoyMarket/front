@@ -1,40 +1,32 @@
 .btn {
     cursor: pointer;
-    
+
     &-container {
-        //margin-top: 25px;
+        width: 100%;
         text-align: center;
     }
     &--big {
         overflow: visible;
-
         width: auto;
         padding: 4px 23px 3px;
-
-        text-align: center;
         text-align: center;
         text-decoration: none;
-
         .inline-block();
         .box-sizing();
     }
     &--medium {
         font-size: 16px;
         line-height: 38px;
-
         display: block;
         overflow: visible;
-
         width: 120px;
         height: 38px;
         padding: 0;
-
         text-align: center;
-
         .rounded(4px);
         .inline-block();
     }
-    &--lstn{
+    &--lstn {
         .inline-block();
         width: auto;
         height: 30px;
@@ -45,29 +37,26 @@
         border-bottom: 2px solid;
         font-size: 14px;
     }
-    &--slot{
+    &--slot {
         font-size: 18px;
-
         min-width: 145px;
-
         color: #000;
         border: 1px solid #ccd594;
         border-bottom: 3px solid #b8c64b;
         background: #cbdf59;
-
         .rounded(5px);
+
         &:hover {
             background-color: #cee062;
         }
         &:active {
             margin-top: 2px;
-
             border-bottom: 1px solid #b8c64b;
             background-color: #cee062;
         }
-        &-lst{
+        &-lst {
             padding: 0;
-            width: 88px;
+            width: 100px;
             min-width: 0;
             text-align: center;
             height: 30px;
@@ -84,55 +73,53 @@
         background: @white;
     }
     &--submit {
+        background: #fcaa2a;
         color: #fff;
         border: 1px solid #ea7900;
         background: #fcaa2a;
     }
     &--orange {
         line-height: 30px;
-
         max-width: 100%;
         height: 34px;
-
         text-align: center;
-
         color: #fff;
         border: 0;
         border-bottom: 2px solid #e26500;
         background: #fcaa2a;
-
         .inline-block();
+
         &:active {
             margin-top: 2px;
             margin-bottom: -2px;
-
             border-bottom: 0;
             border-bottom: 0;
         }
         &:hover {
             color: #fff;
         }
-        &.btn--big{
+        &.btn--big {
             width: auto;
             padding: 0 50px;
             font-size: 20px;
             .rounded(6px);
         }
-        &.btn--medium, .btn--white.btn--medium{
+        &.btn--medium,
+        .btn--white.btn--medium {
             width: auto;
             padding: 0px 6px;
             font-size: 14px;
             .rounded(4px);
             min-width: 100px;
         }
-        &.btn--tall{
+        &.btn--tall {
             height: 40px;
             line-height: 36px;
             font-size: 20px;
             font-weight: bold;
             padding: 0 20px;
         }
-        &.btn--thin{
+        &.btn--thin {
             padding: 0 15px;
             float: right;
             height: 30px;
@@ -145,68 +132,55 @@
     &--pay {
         font-size: 18px;
         line-height: 40px;
-
         width: 120px;
         height: 40px;
         margin: 20px auto;
-
         .rounded(3px);
     }
     &--white {
-        background-color: rgba(255,255,255,0.75);
+        background-color: rgba(255, 255, 255, 0.75);
         color: #5c5c5c;
     }
-
     &--buy {
         .rounded(5px);
         display: block;
-
         width: 120px;
         height: 38px;
-
         text-align: center;
         background: @typ-orange;
         border-bottom: 2px solid @typ-orange-shadow;
         color: @white;
-
-
         font-size: 21px;
         line-height: 38px;
 
-
-        &:hover{
+        &:hover {
             color: @white;
         }
-        &:active{
+        &:active {
             border-bottom: 0;
             margin-top: 2px;
             margin-bottom: -2px;
         }
-
-        &-lst{
+        &-lst {
             background: @typ-orange;
             border-bottom: 2px solid @typ-orange-shadow;
             color: #fff;
             font-weight: bold;
-
-            &:hover{
+            &:hover {
                 color: @white;
             }
         }
-        &.btn--disabled{
+        &.btn--disabled {
             color: @typGray;
             border-color: @white;
             background: @white;
-            &:hover{
+            &:hover {
                 color: @typGray;
             }
         }
-        &.btn--incart {
-       
-        }
-        &.btn--small{
+        &.btn--incart {}
+        &.btn--small {
             font-weight: bold;
-
             display: inline-block;
             width: auto;
             height: 30px;
@@ -216,89 +190,73 @@
             .box-sizing();
             font-size: 14px;
         }
-
-    // резерв и на витрине
+        // резерв и на витрине
         &.btn--inshop {
             .blackGrad();
             position: relative;
-
             text-align: left;
             text-indent: 40px;
-
             border: 1px solid #a1a1a1;
-
             &:after {
                 position: absolute;
                 top: 9px;
                 left: 15px;
-
                 width: 20px;
                 height: 20px;
-
                 content: '';
-
                 background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNElEQVQ4EbWUsWoCQRCGT5FAUEExkEJsfIMQ8AXSJvZiE6xSpBBb8wZ5jISkCBGCfYoQCDZaCGIdCDaCBBJTeef3y204rG7Xc+Bj5paZudnd2UkFQeAlKekwWQVdBvPt/I8MkXdQBx9a8AJnUAAbmeI89thyVK75KMI8uhjTfsLPU4U30ABVOIEF1CALNjKTc0pZkxRVeA6qcAW3MIaDEFRsWeLpK2E/EjLA/oR3OI6sxzF7OF0p4QhOwogf9B88QClci6s+5KgzzKOVUJei5L/gLDs38vafVeGQRbPlS+xH6MAR2Ii2/KwzNMkUnINDaILtpSh2k/ACw7TNG/Y3nIJax0Y2Z7+Xxu5Shnl6bexXqILL05vvZTjcU40ZX1/YOkNV7DK+/oeDBqwaWxND2lkSv5Q18LLgXSSy53IAAAAASUVORK5CYII=);
                 background-repeat: no-repeat;
                 background-position: 0 0;
+                &:hover {
+                    color: #fff;
+                }
+            }
+        }
+        &--show {
+            border: 1px solid #8a8a8a;
+            border-bottom: 2px;
+            color: #8a8a8a;
+            &:hover {
+                color: #8a8a8a;
             }
         }
     }
-    &--show {
-        border: 1px solid #8a8a8a;
-        border-bottom: 2px;
-        color: #8a8a8a;
-        &:hover{
-            color: #8a8a8a;
-        }
-    }
 }
-
 .btn-type {
     font-size: 14px;
     line-height: 35px;
-
     height: 35px;
-
     border-width: 1px;
     border-style: solid;
-
     .rounded(5px);
     .box-sizing(border-box);
+
     &--default {
         padding: 0 10px;
-
         color: @black;
         border-color: #c7c7c7;
         background: #fff;
     }
 }
-
 .btn-transparent {
     font-size: 14px;
-
     padding: 7px 15px;
-
     border: none;
     background: rgba(255, 255, 255, .75);
-
     .rounded(3px);
 }
-
 .btn-stretch {
     font-size: 14px;
-
     width: 100%;
     padding: 10px;
-
     text-align: center;
-
     .box-sizing();
+
     &--default {
         background: #f7f7f7;
     }
     &__link {
         border-bottom: 1px solid;
-
         .opacity(.6);
     }
 }
@@ -306,64 +264,45 @@
 .btnStyleOrange {
     font-size: 14px;
     line-height: 34px;
-
     display: block;
-
     height: 35px;
-
     text-align: center;
-
     color: #fff;
     border: 1px solid #e26500;
     background: #f89b1c;
-
     .rounded(4px);
     &:hover {
         text-decoration: none;
-
         color: @white;
-
         .gradient(#ffa200, #f79200, #ffa200);
     }
     &:active {
         text-decoration: none;
-
         background: #f79200;
     }
 }
-
 .btnStyleBlack {
     font-size: 14px;
     line-height: 34px;
-
     display: block;
-
     height: 35px;
-
     text-align: center;
-
     color: @white;
     border: 1px solid @black;
     background: @black;
-
     .rounded(4px);
 }
-
 .btnStyleGrey {
     font-size: 14px;
     line-height: 34px;
-
     display: block;
-
     height: 35px;
-
     text-align: center;
-
     color: @black;
     border: 1px solid @tabLightGreyBorder;
     background: @tabGrey;
-
     .rounded(4px);
+
     &:hover {
         text-decoration: none;
     }
@@ -371,105 +310,83 @@
 .btn1 {
     font-size: 14px;
     line-height: 31px;
-
     padding: 0 10px;
-
     cursor: pointer;
     text-align: center;
-
     color: @black;
     border: 1px solid @lightGrey1;
-
     .rounded(4px);
     .inline-block();
     .grayGradLight();
+
     &:hover {
         text-decoration: none;
     }
 }
-
 .btn2 {
     font-size: 16px;
     font-weight: bold;
     line-height: 1.9;
-
     padding: 0 10px;
-
     cursor: pointer;
     text-align: center;
-
     color: @white;
     border: 1px solid #a1a1a1;
-
     .blackGrad();
     .inline-block();
     .rounded(4px);
+
     &:hover {
         color: @white;
         background: @black;
     }
 }
-
 .btn3 {
     font-size: 21px;
     line-height: 38px;
-
     height: 38px;
     padding: 0 10px;
-
     text-align: center;
-
     color: @white;
     border: 1px solid #fb9c00;
-
     .gradient(#ffc000, #ffaa01, #ffc000);
     .rounded(5px);
     .inline-block();
+
     &:hover {
         text-decoration: none;
-
         color: @white;
-
         .gradient(#ffa200, #f79200, #ffa200);
     }
     &:active {
         text-decoration: none;
-
         background: #f79200;
     }
 }
-
 .btn4 {
     padding-right: 5px;
     padding-left: 32px;
-
     color: @white;
     background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNElEQVQ4EbWUsWoCQRCGT5FAUEExkEJsfIMQ8AXSJvZiE6xSpBBb8wZ5jISkCBGCfYoQCDZaCGIdCDaCBBJTeef3y204rG7Xc+Bj5paZudnd2UkFQeAlKekwWQVdBvPt/I8MkXdQBx9a8AJnUAAbmeI89thyVK75KMI8uhjTfsLPU4U30ABVOIEF1CALNjKTc0pZkxRVeA6qcAW3MIaDEFRsWeLpK2E/EjLA/oR3OI6sxzF7OF0p4QhOwogf9B88QClci6s+5KgzzKOVUJei5L/gLDs38vafVeGQRbPlS+xH6MAR2Ii2/KwzNMkUnINDaILtpSh2k/ACw7TNG/Y3nIJax0Y2Z7+Xxu5Shnl6bexXqILL05vvZTjcU40ZX1/YOkNV7DK+/oeDBqwaWxND2lkSv5Q18LLgXSSy53IAAAAASUVORK5CYII=') no-repeat 5px 50%;
+    
     &:hover {
         color: @white;
     }
 }
-
 // кнопочка с корнером
 .btn5 {
     padding-right: 10px;
-
     background: url(data:image/png;base64,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) no-repeat 100% 8px;
 }
-
 .btn6 {
     font-size: 18px;
     line-height: 1.1;
-
     height: auto;
     padding: 5px 10px;
-
     text-align: center;
-
     color: #000;
     border: none;
     border-bottom: 3px solid #abbe18;
     background: #c1d837;
-
     .rounded(3px);
 }

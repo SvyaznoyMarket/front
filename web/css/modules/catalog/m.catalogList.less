@@ -4,8 +4,8 @@
 
 @media only screen and (max-width: 959px) {
 	.catalogList {
-		padding-left: 6px;
-		padding-right: 6px;
+		padding-left: 10px;
+		padding-right: 10px;
 
 		&_item {
     		width: 29%;
@@ -39,7 +39,7 @@
 				border-right: none;
 			}
 		}
-    .btnBuy{
+    .btn--buy{
       font-size: 12px;
     }
     .btn--slot-lst{
@@ -53,10 +53,10 @@
     margin: 0 0 30px;
 
 		&_item {
-    		width: 100%;
-    		height: auto;
+    	width: 100%;
+    	height: auto;
 			margin: 0;
-			padding: 15px 0;
+			padding: 30px 0 15px;
 
     		border-right: none !important;
     		border-bottom: 1px solid #e1e1e1;
@@ -78,11 +78,10 @@
 
             }
             .availability{
-                display: none;
-
-                &--top{
-                    display: block;
-                }
+                position: absolute;
+                width: 100%;
+                top: 0;
+                left: 0;
             }
             .rating {
                 text-align: left;
@@ -171,17 +170,13 @@
 
 @media screen and (max-width: 490px) {
   .catalogList {
-      padding: 0;
+      padding-top: 0;
+      padding-bottom: 0;
 
       &_item_new {
         display: block;
         overflow: hidden;
-        padding: 5px 10px;
         width: auto;
-
-        .img {
-          // width: 100px;
-        }
       }
 
       .catalogListItemWrapper {

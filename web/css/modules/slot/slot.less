@@ -1,138 +1,98 @@
-
-.textcolor
-{
+.textcolor {
     color: #5e5e5e;
 }
-.product-card
-{
-    &-head
-    {
+
+.product-card {
+
+    &-head {
         font-size: 16px;
-
         float: right;
-
         width: 100%;
         max-width: 485px;
         margin: 12px auto 10px;
         padding: 0;
-        &__subtitle
-        {
+
+        &__subtitle {
             .inline-block();
         }
-        &__title
-        {
+        &__title {
             line-height: 1em;
         }
-        &__article
-        {
+        &__article {
             line-height: 16px;
-
             .textcolor();
         }
-        &__vendor
-        {
+        &__vendor {
             font-size: 14px;
-
             padding-left: 5px;
-
             text-align: center;
-
             .textcolor();
         }
     }
-    &__section-left
-    {
+    &__section-left {
         display: inline-block;
         float: left;
-
         width: 100%;
         max-width: 450px;
         margin: 10px auto 30px;
     }
-    &__section-right
-    {
+    &__section-right {
         float: right;
         zoom: 1;
-
         width: 100%;
         max-width: 485px;
         margin: 0 auto;
         padding: 0;
     }
-    &-info-container
-    {
+    &-info-container {
         padding: 5px;
         margin: 0 0 25px;
-
         border: 1px dotted #aeaeae;
-
         .rounded(3px);
     }
-    &-price
-    {
+    &-price {
         font-size: 42px;
         font-weight: bold;
         line-height: 1em;
-
         display: block;
-
         margin-top: 1px;
-
         text-align: center;
     }
-    &-info
-    {
-        &--price
-        {
+    &-info {
+        &--price {
             font-size: 14px;
-
             display: block;
-
             text-align: center;
-
             .textcolor();
         }
-        &--deliv-period
-        {
+        &--deliv-period {
             font-size: 12px;
-
             display: block;
-
             margin-top: 5px;
-
             text-align: center;
         }
-        &--recall
-        {
+        &--recall {
             font-size: 14px;
-
             display: block;
-
             margin: 7px -5px -5px -5px;
             padding: 20px;
-
             text-align: center;
-
             background-color: #f9f9f9;
-            &-list
-            {
+
+            &-list {
                 margin-bottom: 30px;
                 width: 300px;
                 margin: 0 auto;
-                li
-                {
+
+                li {
                     position: relative;
-
                     display: inline-block;
-
                     padding-left: 18px;
-
                     list-style: none;
-                    &:before
-                    {
+
+                    &:before {
                         position: absolute;
                         left: 0;
-
                         content: '\2014';
                     }
                 }
@@ -140,41 +100,48 @@
             .btn-container{
                 margin-top: 25px;
             }
+            .btn--slot-lst{
+                width: auto;
+                height: auto;
+                padding: 4px 23px 3px;
+                text-align: center;
+                text-align: center;
+                text-decoration: none;
+                .inline-block();
+                .box-sizing();
+                font-size: 18px;
+                line-height: 1.4;
+            }
         }
     }
-    .slider_lst_img
-    {
+    .slider_lst_img {
         max-width: 450px;
     }
 }
-@media screen and (max-width : 900px)
-{
-    .product-card
-    {
-        &-head
-        {
+
+@media screen and (max-width: 900px) {
+
+    .product-card {
+        &-head {
             display: block;
             float: none;
         }
-        &__section-left
-        {
+        &__section-left {
             display: block;
             float: none;
         }
-        &__section-right
-        {
+        &__section-right {
             display: block;
             float: none;
             max-width: 100%;
-
             text-align: center;
-            .product-card-info-container{
+
+            .product-card-info-container {
                 border-style: dashed;
                 border-left: none;
                 border-right: none;
                 .rounded(0px);
                 margin: 0 0 10px;
-
             }
         }
     }
