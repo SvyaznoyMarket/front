@@ -91,10 +91,6 @@ class Product {
     public function getIndexedObjectListByQueryList(array $queries, $parser = null) {
         $parser = is_callable($parser) ? $parser : function(&$item) {
             // оптимизация по умолчанию для листинга
-            $item['description'] = null;
-            $item['property'] = [];
-            $item['property_group'] = [];
-            $item['media'] = [reset($item['media'])];
         };
 
         $products = [];
@@ -246,7 +242,7 @@ class Product {
                         $day++;
                         if ($day > 7) break;
 
-                        if (in_array($deliveryItem['token'], ['self', 'now'])) {
+                        if (isset($dateItem['shop_list']) && in_array($deliveryItem['token'], ['self', 'now'])) {
                             foreach ($dateItem['shop_list'] as $shopIntervalItem) {
                                 $shopId = (string)$shopIntervalItem['id'];
                                 $shopItem = (!array_key_exists($shopId, $delivery->shopsById) && isset($shopData[$shopId]['id'])) ? $shopData[$shopId] : null;
@@ -313,10 +309,6 @@ class Product {
             foreach ($productsById as $product) {
                 foreach ($accessoryListQuery->getResult() as $accessoryItem) {
                     // оптимизация
-                    $accessoryItem['description'] = null;
-                    $accessoryItem['property'] = [];
-                    $accessoryItem['property_group'] = [];
-                    $accessoryItem['media'] = [reset($accessoryItem['media'])];
                     $product->relation->accessories[] = new Model\Product($accessoryItem);
                 }
             }
@@ -328,9 +320,8 @@ class Product {
     /**
      * @param Model\Product[] $productsByUi
      * @param Query $descriptionListQuery
-     * @param bool $forceDescriptionMedia
      */
-    public function setDescriptionForListByListQuery(array $productsByUi, Query $descriptionListQuery, $forceDescriptionMedia = false) {
+    public function setDescriptionForListByListQuery(array $productsByUi, Query $descriptionListQuery) {
         try {
             foreach ($descriptionListQuery->getResult() as $descriptionItem) {
                 /** @var Model\Product|null $product */
@@ -350,14 +341,26 @@ class Product {
                     }
                 }
 
+                // property groups
+                if (isset($descriptionItem['property_groups'][0])) {
+                    foreach ($descriptionItem['property_groups'] as $propertyGroupItem) {
+                        if (!isset($propertyGroupItem['uid'])) continue;
+
+                        $product->propertyGroups[] = new Model\Product\Property\Group($propertyGroupItem);
+                    }
+                }
+
+                // property
+                if (isset($descriptionItem['properties'][0])) {
+                    foreach ($descriptionItem['properties'] as $propertyItem) {
+                        if (!isset($propertyItem['uid'])) continue;
+
+                        $product->properties[] = new Model\Product\Property($propertyItem);
+                    }
+                }
+
                 // media
-                if (
-                    (!empty($descriptionItem['medias']) && is_array($descriptionItem['medias']))
-                    && (
-                        $forceDescriptionMedia
-                        || (count($descriptionItem['medias']) >= count($product->media->photos)) // SITE-5284
-                    )
-                ) {
+                if (!empty($descriptionItem['medias']) && is_array($descriptionItem['medias'])) {
                     // убеждаемся что есть именно картинки, а не другой медиа-контент
                     foreach ($descriptionItem['medias'] as $mediaItem) {
                         if ('image' === $mediaItem['provider']) {
