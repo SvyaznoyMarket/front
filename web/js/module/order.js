@@ -311,6 +311,7 @@ define(
 
             showMap = function(e) {
                 e.stopPropagation();
+                $map.css({'width' : '100%', 'height' : '100%' });
 
                 var
                     $el = $(e.currentTarget),
@@ -322,7 +323,7 @@ define(
                 ;
 
                 $containerPoints.toggleClass(showMapClass);
-                $elText.text( $('.js-order-points-containet-type:hidden').data('order-points-type') );
+                $elText.text( $('.js-order-points-container-type:hidden').data('order-points-type') );
 
                 require(['module/yandexmaps'], function(maps) {
                     maps.initMap($map, mapData, initMap).done(function(map) {
