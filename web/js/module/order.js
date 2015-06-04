@@ -333,7 +333,7 @@ define(
                 $modalWindow.lightbox_me({
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data, $pointPopupTemplate.data('partial')));
-                        $body.css({'overflow':'hidden'});
+                        $body.css({'overflow':'hidden', 'position' : 'fixed'});
                     },
                     beforeClose: function() {
                         $mapContainer.append($map);
