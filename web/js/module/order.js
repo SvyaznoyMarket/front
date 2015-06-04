@@ -10,42 +10,37 @@ define(
             Storage = {
                 cache: {},
 
-                get: function(selector, criteria) {
+                get: function( selector, criteria ) {
                     var
-                        index = selector + '-' + criteria,
-                        value = Storage.cache[index] ? Storage.cache[index] : $.parseJSON($(selector).html())
+                        key   = selector + '-' + criteria,
+                        value = Storage.cache[key] ? Storage.cache[key] : $.parseJSON($(selector).html())
                     ;
 
-                    console.info('get...', index, value);
-                    if (!Storage.cache[index]) {
-                        console.info('... cached');
-                        Storage.cache[index] = value;
+                    if ( !Storage.cache[key] ) {
+                        Storage.cache[key] = value;
                     }
 
                     return value;
                 },
 
-                set: function(selector, criteria, value) {
+                set: function( selector, criteria, value ) {
                     var
-                        index = selector + '-' + criteria
+                        key = selector + '-' + criteria
                     ;
 
-                    console.info('set...', index, value);
-                    if (!Storage.cache[index]) {
-                        Storage.cache[index] = value;
-                    }
+                    Storage.cache[key] = value;
                 }
             },
 
-            $body = $('body'),
-            $deliveryForm = $('.js-order-delivery-form'),
-            $map = $('#yandexMap'),
-            $mapContainer = $('#yandexMap-container'),
-            $balloonTemplate = $('#tpl-order-delivery-marker-balloon'),
-            $pointPopupTemplate = $('#tpl-order-delivery-point-popup'),
-            $calendarTemplate = $('#tpl-order-delivery-calendar'),
-            $addressPopupTemplate = $('#tpl-order-delivery-address-popup'),
-            $modalWindowTemplate = $('#tpl-modalWindow'),
+            $body                  = $('body'),
+            $deliveryForm          = $('.js-order-delivery-form'),
+            $map                   = $('#yandexMap'),
+            $mapContainer          = $('#yandexMap-container'),
+            $balloonTemplate       = $('#tpl-order-delivery-marker-balloon'),
+            $pointPopupTemplate    = $('#tpl-order-delivery-point-popup'),
+            $calendarTemplate      = $('#tpl-order-delivery-calendar'),
+            $addressPopupTemplate  = $('#tpl-order-delivery-address-popup'),
+            $modalWindowTemplate   = $('#tpl-modalWindow'),
             $discountPopupTemplate = $('#tpl-order-delivery-discount-popup'),
 
             initMap = function(map) {
@@ -109,7 +104,7 @@ define(
                 });
             },
 
-            changeSplit = function(data) {
+            changeSplit = function( data ) {
                 $.ajax({
                     url: $deliveryForm.attr('action'),
                     data: data,
@@ -122,13 +117,13 @@ define(
                 });
             },
 
-            // получаем точки доставки и фильтруем их по выбранным параметрам фильтрации getFilterPoints()
-            getPoints = function( id ) {
+            // получаем точки доставки и фильтруем их по выбранным параметрам фильтрации getFilterParams()
+            getPoints = function( selector ) {
                 var
-                    data = Storage.get(id, 'filtered'),
-                    points = data.points,
+                    data      = $.parseJSON($(selector).html()),
+                    points    = data.points,
                     newPoints = {},
-                    params = getFilterPoints(id),
+                    params    = getFilterParams(selector),
                     key, pointAdd;
 
                 newPoints.points = [points];
@@ -148,15 +143,15 @@ define(
                 };
 
                 newPoints.points = points.filter(filterPoints);
-                Storage.set(id, 'filtered', newPoints);
+                Storage.set(selector, 'filtered', newPoints);
 
-                return newPoints.points;
+                return newPoints;
             },
 
             // формируем массив параметров фильтрации точек доставки
-            getFilterPoints = function( id ) {
+            getFilterParams = function( selector ) {
                 var
-                    $input = $('.js-order-filter-points-input').filter('[data-data-selector="' + id + '"]'),
+                    $input = $('.js-order-filter-points-input').filter('[data-data-selector="' + selector + '"]'),
                     params = {},
                     key;
 
@@ -205,15 +200,13 @@ define(
             // фильтруем точки самовывоза
             filterChangePoints = function( e ) {
                 var
-                    $el    = $(e.target),
-                    id     = $el.data('data-selector'), // TODO: прицепить обработчики к контексту по человечески
-                    points = getPoints(id),
-                    mark   = markerFilter.bind($el);
-
-                console.log('filter point done');
+                    $el       = $(e.target),
+                    selector  = $el.data('data-selector'), // TODO: прицепить обработчики по человечески к контексту
+                    points    = getPoints(selector),
+                    mark      = markerFilter.bind($el);
 
                 renderPoints(points);
-                renderMap(points);
+                renderMap(points.points);
                 mark();
             },
 
@@ -221,22 +214,25 @@ define(
                 e.stopPropagation();
 
                 var
-                    $el = $(e.currentTarget),
-                    $elText = $el.find('.js-order-delivery-map-link-text'),
+                    $el              = $(e.currentTarget),
+                    $elText          = $el.find('.js-order-delivery-map-link-text'),
                     $containerPoints = $('.js-order-points-container'),
-                    points = Storage.get($el.data('dataSelector'), 'filtered').points,
-                    showMapClass ='show-map';
+                    selector         = $el.data('data-selector'),
+                    points           = Storage.get($el.data('dataSelector'), 'filtered'),
+                    showMapClass     ='show-map'
+                ;
 
                 $containerPoints.toggleClass(showMapClass);
                 $elText.text( $('.js-order-points-container-type:hidden').data('order-points-type') );
 
-                renderMap(points);
+                renderMap(points.points);
             },
 
             renderMap = function( points ) {
                 var
                     $container = $('.js-order-points-container-type'),
-                    mapData = $('.js-order-delivery-map-link ').data('map-data');
+                    mapData    = $('.js-order-delivery-map-link ').data('map-data')
+                ;
 
                 if ( !$container.find('#yandexMap').html() ) {
                     $container.append($map);
@@ -313,7 +309,7 @@ define(
                 }, 2500)
             },
 
-            showAddressPopup = function(e) {
+            showAddressPopup = function( e ) {
                 var
                     $el           = $(this),
                     $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
@@ -338,14 +334,14 @@ define(
             },
 
             // показать календарь
-            showCalendar = function(e) {
+            showCalendar = function( e ) {
                 e.stopPropagation();
 
                 var
-                    $el       = $(this),
-                    data      = $.parseJSON($($el.data('dataSelector')).html()),
-                    $modalWindow = $($modalWindowTemplate.html()).appendTo($body),
-                    modalTitle = $el.data('modal-title'),
+                    $el           = $(this),
+                    data          = $.parseJSON($($el.data('dataSelector')).html()),
+                    $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
+                    modalTitle    = $el.data('modal-title'),
                     modalPosition = $el.data('modal-position');
 
                 $modalWindow.find('.js-modal-title').text(modalTitle);
@@ -359,16 +355,15 @@ define(
                 });
             },
 
-            showDiscountPopup = function(e) {
+            showDiscountPopup = function( e ) {
                 e.stopPropagation();
                 console.info('showDiscountPopup');
 
                 var
-                    $el       = $(this),
-                    data = {},
-                    //data      = $.parseJSON($($el.data('dataSelector')).html()),
-                    $modalWindow = $($modalWindowTemplate.html()).appendTo($body),
-                    modalTitle = $el.data('modal-title'),
+                    $el           = $(this),
+                    data          = {},
+                    $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
+                    modalTitle    = $el.data('modal-title'),
                     modalPosition = $el.data('modal-position'),
                     $discountContainer
                 ;
@@ -395,8 +390,6 @@ define(
             },
 
             applyDiscount = function(e) {
-
-
                 $.ajax({
                    'url': $deliveryForm.attr('action'),
                    'data': $form.serializeArray(),
