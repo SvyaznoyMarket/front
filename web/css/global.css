@@ -8689,8 +8689,14 @@ body.noScroll {
 .celedr_tb {
   width: 320px;
   margin: 0 auto;
+  height: 413px;
+  overflow: hidden;
   border-top: 1px solid #e0e0e0;
   font-size: 16px;
+}
+.celedr_tb + .btn-container {
+  margin: 20px 0;
+  width: 100%;
 }
 .celedr_row {
   margin-bottom: -2px;
