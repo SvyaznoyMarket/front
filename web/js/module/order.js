@@ -323,6 +323,7 @@ define(
                 ;
 
                 require(['jquery.kladr'], function() {});
+                require(['module/yandexmaps'], function() {});
 
                 $modalWindow.find('.js-modal-title').text(modalTitle);
                 $modalWindow.addClass(modalPosition);
@@ -332,6 +333,28 @@ define(
                         $modalWindow.find('.js-modal-content').append(mustache.render($addressPopupTemplate.html(), data));
 
                         initSmartAddress($modalWindow);
+
+                        (function($el) {
+                            var $mapContainer = $($el.data('mapContainerSelector')),
+                                mapData = $mapContainer.data('mapData')
+                            ;
+
+                            console.info('$mapContainer', $mapContainer);
+                            console.info('mapData', mapData);
+
+                            if ( !$mapContainer.find('#yandexMap').html() ) {
+                                $mapContainer.append($map);
+                            }
+
+                            require(['module/yandexmaps'], function(maps) {
+                                maps.initMap($map, mapData, initMap).done(function(map) {
+                                    map.setCenter([mapData.center.lat, mapData.center.lng], mapData.zoom);
+                                    map.balloon.close();
+                                    map.geoObjects.removeAll();
+                                    map.container.fitToViewport();
+                                });
+                            });
+                        })($el);
                     },
                     modalCSS: {top: '60px'}
                 });
