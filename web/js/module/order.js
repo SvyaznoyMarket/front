@@ -193,7 +193,7 @@ define(
                     $el = $(e.currentTarget),
                     $elText = $el.find('.js-order-delivery-map-link-text'),
                     $containerPoints = $('.js-order-points-container'),
-                    points = $.parseJSON($($el.data('dataSelector')).html()).points,
+                    points = $.parseJSON($($el.data('dataSelector')).html()),
                     showMapClass ='show-map';
 
                 $containerPoints.toggleClass(showMapClass);
@@ -207,7 +207,9 @@ define(
                     $container = $('.js-order-points-container-type'),
                     mapData = $('.js-order-delivery-map-link ').data('map-data');
 
-                $container.append($map);
+                if ( !$container.find('#yandexMap').html() ) {
+                    $container.append($map);
+                }
 
                 console.log(points);
                 require(['module/yandexmaps'], function(maps) {
