@@ -128,7 +128,7 @@ define(
             // получаем точки доставки и фильтруем их по выбранным параметрам фильтрации getFilterParams()
             getPoints = function( selector ) {
                 var
-                    data      = $.parseJSON($(selector).html()),
+                    data      = Storage.get(selector, 'base'),
                     points    = data.points,
                     newPoints = data,
                     params    = getFilterParams(selector),
