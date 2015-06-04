@@ -4,13 +4,16 @@ define(
     ],
     function($) {
         var
-            toggleBox = function toggleBox(e) {
+            $body       = $('body')
+        ;
+
+            toggleBox = function toggleBox( e ) {
                 var
-                    $el = $(e.target),
                     $toggleWrap = $('.js-toggle-wrap'),
                     toggleClass = 'toggle--active',
-                    isActive;
-                // end of vars
+                    isActive,
+                    $el = $(e.target)
+                ;
 
                 isActive = $el.closest('.js-toggle-wrap').hasClass(toggleClass);
 
@@ -20,9 +23,23 @@ define(
                 } else {
                     $(this).closest('.js-toggle-wrap').removeClass(toggleClass);
                 }
-            }
-    	// end of functions
+            },
 
-    	$('body').on('click', '.js-toggle-link', toggleBox);
+            toggleBoxClose = function toggleBoxClose( e ) {
+                var
+                    $container  = $('.js-toggle-wrap'),
+                    toggleClass = 'toggle--active'
+                ;
+
+                if ( !$container.is( e.target ) && $container.has( e.target ).length === 0 ) {
+                    $container.removeClass(toggleClass);
+                }
+            }
+        ;
+    	// end of vars
+
+    	$body.on('click', '.js-toggle-link', toggleBox);
+
+        $body.on('click', toggleBoxClose);
     }
 )
