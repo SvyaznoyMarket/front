@@ -175,7 +175,7 @@ define(
             filterChangePoints = function( e ) {
                 var
                     $el    = $(e.target),
-                    id     = $el.data('data-selector'), // TODO: прицепить обработчики по человечески к контексту
+                    id     = $el.data('data-selector'), // TODO: прицепить обработчики к контексту по человечески
                     points = getPoints(id),
                     mark   = markerFilter.bind($el);
 
