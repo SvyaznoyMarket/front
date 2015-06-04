@@ -569,7 +569,7 @@
                 var $container = $(document.getElementById('kladr_autocomplete'));
 
                 if (!$container.length) {
-                    $container = $('<div id="kladr_autocomplete" style="z-index: 1020;"></div>').appendTo('.order-popup');
+                    $container = $('<div id="kladr_autocomplete" style="z-index: 1020;"></div>').appendTo('body');
                 }
 
                 var guid = get('guid');

@@ -35,6 +35,8 @@ define(
                 }
             },
 
+            addressMap,
+
             $body                  = $('body'),
             $deliveryForm          = $('.js-order-delivery-form'),
             $map                   = $('#yandexMap'),
@@ -44,6 +46,7 @@ define(
             $calendarTemplate      = $('#tpl-order-delivery-calendar'),
             $addressPopupTemplate  = $('#tpl-order-delivery-address-popup'),
             $modalWindowTemplate   = $('#tpl-modalWindow'),
+
             $discountPopupTemplate = $('#tpl-order-delivery-discount-popup'),
 
             initMap = function(map) {
@@ -96,6 +99,11 @@ define(
                                 //$tooltip.hide();
                                 return false;
                             }
+                        },
+                        change: function (obj) {
+                            console.info(obj);
+
+                            updateAddressMap($form);
                         }
                     });
 
@@ -125,7 +133,7 @@ define(
                 var
                     data      = $.parseJSON($(selector).html()),
                     points    = data.points,
-                    newPoints = {},
+                    newPoints = data,
                     params    = getFilterParams(selector),
                     key, pointAdd;
 
@@ -236,8 +244,8 @@ define(
                     mapData    = $('.js-order-delivery-map-link ').data('map-data')
                 ;
 
-                if ( !$container.find('#yandexMap').html() ) {
-                    $container.append($map);
+                if (!$container.find('#yandexMap').length) {
+                    $container.append($map.show());
                 }
 
                 require(['module/yandexmaps'], function(maps) {
@@ -330,9 +338,88 @@ define(
                         $modalWindow.find('.js-modal-content').append(mustache.render($addressPopupTemplate.html(), data));
 
                         initSmartAddress($modalWindow);
+
+                        (function($el) {
+                            var $mapContainer = $($el.data('mapContainerSelector')),
+                                mapData = $mapContainer.data('mapData')
+                            ;
+
+                            if (!$mapContainer.find('#yandexMap').length) {
+                                $mapContainer.append($map.show());
+                            }
+
+                            require(['module/yandexmaps'], function(maps) {
+                                maps.initMap($map, mapData, initMap).done(function(map) {
+                                    map.setCenter([mapData.center.lat, mapData.center.lng], mapData.zoom);
+                                    map.balloon.close();
+                                    map.geoObjects.removeAll();
+                                    map.container.fitToViewport();
+
+                                    addressMap = map;
+                                });
+                            });
+                        })($el);
+                    },
+                    beforeClose: function() {
+                        $mapContainer.append($map);
                     },
                     modalCSS: {top: '60px'}
                 });
+            },
+
+            updateAddressMap = function() {
+                var zoom = 4;
+
+                var address = $.kladr.getAddress('.js-smartAddress-form', function (objs) {
+                    var result = '';
+
+                    $.each(objs, function (i, obj) {
+                        var name = '',
+                            type = ''
+                        ;
+
+                        if ($.type(obj) === 'object') {
+                            name = obj.name;
+                            type = ' ' + obj.type;
+
+                            switch (obj.contentType) {
+                                case $.kladr.type.city:
+                                    zoom = 10;
+                                    break;
+                                case $.kladr.type.street:
+                                    zoom = 13;
+                                    break;
+                                case $.kladr.type.building:
+                                    zoom = 16;
+                                    break;
+                            }
+                        }
+                        else {
+                            name = obj;
+                        }
+
+                        if (result) result += ', ';
+                        result += type + ' ' + name;
+                    });
+
+                    return result;
+                });
+
+                if (address && addressMap) {
+                    require(['module/yandexmaps'], function(maps) {
+                        var geocode = maps.ymaps.geocode(address);
+                        geocode.then(function (res) {
+                            addressMap.balloon.close();
+                            addressMap.geoObjects.removeAll();
+
+                            var position = res.geoObjects.get(0).geometry.getCoordinates(),
+                                placemark = new maps.ymaps.Placemark(position, {}, {});
+
+                            addressMap.geoObjects.add(placemark);
+                            addressMap.setCenter(position, zoom);
+                        });
+                    });
+                }
             },
 
             // показать календарь
