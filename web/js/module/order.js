@@ -130,7 +130,7 @@ define(
                 var
                     data      = $.parseJSON($(selector).html()),
                     points    = data.points,
-                    newPoints = {},
+                    newPoints = data,
                     params    = getFilterParams(selector),
                     key, pointAdd;
 
