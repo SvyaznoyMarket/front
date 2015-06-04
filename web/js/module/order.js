@@ -7,6 +7,36 @@ define(
         require, $, _, mustache, util, config
     ) {
         var
+            Storage = {
+                cache: {},
+
+                get: function(selector, criteria) {
+                    var
+                        index = selector + '-' + criteria,
+                        value = Storage.cache[index] ? Storage.cache[index] : $.parseJSON($(selector).html())
+                    ;
+
+                    console.info('get...', index, value);
+                    if (!Storage.cache[index]) {
+                        console.info('... cached');
+                        Storage.cache[index] = value;
+                    }
+
+                    return value;
+                },
+
+                set: function(selector, criteria, value) {
+                    var
+                        index = selector + '-' + criteria
+                    ;
+
+                    console.info('set...', index, value);
+                    if (!Storage.cache[index]) {
+                        Storage.cache[index] = value;
+                    }
+                }
+            },
+
             $body = $('body'),
             $deliveryForm = $('.js-order-delivery-form'),
             $map = $('#yandexMap'),
@@ -95,7 +125,7 @@ define(
             // получаем точки доставки и фильтруем их по выбранным параметрам фильтрации getFilterPoints()
             getPoints = function( id ) {
                 var
-                    data = $.parseJSON($(id).html()),
+                    data = Storage.get(id, 'filtered'),
                     points = data.points,
                     newPoints = {},
                     params = getFilterPoints(id),
@@ -118,8 +148,9 @@ define(
                 };
 
                 newPoints.points = points.filter(filterPoints);
+                Storage.set(id, 'filtered', newPoints);
 
-                return newPoints;
+                return newPoints.points;
             },
 
             // формируем массив параметров фильтрации точек доставки
@@ -182,7 +213,7 @@ define(
                 console.log('filter point done');
 
                 renderPoints(points);
-                mapInit(points);
+                renderMap(points);
                 mark();
             },
 
@@ -193,16 +224,16 @@ define(
                     $el = $(e.currentTarget),
                     $elText = $el.find('.js-order-delivery-map-link-text'),
                     $containerPoints = $('.js-order-points-container'),
-                    points = $.parseJSON($($el.data('dataSelector')).html()),
+                    points = Storage.get($el.data('dataSelector'), 'filtered').points,
                     showMapClass ='show-map';
 
                 $containerPoints.toggleClass(showMapClass);
                 $elText.text( $('.js-order-points-container-type:hidden').data('order-points-type') );
 
-                mapInit(points);
+                renderMap(points);
             },
 
-            mapInit = function( points ) {
+            renderMap = function( points ) {
                 var
                     $container = $('.js-order-points-container-type'),
                     mapData = $('.js-order-delivery-map-link ').data('map-data');
@@ -211,7 +242,6 @@ define(
                     $container.append($map);
                 }
 
-                console.log(points);
                 require(['module/yandexmaps'], function(maps) {
                     maps.initMap($map, mapData, initMap).done(function(map) {
                         var
@@ -223,7 +253,7 @@ define(
                         map.geoObjects.removeAll();
                         map.container.fitToViewport();
 
-                        _.each(points.points, function(point){
+                        _.each(points, function(point) {
                             try {
                                 placemark = new maps.ymaps.Placemark(
                                     [point.lat, point.lng],
@@ -242,7 +272,7 @@ define(
                                 );
                                 map.geoObjects.add(placemark);
                             } catch (e) {
-                                console.error(e);
+                                console.error(e, point);
                             }
                         });
                     });
@@ -255,9 +285,10 @@ define(
                 var
                     $el           = $(this),
                     $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
-                    data          = $.parseJSON($($el.data('dataSelector')).html()), // TODO: выполнять один раз, результат записывать в переменную
+                    data          = Storage.get($el.data('dataSelector'), 'filtered'),
                     modalTitle    = $el.data('modal-title'),
-                    modalPosition = $el.data('modal-position');
+                    modalPosition = $el.data('modal-position')
+                ;
 
                 $modalWindow.find('.js-modal-title').text(modalTitle);
                 $modalWindow.addClass(modalPosition);
