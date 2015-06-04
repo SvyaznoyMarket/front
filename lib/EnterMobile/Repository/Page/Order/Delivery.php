@@ -563,6 +563,13 @@ class Delivery {
                     'order' => [
                         'id' => $orderModel->blockName,
                     ],
+                    'mapDataValue' => $templateHelper->json([
+                        'center' => [
+                            'lat' => $regionModel->latitude,
+                            'lng' => $regionModel->longitude,
+                        ],
+                        'zoom'   => 10,
+                    ]),
                 ], JSON_UNESCAPED_UNICODE),
                 'user'           => [
                     'discountUrl' => $router->getUrlByRoute(new Routing\User\Coupon\Get()), // TODO: использовать

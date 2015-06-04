@@ -18,15 +18,13 @@
             <p class="checkout-address__selected">{{user.address.name}}</p>
         {{/user.address}}
 
-        {{^isUserAuthenticated}}
         <div class="checkout-address">
             <div class="checkout-address__title"><strong>Адрес</strong> для всех заказов с доставкой</div>
 
-            <button class="btn-transparent btn-transparent--normal js-order-delivery-addressPopup-link" data-modal-title="Адрес доставки" data-modal-position="fixed" data-data-selector="#order-{{id}}-address-data"><span class="bb-dotted">Указать адрес</span></button>
+            <button class="btn-transparent btn-transparent--normal js-order-delivery-addressPopup-link" data-modal-title="Адрес доставки" data-modal-position="fixed" data-data-selector="#order-{{id}}-address-data" data-map-container-selector="#order-{{id}}-address-map-container"><span class="bb-dotted">Указать адрес</span></button>
         </div>
-        {{/isUserAuthenticated}}
 
-        {{#isUserAuthenticated}}
+        <!--
         <div class="checkout-address__select custom-select">
             <span class="custom-select__value js-order-btn" data-btn="select-address">
                 <span class="bb-dotted js-order-delivery-addressPopup-link" data-modal-title="Адрес доставки" data-modal-position="fixed" data-data-selector="#order-{{id}}-address-data">Указать адрес</span>
@@ -42,6 +40,6 @@
                 </li>
             </ul>
         </div>
-        {{/isUserAuthenticated}}
+        -->
     </div>
 </div>
