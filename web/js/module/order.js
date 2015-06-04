@@ -7,9 +7,11 @@ define(
         require, $, _, mustache, util, config
     ) {
         var
+            // храним отфильтрованные точки доставки
             Storage = {
                 cache: {},
 
+                // получаем точки дсотавки
                 get: function( selector, criteria ) {
                     var
                         key   = selector + '-' + criteria,
@@ -23,6 +25,7 @@ define(
                     return value;
                 },
 
+                // записываем фильтрованные точки доставки
                 set: function( selector, criteria, value ) {
                     var
                         key = selector + '-' + criteria
@@ -218,9 +221,8 @@ define(
                 mark();
             },
 
+            // показываем карту в окне фильтрации
             showMap = function( e ) {
-                e.stopPropagation();
-
                 var
                     $el              = $(e.currentTarget),
                     $elText          = $el.find('.js-order-delivery-map-link-text'),
@@ -300,12 +302,12 @@ define(
                 $modalWindow.lightbox_me({
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data, $pointPopupTemplate.data('partial')));
-                        $body.css({'overflow':'hidden'});
+                        $body.css({'overflow':'hidden', 'position' : 'fixed'});
                         $modalWindow.on('change', '.js-order-filter-points-input', filterChangePoints);
                     },
                     beforeClose: function() {
                         $mapContainer.append($map);
-                        $body.css({'overflow':'auto'});
+                        $body.css({'overflow':'auto', 'position' : 'relative'});
                     },
                     centered: false
                 });
@@ -327,7 +329,6 @@ define(
                 ;
 
                 require(['jquery.kladr'], function() {});
-                require(['module/yandexmaps'], function() {});
 
                 $modalWindow.find('.js-modal-title').text(modalTitle);
                 $modalWindow.addClass(modalPosition);
