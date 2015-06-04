@@ -34,6 +34,8 @@ define(
 
             addressMap,
 
+            pointMap,
+
             $body                  = $('body'),
             $deliveryForm          = $('.js-order-delivery-form'),
             $map                   = $('#yandexMap'),
@@ -46,17 +48,44 @@ define(
 
             $discountPopupTemplate = $('#tpl-order-delivery-discount-popup'),
 
-            initMap = function(map) {
-                map.geoObjects.events.remove('click'); // TODO: можно убрать
-                map.geoObjects.events.add('click', function (e) {
-                    var
-                        placemark = e.get('target')
-                    ;
+            initPointMap = function($container, options) {
+                var defer = $.Deferred();
 
-                    console.info('placemark', placemark, placemark.properties.get('point'));
+                if (pointMap) {
+                    defer.resolve($container);
+                }
 
-                    map.balloon.open(e.get('coords'), mustache.render($balloonTemplate.html(), placemark.properties.get('point')));
+                require(['yandexmaps'], function(ymaps) {
+                    ymaps.ready(function() {
+                        try {
+                            pointMap = new ymaps.Map(
+                                $container.attr('id'),
+                                {
+                                    center: [options.center.lat, options.center.lng],
+                                    zoom: options.zoom
+                                },
+                                {
+                                    autoFitToViewport: 'always'
+                                }
+                            );
+
+                            pointMap.geoObjects.events.remove('click'); // TODO: можно убрать
+                            pointMap.geoObjects.events.add('click', function (e) {
+                                var placemark = e.get('target');
+
+                                pointMap.balloon.open(e.get('coords'), mustache.render($balloonTemplate.html(), placemark.properties.get('point')));
+                            });
+
+                            defer.resolve($container);
+                        } catch (error) {
+                            console.error(error);
+
+                            defer.reject(error);
+                        }
+                    });
                 });
+
+                return defer;
             },
 
             initSmartAddress = function($context) {
@@ -125,18 +154,127 @@ define(
                 });
             },
 
+            updatePointTab = function(e, toggle) {
+                var
+                    $el = $(this),
+                    index = parseInt($el.data('index')),
+                    $selected,
+                    $container,
+                    $filterForm = $($el.data('filterFormSelector'))
+                ;
+
+                if (false !== toggle) {
+                    index = (0 == index) ? 1 : 0;
+                }
+
+                $selected = $el.find('[data-index="' + index + '"]');
+                $container = $($selected.data('containerSelector'));
+
+                $el.data('index', index);
+                $el.find('[data-index]').each(function(i, el) {
+                    var $el = $(el);
+
+                    $el.hide();
+                    $($el.data('containerSelector')).hide();
+                });
+
+                filterPoints($el.data('storageSelector'), $filterForm);
+
+                $selected.show();
+                $container
+                    .show()
+                    .trigger('update', [
+                        Storage.get($el.data('storageSelector'), 'filtered')
+                    ])
+                ;
+            },
+
+            updatePointMap = function(e, data) {
+                var
+                    $container = $(this),
+                    options = $container.data('mapOption'),
+                    ready = function() {
+                        var placemark;
+
+                        console.info('update point map ...');
+
+                        if (!$container.find('#' + $map.attr('id')).length) {
+                            $container.append($map);
+                        }
+
+                        pointMap.setCenter([options.center.lat, options.center.lng], options.zoom);
+                        pointMap.balloon.close();
+                        pointMap.geoObjects.removeAll();
+                        pointMap.container.fitToViewport();
+
+                        _.each(data.points, function(point) {
+                            try {
+                                placemark = new ymaps.Placemark(
+                                    [point.lat, point.lng],
+                                    {
+                                        point: point,
+                                        hintContent: point.name
+                                    },
+                                    {
+                                        iconLayout: 'default#image',
+                                        iconImageHref: '/img/markers/' + point.icon,
+                                        iconImageSize: [28, 39],
+                                        iconImageOffset: [-14, -39],
+                                        //visible: visibility,
+                                        zIndex: ('shops' == point.group.token) ? 1000 : 0
+                                    }
+                                );
+                                pointMap.geoObjects.add(placemark);
+                            } catch (e) {
+                                console.error(e, point);
+                            }
+                        });
+                    }
+                ;
+
+                if (pointMap) {
+                    ready();
+                } else {
+                    initPointMap($map, options).done(ready);
+                }
+            },
+
+            updatePointList = function(e, data) {
+                var
+                    $container = $(this),
+                    partial = $pointPopupTemplate.data('partial')['page/order/delivery/point-list']
+                ;
+
+                console.info('update point list ...');
+
+                $container.html(mustache.render(partial, data));
+            },
+
+            updatePointFilter = function(e) {
+                var
+                    $el = $(this),
+                    $form = $($el.data('formSelector')),
+                    $tab = $($form.data('tabSelector'))
+                ;
+
+                console.info('$tab', $tab);
+
+                $tab.trigger('update', [false]); // не переключать, просто обновить
+            },
+
             // получаем точки доставки и фильтруем их по выбранным параметрам фильтрации getFilterParams()
-            getPoints = function( selector ) {
+            filterPoints = function(selector, $form) {
                 var
                     data      = Storage.get(selector, 'base'),
-                    points    = data.points,
-                    newPoints = data,
-                    params    = getFilterParams(selector),
-                    key, pointAdd;
+                    params    = getFilterParams($form),
+                    newData = {},
+                    key,
+                    pointAdd
+                ;
 
-                newPoints.points = [points];
+                _.extend(newData, data);
 
-                function filterPoints( points ) {
+                newData.points = data.points.filter(function(points) {
                     for ( key in points ) {
                         if ( params[key] && params[key].length && points[key] && points[key].hasOwnProperty('value') ) {
 
@@ -148,22 +286,18 @@ define(
                         }
                     }
                     return true;
-                };
-
-                newPoints.points = points.filter(filterPoints);
-                Storage.set(selector, 'filtered', newPoints);
-
-                return newPoints;
+                });
+                Storage.set(selector, 'filtered', newData);
             },
 
             // формируем массив параметров фильтрации точек доставки
-            getFilterParams = function( selector ) {
+            getFilterParams = function($form) {
                 var
-                    $input = $('.js-order-filter-points-input').filter('[data-data-selector="' + selector + '"]'),
-                    params = {},
-                    key;
+                    $input = $form.find('input'),
+                    params = {}
+                ;
 
-                $input.each(function( key ) {
+                $input.each(function(key) {
                     var
                         $this = $(this),
                         data  = $this.data('value');
@@ -182,117 +316,16 @@ define(
                 return params;
             },
 
-            // отображаем отфильтрованные точки доставки
-            renderPoints = function( data ) {
-                var
-                    partial         = $pointPopupTemplate.data('partial')['page/order/delivery/point-list'],
-                    containerPoints = $('.js-order-points-container-type-points');
-
-                containerPoints.html(mustache.render(partial, data));
-            },
-
-            // маркируем активный фильтр
-            markerFilter = function( el ) {
-                var
-                    $this       = $(this),
-                    $filter     = $this.closest('.js-order-delivery-points-filter-params-list'),
-                    activeClass = 'active';
-
-                if ( $this.prop('checked') == true ) {
-                    $filter.addClass(activeClass);
-                } else {
-                    $filter.removeClass(activeClass);
-                }
-            },
-
-            // фильтруем точки самовывоза
-            filterChangePoints = function( e ) {
-                var
-                    $el       = $(e.target),
-                    selector  = $el.data('data-selector'), // TODO: прицепить обработчики по человечески к контексту
-                    points    = getPoints(selector),
-                    mark      = markerFilter.bind($el);
-
-                renderPoints(points);
-                renderMap(points.points);
-                mark();
-            },
-
-            showMap = function( e ) {
-                e.stopPropagation();
-
-                var
-                    $el              = $(e.currentTarget),
-                    $elText          = $el.find('.js-order-delivery-map-link-text'),
-                    $containerPoints = $('.js-order-points-container'),
-                    selector         = $el.data('data-selector'),
-                    points           = Storage.get($el.data('dataSelector'), 'filtered'),
-                    showMapClass     ='show-map'
-                ;
-
-                $containerPoints.toggleClass(showMapClass);
-                $elText.text( $('.js-order-points-container-type:hidden').data('order-points-type') );
-
-                renderMap(points.points);
-            },
-
-            renderMap = function( points ) {
-                var
-                    $container = $('.js-order-points-container-type'),
-                    mapData    = $('.js-order-delivery-map-link ').data('map-data')
-                ;
-
-                if (!$container.find('#yandexMap').length) {
-                    $container.append($map.show());
-                }
-
-                require(['module/yandexmaps'], function(maps) {
-                    maps.initMap($map, mapData, initMap).done(function(map) {
-                        var
-                            placemark
-                        ;
-
-                        map.setCenter([mapData.center.lat, mapData.center.lng], mapData.zoom);
-                        map.balloon.close();
-                        map.geoObjects.removeAll();
-                        map.container.fitToViewport();
-
-                        _.each(points, function(point) {
-                            try {
-                                placemark = new maps.ymaps.Placemark(
-                                    [point.lat, point.lng],
-                                    {
-                                        point: point,
-                                        hintContent: point.name
-                                    },
-                                    {
-                                        iconLayout: 'default#image',
-                                        iconImageHref: '/img/markers/' + point.icon,
-                                        iconImageSize: [28, 39],
-                                        iconImageOffset: [-14, -39],
-                                        //visible: visibility,
-                                        zIndex: ('shops' == point.group.token) ? 1000 : 0
-                                    }
-                                );
-                                map.geoObjects.add(placemark);
-                            } catch (e) {
-                                console.error(e, point);
-                            }
-                        });
-                    });
-                });
-            },
-
             showPointPopup = function(e) {
-                e.stopPropagation();
-
                 var
                     $el           = $(this),
                     $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
-                    data          = Storage.get($el.data('dataSelector'), 'filtered'),
+                    data          = Storage.get($el.data('storageSelector'), 'filtered'),
                     modalTitle    = $el.data('modal-title'),
                     modalPosition = $el.data('modal-position')
                 ;
+
+                e.stopPropagation();
 
                 $modalWindow.find('.js-modal-title').text(modalTitle);
                 $modalWindow.addClass(modalPosition);
@@ -301,7 +334,6 @@ define(
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data, $pointPopupTemplate.data('partial')));
                         $body.css({'overflow':'hidden'});
-                        $modalWindow.on('change', '.js-order-filter-points-input', filterChangePoints);
                     },
                     beforeClose: function() {
                         $mapContainer.append($map);
@@ -507,8 +539,12 @@ define(
         $body.on('click', '.js-order-delivery-pointPopup-link', showPointPopup);
         $body.on('click', '.js-order-delivery-addressPopup-link', showAddressPopup);
         $body.on('click', '.js-order-delivery-discountPopup-link', showDiscountPopup);
-        $body.on('click', '.js-order-delivery-map-link', showMap);
+        $body.on('click', '.js-order-delivery-point-tab-link', updatePointTab);
+        $body.on('update', '.js-order-delivery-point-tab-link', updatePointTab);
         $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
+        $body.on('update', '.js-order-delivery-map-container', updatePointMap);
+        $body.on('update', '.js-order-delivery-point-container', updatePointList);
+        $body.on('change', '.js-order-delivery-point-filter', updatePointFilter);
         $body.on('submit', '.js-smartAddress-form', function(e) {
             var
                 $form = $(this),

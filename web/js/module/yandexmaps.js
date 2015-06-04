@@ -1,13 +1,10 @@
 define(
     ['jquery', 'yandexmaps'],
     function ($, ymaps) {
-        var
-            map
-        ;
-
         return {
             ymaps: ymaps,
-            initMap: function($container, data, init) {
+
+            ready: function($container, data, init) {
                 var defer = $.Deferred();
 
                 if (!$container.length) {
@@ -19,32 +16,29 @@ define(
 
                 console.info(['module/ymaps.initMap', map, $container]);
 
-                if (map) {
-                    defer.resolve(map, $container);
-                } else {
-                    ymaps.ready(function() {
-                        try {
-                            map = new ymaps.Map(
-                                $container.attr('id'),
-                                {
-                                    center: [data.center.lat, data.center.lng],
-                                    zoom: data.zoom
-                                },
-                                {
-                                    autoFitToViewport: 'always'
-                                }
-                            );
 
-                            init(map);
+                ymaps.ready(function() {
+                    try {
+                        map = new ymaps.Map(
+                            $container.attr('id'),
+                            {
+                                center: [data.center.lat, data.center.lng],
+                                zoom: data.zoom
+                            },
+                            {
+                                autoFitToViewport: 'always'
+                            }
+                        );
 
-                            defer.resolve(map, $container);
-                        } catch (error) {
-                            console.error(error);
+                        init(map);
 
-                            defer.reject(error);
-                        }
-                    });
-                }
+                        defer.resolve(map, $container);
+                    } catch (error) {
+                        console.error(error);
+
+                        defer.reject(error);
+                    }
+                });
 
                 return defer.promise();
             }
