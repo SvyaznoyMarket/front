@@ -8677,7 +8677,7 @@ body.noScroll {
 }
 .celedr {
   padding: 10px 0 0;
-  width: 308px;
+  width: 320px;
   font-size: 16px;
 }
 .celedr_t {
@@ -8687,7 +8687,7 @@ body.noScroll {
   margin: 0 0 10px 10px;
 }
 .celedr_tb {
-  width: 308px;
+  width: 320px;
   margin: 0 auto;
   border-top: 1px solid #e0e0e0;
   font-size: 16px;
@@ -8702,9 +8702,13 @@ body.noScroll {
   background: #f6f6f6;
   line-height: 30px;
 }
+.celedr_row:not(.celedr_row-h) .celedr_col {
+  height: 54px;
+  line-height: 54px;
+}
 .celedr_col {
   float: left;
-  width: 44px;
+  width: 46px;
   height: 41px;
   cursor: pointer;
   text-align: center;
@@ -8727,6 +8731,9 @@ body.noScroll {
 .celedr_col-disbl:focus {
   background: #ffffff;
   color: #e0e0e0;
+}
+.celedr_col:nth-child(7n) {
+  width: 44px;
 }
 .celedr_month {
   float: left;
