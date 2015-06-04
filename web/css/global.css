@@ -3607,9 +3607,14 @@ body.noScroll {
   width: 550px;
   margin: 0 auto;
   text-align: center;
+  font-size: 0;
 }
 .appList__item {
-  float: left;
+  display: inline-block;
+  vertical-align: top;
+  *zoom: 1;
+  *display: inline;
+  vertical-align: middle;
   margin-right: 15px;
 }
 .appList__item-last {
