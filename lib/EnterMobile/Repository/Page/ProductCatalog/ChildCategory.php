@@ -88,7 +88,7 @@ class ChildCategory {
             foreach ($request->products as $productModel) {
                 $productCard = $productCardRepository->getObject(
                     $productModel,
-                    $cartProductButtonRepository->getObject($productModel, null, false, true, ['position' => 'listing']),
+                    $cartProductButtonRepository->getObject($productModel, null, true, true, ['position' => 'listing']),
                     $request->category
                 );
 
