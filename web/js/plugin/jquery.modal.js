@@ -164,8 +164,8 @@
         // behavior
         destroyOnClose: true,
         showOverlay: true,
-        fullScreen: false,
-        modal: true,
+        fullScreen: false, // режим окна центрированного по горизонтали на планшетах и модального на мобилках
+        modal: true, // режим модального окна, окно на весь экран, если необходимо центрировать то false
 
         // callbacks
         onLoad: function() {},
