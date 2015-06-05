@@ -37,7 +37,7 @@ define(
 
             $body                  = $('body'),
             $deliveryForm          = $('.js-order-delivery-form'),
-            $pointMap                   = $('#pointYandexMap'),
+            $pointMap              = $('#pointYandexMap'),
             $addressMap            = $('#addressYandexMap'),
             $mapContainer          = $('#yandexMap-container'),
             $balloonTemplate       = $('#tpl-order-delivery-marker-balloon'),
@@ -129,6 +129,8 @@ define(
                 console.info('$mapContainer', $mapContainer);
 
                 require(['jquery.kladr'], function() {
+                    console.info('config.kladr', config.kladr);
+
                     $.kladr.setDefault({
                         token: config.kladr.token,
                         key: config.kladr.key,
@@ -137,7 +139,7 @@ define(
                         parentId: config.kladr.city.id,
 
                         parentInput: '.js-smartAddress-form',
-                        verify: true,
+                        //verify: true,
                         select: function (obj) {
                             //setLabel($(this), obj.type);
                             //$tooltip.hide();
@@ -368,11 +370,9 @@ define(
                 $modalWindow.lightbox_me({
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data, $pointPopupTemplate.data('partial')));
-                        $body.css({'overflow':'hidden', 'position' : 'fixed'});
                     },
                     beforeClose: function() {
                         $mapContainer.append($pointMap);
-                        $body.css({'overflow':'auto'});
                     },
                     centered: false
                 });
@@ -413,7 +413,7 @@ define(
                         });
                     },
                     beforeClose: function() {
-                        $mapContainer.append($pointMap);
+                        $mapContainer.append($addressMap);
                     },
                     modalCSS: {top: '60px'}
                 });
@@ -423,36 +423,44 @@ define(
                 var zoom = 4;
 
                 var address = $.kladr.getAddress('.js-smartAddress-form', function (objs) {
-                    var result = '';
+                    var result = config.kladr.city.name + '';
 
-                    $.each(objs, function (i, obj) {
-                        var name = '',
-                            type = ''
-                        ;
+                    console.info('objs', objs);
 
-                        if ($.type(obj) === 'object') {
-                            name = obj.name;
-                            type = ' ' + obj.type;
+                    if ($.type(objs.street) === 'object') {
+                        $.each(objs, function (i, obj) {
+                            var name = '',
+                                type = ''
+                            ;
 
-                            switch (obj.contentType) {
-                                case $.kladr.type.city:
-                                    zoom = 10;
-                                    break;
-                                case $.kladr.type.street:
-                                    zoom = 13;
-                                    break;
-                                case $.kladr.type.building:
-                                    zoom = 16;
-                                    break;
+                            if ($.type(obj) === 'object') {
+                                name = obj.name;
+                                type = ' ' + obj.type;
+
+                                switch (obj.contentType) {
+                                    case $.kladr.type.city:
+                                        zoom = 10;
+                                        break;
+                                    case $.kladr.type.street:
+                                        zoom = 13;
+                                        break;
+                                    case $.kladr.type.building:
+                                        zoom = 16;
+                                        break;
+                                }
                             }
-                        }
-                        else {
-                            name = obj;
-                        }
+                            else {
+                                name = obj;
+                            }
 
-                        if (result) result += ', ';
-                        result += type + ' ' + name;
-                    });
+                            console.info('obj', obj, name);
+
+                            if (result) result += ', ';
+                            result += type + '' + name;
+                        });
+                    } else {
+                        result = '';
+                    }
 
                     return result;
                 });
@@ -468,7 +476,7 @@ define(
                             $container.append($addressMap);
                         }
 
-                        addressMap.setCenter([options.center.lat, options.center.lng], options.zoom);
+                        //addressMap.setCenter([options.center.lat, options.center.lng], options.zoom);
                         addressMap.balloon.close();
                         addressMap.geoObjects.removeAll();
                         addressMap.container.fitToViewport();
@@ -480,11 +488,12 @@ define(
                     initAddressMap($addressMap, options).done(ready);
                 }
 
+                console.info('address', address);
                 if (address) {
                     require(['yandexmaps'], function(ymaps) {
-                        var geocode = ymaps.geocode(address);
-
                         if (!addressMap) return;
+
+                        var geocode = ymaps.geocode(address);
 
                         geocode.then(function (res) {
                             addressMap.balloon.close();
@@ -515,6 +524,7 @@ define(
                 $modalWindow.addClass(modalPosition);
 
                 $modalWindow.lightbox_me({
+                    fullScreen: true,
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($calendarTemplate.html(), data));
                     }
