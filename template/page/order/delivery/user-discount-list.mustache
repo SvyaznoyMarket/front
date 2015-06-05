@@ -3,7 +3,10 @@
     <div class="sale-select__list">
     {{#coupons}}
         <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
-            <img class="sale-select__left" src="{{image}}" alt="">
+            <div class="sale-select__left">
+                <img class="sale-select__img" src="{{image}}" alt="">
+                <span class="sale-select__msg">5%</span>
+            </div>
             <span class="sale-select__right">{{name}}</span>
         </a>
     {{/coupons}}

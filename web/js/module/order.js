@@ -37,7 +37,7 @@ define(
 
             $body                  = $('body'),
             $deliveryForm          = $('.js-order-delivery-form'),
-            $pointMap                   = $('#pointYandexMap'),
+            $pointMap              = $('#pointYandexMap'),
             $addressMap            = $('#addressYandexMap'),
             $mapContainer          = $('#yandexMap-container'),
             $balloonTemplate       = $('#tpl-order-delivery-marker-balloon'),
@@ -426,13 +426,10 @@ define(
                 $modalWindow.lightbox_me({
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data, $pointPopupTemplate.data('partial')));
-                        $body.css({'overflow':'hidden', 'position' : 'fixed'});
                     },
                     beforeClose: function() {
                         $mapContainer.append($pointMap);
-                        $body.css({'overflow':'auto'});
-                    },
-                    centered: false
+                    }
                 });
 
                 e.preventDefault();
@@ -537,10 +534,11 @@ define(
                 $modalWindow.addClass(modalPosition);
 
                 $modalWindow.lightbox_me({
+                    fullScreen: true,
+                    modal: false,
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($calendarTemplate.html(), data));
                     }
-                    // modalCSS: {top: '60px'},
                 });
             },
 

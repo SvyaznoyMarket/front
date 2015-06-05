@@ -1,22 +1,3 @@
-/*
-* $ lightbox_me
-* By: Buck Wilson
-* Version : 2.4
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
-
 (function($) {
 
     $.fn.lightbox_me = function(options) {
@@ -26,9 +7,10 @@
 
             var
                 opts = $.extend({}, $.fn.lightbox_me.defaults, options),
+                $body = $('body'),
                 $overlay = $(),
                 $self = $(this),
-                $iframe = $('<iframe id="foo" style="z-index: ' + (opts.zIndex + 1) + ';border: none; margin: 0; padding: 0; position: absolute; width: 100%; height: 100%; top: 0; left: 0; filter: mask();"/>');
+                $iframe = $('<iframe id="foo" style="border: none; margin: 0; padding: 0; position: absolute; width: 100%; height: 100%; top: 0; left: 0; filter: mask();"/>');
 
             if (opts.showOverlay) {
                 //check if there's an existing overlay, if so, make subequent ones clear
@@ -43,7 +25,7 @@
             /*----------------------------------------------------
                DOM Building
             ---------------------------------------------------- */
-            $('body').append($self.hide()).append($overlay);
+            $body.append($self.hide()).append($overlay);
 
 
             /*----------------------------------------------------
@@ -53,7 +35,7 @@
             // set css of the overlay
             if (opts.showOverlay) {
                 setOverlayHeight(); // pulled this into a function because it is called on window resize.
-                $overlay.css({ position: 'absolute', width: '100%', top: 0, left: 0, right: 0, bottom: 0, zIndex: (opts.zIndex + 2), display: 'none' });
+                $overlay.css({ position: 'absolute', width: '100%', top: 0, left: 0, right: 0, bottom: 0, display: 'none', zIndex: 1015 });
                 if (!$overlay.hasClass('lb_overlay_clear')){
                     $overlay.css(opts.overlayCSS);
                 }
@@ -65,11 +47,9 @@
                //
             if (opts.showOverlay) {
                 $overlay.fadeIn(opts.overlaySpeed, function() {
-                    setSelfPosition();
-                    $self[opts.appearEffect](opts.lightboxSpeed, function() { setOverlayHeight(); setSelfPosition(); opts.onLoad()});
+                    $self[opts.appearEffect](opts.lightboxSpeed, function() { setOverlayHeight(); opts.onLoad()});
                 });
             } else {
-                setSelfPosition();
                 $self[opts.appearEffect](opts.lightboxSpeed, function() { opts.onLoad()});
             }
 
@@ -80,35 +60,49 @@
                 opts.parentLightbox.fadeOut(200);
             }
 
+            if (opts.modal) {
+                $body.addClass('full-screen');
+            }
+
+            if (opts.fullScreen) {
+                detectWidth();
+                $(window).on('resize', detectWidth);
+            }
+
 
             /*----------------------------------------------------
                Bind Events
             ---------------------------------------------------- */
 
-            $(window).resize(setOverlayHeight)
-                     .resize(setSelfPosition)
-                     .scroll(setSelfPosition);
+            $(window).resize(setOverlayHeight);
 
-            $(window).bind('keyup.lightbox_me', observeKeyPress);
+            $(window).on('keyup.lightbox_me', observeKeyPress);
 
             if (opts.closeClick) {
                 $overlay.click(function(e) { closeLightbox(); e.preventDefault; });
             }
-            $self.delegate(opts.closeSelector, "click", function(e) {
+            $self.on('click', opts.closeSelector, function(e) {
                 closeLightbox(); e.preventDefault();
             });
-            $self.bind('close', closeLightbox);
-            $self.bind('reposition', setSelfPosition);
-
-
-
-            /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-              -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+            $self.on('close', closeLightbox);
 
 
             /*----------------------------------------------------
                Private Functions
             ---------------------------------------------------- */
+
+            // если ширина экрана больше 639 пиксел
+            function detectWidth() {
+                var
+                    currentWidth = $(window).width()
+                ;
+
+                if ( currentWidth < 639 ) {
+                    $body.addClass('full-screen');
+                } else {
+                    $body.removeClass('full-screen');
+                }
+            }
 
             /* Remove or hide all elements */
             function closeLightbox() {
@@ -120,23 +114,14 @@
                     $self.add($overlay).hide();
                 }
 
-                //show the hidden parent lightbox
-                if (opts.parentLightbox) {
-                    opts.parentLightbox.fadeIn(200);
-                }
-                if (opts.preventScroll) {
-                    $('body').css('overflow', '');
-                }
                 $iframe.remove();
+                $body.removeClass('full-screen');
 
                         // clean up events.
                 $self.undelegate(opts.closeSelector, "click");
                 $self.unbind('close', closeLightbox);
-                $self.unbind('repositon', setSelfPosition);
 
                 $(window).unbind('resize', setOverlayHeight);
-                $(window).unbind('resize', setSelfPosition);
-                $(window).unbind('scroll', setSelfPosition);
                 $(window).unbind('keyup.lightbox_me');
                 opts.onClose();
             }
@@ -160,42 +145,6 @@
                     $overlay.css({height: '100%'});
                 }
             }
-
-
-            /* Set the position of the modal'd window ($self)
-                    : if $self is taller than the window, then make it absolutely positioned
-                    : otherwise fixed
-            */
-            function setSelfPosition() {
-                var s = $self[0].style;
-
-                // reset CSS so width is re-calculated for margin-left CSS
-                $self.css({left: '50%', marginLeft: ($self.outerWidth() / 2) * -1,  zIndex: (opts.zIndex + 3) });
-
-
-                /* we have to get a little fancy when dealing with height, because lightbox_me
-                    is just so fancy.
-                 */
-
-                // if the height of $self is bigger than the window and self isn't already position absolute
-                if (($self.height() + 80  >= $(window).height()) && ($self.css('position') != 'absolute')) {
-
-                    // we are going to make it positioned where the user can see it, but they can still scroll
-                    // so the top offset is based on the user's scroll position.
-                    var topOffset = $(document).scrollTop() + 40;
-                    $self.css({position: 'absolute', top: topOffset + 'px', marginTop: 0})
-                } else if ($self.height() + 80  < $(window).height()) {
-                    //if the height is less than the window height, then we're gonna make this thing position: fixed.
-                    if (opts.centered) {
-                        $self.css({ position: 'fixed', top: '50%', marginTop: ($self.outerHeight() / 2) * -1})
-                    } else {
-                        $self.css({ position: 'fixed'}).css(opts.modalCSS);
-                    }
-                    if (opts.preventScroll) {
-                        $('body').css('overflow', 'hidden');
-                    }
-                }
-            }
         });
     };
 
@@ -215,8 +164,8 @@
         // behavior
         destroyOnClose: true,
         showOverlay: true,
-        parentLightbox: false,
-        preventScroll: false,
+        fullScreen: false,
+        modal: true,
 
         // callbacks
         onLoad: function() {},
@@ -225,9 +174,6 @@
 
         // style
         classPrefix: 'lb',
-        zIndex: 1015,
-        centered: false,
-        modalCSS: {top: '0'},
         overlayCSS: {background: 'black', opacity: .3}
     }
 })(jQuery);
