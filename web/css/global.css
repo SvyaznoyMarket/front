@@ -4533,6 +4533,7 @@ body.noScroll {
   left: 0;
   width: 100%;
   height: 100%;
+  max-height: 100%;
   margin: 0;
 }
 .modal {
@@ -7842,7 +7843,7 @@ body.noScroll {
   font-size: 14px;
   width: 100%;
   margin: 0;
-  padding-left: 80px;
+  padding-left: 90px;
   display: inline-block;
   vertical-align: top;
   *zoom: 1;
@@ -8432,6 +8433,12 @@ body.noScroll {
 .pick-point-list-i {
   padding: 0;
 }
+.pick-point-list-i:first-child .table_cell {
+  padding-top: 30px;
+}
+.pick-point-list-i:last-child .table_cell {
+  padding-bottom: 30px;
+}
 .pick-point .order-popup-map {
   display: none;
 }
@@ -8590,11 +8597,40 @@ body.noScroll {
   max-width: 640px;
   height: 100%;
   margin: auto;
-  padding-bottom: 140px;
+  padding: 0 10px 140px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+}
+.content-scroll:after {
+  content: '';
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  height: 30px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0);
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffffff), color-stop(1, rgba(255, 255, 255, 0)));
+  background: -ms-linear-gradient(bottom, #ffffff, rgba(255, 255, 255, 0));
+  background: -moz-linear-gradient(center bottom, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  background: -o-linear-gradient(rgba(255, 255, 255, 0), #ffffff);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='rgba(255, 255, 255, 0)', endColorstr='#ffffff', GradientType=0);
+}
+.content-scroll:before {
+  content: '';
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 30px;
+  width: 100%;
+  background: #ffffff;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, rgba(255, 255, 255, 0)), color-stop(1, #ffffff));
+  background: -ms-linear-gradient(bottom, rgba(255, 255, 255, 0), #ffffff);
+  background: -moz-linear-gradient(center bottom, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+  background: -o-linear-gradient(#ffffff, rgba(255, 255, 255, 0));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='rgba(255, 255, 255, 0)', GradientType=0);
+  z-index: 1;
 }
 .autocomplete {
   position: absolute;
