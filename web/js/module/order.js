@@ -569,6 +569,25 @@ define(
                         if ($discountContainer.length && $discountContainer.data('url')) {
                             $.get($discountContainer.data('url')).done(function(response) {
                                 $discountContainer.html(response.content);
+
+                                var $form = $modalWindow.find('.js-discount-form');
+
+                                if ($form.length) {
+                                    $discountContainer.on('click', '.js-user-discount', function(e) {
+                                        var
+                                            $el = $(this),
+                                            value = $el.data('value')
+                                            $field = $form.find('[data-field="number"]')
+                                        ;
+
+                                        e.preventDefault();
+                                        e.stopPropagation();
+
+                                        console.info('$field', $field);
+
+                                        $field.val(value);
+                                    });
+                                }
                             })
                         }
                     },
