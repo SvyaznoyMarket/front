@@ -32,13 +32,13 @@ define(
                 }
             },
 
-            addressMap,
-
-            pointMap,
+            addressMap = null,
+            pointMap = null,
 
             $body                  = $('body'),
             $deliveryForm          = $('.js-order-delivery-form'),
-            $map                   = $('#yandexMap'),
+            $pointMap              = $('#pointYandexMap'),
+            $addressMap            = $('#addressYandexMap'),
             $mapContainer          = $('#yandexMap-container'),
             $balloonTemplate       = $('#tpl-order-delivery-marker-balloon'),
             $pointPopupTemplate    = $('#tpl-order-delivery-point-popup'),
@@ -88,12 +88,49 @@ define(
                 return defer;
             },
 
+            initAddressMap = function($container, options) {
+                var defer = $.Deferred();
+
+                if (addressMap) {
+                    defer.resolve($container);
+                }
+
+                require(['yandexmaps'], function(ymaps) {
+                    ymaps.ready(function() {
+                        try {
+                            addressMap = new ymaps.Map(
+                                $container.attr('id'),
+                                {
+                                    center: [options.center.lat, options.center.lng],
+                                    zoom: options.zoom
+                                },
+                                {
+                                    autoFitToViewport: 'always'
+                                }
+                            );
+                            defer.resolve($container);
+                        } catch (error) {
+                            console.error(error);
+
+                            defer.reject(error);
+                        }
+                    });
+                });
+
+                return defer;
+            },
+
             initSmartAddress = function($context) {
                 var
-                    $form = $context.find('.js-smartAddress-form')
+                    $form = $context.find('.js-smartAddress-form'),
+                    $mapContainer = $($form.data('mapContainerSelector'))
                 ;
 
+                console.info('$mapContainer', $mapContainer);
+
                 require(['jquery.kladr'], function() {
+                    console.info('config.kladr', config.kladr);
+
                     $.kladr.setDefault({
                         token: config.kladr.token,
                         key: config.kladr.key,
@@ -102,7 +139,7 @@ define(
                         parentId: config.kladr.city.id,
 
                         parentInput: '.js-smartAddress-form',
-                        verify: true,
+                        //verify: true,
                         select: function (obj) {
                             //setLabel($(this), obj.type);
                             //$tooltip.hide();
@@ -129,7 +166,7 @@ define(
                         change: function (obj) {
                             console.info(obj);
 
-                            updateAddressMap($form);
+                            updateAddressMap($mapContainer, $form);
                         }
                     });
 
@@ -198,8 +235,8 @@ define(
 
                         console.info('update point map ...');
 
-                        if (!$container.find('#' + $map.attr('id')).length) {
-                            $container.append($map);
+                        if (!$container.find('#' + $pointMap.attr('id')).length) {
+                            $container.append($pointMap);
                         }
 
                         pointMap.setCenter([options.center.lat, options.center.lng], options.zoom);
@@ -235,7 +272,7 @@ define(
                 if (pointMap) {
                     ready();
                 } else {
-                    initPointMap($map, options).done(ready);
+                    initPointMap($pointMap, options).done(ready);
                 }
             },
 
@@ -335,7 +372,7 @@ define(
                         $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data, $pointPopupTemplate.data('partial')));
                     },
                     beforeClose: function() {
-                        $mapContainer.append($map);
+                        $mapContainer.append($pointMap);
                     },
                     centered: false
                 });
@@ -343,8 +380,8 @@ define(
                 e.preventDefault();
 
                 setTimeout(function() {
-                    require(['module/yandexmaps'], function() {});
-                }, 2500)
+                    require(['yandexmaps'], function() {});
+                }, 1000)
             },
 
             showAddressPopup = function( e ) {
@@ -357,7 +394,7 @@ define(
                 ;
 
                 require(['jquery.kladr'], function() {});
-                require(['module/yandexmaps'], function() {});
+                require(['yandexmaps'], function() {});
 
                 $modalWindow.find('.js-modal-title').text(modalTitle);
                 $modalWindow.addClass(modalPosition);
@@ -368,81 +405,102 @@ define(
 
                         initSmartAddress($modalWindow);
 
-                        (function($el) {
-                            var $mapContainer = $($el.data('mapContainerSelector')),
-                                mapData = $mapContainer.data('mapData')
-                            ;
+                        require(['yandexmaps'], function() {
+                            var $mapContainer = $($el.data('mapContainerSelector'));
 
-                            if (!$mapContainer.find('#yandexMap').length) {
-                                $mapContainer.append($map.show());
-                            }
-
-                            require(['module/yandexmaps'], function(maps) {
-                                maps.initMap($map, mapData, initMap).done(function(map) {
-                                    map.setCenter([mapData.center.lat, mapData.center.lng], mapData.zoom);
-                                    map.balloon.close();
-                                    map.geoObjects.removeAll();
-                                    map.container.fitToViewport();
-
-                                    addressMap = map;
-                                });
-                            });
-                        })($el);
+                            console.info('$mapContainer', $mapContainer, $mapContainer.data());
+                            updateAddressMap($mapContainer);
+                        });
                     },
                     beforeClose: function() {
-                        $mapContainer.append($map);
+                        $mapContainer.append($addressMap);
                     },
                     modalCSS: {top: '60px'}
                 });
             },
 
-            updateAddressMap = function() {
+            updateAddressMap = function($container) {
                 var zoom = 4;
 
                 var address = $.kladr.getAddress('.js-smartAddress-form', function (objs) {
-                    var result = '';
+                    var result = config.kladr.city.name + '';
 
-                    $.each(objs, function (i, obj) {
-                        var name = '',
-                            type = ''
-                        ;
+                    console.info('objs', objs);
 
-                        if ($.type(obj) === 'object') {
-                            name = obj.name;
-                            type = ' ' + obj.type;
+                    if ($.type(objs.street) === 'object') {
+                        $.each(objs, function (i, obj) {
+                            var name = '',
+                                type = ''
+                            ;
 
-                            switch (obj.contentType) {
-                                case $.kladr.type.city:
-                                    zoom = 10;
-                                    break;
-                                case $.kladr.type.street:
-                                    zoom = 13;
-                                    break;
-                                case $.kladr.type.building:
-                                    zoom = 16;
-                                    break;
+                            if ($.type(obj) === 'object') {
+                                name = obj.name;
+                                type = ' ' + obj.type;
+
+                                switch (obj.contentType) {
+                                    case $.kladr.type.city:
+                                        zoom = 10;
+                                        break;
+                                    case $.kladr.type.street:
+                                        zoom = 13;
+                                        break;
+                                    case $.kladr.type.building:
+                                        zoom = 16;
+                                        break;
+                                }
                             }
-                        }
-                        else {
-                            name = obj;
-                        }
+                            else {
+                                name = obj;
+                            }
 
-                        if (result) result += ', ';
-                        result += type + ' ' + name;
-                    });
+                            console.info('obj', obj, name);
+
+                            if (result) result += ', ';
+                            result += type + '' + name;
+                        });
+                    } else {
+                        result = '';
+                    }
 
                     return result;
                 });
 
-                if (address && addressMap) {
-                    require(['module/yandexmaps'], function(maps) {
-                        var geocode = maps.ymaps.geocode(address);
+                var
+                    options = $container.data('mapOption'),
+                    ready = function() {
+                        var placemark;
+
+                        console.info('update address map ...');
+
+                        if (!$container.find('#' + $addressMap.attr('id')).length) {
+                            $container.append($addressMap);
+                        }
+
+                        //addressMap.setCenter([options.center.lat, options.center.lng], options.zoom);
+                        addressMap.balloon.close();
+                        addressMap.geoObjects.removeAll();
+                        addressMap.container.fitToViewport();
+                    };
+
+                if (addressMap) {
+                    ready();
+                } else {
+                    initAddressMap($addressMap, options).done(ready);
+                }
+
+                console.info('address', address);
+                if (address) {
+                    require(['yandexmaps'], function(ymaps) {
+                        if (!addressMap) return;
+
+                        var geocode = ymaps.geocode(address);
+
                         geocode.then(function (res) {
                             addressMap.balloon.close();
                             addressMap.geoObjects.removeAll();
 
                             var position = res.geoObjects.get(0).geometry.getCoordinates(),
-                                placemark = new maps.ymaps.Placemark(position, {}, {});
+                                placemark = new ymaps.Placemark(position, {}, {});
 
                             addressMap.geoObjects.add(placemark);
                             addressMap.setCenter(position, zoom);
