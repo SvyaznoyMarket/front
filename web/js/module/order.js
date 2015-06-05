@@ -415,7 +415,7 @@ define(
                         });
                     },
                     beforeClose: function() {
-                        $mapContainer.append($pointMap);
+                        $mapContainer.append($addressMap);
                     },
                     modalCSS: {top: '60px'}
                 });
