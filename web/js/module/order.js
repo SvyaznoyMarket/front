@@ -548,12 +548,14 @@ define(
 
                 var
                     $el           = $(this),
-                    data          = {},
+                    data          = $.parseJSON($($el.data('storageSelector')).html()),
                     $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
                     modalTitle    = $el.data('modal-title'),
                     modalPosition = $el.data('modal-position'),
                     $discountContainer
                 ;
+
+                console.info('data', data);
 
                 $modalWindow.find('.js-modal-title').text(modalTitle);
                 $modalWindow.addClass(modalPosition);
@@ -574,19 +576,6 @@ define(
                 });
 
                 e.preventDefault();
-            },
-
-            applyDiscount = function(e) {
-                $.ajax({
-                   'url': $deliveryForm.attr('action'),
-                   'data': $form.serializeArray(),
-                    type: 'post',
-                    timeout: 30000
-                }).done(function(response) {
-
-                }).always(function() {
-                    console.info('unblock screen');
-                });
             }
         ;
 
@@ -623,6 +612,16 @@ define(
 
             changeSplit(data);
         });
-        $body.on('submit', '.js-certificate-check', applyDiscount);
+        $body.on('submit', '.js-discount-form', function(e) {
+            var
+                $form = $(this),
+                data = $form.serializeArray()
+            ;
+
+            e.stopPropagation();
+            e.preventDefault();
+
+            changeSplit(data);
+        });
     }
 );

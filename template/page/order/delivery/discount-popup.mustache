@@ -4,13 +4,15 @@
         <div class="checkout-sale-code popup-fixed-content">
             <div class="checkout-sale-code__title">Код скидки или подарочный сертификат</div>
 
-            <form class="checkout-sale-code__form js-certificate-check" action="/ajax/certificate/check">
+            <form class="js-discount-form checkout-sale-code__form" action="{{url}}" method="post">
+                <input type="hidden" name="{{fields.order.name}}" value="{{fields.order.value}}" />
+
                 <div class="checkout-sale-code__fields">
-                    <input type="text" class="checkout-sale-code__it textfield" name="code" />
+                    <input type="text" class="checkout-sale-code__it textfield" name="{{fields.number.name}}" />
 
                     <div class="checkout-sale-code-pin">
                         <label class="checkout-sale-code-pin__label">PIN-код</label>
-                        <input type="text" class="checkout-sale-code__it checkout-sale-code__it--pin textfield" name="pin" />
+                        <input type="text" class="checkout-sale-code__it checkout-sale-code__it--pin textfield" name="{{fields.pin.name}}" />
                     </div>
                 </div>
 
