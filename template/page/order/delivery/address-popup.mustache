@@ -1,8 +1,8 @@
 <div class="address-pick-snippet">
-    <div id="order-{{order.id}}-address-map-container" data-map-data="{{&mapDataValue}}" class="order-popup-map"></div>
+    <div id="order-{{order.id}}-address-map-container" data-map-option="{{&mapDataValue}}" class="order-popup-map"></div>
 
     <div class="address-pick-snippet__form">
-        <form class="js-smartAddress-form" action="#">
+        <form class="js-smartAddress-form" action="#" data-map-container-selector="#order-{{order.id}}-address-map-container">
             <div class="form-control__container">
                 <div class="form-control-group">
                     <input class="form-control-group__tx textfield js-smartAddress-input" id="order-delivery-address-street" type="text" name="{{fields.street.name}}" autocomplete="off" data-kladr-type="street" />
