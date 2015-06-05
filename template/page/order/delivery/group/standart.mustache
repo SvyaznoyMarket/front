@@ -1,12 +1,12 @@
 <div class="checkout-order__inn box-show js-delivery-type" id="delivery-type-buy-1">
-    <div class="checkout-celendar js-order-delivery-celendar-link" data-data-selector="#order-{{id}}-date-data" data-modal-position="center" data-modal-title="Дата">{{delivery.date}}</div>
+    <div class="checkout-celendar js-order-delivery-celendar-link" data-data-selector="#order-{{id}}-date-data" data-modal-position="fixed-untill-640" data-modal-title="Дата">{{delivery.date}}</div>
 
-    <div class="custom-select custom-select--button">
+    <div class="custom-select custom-select--button toggle js-toggle-wrap">
         {{#delivery.interval}}
-            <span class="custom-select__value js-order-btn" data-btn="select-time">{{from}}…{{to}} <i class="caret"></i></span>
+            <span class="custom-select__value toggle-link js-toggle-link">{{from}}…{{to}} <i class="caret"></i></span>
         {{/delivery.interval}}
 
-        <ul class="custom-select-list js-order-box" data-box="data-select-time">
+        <ul class="custom-select-list toggle-box">
         {{#delivery.intervals}}
             <li class="custom-select-list__item js-order-delivery-form-control" data-value="{{&dataValue}}">{{from}}…{{to}}</li>
         {{/delivery.intervals}}
