@@ -121,7 +121,7 @@ class ProductButton {
         } else if ($product->isInShopOnly && $context['position'] == 'listing') {
             $button->isInShopOnly = true;
             $button->text = 'Посмотреть';
-            $button->noJs = true;
+            $button->seeProductBtn = true;
         } else {
             if (!$product->isBuyable) {
                 $button->url = '#';

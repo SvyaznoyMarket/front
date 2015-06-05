@@ -28,6 +28,6 @@ namespace EnterMobile\Model\Partial\Cart {
         /** @var bool */
         public $isSlot;
         /** @var bool */
-        public $noJs;
+        public $seeProductBtn;
     }
 }
