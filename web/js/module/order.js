@@ -333,11 +333,9 @@ define(
                 $modalWindow.lightbox_me({
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data, $pointPopupTemplate.data('partial')));
-                        $body.css({'overflow':'hidden', 'position' : 'fixed'});
                     },
                     beforeClose: function() {
                         $mapContainer.append($map);
-                        $body.css({'overflow':'auto'});
                     },
                     centered: false
                 });
@@ -468,6 +466,7 @@ define(
                 $modalWindow.addClass(modalPosition);
 
                 $modalWindow.lightbox_me({
+                    fullScreen: true,
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($calendarTemplate.html(), data));
                     }
