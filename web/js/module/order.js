@@ -373,8 +373,7 @@ define(
                     },
                     beforeClose: function() {
                         $mapContainer.append($pointMap);
-                    },
-                    centered: false
+                    }
                 });
 
                 e.preventDefault();
@@ -525,10 +524,10 @@ define(
 
                 $modalWindow.lightbox_me({
                     fullScreen: true,
+                    modal: false,
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($calendarTemplate.html(), data));
                     }
-                    // modalCSS: {top: '60px'},
                 });
             },
 

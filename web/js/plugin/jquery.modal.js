@@ -10,7 +10,7 @@
                 $body = $('body'),
                 $overlay = $(),
                 $self = $(this),
-                $iframe = $('<iframe id="foo" style="z-index: ' + (opts.zIndex + 1) + ';border: none; margin: 0; padding: 0; position: absolute; width: 100%; height: 100%; top: 0; left: 0; filter: mask();"/>');
+                $iframe = $('<iframe id="foo" style="border: none; margin: 0; padding: 0; position: absolute; width: 100%; height: 100%; top: 0; left: 0; filter: mask();"/>');
 
             if (opts.showOverlay) {
                 //check if there's an existing overlay, if so, make subequent ones clear
@@ -35,7 +35,7 @@
             // set css of the overlay
             if (opts.showOverlay) {
                 setOverlayHeight(); // pulled this into a function because it is called on window resize.
-                $overlay.css({ position: 'absolute', width: '100%', top: 0, left: 0, right: 0, bottom: 0, display: 'none' });
+                $overlay.css({ position: 'absolute', width: '100%', top: 0, left: 0, right: 0, bottom: 0, display: 'none', zIndex: 1015 });
                 if (!$overlay.hasClass('lb_overlay_clear')){
                     $overlay.css(opts.overlayCSS);
                 }
@@ -58,6 +58,10 @@
             ---------------------------------------------------- */
             if (opts.parentLightbox) {
                 opts.parentLightbox.fadeOut(200);
+            }
+
+            if (opts.modal) {
+                $body.addClass('full-screen');
             }
 
             if (opts.fullScreen) {
@@ -93,7 +97,7 @@
                     currentWidth = $(window).width()
                 ;
 
-                if ( currentWidth > 639 ) {
+                if ( currentWidth < 639 ) {
                     $body.addClass('full-screen');
                 } else {
                     $body.removeClass('full-screen');
@@ -111,6 +115,7 @@
                 }
 
                 $iframe.remove();
+                $body.removeClass('full-screen');
 
                         // clean up events.
                 $self.undelegate(opts.closeSelector, "click");
@@ -160,6 +165,7 @@
         destroyOnClose: true,
         showOverlay: true,
         fullScreen: false,
+        modal: true,
 
         // callbacks
         onLoad: function() {},
