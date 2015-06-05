@@ -1,14 +1,17 @@
 <div class="sale-select">
     <div class="sale-select__tl">Ваши фишки EnterPrize</div>
-    <div class="sale-select__list">
-    {{#coupons}}
-        <a href="" class="sale-select__item js-order-btn js-user-discount" data-btn="selected-sale" data-value="{{&dataValue}}">
-            <div class="sale-select__left">
-                <img class="sale-select__img" src="{{image}}" alt="">
-                <span class="sale-select__msg">{{discount.value}}{{#discount.isCurrency}} <span class="rubl">p</span>{{/discount.isCurrency}}{{^discount.isCurrency}}%{{/discount.isCurrency}}</span>
-            </div>
-            <span class="sale-select__right">{{name}}</span>
-        </a>
-    {{/coupons}}
+
+    <div class="sale-select__list-wrap">
+	    <div class="sale-select__list">
+	    {{#coupons}}
+	        <a href="#" class="js-user-discount sale-select__item" data-btn="selected-sale" data-value="{{&dataValue}}">
+	            <div class="sale-select__left">
+	                <img class="sale-select__img" src="{{image}}" alt="">
+	                <span class="sale-select__msg">{{discount.value}}{{#discount.isCurrency}} <span class="rubl">p</span>{{/discount.isCurrency}}{{^discount.isCurrency}}%{{/discount.isCurrency}}</span>
+	            </div>
+	            <span class="sale-select__right">{{name}}</span>
+	        </a>
+	    {{/coupons}}
+	    </div>
     </div>
 </div>
