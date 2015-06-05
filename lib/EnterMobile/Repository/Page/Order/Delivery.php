@@ -278,11 +278,26 @@ class Delivery {
 
                     foreach ($orderModel->discounts as $discountModel) {
                         $discounts[] = [
-                            'name'     => $discountModel->name,
-                            'discount' => [
+                            'name'            => $discountModel->name,
+                            'discount'        => [
                                 'value'      => $discountModel->discount,
                                 'isCurrency' => true,
                             ],
+                            'deleteDataValue' => $templateHelper->json([
+                                'change' => [
+                                    'orders' => [
+                                        [
+                                            'blockName' => $orderModel->blockName,
+                                            'discounts' => [
+                                                [
+                                                    'number' => $discountModel->number,
+                                                    'delete' => true,
+                                                ],
+                                            ],
+                                        ]
+                                    ],
+                                ],
+                            ]),
                         ];
                     }
 
