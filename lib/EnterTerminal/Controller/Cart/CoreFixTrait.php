@@ -17,8 +17,10 @@ trait CoreFixTrait {
                 'possible_point_data' => [],
                 'possible_points'     => [],
             ];
-            foreach ($orderItem['possible_point_data'] as $token => $possiblePointItem) {
-                $orderItem['possible_points'][$token][] = $possiblePointItem['id'];
+
+            $orderItem['possible_points'] = [];
+            foreach ($orderItem['possible_point_data'] as $token => $possiblePointItems) {
+                $orderItem['possible_points'][$token] = array_column($possiblePointItems, 'id');
             }
         }
         unset($orderItem);
