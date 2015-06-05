@@ -67,7 +67,8 @@ class DefaultPage {
                 'city'   =>
                     $request->region
                     ? [
-                        'id' => $request->region->kladrId,
+                        'id'   => $request->region->kladrId,
+                        'name' => $request->region->name,
                     ]
                     : null,
             ],
