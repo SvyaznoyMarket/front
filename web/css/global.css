@@ -3686,6 +3686,16 @@ body.noScroll {
     margin-right: 15px;
   }
 }
+@media only screen and (max-width: 640px) {
+  .appList {
+    width: auto;
+  }
+  .appList__item {
+    display: block;
+    margin: 0 0 15px;
+    text-align: center;
+  }
+}
 @media only screen and (max-width: 610px) {
   .footer {
     height: 678px;
@@ -3696,14 +3706,6 @@ body.noScroll {
   }
   .aboutList__item {
     display: block;
-    margin: 0 0 15px;
-    text-align: center;
-  }
-  .appList {
-    width: auto;
-  }
-  .appList__item {
-    float: none;
     margin: 0 0 15px;
     text-align: center;
   }
