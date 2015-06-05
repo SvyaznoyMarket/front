@@ -2,15 +2,15 @@
    Кнопка купить .btnBuy
    ========================================================================== */
 
-.inCart {
-  border-color: #000;
+.inCart(@color:#000) {
+  border-color: @color;
   border: 1px solid;
   border-bottom: 2px solid;
   background: #fff;
-  color: #000;
+  color: @color;
   
   &:hover {
-    color: #000;
+    color: @color;
   }
 }
 
@@ -74,11 +74,6 @@
     &-incart {
       .inCart();
     }
-
-    &.seeProductBtn {
-      .inCart();
-    }
-
 }
 
 .btnBuyOneClick {
