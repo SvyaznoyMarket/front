@@ -23,6 +23,7 @@ class Get {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
+        $couponSeriesRepository = new \EnterRepository\Coupon\Series();
 
         $responseData = [];
 
@@ -62,25 +63,29 @@ class Get {
         }
 
         /** @var Model\Coupon\Series[] $couponSeries */
-        $couponSeries = array_values(
-            array_filter( // фильрация серий купонов
-                (new \EnterRepository\Coupon\Series())->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery),
-                function(Model\Coupon\Series $series) use (&$usedSeriesIds) {
-                    return in_array($series->id, $usedSeriesIds); // только те серии купонов, которые есть у ранее полученых купонов
-                }
-            )
-        );
+        $couponSeries = $couponSeriesRepository->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery);
+        $couponSeriesRepository->filterObjectList($couponSeries, $usedSeriesIds, $user);
+
+        $couponSeriesById = [];
+        foreach ($couponSeries as $iCouponSeries) {
+            $couponSeriesById[$iCouponSeries->id] = $iCouponSeries;
+        }
+
 
         // template data
         $page = [
-            'coupons' => call_user_func(function() use (&$couponSeries) {
+            'coupons' => call_user_func(function() use (&$couponSeriesById, &$coupons) {
                 $data = [];
 
-                foreach ($couponSeries as $iCouponSeries) {
+                foreach ($coupons as $coupon) {
+                    /** @var \EnterModel\Coupon\Series|null $iCouponSeries */
+                    $iCouponSeries = isset($couponSeriesById[$coupon->seriesId]) ? $couponSeriesById[$coupon->seriesId] : null;
+                    if (!$iCouponSeries) continue;
+
                     $data[] = [
-                        'image'    => $iCouponSeries->backgroundImageUrl,
-                        'name'     => $iCouponSeries->productSegment ? $iCouponSeries->productSegment->name : null,
-                        'discount' =>
+                        'image'     => $iCouponSeries->backgroundImageUrl,
+                        'name'      => $iCouponSeries->productSegment ? $iCouponSeries->productSegment->name : null,
+                        'discount'  =>
                             $iCouponSeries->discount
                             ? [
                                 'value'      => $iCouponSeries->discount->value,
@@ -88,6 +93,7 @@ class Get {
                             ]
                             : null
                         ,
+                        'dataValue' => $coupon->number,
                     ];
                 }
 

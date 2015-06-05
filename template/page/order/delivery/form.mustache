@@ -157,6 +157,7 @@
                     <script id="order-{{id}}-date-data" type="application/json">{{&dateJson}}</script>
                     <script id="order-{{id}}-point-data" type="application/json">{{&pointJson}}</script>
                     <script id="order-{{id}}-address-data" type="application/json">{{&addressFormJson}}</script>
+                    <script id="order-{{id}}-discount-data" type="application/json">{{&discountFormJson}}</script>
 
                     {{#delivery.isSelf}}
                         {{>page/order/delivery/group/self}}
@@ -177,7 +178,7 @@
             {{! общая стоимость заказа }}
             <div class="checkout-summary checkout-order__box table">
                 <div class="table_cell">
-                    <button class="btn-transparent btn-transparent--normal js-order-delivery-discountPopup-link" data-modal-position="fixed" data-modal-title="Добавить скидку"><span class="bb-dotted">Добавить скидку</span></button>
+                    <button class="btn-transparent btn-transparent--normal js-order-delivery-discountPopup-link" data-modal-position="fixed" data-modal-title="Добавить скидку" data-storage-selector="#order-{{id}}-discount-data"><span class="bb-dotted">Добавить скидку</span></button>
                 </div>
 
                 <div class="table_cell ta-r">

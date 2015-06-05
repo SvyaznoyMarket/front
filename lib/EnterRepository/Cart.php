@@ -352,7 +352,7 @@ class Cart {
                 }
 
                 // скидки
-                if (isset($orderItem['discounts'][0])) {
+                if (isset($orderItem['discounts']) && is_array($orderItem['discounts'])) {
                     $discountItem = null;
                     foreach ($orderItem['discounts'] as $discountItem) {
                         $this->getLogger()->push(['message' => 'Применение купона', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
@@ -377,7 +377,7 @@ class Cart {
                         } else { // добавление купона
                             $dump['orders'][$blockName]['discounts'][] =
                                 ['number' => $discountItem['number'], 'name' => null, 'type' => null, 'discount' => null]
-                                + (isset($discountItem['pin']) ? ['pin' => $discountItem['pin']] : [])
+                                + (!empty($discountItem['pin']) ? ['pin' => $discountItem['pin']] : [])
                             ;
                         }
                     }

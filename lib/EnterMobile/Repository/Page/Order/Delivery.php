@@ -49,8 +49,6 @@ class Delivery {
         $regionModel = $request->region;
         $splitModel = $request->split;
 
-        // все методы оплат
-
         // индексация токенов методов доставки по группам доставки
         $deliveryMethodTokensByGroupToken = [];
         foreach ($splitModel->deliveryMethods as $deliveryMethodModel) {
@@ -274,6 +272,21 @@ class Delivery {
                     }
 
                     return $products;
+                }),
+                'discounts'      => call_user_func(function() use (&$templateHelper, &$priceHelper, &$splitModel, &$orderModel) {
+                    $discounts = [];
+
+                    foreach ($orderModel->discounts as $discountModel) {
+                        $discounts[] = [
+                            'name'     => $discountModel->name,
+                            'discount' => [
+                                'value'      => $discountModel->discount,
+                                'isCurrency' => true,
+                            ],
+                        ];
+                    }
+
+                    return $discounts;
                 }),
                 'pointJson'      => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$regionModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
                     $points = [];
@@ -546,6 +559,7 @@ class Delivery {
                     return $messages;
                 }),
                 'addressFormJson' => json_encode([
+                    'url'    => $router->getUrlByRoute(new Routing\Order\Delivery()),
                     'fields' => [
                         'street'    => [
                             'name' => 'change[user][address][street]',
@@ -571,17 +585,47 @@ class Delivery {
                         'zoom'   => 10,
                     ]),
                 ], JSON_UNESCAPED_UNICODE),
+                'discountFormJson' => json_encode([
+                    'url'    => $router->getUrlByRoute(new Routing\Order\Delivery()),
+                    'fields' => [
+                        'number' => [
+                            'name' => 'change[orders][0][discounts][0][number]',
+                        ],
+                        'pin'    => [
+                            'name' => 'change[orders][0][discounts][0][pin]',
+                        ],
+                        'order'  => [
+                            'name'  => 'change[orders][0][blockName]',
+                            'value' => $orderModel->blockName,
+                        ],
+                    ],
+                ], JSON_UNESCAPED_UNICODE),
                 'user'           => [
                     'discountUrl' => $router->getUrlByRoute(new Routing\User\Coupon\Get()), // TODO: использовать
                     'address'     =>
                         ($splitModel->user && $splitModel->user->address && $splitModel->user->address->street)
-                        ? [
-                            'name'      => implode(', ', [$splitModel->user->address->street, $splitModel->user->address->building, $splitModel->user->address->apartment]),
-                            'street'    => $splitModel->user->address->street,
-                            'building'  => $splitModel->user->address->building,
-                            'apartment' => $splitModel->user->address->apartment,
-                            'kladrId'   => $splitModel->user->address->kladrId,
-                        ]
+                        ? call_user_func(function() use (&$splitModel, &$regionModel) {
+                            $name = $regionModel->name;
+                            if ($splitModel->user->address->street) {
+                                $name .= ', ' . $splitModel->user->address->street;
+                            }
+                            if ($splitModel->user->address->building) {
+                                $name .= ', д.' . $splitModel->user->address->building;
+                            }
+                            if ($splitModel->user->address->apartment) {
+                                $name .= ', кв.' . $splitModel->user->address->apartment;
+                            }
+
+                            $address = [
+                                'name'      => $name,
+                                'street'    => $splitModel->user->address->street,
+                                'building'  => $splitModel->user->address->building,
+                                'apartment' => $splitModel->user->address->apartment,
+                                'kladrId'   => $splitModel->user->address->kladrId,
+                            ];
+
+                            return $address;
+                        })
                         : false
 
                 ],
