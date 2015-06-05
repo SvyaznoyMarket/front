@@ -4313,9 +4313,12 @@ body.noScroll {
 }
 .cartItem_col-img {
   width: 120px;
+  height: 100px;
+  text-align: center;
 }
 .cartItem_col-img .img {
-  width: 100px;
+  max-width: 90%;
+  max-height: 100%;
 }
 .cartItem_col-desc {
   vertical-align: top;
