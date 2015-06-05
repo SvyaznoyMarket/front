@@ -37,6 +37,7 @@
 
         .inline-block-middle();
     }
+    .box-sizing(border-box);
 }
 
 .custom-label-flex {
@@ -147,7 +148,7 @@
         .rounded(4px);
         .box-shadow(0 0 10px rgba(0, 0, 0, .5));
         &__item {
-            padding: 10px;
+            padding: 0px 10px;
 
             cursor: pointer;
 
@@ -157,6 +158,10 @@
             }
             &:first-child {
                 border-top: 1px solid #c7c7c7;
+            }
+            .custom-label{
+                padding-top: 10px;
+                padding-bottom: 10px;
             }
         }
     }
