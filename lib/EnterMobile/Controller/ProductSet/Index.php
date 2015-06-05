@@ -14,9 +14,10 @@ use EnterQuery as Query;
 use EnterMobile\Model;
 use EnterMobile\Model\Page\ProductCatalog\ChildCategory as Page;
 use EnterQuery;
+use EnterAggregator\AbTestTrait;
 
 class Index {
-    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, AbTestTrait;
 
     /**
      * @param Http\Request $request
@@ -124,6 +125,15 @@ class Index {
         $pageRequest->category = null;
         $pageRequest->catalogConfig = null;
         $pageRequest->products = $productsById;
+
+        // AB тест
+        $chosenListingType = $this->getAbTest()->getObjectByToken('product_listing')->chosenItem->token;
+
+        if ($chosenListingType == 'old_listing') {
+            $pageRequest->buyBtnListing = false;
+        } else if ($chosenListingType == 'new_listing') {
+            $pageRequest->buyBtnListing = true;
+        }
 
         // страница
         $page = new Page();
