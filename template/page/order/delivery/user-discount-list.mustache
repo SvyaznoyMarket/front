@@ -5,7 +5,7 @@
         <a href="" class="sale-select__item js-order-btn" data-btn="selected-sale">
             <div class="sale-select__left">
                 <img class="sale-select__img" src="{{image}}" alt="">
-                <span class="sale-select__msg">5%</span>
+                <span class="sale-select__msg">{{discount.value}}{{#discount.isCurrency}} <span class="rubl">p</span>{{/discount.isCurrency}}{{^discount.isCurrency}}%{{/discount.isCurrency}}</span>
             </div>
             <span class="sale-select__right">{{name}}</span>
         </a>

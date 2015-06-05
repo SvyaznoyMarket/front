@@ -78,8 +78,16 @@ class Get {
 
                 foreach ($couponSeries as $iCouponSeries) {
                     $data[] = [
-                        'image' => $iCouponSeries->backgroundImageUrl,
-                        //'name'  => $iCouponSeries->,
+                        'image'    => $iCouponSeries->backgroundImageUrl,
+                        'name'     => $iCouponSeries->productSegment ? $iCouponSeries->productSegment->name : null,
+                        'discount' =>
+                            $iCouponSeries->discount
+                            ? [
+                                'value'      => $iCouponSeries->discount->value,
+                                'isCurrency' => '%' !== $iCouponSeries->discount->unit,
+                            ]
+                            : null
+                        ,
                     ];
                 }
 
