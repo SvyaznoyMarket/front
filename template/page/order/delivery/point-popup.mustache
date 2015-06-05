@@ -25,10 +25,9 @@
     </div>
 
     <div class="flexbox-two-rows__content flexbox-two-rows">
-        <div class="dropdowns flexbox-two-rows__header">
+        <form id="order-{{order.id}}-delivery-point-filter-form" class="dropdowns flexbox-two-rows__header" data-tab-selector="#order-{{order.id}}-delivery-point-tab-link">
                 <div class="custom-select__kit custom-filter__kit">
 
-                <form id="order-{{order.id}}-delivery-point-filter-form" data-tab-selector="#order-{{order.id}}-delivery-point-tab-link">
                     <div class="custom-select custom-filter toggle js-toggle-wrap js-order-delivery-points-filter-params-list">
                         <span class="custom-select__value toggle-link js-toggle-link">
                             <span class="bb-dotted">Все точки</span>
@@ -83,9 +82,8 @@
                     {{/filters.date}}
                     </ul>
                 </div>
-                </form>
             </div>
-        </div>
+        </form>
 
         {{! show-map показывает, что отображается в данный момент - если класс есть, то карта, если нет - список. }}
         <div class="pick-point flexbox-two-rows__content ">

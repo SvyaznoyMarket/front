@@ -3718,6 +3718,13 @@ body.noScroll {
   left: 0;
   right: auto;
 }
+.custom-select__kit.custom-filter__kit .custom-input--square-check + .custom-label {
+  background-position: 5px 50%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 30px;
+  margin: -5px 0 -5px -5px;
+}
 @media screen and (max-width: 640px) {
   .custom-select__kit.custom-filter__kit .custom-select__value {
     font-size: 12px;
@@ -7826,7 +7833,7 @@ body.noScroll {
   font-size: 14px;
   width: 100%;
   margin: 0;
-  text-indent: 80px;
+  padding-left: 80px;
   display: inline-block;
   vertical-align: top;
   *zoom: 1;
