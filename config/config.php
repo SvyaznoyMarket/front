@@ -72,7 +72,6 @@ return function(\EnterAggregator\Config $config) {
     $config->searchService->clientId = 'site';
     $config->searchService->debug = false;
 
-    $config->scmsService->url = 'http://scms.enter.ru/';
     $config->scmsService->timeout = 5;
 
     $config->crmService->url = 'http://crm.enter.ru/';
