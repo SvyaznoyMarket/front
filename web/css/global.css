@@ -7826,7 +7826,7 @@ body.noScroll {
   font-size: 14px;
   width: 100%;
   margin: 0;
-  text-indent: 80px;
+  padding-left: 80px;
   display: inline-block;
   vertical-align: top;
   *zoom: 1;
