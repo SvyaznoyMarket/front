@@ -123,6 +123,7 @@ define(
             initSmartAddress = function($context) {
                 var
                     $form = $context.find('.js-smartAddress-form'),
+                    $kladrIdInput = $($form.data('kladrIdSelector')),
                     $mapContainer = $($form.data('mapContainerSelector'))
                 ;
 
@@ -164,9 +165,64 @@ define(
                             }
                         },
                         change: function (obj) {
-                            console.info(obj);
+                            var
+                                zoom = 10,
+                                address = $.kladr.getAddress('.js-smartAddress-form', function (objs) {
+                                    var result = config.kladr.city.name + '';
 
-                            updateAddressMap($mapContainer, $form);
+                                    console.info('objs', objs);
+                                    console.info('$kladrIdInput', $kladrIdInput);
+
+                                    if ($kladrIdInput.length) {
+                                        if ($.type(objs.building) === 'object') {
+                                            $kladrIdInput.val(objs.building.id);
+                                            console.info('$kladrIdInput.val', objs.building.id);
+                                        } else if ($.type(objs.street) === 'object') {
+                                            console.info('$kladrIdInput.val', objs.street.id);
+                                            $kladrIdInput.val(objs.street.id);
+                                        }
+                                    }
+
+                                    if ($.type(objs.street) === 'object') {
+                                        $.each(objs, function (i, obj) {
+                                            var name = '',
+                                                type = ''
+                                                ;
+
+                                            if ($.type(obj) === 'object') {
+                                                name = obj.name;
+                                                type = ' ' + obj.type;
+
+                                                switch (obj.contentType) {
+                                                    case $.kladr.type.city:
+                                                        zoom = 10;
+                                                        break;
+                                                    case $.kladr.type.street:
+                                                        zoom = 13;
+                                                        break;
+                                                    case $.kladr.type.building:
+                                                        zoom = 16;
+                                                        break;
+                                                }
+                                            }
+                                            else {
+                                                name = obj;
+                                            }
+
+                                            console.info('obj', obj, name);
+
+                                            if (result) result += ', ';
+                                            result += type + '' + name;
+                                        });
+                                    } else {
+                                        result = '';
+                                    }
+
+                                    return result;
+                                })
+                            ;
+
+                            updateAddressMap($mapContainer, address, zoom);
                         }
                     });
 
@@ -421,52 +477,7 @@ define(
                 });
             },
 
-            updateAddressMap = function($container) {
-                var zoom = 4;
-
-                var address = $.kladr.getAddress('.js-smartAddress-form', function (objs) {
-                    var result = config.kladr.city.name + '';
-
-                    console.info('objs', objs);
-
-                    if ($.type(objs.street) === 'object') {
-                        $.each(objs, function (i, obj) {
-                            var name = '',
-                                type = ''
-                            ;
-
-                            if ($.type(obj) === 'object') {
-                                name = obj.name;
-                                type = ' ' + obj.type;
-
-                                switch (obj.contentType) {
-                                    case $.kladr.type.city:
-                                        zoom = 10;
-                                        break;
-                                    case $.kladr.type.street:
-                                        zoom = 13;
-                                        break;
-                                    case $.kladr.type.building:
-                                        zoom = 16;
-                                        break;
-                                }
-                            }
-                            else {
-                                name = obj;
-                            }
-
-                            console.info('obj', obj, name);
-
-                            if (result) result += ', ';
-                            result += type + '' + name;
-                        });
-                    } else {
-                        result = '';
-                    }
-
-                    return result;
-                });
-
+            updateAddressMap = function($container, address, zoom) {
                 var
                     options = $container.data('mapOption'),
                     ready = function() {

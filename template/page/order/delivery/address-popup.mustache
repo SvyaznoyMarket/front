@@ -2,7 +2,7 @@
     <div id="order-{{order.id}}-address-map-container" data-map-option="{{&mapDataValue}}" class="order-popup-map"></div>
 
     <div class="address-pick-snippet__form">
-        <form class="js-smartAddress-form" action="#" data-map-container-selector="#order-{{order.id}}-address-map-container">
+        <form class="js-smartAddress-form" action="#" data-map-container-selector="#order-{{order.id}}-address-map-container" data-kladr-id-selector="#order-delivery-address-kladrId">
             <div class="form-control__container">
                 <div class="form-control-group">
                     <input class="form-control-group__tx textfield js-smartAddress-input" id="order-delivery-address-street" type="text" name="{{fields.street.name}}" autocomplete="off" data-kladr-type="street" />
@@ -18,6 +18,8 @@
                     <input class="form-control-group__tx textfield" id="order-delivery-address-apartment" type="text" name="{{fields.apartment.name}}">
                     <label class="form-control-group__lbl" for="order-delivery-address-apartment">Квартира</label>
                 </div>
+
+                <input id="order-delivery-address-kladrId" type="hidden" name="{{fields.kladrId.name}}">
 
                 <div class="btn-container">
                     <button class="btn btn--submit btn--orange btn--medium" type="submit">Готово</button>
