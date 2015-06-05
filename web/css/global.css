@@ -1864,6 +1864,16 @@ body.noScroll {
 .btnBuy-incart:hover {
   color: #000;
 }
+.btnBuy.seeProductBtn {
+  border-color: #000;
+  border: 1px solid;
+  border-bottom: 2px solid;
+  background: #fff;
+  color: #000;
+}
+.btnBuy.seeProductBtn:hover {
+  color: #000;
+}
 .btnBuyOneClick {
   margin: 10px 0 0;
 }
@@ -4981,6 +4991,16 @@ body.noScroll {
 }
 .catalogList .btnBuy:hover {
   color: #fff;
+}
+.catalogList .seeProductBtn {
+  border-color: #000;
+  border: 1px solid;
+  border-bottom: 2px solid;
+  background: #fff;
+  color: #000;
+}
+.catalogList .seeProductBtn:hover {
+  color: #000;
 }
 .catalogList .btn-container {
   margin-top: 10px;

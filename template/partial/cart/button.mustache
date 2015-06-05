@@ -3,7 +3,7 @@
         <a href="{{url}}"
             class="{{id}}
                 {{#isSlot}}btn btn--slot btn--slot-lst js-slotButton noselect{{/isSlot}}
-                {{^noJs}}
+                {{^seeProductBtn}}
                 {{^isSlot}} js-ga-click
                     {{^isQuick}} js-buyButton{{/isQuick}}
                     {{#isQuick}} js-quickBuyButton{{/isQuick}}
@@ -11,10 +11,10 @@
                     {{#isInShopOnly}} delivrB_btn btn2{{/isInShopOnly}}
                     {{#isInCart}} btnBuy-incart{{/isInCart}}
                 {{/isSlot}}
-                {{/noJs}}
-                {{#noJs}}
-                    {{#isInShopOnly}} btnBuy{{/isInShopOnly}}
-                {{/noJs}}"
+                {{/seeProductBtn}}
+                {{#seeProductBtn}}
+                    {{#isInShopOnly}} btnBuy seeProductBtn{{/isInShopOnly}}
+                {{/seeProductBtn}}"
             data-ga-click="{{&dataGa}}"
             {{#widgetId}}data-widget-selector=".{{widgetId}}"{{/widgetId}}
             data-url="{{&dataUrl}}"
