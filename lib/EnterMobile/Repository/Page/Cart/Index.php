@@ -36,15 +36,11 @@ class Index {
 
         $page->dataModule = 'cart';
 
-        // ga
-        $page->content->orderDataGa = $templateHelper->json(['m_checkout' => ['send', 'event', 'm_checkout', 'cart']]);
-
         if (count($request->cart)) {
             $page->content->cart = (new Repository\Partial\Cart())->getObject($request->cart, $request->productsById);
         } else {
             $page->content->cart = false;
         }
-        $page->content->orderUrl = $router->getUrlByRoute(new Routing\Order\Index());
 
         foreach (array_reverse($request->cartProducts) as $cartProduct) {
             $product = isset($request->productsById[$cartProduct->id]) ? $request->productsById[$cartProduct->id] : null;
