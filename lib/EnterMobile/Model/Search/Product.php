@@ -18,31 +18,21 @@ namespace EnterMobile\Model\Search {
          * @param array $data
          */
         public function __construct(array $data = []) {
-            static $photoUrlSizes;
-
-            if (!$photoUrlSizes) {
-                $photoUrlSizes = [
-                     'product_60'   => '/1/1/60/'
-                ];
-            }
 
             if (array_key_exists('name', $data)) $this->name = $data['name'] ? (string)$data['name'] : null;
             if (array_key_exists('link', $data)) $this->link = $data['link'] ? (string)$data['link'] : null;
 
-            // ядерные фотографии
-            call_user_func(function() use (&$data, &$photoUrlSizes) {
-                // host
-                $hosts = $this->getConfig()->mediaHosts;
-                $index = !empty($photoId) ? ($photoId % count($hosts)) : rand(0, count($hosts) - 1);
-                $host = isset($hosts[$index]) ? $hosts[$index] : '';
+            $photoUrlSizes = [
+                 'product_60'   => '/1/1/60/'
+            ];
 
-                $item = [];
-                foreach ($photoUrlSizes as $type => $prefix) {
-                    $item['image'] = $host . $prefix . $data['image'];
-                }
+            $hosts = $this->getConfig()->mediaHosts;
+            $index = !empty($photoId) ? ($photoId % count($hosts)) : rand(0, count($hosts) - 1);
+            $host = isset($hosts[$index]) ? $hosts[$index] : '';
 
-                $this->image = $item['image'];
-            });
+            foreach ($photoUrlSizes as $type => $prefix) {
+                $this->image = $host . $prefix . $data['image'];
+            }
         }
     }
 }

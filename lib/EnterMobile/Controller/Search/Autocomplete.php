@@ -31,9 +31,16 @@ class Autocomplete {
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // поисковая строка
-        $searchPhrase = (new \EnterRepository\Search())->getPhraseByHttpRequest($request);
-        if (!$searchPhrase) {
-            return false;
+        try {
+            $searchPhrase = (new \EnterRepository\Search())->getPhraseByHttpRequest($request);
+            if (!$searchPhrase) {
+                throw new \Exception('Bad Request', 400);
+            }
+        } catch (\Exception $e) {
+            return new Http\JsonResponse([
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
         }
 
         // запрос региона
