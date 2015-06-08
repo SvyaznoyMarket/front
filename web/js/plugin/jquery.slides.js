@@ -148,7 +148,8 @@
 
             setData();
             addPager();
-            w.on('load resize', slidesResize);
+            w.on('resize', slidesResize);
+            cont.on('load', slidesResize);
             rightBtn.on('click', nextSlides);
             leftBtn.on('click', prevSlides);
 
