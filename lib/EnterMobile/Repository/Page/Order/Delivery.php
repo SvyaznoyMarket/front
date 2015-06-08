@@ -658,6 +658,24 @@ class Delivery {
             : false
         ;
 
+        $page->content->errors = call_user_func(function() use (&$splitModel) {
+            $errors = [];
+
+            foreach ($splitModel->errors as $errorModel) {
+                if (isset($errorModel->detail['product']['name'])) {
+                    $message = $errorModel->message . ' ' . $errorModel->detail['product']['name'];
+                } else {
+                    $message = $errorModel->message;
+                }
+
+                $errors[] = [
+                    'message' => $message,
+                ];
+            }
+
+            return $errors;
+        });
+
         $page->content->isUserAuthenticated = (bool)$request->user;
 
         // шаблоны mustache

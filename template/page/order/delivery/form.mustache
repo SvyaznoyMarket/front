@@ -3,6 +3,10 @@
 
     <h1 class="checkout__tl">Самовывоз и доставка</h1>
 
+    {{#errors}}
+        <p>{{message}}</p>
+    {{/errors}}
+
     {{#orderCountMessage}}
         <p class="orderInf">Товары будут оформлены как <strong class="mdb">{{orderCountMessage}}</strong></p>
     {{/orderCountMessage}}

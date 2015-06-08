@@ -31,6 +31,8 @@ namespace EnterMobile\Model\Page\Order\Delivery {
         public $region;
         /** @var array */
         public $orders = [];
+        /** @var array */
+        public $errors = [];
         /** @var string|bool */
         public $orderCountMessage;
         /** @var bool */
