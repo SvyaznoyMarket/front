@@ -30,6 +30,10 @@ define(
                     ;
 
                     Storage.cache[key] = value;
+                },
+
+                clear: function() {
+                    Storage.cache = {};
                 }
             },
 
@@ -246,6 +250,8 @@ define(
                 }).always(function() {
                     console.info('unblock screen');
                 });
+
+                Storage.clear();
             },
 
             updatePointTab = function(e, toggle) {
