@@ -15,9 +15,10 @@ use EnterAggregator\RouterTrait;
 use EnterMobile\Routing;
 use EnterMobile\Model;
 use EnterMobile\Model\Page\Search\Index as Page;
+use EnterAggregator\AbTestTrait as AbTestTrait;
 
 class Index {
-    use ConfigTrait, LoggerTrait, RouterTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, AbTestTrait;
 
     /**
      * @param Http\Request $request
@@ -174,6 +175,14 @@ class Index {
         $pageRequest->sortings = $sortings;
         $pageRequest->products = $productsById;
         $pageRequest->httpRequest = $request;
+
+        $chosenListingType = $this->getAbTest()->getObjectByToken('product_listing')->chosenItem->token;
+
+        if ($chosenListingType == 'old_listing') {
+            $pageRequest->buyBtnListing = false;
+        } else if ($chosenListingType == 'new_listing') {
+            $pageRequest->buyBtnListing = true;
+        }
 
         // страница
         $page = new Page();

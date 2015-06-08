@@ -28,7 +28,7 @@ class ListByFilter {
         $page->limit = $request->limit;
 
         foreach ($request->products as $productModel) {
-            $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel), $request->category);
+            $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel, null, true, true, ['position' => 'listing']), $request->category);
 
             $page->productCards[] = $renderer->render('partial/product-card/default', $productCard);
         }
