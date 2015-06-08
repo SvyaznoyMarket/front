@@ -1,11 +1,12 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'jquery.maskedinput',
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'jquery.ui', 'jquery.maskedinput',
         'module/order/user.form', 'module/order/common', 'module/order/toggle'
     ],
     function(
         require, $, _, mustache, util, config
     ) {
+
         var
             Storage = {
                 cache: {},

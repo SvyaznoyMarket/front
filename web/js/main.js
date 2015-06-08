@@ -140,7 +140,7 @@ require(
         'module/widget',      // виджеты
         'module/user.common', // инфо о пользователе
         'module/cart.common', // кнопка купить, спиннер
-        'module/order',
+        //'module/order',
         'module/product.catalog.common',
 		'module/siteVersionSwitcher',
 		'module/slotButton',
