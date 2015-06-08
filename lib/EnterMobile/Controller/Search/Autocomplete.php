@@ -25,7 +25,7 @@ class Autocomplete {
      */
     public function execute(Http\Request $request) {
         $curl = $this->getCurl();
-        $searchRepository = new \EnterRepository\Search();
+        $searchRepository = new \EnterMobile\Repository\Search();
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
