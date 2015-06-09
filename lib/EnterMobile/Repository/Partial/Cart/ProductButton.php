@@ -124,7 +124,7 @@ class ProductButton {
         } else {
             if (!$product->isBuyable) {
                 $button->url = '#';
-                $button->text = $product->isInShopShowroomOnly ? 'На витрине' : 'Недоступен';
+                $button->text = $product->isInShopShowroomOnly ? 'На витрине' : 'Нет в наличии';
                 $button->isDisabled = true;
             } else if (!$button->url) {
                 $button->url = $this->router->getUrlByRoute(new Routing\Cart\SetProduct($product->id));
