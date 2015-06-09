@@ -609,9 +609,12 @@ define(
                 var
                     $input = $(this),
                     text = $input.val(),
-                    $suggestContainer = $(($input.data('suggestContainerSelector'))),
+                    suggestContainerSelector = $input.data('suggestContainerSelector'),
+                    $suggestContainer = $(suggestContainerSelector),
                     data = {items: []}
                 ;
+
+                e.stopPropagation();
 
                 require(['yandexmaps'], function(ymaps) {
                     if ((text.length > 1) && pointMap) {
@@ -624,7 +627,11 @@ define(
                         ymaps.geocode(text, { boundedBy: pointMap.geoObjects.getBounds(), strictBounds: true }).then(
                             function(res){
                                 res.geoObjects.each(function(obj){
-                                    data.items.push({name: obj.properties.get('name')});
+                                    data.items.push({
+                                        name: obj.properties.get('name'),
+                                        dataCenterValue: JSON.stringify(obj.geometry.getBounds()[0]).replace(/\"/g,'&quot;'),
+                                        containerSelector: suggestContainerSelector
+                                    });
                                 });
 
                                 $suggestContainer.html(mustache.render($pointSuggestTemplate.html(), data));
@@ -636,6 +643,30 @@ define(
                         );
                     }
                 });
+            },
+
+            applyPointSuggest = function(e) {
+                var
+                    $el = $(this),
+                    center = $el.data('center'),
+                    $container = $($el.data('containerSelector'))
+                ;
+
+                console.info('$el', $el);
+
+                e.stopPropagation();
+                e.preventDefault();
+
+                try {
+                    if (pointMap && center) {
+                        console.info(center);
+                        pointMap.setCenter(center, 14);
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+
+                $container.hide();
             }
         ;
 
@@ -662,6 +693,7 @@ define(
         $body.on('update', '.js-order-delivery-point-container', updatePointList);
         $body.on('change', '.js-order-delivery-point-filter', updatePointFilter);
         $body.on('input', '.js-order-delivery-point-search-input', searchPoint);
+        $body.on('click', '.js-order-delivery-suggest-item', applyPointSuggest);
         $body.on('submit', '.js-smartAddress-form', function(e) {
             var
                 $form = $(this),
