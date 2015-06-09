@@ -712,6 +712,12 @@ class Delivery {
                 'name'     => 'page/order/delivery/discount-popup',
                 'partials' => [],
             ],
+            // подсказка для поиска точек самовывоза
+            [
+                'id'       => 'tpl-order-delivery-point-suggest',
+                'name'     => 'page/order/delivery/point-suggest',
+                'partials' => [],
+            ],
         ]);
     }
 

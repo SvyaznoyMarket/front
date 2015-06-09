@@ -49,6 +49,7 @@ define(
             $pointPopupTemplate    = $('#tpl-order-delivery-point-popup'),
             $calendarTemplate      = $('#tpl-order-delivery-calendar'),
             $addressPopupTemplate  = $('#tpl-order-delivery-address-popup'),
+            $pointSuggestTemplate  = $('#tpl-order-delivery-point-suggest'),
             $modalWindowTemplate   = $('#tpl-modalWindow'),
 
             $discountPopupTemplate = $('#tpl-order-delivery-discount-popup'),
@@ -602,6 +603,39 @@ define(
                 });
 
                 e.preventDefault();
+            },
+
+            searchPoint = function(e) {
+                var
+                    $input = $(this),
+                    text = $input.val(),
+                    $suggestContainer = $(($input.data('suggestContainerSelector'))),
+                    data = {items: []}
+                ;
+
+                require(['yandexmaps'], function(ymaps) {
+                    if ((text.length > 1) && pointMap) {
+                        try {
+                            text = config.kladr.city.name + ', ' + text;
+                        } catch (error) {
+                            console.error(error);
+                        }
+
+                        ymaps.geocode(text, { boundedBy: pointMap.geoObjects.getBounds(), strictBounds: true }).then(
+                            function(res){
+                                res.geoObjects.each(function(obj){
+                                    data.items.push({name: obj.properties.get('name')});
+                                });
+
+                                $suggestContainer.html(mustache.render($pointSuggestTemplate.html(), data));
+                                $suggestContainer.show();
+                            },
+                            function(error){
+                                console.warn('Geocode error', error)
+                            }
+                        );
+                    }
+                });
             }
         ;
 
@@ -627,6 +661,7 @@ define(
         $body.on('update', '.js-order-delivery-map-container', updatePointMap);
         $body.on('update', '.js-order-delivery-point-container', updatePointList);
         $body.on('change', '.js-order-delivery-point-filter', updatePointFilter);
+        $body.on('input', '.js-order-delivery-point-search-input', searchPoint);
         $body.on('submit', '.js-smartAddress-form', function(e) {
             var
                 $form = $(this),

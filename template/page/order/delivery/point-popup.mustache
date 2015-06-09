@@ -4,18 +4,9 @@
             <div class="search-control {{! suggest-open }}">
                 <i class="sprite-icon sprite-icon--search"></i>
 
-                <input class="search-control__input" type="text" placeholder="Искать по улице, метро">
+                <input class="js-order-delivery-point-search-input search-control__input" data-suggest-container-selector="#order-{{order.id}}-suggest-container" type="text" placeholder="Искать по улице, метро">
                 <input class="search-control__submit" type="submit" value="">
-                <div class="form-control-group__suggest suggest-control">
-                    <ul class="suggest-control-lst">
-                        <li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
-                        <li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
-                        <li class="suggest-control-lst-i">Улица Мочалок Командира</li>
-                        <li class="suggest-control-lst-i">Первый Нижний Мойдодыровский проезд</li>
-                        <li class="suggest-control-lst-i">Площадь Умывальников Начальника</li>
-                        <li class="suggest-control-lst-i">Улица Мочалок Командира</li>
-                    </ul>
-                </div>
+                <div id="order-{{order.id}}-suggest-container" class="form-control-group__suggest suggest-control"></div>
             </div>
             <div id="order-{{order.id}}-delivery-point-tab-link" class="js-order-delivery-point-tab-link btn btn--white btn--medium" data-index="0" data-storage-selector="#order-{{order.id}}-point-data" data-filter-form-selector="#order-{{order.id}}-delivery-point-filter-form">
                 <span class="map-link" data-index="0" data-container-selector="#order-{{order.id}}-point-container">Карта</span>
