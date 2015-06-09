@@ -11,7 +11,7 @@ namespace EnterMobile\Model\Search {
         public $name;
         /** @var string */
         public $link;
-        /** @var Model\Product\Media */
+        /** @var string */
         public $image;
 
         /**
