@@ -133,11 +133,7 @@ define(
                     $mapContainer = $($form.data('mapContainerSelector'))
                 ;
 
-                console.info('$mapContainer', $mapContainer);
-
                 require(['jquery.kladr'], function() {
-                    console.info('config.kladr', config.kladr);
-
                     $.kladr.setDefault({
                         token: config.kladr.token,
                         key: config.kladr.key,
@@ -176,15 +172,10 @@ define(
                                 address = $.kladr.getAddress('.js-smartAddress-form', function (objs) {
                                     var result = config.kladr.city.name + '';
 
-                                    console.info('objs', objs);
-                                    console.info('$kladrIdInput', $kladrIdInput);
-
                                     if ($kladrIdInput.length) {
                                         if ($.type(objs.building) === 'object') {
                                             $kladrIdInput.val(objs.building.id);
-                                            console.info('$kladrIdInput.val', objs.building.id);
                                         } else if ($.type(objs.street) === 'object') {
-                                            console.info('$kladrIdInput.val', objs.street.id);
                                             $kladrIdInput.val(objs.street.id);
                                         }
                                     }
@@ -214,8 +205,6 @@ define(
                                             else {
                                                 name = obj;
                                             }
-
-                                            console.info('obj', obj, name);
 
                                             if (result) result += ', ';
                                             result += type + '' + name;
@@ -253,6 +242,8 @@ define(
                 });
 
                 Storage.clear();
+
+                $body.trigger('beforeSplit');
             },
 
             updatePointTab = function(e, toggle) {
@@ -358,8 +349,6 @@ define(
                     $tab = $($form.data('tabSelector'))
                 ;
 
-                console.info('$tab', $tab);
-
                 $tab.trigger('update', [false]); // не переключать, просто обновить
             },
 
@@ -423,7 +412,10 @@ define(
                     $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
                     data          = Storage.get($el.data('storageSelector'), 'filtered'),
                     modalTitle    = $el.data('modal-title'),
-                    modalPosition = $el.data('modal-position')
+                    modalPosition = $el.data('modal-position'),
+                    beforeSplit       = function() {
+                        $modalWindow.trigger('close');
+                    }
                 ;
 
                 e.stopPropagation();
@@ -437,8 +429,11 @@ define(
                     },
                     beforeClose: function() {
                         $mapContainer.append($pointMap);
+                        $body.off('beforeSplit', beforeSplit);
                     }
                 });
+
+                $body.on('beforeSplit', beforeSplit);
 
                 e.preventDefault();
 
@@ -453,7 +448,10 @@ define(
                     $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
                     modalTitle    = $el.data('modal-title'),
                     modalPosition = $el.data('modal-position'),
-                    data          = $.parseJSON($($el.data('dataSelector')).html())
+                    data          = $.parseJSON($($el.data('dataSelector')).html()),
+                    beforeSplit   = function() {
+                        $modalWindow.trigger('close');
+                    }
                 ;
 
                 require(['jquery.kladr'], function() {});
@@ -471,15 +469,17 @@ define(
                         require(['yandexmaps'], function() {
                             var $mapContainer = $($el.data('mapContainerSelector'));
 
-                            console.info('$mapContainer', $mapContainer, $mapContainer.data());
                             updateAddressMap($mapContainer);
                         });
                     },
                     beforeClose: function() {
                         $mapContainer.append($addressMap);
+                        $body.off('beforeSplit', beforeSplit);
                     },
                     modalCSS: {top: '60px'}
                 });
+
+                $body.on('beforeSplit', beforeSplit);
             },
 
             updateAddressMap = function($container, address, zoom) {
@@ -506,7 +506,6 @@ define(
                     initAddressMap($addressMap, options).done(ready);
                 }
 
-                console.info('address', address);
                 if (address) {
                     require(['yandexmaps'], function(ymaps) {
                         if (!addressMap) return;
@@ -551,19 +550,19 @@ define(
             },
 
             showDiscountPopup = function( e ) {
-                e.stopPropagation();
-                console.info('showDiscountPopup');
-
                 var
                     $el           = $(this),
                     data          = $.parseJSON($($el.data('storageSelector')).html()),
                     $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
                     modalTitle    = $el.data('modal-title'),
                     modalPosition = $el.data('modal-position'),
-                    $discountContainer
+                    $discountContainer,
+                    beforeSplit       = function() {
+                        $modalWindow.trigger('close');
+                    }
                 ;
 
-                console.info('data', data);
+                e.stopPropagation();
 
                 $modalWindow.find('.js-modal-title').text(modalTitle);
                 $modalWindow.addClass(modalPosition);
@@ -591,16 +590,19 @@ define(
                                         e.preventDefault();
                                         e.stopPropagation();
 
-                                        console.info('$field', $field);
-
                                         $field.val(value);
                                     });
                                 }
                             })
                         }
                     },
+                    beforeClose: function() {
+                        $body.off('beforeSplit', beforeSplit);
+                    },
                     centered: false
                 });
+
+                $body.on('beforeSplit', beforeSplit);
 
                 e.preventDefault();
             },
@@ -651,8 +653,6 @@ define(
                     center = $el.data('center'),
                     $container = $($el.data('containerSelector'))
                 ;
-
-                console.info('$el', $el);
 
                 e.stopPropagation();
                 e.preventDefault();
