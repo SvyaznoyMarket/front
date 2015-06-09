@@ -547,6 +547,7 @@ class Delivery {
                                 'order'     => [
                                     'id' => $orderModel->blockName,
                                 ],
+                                'isOnline'  => $paymentMethodModel->isOnline,
                             ];
                         }
                     }
@@ -615,6 +616,52 @@ class Delivery {
                         ],
                     ],
                 ], JSON_UNESCAPED_UNICODE),
+                'onlinePaymentJson' => json_encode(call_user_func(function() use (&$splitModel, &$orderModel, &$paymentMethodsById) {
+                    $paymentMethods = [];
+
+                    $dataById = [
+                        '5'  => [
+                            'name'   => 'Банковская карта',
+                            'images' => ['visa2.png', 'mcard.png'],
+                        ],
+                        '8'  => [
+                            'name'   => 'Интернет-банк Промсвязьбанка',
+                            'images' => ['psbfull.png'],
+                        ],
+                        /*
+                        '13' => [
+                            'name'   => 'PayPal',
+                            'images' => ['paypal3.png'],
+                        ],
+                        '?1'  => [
+                            'name'   => 'Яндекс.Деньги',
+                            'images' => ['yandexmoney.png'],
+                        ],
+                        */
+                    ];
+
+                    foreach ($orderModel->possiblePaymentMethodIds as $paymentMethodId) {
+                        /** @var \EnterModel\PaymentMethod|null $paymentMethodModel */
+                        $paymentMethodModel =
+                            (
+                                isset($paymentMethodsById[$paymentMethodId])
+                                && array_key_exists($paymentMethodId, $dataById)
+                            )
+                            ? $paymentMethodsById[$paymentMethodId]
+                            : null
+                        ;
+                        if (!$paymentMethodModel) continue;
+
+                        $paymentMethods[] = $dataById[$paymentMethodId];
+                    }
+
+                    return [
+                        'paymentMethods' => $paymentMethods,
+                        'order'          => [
+                            'id' => $orderModel->blockName,
+                        ],
+                    ];
+                }), JSON_UNESCAPED_UNICODE),
                 'user'           => [
                     'discountUrl' => $router->getUrlByRoute(new Routing\User\Coupon\Get()), // TODO: использовать
                     'address'     =>
@@ -700,7 +747,7 @@ class Delivery {
                 'name'     => 'page/order/delivery/marker-balloon',
                 'partials' => [],
             ],
-            // всплываюшка для адреса
+            // модальное окно для выбора адреса доставки
             [
                 'id'       => 'tpl-order-delivery-address-popup',
                 'name'     => 'page/order/delivery/address-popup',
@@ -716,6 +763,12 @@ class Delivery {
             [
                 'id'       => 'tpl-order-delivery-point-suggest',
                 'name'     => 'page/order/delivery/point-suggest',
+                'partials' => [],
+            ],
+            // модальное окно для выбора онлайн оплат
+            [
+                'id'       => 'tpl-order-delivery-onlinePayment-popup',
+                'name'     => 'page/order/delivery/onlinePayment-popup',
                 'partials' => [],
             ],
         ]);

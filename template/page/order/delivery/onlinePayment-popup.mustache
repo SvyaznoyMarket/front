@@ -1,0 +1,72 @@
+<div>
+    <ul class="checkout-checkbox-lst">
+    {{#paymentMethods}}
+        <li class="checkout-checkbox-lst__i">
+            <input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio">
+
+            <label class="custom-label" for="order-{{order.id}}-delivery-payment-method-{{id}}">
+                <div class="custom-label-flex">
+                    <span class="custom-label_tx">{{name}}</span>
+                        <span class="checkout-payment__icon-wrap">
+                        {{#images}}
+                            <img src="/css/modules/order/img/{{.}}" />
+                        {{/images}}
+                        </span>
+                </div>
+            </label>
+        </li>
+    {{/paymentMethods}}
+<!--
+        <li class="checkout-checkbox-lst__i">
+            <input type="radio" id="pay1" name="paynow" class="custom-input custom-input--defradio" checked>
+
+            <label class="custom-label" for="pay1">
+                <div class="custom-label-flex">
+                    <span class="custom-label_tx">Банковская карта</span>
+                        <span class="checkout-payment__icon-wrap">
+                            <img src="/css/modules/order/img/visa2.png" alt="">
+                            <img src="/css/modules/order/img/mcard.png" alt="">
+                        </span>
+                </div>
+            </label>
+        </li>
+
+        <li class="checkout-checkbox-lst__i">
+            <input type="radio" id="pay2" name="paynow" class="custom-input custom-input--defradio">
+
+            <label class="custom-label" for="pay2">
+                <div class="custom-label-flex">
+                    <span class="custom-label_tx">Pay Pal</span>
+                    <span class="order-popup__icon-wrap"><img src="/css/modules/order/img/paypal3.png" alt=""></span>
+                </div>
+            </label>
+        </li>
+
+        <li class="checkout-checkbox-lst__i">
+            <input type="radio" id="pay3" name="paynow" class="custom-input custom-input--defradio">
+
+            <label class="custom-label" for="pay3">
+                <div class="custom-label-flex">
+                    <span class="custom-label_tx">Яндекс.деньги</span>
+                    <span class="checkout-payment__icon-wrap"><img src="/css/modules/order/img/yandexmoney.png" alt=""></span>
+                </div>
+            </label>
+        </li>
+
+        <li class="checkout-checkbox-lst__i">
+            <input type="radio" id="pay4" name="paynow" class="custom-input custom-input--defradio">
+
+            <label class="custom-label" for="pay4">
+                <div class="custom-label-flex">
+                    <span class="custom-label_tx">Интернет-банк</span>
+                    <span class="checkout-payment__icon-wrap"><img src="/css/modules/order/img/psbfull.png" alt=""></span>
+                </div>
+            </label>
+        </li>
+-->
+    </ul>
+
+    <div class="btn-container"><a href="" class="btn btn--orange btn--pay">Оплатить</a></div>
+
+    <p class="checkout-checkbox-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
+</div>

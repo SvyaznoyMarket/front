@@ -40,17 +40,18 @@ define(
             addressMap = null,
             pointMap = null,
 
-            $body                  = $('body'),
-            $deliveryForm          = $('.js-order-delivery-form'),
-            $pointMap              = $('#pointYandexMap'),
-            $addressMap            = $('#addressYandexMap'),
-            $mapContainer          = $('#yandexMap-container'),
-            $balloonTemplate       = $('#tpl-order-delivery-marker-balloon'),
-            $pointPopupTemplate    = $('#tpl-order-delivery-point-popup'),
-            $calendarTemplate      = $('#tpl-order-delivery-calendar'),
-            $addressPopupTemplate  = $('#tpl-order-delivery-address-popup'),
-            $pointSuggestTemplate  = $('#tpl-order-delivery-point-suggest'),
-            $modalWindowTemplate   = $('#tpl-modalWindow'),
+            $body                       = $('body'),
+            $deliveryForm               = $('.js-order-delivery-form'),
+            $pointMap                   = $('#pointYandexMap'),
+            $addressMap                 = $('#addressYandexMap'),
+            $mapContainer               = $('#yandexMap-container'),
+            $balloonTemplate            = $('#tpl-order-delivery-marker-balloon'),
+            $pointPopupTemplate         = $('#tpl-order-delivery-point-popup'),
+            $calendarTemplate           = $('#tpl-order-delivery-calendar'),
+            $addressPopupTemplate       = $('#tpl-order-delivery-address-popup'),
+            $onlinePaymentPopupTemplate = $('#tpl-order-delivery-onlinePayment-popup'),
+            $pointSuggestTemplate       = $('#tpl-order-delivery-point-suggest'),
+            $modalWindowTemplate        = $('#tpl-modalWindow'),
 
             $discountPopupTemplate = $('#tpl-order-delivery-discount-popup'),
 
@@ -667,6 +668,26 @@ define(
                 }
 
                 $container.hide();
+            },
+
+            showOnlinePaymentPopup = function(e) {
+                var
+                    $el = $(this),
+                    $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
+                    modalTitle    = $el.data('modal-title'),
+                    modalPosition = $el.data('modal-position'),
+                    data = Storage.get($el.data('storageSelector'))
+                ;
+
+                $modalWindow.find('.js-modal-title').text(modalTitle);
+                $modalWindow.addClass(modalPosition);
+
+                $modalWindow.lightbox_me({
+                    onLoad: function() {
+                        $modalWindow.find('.js-modal-content').append(mustache.render($onlinePaymentPopupTemplate.html(), data));
+                    },
+                    beforeClose: function() {}
+                });
             }
         ;
 
@@ -694,6 +715,7 @@ define(
         $body.on('change', '.js-order-delivery-point-filter', updatePointFilter);
         $body.on('input', '.js-order-delivery-point-search-input', searchPoint);
         $body.on('click', '.js-order-delivery-suggest-item', applyPointSuggest);
+        $body.on('click', '.js-order-delivery-onlinePayment-link', showOnlinePaymentPopup);
         $body.on('submit', '.js-smartAddress-form', function(e) {
             var
                 $form = $(this),
