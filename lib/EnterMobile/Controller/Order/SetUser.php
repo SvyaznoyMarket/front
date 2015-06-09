@@ -35,6 +35,10 @@ class SetUser {
         ];
         $userData = (array)(isset($request->data['user']) ? $request->data['user'] : []) + $defaultUserData;
 
+        if (11 === mb_strlen($userData['phone']) && (0 === strpos($userData['phone'], '8'))) {
+            $userData['phone'] = preg_replace('/^8/', '+7', $userData['phone']);
+        }
+
         $errors = [];
         try {
             foreach ($userData as $field) {

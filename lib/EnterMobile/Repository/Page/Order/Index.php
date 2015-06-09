@@ -40,6 +40,10 @@ class Index {
             $page->content->form->firstName = $userModel->firstName;
         }
 
+        if (11 === mb_strlen($page->content->form->phone) && (0 === strpos($page->content->form->phone, '8'))) {
+            $page->content->form->phone = preg_replace('/^8/', '+7', $page->content->form->phone);
+        }
+
         $page->content->isUserAuthenticated = (bool)$userModel->id;
         $page->content->authUrl = $router->getUrlByRoute(
             new Routing\User\Login(),
