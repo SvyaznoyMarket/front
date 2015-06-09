@@ -112,11 +112,15 @@ class ProductButton {
             $button->url = '/cart'; // TODO: route
             $button->dataUrl = '';
             $button->isInCart = true;
-        } else if ($product->isInShopOnly) {
+        } else if ($product->isInShopOnly && $context['position'] !== 'listing') {
             $button->isInShopOnly = true;
             $button->text = 'Резерв';
             $button->url = $this->router->getUrlByRoute(new Routing\Order\Quick\Index(), ['product' => ['id' => $product->id, 'quantity' => 1]]);
             $button->isQuick = true;
+        } else if ($product->isInShopOnly && $context['position'] == 'listing') {
+            $button->isInShopOnly = true;
+            $button->text = 'Посмотреть';
+            $button->seeProductBtn = true;
         } else {
             if (!$product->isBuyable) {
                 $button->url = '#';

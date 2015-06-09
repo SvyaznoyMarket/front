@@ -140,6 +140,9 @@ class Slice {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
         }
 
+        // AB test
+        $page->buyBtnListing = $request->buyBtnListing;
+
         // шаблоны mustache
         (new Repository\Template())->setListForPage($page, [
             [
