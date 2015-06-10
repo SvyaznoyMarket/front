@@ -46,9 +46,12 @@ class Delivery {
 
             return
                 $request->isXmlHttpRequest()
-                    ? new Http\JsonResponse([
-                    'redirect' => $url,
-                ])
+                    ? new Http\JsonResponse(
+                        [
+                            'redirect' => $url,
+                        ],
+                        Http\Response::STATUS_FOUND
+                    )
                 : (new \EnterAggregator\Controller\Redirect())->execute($url, 302)
             ;
         }

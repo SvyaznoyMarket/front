@@ -240,6 +240,18 @@ define(
                     $($deliveryForm.data('containerSelector')).html(response)
                 }).always(function() {
                     console.info('unblock screen');
+                }).error(function(xhr, textStatus, error) {
+                    var
+                        response,
+                        redirect
+                    ;
+
+                    if (xhr && (302 === xhr.status)) {
+                        response = $.parseJSON(xhr.responseText) || {};
+                        redirect = response.redirect || '/cart';
+
+                        window.location.href = redirect;
+                    }
                 });
 
                 Storage.clear();
