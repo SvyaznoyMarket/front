@@ -39,6 +39,7 @@ define(
 
             addressMap = null,
             pointMap = null,
+            yandexmaps = null,
 
             $body                       = $('body'),
             $deliveryForm               = $('.js-order-delivery-form'),
@@ -114,6 +115,29 @@ define(
                                 }
                             );
                             defer.resolve($container);
+                        } catch (error) {
+                            console.error(error);
+
+                            defer.reject(error);
+                        }
+                    });
+                });
+
+                return defer;
+            },
+
+            initGeocode = function() {
+                var defer = $.Deferred();
+
+                if (yandexmaps) {
+                    defer.resolve(yandexmaps);
+                }
+
+                require(['yandexmaps'], function(ymaps) {
+                    ymaps.ready(function() {
+                        try {
+                            defer.resolve(yandexmaps);
+                            yandexmaps = ymaps;
                         } catch (error) {
                             console.error(error);
 
@@ -637,20 +661,25 @@ define(
                     text = $input.val(),
                     suggestContainerSelector = $input.data('suggestContainerSelector'),
                     $suggestContainer = $(suggestContainerSelector),
-                    data = {items: []}
+                    data = {items: []},
+                    geocodeParams = {}
                 ;
 
                 e.stopPropagation();
 
-                require(['yandexmaps'], function(ymaps) {
-                    if ((text.length > 1) && pointMap) {
+                initGeocode().done(function(ymaps) {
+                    if ((text.length > 1)) {
                         try {
                             text = config.kladr.city.name + ', ' + text;
                         } catch (error) {
                             console.error(error);
                         }
 
-                        ymaps.geocode(text, { boundedBy: pointMap.geoObjects.getBounds(), strictBounds: true }).then(
+                        if (pointMap) {
+                            geocodeParams = { boundedBy: pointMap.geoObjects.getBounds(), strictBounds: true }
+                        }
+
+                        ymaps.geocode(text, geocodeParams).then(
                             function(res){
                                 res.geoObjects.each(function(obj){
                                     data.items.push({
@@ -680,6 +709,8 @@ define(
 
                 e.stopPropagation();
                 e.preventDefault();
+
+                console.info('center', center);
 
                 try {
                     if (pointMap && center) {
