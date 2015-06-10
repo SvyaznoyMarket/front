@@ -616,24 +616,29 @@ class Delivery {
                         ],
                     ],
                 ], JSON_UNESCAPED_UNICODE),
-                'onlinePaymentJson' => json_encode(call_user_func(function() use (&$splitModel, &$orderModel, &$paymentMethodsById) {
+                'onlinePaymentJson' => json_encode(call_user_func(function() use (&$splitModel, &$orderModel, &$paymentMethodsById, &$templateHelper, &$router) {
+                    // TODO: перенести на 3-й шаг
                     $paymentMethods = [];
 
                     $dataById = [
                         '5'  => [
+                            'id'     => '5',
                             'name'   => 'Банковская карта',
                             'images' => ['visa2.png', 'mcard.png'],
                         ],
                         '8'  => [
+                            'id'     => '8',
                             'name'   => 'Интернет-банк Промсвязьбанка',
                             'images' => ['psbfull.png'],
                         ],
                         /*
                         '13' => [
+                            'id'     => '13',
                             'name'   => 'PayPal',
                             'images' => ['paypal3.png'],
                         ],
                         '?1'  => [
+                            'id'     => '?1',
                             'name'   => 'Яндекс.Деньги',
                             'images' => ['yandexmoney.png'],
                         ],
@@ -652,7 +657,12 @@ class Delivery {
                         ;
                         if (!$paymentMethodModel) continue;
 
-                        $paymentMethods[] = $dataById[$paymentMethodId];
+                        $paymentMethods[] = $dataById[$paymentMethodId] + [
+                            'dataValue' => $templateHelper->json([
+                                'methodId' => $paymentMethodId,
+                                //'orderId'  => $orderModel->,
+                            ]),
+                        ];
                     }
 
                     return [
@@ -660,6 +670,7 @@ class Delivery {
                         'order'          => [
                             'id' => $orderModel->blockName,
                         ],
+                        'url'            => $router->getUrlByRoute(new Routing\Order\Payment\GetForm()),
                     ];
                 }), JSON_UNESCAPED_UNICODE),
                 'user'           => [
@@ -766,11 +777,14 @@ class Delivery {
                 'partials' => [],
             ],
             // модальное окно для выбора онлайн оплат
+            // TODO: Перенести на 3-й шаг
+            /*
             [
-                'id'       => 'tpl-order-delivery-onlinePayment-popup',
-                'name'     => 'page/order/delivery/onlinePayment-popup',
+                'id'       => 'tpl-order-complete-onlinePayment-popup',
+                'name'     => 'page/order/complete/onlinePayment-popup',
                 'partials' => [],
             ],
+            */
         ]);
     }
 
