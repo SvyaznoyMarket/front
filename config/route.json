@@ -172,6 +172,25 @@
         "name": "Личный кабинет",
         "pattern": "/private"
     },
+    "User\\Orders": {
+        "name": "Заказы в личном кабинете",
+        "pattern": "/private/orders"
+    },
+    "User\\Order": {
+        "name": "Заказ в личном кабинете",
+        "pattern": "/private/order/{orderId}",
+        "require": {
+            "orderId": "[\\w\\d-_]+"
+        }
+    },
+    "User\\Edit": {
+        "name": "Изменение данных",
+        "pattern": "/private/edit"
+    },
+    "User\\Password": {
+        "name": "Изменение пароля",
+        "pattern": "/private/password"
+    },
     "User\\Cart\\Clear": {
         "name": "Очистить корзину",
         "pattern": "/ajax/user/cart/clear",
