@@ -136,6 +136,18 @@
         "name": "Оформление заказа - создание",
         "pattern": "/orders/create"
     },
+    "Order\\Complete": {
+        "name": "Оформление заказа - завершение",
+        "pattern": "/orders/complete"
+    },
+    "Order\\Payment\\GetForm": {
+        "name": "Оформление заказа - форма онлайн-оплаты",
+        "pattern": "/orders/{orderId}/payment/{methodId}/get-form",
+        "require": {
+            "orderId": "[\\w\\d-_]+",
+            "methodId": "[\\d]+"
+        }
+    },
 
     "Product\\Review\\GetList": {
         "name": "Отзывы товара",
