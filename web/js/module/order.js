@@ -543,14 +543,15 @@ define(
 
             // показать календарь
             showCalendar = function( e ) {
-                e.stopPropagation();
-
                 var
                     $el           = $(this),
                     data          = $.parseJSON($($el.data('dataSelector')).html()),
                     $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
                     modalTitle    = $el.data('modal-title'),
-                    modalPosition = $el.data('modal-position')
+                    modalPosition = $el.data('modal-position'),
+                    beforeSplit       = function() {
+                        $modalWindow.trigger('close');
+                    }
                 ;
 
                 e.stopPropagation();
@@ -563,8 +564,13 @@ define(
                     modal: false,
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($calendarTemplate.html(), data));
+                    },
+                    beforeClose: function() {
+                        $body.off('beforeSplit', beforeSplit);
                     }
                 });
+
+                $body.on('beforeSplit', beforeSplit);
             },
 
             showDiscountPopup = function( e ) {
