@@ -89,7 +89,6 @@ class Cart {
     }
 
     public function getPointImageUrl($pointToken) {
-        // Возможные типы см. в коде https://github.com/SvyaznoyMarket/core/blob/euroset/application/models/V2/PickupPoint/Repository.php#L10
         switch ($pointToken) {
             case 'shops':
                 $image = 'enter.png';
@@ -103,6 +102,9 @@ class Cart {
                 break;
             case 'self_partner_euroset':
                 $image = 'euroset.png';
+                break;
+            case 'self_partner_hermes':
+                $image = 'hermesdpd.png';
                 break;
             default:
                 $image = '';
