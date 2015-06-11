@@ -129,15 +129,15 @@ define(
             initGeocode = function() {
                 var defer = $.Deferred();
 
-                if (yandexmaps) {
+                if (null !== yandexmaps) {
                     defer.resolve(yandexmaps);
                 }
 
                 require(['yandexmaps'], function(ymaps) {
                     ymaps.ready(function() {
                         try {
-                            defer.resolve(yandexmaps);
                             yandexmaps = ymaps;
+                            defer.resolve(yandexmaps);
                         } catch (error) {
                             console.error(error);
 
@@ -377,6 +377,8 @@ define(
                 console.info('update point list ...');
 
                 $container.html(mustache.render(partial, data));
+                $container.find('.content-scroll').scrollTop();
+                console.info('$scroll', $container.find('.content-scroll'));
             },
 
             updatePointFilter = function(e) {
@@ -392,11 +394,14 @@ define(
             // получаем точки доставки и фильтруем их по выбранным параметрам фильтрации getFilterParams()
             filterPoints = function(selector, $form) {
                 var
+                    center = $($form.data('suggestInputSelector')).data('center') || null,
                     data      = Storage.get(selector, 'base'),
                     params    = getFilterParams($form),
                     newData = {},
                     key,
-                    pointAdd
+                    pointAdd,
+                    latDiff,
+                    lngDiff
                 ;
 
                 _.extend(newData, data);
@@ -414,6 +419,30 @@ define(
                     }
                     return true;
                 });
+
+                // проверка на строку поиска
+                if (center) {
+                    try {
+                        _.each(newData.points, function(point, i) {
+                            latDiff = Math.abs(point.lat - center[0]);
+                            lngDiff = Math.abs(point.lng - center[1]);
+                            point.distance = Math.sqrt(latDiff * latDiff + lngDiff * lngDiff);
+
+                            if (point.distance > 0.2) {
+                                // TODO: удалить
+                            }
+
+                            console.info(point.name + ' ' + point.distance);
+                        });
+
+                        newData.points.sort(function(a, b) {
+                            return a.distance - b.distance;
+                        });
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+
                 Storage.set(selector, 'filtered', newData);
             },
 
@@ -667,6 +696,8 @@ define(
 
                 e.stopPropagation();
 
+                $input.data('center', null);
+
                 initGeocode().done(function(ymaps) {
                     if ((text.length > 1)) {
                         try {
@@ -704,7 +735,8 @@ define(
                 var
                     $el = $(this),
                     center = $el.data('center'),
-                    $container = $($el.data('containerSelector'))
+                    $container = $($el.data('containerSelector')),
+                    $input = $($container.data('inputSelector'))
                 ;
 
                 e.stopPropagation();
@@ -713,9 +745,17 @@ define(
                 console.info('center', center);
 
                 try {
-                    if (pointMap && center) {
-                        console.info(center);
-                        pointMap.setCenter(center, 14);
+                    if (center) {
+                        if ($input.length) {
+                            $input.val($el.text());
+                            $input.data('center', center);
+                        }
+
+                        if (pointMap) {
+                            pointMap.setCenter(center, 14);
+                        } else {
+                            $('.js-order-delivery-point-tab-link').trigger('update', [false])
+                        }
                     }
                 } catch (error) {
                     console.error(error);

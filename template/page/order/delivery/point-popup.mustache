@@ -4,9 +4,9 @@
             <div class="search-control {{! suggest-open }}">
                 <i class="sprite-icon sprite-icon--search"></i>
 
-                <input class="js-order-delivery-point-search-input search-control__input" data-suggest-container-selector="#order-{{order.id}}-suggest-container" type="text" placeholder="Искать по улице, метро">
+                <input id="order-{{order.id}}-suggest-input" class="js-order-delivery-point-search-input search-control__input" data-suggest-container-selector="#order-{{order.id}}-suggest-container" type="text" placeholder="Искать по улице, метро">
                 <input class="search-control__submit" type="submit" value="">
-                <div id="order-{{order.id}}-suggest-container" class="form-control-group__suggest suggest-control"></div>
+                <div id="order-{{order.id}}-suggest-container" data-input-selector="#order-{{order.id}}-suggest-input" class="form-control-group__suggest suggest-control"></div>
             </div>
             <div id="order-{{order.id}}-delivery-point-tab-link" class="js-order-delivery-point-tab-link btn btn--white btn--medium" data-index="0" data-storage-selector="#order-{{order.id}}-point-data" data-filter-form-selector="#order-{{order.id}}-delivery-point-filter-form">
                 <span class="map-link" data-index="0" data-container-selector="#order-{{order.id}}-point-container">Карта</span>
@@ -16,7 +16,7 @@
     </div>
 
     <div class="flexbox-two-rows__content flexbox-two-rows">
-        <form id="order-{{order.id}}-delivery-point-filter-form" class="dropdowns flexbox-two-rows__header" data-tab-selector="#order-{{order.id}}-delivery-point-tab-link">
+        <form id="order-{{order.id}}-delivery-point-filter-form" class="dropdowns flexbox-two-rows__header" data-tab-selector="#order-{{order.id}}-delivery-point-tab-link" data-suggest-input-selector="#order-{{order.id}}-suggest-input">
                 <div class="custom-select__kit custom-filter__kit">
 
                     <div class="custom-select custom-filter toggle js-toggle-wrap js-order-delivery-points-filter-params-list">
