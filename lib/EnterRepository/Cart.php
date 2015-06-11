@@ -94,16 +94,13 @@ class Cart {
             case 'shops':
                 $image = 'enter.png';
                 break;
-            case 'self_partner_pickpoint_pred_supplier':
             case 'self_partner_pickpoint':
                 $image = 'pickpoint.png';
                 break;
-            case 'self_partner_svyaznoy_pred_supplier':
             case 'self_partner_svyaznoy':
             case 'shops_svyaznoy':
                 $image = 'svyaznoy.png';
                 break;
-            case 'self_partner_euroset_pred_supplier':
             case 'self_partner_euroset':
                 $image = 'euroset.png';
                 break;
