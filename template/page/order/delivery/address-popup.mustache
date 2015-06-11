@@ -5,7 +5,7 @@
         <form class="js-smartAddress-form" action="{{url}}" method="post" data-map-container-selector="#order-{{order.id}}-address-map-container" data-kladr-id-selector="#order-delivery-address-kladrId">
             <div class="form-control__container">
                 <div class="form-control-group">
-                    <input class="form-control-group__tx textfield js-smartAddress-input" id="order-delivery-address-street" type="text" name="{{fields.street.name}}" autocomplete="off" data-kladr-type="street" />
+                    <input required="required" class="form-control-group__tx textfield js-smartAddress-input" id="order-delivery-address-street" type="text" name="{{fields.street.name}}" autocomplete="off" data-kladr-type="street" />
                     <label class="form-control-group__lbl" for="order-delivery-address-street">Улица</label>
                 </div>
 
