@@ -602,8 +602,10 @@ class Delivery {
                     ]),
                 ], JSON_UNESCAPED_UNICODE),
                 'discountFormJson' => json_encode([
-                    'url'    => $router->getUrlByRoute(new Routing\Order\Delivery()),
-                    'fields' => [
+                    'url'       => $router->getUrlByRoute(new Routing\Order\Delivery()),
+                    'checkUrl'  => $router->getUrlByRoute(new Routing\Certificate\Check()),
+                    'couponUrl' => $request->user ? $router->getUrlByRoute(new Routing\User\Coupon\Get()) : '',
+                    'fields'    => [
                         'number' => [
                             'name' => 'change[orders][0][discounts][0][number]',
                         ],
@@ -674,7 +676,6 @@ class Delivery {
                     ];
                 }), JSON_UNESCAPED_UNICODE),
                 'user'           => [
-                    'discountUrl' => $router->getUrlByRoute(new Routing\User\Coupon\Get()), // TODO: использовать
                     'address'     =>
                         ($splitModel->user && $splitModel->user->address && $splitModel->user->address->street)
                         ? call_user_func(function() use (&$splitModel, &$regionModel) {

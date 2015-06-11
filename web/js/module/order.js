@@ -805,13 +805,38 @@ define(
         $body.on('submit', '.js-discount-form', function(e) {
             var
                 $form = $(this),
-                data = $form.serializeArray()
+                data = $form.serializeArray(),
+                checkUrl = $form.data('checkUrl')
             ;
+
+            if (checkUrl) {
+                $.ajax({
+                    url: checkUrl,
+                    data: {
+                        code: $form.find('[data-field="number"]').val()
+                    },
+                    type: 'post',
+                    timeout: 15000
+                }).done(function(response) {
+                    if (true === response.success) {
+                        changeSplit(data);
+                    } else if (true === response.showPin) {
+                        $form.find('[data-field-container="pin"]').show();
+                        $form.find('[data-field="pin"]').focus();
+                    } else {
+                        changeSplit(data);
+                    }
+                }).always(function() {
+                    console.info('unblock screen');
+                }).error(function(xhr, textStatus, error) {
+                    changeSplit(data);
+                });
+            } else {
+                changeSplit(data);
+            }
 
             e.stopPropagation();
             e.preventDefault();
-
-            changeSplit(data);
         });
     }
 );
