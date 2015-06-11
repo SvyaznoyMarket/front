@@ -218,7 +218,6 @@ namespace EnterMobileApplication\Controller\Cart {
          */
         private function setPointImageUrls($pointGroups) {
             foreach ($pointGroups as $pointGroup) {
-                // Возможные типы см. в коде https://github.com/SvyaznoyMarket/core/blob/euroset/application/models/V2/PickupPoint/Repository.php#L10
                 switch ($pointGroup->token) {
                     case 'shops':
                         $image = 'enter.png';
@@ -227,10 +226,14 @@ namespace EnterMobileApplication\Controller\Cart {
                         $image = 'pickpoint.png';
                         break;
                     case 'self_partner_svyaznoy':
+                    case 'shops_svyaznoy':
                         $image = 'svyaznoy.png';
                         break;
                     case 'self_partner_euroset':
                         $image = 'euroset.png';
+                        break;
+                    case 'self_partner_hermes':
+                        $image = 'hermesdpd.png';
                         break;
                     default:
                         $image = '';
