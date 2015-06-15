@@ -27,4 +27,6 @@ class Request extends Repository\Page\DefaultPage\Request {
     public $products = [];
     /** @var Http\Request */
     public $httpRequest;
+    /** @var bool */
+    public $buyBtnListing;
 }

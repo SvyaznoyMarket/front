@@ -20,10 +20,28 @@ namespace EnterMobileApplication\Controller {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
-            $config = $this->getConfig();
             $session = $this->getSession();
             $curl = $this->getCurl();
             $cartRepository = new \EnterRepository\Cart();
+
+            // Данные заголовки добавляются при вызове session_start
+            header_remove('Cache-Control');
+            header_remove('Expires');
+            header_remove('Pragma');
+
+            // корзина из сессии
+            $cart = $cartRepository->getObjectByHttpSession($session);
+
+            $eTags = $request->getHeader('if-none-match');
+            if ($eTags) {
+                $eTags = array_map(function($etag) { return trim($etag); }, explode(',', $eTags));
+                // См. RFC 2616, раздел 14.26 If-None-Match
+                if (in_array('"' . $cart->cacheId . '"', $eTags) || in_array('*', $eTags)) {
+                    $httpResponse = new Http\JsonResponse([], Http\JsonResponse::STATUS_NOT_MODIFIED);
+                    $httpResponse->headers['ETag'] = '"' . $cart->cacheId . '"';
+                    return $httpResponse;
+                }
+            }
 
             // ид региона
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
@@ -39,9 +57,6 @@ namespace EnterMobileApplication\Controller {
 
             // регион
             $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
-
-            // корзина из сессии
-            $cart = $cartRepository->getObjectByHttpSession($session);
 
             $productsById = [];
             foreach ($cart->product as $cartProduct) {
@@ -85,7 +100,9 @@ namespace EnterMobileApplication\Controller {
             }
 
             // response
-            return new Http\JsonResponse($response);
+            $httpResponse = new Http\JsonResponse($response);
+            $httpResponse->headers['ETag'] = '"' . $cart->cacheId . '"';
+            return $httpResponse;
         }
     }
 }

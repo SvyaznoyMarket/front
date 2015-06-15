@@ -59,6 +59,10 @@ class User {
             $url = $defaultUrl;
         }
 
+        if ($request->server['HTTP_REFERER'] == $url) {
+            $url = '/';
+        }
+
         return $url;
     }
 

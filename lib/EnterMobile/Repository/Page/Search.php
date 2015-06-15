@@ -89,7 +89,7 @@ class Search {
         $page->content->productBlock->dataReset = $templateHelper->json($dataReset);
 
         foreach ($request->products as $productModel) {
-            $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
+            $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel, null, true, true, ['position' => 'listing']));
 
             $page->content->productBlock->products[] = $productCard;
         }
@@ -128,6 +128,9 @@ class Search {
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
         }
+
+        // AB test
+        $page->buyBtnListing = $request->buyBtnListing;
 
         // шаблоны mustache
         (new Repository\Template())->setListForPage($page, [

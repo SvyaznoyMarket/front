@@ -23,16 +23,23 @@ class Clear {
         $session = $this->getSession();
         $cartRepository = new \EnterRepository\Cart();
 
+        $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request);
+        if (!$regionId) {
+            throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
+        }
+
         // корзина из сессии
         $cart = $cartRepository->getObjectByHttpSession($session);
 
         // удаление товаров
         $cart->product = [];
 
+        $cart->cacheId++;
+
         // сохранение корзины в сессию
         $cartRepository->saveObjectToHttpSession($session, $cart);
 
         // response
-        return (new Controller\Cart())->execute($request);
+        return new Http\JsonResponse([]);
     }
 }
