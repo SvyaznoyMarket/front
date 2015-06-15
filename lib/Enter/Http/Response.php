@@ -73,8 +73,6 @@ class Response {
     /** @var int */
     public $statusCode;
     /** @var string */
-    public $statusText;
-    /** @var string */
     public $charset;
     /** @var array */
     public static $statusTexts = [
@@ -180,7 +178,7 @@ class Response {
         }
 
         // status
-        header(sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText), true, $this->statusCode);
+        header(sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, static::$statusTexts[$this->statusCode]), true, $this->statusCode);
 
         if (!isset($this->headers['Content-Type'])) {
             $this->headers['Content-Type'] = 'text/html; charset=' . ($this->charset ?: 'UTF-8');

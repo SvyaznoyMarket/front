@@ -89,23 +89,22 @@ class Cart {
     }
 
     public function getPointImageUrl($pointToken) {
-        // Возможные типы см. в коде https://github.com/SvyaznoyMarket/core/blob/euroset/application/models/V2/PickupPoint/Repository.php#L10
         switch ($pointToken) {
             case 'shops':
                 $image = 'enter.png';
                 break;
-            case 'self_partner_pickpoint_pred_supplier':
             case 'self_partner_pickpoint':
                 $image = 'pickpoint.png';
                 break;
-            case 'self_partner_svyaznoy_pred_supplier':
             case 'self_partner_svyaznoy':
             case 'shops_svyaznoy':
                 $image = 'svyaznoy.png';
                 break;
-            case 'self_partner_euroset_pred_supplier':
             case 'self_partner_euroset':
                 $image = 'euroset.png';
+                break;
+            case 'self_partner_hermes':
+                $image = 'hermesdpd.png';
                 break;
             default:
                 $image = '';
@@ -128,6 +127,7 @@ class Cart {
 
         $cartData = array_merge([
             'product' => [],
+            'cacheId' => 0,
         ], (array)$session->get('cart'));
 
         // импорт старой корзины
@@ -162,6 +162,8 @@ class Cart {
             $cart->product[$cartProduct->id] = $cartProduct;
         }
 
+        $cart->cacheId = $cartData['cacheId'];
+
         return $cart;
     }
 
@@ -185,6 +187,7 @@ class Cart {
         // новая корзина
         $cartData = [
             'product' => [],
+            'cacheId' => $cart->cacheId,
         ];
 
         foreach ($cart->product as $cartProduct) {

@@ -54,10 +54,12 @@ class SetProductList {
             $cartRepository->setProductForObject($cart, $cartProduct);
         }
 
+        $cart->cacheId++;
+
         // сохранение корзины в сессию
         $cartRepository->saveObjectToHttpSession($session, $cart);
 
         // response
-        return (new Controller\Cart())->execute($request);
+        return new Http\JsonResponse([]);
     }
 }

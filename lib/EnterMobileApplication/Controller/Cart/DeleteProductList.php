@@ -48,6 +48,8 @@ class DeleteProductList {
             }
         }
 
+        $cart->cacheId++;
+
         $cartRepository->saveObjectToHttpSession($session, $cart);
         return new Http\JsonResponse([]);
     }
