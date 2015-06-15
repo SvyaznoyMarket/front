@@ -175,7 +175,11 @@
       &:hover{
         color: #fff;
       }
+      &.seeProductBtn {
+        .inCart(#8a8a8a);
+      }
   }
+
   .btn-container{
     margin-top: 10px;
     margin-bottom: 20px;
@@ -201,6 +205,15 @@
       }
     }
   }
+
+  .btn {
+    &--slot {
+      &-lst {
+        display: none;
+      }
+    }
+  }
+
 }
 
 .buyBtnListing {
@@ -211,6 +224,15 @@
       .inCart();
     }
   }
+
+  .btn {
+    &--slot {
+      &-lst {
+        .inline-block();
+      }
+    }
+  }
+
 }
 
 .catalogList {

@@ -30,6 +30,8 @@ namespace EnterMobile\Model\Page\Search\Index {
         public $selectedFilterBlock;
         /** @var Partial\SortingBlock|null */
         public $sortingBlock;
+        /** @var bool */
+        public $buyBtnListing;
 
         public function __construct() {
             parent::__construct();
