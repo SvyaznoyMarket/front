@@ -1,0 +1,48 @@
+<div class="content">
+    <h1>Заказ №{{number}} от {{added}}</h1>
+    <div class="delivery-info">
+        <div class="delivery-date">
+            {{#delivery}}
+                {{#is_delivery}}
+                    Доставка {{delivery_date}}
+                {{/is_delivery}}
+                {{^is_delivery}}
+                    Самовывоз {{delivery_date}}
+                {{/is_delivery}}
+            {{/delivery}}
+        </div>
+        <div class="delivery-address">Адрес: {{address}}</div>
+    </div>
+    <div class="order-items">
+        {{#product}}
+            <div class="order-item">
+                <div class="order-item-img">
+                    <img src="{{image}}" alt=""/>
+                </div>
+                <div class="order-item-description">
+                    <h5>{{name}}</h5>
+                    <div class="order-item-description-price">{{price}}</div>
+                    <div class="order-item-description-quantity">{{quantity}}</div>
+                </div>
+                <div class="order-item-amount">{{sum}}</div>
+            </div>
+        {{/product}}
+    </div>
+
+    <div class="order-discount">
+        <div class="order-discount-item">
+            <div class="order-discount-item-img">
+                <img src="{{discount_item_img}}" alt=""/>
+            </div>
+        </div>
+    </div>
+
+    <div class="order-total">
+        <div class="order-total-delivery">Доставка: {{#delivery}}{{price}}{{/delivery}}</div>
+        <div class="order-total-amount">Итого: {{sum}}</div>
+    </div>
+
+
+
+</div>
+
