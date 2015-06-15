@@ -78,10 +78,17 @@ class Order {
     public $paymentUrl;
     /** @var Model\Order\Delivery[] */
     public $deliveries = [];
+    /** @var Model\Order\Interval|null */
+    public $interval;
     /** @var Model\PaymentMethod[] */
     public $paymentMethods = [];
-    /** @var Model\Shop|null */
+    /**
+     * @deprecated
+     * @var Model\Shop|null
+     */
     public $shop;
+    /** @var Model\Point|null */
+    public $point;
     /** @var Model\Seller|null */
     public $seller;
     /** @var Model\Order\Meta[] */
@@ -133,7 +140,8 @@ class Order {
 
                 $this->deliveries[] = new Model\Order\Delivery($deliveryItem);
             }
-        };
+        }
+        if (array_key_exists('interval', $data) && (bool)is_array($data['interval'])) $this->interval = new Model\Order\Interval($data['interval']);
 
         if (isset($data['seller']['ui'])) {
             $this->seller = new Model\Seller($data['seller']);
@@ -152,5 +160,7 @@ class Order {
                 $this->meta[] = $meta;
             }
         }
+
+        if (isset($data['point_ui'])) $this->point = new Model\Point(['ui' => $data['point_ui']]);
     }
 }

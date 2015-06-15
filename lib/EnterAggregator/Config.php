@@ -370,6 +370,11 @@ namespace EnterAggregator\Config {
          * @var string
          */
         public $cookieName;
+        /**
+         * Ключ сессии, в котором хранится созданный заказ
+         * @var string
+         */
+        public $sessionName;
         /** @var Order\Prepayment */
         public $prepayment;
 

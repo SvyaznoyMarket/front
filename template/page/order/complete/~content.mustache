@@ -6,62 +6,6 @@
         <section class="checkout">
             <h1 class="checkout__tl">Ваши заказы</h1>
 
-        {{#orders}}
-            <div class="confirm">
-                <div class="confirm__box confirm__box--normal">
-                    <strong class="confirm__title">Заказ</strong>
-                    <a href="" class="confirm__number">{{number}}</a>
-                </div>
-
-                <div class="confirm__box confirm__box--items table table--2col">
-                    <div class="table_cell">
-                        <ul class="confirm-items">
-                            <li class="confirm-items__i">Бумажный конструктор 3 шт.</li>
-                            <li class="confirm-items__i">Батарейки AAAA 18 шт.</li>
-                            <li class="confirm-items__i"><a class="confirm-items__lk" href="">и ещё 3 товара</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="table_cell">
-                    {{#delivery}}
-                        <div>{{type.name}} {{date.name}}</div>
-                    {{/delivery}}
-
-                    {{#point}}
-                        <div class="shop-snippet clearfix">
-                            <div class="shop-snippet-name">
-                                <img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
-                                <span class="shop-snippet-name__text">Магазин Enter</span>
-                            </div>
-
-                            <div class="shop-snippet-info">
-                                {{#subway}}
-                                <div class="shop-snippet-metro">
-                                    {{#line}}
-                                        <span class="shop-snippet-metro__bullet" style="background: {{line.color}};"></span>
-                                    {{/line}}
-                                    <span class="shop-snippet-metro__text">м. {{name}}</span>
-                                </div>
-                                {{/subway}}
-
-                                <div class="shop-snippet-address">
-                                    {{address}} <br/>
-                                    {{#interval}}c {{interval.from}} до {{interval.to}}{{/interval}}
-                                </div>
-                            </div>
-                        </div>
-                    {{/point}}
-                    </div>
-
-                </div>
-
-                <div class="confirm__box confirm__box--normal comfirm-summary">
-                    <span class="comfirm-summary__title">Сумма заказа:</span>
-                    <span class="comfirm-summary__price">{{sum.name}} <span class="rubl">p</span></span>
-                </div>
-            </div>
-        {{/orders}}
-
             <div class="confirm">
                 <div class="confirm__box confirm__box--normal">
                     <strong class="confirm__title">Заказ</strong>
@@ -233,7 +177,70 @@
                 </div>
             </div>
 
-            <div class="btn-stretch btn-stretch--default"><a class="btn-stretch__link" href="/">Вернуться на главную</a></div>
+            <div class="btn-stretch btn-stretch--default"><a class="btn-stretch__link" href="" title="">Вернуться на главную</a></div>
+        </section>
+
+        <section class="checkout checkout-done">
+            <h1 class="checkout__tl">Оформлен заказ № COXD-1234567</h1>
+            <div class="checkout__sum">На сумму <b>47 222</b> рублей</div>
+
+            <div class="checkout-done-order-cnt">
+                <span class="checkout-done-order-cnt__tl">Ждём Вас 27.12.2014</span>
+                <div class="shop-snippet">
+                    <div class="shop-snippet-name">
+                        <img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
+                        <span class="shop-snippet-name__text">Магазин Enter</span>
+                    </div>
+
+                    <div class="shop-snippet-info">
+                        <div class="shop-snippet-metro">
+                            <span class="shop-snippet-metro__bullet" style="background: green;"></span>
+                            <span class="shop-snippet-metro__text">м. Белорусская</span>
+                        </div>
+
+                        <div class="shop-snippet-address">ул. Линии Октябрьской Железной Дороги, д. 1, стр. 2 <br/>c 9.00 до 22.00</div>
+                    </div>
+                </div>
+                <span class="checkout-done-order-cnt__place-link">Как добраться</span>
+                <div class="checkout-done-order-cnt__info">Оплата при получении — наличными или картой.</div>
+            </div>
+            <div class="checkout-done-order-cnt checkout-done-order-cnt-online-payment">
+                <span class="checkout-done-order-cnt__tl">Скидка 5%</span>
+                <ul class="discount-list">
+                    <li class="discount-list-i">
+                        <span class="discount-list-i__txt">Сумма заказа:</span>
+                        <span class="discount-list-i__sum">47 767 <span class="rubl">p</span></span>
+                    </li>
+                    <li class="discount-list-i">
+                        <span class="discount-list-i__txt">При оплате онлайн:</span>
+                        <span class="discount-list-i__sum">46 167 <span class="rubl">p</span></span>
+                    </li>
+                </ul>
+                <div class="payment-opt">
+                    <button class="btn btn--submit btn--orange btn--medium">Оплатить сейчас</button>
+		    		<span class="confirm-payment__types">
+		    			<img class="confirm-payment__card" width="25" src="/css/modules/order/img/visa2.png" alt="">
+						<img class="confirm-payment__card" width="25" src="/css/modules/order/img/mcard.png" alt="">
+                        <img class="confirm-payment__card" width="16" src="/css/modules/order/img/psb.png" alt="">
+					</span>
+                </div>
+            </div>
+            <div class="checkout-done-order-cnt">
+                <span class="checkout-done-order-cnt__tl">Онлайн-оплата в два клика</span>
+                <div class="payment-opt">
+                    <button class="btn btn--submit btn--orange btn--medium">Оплатить сейчас</button>
+		    		<span class="confirm-payment__types">
+		    			<img class="confirm-payment__card" width="25" src="/css/modules/order/img/visa2.png" alt="">
+						<img class="confirm-payment__card" width="25" src="/css/modules/order/img/mcard.png" alt="">
+                        <img class="confirm-payment__card" width="16" src="/css/modules/order/img/psb.png" alt="">
+					</span>
+                </div>
+            </div>
+
+            <div class="btn-stretch btn-stretch--default">
+                <a class="btn-stretch__link" href="" title="">Вернуться на главную</a>
+            </div>
+
         </section>
 
     </div>

@@ -35,13 +35,29 @@ class Create {
         }
 
         $splitData = (array)$session->get($config->order->splitSessionKey);
-        if (!$splitData) {
-            throw new \Exception('Не найдено предыдущее разбиение');
+
+        try {
+            if (!$splitData) {
+                throw new \Exception('Не найдено предыдущее разбиение');
+            }
+
+            if (!isset($splitData['cart']['product_list'])) {
+                throw new \Exception('Не найдены товары в корзине');
+            }
+        } catch (\Exception $e) {
+            $this->getLogger()->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order', 'controller']]);
+
+            // http-ответ
+            return (new \EnterAggregator\Controller\Redirect())->execute(
+                $router->getUrlByRoute(new Routing\Cart\Index()),
+                302
+            );
         }
 
-        if (!isset($splitData['cart']['product_list'])) {
-            throw new \Exception('Не найдены товары в корзине');
-        }
+        $response = (new \EnterAggregator\Controller\Redirect())->execute(
+            $router->getUrlByRoute(new Routing\Order\Delivery()),
+            302
+        );
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
@@ -99,27 +115,78 @@ class Create {
             $metas = [];
 
             $controller = new \EnterAggregator\Controller\Order\Create();
-            $controllerResponse = new \EnterAggregator\Controller\Order\Create\Response;
-            $controllerResponse = unserialize(file_get_contents('/home/green/desktop/order-create-response.txt'));
-
-            /*
             $controllerResponse = $controller->execute(
                 $region->id,
                 $split,
                 $metas
             );
-            */
-            die(var_dump($controllerResponse));
 
-            //file_put_contents('/home/green/desktop/order-create-response.txt', serialize($controllerResponse)); exit();
+            // http-ответ
+            $response = (new \EnterAggregator\Controller\Redirect())->execute(
+                $router->getUrlByRoute(new Routing\Order\Complete()),
+                302
+            );
+
+            // TODO: удалить предыдущее разбиение и очистить корзину!!!
+
+            $orderData = [
+                'updatedAt' => (new \DateTime())->format('c'),
+                'expired'   => false,
+                'orders'    => call_user_func(function() use (&$controllerResponse) {
+                    $orders = [];
+
+                    foreach ($controllerResponse->orders as $order) {
+                        $orders[] = [
+                            'number'          => $order->number,
+                            'sum'             => $order->sum,
+                            'delivery'        =>
+                                isset($order->deliveries[0])
+                                ? call_user_func(function() use ($order) {
+                                    $delivery = $order->deliveries[0];
+
+                                    return [
+                                        'type'  =>
+                                            $delivery->type
+                                            ? [
+                                                'token'     => $delivery->type->token,
+                                                'shortName' => $delivery->type->shortName,
+                                            ]
+                                            : null
+                                        ,
+                                        'price' => $delivery->price,
+                                        'date'  => $delivery->date,
+                                    ];
+                                })
+                                : null
+                            ,
+                            'interval'        =>
+                                $order->interval
+                                ? ['from' => $order->interval->from, 'to' => $order->interval->to]
+                                : null
+                            ,
+                            'paymentMethodId' => $order->paymentMethodId,
+                            'point'           =>
+                                $order->point
+                                ? [
+                                    'ui' => $order->point->ui,
+                                ]
+                                : null
+                            ,
+                        ];
+                    }
+
+                    return $orders;
+                }),
+            ];
+
+            $session->set($config->order->sessionName, $orderData);
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical', 'order']]);
 
+            // TODO: flash message
+
             throw new \Exception($e->getMessage());
         }
-
-        // http-ответ
-        $response = null;
 
         return $response;
     }

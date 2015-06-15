@@ -130,7 +130,7 @@ namespace EnterAggregator\Controller\Order {
 
             $curl->execute();
 
-            // товары сгруппированные по id
+            // товары индексированные по id
             $productsById = [];
             try {
                 $productsById = $productListQuery ? (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]) : [];
