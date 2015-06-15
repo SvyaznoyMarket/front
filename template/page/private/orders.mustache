@@ -1,11 +1,13 @@
-<div class="content">
-    <table style="border:1px solid #ccc; border-collapse: collapse;">
+<div class="content private">
+<section>
+    <table class="private-orders-list">
         {{#orders}}
-        <tr>
-            <td style="padding:10px;"><a href="/private/order/{{id}}">{{number}}</a></td>
-            <td style="padding:10px;">{{added}}</td>
-            <td style="padding:10px;">{{pay_sum}} Р</td>
+        <tr class="private-orders-list-i">
+            <td class="private-orders-list-i__num"><a href="/private/order/{{id}}">{{number}}</a></td>
+            <td class="private-orders-list-i__date"><a href="/private/order/{{id}}">{{added}}</a></td>
+            <td class="private-orders-list-i__sum"><a href="/private/order/{{id}}">{{pay_sum}} <span class="rubl">p</span></a></td>
         </tr>
         {{/orders}}
     </table>
+</section>
 </div>
