@@ -4,13 +4,13 @@ namespace EnterMobile\Model\Page\Order {
     use EnterMobile\Model\Page;
 
     class Complete extends Page\DefaultPage {
-        /** @var Index\Content */
+        /** @var Complete\Content */
         public $content;
 
         public function __construct() {
             parent::__construct();
 
-            $this->content = new Index\Content();
+            $this->content = new Complete\Content();
         }
     }
 }

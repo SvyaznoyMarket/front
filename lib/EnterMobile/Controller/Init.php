@@ -27,6 +27,7 @@ class Init {
             && !$request->isXmlHttpRequest()
             && ('/' !== $url)
             && (0 !== strpos($url, '/orders/'))
+            && (0 !== strpos($url, '/cart'))
             && (0 !== strpos($url, '/private'))
         ) {
             $redirectQuery = new Query\RedirectManager\GetItem($url);
