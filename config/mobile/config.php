@@ -20,7 +20,7 @@ return function(\EnterMobile\Config $config) {
 
     $config->mustacheRenderer->templateDir = $config->dir . '/template';
 
-    $config->product->itemPerPage = 19;
+    $config->product->itemPerPage = 24;
     $config->product->itemsInSlider = 60;
 
     $config->productReview->itemsInCard = 7;

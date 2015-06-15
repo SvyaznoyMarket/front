@@ -110,6 +110,7 @@ class Slice {
         $pageRequest->categories = $controllerResponse->category ? $controllerResponse->category->children : $controllerResponse->categories;
         $pageRequest->catalogConfig = $controllerResponse->catalogConfig;
         $pageRequest->products = $controllerResponse->products;
+        $pageRequest->buyBtnListing = $controllerResponse->buyBtnListing;
 
         // страница
         $page = new Page();
