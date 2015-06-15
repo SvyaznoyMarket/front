@@ -55,6 +55,9 @@ namespace EnterTerminal\Controller\ProductCatalog {
             // фильтр категории в http-запросе
             //$requestFilters[] = $filterRepository->getRequestObjectByCategory($category);
 
+            // Исключаем из листингов товары от Викимарта
+            $this->excludeWikimart($requestFilters);
+
             $context = new Context\ProductCatalog();
             $context->mainMenu = false;
             $context->parentCategory = true;
@@ -87,6 +90,16 @@ namespace EnterTerminal\Controller\ProductCatalog {
             $response->sortings = $controllerResponse->sortings;
 
             return new Http\JsonResponse($response);
+        }
+
+        /** Добавляет фильтр для исключения товаров Викимарта
+         * @param Model\Product\RequestFilter[] $requestFilters
+         */
+        private function excludeWikimart(array &$requestFilters) {
+            $filter = new Model\Product\RequestFilter();
+            $filter->token = 'exclude_wikimart';
+            $filter->value = '1';
+            $requestFilters[] = $filter;
         }
     }
 }
