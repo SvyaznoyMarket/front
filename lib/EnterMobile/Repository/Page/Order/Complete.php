@@ -8,6 +8,7 @@ use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\PriceHelperTrait;
 use EnterAggregator\DateHelperTrait;
+use EnterAggregator\TranslateHelperTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
@@ -15,7 +16,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\Order\Complete as Page;
 
 class Complete {
-    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, PriceHelperTrait, DateHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, PriceHelperTrait, DateHelperTrait, TranslateHelperTrait;
 
     /**
      * @param Page $page
@@ -28,6 +29,7 @@ class Complete {
         $templateHelper = $this->getTemplateHelper();
         $priceHelper = $this->getPriceHelper();
         $dateHelper = $this->getDateHelper();
+        $translateHelper = $this->getTranslateHelper();
 
         $regionModel = $request->region;
 
@@ -110,6 +112,37 @@ class Complete {
                     ];
 
                     return $point;
+                }),
+                'products' => call_user_func(function() use (&$orderModel) {
+                    $products = [];
+
+                    $i = 0;
+                    foreach ($orderModel->product as $productModel) {
+                        $i++;
+                        $products[] = [
+                            'id'       => $productModel->id,
+                            'quantity' => $productModel->quantity,
+                            'sum'      => $productModel->sum,
+                            'name'     => isset($productModel->name) ? $productModel->name : null,
+                            'link'     => isset($productModel->link) ? $productModel->link : null,
+                            'isHidden' => $i > 2,
+                        ];
+                    }
+
+                    return $products;
+                }),
+                'productMoreLink' => call_user_func(function() use (&$orderModel, &$translateHelper) {
+                    $count = count($orderModel->product);
+
+                    if ($count <= 2) {
+                        return false;
+                    }
+
+                    $restCount = $count - 2;
+
+                    return [
+                        'name' => 'и ещё ' . $restCount . ' ' . $translateHelper->numberChoice($restCount, ['товар', 'товара', 'товаров']),
+                    ];
                 }),
             ];
 

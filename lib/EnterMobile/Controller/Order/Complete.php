@@ -37,7 +37,7 @@ class Complete {
             ];
             // FIXME fixture
             //die(json_encode($orderData, JSON_UNESCAPED_UNICODE));
-            $orderData = json_decode('{"updatedAt":"2015-06-15T15:38:08+03:00","expired":false,"orders":[{"number":"TG071064","sum":3980,"delivery":{"type":{"token":"self","shortName":"Самовывоз"},"price":0,"date":1434402000},"interval":{"from":"16:00","to":"21:00"},"paymentMethodId":"1","point":{"ui":"57ba26a3-ea68-11e0-83b4-005056af265b"}}]}', true);
+            //$orderData = json_decode('{"updatedAt":"2015-06-15T15:38:08+03:00","expired":false,"orders":[{"number":"TG071064","sum":3980,"delivery":{"type":{"token":"self","shortName":"Самовывоз"},"price":0,"date":1434402000},"interval":{"from":"16:00","to":"21:00"},"paymentMethodId":"1","point":{"ui":"57ba26a3-ea68-11e0-83b4-005056af265b"}}]}', true);
             //die(var_dump($orderData));
 
             $pointUis = [];
@@ -67,6 +67,21 @@ class Complete {
                         $interval->from = $orderItem['interval']['from'];
                         $interval->to = $orderItem['interval']['to'];
                         $order->interval = $interval;
+                    }
+                    if (!empty($orderItem['product'][0])) {
+                        foreach ($orderItem['product'] as $productItem) {
+                            if (empty($productItem['id'])) continue;
+
+                            $product = new Model\Order\Product($productItem);
+                            if (isset($productItem['name'])) {
+                                $product->name = $productItem['name'];
+                            }
+                            if (isset($productItem['link'])) {
+                                $product->link = $productItem['link'];
+                            }
+
+                            $order->product[] = $product;
+                        }
                     }
 
                     $order->deliveries[] = $delivery;

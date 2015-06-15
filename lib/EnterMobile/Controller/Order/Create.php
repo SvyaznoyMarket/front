@@ -172,6 +172,20 @@ class Create {
                                 ]
                                 : null
                             ,
+                            'product' => call_user_func(function() use (&$order) {
+                                $data = [];
+
+                                foreach ($order->product as $product) {
+                                    $data[] = [
+                                        'id'       => $product->id,
+                                        'quantity' => $product->quantity,
+                                        'name'     => isset($product->name) ? $product->name : null,
+                                        'link'     => isset($product->link) ? $product->link : null,
+                                    ];
+                                }
+
+                                return $data;
+                            }),
                         ];
                     }
 

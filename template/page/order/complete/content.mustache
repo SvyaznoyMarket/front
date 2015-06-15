@@ -16,9 +16,12 @@
                 <div class="confirm__box confirm__box--items table table--2col">
                     <div class="table_cell">
                         <ul class="confirm-items">
-                            <li class="confirm-items__i">Бумажный конструктор 3 шт.</li>
-                            <li class="confirm-items__i">Батарейки AAAA 18 шт.</li>
-                            <li class="confirm-items__i"><a class="confirm-items__lk" href="">и ещё 3 товара</a></li>
+                        {{#products}}
+                            <li class="confirm-items__i"{{#isHidden}} style="display: none;"{{/isHidden}}>{{name}} {{quantity}} шт.</li>
+                        {{/products}}
+                        {{#productMoreLink}}
+                            <li class="confirm-items__i"><a class="confirm-items__lk" href="">{{name}}</a></li>
+                        {{/productMoreLink}}
                         </ul>
                     </div>
 

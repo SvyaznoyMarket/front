@@ -8,6 +8,7 @@ define(
     ) {
 
         var
+            $body = $('body'),
             $onlinePaymentPopupTemplate = $('#tpl-order-delivery-onlinePayment-popup'),// TODO: перенести на 3-й шаг
             $modalWindowTemplate        = $('#tpl-modalWindow'),
 
