@@ -127,6 +127,7 @@ class Cart {
 
         $cartData = array_merge([
             'product' => [],
+            'cacheId' => 0,
         ], (array)$session->get('cart'));
 
         // импорт старой корзины
@@ -161,6 +162,8 @@ class Cart {
             $cart->product[$cartProduct->id] = $cartProduct;
         }
 
+        $cart->cacheId = $cartData['cacheId'];
+
         return $cart;
     }
 
@@ -184,6 +187,7 @@ class Cart {
         // новая корзина
         $cartData = [
             'product' => [],
+            'cacheId' => $cart->cacheId,
         ];
 
         foreach ($cart->product as $cartProduct) {
