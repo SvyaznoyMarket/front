@@ -20,7 +20,7 @@ class Index {
     public function execute(Http\Request $request) {
         $referer = isset($request->server['HTTP_REFERER']) ? $request->server['HTTP_REFERER'] : '/';
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
-        $userToken = (new \EnterRepository\User)->getTokenByHttpRequest($request);
+        $curl = $this->getCurl();
         $userItemQuery = null;
         $cartSplitQuery = null;
         $createOrderQuery = null;
@@ -32,10 +32,14 @@ class Index {
                 throw new \Exception('Не подтверждено согласие с офертой');
             }
 
-            $userItemQuery = $this->prepareUserItemQuery($userToken);
+            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+            if ($userItemQuery) {
+                $curl->prepare($userItemQuery);
+            }
+
             $cartSplitQuery = $this->prepareCartSplitQuery($request->data['productId'], $regionId);
 
-            $this->getCurl()->execute();
+            $curl->execute();
 
             $split = new Model\Cart\Split($cartSplitQuery->getResult());
             $split->region = new Model\Region(['id' => $regionId]);
@@ -45,14 +49,10 @@ class Index {
             }
 
             // пользователь
-            if ($userItemQuery) {
-                try {
-                    $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
-                    $split->user->id = $user->id;
-                    $split->user->ui = $user->ui;
-                } catch (\Exception $e) {
-                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['critical', 'order', 'slot']]);
-                }
+            $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+            if ($user) {
+                $split->user->id = $user->id;
+                $split->user->ui = $user->ui;
             }
 
             // обновление email и телефона
@@ -67,7 +67,7 @@ class Index {
             }
 
             $createOrderQuery = $this->prepareOrderCreatePacketQuery($split, $request->data['productId'], $regionId);
-            $this->getCurl()->query($createOrderQuery);
+            $curl->query($createOrderQuery);
             $orderCreatePacketResponse = $createOrderQuery->getResult();
 
             if (!isset($orderCreatePacketResponse[0]['number_erp'])) {
@@ -137,20 +137,6 @@ class Index {
         }
 
         return $phone;
-    }
-
-    /**
-     * @param string $userToken
-     * @return Query\User\GetItemByToken|null
-     */
-    private function prepareUserItemQuery($userToken) {
-        if ($userToken) {
-            $userItemQuery =  new Query\User\GetItemByToken($userToken);
-            $this->getCurl()->prepare($userItemQuery);
-            return $userItemQuery;
-        }
-
-        return null;
     }
 
     /**

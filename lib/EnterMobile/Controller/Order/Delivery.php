@@ -34,7 +34,7 @@ class Delivery {
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // токен пользователя
-        $userToken = (new \EnterRepository\User())->getTokenByHttpRequest($request);
+        $userToken = (new Repository\User())->getTokenByHttpRequest($request);
 
         // корзина
         $cart = $cartRepository->getObjectByHttpSession($session);

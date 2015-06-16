@@ -7132,8 +7132,14 @@ body.noScroll {
   color: #ffffff;
   border-bottom: 5px solid #fb9c00;
 }
+.checkout-head-steps__item.active a {
+  color: inherit;
+}
 .checkout-head-steps__item.passive {
   color: #ffffff;
+}
+.checkout-head-steps__item.passive a {
+  color: inherit;
 }
 .checkout-head-steps__text {
   line-height: 1.2;

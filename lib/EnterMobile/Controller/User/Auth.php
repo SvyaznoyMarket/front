@@ -30,7 +30,7 @@ class Auth {
         $messageRepository = new Repository\Message();
 
         // редирект
-        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Index()));
+        $redirectUrl = (new \EnterMobile\Repository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Index()));
         // http-ответ
         $response = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
 
@@ -54,7 +54,7 @@ class Auth {
             }
 
             // установка cookie
-            (new \EnterRepository\User())->setTokenToHttpResponse($token, $response);
+            (new \EnterMobile\Repository\User())->setTokenToHttpResponse($token, $response);
 
             // FIXME: костыль для project13
             $session->set($config->userToken->authName, $token);

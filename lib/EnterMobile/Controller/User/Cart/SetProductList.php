@@ -60,17 +60,14 @@ class SetProductList {
         $cart = $controllerResponse->cart;
         $productsById = $controllerResponse->productsById;
 
-        // токен пользователя
-        $userToken = (new \EnterRepository\User)->getTokenByHttpRequest($request);
-
         // запрос пользователя
-        $userItemQuery = $userToken ? new Query\User\GetItemByToken($userToken) : null;
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
         if ($userItemQuery) {
             $curl->prepare($userItemQuery)->execute();
         }
 
         // пользователь
-        $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
+        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
         // страница
         $page = new Page();

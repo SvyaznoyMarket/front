@@ -29,43 +29,24 @@ class Index {
 
         // запрос пользователя
         $userItemQuery = null;
-        if ($userToken = (new \EnterRepository\User())->getTokenByHttpRequest($request)) {
-            $userItemQuery = new Query\User\GetItemByToken($userToken);
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
             $curl->prepare($userItemQuery);
         }
 
         $curl->execute();
 
-        // пользователь
-        $user = null;
-        try {
-            if ($userItemQuery) {
-                $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
-            }
-        } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
-        }
-        if (!$user) {
-            $user = new Model\User();
-        }
-
-        $userData = $session->get($config->order->userSessionKey);
-        foreach (['firstName', 'phone', 'email'] as $v) {
-            if (!empty($userData[$v])) {
-                $user->{$v} = $userData[$v];
-            }
-        }
-
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Order\Index\Request();
         $pageRequest->httpRequest = $request;
-        $pageRequest->user = $user;
         $pageRequest->formErrors = (array)$session->flashBag->get('orderForm.error');
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница
         $page = new Page();
-        (new Repository\Page\Order\Index())->buildObjectByRequest($page, $pageRequest);
+        (new Repository\Page\Order\Index())->buildObjectByRequest($page, $pageRequest, $session->get($config->order->userSessionKey));
 
         // debug
         if ($config->debugLevel) $this->getDebugContainer()->page = $page;

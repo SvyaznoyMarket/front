@@ -54,7 +54,14 @@ namespace EnterMobile\Model\Page {
 
 namespace EnterMobile\Model\Page\DefaultPage {
     class GoogleAnalytics {
-        public $id;
+        /** @var string */
+        public $regionName;
+        /** @var string */
+        public $userAuth;
+        /** @var string */
+        public $hostname;
+        /** @var GoogleAnalytics\AbTest[] */
+        public $abTests = [];
     }
 
     class GoogleTagManager {
@@ -151,5 +158,16 @@ namespace EnterMobile\Model\Page\DefaultPage\Search {
         public $name;
         /** @var string */
         public $url;
+    }
+}
+
+namespace EnterMobile\Model\Page\DefaultPage\GoogleAnalytics {
+    class AbTest {
+        /** @var string */
+        public $gaSlotNumber;
+        /** @var string */
+        public $gaSlotScope;
+        /** @var string */
+        public $chosenToken;
     }
 }

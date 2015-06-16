@@ -47,7 +47,7 @@ class Login {
         }
 
         // редирект
-        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest(
+        $redirectUrl = (new \EnterMobile\Repository\User())->getRedirectUrlByHttpRequest(
             $request,
             $referer ?: $router->getUrlByRoute(new Routing\User\Index())
         );
@@ -58,6 +58,12 @@ class Login {
         // запрос региона
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
+
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
 
         $curl->execute();
 
@@ -81,6 +87,7 @@ class Login {
         $pageRequest = new Repository\Page\User\Login\Request();
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
         $pageRequest->redirectUrl = $redirectUrl;
 
         $pageRequest->authFormErrors = array_map(function(\EnterModel\Message $message) { return $message->name; }, $messageRepository->getObjectListByHttpSession('authForm.error', $session));
