@@ -35,6 +35,12 @@ class Content {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
+
         $curl->execute();
 
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
@@ -62,6 +68,7 @@ class Content {
         $pageRequest->content = $contentItem['content'];
         $pageRequest->region = $region;
         $pageRequest->mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
         $page = new Page();
         (new \EnterMobile\Repository\Page\Content())->buildObjectByRequest($page, $pageRequest);

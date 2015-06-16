@@ -2,6 +2,7 @@
 
 namespace EnterMobile\Repository\Page;
 
+use EnterAggregator\AbTestTrait;
 use EnterAggregator\RequestIdTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
@@ -13,7 +14,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Page\DefaultPage as Page;
 
 class DefaultPage {
-    use RequestIdTrait, ConfigTrait, RouterTrait, LoggerTrait, TemplateHelperTrait;
+    use RequestIdTrait, ConfigTrait, RouterTrait, LoggerTrait, TemplateHelperTrait, AbTestTrait;
 
     /**
      * @param Page $page
@@ -33,12 +34,17 @@ class DefaultPage {
         $page->fullHost = $this->getConfig()->fullHost;
         $page->dataDebug = $config->debugLevel ? 'true' : '';
         try {
-            $page->dataVersion = file_get_contents($config->dir . '/version') ?: date('ymd');
+            if (file_exists($config->dir . '/version')) {
+                $page->dataVersion = file_get_contents($config->dir . '/version');
+            }
         } catch (\Exception $e) {
-            $page->dataVersion = date('ymd');
-
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
+
+        if (!$page->dataVersion) {
+            $page->dataVersion = date('ymd');
+        }
+
         $page->dataModule = 'default';
 
         // body[data-value]
@@ -77,7 +83,20 @@ class DefaultPage {
         $page->googleAnalytics = false;
         if ($config->googleAnalytics->enabled) {
             $page->googleAnalytics = new Page\GoogleAnalytics();
-            $page->googleAnalytics->id = $config->googleAnalytics->id;
+            $page->googleAnalytics->regionName = $request->region->name;
+            $page->googleAnalytics->userAuth = $request->user ? '1' : '0';
+            $page->googleAnalytics->hostname = $config->hostname;
+
+            foreach ($this->getAbTest()->getObjectList() as $test) {
+                if ($test->gaSlotNumber) {
+                    $abTest = new Page\GoogleAnalytics\AbTest();
+                    $abTest->gaSlotNumber = $test->gaSlotNumber;
+                    $abTest->gaSlotScope = $test->gaSlotScope;
+                    $abTest->chosenToken = $test->token . '_' . $test->chosenItem->token;
+
+                    $page->googleAnalytics->abTests[] = $abTest;
+                }
+            }
         }
 
         $page->googleTagManager = false;

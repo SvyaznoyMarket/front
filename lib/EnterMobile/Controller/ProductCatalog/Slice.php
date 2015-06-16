@@ -85,6 +85,7 @@ class Slice {
         $controllerRequest->filterRepository = $filterRepository;
         $controllerRequest->baseRequestFilters = $baseRequestFilters;
         $controllerRequest->requestFilters = array_merge($requestFilters, $baseRequestFilters);
+        $controllerRequest->userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request);
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);
 
@@ -97,6 +98,7 @@ class Slice {
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $controllerResponse->region;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
+        $pageRequest->user = $controllerResponse->user;
         $pageRequest->pageNum = $pageNum;
         $pageRequest->limit = $limit;
         $pageRequest->count = $controllerResponse->productUiPager->count; // TODO: передавать productUiPager
