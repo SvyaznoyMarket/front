@@ -33,12 +33,17 @@ class DefaultPage {
         $page->fullHost = $this->getConfig()->fullHost;
         $page->dataDebug = $config->debugLevel ? 'true' : '';
         try {
-            $page->dataVersion = file_get_contents($config->dir . '/version') ?: date('ymd');
+            if (file_exists($config->dir . '/version')) {
+                $page->dataVersion = file_get_contents($config->dir . '/version');
+            }
         } catch (\Exception $e) {
-            $page->dataVersion = date('ymd');
-
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
+
+        if (!$page->dataVersion) {
+            $page->dataVersion = date('ymd');
+        }
+
         $page->dataModule = 'default';
 
         // body[data-value]
