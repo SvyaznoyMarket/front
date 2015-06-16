@@ -9,7 +9,7 @@ define(
 
         var
             $body = $('body'),
-            $onlinePaymentPopupTemplate = $('#tpl-order-delivery-onlinePayment-popup'),// TODO: перенести на 3-й шаг
+            $onlinePaymentPopupTemplate = $('#tpl-order-complete-onlinePayment-popup'),// TODO: перенести на 3-й шаг
             $modalWindowTemplate        = $('#tpl-modalWindow'),
 
             showOnlinePaymentPopup = function(e) {
@@ -18,8 +18,9 @@ define(
                     $modalWindow  = $($modalWindowTemplate.html()).appendTo($body),
                     modalTitle    = $el.data('modal-title'),
                     modalPosition = $el.data('modal-position'),
-                    data = Storage.get($el.data('storageSelector'))
+                    data = $.parseJSON($($el.data('storageSelector')).html())
                 ;
+                console.info(data);
 
                 e.stopPropagation();
 
@@ -38,7 +39,8 @@ define(
                 var
                     $el = $(this),
                     $container = $($el.data('containerSelector')),
-                    url = $container.data('url')
+                    url = $container.data('url'),
+                    data = $el.data('value')
                 ;
 
                 e.stopPropagation();

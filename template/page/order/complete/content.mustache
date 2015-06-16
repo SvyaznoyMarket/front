@@ -8,6 +8,8 @@
 
         {{#orders}}
             <div class="confirm">
+                <script id="order-{{id}}-onlinePayment-data" type="application/json">{{&onlinePaymentJson}}</script>
+
                 <div class="confirm__box confirm__box--normal">
                     <strong class="confirm__title">Заказ</strong>
                     <a href="" class="confirm__number">{{number}}</a>
@@ -27,7 +29,7 @@
 
                     <div class="table_cell">
                     {{#delivery}}
-                        <div>{{type.name}} {{date.name}}</div>
+                        <div>{{type.name}} {{date.name}} {{#interval}}{{from}}…{{to}}{{/interval}}</div>
                     {{/delivery}}
 
                     {{#point}}
@@ -56,6 +58,26 @@
                     {{/point}}
                     </div>
 
+                </div>
+
+                <div class="confirm__box confirm__box--payment confirm-payment">
+                    {{#isPrepayment}}
+                    <div class="confirm-payment__title confirm-payment__cell">Требуется предоплата</div>
+                    {{/isPrepayment}}
+
+                    {{#onlinePayment}}
+                    <div class="confirm-payment__cell">
+                        <button class="confirm-payment__btn btn-transparent btn-transparent--normal js-order-delivery-onlinePayment-link" data-storage-selector="#order-{{id}}-onlinePayment-data">
+                            <span class="bb-dotted m">Оплатить онлайн</span>
+                        </button>
+
+						<span class="confirm-payment__types">
+                            {{#images}}
+							<img class="confirm-payment__card" src="/css/modules/order/img/{{.}}" />
+                            {{/images}}
+						</span>
+                    </div>
+                    {{/onlinePayment}}
                 </div>
 
                 <div class="confirm__box confirm__box--normal comfirm-summary">

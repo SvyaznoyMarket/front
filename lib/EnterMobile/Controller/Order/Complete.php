@@ -27,6 +27,23 @@ class Complete {
         $curl = $this->getCurl();
         $session = $this->getSession();
 
+        $regionRepository = new \EnterRepository\Region();
+
+        // ид региона
+        $regionId = $regionRepository->getIdByHttpRequestCookie($request);
+
+        // запрос региона
+        $regionQuery = new Query\Region\GetItemById($regionId);
+        $curl->prepare($regionQuery);
+
+        $curl->execute();
+
+        try {
+            $region = $regionRepository->getObjectByQuery($regionQuery);
+        } catch (\Exception $e) {
+            $region = new Model\Region(['id' => $config->region->defaultId, 'name' => 'Москва*']);
+        }
+
         /** @var Model\Order[] $orders */
         $orders = [];
         try {
@@ -41,10 +58,12 @@ class Complete {
             //die(var_dump($orderData));
 
             $pointUis = [];
+            $orderNumberErps = [];
             foreach ($orderData['orders'] as $orderItem) {
                 $order = new Model\Order();
-                $order->number = $orderItem['number'];
                 $order->sum = $orderItem['sum'];
+                $order->number = $orderItem['number'];
+                $order->numberErp = $orderItem['numberErp'];
                 if (!empty($orderItem['delivery'])) {
                     $delivery = new Model\Order\Delivery();
                     try {
@@ -84,23 +103,37 @@ class Complete {
                         }
                     }
 
+                    $orderNumberErps[] = $order->numberErp;
+
                     $order->deliveries[] = $delivery;
                 }
 
                 $orders[] = $order;
             }
 
+            /** @var Model\PaymentMethod[] $onlinePaymentMethodsById */
+            $onlinePaymentMethodsById = [];
             try {
                 // дополнение точками самовывоза
+                $pointListQuery = null;
                 if ($pointUis) {
                     $pointListQuery = new Query\Point\GetList($pointUis);
                     $pointListQuery->setTimeout(1.5 * $config->coreService->timeout);
                     $curl->prepare($pointListQuery);
+                }
 
-                    $curl->execute();
+                // онлайн оплата
+                foreach ($orderNumberErps as $orderNumberErp) {
+                    $paymentListQuery = new Query\Payment\GetListByOrderNumberErp($region->id, $orderNumberErp);
+                    $curl->prepare($paymentListQuery);
+                    $paymentListQueriesByNumberErp[$orderNumberErp] = $paymentListQuery;
+                }
 
-                    /** @var Model\Point[] $pointsByUi */
-                    $pointsByUi = [];
+                $curl->execute();
+
+                /** @var Model\Point[] $pointsByUi */
+                $pointsByUi = [];
+                if ($pointListQuery) {
                     foreach ($pointListQuery->getResult() as $pointItem) {
                         if (!isset($pointItem['ui'])) continue;
 
@@ -108,13 +141,31 @@ class Complete {
 
                         $pointsByUi[$point->ui] = $point;
                     }
+                }
 
-                    foreach ($orders as $order) {
-                        if ($order->point && isset($pointsByUi[$order->point->ui])) {
-                            $order->point = $pointsByUi[$order->point->ui];
+                foreach ($orders as $order) {
+                    if ($order->point && isset($pointsByUi[$order->point->ui])) {
+                        $order->point = $pointsByUi[$order->point->ui];
+                    }
+
+                    try {
+                        /** @var Query\Payment\GetListByOrderNumberErp|null $paymentListQuery */
+                        $paymentListQuery = isset($paymentListQueriesByNumberErp[$order->numberErp]) ? $paymentListQueriesByNumberErp[$order->numberErp] : null;
+                        if ($paymentListQuery) {
+                            $paymentData = $paymentListQuery->getResult()['methods'];
+
+                            foreach ($paymentData as $paymentItem) {
+                                $paymentMethod = new Model\PaymentMethod($paymentItem);
+                                if (!$paymentMethod->isOnline) continue;
+
+                                $onlinePaymentMethodsById[$paymentMethod->id] = $paymentMethod;
+                            }
                         }
+                    } catch (\Exception $e) {
+                        $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order', 'critical']]);
                     }
                 }
+
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order', 'critical']]);
             }
@@ -127,6 +178,7 @@ class Complete {
         $pageRequest = new Repository\Page\Order\Complete\Request();
         $pageRequest->httpRequest = $request;
         $pageRequest->orders = $orders;
+        $pageRequest->onlinePaymentMethodsById = $onlinePaymentMethodsById;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница

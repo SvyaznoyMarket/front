@@ -25,6 +25,7 @@ class Complete {
     public function buildObjectByRequest(Page $page, Complete\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
+        $config = $this->getConfig();
         $router = $this->getRouter();
         $templateHelper = $this->getTemplateHelper();
         $priceHelper = $this->getPriceHelper();
@@ -33,11 +34,41 @@ class Complete {
 
         $regionModel = $request->region;
 
+        $onlinePaymentMethodModelsById = $request->onlinePaymentMethodsById;
+
+        $onlinePaymentMethodsById = [
+            '5'  => [
+                'id'          => '5',
+                'name'        => 'Банковская карта',
+                'images'      => ['visa2.png', 'mcard.png'],
+                'smallImages' => ['Visa.png', 'master.png'],
+            ],
+            '8'  => [
+                'id'          => '8',
+                'name'        => 'Интернет-банк Промсвязьбанка',
+                'images'      => ['psbfull.png'],
+                'smallImages' => ['psb.png'],
+            ],
+            /*
+            '13' => [
+                'id'     => '13',
+                'name'   => 'PayPal',
+                'images' => ['paypal3.png'],
+            ],
+            '?1'  => [
+                'id'     => '?1',
+                'name'   => 'Яндекс.Деньги',
+                'images' => ['yandexmoney.png'],
+            ],
+            */
+        ];
+
         foreach ($request->orders as $orderModel) {
             /** @var \EnterModel\Order\Delivery|null $deliveryModel */
             $deliveryModel = isset($orderModel->deliveries[0]) ? $orderModel->deliveries[0] : null;
 
             $order = [
+                'id'     => $orderModel->id,
                 'number' => $orderModel->number,
                 'sum'    =>
                     $orderModel->sum
@@ -144,6 +175,48 @@ class Complete {
                         'name' => 'и ещё ' . $restCount . ' ' . $translateHelper->numberChoice($restCount, ['товар', 'товара', 'товаров']),
                     ];
                 }),
+                'isPrepayment' => call_user_func(function() use (&$config, &$orderModel) {
+                    return
+                        $config->order->prepayment->enabled
+                        && ($orderModel->sum >= $config->order->prepayment->priceLimit)
+                    ;
+                }),
+                'onlinePayment'     => call_user_func(function() use (&$orderModel, &$onlinePaymentMethodModelsById, $onlinePaymentMethodsById) {
+                    if (!count($onlinePaymentMethodModelsById)) {
+                        return false;
+                    }
+
+                    $data = [
+                        'images' => [],
+                    ];
+                    foreach ($onlinePaymentMethodModelsById as $paymentMethodModel) {
+                        $paymentMethod = $onlinePaymentMethodsById[$paymentMethodModel->id];
+
+                        $data['images'] = array_merge($data['images'], $paymentMethod['smallImages']);
+                    }
+
+                    return $data;
+                }),
+                'onlinePaymentJson' => json_encode(call_user_func(function() use (&$orderModel, &$onlinePaymentMethodModelsById, $onlinePaymentMethodsById, &$templateHelper, &$router) {
+                    $paymentMethods = [];
+
+                    foreach ($onlinePaymentMethodModelsById as $paymentMethodModel) {
+                        $paymentMethods[] = $onlinePaymentMethodsById[$paymentMethodModel->id] + [
+                            'dataValue' => $templateHelper->json([
+                                'methodId' => $paymentMethodModel->id,
+                                'orderId'  => $orderModel->id,
+                            ]),
+                        ];
+                    }
+
+                    return [
+                        'paymentMethods' => $paymentMethods,
+                        'order'          => [
+                            'id' => $orderModel->id,
+                        ],
+                        'url'            => $router->getUrlByRoute(new Routing\Order\Payment\GetForm()),
+                    ];
+                }), JSON_UNESCAPED_UNICODE),
             ];
 
             $page->content->orders[] = $order;
@@ -153,5 +226,15 @@ class Complete {
         $page->title = 'Оформление заказа - Завершение - Enter';
 
         $page->dataModule = 'order-complete';
+
+        // шаблоны mustache
+        (new Repository\Template())->setListForPage($page, [
+            // модальное окно для выбора онлайн оплат
+            [
+                'id'       => 'tpl-order-complete-onlinePayment-popup',
+                'name'     => 'page/order/complete/onlinePayment-popup',
+                'partials' => [],
+            ],
+        ]);
     }
 }
