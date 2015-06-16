@@ -87,14 +87,21 @@ namespace EnterMobileApplication\Controller {
             $response->sum = $cart->sum;
 
             foreach (array_reverse($cart->product) as $cartProduct) {
-                $product = !empty($productsById[$cartProduct->id])
-                    ? $productsById[$cartProduct->id]
-                    : new Model\Product([
-                        'id' => $cartProduct->id,
-                    ]);
+                /** @var Model\Cart\Product $cartProduct */
 
-                $product->quantity = $cartProduct->quantity; // FIXME
-                $product->sum = $cartProduct->sum; // FIXME
+                $product = new \EnterMobileApplication\Model\Cart\Product();
+
+                $product->id = $cartProduct->id;
+                $product->quantity = $cartProduct->quantity;
+                $product->sum = $cartProduct->sum;
+
+                if (!empty($productsById[$cartProduct->id])) {
+                    $product->webName = $productsById[$cartProduct->id]->webName;
+                    $product->namePrefix = $productsById[$cartProduct->id]->namePrefix;
+                    $product->name = $productsById[$cartProduct->id]->name;
+                    $product->price = $productsById[$cartProduct->id]->price;
+                    $product->media = $productsById[$cartProduct->id]->media;
+                }
 
                 $response->products[] = $product;
                 $response->quantity += $cartProduct->quantity;
