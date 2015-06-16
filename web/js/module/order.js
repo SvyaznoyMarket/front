@@ -53,6 +53,7 @@ define(
             $pointSuggestTemplate       = $('#tpl-order-delivery-point-suggest'),
             $discountPopupTemplate      = $('#tpl-order-delivery-discount-popup'),
             $modalWindowTemplate        = $('#tpl-modalWindow'),
+            $discountScroll             = $('[data-scroll]'),
 
             initPointMap = function($container, options) {
                 var defer = $.Deferred();
@@ -648,7 +649,6 @@ define(
                 $modalWindow.lightbox_me({
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($discountPopupTemplate.html(), data));
-
                         $discountContainer = $('.js-user-discount-container');
 
                         if ($discountContainer.length && $discountContainer.data('url')) {
@@ -679,7 +679,9 @@ define(
                     },
                     centered: false
                 });
-
+                
+                
+                
                 $body.on('beforeSplit', beforeSplit);
 
                 e.preventDefault();
@@ -877,5 +879,19 @@ define(
             e.stopPropagation();
             e.preventDefault();
         });
+        //скролл списка фишек в попапе скидок
+        $body.on('DOMNodeInserted', $discountScroll, function () {
+            
+            $('[data-scroll]').scroll(function() {
+                clearTimeout($.data(this, 'scrollTimer'));
+                $('[data-scroll-wrap]').addClass('scrolling');
+
+                $.data(this, 'scrollTimer', setTimeout(function() {
+                    $('[data-scroll-wrap]').removeClass('scrolling');
+                }, 600));
+            });
+            
+        });
+
     }
 );
