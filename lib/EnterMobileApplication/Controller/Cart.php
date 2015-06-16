@@ -97,6 +97,8 @@ namespace EnterMobileApplication\Controller {
                 $product->sum = $cartProduct->sum; // FIXME
 
                 $response->products[] = $product;
+                $response->quantity += $cartProduct->quantity;
+                $response->uniqueQuantity++;
             }
 
             // response
@@ -115,5 +117,9 @@ namespace EnterMobileApplication\Controller\Cart {
         public $sum;
         /** @var Model\Product[] */
         public $products = [];
+        /** @var int */
+        public $quantity = 0;
+        /** @var int */
+        public $uniqueQuantity = 0;
     }
 }
