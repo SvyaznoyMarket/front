@@ -6,6 +6,8 @@ namespace EnterMobile\Model\Page\Order {
     class Complete extends Page\DefaultPage {
         /** @var Complete\Content */
         public $content;
+        /** @var array */
+        public $steps = [];
 
         public function __construct() {
             parent::__construct();

@@ -49,5 +49,11 @@ class Index {
             new Routing\User\Login(),
             ['redirect_to' => $router->getUrlByRoute(new Routing\Order\Index())]
         );
+
+        $page->steps = [
+            ['name' => 'Получатель', 'isPassive' => true, 'isActive' => true],
+            ['name' => 'Самовывоз и доставка', 'isPassive' => false, 'isActive' => false],
+            ['name' => 'Оплата', 'isPassive' => false, 'isActive' => false],
+        ];
     }
 }

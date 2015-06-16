@@ -680,6 +680,12 @@ class Delivery {
 
         $page->content->isUserAuthenticated = (bool)$request->user;
 
+        $page->steps = [
+            ['name' => 'Получатель', 'isPassive' => true, 'isActive' => false, 'url' => $router->getUrlByRoute(new Routing\Order\Index())],
+            ['name' => 'Самовывоз и доставка', 'isPassive' => true, 'isActive' => true],
+            ['name' => 'Оплата', 'isPassive' => false, 'isActive' => false],
+        ];
+
         // шаблоны mustache
         (new Repository\Template())->setListForPage($page, [
             // модальное окно с точками самовывоза

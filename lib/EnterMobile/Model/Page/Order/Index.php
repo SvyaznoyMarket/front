@@ -6,6 +6,8 @@ namespace EnterMobile\Model\Page\Order {
     class Index extends Page\DefaultPage {
         /** @var Index\Content */
         public $content;
+        /** @var array */
+        public $steps = [];
 
         public function __construct() {
             parent::__construct();
