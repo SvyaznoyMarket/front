@@ -73,6 +73,7 @@ class BrandCategory {
         $controllerRequest->filterRepository = $filterRepository;
         $controllerRequest->baseRequestFilters = $baseRequestFilters;
         $controllerRequest->requestFilters = $requestFilters;
+        $controllerRequest->userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request);
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);
 
@@ -85,6 +86,7 @@ class BrandCategory {
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $controllerResponse->region;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
+        $pageRequest->user = $controllerResponse->user;
         $pageRequest->pageNum = $pageNum;
         $pageRequest->limit = $limit;
         $pageRequest->count = $controllerResponse->productUiPager->count; // TODO: передавать productUiPager

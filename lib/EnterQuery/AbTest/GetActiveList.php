@@ -16,6 +16,9 @@ class GetActiveList extends Query {
     public function __construct() {
         $this->url = new Url();
         $this->url->path = 'api/ab_test/get-active';
+        $this->url->query = [
+            'tags' => ['site-mobile'],
+        ];
 
         $this->init();
     }

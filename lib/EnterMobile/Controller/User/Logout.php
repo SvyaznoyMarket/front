@@ -34,7 +34,7 @@ class Logout {
         // http-ответ
         $response = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
         // сброс cookie
-        (new \EnterRepository\User())->setTokenToHttpResponse(null, $response);
+        (new \EnterMobile\Repository\User())->setTokenToHttpResponse(null, $response);
 
         $session->remove($config->order->userSessionKey);
 

@@ -57,6 +57,12 @@ class Index {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
+
         $curl->execute();
 
         // регион
@@ -167,6 +173,7 @@ class Index {
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->pageNum = $pageNum;
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
         $pageRequest->limit = $limit;
         $pageRequest->count = $searchResult->productCount; // TODO: передавать searchResult
         $pageRequest->requestFilters = $requestFilters;
