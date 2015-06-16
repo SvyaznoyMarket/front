@@ -137,6 +137,7 @@ class Create {
 
                     foreach ($controllerResponse->orders as $order) {
                         $orders[] = [
+                            'id'              => $order->id,
                             'number'          => $order->number,
                             'numberErp'       => $order->numberErp,
                             'sum'             => $order->sum,

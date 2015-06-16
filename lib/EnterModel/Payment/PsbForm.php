@@ -36,6 +36,7 @@ class PsbForm {
      * @param array $data
      */
     public function __construct(array $data) {
+        if (array_key_exists('url', $data)) $this->url = (string)$data['url'];
         if (array_key_exists('AMOUNT', $data)) $this->amount = (string)$data['AMOUNT'];
         if (array_key_exists('CURRENCY', $data)) $this->currency = (string)$data['CURRENCY'];
         if (array_key_exists('ORDER', $data)) $this->order = (string)$data['ORDER'];

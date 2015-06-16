@@ -60,12 +60,12 @@
 
                 </div>
 
+                {{#onlinePayment}}
                 <div class="confirm__box confirm__box--payment confirm-payment">
                     {{#isPrepayment}}
                     <div class="confirm-payment__title confirm-payment__cell">Требуется предоплата</div>
                     {{/isPrepayment}}
 
-                    {{#onlinePayment}}
                     <div class="confirm-payment__cell">
                         <button class="confirm-payment__btn btn-transparent btn-transparent--normal js-order-delivery-onlinePayment-link" data-storage-selector="#order-{{id}}-onlinePayment-data">
                             <span class="bb-dotted m">Оплатить онлайн</span>
@@ -77,8 +77,8 @@
                             {{/images}}
 						</span>
                     </div>
-                    {{/onlinePayment}}
                 </div>
+                {{/onlinePayment}}
 
                 <div class="confirm__box confirm__box--normal comfirm-summary">
                     <span class="comfirm-summary__title">Сумма заказа:</span>
@@ -86,177 +86,6 @@
                 </div>
             </div>
         {{/orders}}
-
-            <div class="confirm">
-                <div class="confirm__box confirm__box--normal">
-                    <strong class="confirm__title">Заказ</strong>
-                    <a href="" class="confirm__number">COXD-305176</a>
-                </div>
-
-                <div class="confirm__box confirm__box--items table table--2col">
-                    <div class="table_cell">
-                        <ul class="confirm-items">
-                            <li class="confirm-items__i">Бумажный конструктор 3 шт.</li>
-                            <li class="confirm-items__i">Батарейки AAAA 18 шт.</li>
-                            <li class="confirm-items__i"><a class="confirm-items__lk" href="">и ещё 3 товара</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="table_cell">
-                        <div>Самовывоз 11 июл. 2014</div>
-
-                        <div class="shop-snippet clearfix">
-                            <div class="shop-snippet-name">
-                                <img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
-                                <span class="shop-snippet-name__text">Магазин Enter</span>
-                            </div>
-
-                            <div class="shop-snippet-info">
-                                <div class="shop-snippet-metro">
-                                    <span class="shop-snippet-metro__bullet" style="background: green;"></span>
-                                    <span class="shop-snippet-metro__text">м. Белорусская</span>
-                                </div>
-
-                                <div class="shop-snippet-address">ул. Грузинский вал, д. 28/45 <br/>c 9.00 до 22.00</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="confirm__box confirm__box--normal comfirm-summary">
-                    <span class="comfirm-summary__title">Сумма заказа:</span>
-                    <span class="comfirm-summary__price">42 740 <span class="rubl">p</span></span>
-                </div>
-            </div>
-
-            <div class="confirm">
-                <div class="confirm__box confirm__box--normal">
-                    <strong class="confirm__title">Заказ</strong>
-                    <a href="" class="confirm__number">COXD-305176</a>
-                </div>
-
-                <div class="confirm__box confirm__box--items table table--2col">
-                    <div class="table_cell">
-                        <ul class="confirm-items">
-                            <li class="confirm-items__i">Бумажный конструктор 3 шт.</li>
-                            <li class="confirm-items__i">Батарейки AAAA 18 шт.</li>
-                            <li class="confirm-items__i"><a class="confirm-items__lk" href="">и ещё 3 товара</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="table_cell">
-                        <div>Доставка 11 июл. 2014 9:00…18:00</div>
-                        <div>Оплата при получении: наличные, банковская карта</div>
-                    </div>
-                </div>
-
-                <div class="confirm__box confirm__box--payment confirm-payment">
-                    <div class="confirm-payment__title confirm-payment__cell">Требуется предоплата</div>
-
-                    <div class="confirm-payment__cell">
-                        <button class="confirm-payment__btn btn-transparent btn-transparent--normal js-popup-link">
-                            <span class="bb-dotted m">Оплатить онлайн</span>
-                        </button>
-
-						<span class="confirm-payment__types">
-							<img class="confirm-payment__card" width="25" src="/css/modules/order/img/master.png" alt="" />
-                            <img class="confirm-payment__card" width="25" src="/css/modules/order/img/Visa.png" alt="" />
-                            <img class="confirm-payment__card" width="16" src="/css/modules/order/img/psb.png" alt="" />
-						</span>
-                    </div>
-                </div>
-
-                <div class="confirm__box confirm__box--normal comfirm-summary">
-                    <span class="comfirm-summary__title">Сумма заказа:</span>
-                    <span class="comfirm-summary__price">42 740 <span class="rubl">p</span></span>
-                </div>
-            </div>
-
-            <div class="confirm">
-                <div class="confirm__box confirm__box--normal">
-                    <strong class="confirm__title">Заказ</strong>
-                    <a href="" class="confirm__number">COXD-305176</a>
-                    <strong class="confirm__status">оформлен</strong>
-                </div>
-
-                <div class="confirm__box confirm__box--items table table--2col">
-                    <div class="table_cell">
-                        <ul class="confirm-items">
-                            <li class="confirm-items__i">Бумажный конструктор 3 шт.</li>
-                            <li class="confirm-items__i">Батарейки AAAA 18 шт.</li>
-                            <li class="confirm-items__i"><a class="confirm-items__lk" href="">и ещё 3 товара</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="table_cell">
-                        <div>Доставка 11 июл. 2014 9:00…18:00</div>
-                        <div>Оплата при получении: наличные, банковская карта</div>
-                    </div>
-                </div>
-
-                <div class="confirm__box confirm__box--normal comfirm-summary">
-                    <span class="comfirm-summary__title">Сумма заказа:</span>
-                    <span class="comfirm-summary__price">42 740 <span class="rubl">p</span></span>
-                </div>
-
-                <div class="confirm__box confirm__box--payment confirm-payment">
-                    <div class="confirm-payment__title confirm-payment__cell">Требуется предоплата</div>
-
-                    <div class="confirm-payment__cell">
-                        <button class="confirm-payment__btn btn-transparent btn-transparent--normal js-popup-link">
-                            <span class="bb-dotted m">Оплатить онлайн</span>
-                        </button>
-
-						<span class="confirm-payment__types">
-							<img class="confirm-payment__card" width="25" src="/css/modules/order/img/master.png" alt="" />
-                            <img class="confirm-payment__card" width="25" src="/css/modules/order/img/Visa.png" alt="" />
-                            <img class="confirm-payment__card" width="16" src="/css/modules/order/img/psb.png" alt="" />
-						</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="confirm">
-                <div class="confirm__box confirm__box--normal">
-                    <strong class="confirm__title">Заказ</strong>
-                    <a href="" class="confirm__number">COXD-305176</a>
-                    <strong class="confirm__status">оформлен</strong>
-                </div>
-
-                <div class="confirm__box confirm__box--items table table--2col">
-                    <div class="table_cell">
-                        <ul class="confirm-items">
-                            <li class="confirm-items__i">Бумажный конструктор 3 шт.</li>
-                        </ul>
-                    </div>
-
-                    <div class="table_cell">
-                        <div>Доставка 11 июл. 2014 9:00…18:00</div>
-                        <div>Оплата при получении: наличные, банковская карта</div>
-                    </div>
-                </div>
-
-                <div class="confirm__box confirm__box--normal comfirm-summary">
-                    <span class="comfirm-summary__title">Сумма заказа:</span>
-                    <span class="comfirm-summary__price">42 740 <span class="rubl">p</span></span>
-                </div>
-
-                <div class="confirm__box confirm__box--payment confirm-payment">
-                    <div class="confirm-payment__title confirm-payment__cell">Требуется предоплата</div>
-
-                    <div class="confirm-payment__cell">
-                        <button class="confirm-payment__btn btn-transparent btn-transparent--normal js-popup-link">
-                            <span class="bb-dotted m">Оплатить онлайн</span>
-                        </button>
-
-						<span class="confirm-payment__types">
-							<img class="confirm-payment__card" width="25" src="/css/modules/order/img/master.png" alt="" />
-                            <img class="confirm-payment__card" width="25" src="/css/modules/order/img/Visa.png" alt="" />
-                            <img class="confirm-payment__card" width="16" src="/css/modules/order/img/psb.png" alt="" />
-						</span>
-                    </div>
-                </div>
-            </div>
 
             <div class="btn-stretch btn-stretch--default"><a class="btn-stretch__link" href="/">Вернуться на главную</a></div>
         </section>

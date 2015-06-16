@@ -62,6 +62,7 @@ class Complete {
             foreach ($orderData['orders'] as $orderItem) {
                 $order = new Model\Order();
                 $order->sum = $orderItem['sum'];
+                $order->id = $orderItem['id'];
                 $order->number = $orderItem['number'];
                 $order->numberErp = $orderItem['numberErp'];
                 if (!empty($orderItem['delivery'])) {

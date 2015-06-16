@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterMobile\Controller\Order;
+namespace EnterMobile\Controller\Order\Payment;
 
 use Enter\Http;
 use EnterMobile\ConfigTrait;
@@ -31,12 +31,12 @@ class GetForm {
         $session = $this->getSession();
         $paymentRepository = new \EnterRepository\Payment();
 
-        $orderId = $request->query['orderId'] ? (string)$request->query['orderId'] : null;
+        $orderId = $request->data['orderId'] ? (string)$request->data['orderId'] : null;
         if (!$orderId) {
             throw new \Exception('Не передан идентификатор заказа', Http\Response::STATUS_BAD_REQUEST);
         }
 
-        $paymentMethodId = $request->query['methodId'] ? (string)$request->query['methodId'] : null;
+        $paymentMethodId = $request->data['methodId'] ? (string)$request->data['methodId'] : null;
         if (!$orderId) {
             throw new \Exception('Не передан идентификатор метода оплаты', Http\Response::STATUS_BAD_REQUEST);
         }

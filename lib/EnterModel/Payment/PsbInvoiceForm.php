@@ -22,6 +22,7 @@ class PsbInvoiceForm {
      * @param array $data
      */
     public function __construct(array $data) {
+        if (array_key_exists('url', $data)) $this->url = (string)$data['url'];
         if (array_key_exists('ContractorID', $data)) $this->contractorId = (string)$data['ContractorID'];
         if (array_key_exists('InvoiceID', $data)) $this->invoiceId = (string)$data['InvoiceID'];
         if (array_key_exists('Sum', $data)) $this->sum = (string)$data['Sum'];

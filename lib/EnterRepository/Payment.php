@@ -19,9 +19,10 @@ class Payment {
         $result = $query->getResult();
 
         $form =
-            (isset($result['detail']) && is_array($result['detail']))
-            ? new Model\Payment\PsbForm($result['detail'])
-            : null;
+            (isset($result['detail']) && is_array($result['detail']) && !empty($result['url']))
+            ? new Model\Payment\PsbForm(['url' => $result['url']] + $result['detail'])
+            : null
+        ;
 
         return $form;
     }
@@ -35,9 +36,10 @@ class Payment {
         $result = $query->getResult();
 
         $form =
-            (isset($result['detail']) && is_array($result['detail']))
-            ? new Model\Payment\PsbInvoiceForm($result['detail'])
-            : null;
+            (isset($result['detail']) && is_array($result['detail']) && !empty($result['url']))
+            ? new Model\Payment\PsbInvoiceForm(['url' => $result['url']] + $result['detail'])
+            : null
+        ;
 
         return $form;
     }
