@@ -68,7 +68,8 @@ define(
                                 $container.attr('id'),
                                 {
                                     center: [options.center.lat, options.center.lng],
-                                    zoom: options.zoom
+                                    zoom: options.zoom,
+                                    controls: []
                                 },
                                 {
                                     autoFitToViewport: 'always'
@@ -751,7 +752,7 @@ define(
                             $input.data('center', center);
                         }
 
-                        if (pointMap) {
+                        if (pointMap && $pointMap.is(':visible')) {
                             pointMap.setCenter(center, 14);
                         } else {
                             $('.js-order-delivery-point-tab-link').trigger('update', [false])
@@ -762,6 +763,43 @@ define(
                 }
 
                 $container.hide();
+            },
+
+            locatePoint = function(e) {
+                var
+                    $el = $(this),
+                    center,
+                    $input = $($el.data('suggestInputSelector'))
+                ;
+
+                e.stopPropagation();
+                e.preventDefault();
+
+                initGeocode().done(function(ymaps) {
+                    ymaps.geolocation.get({
+                        // Выставляем опцию для определения положения по ip
+                        provider: 'auto',
+                        // Карта автоматически отцентрируется по положению пользователя.
+                        mapStateAutoApply: true
+                    }).then(function (result) {
+                        try {
+                            center = result.geoObjects.position;
+                            console.info('$input', $input);
+                            if ($input.length) {
+                                $input.val('');
+                                $input.data('center', center);
+                            }
+
+                            if (pointMap && $pointMap.is(':visible')) {
+                                pointMap.setCenter(center, 13);
+                            } else {
+                                $('.js-order-delivery-point-tab-link').trigger('update', [false])
+                            }
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    });
+                });
             }
         ;
 
@@ -791,6 +829,7 @@ define(
         $body.on('change', '.js-order-delivery-point-filter', updatePointFilter);
         $body.on('input', '.js-order-delivery-point-search-input', searchPoint);
         $body.on('click', '.js-order-delivery-suggest-item', applyPointSuggest);
+        $body.on('click', '.js-order-delivery-geolocation-link', locatePoint);
         $body.on('submit', '.js-smartAddress-form', function(e) {
             var
                 $form = $(this),

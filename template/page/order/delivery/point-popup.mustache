@@ -5,7 +5,7 @@
                 <i class="sprite-icon sprite-icon--search"></i>
 
                 <input id="order-{{order.id}}-suggest-input" class="js-order-delivery-point-search-input search-control__input" data-suggest-container-selector="#order-{{order.id}}-suggest-container" type="text" placeholder="Искать по улице, метро">
-                <input class="search-control__submit" type="submit" value="">
+                <input class="search-control__submit js-order-delivery-geolocation-link" type="submit" value="" data-suggest-input-selector="#order-{{order.id}}-suggest-input">
                 <div id="order-{{order.id}}-suggest-container" data-input-selector="#order-{{order.id}}-suggest-input" class="form-control-group__suggest suggest-control"></div>
             </div>
             <div id="order-{{order.id}}-delivery-point-tab-link" class="js-order-delivery-point-tab-link btn btn--white btn--medium" data-index="0" data-storage-selector="#order-{{order.id}}-point-data" data-filter-form-selector="#order-{{order.id}}-delivery-point-filter-form">
