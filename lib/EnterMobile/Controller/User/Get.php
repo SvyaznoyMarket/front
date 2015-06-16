@@ -38,11 +38,8 @@ class Get {
             $cart->sum = 0;
         }
 
-        // токен пользователя
-        $userToken = (new \EnterRepository\User)->getTokenByHttpRequest($request);
-
         // запрос пользователя
-        $userItemQuery = $userToken ? new Query\User\GetItemByToken($userToken) : null;
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
         if ($userItemQuery) {
             $curl->prepare($userItemQuery);
         }
@@ -68,7 +65,7 @@ class Get {
 
         $curl->execute();
 
-        $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
+        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
         if ($productListQuery) {
             $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);

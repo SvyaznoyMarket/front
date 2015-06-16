@@ -20,12 +20,12 @@ return function(\EnterAggregator\Config $config) {
     $config->wikimart->jsUrl = 'http://checkout.wikimart.ru/js/enter/script/';
 
     $config->googleAnalytics->enabled = true;
-    $config->googleAnalytics->id = 'UA-25485956-5';
 
     $config->region->defaultId = '14974';
     $config->region->cookieName = 'geoshop';
 
-    $config->abTest->cookieName = 'switch';
+    $config->abTest->cookieName = 'switchMobile';
+    $config->abTest->cookieDomain = '.m.enter.ru';
 
     $config->credit->cookieName = 'credit_on';
 

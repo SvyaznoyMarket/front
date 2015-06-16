@@ -41,6 +41,12 @@ class Index {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
+
         $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
         $curl->prepare($cartItemQuery);
 
@@ -78,6 +84,7 @@ class Index {
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
         $pageRequest->cart = $cart;
         $pageRequest->productsById = $productsById;
         $pageRequest->cartProducts = $cartProducts;

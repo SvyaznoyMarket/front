@@ -2,6 +2,7 @@
 
 namespace EnterMobile\Repository\Page;
 
+use EnterAggregator\AbTestTrait;
 use EnterAggregator\RequestIdTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
@@ -13,7 +14,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Page\DefaultPage as Page;
 
 class DefaultPage {
-    use RequestIdTrait, ConfigTrait, RouterTrait, LoggerTrait, TemplateHelperTrait;
+    use RequestIdTrait, ConfigTrait, RouterTrait, LoggerTrait, TemplateHelperTrait, AbTestTrait;
 
     /**
      * @param Page $page
@@ -78,7 +79,20 @@ class DefaultPage {
         $page->googleAnalytics = false;
         if ($config->googleAnalytics->enabled) {
             $page->googleAnalytics = new Page\GoogleAnalytics();
-            $page->googleAnalytics->id = $config->googleAnalytics->id;
+            $page->googleAnalytics->regionName = $request->region->name;
+            $page->googleAnalytics->userAuth = $request->user ? '1' : '0';
+            $page->googleAnalytics->hostname = $config->hostname;
+
+            foreach ($this->getAbTest()->getObjectList() as $test) {
+                if ($test->gaSlotNumber) {
+                    $abTest = new Page\GoogleAnalytics\AbTest();
+                    $abTest->gaSlotNumber = $test->gaSlotNumber;
+                    $abTest->gaSlotScope = $test->gaSlotScope;
+                    $abTest->chosenToken = $test->token . '_' . $test->chosenItem->token;
+
+                    $page->googleAnalytics->abTests[] = $abTest;
+                }
+            }
         }
 
         $page->googleTagManager = false;

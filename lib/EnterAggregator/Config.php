@@ -186,11 +186,11 @@ namespace EnterAggregator\Config {
     class AbTest {
         /** @var string */
         public $cookieName;
+        /** @var string */
+        public $cookieDomain;
     }
 
     class GoogleAnalytics {
-        /** @var string */
-        public $id;
         /** @var bool */
         public $enabled;
     }

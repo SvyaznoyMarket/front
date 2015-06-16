@@ -49,7 +49,7 @@ namespace EnterAggregator\Controller {
 
             // запрос пользователя
             $userItemQuery = null;
-            if ($request->userToken && (0 !== strpos($request->userToken, 'anonymous-')) && ($request->config->favourite)) {
+            if ($request->userToken && (0 !== strpos($request->userToken, 'anonymous-'))) {
                 $userItemQuery = new Query\User\GetItemByToken($request->userToken);
                 $curl->prepare($userItemQuery);
             }
@@ -63,10 +63,9 @@ namespace EnterAggregator\Controller {
             }
 
             // пользователь
-            $user = null;
             try {
                 if ($userItemQuery) {
-                    $user = (new Repository\User())->getObjectByQuery($userItemQuery);
+                    $response->user = (new Repository\User())->getObjectByQuery($userItemQuery);
                 }
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
@@ -83,11 +82,11 @@ namespace EnterAggregator\Controller {
             if (
                 $config->eventService->enabled
                 && (
-                    ($request->config->authorizedEvent && $user) // или авторизованные события с пользователем, ...
+                    ($request->config->authorizedEvent && $response->user) // или авторизованные события с пользователем, ...
                     || !$request->config->authorizedEvent // ... или неавторизованные события
                 )
             ) {
-                $productViewEventQuery = new Query\Event\PushProductView($response->product->ui, $user ? $user->ui : null);
+                $productViewEventQuery = new Query\Event\PushProductView($response->product->ui, $response->user ? $response->user->ui : null);
                 $curl->prepare($productViewEventQuery);
             }
 
@@ -168,8 +167,8 @@ namespace EnterAggregator\Controller {
 
             // запрос на проверку товаров в избранном
             $favoriteListQuery = null;
-            if ($request->config->favourite && $user && $response->product->ui) {
-                $favoriteListQuery = new Query\User\Favorite\CheckListByUserUi($user->ui, [$response->product->ui]);
+            if ($request->config->favourite && $response->user && $response->product->ui) {
+                $favoriteListQuery = new Query\User\Favorite\CheckListByUserUi($response->user->ui, [$response->product->ui]);
                 $favoriteListQuery->setTimeout($config->crmService->timeout / 2);
                 $curl->prepare($favoriteListQuery);
             }
@@ -356,6 +355,8 @@ namespace EnterAggregator\Controller\ProductCard {
         public $catalogConfig;
         /** @var Model\MainMenu|null */
         public $mainMenu;
+        /** @var Model\User|null */
+        public $user;
         /** @var bool */
         public $hasCredit;
     }
