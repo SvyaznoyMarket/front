@@ -33,22 +33,22 @@ class Index {
         $page->content->form->url = $router->getUrlByRoute(new Routing\Order\SetUser());
         $page->content->form->errorDataValue = $templateHelper->json($request->formErrors);
 
-        if (!empty($request->userData['firstName'])) {
-            $page->content->form->firstName = $request->userData['firstName'];
-        } else if ($request->user && $request->user->firstName) {
+        if ($request->user && $request->user->firstName) {
             $page->content->form->firstName = $request->user->firstName;
+        } else if (!empty($request->userData['firstName'])) {
+            $page->content->form->firstName = $request->userData['firstName'];
         }
 
-        if (!empty($request->userData['phone'])) {
-            $page->content->form->phone = $request->userData['phone'];
-        } else if ($request->user && $request->user->phone) {
+        if ($request->user && $request->user->phone) {
             $page->content->form->phone = $request->user->phone;
+        } else if (!empty($request->userData['phone'])) {
+            $page->content->form->phone = $request->userData['phone'];
         }
 
-        if (!empty($request->userData['email'])) {
-            $page->content->form->email = $request->userData['email'];
-        } else if ($request->user && $request->user->email) {
+        if ($request->user && $request->user->email) {
             $page->content->form->email = $request->user->email;
+        } else if (!empty($request->userData['email'])) {
+            $page->content->form->email = $request->userData['email'];
         }
 
         if (11 === mb_strlen($page->content->form->phone) && (0 === strpos($page->content->form->phone, '8'))) {
