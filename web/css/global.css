@@ -7878,6 +7878,9 @@ body.noScroll {
   .checkout-order-info__r {
     float: none;
   }
+  .self-delivery-choose {
+    text-align: center;
+  }
 }
 @media only screen and (max-width: 480px) {
   .checkout-order-head__vendor {
