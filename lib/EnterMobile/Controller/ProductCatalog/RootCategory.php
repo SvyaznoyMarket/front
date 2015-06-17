@@ -41,10 +41,14 @@ class RootCategory {
             $curl->prepare($userItemQuery);
         }
 
+        list($cart, $cartItemQuery, $cartProductListQuery) = (new \EnterMobile\Repository\Cart())->getObjectAndPreparedQueries($regionId);
+
         $curl->execute();
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // наличие категорий в данном регионе
         $categoryListQuery = new Query\Product\Category\GetAvailableList(['token' => $categoryToken], $region->id, 1);
@@ -105,6 +109,7 @@ class RootCategory {
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->cart = $cart;
         $pageRequest->category = $category;
 
         // страница

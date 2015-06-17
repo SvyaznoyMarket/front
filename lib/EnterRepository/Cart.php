@@ -183,26 +183,39 @@ class Cart {
 
     /**
      * @param \EnterModel\Cart $cart
-     * @param Query $query
      */
-    public function updateObjectByQuery(Model\Cart $cart, Query $query) {
+    public function updateObjectByQuery(Model\Cart $cart, Query $cartItemQuery = null, Query $cartProductListQuery = null) {
+        if (!$cartItemQuery && !$cartProductListQuery) {
+            return;
+        }
+
+        /** @var \EnterModel\Cart\Product[] $cartProductsById */
         $cartProductsById = [];
         foreach ($cart->product as $cartProduct) {
             $cartProductsById[$cartProduct->id] = $cartProduct;
         }
 
-        $item = $query->getResult();
-        $coreCart = new Model\Cart($item);
+        if ($cartItemQuery) {
+            $item = $cartItemQuery->getResult();
+            $coreCart = new Model\Cart($item);
 
-        $cart->sum = $coreCart->sum;
-        foreach ($coreCart->product as $coreCartProduct) {
-            /** @var \EnterModel\Cart\Product|null $cartProduct */
-            $cartProduct = isset($cartProductsById[$coreCartProduct->id]) ? $cartProductsById[$coreCartProduct->id] : null;
-            if (!$cartProduct) continue;
+            $cart->sum = $coreCart->sum;
+            foreach ($coreCart->product as $coreCartProduct) {
+                $cartProduct = isset($cartProductsById[$coreCartProduct->id]) ? $cartProductsById[$coreCartProduct->id] : null;
+                if (!$cartProduct) continue;
 
-            $cartProduct->price = $coreCartProduct->price;
-            $cartProduct->sum = $coreCartProduct->sum;
-            $cartProduct->quantity = $coreCartProduct->quantity;
+                $cartProduct->price = $coreCartProduct->price;
+                $cartProduct->sum = $coreCartProduct->sum;
+                $cartProduct->quantity = $coreCartProduct->quantity;
+            }
+        }
+
+        if ($cartProductListQuery) {
+            foreach ((new \EnterRepository\Product())->getIndexedObjectListByQueryList([$cartProductListQuery]) as $coreCartProduct) {
+                if (isset($cartProductsById[$coreCartProduct->id])) {
+                    $cartProductsById[$coreCartProduct->id]->product = $coreCartProduct;
+                }
+            }
         }
     }
 

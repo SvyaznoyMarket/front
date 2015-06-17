@@ -56,9 +56,6 @@ class DefaultPage {
                 'domain'   => $config->session->cookieDomain,
                 'lifetime' => $config->session->cookieLifetime,
             ],
-            'user'      => [
-                'infoUrl'    => $router->getUrlByRoute(new Routing\User\Get()),
-            ],
             'credit'    => [
                 'cookieName' => $config->credit->cookieName,
             ],
@@ -75,6 +72,64 @@ class DefaultPage {
                 : null
             ,
         ]);
+
+        $page->dataUser = $templateHelper->json($request->user ? [
+            'id' => $request->user->id,
+        ] : null);
+
+        call_user_func(function() use($page, $request, $templateHelper) {
+            $dataCart = ['products' => []];
+
+            foreach ($request->cart->product as $cartProduct) {
+                $dataCart['products'][] = [
+                    'id' => $cartProduct->id,
+                    'name' => $cartProduct->product ? $cartProduct->product->name : null,
+                    'price' => $cartProduct->price,
+                    'quantity' => $cartProduct->quantity,
+                ];
+            }
+
+            $page->dataCart = $templateHelper->json($dataCart ? $dataCart : null);
+        });
+
+        // Виджеты, выполняемые при загрузке страницы
+        call_user_func(function() use($page, $request, $templateHelper) {
+            $dataWidget = [];
+
+            $userBlock = (new Repository\Partial\UserBlock())->getObject($request->cart, $request->user);
+            $dataWidget['.' . $userBlock->widgetId] = $userBlock;
+
+            foreach ($request->cart->product as $cartProduct) {
+                $product = $cartProduct->product ?: new \EnterModel\Product(['id' => $cartProduct->id]);
+
+                if ($widget = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, $cartProduct)) {
+                    $dataWidget['.' . $widget->widgetId] = $widget;
+                }
+
+                if ($widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct)) {
+                    $dataWidget['.' . $widget->widgetId] = $widget;
+                }
+
+                // кнопка купить для родительского товара
+                if ($cartProduct->parentId && $widget = (new Repository\Partial\Cart\ProductButton())->getObject(
+                        new \EnterModel\Product(['id' => $cartProduct->parentId]),
+                        new \EnterModel\Cart\Product(['id' => $cartProduct->parentId, 'quantity' => 1])
+                    )) {
+                    $dataWidget['.' . $widget->widgetId] = $widget;
+                }
+
+                if ($widget = (new Repository\Partial\Cart\ProductSpinner())->getObject(
+                    $product,
+                    $cartProduct,
+                    false
+                )) {
+                    $dataWidget['.' . $widget->widgetId] = $widget;
+                }
+            }
+
+            $page->dataWidget = $templateHelper->json($dataWidget ? $dataWidget : null);
+        });
+
 
         $page->googleAnalytics = false;
         if ($config->googleAnalytics->enabled) {

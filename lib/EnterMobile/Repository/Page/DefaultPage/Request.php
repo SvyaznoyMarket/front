@@ -14,4 +14,6 @@ class Request {
     public $httpRequest;
     /** @var \EnterModel\User|null */
     public $user;
+    /** @var \EnterModel\Cart */
+    public $cart;
 }

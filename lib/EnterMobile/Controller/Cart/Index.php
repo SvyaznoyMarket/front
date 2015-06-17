@@ -29,13 +29,9 @@ class Index {
         $config = $this->getConfig();
         $curl = $this->getCurl();
         $session = $this->getSession();
-        $cartRepository = new \EnterRepository\Cart();
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
-
-        // корзина из сессии
-        $cart = $cartRepository->getObjectByHttpSession($session);
 
         // запрос региона
         $regionQuery = new Query\Region\GetItemById($regionId);
@@ -47,21 +43,14 @@ class Index {
             $curl->prepare($userItemQuery);
         }
 
-        $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
-        $curl->prepare($cartItemQuery);
+        list($cart, $cartItemQuery, $cartProductListQuery) = (new \EnterMobile\Repository\Cart())->getObjectAndPreparedQueries($regionId);
 
         $curl->execute();
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
-        $productListQuery = (bool)$cart->product ? new Query\Product\GetListByIdList(array_values(array_map(function(\EnterModel\Cart\Product $cartProduct) { return $cartProduct->id; }, $cart->product)), $region->id) : null;
-        if ($productListQuery) {
-            $curl->prepare($productListQuery);
-        }
-
-        // корзина из ядра
-        $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // запрос дерева категорий для меню
         $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
@@ -73,9 +62,6 @@ class Index {
 
         $curl->execute();
 
-        $cartProducts = $cart->product;
-        $productsById = $productListQuery ? (new \EnterRepository\Product)->getIndexedObjectListByQueryList([$productListQuery]) : [];
-
         // меню
         $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
 
@@ -86,8 +72,6 @@ class Index {
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
         $pageRequest->cart = $cart;
-        $pageRequest->productsById = $productsById;
-        $pageRequest->cartProducts = $cartProducts;
 
         // страница
         $page = new Page();

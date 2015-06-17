@@ -63,7 +63,11 @@ class Index {
             $curl->prepare($userItemQuery);
         }
 
+        list($cart, $cartItemQuery, $cartProductListQuery) = (new \EnterMobile\Repository\Cart())->getObjectAndPreparedQueries($regionId);
+
         $curl->execute();
+
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
@@ -174,6 +178,7 @@ class Index {
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->pageNum = $pageNum;
         $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->cart = $cart;
         $pageRequest->limit = $limit;
         $pageRequest->count = $searchResult->productCount; // TODO: передавать searchResult
         $pageRequest->requestFilters = $requestFilters;

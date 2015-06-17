@@ -1,1 +1,1 @@
-define(["direct-credit"],function(){return{getPayment:function(e,t,n,r){dc_getCreditForTheProduct(e.partnerId,t.sessionId,"getPayment",{products:n},function(e){console.info("dc_getCreditForTheProduct",e),!1 in e||e.payment<=0||r(e)})}}});
+define(["direct-credit"],function(){return{getPayment:function(t,e,n,c){dc_getCreditForTheProduct(t,e,"getPayment",{products:n},function(t){console.info("dc_getCreditForTheProduct",t),!1 in t||t.payment<=0||c(t)})}}});

@@ -1,1 +1,1 @@
-define(["jquery","underscore"],function(e,d){return d.extend({cookie:{domain:null,lifetime:null},user:{infoUrl:null},credit:{cookieName:null},event:{productAddedToCart:"cart_product_added",productRemovedFromCart:"cart_product_removed"},wikimart:null},e("body").data("config"))});
+define(["jquery","underscore"],function(e,d){return d.extend({cookie:{domain:null,lifetime:null},credit:{cookieName:null},event:{productAddedToCart:"cart_product_added",productRemovedFromCart:"cart_product_removed"},wikimart:null},e("body").data("config"))});
