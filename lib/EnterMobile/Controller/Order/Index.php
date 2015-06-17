@@ -31,13 +31,14 @@ class Index {
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // запрос пользователя
-        $userItemQuery = null;
         $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
         if ($userItemQuery) {
             $curl->prepare($userItemQuery);
         }
 
-        list($cart, $cartItemQuery, $cartProductListQuery) = (new \EnterMobile\Repository\Cart())->getObjectAndPreparedQueries($regionId);
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
 
         $curl->execute();
 

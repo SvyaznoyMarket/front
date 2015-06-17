@@ -3,6 +3,7 @@
 namespace EnterMobile\Controller;
 
 use Enter\Http;
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\CurlTrait;
@@ -14,7 +15,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Page\Index as Page;
 
 class Index {
-    use ConfigTrait, LoggerTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, LoggerTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, SessionTrait;
 
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
@@ -34,7 +35,9 @@ class Index {
             $curl->prepare($userItemQuery);
         }
 
-        list($cart, $cartItemQuery, $cartProductListQuery) = (new \EnterMobile\Repository\Cart())->getObjectAndPreparedQueries($regionId);
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
 
         $curl->execute();
 

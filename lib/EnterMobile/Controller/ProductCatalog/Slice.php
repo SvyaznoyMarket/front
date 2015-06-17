@@ -3,6 +3,7 @@
 namespace EnterMobile\Controller\ProductCatalog;
 
 use Enter\Http;
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\MustacheRendererTrait;
@@ -16,7 +17,7 @@ use EnterMobile\Model\Page\ProductCatalog\ChildCategory as Page;
 use EnterQuery;
 
 class Slice {
-    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -42,6 +43,8 @@ class Slice {
 
         // сортировка
         $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
+
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
 
         // запрос среза
         $sliceItemQuery = new Query\Product\Slice\GetItemByToken($sliceToken);
@@ -86,7 +89,7 @@ class Slice {
         $controllerRequest->baseRequestFilters = $baseRequestFilters;
         $controllerRequest->requestFilters = array_merge($requestFilters, $baseRequestFilters);
         $controllerRequest->userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request);
-        $controllerRequest->getCart = true;
+        $controllerRequest->cart = $cart;
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);
 
@@ -100,7 +103,7 @@ class Slice {
         $pageRequest->region = $controllerResponse->region;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
         $pageRequest->user = $controllerResponse->user;
-        $pageRequest->cart = $controllerResponse->cart;
+        $pageRequest->cart = $cart;
         $pageRequest->pageNum = $pageNum;
         $pageRequest->limit = $limit;
         $pageRequest->count = $controllerResponse->productUiPager->count; // TODO: передавать productUiPager

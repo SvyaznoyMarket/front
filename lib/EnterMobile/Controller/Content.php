@@ -5,12 +5,13 @@ use Enter\Http;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\DebugContainerTrait;
 use EnterAggregator\MustacheRendererTrait;
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterQuery as Query;
 use EnterMobile\Model\Page\Content as Page;
 
 class Content {
-    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -41,7 +42,9 @@ class Content {
             $curl->prepare($userItemQuery);
         }
 
-        list($cart, $cartItemQuery, $cartProductListQuery) = (new \EnterMobile\Repository\Cart())->getObjectAndPreparedQueries($regionId);
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
 
         $curl->execute();
 

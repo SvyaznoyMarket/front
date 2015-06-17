@@ -5,40 +5,42 @@ namespace EnterMobile\Repository;
 use Enter\Http;
 use EnterAggregator\ConfigTrait;
 use EnterAggregator\CurlTrait;
-use EnterAggregator\SessionTrait;
 
 class Cart {
-    use ConfigTrait, CurlTrait, SessionTrait;
+    use ConfigTrait, CurlTrait;
 
     /**
      * @param string $regionId
-     * @return array
+     * @return \EnterQuery\Cart\GetItem|null
      */
-    public function getObjectAndPreparedQueries($regionId) {
-        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
-
-        if ($this->getConfig()->wikimart->enabled) {
-            $cart->product = [];
-            $cart->sum = 0;
-        }
-
+    public function getPreparedCartItemQuery(\EnterModel\Cart $cart, $regionId) {
         if ($cart->product) {
-            $curl = $this->getCurl();
-
             $cartItemQuery = new \EnterQuery\Cart\GetItem($cart, $regionId);
-            $curl->prepare($cartItemQuery);
+            $this->getCurl()->prepare($cartItemQuery);
 
+            return $cartItemQuery;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * @param string $regionId
+     * @return \EnterQuery\Product\GetListByIdList|null
+     */
+    public function getPreparedCartProductListQuery(\EnterModel\Cart $cart, $regionId) {
+        if ($cart->product) {
             $cartProductsIds = [];
             foreach ($cart->product as $cartProduct) {
                 $cartProductsIds[] = $cartProduct->id;
             }
 
             $cartProductListQuery = new \EnterQuery\Product\GetListByIdList($cartProductsIds, $regionId);
-            $curl->prepare($cartProductListQuery);
+            $this->getCurl()->prepare($cartProductListQuery);
 
-            return [$cart, $cartItemQuery, $cartProductListQuery];
+            return $cartProductListQuery;
         } else {
-            return [$cart, null, null];
+            return null;
         }
     }
 }

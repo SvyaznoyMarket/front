@@ -43,7 +43,7 @@ class GetForm {
 
         // запрос пользователя
         $userItemQuery = null;
-        if ($userToken = (new \EnterRepository\User())->getTokenByHttpRequest($request)) {
+        if ($userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request)) {
             $userItemQuery = new Query\User\GetItemByToken($userToken);
             $curl->prepare($userItemQuery);
         }
