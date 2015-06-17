@@ -41,6 +41,7 @@ class Index {
         $pageRequest->httpRequest = $request;
         $pageRequest->formErrors = (array)$session->flashBag->get('orderForm.error');
         $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->userData = $session->get($config->order->userSessionKey);
 
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 

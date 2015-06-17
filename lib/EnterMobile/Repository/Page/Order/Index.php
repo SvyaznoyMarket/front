@@ -19,7 +19,7 @@ class Index {
      * @param Page $page
      * @param Index\Request $request
      */
-    public function buildObjectByRequest(Page $page, Index\Request $request, $orderFormUserData) {
+    public function buildObjectByRequest(Page $page, Index\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
         $router = $this->getRouter();
@@ -33,21 +33,21 @@ class Index {
         $page->content->form->url = $router->getUrlByRoute(new Routing\Order\SetUser());
         $page->content->form->errorDataValue = $templateHelper->json($request->formErrors);
 
-        if (!empty($userData['firstName'])) {
-            $page->content->form->firstName = $userData['firstName'];
-        } else if ($request->user->firstName) {
+        if (!empty($request->userData['firstName'])) {
+            $page->content->form->firstName = $request->userData['firstName'];
+        } else if ($request->user && $request->user->firstName) {
             $page->content->form->firstName = $request->user->firstName;
         }
 
-        if (!empty($userData['phone'])) {
-            $page->content->form->phone = $userData['phone'];
-        } else if ($request->user->phone) {
+        if (!empty($request->userData['phone'])) {
+            $page->content->form->phone = $request->userData['phone'];
+        } else if ($request->user && $request->user->phone) {
             $page->content->form->phone = $request->user->phone;
         }
 
-        if (!empty($userData['email'])) {
-            $page->content->form->email = $userData['email'];
-        } else if ($request->user->email) {
+        if (!empty($request->userData['email'])) {
+            $page->content->form->email = $request->userData['email'];
+        } else if ($request->user && $request->user->email) {
             $page->content->form->email = $request->user->email;
         }
 

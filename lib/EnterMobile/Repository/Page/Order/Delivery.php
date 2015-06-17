@@ -145,7 +145,7 @@ class Delivery {
                                     'name'    => $point->name,
                                     'group'   => [
                                         'token' => $pointGroup->token,
-                                        'name'  => $pointGroup->blockName,
+                                        'name'  => $this->getPointGroupName($pointGroup->blockName),
                                     ],
                                     'address' => $point->address,
                                     'icon'    => $this->getPointIcon($pointGroup->token),
@@ -344,7 +344,7 @@ class Delivery {
                             'id'        => $possiblePointModel->id,
                             'name'      => $point->name,
                             'group'     => [
-                                'name'  => $pointGroup->blockName,
+                                'name'  => $this->getPointGroupName($pointGroup->blockName),
                                 'value' => $pointGroup->token,
                             ],
                             'icon'      => $this->getPointIcon($pointGroup->token),
@@ -751,5 +751,17 @@ class Delivery {
         }
 
         return $icon . '.png';
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    private function getPointGroupName($name) {
+        return strtr($name, [
+            'Магазин'    => 'Магазин Enter',
+            'Постамат'   => 'Постамат PickPoint',
+            'Hermes DPD' => 'Постамат Hermes-DPD',
+        ]);
     }
 }
