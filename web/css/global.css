@@ -637,25 +637,6 @@ textarea[contenteditable] {
   border-bottom: 1px solid #c7c7c7;
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAYAAACQN/8FAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAuElEQVQoFYXR3QnCMBSG4XOlRfBGvA/1ZwQXcAjH6BiCFnUQdQq9EeoSjiAiFIX4nsIJsa148dA235c0JOK9lzYi0sUYiea/SgMKS9wxby0S9JHjjStco8hgDxlKXDDT0leRwQRbPHDAyEqhyGAHK2jpDBeX4uKE8IkbFvVSXNQV19AVT3D1cjgeQt3jDlreo7lHm004xAYvHJGGzF7sSRifY8G30yz82orVoMj/m7EJrKR3PUV11x/05fDNuFCCQAAAAABJRU5ErkJggg==) no-repeat 10px 50%;
 }
-.textfield {
-  line-height: 35px;
-  display: block;
-  height: 35px;
-  margin: 0 0 15px;
-  padding-left: 10px;
-  border: 1px solid #9f9f9f;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -ms-box-sizing: border-box;
-}
-.textfield-err {
-  border-width: 3px;
-  border-color: #ec434f;
-}
 .btnsubmit {
   font-size: 14px;
   font-weight: bold;
@@ -3635,6 +3616,36 @@ body.noScroll {
   font-size: 12px;
   text-align: center;
   color: #616161;
+}
+.textfield {
+  display: block;
+  height: 35px;
+  margin: 0 0 15px;
+  padding-left: 10px;
+  border: 1px solid #9f9f9f;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+.textfield-err {
+  border-width: 3px;
+  border-color: #ec434f;
+}
+.textfield::-webkit-input-placeholder {
+  line-height: normal;
+}
+.textfield::-moz-placeholder {
+  line-height: normal;
+}
+.textfield:-ms-input-placeholder {
+  line-height: normal;
+}
+.textfield:-moz-placeholder {
+  line-height: normal;
 }
 /* ==========================================================================
    Пользовательских input[type=radio], input[type=checkbox] .customInput
