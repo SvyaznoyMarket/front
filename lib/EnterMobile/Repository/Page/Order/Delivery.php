@@ -144,8 +144,9 @@ class Delivery {
                                     'id'      => $point->id,
                                     'name'    => $point->name,
                                     'group'   => [
-                                        'token' => $pointGroup->token,
-                                        'name'  => $this->getPointGroupName($pointGroup->blockName),
+                                        'token'     => $pointGroup->token,
+                                        'shortName' => $pointGroup->blockName,
+                                        'name'      => $this->getPointGroupName($pointGroup->blockName),
                                     ],
                                     'address' => $point->address,
                                     'icon'    => $this->getPointIcon($pointGroup->token),
