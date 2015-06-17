@@ -747,6 +747,10 @@ class Delivery {
             case 'shops_svyaznoy':
                 $icon = 'svyaznoy';
                 break;
+            case 'self_partner_hermes_pred_supplier':
+            case 'self_partner_hermes':
+                $icon = 'hermes';
+                break;
             default:
                 $icon = 'enter';
         }
