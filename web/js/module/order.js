@@ -597,7 +597,7 @@ define(
             },
 
             // показать календарь
-            showCalendar = function( e ) {
+            showCalendarPopup = function( e ) {
                 var
                     $el           = $(this),
                     data          = $.parseJSON($($el.data('dataSelector')).html()),
@@ -605,7 +605,7 @@ define(
                     modalTitle    = $el.data('modal-title'),
                     modalPosition = $el.data('modal-position'),
                     beforeSplit       = function() {
-                        $modalWindow.trigger('close');
+                        setTimeout(function() { $modalWindow.trigger('close') }, 400);
                     }
                 ;
 
@@ -825,7 +825,7 @@ define(
         $body.on('click', '.js-order-delivery-discountPopup-link', showDiscountPopup);
         $body.on('click', '.js-order-delivery-point-tab-link', updatePointTab);
         $body.on('update', '.js-order-delivery-point-tab-link', updatePointTab);
-        $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
+        $body.on('click', '.js-order-delivery-celendar-link', showCalendarPopup);
         $body.on('update', '.js-order-delivery-map-container', updatePointMap);
         $body.on('update', '.js-order-delivery-point-container', updatePointList);
         $body.on('change', '.js-order-delivery-point-filter', updatePointFilter);
