@@ -578,16 +578,19 @@ class Delivery {
                 'addressFormJson' => json_encode([
                     'url'    => $router->getUrlByRoute(new Routing\Order\Delivery()),
                     'fields' => [
-                        'street'    => [
+                        'street'     => [
                             'name' => 'change[user][address][street]',
                         ],
-                        'building'  => [
+                        'streetType' => [
+                            'name' => 'change[user][address][streetType]',
+                        ],
+                        'building'   => [
                             'name' => 'change[user][address][building]',
                         ],
-                        'apartment' => [
+                        'apartment'  => [
                             'name' => 'change[user][address][apartment]',
                         ],
-                        'kladrId'   => [
+                        'kladrId'    => [
                             'name' => 'change[user][address][kladrId]',
                         ],
                     ],
