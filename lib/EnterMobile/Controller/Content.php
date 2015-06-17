@@ -41,9 +41,13 @@ class Content {
             $curl->prepare($userItemQuery);
         }
 
+        list($cart, $cartItemQuery, $cartProductListQuery) = (new \EnterMobile\Repository\Cart())->getObjectAndPreparedQueries($regionId);
+
         $curl->execute();
 
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
         $curl->prepare($categoryListQuery);
@@ -69,6 +73,7 @@ class Content {
         $pageRequest->region = $region;
         $pageRequest->mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
         $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->cart = $cart;
 
         $page = new Page();
         (new \EnterMobile\Repository\Page\Content())->buildObjectByRequest($page, $pageRequest);

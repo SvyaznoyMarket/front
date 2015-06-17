@@ -138,7 +138,6 @@ require(
         'module/popupShow',
         'jquery.modal',
         'module/widget',      // виджеты
-        'module/user.common', // инфо о пользователе
         'module/cart.common', // кнопка купить, спиннер
         //'module/order',
         'module/product.catalog.common',

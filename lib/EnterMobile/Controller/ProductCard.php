@@ -38,6 +38,7 @@ class ProductCard {
         $controllerRequest->regionId = $regionId;
         $controllerRequest->productCriteria = ['token' => $productToken];
         $controllerRequest->userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request);
+        $controllerRequest->getCart = true;
 
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);
@@ -55,6 +56,7 @@ class ProductCard {
         $pageRequest->region = $controllerResponse->region;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
         $pageRequest->user = $controllerResponse->user;
+        $pageRequest->cart = $controllerResponse->cart;
         $pageRequest->product = $controllerResponse->product;
         $pageRequest->accessoryCategories = $controllerResponse->accessoryCategories;
         $pageRequest->hasCredit = $controllerResponse->hasCredit;

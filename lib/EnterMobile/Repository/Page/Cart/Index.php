@@ -37,23 +37,28 @@ class Index {
         $page->dataModule = 'cart';
 
         if (count($request->cart)) {
-            $page->content->cart = (new Repository\Partial\Cart())->getObject($request->cart, $request->productsById);
+            $cartProductsById = [];
+            foreach ($request->cart->product as $cartProduct) {
+                $cartProductsById[$cartProduct->id] = $cartProduct->product;
+            }
+
+            $page->content->cart = (new Repository\Partial\Cart())->getObject($request->cart, $cartProductsById);
         } else {
             $page->content->cart = false;
         }
 
-        foreach (array_reverse($request->cartProducts) as $cartProduct) {
-            $product = isset($request->productsById[$cartProduct->id]) ? $request->productsById[$cartProduct->id] : null;
-            if (!$product) {
+        foreach (array_reverse($request->cart->product) as $cartProduct) {
+            /** @var \EnterModel\Cart\Product $cartProduct */
+            if (!$cartProduct->product) {
                 // TODO: журналирование
                 continue;
             }
 
             $productCard = $productCardRepository->getObject(
                 $cartProduct,
-                $product,
-                $productSpinnerRepository->getObject($product, $cartProduct, false),
-                $productDeleteButtonRepository->getObject($product)
+                $cartProduct->product,
+                $productSpinnerRepository->getObject($cartProduct->product, $cartProduct, false),
+                $productDeleteButtonRepository->getObject($cartProduct->product)
             );
             $page->content->productBlock->products[] = $productCard;
         }
@@ -83,7 +88,7 @@ class Index {
 
         if (is_object($page->mailRu)) {
             $productIds = [];
-            foreach ($request->cartProducts as $product) {
+            foreach ($request->cart->product as $product) {
                 $productIds[] = $product->id;
             }
 

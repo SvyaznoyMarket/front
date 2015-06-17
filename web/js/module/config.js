@@ -6,9 +6,6 @@ define(
                 domain: null,
                 lifetime: null
             },
-            user: {
-                infoUrl: null
-            },
             credit: {
                 cookieName: null
             },
