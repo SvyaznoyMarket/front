@@ -239,11 +239,12 @@ define(
                                 text = obj.type;
                                 text = text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
 
-                                $(this).parent().find('label').text(text);
-
                                 if ('street' === obj.contentType) {
                                     $form.find('[data-field="streetType"]').val(obj.typeShort);
                                 }
+
+                                $(this).parent().find('label').text(text);
+
                             } else {
                                 //showError($input, 'Введено неверно');
                             }
