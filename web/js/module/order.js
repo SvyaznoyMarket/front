@@ -236,7 +236,7 @@ define(
                             updateAddressMap($mapContainer, address, zoom);
 
                             if (obj) {
-                                text = obj.type;
+                                text = (obj.type.length > 8) ? obj.typeShort : obj.type;
                                 text = text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
 
                                 if ('street' === obj.contentType) {
