@@ -172,17 +172,7 @@ define(
                             //setLabel($(this), obj.type);
                             //$tooltip.hide();
                         },
-                        check: function (obj) {
-                            var $input = $(this);
-
-                            if (obj) {
-                                //setLabel($input, obj.type);
-                                //$tooltip.hide();
-                            }
-                            else {
-                                //showError($input, 'Введено неверно');
-                            }
-                        },
+                        check: function (obj) {},
                         checkBefore: function () {
                             var $input = $(this);
 
@@ -193,6 +183,7 @@ define(
                         },
                         change: function (obj) {
                             var
+                                text,
                                 zoom = 10,
                                 address = $.kladr.getAddress('.js-smartAddress-form', function (objs) {
                                     var result = config.kladr.city.name + '';
@@ -243,6 +234,19 @@ define(
                             ;
 
                             updateAddressMap($mapContainer, address, zoom);
+
+                            if (obj) {
+                                text = obj.type;
+                                text = text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
+
+                                $(this).parent().find('label').text(text);
+
+                                if ('street' === obj.contentType) {
+                                    $form.find('[data-field="streetType"]').val(obj.typeShort);
+                                }
+                            } else {
+                                //showError($input, 'Введено неверно');
+                            }
                         }
                     });
 
