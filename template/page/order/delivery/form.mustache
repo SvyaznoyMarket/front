@@ -11,12 +11,12 @@
         <p class="orderInf">Товары будут оформлены как <strong class="mdb">{{orderCountMessage}}</strong></p>
     {{/orderCountMessage}}
 
-    <div class="orderInf clearfix">
-        <div class="orderInf_tx">Ваш регион: <strong>{{region.name}}</strong></div>
+    <div class="checkout-order-info clearfix">
+        <div class="checkout-order-info__tx ">Ваш регион: <strong>{{region.name}}</strong></div>
 
-        <div class="orderInf_l">От региона зависят доступные способы получения и оплаты заказов.</div>
+        <div class="checkout-order-info__l">От региона зависят доступные способы получения и оплаты заказов.</div>
 
-        <button class="jsSelectCity orderInf_r btn-transparent btn-transparent--normal"><span class="bb-dotted">Изменить регион</span></button>
+        <button class="jsSelectCity checkout-order-info__r btn-transparent btn-transparent--normal"><span class="bb-dotted">Изменить регион</span></button>
     </div>
 
     {{#orders}}
