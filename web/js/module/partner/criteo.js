@@ -9,7 +9,8 @@ define(
 
             handle = function(action, data, $el) {
                 if (data[1] && ('{userId}' == data[1].id)) {
-                    data[1].id = $body.data('user').id
+                    var user = $body.data('user');
+                    data[1].id = user ? user.id : null;
                 }
 
                 window.criteo_q = window.criteo_q || [];

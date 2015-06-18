@@ -50,6 +50,11 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($userItemQuery);
             }
 
+            if ($request->cart) {
+                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $request->regionId);
+                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $request->regionId);
+            }
+
             $curl->execute();
 
             // регион
@@ -62,6 +67,10 @@ namespace EnterAggregator\Controller {
                 }
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+            }
+
+            if ($request->cart) {
+                (new \EnterRepository\Cart())->updateObjectByQuery($request->cart, $cartItemQuery, $cartProductListQuery);
             }
 
             $categoryRootListQuery = null;
@@ -394,6 +403,8 @@ namespace EnterAggregator\Controller\ProductList {
         public $filterRequestFilters = [];
         /** @var string|null */
         public $userToken;
+        /** @var \EnterModel\Cart|null */
+        public $cart;
 
         public function __construct() {
             $this->config = new Request\Config();

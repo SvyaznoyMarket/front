@@ -3,6 +3,7 @@
 namespace EnterMobile\Controller\ProductCatalog;
 
 use Enter\Http;
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterAggregator\DebugContainerTrait;
@@ -13,7 +14,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Page\ProductCatalog\ChildCategory as Page;
 
 class ChildCategory {
-    use ConfigTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, MustacheRendererTrait, DebugContainerTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -37,6 +38,8 @@ class ChildCategory {
         // сортировка
         $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
 
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+
         // фильтры в http-запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
         // базовые фильтры
@@ -59,6 +62,7 @@ class ChildCategory {
         $controllerRequest->baseRequestFilters = $baseRequestFilters;
         $controllerRequest->requestFilters = $requestFilters;
         $controllerRequest->userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request);
+        $controllerRequest->cart = $cart;
 
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);
@@ -75,6 +79,7 @@ class ChildCategory {
         $pageRequest->region = $controllerResponse->region;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
         $pageRequest->user = $controllerResponse->user;
+        $pageRequest->cart = $cart;
         $pageRequest->pageNum = $pageNum;
         $pageRequest->limit = $limit;
         $pageRequest->count = $controllerResponse->productUiPager->count; // TODO: передавать productUiPager

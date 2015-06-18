@@ -16,4 +16,6 @@ class Request {
     public $mainMenu;
     /** @var Http\Request */
     public $httpRequest;
+    /** @var \EnterModel\Cart */
+    public $cart;
 }

@@ -99,6 +99,7 @@ class Delivery {
         $controllerRequest->changeData = $changeData;
         $controllerRequest->previousSplitData = $previousSplitData;
         $controllerRequest->cart = $cart;
+        $controllerRequest->enrichCart = true;
         $controllerRequest->userFromSplit = $userFromSplit;
         // при получении данных о разбиении корзины - записать их в сессию немедленно
         $controllerRequest->splitReceivedSuccessfullyCallback->handler = function() use (&$controllerRequest, &$config, &$session) {
@@ -112,6 +113,7 @@ class Delivery {
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $controllerResponse->region;
         $pageRequest->user = $controllerResponse->user;
+        $pageRequest->cart = $cart;
         $pageRequest->split = $controllerResponse->split;
         //$pageRequest->formErrors = $controllerResponse->errors; // TODO
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
@@ -129,18 +131,13 @@ class Delivery {
 
         if ($request->isXmlHttpRequest()) {
             $content = $renderer->render('page/order/delivery/form', $page->content);
-
-            $response = new Http\Response($content);
         } else {
             $renderer->setPartials([
                 'content' => 'page/order/delivery/content',
             ]);
             $content = $renderer->render('layout/simple', $page);
-
-            // http-ответ
-            $response = new Http\Response($content);
         }
 
-        return $response;
+        return new Http\Response($content);
     }
 }

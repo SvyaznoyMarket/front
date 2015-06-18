@@ -15,6 +15,12 @@ namespace EnterMobile\Model\Page {
         public $dataModule;
         /** @var string */
         public $dataConfig;
+        /** @var string */
+        public $dataUser;
+        /** @var string */
+        public $dataCart;
+        /** @var string */
+        public $dataWidget;
         /** @var DefaultPage\Template[] */
         public $templates = [];
         /** @var DefaultPage\GoogleAnalytics|null */
