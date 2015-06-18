@@ -8026,10 +8026,10 @@ body.noScroll {
 }
 .search-control__input {
   font-size: 14px;
-  line-height: 33px;
   width: 100%;
   height: 35px;
   padding-left: 35px;
+  padding-right: 33px;
   color: #686868;
   border: 1px solid #c7c7c7;
   background: #fff;
@@ -8040,6 +8040,18 @@ body.noScroll {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+}
+.search-control__input::-webkit-input-placeholder {
+  line-height: normal;
+}
+.search-control__input::-moz-placeholder {
+  line-height: normal;
+}
+.search-control__input:-ms-input-placeholder {
+  line-height: normal;
+}
+.search-control__input:-moz-placeholder {
+  line-height: normal;
 }
 .search-control .sprite-icon {
   position: absolute;
@@ -8059,6 +8071,9 @@ body.noScroll {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+}
+.search-control .suggest-control-lst {
+  margin-top: 0px;
 }
 .map-link {
   border-bottom: 1px dotted;
@@ -8109,6 +8124,7 @@ body.noScroll {
   line-height: 40px;
   height: 40px;
   padding: 0 10px;
+  white-space: nowrap;
   color: #616161;
   border-bottom: 1px solid #e6e6e6;
   background-color: #fff;
@@ -8128,11 +8144,11 @@ body.noScroll {
   height: 20px;
   content: '';
   background: #ffffff;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffffff), color-stop(1, transparent));
-  background: -ms-linear-gradient(bottom, #ffffff, transparent);
-  background: -moz-linear-gradient(center bottom, #ffffff 0%, transparent 100%);
-  background: -o-linear-gradient(transparent, #ffffff);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='transparent', endColorstr='#ffffff', GradientType=0);
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #ffffff), color-stop(1, rgba(255, 255, 255, 0)));
+  background: -ms-linear-gradient(bottom, #ffffff, rgba(255, 255, 255, 0));
+  background: -moz-linear-gradient(center bottom, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+  background: -o-linear-gradient(rgba(255, 255, 255, 0), #ffffff);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='rgba(255, 255, 255, 0)', endColorstr='#ffffff', GradientType=0);
 }
 .suggest-open .suggest-control {
   display: block;
@@ -8326,8 +8342,11 @@ body.noScroll {
   padding: 20px 0;
   text-align: center;
   background-color: #f7f7f7;
-  z-index: 2;
+  z-index: 3;
   position: relative;
+}
+.order-popup-points {
+  border-bottom: 1px solid #e6e6e6;
 }
 .dropdowns {
   width: 100%;
@@ -8338,6 +8357,11 @@ body.noScroll {
 #yandexMap {
   width: 100% !important;
   height: 100% !important;
+}
+@media screen and (max-width: 639px) {
+  .order-popup-points {
+    border-bottom: 1px solid #a6a6a6;
+  }
 }
 .confirm {
   margin: 0 0 20px;
