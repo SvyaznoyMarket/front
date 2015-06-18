@@ -171,7 +171,7 @@ class Delivery {
                             ,
                             'date'        =>
                                 $deliveryModel->date
-                                ? mb_strtolower($dateHelper->strftimeRu('%e %B2 %G, %A', $deliveryModel->date))
+                                ? mb_strtolower($dateHelper->strftimeRu('%e %B2 %G', $deliveryModel->date)) // если нужен день недели, то '%e %B2 %G, %A'
                                 : 'Выбрать'
                             ,
                             'interval'    =>
