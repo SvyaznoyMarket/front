@@ -83,10 +83,11 @@ class ProductCard {
         $card->labels = $product->labels;
 
         // значки со склада, в магазинах, на витрине
-        if (!$product->isInShopOnly &&
-            $product->category->isFurniture &&
-            $product->isStore &&
-            !$product->getSlotPartnerOffer()
+        if (!$product->isInShopOnly
+            && $product->category
+            && $product->category->isFurniture
+            && $product->isStore
+            && !$product->getSlotPartnerOffer()
         ) {
             $card->stateLabel = ['name' => 'Товар со склада', 'cssClassName' => 'availability--instock'];
         } elseif($product->isInShopOnly && $product->isInShopStockOnly) {
