@@ -767,9 +767,10 @@ class Delivery {
      */
     private function getPointGroupName($name) {
         return strtr($name, [
-            'Магазин'    => 'Магазин Enter',
-            'Постамат'   => 'Постамат PickPoint',
-            'Hermes DPD' => 'Постамат Hermes-DPD',
+            'Магазин'           => 'Магазин Enter',
+            'Магазин "Связной"' => 'Связной',
+            'Постамат'          => 'Постамат PickPoint',
+            'Hermes DPD'        => 'Постамат Hermes-DPD',
         ]);
     }
 }
