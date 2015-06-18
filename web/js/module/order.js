@@ -302,21 +302,20 @@ define(
 
                 $el.data('index', index);
                 $el.find('[data-index]').each(function(i, el) {
-                    var $el = $(el);
+                    var
+                        $el = $(el),
+                        $container = $($el.data('containerSelector'))
+                    ;
 
                     $el.hide();
-                    $($el.data('containerSelector')).hide();
+                    $container.parent().hide(); // важно чтобы у контейнера был родительский контейнер
                 });
 
                 filterPoints($el.data('storageSelector'), $filterForm);
 
                 $selected.show();
-                $container
-                    .show()
-                    .trigger('update', [
-                        Storage.get($el.data('storageSelector'), 'filtered')
-                    ])
-                ;
+                $container.parent().show();
+                $container.trigger('update', [Storage.get($el.data('storageSelector'), 'filtered')]);
             },
 
             updatePointMap = function(e, data) {
@@ -379,7 +378,6 @@ define(
 
                 $container.html(mustache.render(partial, data));
                 $container.find('.content-scroll').scrollTop();
-                console.info('$scroll', $container.find('.content-scroll'));
             },
 
             updatePointFilter = function(e) {

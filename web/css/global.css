@@ -8597,9 +8597,6 @@ body.noScroll {
 .pick-point-list-i:last-child .table_cell {
   padding-bottom: 30px;
 }
-.pick-point .order-popup-map {
-  display: none;
-}
 .pick-point.show-map .order-popup-map {
   display: block;
 }
