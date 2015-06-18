@@ -7966,6 +7966,10 @@ body.noScroll {
   *zoom: 1;
   *display: inline;
 }
+.form-control-group__tx:active,
+.form-control-group__tx:focus {
+  outline: none;
+}
 .form-control-group__hint {
   font-size: 14px;
   position: absolute;
