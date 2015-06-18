@@ -77,13 +77,11 @@
         </form>
 
         {{! show-map показывает, что отображается в данный момент - если класс есть, то карта, если нет - список. }}
-        <div class="pick-point">
-            <div>
-                <div id="order-{{order.id}}-map-container" class="js-order-delivery-map-container order-popup-map" data-map-option="{{&mapDataValue}}"></div>
-            </div>
+        <div id="order-{{order.id}}-point-parent-container" class="pick-point" data-toggle-class="show-map">
+            <div id="order-{{order.id}}-map-container" class="js-order-delivery-map-container order-popup-map" data-map-option="{{&mapDataValue}}" data-parent-container-selector="#order-{{order.id}}-point-parent-container"></div>
 
             <div class="content-scroll">
-                <div id="order-{{order.id}}-point-container" class="js-order-delivery-point-container pick-point-list table">
+                <div id="order-{{order.id}}-point-container" class="js-order-delivery-point-container pick-point-list table" data-parent-container-selector="#order-{{order.id}}-point-parent-container">
                     {{>page/order/delivery/point-list}}
                 </div>
             </div>

@@ -288,6 +288,7 @@ define(
                     index = parseInt($el.data('index')),
                     $selected,
                     $container,
+                    $parentContainer,
                     $filterForm = $($el.data('filterFormSelector'))
                 ;
 
@@ -299,22 +300,17 @@ define(
 
                 $selected = $el.find('[data-index="' + index + '"]');
                 $container = $($selected.data('containerSelector'));
+                $parentContainer = $($container.data('parentContainerSelector'));
 
                 $el.data('index', index);
                 $el.find('[data-index]').each(function(i, el) {
-                    var
-                        $el = $(el),
-                        $container = $($el.data('containerSelector'))
-                    ;
-
-                    $el.hide();
-                    $container.parent().hide(); // важно чтобы у контейнера был родительский контейнер
+                    $(el).hide();
                 });
 
                 filterPoints($el.data('storageSelector'), $filterForm);
 
                 $selected.show();
-                $container.parent().show();
+                $parentContainer.toggleClass($parentContainer.data('toggleClass'));
                 $container.trigger('update', [Storage.get($el.data('storageSelector'), 'filtered')]);
             },
 
