@@ -1,0 +1,35 @@
+<div class="checkout-order__inn box-show js-delivery-type id-order-{{id}}-delivery" data-data-selector="#order-{{id}}-map-data">
+    <div class="checkout-celendar js-order-delivery-celendar-link" data-data-selector="#order-{{id}}-date-data" data-modal-position="fixed-untill-640" data-modal-title="Дата">{{delivery.date}}</div>
+
+    {{^delivery.point}}
+        <button class="btn-transparent btn-transparent--normal js-order-delivery-pointPopup-link" data-modal-title="Точки самовывоза" data-modal-position="fixed" data-storage-selector="#order-{{id}}-point-data" data-btn="select-shop">
+            <span class="bb-dotted">Выбрать точку самовывоза</span>
+        </button>
+    {{/delivery.point}}
+
+    {{#delivery.point}}
+        <div class="checkout-address">
+            <div class="checkout-address__title"><strong>Магазин</strong></div>
+
+            <div class="shop-snippet clearfix">
+                <div class="shop-snippet-name">
+                    <img src="/img/points/{{icon}}" alt="" class="shop-snippet-name__img">
+                    <span class="shop-snippet-name__text">{{group.name}}</span>
+                </div>
+
+                <div class="shop-snippet-info">
+                    {{#subway}}
+                    <div class="shop-snippet-metro">
+                        <span class="shop-snippet-metro__bullet" style="background: {{color}};"></span>
+                        <span class="shop-snippet-metro__text">{{name}}</span>
+                    </div>
+                    {{/subway}}
+
+                    <div class="shop-snippet-address">{{address}} <br/>{{regime}}</div>
+                </div>
+
+                <div class="table_cell ta-r"><a href="" class="bb-dotted js-modal-show js-order-delivery-pointPopup-link" data-modal-title="Точки самовывоза" data-modal-position="fixed" data-storage-selector="#order-{{order.id}}-point-data">Изменить</a></div>
+            </div>
+        </div>
+    {{/delivery.point}}
+</div>

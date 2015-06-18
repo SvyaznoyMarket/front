@@ -21,6 +21,8 @@ class Product {
     public $sender = [];
     /** @var mixed */
     public $clientMeta;
+    /** @var \EnterModel\Product */
+    public $product;
 
     /**
      * @param array $data

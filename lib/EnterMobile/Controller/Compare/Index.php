@@ -3,6 +3,7 @@
 namespace EnterMobile\Controller\Compare;
 
 use Enter\Http;
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\DebugContainerTrait;
@@ -14,7 +15,7 @@ use EnterMobile\Repository;
 use EnterMobile\Model\Page\Compare\Index as Page;
 
 class Index {
-    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -31,10 +32,22 @@ class Index {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
+
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
+
         $curl->execute();
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // запрос категорий
         $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
@@ -54,6 +67,8 @@ class Index {
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->cart = $cart;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница

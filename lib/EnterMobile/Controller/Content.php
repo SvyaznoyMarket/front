@@ -5,12 +5,13 @@ use Enter\Http;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\DebugContainerTrait;
 use EnterAggregator\MustacheRendererTrait;
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterQuery as Query;
 use EnterMobile\Model\Page\Content as Page;
 
 class Content {
-    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -35,9 +36,21 @@ class Content {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
+
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
+
         $curl->execute();
 
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
         $curl->prepare($categoryListQuery);
@@ -62,6 +75,8 @@ class Content {
         $pageRequest->content = $contentItem['content'];
         $pageRequest->region = $region;
         $pageRequest->mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->cart = $cart;
 
         $page = new Page();
         (new \EnterMobile\Repository\Page\Content())->buildObjectByRequest($page, $pageRequest);

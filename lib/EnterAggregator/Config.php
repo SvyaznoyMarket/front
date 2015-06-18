@@ -74,6 +74,8 @@ namespace EnterAggregator {
         public $retailRocketService;
         /** @var Config\MustacheRenderer */
         public $mustacheRenderer;
+        /** @var Config\Kladr */
+        public $kladr;
         /** @var array */
         public $mediaHosts = [];
         /** @var Config\Order */
@@ -124,6 +126,8 @@ namespace EnterAggregator {
             $this->retailRocketService = new Config\RetailRocketService();
 
             $this->mustacheRenderer = new Config\MustacheRenderer();
+
+            $this->kladr = new Config\Kladr();
 
             $this->order = new Config\Order();
             $this->product = new Config\Product();
@@ -182,11 +186,11 @@ namespace EnterAggregator\Config {
     class AbTest {
         /** @var string */
         public $cookieName;
+        /** @var string */
+        public $cookieDomain;
     }
 
     class GoogleAnalytics {
-        /** @var string */
-        public $id;
         /** @var bool */
         public $enabled;
     }
@@ -341,9 +345,42 @@ namespace EnterAggregator\Config {
         public $checkEscape;
     }
 
-    class Order {
+    class Kladr {
         /** @var string */
+        public $token;
+        /** @var string */
+        public $key;
+        /** @var int */
+        public $limit;
+    }
+
+    class Order {
+        /**
+         * Ключ сессии, в котором хранится предыдущее разбиение корзины
+         * @var string
+         */
         public $splitSessionKey;
+        /**
+         * Ключ сессии, в котором хранятся данные пользователя
+         * @var string
+         */
+        public $userSessionKey;
+        /**
+         * Кука, в которой хранятся данные о последнем созданном заказе
+         * @var string
+         */
+        public $cookieName;
+        /**
+         * Ключ сессии, в котором хранится созданный заказ
+         * @var string
+         */
+        public $sessionName;
+        /** @var Order\Prepayment */
+        public $prepayment;
+
+        public function __construct() {
+            $this->prepayment = new Order\Prepayment();
+        }
     }
 
     class Product {
@@ -408,6 +445,18 @@ namespace EnterAggregator\Config\Logger {
     class FileAppender extends BaseAppender {
         /** @var string */
         public $file;
+    }
+}
+
+namespace EnterAggregator\Config\Order {
+    class Prepayment {
+        /** @var bool */
+        public $enabled;
+        /**
+         * Если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
+         * @var int|null
+         */
+        public $priceLimit;
     }
 }
 

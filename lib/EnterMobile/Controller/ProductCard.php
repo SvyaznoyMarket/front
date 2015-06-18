@@ -3,6 +3,7 @@
 namespace EnterMobile\Controller;
 
 use Enter\Http;
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterAggregator\DebugContainerTrait;
@@ -13,7 +14,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use ConfigTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, MustacheRendererTrait, DebugContainerTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -29,6 +30,8 @@ class ProductCard {
         // токен товара
         $productToken = $productRepository->getTokenByHttpRequest($request);
 
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+
         // контроллер
         $controller = new \EnterAggregator\Controller\ProductCard();
         // запрос для контроллера
@@ -37,6 +40,8 @@ class ProductCard {
         $controllerRequest->config->review = true;
         $controllerRequest->regionId = $regionId;
         $controllerRequest->productCriteria = ['token' => $productToken];
+        $controllerRequest->userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request);
+        $controllerRequest->cart = $cart;
 
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);
@@ -53,6 +58,8 @@ class ProductCard {
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $controllerResponse->region;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
+        $pageRequest->user = $controllerResponse->user;
+        $pageRequest->cart = $cart;
         $pageRequest->product = $controllerResponse->product;
         $pageRequest->accessoryCategories = $controllerResponse->accessoryCategories;
         $pageRequest->hasCredit = $controllerResponse->hasCredit;

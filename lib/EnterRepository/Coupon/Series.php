@@ -47,4 +47,33 @@ class Series {
 
         return $seriesList;
     }
+
+    /**
+     * @param Model\Coupon\Series[] $couponSeries
+     * @param array $usedSeriesIds
+     * @param Model\User $user
+     * @param $couponSeriesId
+     * @return array
+     */
+    public function filterObjectList(array &$couponSeries, array $usedSeriesIds, Model\User $user, $couponSeriesId = null) {
+        return array_values(
+            array_filter(
+                $couponSeries,
+                function(Model\Coupon\Series $series) use (&$usedSeriesIds, &$user, &$couponSeriesId) {
+                    return (
+                        $couponSeriesId
+                        || (
+                            !in_array($series->id, $usedSeriesIds) // ... которые не были получены ранее
+                            && $series->limit > 0 // ... у которых не исчерпан лимит
+                            && ($series->isForNotMember || $series->isForNotMember) // ... которые хотя бы для участника ИЛИ неучастника // TODO: кажись, лишнее условие
+                            && (
+                                (!$user || (!$user->isEnterprizeMember && $series->isForNotMember)) // ... которые для неучастников ИЛИ ...
+                                || ($user && $user->isEnterprizeMember && $series->isForMember) // ... которые для участников
+                            )
+                        )
+                    );
+                }
+            )
+        );
+    }
 }

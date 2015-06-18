@@ -76,6 +76,13 @@ namespace EnterMobileApplication\Controller\Cart {
             $response->errors = $controllerResponse->errors;
             $response->split = $controllerResponse->split;
 
+            // type fix
+            foreach ($response->split->orders as $order) {
+                if (!(bool)$order->groupedPossiblePointIds) {
+                    $order->groupedPossiblePointIds = null;
+                }
+            }
+
             // response
             return new Http\JsonResponse($response);
         }

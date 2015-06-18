@@ -1,0 +1,74 @@
+<div class="address-pick-snippet">
+    <div id="order-{{order.id}}-address-map-container" data-map-option="{{&mapDataValue}}" class="order-popup-map"></div>
+
+    <div class="address-pick-snippet__form">
+        <form class="js-smartAddress-form" action="{{url}}" method="post" data-map-container-selector="#order-{{order.id}}-address-map-container" data-kladr-id-selector="#order-delivery-address-kladrId">
+            <div class="form-control__container">
+                <div class="form-control-group">
+                    <input required="required" class="form-control-group__tx textfield js-smartAddress-input" id="order-delivery-address-street" type="text" name="{{fields.street.name}}" autocomplete="off" data-kladr-type="street" />
+                    <label class="form-control-group__lbl" for="order-delivery-address-street">Улица</label>
+                </div>
+
+                <div class="form-control-group half-wide">
+                    <input class="form-control-group__tx textfield js-smartAddress-input" id="order-delivery-address-building" type="text" name="{{fields.building.name}}" autocomplete="off" data-kladr-type="building" />
+                    <label class="form-control-group__lbl" for="order-delivery-address-building">Дом</label>
+                </div>
+
+                <div class="form-control-group half-wide">
+                    <input class="form-control-group__tx textfield" id="order-delivery-address-apartment" type="text" name="{{fields.apartment.name}}">
+                    <label class="form-control-group__lbl" for="order-delivery-address-apartment">Квартира</label>
+                </div>
+
+                <input id="order-delivery-address-kladrId" type="hidden" name="{{fields.kladrId.name}}">
+
+                <div class="btn-container">
+                    <button class="btn btn--submit btn--orange btn--medium" type="submit">Готово</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--
+<ul class="checkout-checkbox-lst">
+    <li class="checkout-checkbox-lst__i">
+        <input type="radio" id="adr1" name="paynow" class="custom-input custom-input--defradio" checked>
+
+        <label class="custom-label" for="adr1">
+            <span class="custom-label_tx">ул. Линии Октябрьской Железной Дороги, 12/1, 23</span>
+        </label>
+    </li>
+
+    <li class="checkout-checkbox-lst__i">
+        <input type="radio" id="adr2" name="adrnow" class="custom-input custom-input--defradio">
+
+        <label class="custom-label" for="adr2">
+            <span class="custom-label_tx">ул. Орджоникидзе, 10</span>
+        </label>
+    </li>
+
+    <li class="checkout-checkbox-lst__i">
+        <input type="radio" id="adr3" name="adrnow" class="custom-input custom-input--defradio">
+
+        <label class="custom-label" for="adr3">
+            <span class="custom-label_tx">Улицв Умывальников Начальника</span>
+        </label>
+    </li>
+    <li class="checkout-checkbox-lst__i">
+        <input type="radio" id="adr3" name="adrnow" class="custom-input custom-input--defradio">
+
+        <label class="custom-label" for="adr3">
+            <span class="custom-label_tx"><span class="custom-label_tx--gray">Другой адрес</span></span>
+        </label>
+    </li>
+    <li class="checkout-checkbox-lst__i">
+        <input type="radio" id="adr4" name="adrnow" class="custom-input custom-input--defradio">
+
+        <label class="custom-label" for="adr4">
+            <span class="custom-label_tx"><span class="custom-label_tx--gray">Изменить адрес</span>
+                Улица Мочалок Командира</span>
+        </label>
+    </li>
+</ul>
+<div class="btn-container"><a href="" class="btn btn--orange btn--pay">Выбрать</a></div>
+-->

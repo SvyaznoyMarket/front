@@ -1,0 +1,94 @@
+{{>page/order/header}}
+
+<div class="content">
+    <div class="contentBox640">
+
+        <section class="checkout">
+            <h1 class="checkout__tl">Ваши заказы</h1>
+
+        {{#orders}}
+            <div class="confirm">
+                <script id="order-{{id}}-onlinePayment-data" type="application/json">{{&onlinePaymentJson}}</script>
+
+                <div class="confirm__box confirm__box--normal">
+                    <strong class="confirm__title">Заказ</strong>
+                    <a href="" class="confirm__number">{{number}}</a>
+                </div>
+
+                <div class="confirm__box confirm__box--items table table--2col">
+                    <div class="table_cell">
+                        <ul class="confirm-items">
+                        {{#products}}
+                            <li class="confirm-items__i"{{#isHidden}} style="display: none;"{{/isHidden}}>{{name}} {{quantity}} шт.</li>
+                        {{/products}}
+                        {{#productMoreLink}}
+                            <li class="confirm-items__i"><a class="confirm-items__lk" href="">{{name}}</a></li>
+                        {{/productMoreLink}}
+                        </ul>
+                    </div>
+
+                    <div class="table_cell">
+                    {{#delivery}}
+                        <div>{{type.name}} {{date.name}} {{#interval}}{{from}}…{{to}}{{/interval}}</div>
+                    {{/delivery}}
+
+                    {{#point}}
+                        <div class="shop-snippet clearfix">
+                            <div class="shop-snippet-name">
+                                <img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
+                                <span class="shop-snippet-name__text">Магазин Enter</span>
+                            </div>
+
+                            <div class="shop-snippet-info">
+                                {{#subway}}
+                                <div class="shop-snippet-metro">
+                                    {{#line}}
+                                        <span class="shop-snippet-metro__bullet" style="background: {{line.color}};"></span>
+                                    {{/line}}
+                                    <span class="shop-snippet-metro__text">м. {{name}}</span>
+                                </div>
+                                {{/subway}}
+
+                                <div class="shop-snippet-address">
+                                    {{address}} <br/>
+                                    {{#interval}}c {{interval.from}} до {{interval.to}}{{/interval}}
+                                </div>
+                            </div>
+                        </div>
+                    {{/point}}
+                    </div>
+
+                </div>
+
+                {{#onlinePayment}}
+                <div class="confirm__box confirm__box--payment confirm-payment">
+                    {{#isPrepayment}}
+                    <div class="confirm-payment__title confirm-payment__cell">Требуется предоплата</div>
+                    {{/isPrepayment}}
+
+                    <div class="confirm-payment__cell">
+                        <button class="confirm-payment__btn btn-transparent btn-transparent--normal js-order-delivery-onlinePayment-link" data-storage-selector="#order-{{id}}-onlinePayment-data">
+                            <span class="bb-dotted m">Оплатить онлайн</span>
+                        </button>
+
+						<span class="confirm-payment__types">
+                            {{#images}}
+							<img class="confirm-payment__card" src="/css/modules/order/img/{{.}}" />
+                            {{/images}}
+						</span>
+                    </div>
+                </div>
+                {{/onlinePayment}}
+
+                <div class="confirm__box confirm__box--normal comfirm-summary">
+                    <span class="comfirm-summary__title">Сумма заказа:</span>
+                    <span class="comfirm-summary__price">{{sum.name}} <span class="rubl">p</span></span>
+                </div>
+            </div>
+        {{/orders}}
+
+            <div class="btn-stretch btn-stretch--default"><a class="btn-stretch__link" href="/">Вернуться на главную</a></div>
+        </section>
+
+    </div>
+</div>

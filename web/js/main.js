@@ -19,6 +19,7 @@ require.config({
         'jquery.ui'             : 'vendor/jquery/jquery.ui-1.10.4.custom',
         'jquery.ui.touch-punch' : 'vendor/jquery/jquery.ui.touch-punch-0.2.3',
         'jquery.popup'          : 'plugin/jquery.popup',
+        'jquery.modal'          : 'plugin/jquery.modal',
         'jquery.deparam'        : 'plugin/jquery.deparam',
         'jquery.enterslide'     : 'plugin/jquery.enterslide',
         'jquery.touchwipe'      : 'plugin/jquery.touchwipe',
@@ -27,7 +28,8 @@ require.config({
         'jquery.scrollTo'       : 'plugin/jquery.scrollTo',
         'jquery.maskedinput'    : 'plugin/jquery.maskedinput',
         'jquery.smartbanner'    : 'plugin/jquery.smartbanner',
-        'jquery.slick'         : 'plugin/slick.min',
+        'jquery.slick'          : 'plugin/slick.min',
+        'jquery.kladr'          : 'plugin/jquery.kladr',
 
         'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
         'mustache'           : 'vendor/mustache-0.8.2',
@@ -36,6 +38,10 @@ require.config({
 
         'browserstate.history'         : 'vendor/browserstate.history-1.8b2',
         'browserstate.history.adapter' : 'vendor/browserstate.history.adapter.jquery-1.8b2',
+
+        'yandexmaps' : (debug) ? 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=debug' : 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=release',
+
+        'kladr' : 'vendor/kladr/core',
 
         'direct-credit' : 'http://direct-credit.ru/widget/api_script_utf'
     },
@@ -56,6 +62,9 @@ require.config({
         'jquery.popup': {
             deps: ['jquery']
         },
+        'jquery.modal': {
+            deps: ['jquery']
+        },
         'jquery.touchwipe': {
             deps: ['jquery']
         },
@@ -74,6 +83,9 @@ require.config({
         'jquery.smartbanner': {
             deps: ['jquery']
         },
+        'jquery.kladr': {
+            deps: ['jquery', 'kladr']
+        },
         'underscore': {
             exports: '_'
         },
@@ -86,6 +98,14 @@ require.config({
         'browserstate.history': [],
         'browserstate.history.adapter': {
             deps: ['browserstate.history', 'jquery']
+        },
+
+        'yandexmaps': {
+            exports: 'ymaps'
+        },
+
+        'kladr': {
+            deps: ['jquery']
         },
 
         'direct-credit': []
@@ -116,10 +136,10 @@ require(
         'module/region',
         'module/search',
         'module/popupShow',
+        'jquery.modal',
         'module/widget',      // виджеты
-        'module/user.common', // инфо о пользователе
         'module/cart.common', // кнопка купить, спиннер
-        'module/order.common',
+        //'module/order',
         'module/product.catalog.common',
 		'module/siteVersionSwitcher',
 		'module/slotButton',

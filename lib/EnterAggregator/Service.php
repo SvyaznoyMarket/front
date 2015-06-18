@@ -130,7 +130,7 @@ class Service {
                 'partials_loader'       => new FilesystemAliasLoader($config->templateDir),
                 'escape'                => $config->checkEscape
                     ? function($value) {
-                        if (!is_scalar($value)) {
+                        if ((null !== $value) && !is_scalar($value)) {
                             throw new \Exception('Неверное значение ' . json_encode($value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
                         }
 

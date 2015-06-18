@@ -3,6 +3,7 @@
 namespace EnterMobile\Controller\ProductSet;
 
 use Enter\Http;
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\MustacheRendererTrait;
@@ -17,7 +18,7 @@ use EnterQuery;
 use EnterAggregator\AbTestTrait;
 
 class Index {
-    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, AbTestTrait;
+    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, AbTestTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -57,10 +58,22 @@ class Index {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
+
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
+
         $curl->execute();
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // запрос меню
         $mainMenuQuery = new Query\MainMenu\GetItem();
@@ -114,6 +127,8 @@ class Index {
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->cart = $cart;
         $pageRequest->pageNum = $pageNum;
         $pageRequest->limit = $limit;
         $pageRequest->count = count($productsById);

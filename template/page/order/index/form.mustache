@@ -1,0 +1,54 @@
+<form class="js-user-form checkout-form form-control clearfix" action="{{form.url}}" method="post" accept-charset="utf-8" data-error="{{&form.errorDataValue}}">
+    <div class="global-error js-global-error"></div>
+
+    {{^isUserAuthenticated}}
+    <fieldset class="order-authorize__container">
+        <div class="order-authorize">
+            <div class="order-authorize__t">Уже заказывали у нас?</div>
+            <a class="order-authorize__btn btn1" href="{{authUrl}}"><span class="btn-inner">Войти с паролем</span></a>
+        </div>
+    </fieldset>
+    {{/isUserAuthenticated}}
+
+    <fieldset class="form-control__container lr-padding">
+        <div class="form-control-group js-user-wrap">
+            <input class="form-control-group__tx textfield js-user-field js-field-phone" data-field-name="phone" id="id-userForm-phone" type="text" name="user[phone]" value="{{form.phone}}" placeholder="+7(xxx)xxx-xx-xx">
+            <label class="form-control-group__lbl required" for="id-userForm-phone">Телефон</label>
+            <span class="form-control-group__hint">Для смс о состоянии заказа</span>
+        </div>
+
+        <div class="form-control-group js-user-wrap">
+            <input class="form-control-group__tx textfield js-user-field js-field-email" data-field-name="email" id="id-userForm-email" type="text" name="user[email]" value="{{form.email}}" placeholder="email.ru@email">
+            <label class="form-control-group__lbl required" for="id-userForm-email">E-mail</label>
+        </div>
+
+        <div class="form-control-group">
+            <input class="form-control-group__tx textfield" id="id-userForm-firstName" type="text" name="user[firstName]" value="{{form.firstName}}" placeholder="">
+            <label class="form-control-group__lbl" for="id-userForm-firstName">Имя</label>
+            <span class="form-control-group__hint">Как к вам обращаться?</span>
+        </div>
+
+        <div class="error"></div>
+    </fieldset>
+
+    <fieldset class="form-control__container lr-padding">
+        {{! Чтобы показать/скрыть поле с картой, надо добавить/убрать класс active: }}
+        <div class="bonus-cnt toggle js-toggle-wrap">
+            <div class="bonus-cnt__head">Начислить баллы</div>
+
+            <div class="bonus-cnt-card toggle-link js-toggle-link">
+                <img class="bonus-cnt-card__img" src="/css/modules/order/img/m-mnogoru.png">
+                <span class="bonus-cnt-card__tl">Карта Много.ру</span>
+            </div>
+
+            <div class="form-control-group toggle-box">
+                <input class="form-control-group__tx textfield js-field-mnogoru" id="id-userForm-mnogoruNumber" type="text" name="user[mnogoruNumber]" value="{{form.mnogoruNumber}}" placeholder="xxxx xxxx">
+                <label class="form-control-group__lbl" for="id-userForm-mnogoruNumber">Карта</label>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="btn-container btn-container--orange">
+        <button type="submit" class="btn btn--submit btn--orange btn--big js-user-submit">Далее</button>
+    </div>
+</form>

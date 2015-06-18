@@ -1,0 +1,74 @@
+// блок филььтра с параметрами
+
+.custom-select__kit.custom-filter__kit{
+    background-color: #fff;
+    
+    .custom-select{
+        margin-left: 5px;
+
+        &--button {
+
+        }
+        &__value {
+            border: 1px solid transparent;
+            border-bottom: 0px;
+            .border-radius(4px,0px,0px,4px);
+            padding-left: 20px;
+            padding-right: 20px;
+            color: #686868;
+
+        }
+        &-list {
+            top: 34px;
+            left: auto;
+            right: 0;
+            padding-top: 0px;
+            border: 1px solid #c7c7c7;
+            .border-radius(0px,3px,3px,0px);
+            .box-shadow(0 3px 5px rgba(0, 0, 0, .3));
+
+            &__item {
+                border: 0;
+                color: #686868;
+            }
+        }
+        &.toggle--active{
+            .custom-select{
+                &__value {
+                    border-color: #c7c7c7;
+                    background-color: #fff;
+                }
+                &-list{
+                    display: block;
+                    z-index: 1;
+                }
+            }
+            .caret{
+                .transform(rotate(180deg));
+            }
+        }
+        &:first-child{
+            .custom-select{
+                &-list {
+                    left: 0;
+                    right: auto;
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width: 640px){
+    .custom-select__kit.custom-filter__kit{
+        .custom-select{
+            &__value{
+                font-size: 12px;
+            }
+            &-list{
+                top: 32px;
+                &__item{
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+}

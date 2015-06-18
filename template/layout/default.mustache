@@ -16,6 +16,7 @@
     <meta name="google-play-app" content="app-id=ru.enter">
 
     <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="canonical" href="http://www.enter.ru{{&path}}" >
 
     <script type="text/javascript">
         window.htmlStartTime = new Date().getTime();
@@ -46,7 +47,7 @@
     {{>partial/javascript}}
 </head>
 
-<body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="">
+<body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="{{&dataUser}}" data-cart="{{&dataCart}}" data-widget="{{&dataWidget}}">
     {{>partial/counters}}
 
     <div class="wrapper">

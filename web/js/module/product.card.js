@@ -115,15 +115,15 @@ define(
 
 
         // direct-credit
-        $creditPayment = $('.js-creditPayment');
+        var $creditPayment = $('.js-creditPayment');
         console.info('creditPayment', $creditPayment);
         var dataValue = $creditPayment.data('value');
         _.isObject(dataValue) && require(['module/direct-credit', 'direct-credit'], function(directCredit) {
             dataValue.product.quantity = 1;
 
             directCredit.getPayment(
-                { partnerId: dataValue.partnerId },
-                $body.data('user'),
+                dataValue.partnerId,
+                dataValue.sessionId,
                 dataValue.product,
                 function (result) {
                     var $template = $($creditPayment.data('templateSelector')),

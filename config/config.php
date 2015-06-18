@@ -2,6 +2,7 @@
 
 return function(\EnterAggregator\Config $config) {
     mb_internal_encoding('UTF-8');
+    setlocale(LC_TIME, 'ru_RU', 'ru_RU.utf8');
 
     $config->dir = realpath(__DIR__ . '/..');
 
@@ -17,12 +18,12 @@ return function(\EnterAggregator\Config $config) {
     $config->userToken->authName = '_token';
 
     $config->googleAnalytics->enabled = true;
-    $config->googleAnalytics->id = 'UA-25485956-5';
 
     $config->region->defaultId = '14974';
     $config->region->cookieName = 'geoshop';
 
-    $config->abTest->cookieName = 'switch';
+    $config->abTest->cookieName = 'switchMobile';
+    $config->abTest->cookieDomain = '.m.enter.ru';
 
     $config->credit->cookieName = 'credit_on';
 
@@ -107,6 +108,10 @@ return function(\EnterAggregator\Config $config) {
     $config->mustacheRenderer->templateClassPrefix = preg_replace('/[^\w]/', '_', $config->hostname . '_v2' . '-');
     $config->mustacheRenderer->checkEscape = false;
 
+    $config->kladr->token = '52b04de731608f2773000000';
+    $config->kladr->key = 'c20b52a7dc6f6b28023e3d8ef81b9dbdb51ff74b';
+    $config->kladr->limit = 20;
+
     $config->mediaHosts = [
         0 => 'http://fs01.enter.ru',
         1 => 'http://fs02.enter.ru',
@@ -121,6 +126,11 @@ return function(\EnterAggregator\Config $config) {
     ];
 
     $config->order->splitSessionKey = 'order_split';
+    $config->order->userSessionKey = 'order_user';
+    $config->order->cookieName = 'last_order';
+    $config->order->sessionName = 'createdOrder';
+    $config->order->prepayment->enabled = true;
+    $config->order->prepayment->priceLimit = 100000;
 
     $config->product->itemPerPage = 19;
     $config->product->itemsInSlider = 60;

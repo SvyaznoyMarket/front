@@ -1,0 +1,53 @@
+.shop-snippet {
+    display: table;
+    width: 100%;
+    &-name {
+        padding: 5px 20px 0 0;
+
+        text-align: center;
+        display: table-cell;
+        vertical-align: middle;
+
+        width: 70px;
+        &__img {
+            display: block;
+
+            max-width: 35px;
+            margin: 0 auto;
+        }
+        &__text {
+            font-size: 10px;
+
+            display: block;
+
+            margin: 2px 0 0;
+
+            color: #616161;
+        }
+    }
+    &-metro {
+        &__bullet {
+            width: 8px;
+            height: 8px;
+            margin: 0 2px 0 -15px;
+
+            .rounded(50%);
+            .inline-block-middle();
+        }
+        &__text {
+            font-size: 14px;
+
+            .inline-block-middle();
+        }
+    }
+    &-address {
+        font-size: 12px;
+
+        color: #616161;
+    }
+
+    &-info {
+        display: table-cell;
+        vertical-align: middle;
+    }
+}

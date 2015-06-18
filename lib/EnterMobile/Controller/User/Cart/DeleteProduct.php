@@ -47,11 +47,8 @@ class DeleteProduct {
         $productItemQuery = new Query\Product\GetItemById($cartProduct->id, $regionId);
         $curl->prepare($productItemQuery);
 
-        // токен пользователя
-        $userToken = (new \EnterRepository\User)->getTokenByHttpRequest($request);
-
         // запрос пользователя
-        $userItemQuery = $userToken ? new Query\User\GetItemByToken($userToken) : null;
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
         if ($userItemQuery) {
             $curl->prepare($userItemQuery);
         }
@@ -101,7 +98,7 @@ class DeleteProduct {
         }
 
         // пользователь
-        $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
+        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
         $page = new Page();
         // кнопка купить

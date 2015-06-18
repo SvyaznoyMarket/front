@@ -3,6 +3,7 @@
 namespace EnterMobile\Controller\ProductCatalog;
 
 use Enter\Http;
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\RouterTrait;
@@ -16,7 +17,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Page\ProductCatalog\ChildCategory as Page;
 
 class BrandCategory {
-    use ConfigTrait, CurlTrait, RouterTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, CurlTrait, RouterTrait, MustacheRendererTrait, DebugContainerTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -36,6 +37,8 @@ class BrandCategory {
 
         // токен бренда
         $brandToken = is_scalar($request->query['brandToken']) ? (string)$request->query['brandToken'] : null;
+
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
 
         $brandQuery = new Query\Brand\GetItemByToken($brandToken, $regionId);
         $curl->prepare($brandQuery)->execute();
@@ -73,6 +76,9 @@ class BrandCategory {
         $controllerRequest->filterRepository = $filterRepository;
         $controllerRequest->baseRequestFilters = $baseRequestFilters;
         $controllerRequest->requestFilters = $requestFilters;
+        $controllerRequest->userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request);
+        $controllerRequest->cart = $cart;
+
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);
 
@@ -85,6 +91,8 @@ class BrandCategory {
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $controllerResponse->region;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
+        $pageRequest->user = $controllerResponse->user;
+        $pageRequest->cart = $cart;
         $pageRequest->pageNum = $pageNum;
         $pageRequest->limit = $limit;
         $pageRequest->count = $controllerResponse->productUiPager->count; // TODO: передавать productUiPager

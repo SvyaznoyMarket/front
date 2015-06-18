@@ -1,6 +1,8 @@
 <?php
 namespace EnterModel\Cart\Split\Order;
 
+use EnterModel as Model;
+
 class Product {
     /** @var string|null */
     public $id;
@@ -28,13 +30,15 @@ class Product {
     public $stockQuantity;
     /** @var array */
     public $sender;
-    /** @var \EnterModel\Product\Media */
+    /** @var Model\Product\Media */
     public $media;
 
     /**
      * @param array $data
      */
     public function __construct($data = []) {
+        $this->media = new Model\Product\Media();
+
         $this->id = $data['id'] ? (string)$data['id'] : null;
         $this->ui = $data['ui'] ? (string)$data['ui'] : null;
         $this->name = $data['name'] ? (string)$data['name'] : null;

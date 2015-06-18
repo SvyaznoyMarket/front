@@ -107,11 +107,12 @@
 
 
 /* ==========================================================================
-   Пользовательских input[type=radio], input[type=checkbox] .customInput
+   Пользовательских input[type=radio], input[type=checkbox] .custom-input
    ========================================================================== */
 
 @import "modules/customInput/customInput.less";
 @import "modules/customInput/m.customInput.less";
+@import "modules/customInput/drop-filter.less";
 
 
 /* ==========================================================================
@@ -259,24 +260,22 @@
 @import "modules/order/order.less";
 @import "modules/order/m.order.less";
 
-//блок товара в оформлении заказа .orderCol_cnt
-@import "modules/order/orderCol/orderCol.less";
-@import "modules/order/orderCol/m.orderCol.less";
+// новое оформление заказа
+@import "modules/order/checkout/checkout.less";
+@import "modules/order/checkout/checkout-order.less";
+@import "modules/order/checkout/m.checkout-order.less";
+@import "modules/order/controls/controls.less";
 
-//дополнительные пожелания .orderComment
-@import "modules/order/orderComment.less";
+//форма личных данных пользователя
+@import "modules/order/authorize/order-authorize.less";
+@import "modules/order/authorize/m.order-authorize.less";
+@import "modules/order/order-popup/order-popup.less";
 
-//строка перехода к следующему шагу .orderCompl
-@import "modules/order/orderCompl/orderCompl.less";
-@import "modules/order/orderCompl/m.orderCompl.less";
-
-//форма личных данных пользователя .orderU
-@import "modules/order/orderU/orderU.less";
-@import "modules/order/orderU/m.orderU.less";
-
-//форма личных данных пользователя .orderU
-@import "modules/order/orderLn/orderLn.less";
-@import "modules/order/orderLn/m.orderLn.less";
+@import "modules/order/confirm/confirm.less";
+@import "modules/order/confirm/m.confirm.less";
+//сниппеты для заказа
+@import "modules/order/shop-snippet/shop-snippet.less";
+@import "modules/order/address/address.less";
 
 //календарь .celedr
 @import "modules/order/popupFl/popupFl.less";
@@ -300,3 +299,8 @@
    slick.less
    ========================================================================== */
 @import "modules/slick/slick.less";
+
+/* ==========================================================================
+   Helpers
+   ========================================================================== */
+@import "modules/helpers/helpers.less";

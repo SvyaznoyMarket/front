@@ -25,7 +25,7 @@ class User {
      * @param array $data
      */
     public function __construct($data = []) {
-        if ($data['phone']) {
+        if (array_key_exists('phone', $data)) {
             $this->phone = trim((string)$data['phone']);
             $this->phone = preg_replace('/^\+7/', '8', $this->phone);
             $this->phone = preg_replace('/[^\d]/', '', $this->phone);
@@ -34,10 +34,10 @@ class User {
             }
         }
 
-        $this->lastName = $data['last_name'] ? (string)$data['last_name'] : null;
-        $this->firstName = $data['first_name'] ? (string)$data['first_name'] : null;
-        $this->email = $data['email'] ? (string)$data['email'] : null;
-        $this->address = $data['address'] ? new User\Address($data['address']) : null;
+        $this->lastName = array_key_exists('last_name', $data) ? (string)$data['last_name'] : null;
+        $this->firstName = array_key_exists('first_name', $data) ? (string)$data['first_name'] : null;
+        $this->email = array_key_exists('email', $data) ? (string)$data['email'] : null;
+        $this->address = (isset($data['address']) && is_array($data['address'])) ? new User\Address($data['address']) : null;
         //$this->bonusCardNumber = $data['bonus_card_number'] ? (string)$data['bonus_card_number'] : null;
     }
 

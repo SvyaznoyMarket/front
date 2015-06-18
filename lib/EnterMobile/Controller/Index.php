@@ -3,6 +3,7 @@
 namespace EnterMobile\Controller;
 
 use Enter\Http;
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\CurlTrait;
@@ -14,7 +15,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Page\Index as Page;
 
 class Index {
-    use ConfigTrait, LoggerTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, LoggerTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, SessionTrait;
 
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
@@ -28,10 +29,22 @@ class Index {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
+
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
+
         $curl->execute();
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // запрос категорий
         $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
@@ -57,6 +70,8 @@ class Index {
         $pageRequest = new Repository\Page\Index\Request();
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->cart = $cart;
         $pageRequest->promos = $promos;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 

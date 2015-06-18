@@ -3,6 +3,7 @@
 namespace EnterMobile\Controller\Search;
 
 use Enter\Http;
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
@@ -18,7 +19,7 @@ use EnterMobile\Model\Page\Search\Index as Page;
 use EnterAggregator\AbTestTrait as AbTestTrait;
 
 class Index {
-    use ConfigTrait, LoggerTrait, RouterTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, AbTestTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, AbTestTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -57,7 +58,19 @@ class Index {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
+
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
+
         $curl->execute();
+
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
@@ -167,6 +180,8 @@ class Index {
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->pageNum = $pageNum;
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->cart = $cart;
         $pageRequest->limit = $limit;
         $pageRequest->count = $searchResult->productCount; // TODO: передавать searchResult
         $pageRequest->requestFilters = $requestFilters;

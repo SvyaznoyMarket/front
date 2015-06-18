@@ -60,27 +60,13 @@ namespace EnterMobileApplication\Controller\User {
 
             $curl->execute();
 
-            $usedSeriesIds = []; // ид серий купонов
-
-            try {
-                $couponListData = $couponListQuery->getResult();
-            } catch (\Exception $e) {
-                if (402 == $e->getCode()) {
-                    throw new \Exception('Пользователь не авторизован', 401);
-                }
-                throw $e;
-            }
-
-            foreach ($couponListData as $couponItem) {
-                if (empty($couponItem['number'])) continue;
-
-                $coupon = new Model\Coupon($couponItem);
-
-                $response->coupons[] = $coupon; // TODO: вынести в репозиторий
+            $usedSeriesIds = [];
+            $coupons = (new \EnterRepository\Coupon())->getObjectListByQuery($couponListQuery);
+            foreach ($coupons as $coupon) {
                 $usedSeriesIds[] = $coupon->seriesId;
             }
 
-            $response->couponSeries = array_values(
+            $response->couponSeries = array_values( // TODO: вынести в репозиторий
                 array_filter( // фильрация серий купонов
                     (new \EnterRepository\Coupon\Series())->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery),
                     function(Model\Coupon\Series $series) use (&$usedSeriesIds) {

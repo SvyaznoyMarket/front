@@ -124,7 +124,7 @@ class AbTest {
                 $encodedValue,
                 time() + 20 * 365 * 24 * 60 * 60,
                 '/',
-                $this->getConfig()->session->cookieDomain,
+                $this->getConfig()->abTest->cookieDomain,
                 false,
                 false
             ));

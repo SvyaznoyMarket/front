@@ -16,4 +16,8 @@ class Cart extends Partial\Widget {
     public $shownQuantity;
     /** @var Partial\DirectCredit|null */
     public $credit;
+    /** @var string */
+    public $orderUrl;
+    /** @var string */
+    public $orderDataGa;
 }

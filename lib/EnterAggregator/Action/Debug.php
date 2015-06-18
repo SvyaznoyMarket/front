@@ -81,7 +81,10 @@ class Debug {
 
         // session
         if (isset($GLOBALS['enter.http.session'])) {
-            $page->session = json_encode($this->getSession()->all(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+            $data = $this->getSession()->all();
+            if (isset($data['__prevDebug__'])) unset($data['__prevDebug__']);
+
+            $page->session = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
         }
 
         // config

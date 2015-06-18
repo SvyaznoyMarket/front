@@ -18,12 +18,20 @@ namespace EnterMobile\Model\Page\Order {
 namespace EnterMobile\Model\Page\Order\Index {
     use EnterMobile\Model\Page;
     use EnterMobile\Model\Partial;
+    use EnterMobile\Model\Form;
 
     class Content extends Page\DefaultPage\Content {
+        /** @var Form\Order\UserForm */
+        public $form;
+        /** @var bool */
+        public $isUserAuthenticated; // TODO: перенести на уровень выше
+        /** @var string */
+        public $authUrl;
 
         public function __construct() {
             parent::__construct();
+
+            $this->form = new Form\Order\UserForm();
         }
     }
 }
-
