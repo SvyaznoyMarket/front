@@ -77,7 +77,7 @@ namespace EnterAggregator\Controller\Cart {
                 $shop,
                 null,
                 (array)$request->previousSplitData,
-                $request->changeData ? $cartRepository->dumpSplitChange($request->changeData, $request->previousSplitData) : [],
+                $request->changeData ? $request->changeData : [],
                 $request->userFromSplit
             );
             $splitQuery->setTimeout(10 * $config->coreService->timeout);

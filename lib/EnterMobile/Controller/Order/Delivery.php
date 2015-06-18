@@ -96,7 +96,7 @@ class Delivery {
         $controllerRequest->regionId = $regionId;
         $controllerRequest->userToken = $userToken;
         $controllerRequest->shopId = null;
-        $controllerRequest->changeData = $changeData;
+        $controllerRequest->changeData = (new \EnterRepository\Cart())->dumpSplitChange($changeData, $previousSplitData);
         $controllerRequest->previousSplitData = $previousSplitData;
         $controllerRequest->cart = $cart;
         $controllerRequest->enrichCart = true;
