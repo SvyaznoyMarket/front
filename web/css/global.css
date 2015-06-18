@@ -3524,7 +3524,7 @@ body.noScroll {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 .custom-select-list__item {
-  padding: 0px 10px;
+  padding: 5px 10px;
   cursor: pointer;
   border-bottom: 1px solid #e6e6e6;
 }
@@ -3717,6 +3717,8 @@ body.noScroll {
 }
 .custom-select__kit.custom-filter__kit .custom-select-list__item {
   border: 0;
+  padding-top: 0;
+  padding-bottom: 0;
   color: #686868;
 }
 .custom-select__kit.custom-filter__kit .custom-select.toggle--active .custom-select__value {
