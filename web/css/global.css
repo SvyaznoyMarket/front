@@ -7462,6 +7462,23 @@ body.noScroll {
 .checkout-order .shopLst_addrs_tm {
   display: table;
 }
+.checkout-order-info {
+  font-size: 14px;
+  margin: 0 0 10px;
+  padding: 10px;
+  border-left: 5px solid #fb9c00;
+  background: rgba(252, 171, 41, 0.2);
+}
+.checkout-order-info__tx {
+  margin-bottom: 5px;
+}
+.checkout-order-info__l {
+  float: left;
+  max-width: 400px;
+}
+.checkout-order-info__r {
+  float: right;
+}
 .checkout-celendar {
   font-size: 14px;
   line-height: 1;
@@ -7852,6 +7869,18 @@ body.noScroll {
 }
 .checkout-summary__item--val {
   width: 90px;
+}
+@media only screen and (max-width: 560px) {
+  .checkout-order-info__l {
+    float: none;
+    margin-bottom: 10px;
+  }
+  .checkout-order-info__r {
+    float: none;
+  }
+  .self-delivery-choose {
+    text-align: center;
+  }
 }
 @media only screen and (max-width: 480px) {
   .checkout-order-head__vendor {
