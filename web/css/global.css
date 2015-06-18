@@ -8346,7 +8346,7 @@ body.noScroll {
   position: relative;
 }
 .order-popup-points {
-  border-bottom: 1px solid #a6a6a6;
+  border-bottom: 1px solid #e6e6e6;
 }
 .dropdowns {
   width: 100%;
@@ -8357,6 +8357,11 @@ body.noScroll {
 #yandexMap {
   width: 100% !important;
   height: 100% !important;
+}
+@media screen and (max-width: 639px) {
+  .order-popup-points {
+    border-bottom: 1px solid #a6a6a6;
+  }
 }
 .confirm {
   margin: 0 0 20px;
