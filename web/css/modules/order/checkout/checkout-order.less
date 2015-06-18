@@ -306,17 +306,18 @@
 }
 
 .checkout-sale-top {
-    height: 88px;
-    padding-bottom: 10px;
+    min-height: 88px;
+    padding-bottom: 14px;
 }
 
 .checkout-sale-code {
     &__title {
         width: 100%;
         margin-bottom: 8px;
+        font-size: 14px;
     }
     &__it {
-        width: 125px;
+        width: 150px;
         margin: 0;
         padding: 0;
 
@@ -407,7 +408,7 @@
 
         position: relative;
 
-        box-sizing: border-box;
+        .box-sizing(border-box);
         width: 100%;
         margin: 0 0 10px;
         padding: 10px 10px 10px 50px;
