@@ -8345,6 +8345,9 @@ body.noScroll {
   z-index: 3;
   position: relative;
 }
+.order-popup-points {
+  border-bottom: 1px solid #a6a6a6;
+}
 .dropdowns {
   width: 100%;
   background-color: #fff;
