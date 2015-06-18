@@ -7870,6 +7870,13 @@ body.noScroll {
 .checkout-address__select .custom-select-list__item--add .icon-plus {
   margin-left: -19px;
 }
+.checkout-address-choose {
+  margin-top: 10px;
+  display: inline-block;
+  vertical-align: top;
+  *zoom: 1;
+  *display: inline;
+}
 .checkout-sale {
   padding: 10px 0;
 }
