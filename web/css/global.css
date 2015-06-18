@@ -3663,6 +3663,7 @@ body.noScroll {
 }
 .custom-select__kit.custom-filter__kit {
   background-color: #fff;
+  border-bottom: 1px solid #e6e6e6;
 }
 .custom-select__kit.custom-filter__kit .custom-select {
   margin-left: 5px;
@@ -8575,6 +8576,7 @@ body.noScroll {
 }
 .pick-point-list-i {
   padding: 0;
+  border-bottom: 1px solid #e6e6e6;
 }
 .pick-point-list-i:first-child .table_cell {
   padding-top: 30px;
