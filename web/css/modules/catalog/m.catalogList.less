@@ -150,23 +150,28 @@
 }
 
 @media screen and (min-width: 601px) {
-  .catalogList {
-    .img {
-      .flexbox();
-      align-items: center;
-      justify-content: center;
+    .catalogList {
+        .img {
+            .flexbox();
+            align-items: center;
+            justify-content: center;
+        }
+        .rating-beforeItemName {
+            display: block;
+        }
+        .rating-afterItemName {
+            display: none;
+        }
+        .price {
+            &_old {
+                &:empty {
+                    display: none;
+                }
+            }
+        }
     }
-
-    .rating-beforeItemName {
-      display: block;
-    }
-
-    .rating-afterItemName {
-      display: none;
-    }
-
-  }
 }
+
 
 @media screen and (max-width: 490px) {
   .catalogList {

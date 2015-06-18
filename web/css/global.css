@@ -4740,6 +4740,7 @@ body.noScroll {
 }
 .cartItem_col {
   display: table-cell;
+  overflow: hidden;
   vertical-align: top;
 }
 .cartItem_col-img {
@@ -4753,6 +4754,7 @@ body.noScroll {
 }
 .cartItem_col-desc {
   vertical-align: top;
+  overflow: visible;
   font-size: 20px;
 }
 .cartItem_col-desc .name {
@@ -5429,9 +5431,6 @@ body.noScroll {
   color: #8a8a8a;
   font-size: 18px;
 }
-.catalogList .price_old:empty {
-  display: none;
-}
 .catalogList .price_now {
   font-size: 18px;
   font-weight: normal;
@@ -5600,6 +5599,9 @@ body.noScroll {
     display: block;
   }
   .catalogList .rating-afterItemName {
+    display: none;
+  }
+  .catalogList .price_old:empty {
     display: none;
   }
 }
