@@ -897,6 +897,22 @@ define(
             });
             
         });
+        $body.on('submit', '.js-order-form', function(e) {
+            var
+                $form = $(this),
+                $accept = $form.find('[data-field="accept"]')
+            ;
 
+            e.stopPropagation();
+
+            if ($accept.length) {
+                if ($accept.is(':checked')) {
+                    $accept.removeClass('error');
+                } else {
+                    $accept.addClass('error');
+                    e.preventDefault();
+                }
+            }
+        });
     }
 );
