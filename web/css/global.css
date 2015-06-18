@@ -8051,7 +8051,7 @@ body.noScroll {
   width: 100%;
   height: 35px;
   padding-left: 35px;
-  padding-right: 33px;
+  padding-right: 35px;
   color: #686868;
   border: 1px solid #c7c7c7;
   background: #fff;
@@ -8082,17 +8082,18 @@ body.noScroll {
 }
 .search-control__submit {
   position: absolute;
-  top: 11px;
-  right: 15px;
-  width: 17px;
-  height: 17px;
+  top: 0px;
+  right: 0px;
+  width: 35px;
+  height: 35px;
+  padding: 0;
   border: 0;
-  background: url('modules/order/img/map-pointer@2x.png') no-repeat;
+  background: url('modules/order/img/map-pointer@2x.png') no-repeat center;
   background-color: transparent;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+  -webkit-background-size: 17px 17px;
+  -moz-background-size: 17px 17px;
+  -o-background-size: 17px 17px;
+  background-size: 17px 17px;
 }
 .search-control .suggest-control-lst {
   margin-top: 0px;
