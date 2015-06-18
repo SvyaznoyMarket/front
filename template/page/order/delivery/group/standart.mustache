@@ -22,9 +22,9 @@
             <p class="checkout-address__selected">{{user.address.name}}</p>
         {{/user.address}}
 
-        <button class="btn-transparent btn-transparent--normal js-order-delivery-addressPopup-link" data-modal-title="Адрес доставки" data-modal-position="fixed" data-data-selector="#order-{{id}}-address-data" data-map-container-selector="#order-{{id}}-address-map-container">
+        <a class="btn {{^user.address}}btn-transparent btn-transparent--normal{{/user.address}} js-order-delivery-addressPopup-link" data-modal-title="Адрес доставки" data-modal-position="fixed" data-data-selector="#order-{{id}}-address-data" data-map-container-selector="#order-{{id}}-address-map-container">
             <span class="bb-dotted">{{^user.address}}Указать адрес{{/user.address}}{{#user.address}}Изменить адрес{{/user.address}}</span>
-        </button>
+        </a>
 
 
         <!--
