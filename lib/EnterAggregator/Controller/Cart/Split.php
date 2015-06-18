@@ -40,6 +40,11 @@ namespace EnterAggregator\Controller\Cart {
                 $curl->prepare($userItemQuery);
             }
 
+            if ($request->enrichCart) {
+                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $request->regionId);
+                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $request->regionId);
+            }
+
             $curl->execute();
 
             // регион
@@ -59,6 +64,10 @@ namespace EnterAggregator\Controller\Cart {
                 }
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+            }
+
+            if ($request->enrichCart) {
+                (new \EnterRepository\Cart())->updateObjectByQuery($request->cart, $cartItemQuery, $cartProductListQuery);
             }
 
             // запрос на разбиение корзины
@@ -211,6 +220,8 @@ namespace EnterAggregator\Controller\Cart\Split {
         public $shopId;
         /** @var Model\Cart */
         public $cart;
+        /** @var bool */
+        public $enrichCart = false;
         /**
          * Сырые данные от ядра о предыдущем разбиении
          *

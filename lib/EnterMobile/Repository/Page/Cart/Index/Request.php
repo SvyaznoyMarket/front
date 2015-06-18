@@ -6,10 +6,5 @@ use EnterMobile\Model;
 use EnterMobile\Repository;
 
 class Request extends Repository\Page\DefaultPage\Request {
-    /** @var \EnterModel\Cart */
-    public $cart;
-    /** @var \EnterModel\Product[] */
-    public $productsById = [];
-    /** @var \EnterModel\Cart\Product[] */
-    public $cartProducts = [];
+
 }

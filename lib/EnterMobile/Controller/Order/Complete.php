@@ -36,6 +36,16 @@ class Complete {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
+
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
+
         $curl->execute();
 
         try {
@@ -43,6 +53,8 @@ class Complete {
         } catch (\Exception $e) {
             $region = new Model\Region(['id' => $config->region->defaultId, 'name' => 'Москва*']);
         }
+
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         /** @var Model\Order[] $orders */
         $orders = [];
@@ -178,6 +190,8 @@ class Complete {
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Order\Complete\Request();
         $pageRequest->httpRequest = $request;
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->cart = $cart;
         $pageRequest->orders = $orders;
         $pageRequest->onlinePaymentMethodsById = $onlinePaymentMethodsById;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));

@@ -44,5 +44,9 @@ define(
 
         $body.on('render', renderBody);
         $body.on('render', '.js-widget', renderWidget);
+
+        $(function() {
+            $body.trigger('render');
+        });
     }
 );

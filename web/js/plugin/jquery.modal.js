@@ -154,7 +154,7 @@
         appearEffect: "fadeIn",
         appearEase: "",
         overlaySpeed: 250,
-        lightboxSpeed: 300,
+        lightboxSpeed: 0,
 
         // close
         closeSelector: ".js-modal-close",

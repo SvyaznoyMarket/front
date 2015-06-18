@@ -2,6 +2,7 @@
 
 namespace EnterMobile\Repository\Partial;
 
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterMobile\Repository;
@@ -9,7 +10,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 
 class DirectCredit {
-    use ConfigTrait, TemplateHelperTrait;
+    use ConfigTrait, TemplateHelperTrait, SessionTrait;
 
     /**
      * @param \EnterModel\Product[] $products
@@ -48,6 +49,7 @@ class DirectCredit {
         $directCredit->widgetId = 'id-creditPayment';
         $directCredit->dataValue = $this->getTemplateHelper()->json([
             'partnerId' => $this->getConfig()->credit->directCredit->partnerId,
+            'sessionId' => $this->getSession()->getId(),
             'product'   => $productData,
         ]);
         $directCredit->isHidden = $cartModel ? !(new \EnterRepository\DirectCredit())->isEnabledForCart($cartModel) : false; // FIXME
