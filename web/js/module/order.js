@@ -137,14 +137,8 @@ define(
 
                 require(['yandexmaps'], function(ymaps) {
                     ymaps.ready(function() {
-                        try {
-                            yandexmaps = ymaps;
-                            defer.resolve(yandexmaps);
-                        } catch (error) {
-                            console.error(error);
-
-                            defer.reject(error);
-                        }
+                        yandexmaps = ymaps;
+                        defer.resolve(yandexmaps);
                     });
                 });
 
@@ -439,7 +433,7 @@ define(
                                 // TODO: удалить
                             }
 
-                            console.info(point.name + ' ' + point.distance);
+                            //console.info(point.name + ' ' + point.distance);
                         });
 
                         newData.points.sort(function(a, b) {
@@ -782,16 +776,14 @@ define(
                 e.stopPropagation();
                 e.preventDefault();
 
-                initGeocode().done(function(ymaps) {
-                    ymaps.geolocation.get({
-                        // Выставляем опцию для определения положения по ip
-                        provider: 'auto',
-                        // Карта автоматически отцентрируется по положению пользователя.
-                        mapStateAutoApply: true
-                    }).then(function (result) {
+                console.info('$input', $input);
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        center = [position.coords.latitude, position.coords.longitude];
+                        console.info(center);
+
                         try {
-                            center = result.geoObjects.position;
-                            console.info('$input', $input);
                             if ($input.length) {
                                 $input.val('');
                                 $input.data('center', center);
@@ -806,7 +798,7 @@ define(
                             console.error(error);
                         }
                     });
-                });
+                }
             }
         ;
 
@@ -914,5 +906,13 @@ define(
                 }
             }
         });
+
+        try {
+            if (!navigator.geolocation) {
+                $('.js-order-delivery-geolocation-link').hide();
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 );
