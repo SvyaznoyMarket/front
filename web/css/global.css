@@ -4959,9 +4959,6 @@ body.noScroll {
   color: #8a8a8a;
   font-size: 18px;
 }
-.catalogList .price_old:empty {
-  display: none;
-}
 .catalogList .price_now {
   font-size: 18px;
   font-weight: normal;
@@ -5130,6 +5127,9 @@ body.noScroll {
     display: block;
   }
   .catalogList .rating-afterItemName {
+    display: none;
+  }
+  .catalogList .price_old:empty {
     display: none;
   }
 }
