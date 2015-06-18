@@ -3436,6 +3436,12 @@ body.noScroll {
   -webkit-box-align: center;
   align-content: center;
 }
+.custom-label-flex.parced-items {
+  -webkit-justify-content: space-between;
+  -webkit-box-pack: space-between;
+  -moz-justify-content: space-between;
+  justify-content: space-between;
+}
 .custom-input--defcheck + .custom-label {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAVUlEQVQoFWMsKCjw/Pfv3ywGBgYZICYEnjAxMaUx5OXlPf7+/ft/YgBIHUg9E9BoGQ4ODkI2gOWh6mRAmkgGo5qgQUbfgHjy48cPouIKqu4JIzlpDwAOtUVHIztiigAAAABJRU5ErkJggg==);
   background-position: 0 1px;
@@ -7369,6 +7375,8 @@ body.noScroll {
   margin-top: 15px;
   margin-bottom: 10px;
   color: #616161;
+  text-align: center;
+  display: block;
 }
 .checkout-done-order-cnt-online-payment {
   margin: 20px auto 30px;
@@ -8337,6 +8345,9 @@ body.noScroll {
 }
 .order-popup .btn-container {
   margin-top: 0;
+}
+.order-popup .checkout-done-popup .btn-container {
+  margin: 20px 0;
 }
 .order-popup__top-block {
   padding: 20px 0;
