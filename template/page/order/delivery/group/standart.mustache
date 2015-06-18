@@ -14,17 +14,18 @@
     </div>
 
     <div class="checkout-address">
+       
+
+        
         {{#user.address}}
+            <div class="checkout-address__title"><strong>Адрес</strong> для всех заказов с доставкой</div>
             <p class="checkout-address__selected">{{user.address.name}}</p>
         {{/user.address}}
 
-        <div class="checkout-address">
-            <div class="checkout-address__title"><strong>Адрес</strong> для всех заказов с доставкой</div>
+        <button class="btn-transparent btn-transparent--normal js-order-delivery-addressPopup-link" data-modal-title="Адрес доставки" data-modal-position="fixed" data-data-selector="#order-{{id}}-address-data" data-map-container-selector="#order-{{id}}-address-map-container">
+            <span class="bb-dotted">{{^user.address}}Указать адрес{{/user.address}}{{#user.address}}Изменить адрес{{/user.address}}</span>
+        </button>
 
-            <button class="btn-transparent btn-transparent--normal js-order-delivery-addressPopup-link" data-modal-title="Адрес доставки" data-modal-position="fixed" data-data-selector="#order-{{id}}-address-data" data-map-container-selector="#order-{{id}}-address-map-container">
-                <span class="bb-dotted">{{^user.address}}Указать адрес{{/user.address}}{{#user.address}}Изменить адрес{{/user.address}}</span>
-            </button>
-        </div>
 
         <!--
         <div class="checkout-address__select custom-select">
