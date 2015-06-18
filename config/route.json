@@ -191,6 +191,10 @@
         "name": "Изменение пароля",
         "pattern": "/private/password"
     },
+    "User\\ChangePassword": {
+        "name": "Изменение пароля",
+        "pattern": "/ajax/private/password/change"
+    },
     "User\\Cart\\Clear": {
         "name": "Очистить корзину",
         "pattern": "/ajax/user/cart/clear",
