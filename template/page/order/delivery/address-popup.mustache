@@ -2,16 +2,17 @@
     <div id="order-{{order.id}}-address-map-container" data-map-option="{{&mapDataValue}}" class="order-popup-map"></div>
 
     <div class="address-pick-snippet__form">
-        <form class="js-smartAddress-form" action="{{url}}" method="post" data-map-container-selector="#order-{{order.id}}-address-map-container" data-kladr-id-selector="#order-delivery-address-kladrId">
+        <form class="js-smartAddress-form js-user-form" action="{{url}}" method="post" data-map-container-selector="#order-{{order.id}}-address-map-container" data-kladr-id-selector="#order-delivery-address-kladrId">
             <div class="form-control__container">
-                <div class="form-control-group">
-                    <input required="required" class="form-control-group__tx textfield js-smartAddress-input" id="order-delivery-address-street" type="text" name="{{fields.street.name}}" autocomplete="off" data-kladr-type="street" />
-                    <label class="form-control-group__lbl" for="order-delivery-address-street">Улица</label>
+                <div class="form-control-group js-user-wrap">
+                    <input required="required" class="form-control-group__tx textfield js-user-field js-smartAddress-input" id="order-delivery-address-street" type="text" name="{{fields.street.name}}" autocomplete="off" data-kladr-type="street" />
+                    <input type="hidden" name="{{fields.streetType.name}}" data-field="streetType" />
+                    <label class="form-control-group__lbl required" for="order-delivery-address-street">Улица</label>
                 </div>
 
-                <div class="form-control-group half-wide">
-                    <input class="form-control-group__tx textfield js-smartAddress-input" id="order-delivery-address-building" type="text" name="{{fields.building.name}}" autocomplete="off" data-kladr-type="building" />
-                    <label class="form-control-group__lbl" for="order-delivery-address-building">Дом</label>
+                <div class="form-control-group half-wide js-user-wrap">
+                    <input class="form-control-group__tx textfield js-smartAddress-input js-user-field" id="order-delivery-address-building" type="text" name="{{fields.building.name}}" autocomplete="off" data-kladr-type="building" />
+                    <label class="form-control-group__lbl required" for="order-delivery-address-building">Дом</label>
                 </div>
 
                 <div class="form-control-group half-wide">
@@ -22,7 +23,7 @@
                 <input id="order-delivery-address-kladrId" type="hidden" name="{{fields.kladrId.name}}">
 
                 <div class="btn-container">
-                    <button class="btn btn--submit btn--orange btn--medium" type="submit">Готово</button>
+                    <button class="btn btn--submit btn--orange btn--medium js-user-submit" type="submit">Готово</button>
                 </div>
             </div>
         </form>

@@ -4,10 +4,13 @@
         <img class="checkout-head__logo" src="/css/modules/order/img/logo.png" />
 
         <ul class="checkout-head-steps">
-            <!-- если шаг пройден то passive, текущий шаг active -->
-            <li class="checkout-head-steps__item passive"><span class="checkout-head-steps__text">Получатель</span></li>
-            <li class="checkout-head-steps__item active"><span class="checkout-head-steps__text">Самовывоз <i class="block"></i>и доставка</span></li>
-            <li class="checkout-head-steps__item"><span class="checkout-head-steps__text">Оплата</span></li>
+        {{! если шаг пройден то passive, текущий шаг active !}}
+        {{#steps}}
+            <li class="checkout-head-steps__item{{#isPassive}} passive{{/isPassive}}{{#isActive}} active{{/isActive}}">
+                {{#url}}<a class="checkout-head-steps__text" href="{{url}}">{{name}}</a>{{/url}}
+                {{^url}}<span class="checkout-head-steps__text">{{name}}</span>{{/url}}
+            </li>
+        {{/steps}}
         </ul>
     </div>
 </header>

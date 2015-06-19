@@ -227,6 +227,12 @@ class Complete {
 
         $page->dataModule = 'order-complete';
 
+        $page->steps = [
+            ['name' => 'Получатель', 'isPassive' => false, 'isActive' => false],
+            ['name' => 'Самовывоз и доставка', 'isPassive' => false, 'isActive' => false],
+            ['name' => 'Оплата', 'isPassive' => false, 'isActive' => true],
+        ];
+
         // шаблоны mustache
         (new Repository\Template())->setListForPage($page, [
             // модальное окно для выбора онлайн оплат

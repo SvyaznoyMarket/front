@@ -21,6 +21,7 @@ class SetProductList {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
         $curl = $this->getCurl();
         $session = $this->getSession();
         $cartRepository = new \EnterRepository\Cart();
@@ -29,7 +30,7 @@ class SetProductList {
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // корзина из сессии
-        $cart = $cartRepository->getObjectByHttpSession($session);
+        $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
         // товара для корзины
         $cartProducts = $cartRepository->getProductListByHttpRequest($request);

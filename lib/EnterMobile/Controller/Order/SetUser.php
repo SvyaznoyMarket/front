@@ -27,6 +27,9 @@ class SetUser {
         $session = $this->getSession();
         $router = $this->getRouter();
 
+        // ид магазина
+        $shopId = is_scalar($request->query['shopId']) ? (string)$request->query['shopId']: null;
+
         // данные пользователя
         $defaultUserData = [
             'firstName' => null,
@@ -81,7 +84,7 @@ class SetUser {
                 'errors' => $errors,
             ];
             if (!$errors) {
-                $responseData['redirect'] = $router->getUrlByRoute(new Routing\Order\Delivery());
+                $responseData['redirect'] = $router->getUrlByRoute(new Routing\Order\Delivery(), ['shopId' => $shopId]);
             }
 
             $response = new Http\JsonResponse($responseData);

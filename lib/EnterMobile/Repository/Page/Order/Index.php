@@ -19,7 +19,7 @@ class Index {
      * @param Page $page
      * @param Index\Request $request
      */
-    public function buildObjectByRequest(Page $page, Index\Request $request, $orderFormUserData) {
+    public function buildObjectByRequest(Page $page, Index\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
         $router = $this->getRouter();
@@ -30,25 +30,25 @@ class Index {
 
         $page->dataModule = 'order';
 
-        $page->content->form->url = $router->getUrlByRoute(new Routing\Order\SetUser());
+        $page->content->form->url = $router->getUrlByRoute(new Routing\Order\SetUser(), ['shopId' => $request->shopId]);
         $page->content->form->errorDataValue = $templateHelper->json($request->formErrors);
 
-        if (!empty($userData['firstName'])) {
-            $page->content->form->firstName = $userData['firstName'];
-        } else if ($request->user->firstName) {
+        if ($request->user && $request->user->firstName) {
             $page->content->form->firstName = $request->user->firstName;
+        } else if (!empty($request->userData['firstName'])) {
+            $page->content->form->firstName = $request->userData['firstName'];
         }
 
-        if (!empty($userData['phone'])) {
-            $page->content->form->phone = $userData['phone'];
-        } else if ($request->user->phone) {
+        if ($request->user && $request->user->phone) {
             $page->content->form->phone = $request->user->phone;
+        } else if (!empty($request->userData['phone'])) {
+            $page->content->form->phone = $request->userData['phone'];
         }
 
-        if (!empty($userData['email'])) {
-            $page->content->form->email = $userData['email'];
-        } else if ($request->user->email) {
+        if ($request->user && $request->user->email) {
             $page->content->form->email = $request->user->email;
+        } else if (!empty($request->userData['email'])) {
+            $page->content->form->email = $request->userData['email'];
         }
 
         if (11 === mb_strlen($page->content->form->phone) && (0 === strpos($page->content->form->phone, '8'))) {
@@ -60,5 +60,11 @@ class Index {
             new Routing\User\Login(),
             ['redirect_to' => $router->getUrlByRoute(new Routing\Order\Index())]
         );
+
+        $page->steps = [
+            ['name' => 'Получатель', 'isPassive' => true, 'isActive' => true],
+            ['name' => 'Самовывоз и доставка', 'isPassive' => false, 'isActive' => false],
+            ['name' => 'Оплата', 'isPassive' => false, 'isActive' => false],
+        ];
     }
 }

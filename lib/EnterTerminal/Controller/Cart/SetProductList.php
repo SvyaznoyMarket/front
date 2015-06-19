@@ -3,11 +3,12 @@
 namespace EnterTerminal\Controller\Cart;
 
 use Enter\Http;
+use EnterTerminal\ConfigTrait;
 use EnterAggregator\SessionTrait;
 use EnterTerminal\Controller;
 
 class SetProductList {
-    use SessionTrait;
+    use ConfigTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -15,11 +16,12 @@ class SetProductList {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
         $session = $this->getSession();
         $cartRepository = new \EnterRepository\Cart();
 
         // корзина из сессии
-        $cart = $cartRepository->getObjectByHttpSession($session);
+        $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
         // товара для корзины
         $cartProducts = $cartRepository->getProductObjectListByHttpRequest($request);
@@ -33,7 +35,7 @@ class SetProductList {
         }
 
         // сохранение корзины в сессию
-        $cartRepository->saveObjectToHttpSession($session, $cart);
+        $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
 
         // response
         return (new Controller\Cart())->execute($request);

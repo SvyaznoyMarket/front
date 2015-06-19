@@ -53,6 +53,7 @@ define(
             $pointSuggestTemplate       = $('#tpl-order-delivery-point-suggest'),
             $discountPopupTemplate      = $('#tpl-order-delivery-discount-popup'),
             $modalWindowTemplate        = $('#tpl-modalWindow'),
+            $discountScroll             = $('[data-scroll]'),
 
             initPointMap = function($container, options) {
                 var defer = $.Deferred();
@@ -68,7 +69,8 @@ define(
                                 $container.attr('id'),
                                 {
                                     center: [options.center.lat, options.center.lng],
-                                    zoom: options.zoom
+                                    zoom: options.zoom,
+                                    controls: ['zoomControl']
                                 },
                                 {
                                     autoFitToViewport: 'always'
@@ -108,7 +110,8 @@ define(
                                 $container.attr('id'),
                                 {
                                     center: [options.center.lat, options.center.lng],
-                                    zoom: options.zoom
+                                    zoom: options.zoom,
+                                    controls: ['zoomControl']
                                 },
                                 {
                                     autoFitToViewport: 'always'
@@ -135,14 +138,8 @@ define(
 
                 require(['yandexmaps'], function(ymaps) {
                     ymaps.ready(function() {
-                        try {
-                            yandexmaps = ymaps;
-                            defer.resolve(yandexmaps);
-                        } catch (error) {
-                            console.error(error);
-
-                            defer.reject(error);
-                        }
+                        yandexmaps = ymaps;
+                        defer.resolve(yandexmaps);
                     });
                 });
 
@@ -170,17 +167,7 @@ define(
                             //setLabel($(this), obj.type);
                             //$tooltip.hide();
                         },
-                        check: function (obj) {
-                            var $input = $(this);
-
-                            if (obj) {
-                                //setLabel($input, obj.type);
-                                //$tooltip.hide();
-                            }
-                            else {
-                                //showError($input, 'Введено неверно');
-                            }
-                        },
+                        check: function (obj) {},
                         checkBefore: function () {
                             var $input = $(this);
 
@@ -191,6 +178,7 @@ define(
                         },
                         change: function (obj) {
                             var
+                                text,
                                 zoom = 10,
                                 address = $.kladr.getAddress('.js-smartAddress-form', function (objs) {
                                     var result = config.kladr.city.name + '';
@@ -241,6 +229,20 @@ define(
                             ;
 
                             updateAddressMap($mapContainer, address, zoom);
+
+                            if (obj) {
+                                text = (obj.type.length > 8) ? obj.typeShort : obj.type;
+                                text = text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
+
+                                if ('street' === obj.contentType) {
+                                    $form.find('[data-field="streetType"]').val(obj.typeShort);
+                                }
+
+                                $(this).parent().find('label').text(text);
+
+                            } else {
+                                //showError($input, 'Введено неверно');
+                            }
                         }
                     });
 
@@ -287,6 +289,7 @@ define(
                     index = parseInt($el.data('index')),
                     $selected,
                     $container,
+                    $parentContainer,
                     $filterForm = $($el.data('filterFormSelector'))
                 ;
 
@@ -298,24 +301,18 @@ define(
 
                 $selected = $el.find('[data-index="' + index + '"]');
                 $container = $($selected.data('containerSelector'));
+                $parentContainer = $($container.data('parentContainerSelector'));
 
                 $el.data('index', index);
                 $el.find('[data-index]').each(function(i, el) {
-                    var $el = $(el);
-
-                    $el.hide();
-                    $($el.data('containerSelector')).hide();
+                    $(el).hide();
                 });
 
                 filterPoints($el.data('storageSelector'), $filterForm);
 
                 $selected.show();
-                $container
-                    .show()
-                    .trigger('update', [
-                        Storage.get($el.data('storageSelector'), 'filtered')
-                    ])
-                ;
+                $parentContainer.toggleClass($parentContainer.data('toggleClass'));
+                $container.trigger('update', [Storage.get($el.data('storageSelector'), 'filtered')]);
             },
 
             updatePointMap = function(e, data) {
@@ -378,7 +375,6 @@ define(
 
                 $container.html(mustache.render(partial, data));
                 $container.find('.content-scroll').scrollTop();
-                console.info('$scroll', $container.find('.content-scroll'));
             },
 
             updatePointFilter = function(e) {
@@ -432,7 +428,7 @@ define(
                                 // TODO: удалить
                             }
 
-                            console.info(point.name + ' ' + point.distance);
+                            //console.info(point.name + ' ' + point.distance);
                         });
 
                         newData.points.sort(function(a, b) {
@@ -595,7 +591,7 @@ define(
             },
 
             // показать календарь
-            showCalendar = function( e ) {
+            showCalendarPopup = function( e ) {
                 var
                     $el           = $(this),
                     data          = $.parseJSON($($el.data('dataSelector')).html()),
@@ -603,7 +599,7 @@ define(
                     modalTitle    = $el.data('modal-title'),
                     modalPosition = $el.data('modal-position'),
                     beforeSplit       = function() {
-                        $modalWindow.trigger('close');
+                        setTimeout(function() { $modalWindow.trigger('close') }, 400);
                     }
                 ;
 
@@ -647,7 +643,6 @@ define(
                 $modalWindow.lightbox_me({
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($discountPopupTemplate.html(), data));
-
                         $discountContainer = $('.js-user-discount-container');
 
                         if ($discountContainer.length && $discountContainer.data('url')) {
@@ -678,7 +673,9 @@ define(
                     },
                     centered: false
                 });
-
+                
+                
+                
                 $body.on('beforeSplit', beforeSplit);
 
                 e.preventDefault();
@@ -751,7 +748,7 @@ define(
                             $input.data('center', center);
                         }
 
-                        if (pointMap) {
+                        if (pointMap && $pointMap.is(':visible')) {
                             pointMap.setCenter(center, 14);
                         } else {
                             $('.js-order-delivery-point-tab-link').trigger('update', [false])
@@ -762,6 +759,41 @@ define(
                 }
 
                 $container.hide();
+            },
+
+            locatePoint = function(e) {
+                var
+                    $el = $(this),
+                    center,
+                    $input = $($el.data('suggestInputSelector'))
+                ;
+
+                e.stopPropagation();
+                e.preventDefault();
+
+                console.info('$input', $input);
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        center = [position.coords.latitude, position.coords.longitude];
+                        console.info(center);
+
+                        try {
+                            if ($input.length) {
+                                $input.val('');
+                                $input.data('center', center);
+                            }
+
+                            if (pointMap && $pointMap.is(':visible')) {
+                                pointMap.setCenter(center, 13);
+                            } else {
+                                $('.js-order-delivery-point-tab-link').trigger('update', [false])
+                            }
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    });
+                }
             }
         ;
 
@@ -785,12 +817,13 @@ define(
         $body.on('click', '.js-order-delivery-discountPopup-link', showDiscountPopup);
         $body.on('click', '.js-order-delivery-point-tab-link', updatePointTab);
         $body.on('update', '.js-order-delivery-point-tab-link', updatePointTab);
-        $body.on('click', '.js-order-delivery-celendar-link', showCalendar);
+        $body.on('click', '.js-order-delivery-celendar-link', showCalendarPopup);
         $body.on('update', '.js-order-delivery-map-container', updatePointMap);
         $body.on('update', '.js-order-delivery-point-container', updatePointList);
         $body.on('change', '.js-order-delivery-point-filter', updatePointFilter);
         $body.on('input', '.js-order-delivery-point-search-input', searchPoint);
         $body.on('click', '.js-order-delivery-suggest-item', applyPointSuggest);
+        $body.on('click', '.js-order-delivery-geolocation-link', locatePoint);
         $body.on('submit', '.js-smartAddress-form', function(e) {
             var
                 $form = $(this),
@@ -838,5 +871,43 @@ define(
             e.stopPropagation();
             e.preventDefault();
         });
+        //скролл списка фишек в попапе скидок
+        $body.on('DOMNodeInserted', $discountScroll, function () {
+            
+            $('[data-scroll]').scroll(function() {
+                clearTimeout($.data(this, 'scrollTimer'));
+                $('[data-scroll-wrap]').addClass('scrolling');
+
+                $.data(this, 'scrollTimer', setTimeout(function() {
+                    $('[data-scroll-wrap]').removeClass('scrolling');
+                }, 600));
+            });
+            
+        });
+        $body.on('submit', '.js-order-form', function(e) {
+            var
+                $form = $(this),
+                $accept = $form.find('[data-field="accept"]')
+            ;
+
+            e.stopPropagation();
+
+            if ($accept.length) {
+                if ($accept.is(':checked')) {
+                    $accept.removeClass('error');
+                } else {
+                    $accept.addClass('error');
+                    e.preventDefault();
+                }
+            }
+        });
+
+        try {
+            if (!navigator.geolocation) {
+                $('.js-order-delivery-geolocation-link').hide();
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 );
