@@ -40,7 +40,7 @@ class ProductCard {
         $card->shownOldPrice = $product->oldPrice ? $this->getPriceHelper()->format($product->oldPrice) : null;
         /** @var \EnterModel\Media|null $photo */
         if ($photo = reset($product->media->photos)) {
-            $card->image = (string)(new Routing\Product\Media\GetPhoto($photo, 'product_120'));
+            $card->image = (new \EnterRepository\Media())->getSourceObjectByItem($photo, 'product_120')->url;
         }
         $card->id = $product->id;
         $card->cartSpinner = $cartSpinner;

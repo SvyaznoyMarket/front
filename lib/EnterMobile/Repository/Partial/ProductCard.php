@@ -31,6 +31,7 @@ class ProductCard {
         \EnterModel\Product\Category $category = null,
         $imageSize = 'product_160'
     ) {
+        $mediaRepository = (new \EnterRepository\Media());
         $card = new Partial\ProductCard();
 
         $card->name = $product->name;
@@ -47,7 +48,7 @@ class ProductCard {
         $card->shownOldPrice = $product->oldPrice ? $this->getPriceHelper()->format($product->oldPrice) : null;
         /** @var \EnterModel\Media|null $photo */
         if ($photo = reset($product->media->photos)) {
-            $card->image = (string)(new Routing\Product\Media\GetPhoto($photo, $imageSize));
+            $card->image = $mediaRepository->getSourceObjectByItem($photo, $imageSize)->url;
         }
         $card->id = $product->id;
         $card->categoryId = $product->category ? $product->category->id : null;
@@ -63,8 +64,12 @@ class ProductCard {
         }
 
         // Не показываем этикетку бренда в списке товаров категории tchibo
-        if (!$category || !$category->ascendants || 'tchibo' !== $category->ascendants[0]->token) {
-            $card->brand = $product->brand;
+        if ((!$category || !$category->ascendants || 'tchibo' !== $category->ascendants[0]->token) && $product->brand) {
+            $card->brand = new \EnterMobile\Model\Partial\ProductCard\Brand();
+            $card->brand->id = $product->brand->id;
+            $card->brand->name = $product->brand->name;
+            $card->brand->token = $product->brand->token;
+            $card->brand->imageUrl = $mediaRepository->getSourceObjectByList($product->brand->media->photos, 'main', 'original')->url;
         }
 
         // состояние товара
@@ -77,10 +82,14 @@ class ProductCard {
         $card->states['isFurnitureItem'] = $product->category->isFurniture;
 
         // шильдики
+        $card->labels = [];
         foreach ($product->labels as $label) {
-            $label->imageUrl = (string)(new Routing\Product\Label\Get($label->id, $label->image, 0)); // FIXME
+            $viewLabel = new \EnterMobile\Model\Partial\ProductCard\Label();
+            $viewLabel->id = $label->id;
+            $viewLabel->name = $label->name;
+            $viewLabel->imageUrl = $mediaRepository->getSourceObjectByList($label->media->photos, '66x23', 'original')->url;
+            $card->labels[] = $viewLabel;
         }
-        $card->labels = $product->labels;
 
         // значки со склада, в магазинах, на витрине
         if (!$product->isInShopOnly &&

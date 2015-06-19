@@ -71,6 +71,9 @@ namespace EnterMobileApplication\Controller\User\Favorite {
                         [
                             'media'       => true,
                             'media_types' => ['main'], // только главная картинка
+                            'category'    => true,
+                            'label'       => true,
+                            'brand'       => true,
                         ]
                     );
                     $curl->prepare($descriptionListQuery);
@@ -79,15 +82,8 @@ namespace EnterMobileApplication\Controller\User\Favorite {
 
                     $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
 
-                    // товары по ui
-                    $productsByUi = [];
-                    call_user_func(function() use (&$productsById, &$productsByUi) {
-                        foreach ($productsById as $product) {
-                            $productsByUi[$product->ui] = $product;
-                        }
-                    });
                     // медиа для товаров
-                    (new \EnterRepository\Product())->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                    (new \EnterRepository\Product())->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
 
                     $response->products = array_values($productsById);
                 }

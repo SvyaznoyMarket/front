@@ -37,49 +37,44 @@ namespace EnterModel {
 }
 
 namespace EnterModel\Media {
-    abstract class Source {
+    class Source {
         /** @var string */
         public $type;
+        /** @var string */
+        public $url;
 
         /**
-         * @param array $data
+         * @param mixed $data
          */
-        public function __construct(array $data = []) {
-            if (array_key_exists('type', $data)) $this->type = (string)$data['type'];
+        public function __construct($data = []) {
+            if (isset($data['type'])) $this->type = (string)$data['type'];
+            if (isset($data['url'])) $this->url = (string)$data['url'];
         }
     }
 
     class ImageSource extends Source {
-        /** @var string */
-        public $url;
         /** @var int */
         public $width;
         /** @var int */
         public $height;
 
         /**
-         * @param array $data
+         * @param mixed $data
          */
-        public function __construct(array $data = []) {
+        public function __construct($data = []) {
             parent::__construct($data);
 
-            if (array_key_exists('url', $data)) $this->url = (string)$data['url'];
-            if (array_key_exists('width', $data)) $this->width = (string)$data['width'];
-            if (array_key_exists('height', $data)) $this->height = (string)$data['height'];
+            if (isset($data['width'])) $this->width = (string)$data['width'];
+            if (isset($data['height'])) $this->height = (string)$data['height'];
         }
     }
 
     class SvgSource extends Source {
-        /** @var string */
-        public $url;
-
         /**
-         * @param array $data
+         * @param mixed $data
          */
-        public function __construct(array $data = []) {
+        public function __construct($data = []) {
             parent::__construct($data);
-
-            if (array_key_exists('url', $data)) $this->url = (string)$data['url'];
         }
     }
 }

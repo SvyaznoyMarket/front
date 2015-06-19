@@ -88,10 +88,6 @@ namespace EnterAggregator {
         public $productPhoto;
         /** @var Config\Search */
         public $search;
-        /** @var Config\Promo */
-        public $promo;
-        /** @var Config\ProductLabel */
-        public $productLabel;
 
         public function __construct() {
             $this->logger = new Config\Logger();
@@ -134,8 +130,6 @@ namespace EnterAggregator {
             $this->productReview = new Config\ProductReview();
             $this->productPhoto = new Config\ProductPhoto();
             $this->search = new Config\Search();
-            $this->promo = new Config\Promo();
-            $this->productLabel = new Config\ProductLabel();
         }
     }
 }
@@ -416,23 +410,6 @@ namespace EnterAggregator\Config {
     class Search {
         /** @var int */
         public $minPhraseLength;
-    }
-
-    class Promo {
-        /**
-         * @deprecated
-         * @var int
-         */
-        public $typeId;
-        /**
-         * @var array
-         */
-        public $urlPaths = [];
-    }
-
-    class ProductLabel {
-        /** @var array */
-        public $urlPaths = [];
     }
 }
 

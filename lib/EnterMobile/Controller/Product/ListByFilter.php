@@ -125,19 +125,19 @@ class ListByFilter {
 
         // запрос списка товаров
         $productListQuery = null;
-        if ((bool)$productUiPager->uis) {
+        $descriptionListQuery = null;
+        if ($productUiPager && $productUiPager->uis) {
             $productListQuery = new Query\Product\GetListByUiList($productUiPager->uis, $region->id);
             $curl->prepare($productListQuery);
-        }
 
-        // запрос списка медиа для товаров
-        $descriptionListQuery = null;
-        if ($productUiPager && (bool)$productUiPager->uis) {
             $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
                 $productUiPager->uis,
                 [
                     'media'       => true,
                     'media_types' => ['main'], // только главная картинка
+                    'category'    => true,
+                    'label'       => true,
+                    'brand'       => true,
                 ]
             );
             $curl->prepare($descriptionListQuery);
@@ -155,16 +155,9 @@ class ListByFilter {
         // список товаров
         $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
 
-        // товары по ui
-        $productsByUi = [];
-        call_user_func(function() use (&$productsById, &$productsByUi) {
-            foreach ($productsById as $product) {
-                $productsByUi[$product->ui] = $product;
-            }
-        });
         // медиа для товаров
         if ($descriptionListQuery) {
-            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+            $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
         }
 
         // список рейтингов товаров

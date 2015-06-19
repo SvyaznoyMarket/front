@@ -44,6 +44,8 @@ class Product {
     public $isInWarehouse;
     /** @var bool */
     public $isKitLocked;
+    /** @var int */
+    public $kitCount;
     /** @var Model\Product\Category|null */
     public $category;
     /** @var Model\Brand|null */
@@ -62,7 +64,7 @@ class Product {
     public $oldPrice;
     /** @var Model\Product\Label[] */
     public $labels = [];
-    /** @var Model\Product\Media */
+    /** @var Model\MediaList */
     public $media;
     /** @var Model\Product\Rating|null */
     public $rating;
@@ -115,7 +117,7 @@ class Product {
             ];
         }
 
-        $this->media = new Model\Product\Media();
+        $this->media = new Model\MediaList();
         $this->relation = new Model\Product\Relation();
 
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
@@ -140,18 +142,6 @@ class Product {
             isset($data['partners_offer'][0]) ? $data['partners_offer'] : []
         );
 
-        if (isset($data['category'][0])) {
-            $categoryItem = (array)array_pop($data['category']);
-            $this->category = new Model\Product\Category($categoryItem);
-
-            foreach ($data['category'] as $categoryItem) {
-                if (empty($categoryItem['id'])) continue;
-                $this->category->ascendants[] = new Model\Product\Category($categoryItem);
-            }
-        }
-
-        if (isset($data['brand']['id'])) $this->brand = new Model\Brand($data['brand']);
-
         if (isset($data['properties'][0])) {
             foreach ($data['properties'] as $propertyItem) {
                 $this->properties[] = new Model\Product\Property((array)$propertyItem);
@@ -161,24 +151,6 @@ class Product {
         if (isset($data['property_groups'][0])) {
             foreach ($data['property_groups'] as $propertyGroupItem) {
                 $this->propertyGroups[] = new Model\Product\Property\Group((array)$propertyGroupItem);
-            }
-        }
-
-        // ядерные фотографии
-        if (!empty($data['medias']) && is_array($data['medias'])) {
-            // убеждаемся что есть именно картинки, а не другой медиа-контент
-            foreach ($data['medias'] as $mediaItem) {
-                if ('image' === $mediaItem['provider']) {
-                    $this->media = new Model\Product\Media($mediaItem);
-
-                    break;
-                }
-            }
-        }
-
-        if (isset($data['label'][0])) {
-            foreach ($data['label'] as $labelItem) {
-                $this->labels[] = new Model\Product\Label($labelItem);
             }
         }
 
