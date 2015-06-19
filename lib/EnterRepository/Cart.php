@@ -144,14 +144,16 @@ class Cart {
                 'added'    => null,
             ], $productItem);
 
-            $cartProduct = new Model\Cart\Product();
-            $cartProduct->id = (string)$productItem['id'];
-            $cartProduct->ui = (string)$productItem['ui'];
-            $cartProduct->quantity = (int)$productItem['quantity'];
-            $cartProduct->parentId = $productItem['parentId'] ? (string)$productItem['parentId'] : null;
-            $cartProduct->addedAt = $productItem['added'] ? (string)$productItem['added'] : null;
+            if (isset($productItem['id']) && $productItem['id']) { // На случай, если в сессию попадут некорректные данные
+                $cartProduct = new Model\Cart\Product();
+                $cartProduct->id = (string)$productItem['id'];
+                $cartProduct->ui = (string)$productItem['ui'];
+                $cartProduct->quantity = (int)$productItem['quantity'];
+                $cartProduct->parentId = $productItem['parentId'] ? (string)$productItem['parentId'] : null;
+                $cartProduct->addedAt = $productItem['added'] ? (string)$productItem['added'] : null;
 
-            $cart->product[$cartProduct->id] = $cartProduct;
+                $cart->product[$cartProduct->id] = $cartProduct;
+            }
         }
 
         $cart->cacheId = $cartData['cacheId'];
