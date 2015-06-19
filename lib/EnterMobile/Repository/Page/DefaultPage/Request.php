@@ -10,8 +10,6 @@ class Request {
     public $region;
     /** @var \EnterModel\User|null */
     public $user;
-    /** @var array */
-    public $userData;
     /** @var \EnterModel\MainMenu */
     public $mainMenu;
     /** @var Http\Request */

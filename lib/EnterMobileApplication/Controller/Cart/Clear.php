@@ -20,6 +20,7 @@ class Clear {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
         $session = $this->getSession();
         $cartRepository = new \EnterRepository\Cart();
 
@@ -29,7 +30,7 @@ class Clear {
         }
 
         // корзина из сессии
-        $cart = $cartRepository->getObjectByHttpSession($session);
+        $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
         // удаление товаров
         $cart->product = [];
@@ -37,7 +38,7 @@ class Clear {
         $cart->cacheId++;
 
         // сохранение корзины в сессию
-        $cartRepository->saveObjectToHttpSession($session, $cart);
+        $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
 
         // response
         return new Http\JsonResponse([]);

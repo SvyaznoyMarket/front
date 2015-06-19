@@ -33,11 +33,14 @@ class Delivery {
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
+        // ид магазина
+        $shopId = is_scalar($request->query['shopId']) ? (string)$request->query['shopId']: null;
+
         // токен пользователя
         $userToken = (new Repository\User())->getTokenByHttpRequest($request);
 
         // корзина
-        $cart = $cartRepository->getObjectByHttpSession($session);
+        $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
         // проверяет наличие товаров в корзине
         if (!$cart->product) {
             $this->getLogger()->push(['type' => 'error', 'message' => 'Пустая корзина', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split', 'critical']]);
@@ -95,7 +98,7 @@ class Delivery {
         $controllerRequest = $controller->createRequest();
         $controllerRequest->regionId = $regionId;
         $controllerRequest->userToken = $userToken;
-        $controllerRequest->shopId = null;
+        $controllerRequest->shopId = $shopId;
         $controllerRequest->changeData = (new \EnterRepository\Cart())->dumpSplitChange($changeData, $previousSplitData);
         $controllerRequest->previousSplitData = $previousSplitData;
         $controllerRequest->cart = $cart;
