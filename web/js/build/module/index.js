@@ -1,1 +1,1 @@
-define(["require","jquery","underscore","mustache","jquery.slides"],function(e,r){r("body")});
+define(["require","jquery","underscore","mustache","jquery.slides","jquery.slick"],function(e,s){s("body");s(".goods-slider-slides").each(function(){var e=s(this).data("slick-slider");s(".js-main-goods-slider-"+e).slick({autoplaySpeed:2e3,dots:!0,infinite:!1,prevArrow:".js-main-goods-slider-btn-prev-"+e,nextArrow:".js-main-goods-slider-btn-next-"+e,responsive:[{breakpoint:480,settings:{slidesToShow:2,slidesToScroll:2}}]})})});

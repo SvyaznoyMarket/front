@@ -62,13 +62,19 @@
         -->
 
         <link rel="stylesheet" href="/css/global.min.css">
+
+		<meta id="js-enter-debug" name="enter-debug" content="{{&dataDebug}}">
+	    <meta id="js-enter-version" name="enter-version" content="{{&dataVersion}}">
+	    <meta id="js-enter-module" name="enter-module" content="{{&dataModule}}">
+
+        {{>partial/javascript}}
     </head>
 
-    <body>
+    <body data-module="{{&dataModule}}" data-config="{{&dataConfig}}">
     	<header class="header">
-			<a class="header-nav-link"></a>
+			<a class="header-nav-link" href=""	><i class="i-header i-header__menu"></i></a>
 
-			<a class="header__logotype"></a>
+			<div class="header__logotype"><a href="" class="header__logotype-link"></a></div>
 
 			<manu class="header-controls">
 				<li class="header-controls__item header-controls__item--search"><a href="" class="header-controls__link"><i class="i-header i-header__search"></i></a></li>
@@ -76,107 +82,370 @@
 			</manu>
 		</header>
 
-		<main>
+		<main class="content">
 			<div class="main-banner-slider">
 
 			</div>
 
-			<ul class="shops-info grid-4cols">
-				<li class="shops-info__item grid-4cols__item"></li>
-				<li class="shops-info__item grid-4cols__item"></li>
-				<li class="shops-info__item grid-4cols__item"></li>
-				<li class="shops-info__item grid-4cols__item"></li>
+			<ul class="shop-info grid-4cols clearfix">
+				<li class="shop-info__item grid-4cols__item">
+					<a class="shop-info__link" href="">
+						<i class="shop-info__item-icon i-shop-info i-shop-info__phone"></i>
+						<span class="shop-info__item-text">8 (800) 700-00-09</span>
+					</a>
+				</li>
+				<li class="shop-info__item grid-4cols__item">
+					<a class="shop-info__link" href="">
+						<i class="shop-info__item-icon i-shop-info i-shop-info__delivery"></i>
+						<span class="shop-info__item-text">Доставка</span>
+					</a>
+				</li>
+				<li class="shop-info__item grid-4cols__item">
+					<a class="shop-info__link" href="">
+						<i class="shop-info__item-icon i-shop-info i-shop-info__self-delivery"></i>
+						<span class="shop-info__item-text">Самовывоз</span>
+					</a>
+				</li>
+				<li class="shop-info__item grid-4cols__item">
+					<a class="shop-info__link" href="">
+						<i class="shop-info__item-icon i-shop-info i-shop-info__shops"></i>
+						<span class="shop-info__item-text">Магазины</span>
+					</a>
+				</li>
 			</ul>
 
-			<div class="grid-2cols">
-				<div class="grid-2cols__item"></div>
-				<div class="grid-2cols__item"></div>
+			<div class="inn">
+				<div class="grid-2cols clearfix">
+					<div class="grid-2cols__item">
+						<div class="goods-slider goods-slider--left">
+							<div class="goods-slider-nav">
+						        <div class="goods-slider-nav__btn goods-slider-nav__btn--prev js-main-goods-slider-btn-prev-featured"></div>
+
+						        <div class="goods-slider-nav__desc">
+						            <div class="goods-slider-nav__title">Популярные товары</div>
+						        </div>
+
+						        <div class="goods-slider-nav__btn goods-slider-nav__btn--next js-main-goods-slider-btn-next-featured"></div>
+						    </div>
+
+						    <div class="goods-slider-slides js-main-goods-slider-featured" data-slick-slider="featured" data-slick='{"slidesToShow": 3, "slidesToScroll": 3}'>
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+
+									<a class="goods-slider__name">Смартфон Nokia Lumia 720 черный</a>
+
+									<span class="goods-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+									<span class="span goods-slider__now-price">45 590 <span class="rubl">p</span></span>
+									<a href="" class="span goods-slider__buy btn--buy btn--extra">Купить</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+
+									<a class="goods-slider__name">Смартфон Nokia Lumia 720 черный</a>
+
+									<span class="goods-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+									<span class="span goods-slider__now-price">45 590 <span class="rubl">p</span></span>
+									<a href="" class="span goods-slider__buy btn--buy btn--extra">Купить</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+
+									<a class="goods-slider__name">Смартфон Nokia Lumia 720 черный</a>
+
+									<span class="goods-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+									<span class="span goods-slider__now-price">45 590 <span class="rubl">p</span></span>
+									<a href="" class="span goods-slider__buy btn--buy btn--extra">Купить</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+
+									<a class="goods-slider__name">Смартфон Nokia Lumia 720 черный</a>
+
+									<span class="goods-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+									<span class="span goods-slider__now-price">45 590 <span class="rubl">p</span></span>
+									<a href="" class="span goods-slider__buy btn--buy btn--extra">Купить</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+
+									<a class="goods-slider__name">Смартфон Nokia Lumia 720 черный</a>
+
+									<span class="goods-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+									<span class="span goods-slider__now-price">45 590 <span class="rubl">p</span></span>
+									<a href="" class="span goods-slider__buy btn--buy btn--extra">Купить</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="grid-2cols__item">
+						<div class="goods-slider goods-slider--right">
+							<div class="goods-slider-nav">
+						        <div class="goods-slider-nav__btn goods-slider-nav__btn--prev js-main-goods-slider-btn-prev-recommended"></div>
+
+						        <div class="goods-slider-nav__desc">
+						            <div class="goods-slider-nav__title">Мы рекомендуем</div>
+						        </div>
+
+						        <div class="goods-slider-nav__btn goods-slider-nav__btn--next js-main-goods-slider-btn-next-recommended"></div>
+						    </div>
+
+						    <div class="goods-slider-slides js-main-goods-slider-recommended" data-slick-slider="recommended" data-slick='{"slidesToShow": 3, "slidesToScroll": 3}'>
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+
+									<a class="goods-slider__name">Смартфон Nokia Lumia 720 черный</a>
+
+									<span class="goods-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+									<span class="span goods-slider__now-price">45 590 <span class="rubl">p</span></span>
+									<a href="" class="span goods-slider__buy btn--buy btn--extra">Купить</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+
+									<a class="goods-slider__name">Смартфон Nokia Lumia 720 черный</a>
+
+									<span class="goods-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+									<span class="span goods-slider__now-price">45 590 <span class="rubl">p</span></span>
+									<a href="" class="span goods-slider__buy btn--buy btn--extra">Купить</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+
+									<a class="goods-slider__name">Смартфон Nokia Lumia 720 черный</a>
+
+									<span class="goods-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+									<span class="span goods-slider__now-price">45 590 <span class="rubl">p</span></span>
+									<a href="" class="span goods-slider__buy btn--buy btn--extra">Купить</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+
+									<a class="goods-slider__name">Смартфон Nokia Lumia 720 черный</a>
+
+									<span class="goods-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+									<span class="span goods-slider__now-price">45 590 <span class="rubl">p</span></span>
+									<a href="" class="span goods-slider__buy btn--buy btn--extra">Купить</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+
+									<a class="goods-slider__name">Смартфон Nokia Lumia 720 черный</a>
+
+									<span class="goods-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+									<span class="span goods-slider__now-price">45 590 <span class="rubl">p</span></span>
+									<a href="" class="span goods-slider__buy btn--buy btn--extra">Купить</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 
-			<ul class="categories-grid">
-				<li class="categories-grid__item"><a href="" class="categories-grid__link"><span class="categories-grid__icon"></span><span class="categories-grid__text"></span></a></li>
-				<li class="categories-grid__item"><a href="" class="categories-grid__link"><span class="categories-grid__icon"></span><span class="categories-grid__text"></span></a></li>
-				<li class="categories-grid__item"><a href="" class="categories-grid__link"><span class="categories-grid__icon"></span><span class="categories-grid__text"></span></a></li>
-				<li class="categories-grid__item"><a href="" class="categories-grid__link"><span class="categories-grid__icon"></span><span class="categories-grid__text"></span></a></li>
-				<li class="categories-grid__item"><a href="" class="categories-grid__link"><span class="categories-grid__icon"></span><span class="categories-grid__text"></span></a></li>
-				<li class="categories-grid__item"><a href="" class="categories-grid__link"><span class="categories-grid__icon"></span><span class="categories-grid__text"></span></a></li>
-				<li class="categories-grid__item"><a href="" class="categories-grid__link"><span class="categories-grid__icon"></span><span class="categories-grid__text"></span></a></li>
-				<li class="categories-grid__item"><a href="" class="categories-grid__link"><span class="categories-grid__icon"></span><span class="categories-grid__text"></span></a></li>
-				<li class="categories-grid__item"><a href="" class="categories-grid__link"><span class="categories-grid__icon"></span><span class="categories-grid__text"></span></a></li>
-				<li class="categories-grid__item"><a href="" class="categories-grid__link"><span class="categories-grid__icon"></span><span class="categories-grid__text"></span></a></li>
-				<li class="categories-grid__item"><a href="" class="categories-grid__link"><span class="categories-grid__icon"></span><span class="categories-grid__text"></span></a></li>
-				<li class="categories-grid__item"><a href="" class="categories-grid__link"><span class="categories-grid__icon"></span><span class="categories-grid__text"></span></a></li>
+			{{#mainMenu}}
+			<ul class="categories-grid clearfix">
+				{{#elements}}
+				<li class="categories-grid__item">
+					<a class="categories-grid__link js-ga-click" href="{{url}}" data-ga-click="{{&dataGa}}">
+						<span class="categories-grid__icon">
+							<span class="categories-grid__char"{{#style}} style="{{style}}"{{/style}}>{{char}}</span>
+                        	{{#image}}<img class="categories-grid__img" src="{{image}}" />{{/image}}
+						</span>
+						<span class="categories-grid__text">{{&name}}</span>
+					</a>
+				</li>
+				{{/elements}}
 			</ul>
+			{{/mainMenu}}
 
-			<div class="grid-2cols">
-				<div class="grid-2cols__item"></div>
-				<div class="grid-2cols__item"></div>
-			</div>
+			<div class="inn">
+				<div class="grid-2cols clearfix">
+					<div class="grid-2cols__item">
+						<div class="goods-slider">
+							<div class="goods-slider-nav">
+						        <div class="goods-slider-nav__btn goods-slider-nav__btn--prev js-main-goods-slider-btn-prev-watched"></div>
 
-			<div class="footer">
-				<div class="footer-apps-list">
-					<a href="" class="footer-apps-list__link"><img src="" alt="" class="footer-apps-list__img"></a>
-					<a href="" class="footer-apps-list__link"><img src="" alt="" class="footer-apps-list__img"></a>
+						        <div class="goods-slider-nav__desc">
+						            <div class="goods-slider-nav__title">Вы смотрели</div>
+						        </div>
+
+						        <div class="goods-slider-nav__btn goods-slider-nav__btn--next js-main-goods-slider-btn-next-watched"></div>
+						    </div>
+
+						    <div class="goods-slider-slides js-main-goods-slider-watched" data-slick-slider="watched" data-slick='{"slidesToShow": 5, "slidesToScroll": 5}'>
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="grid-2cols__item">
+						<div class="goods-slider">
+							<div class="goods-slider-nav">
+						        <div class="goods-slider-nav__btn goods-slider-nav__btn--prev js-main-goods-slider-btn-prev-brands"></div>
+
+						        <div class="goods-slider-nav__desc">
+						            <div class="goods-slider-nav__title">Популярные бренды</div>
+						        </div>
+
+						        <div class="goods-slider-nav__btn goods-slider-nav__btn--next js-main-goods-slider-btn-next-brands"></div>
+						    </div>
+
+						    <div class="goods-slider-slides js-main-goods-slider-brands" data-slick-slider="brands" data-slick='{"slidesToShow": 4, "slidesToScroll": 4}'>
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+								</div>
+
+								<div class="goods-slider-slides__item">
+									<a class="goods-slider__img-link">
+										<img class="goods-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-
-				<ul class="footer-shop-info">
-					<li class="footer-shop-info__item">
-						<linl class="footer-shop-info__link"></linl>
-					</li>
-					<li class="footer-shop-info__item">
-						<linl class="footer-shop-info__link"></linl>
-					</li>
-					<li class="footer-shop-info__item">
-						<linl class="footer-shop-info__link"></linl>
-					</li>
-					<li class="footer-shop-info__item">
-						<linl class="footer-shop-info__link"></linl>
-					</li>
-					<li class="footer-shop-info__item">
-						<linl class="footer-shop-info__link"></linl>
-					</li>
-					<li class="footer-shop-info__item">
-						<linl class="footer-shop-info__link"></linl>
-					</li>
-				</ul>
-
-				<div class="footer-external-links">
-					<ul class="partner-list">
-						<li class="partner-list__item"><a href="" class="partner-list__link"><img src="" alt="" class="partner-list__img"></a></li>
-						<li class="partner-list__item"><a href="" class="partner-list__link"><img src="" alt="" class="partner-list__img"></a></li>
-					</ul>
-
-					<ul class="social-net-list">
-						<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
-						<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
-						<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
-						<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
-						<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
-					</ul>
-				</div>
-
-				<ul class="footer-shop-info">
-					<li class="footer-shop-info__item">
-						<linl class="footer-shop-info__link"></linl>
-					</li>
-					<li class="footer-shop-info__item">
-						<linl class="footer-shop-info__link"></linl>
-					</li>
-					<li class="footer-shop-info__item">
-						<linl class="footer-shop-info__link"></linl>
-					</li>
-					<li class="footer-shop-info__item">
-						<linl class="footer-shop-info__link"></linl>
-					</li>
-					<li class="footer-shop-info__item">
-						<linl class="footer-shop-info__link"></linl>
-					</li>
-					<li class="footer-shop-info__item">
-						<linl class="footer-shop-info__link"></linl>
-					</li>
-				</ul>
-				<footer class="footer-bottom"></footer>
 			</div>
 		</main>
+
+		<div class="footer">
+			<div class="footer-apps-list">
+				<a href="" class="footer-apps-list__link"><img src="" alt="" class="footer-apps-list__img"></a>
+				<a href="" class="footer-apps-list__link"><img src="" alt="" class="footer-apps-list__img"></a>
+			</div>
+
+			<ul class="footer-shop-info">
+				<li class="footer-shop-info__item">
+					<linl class="footer-shop-info__link"></linl>
+				</li>
+				<li class="footer-shop-info__item">
+					<linl class="footer-shop-info__link"></linl>
+				</li>
+				<li class="footer-shop-info__item">
+					<linl class="footer-shop-info__link"></linl>
+				</li>
+				<li class="footer-shop-info__item">
+					<linl class="footer-shop-info__link"></linl>
+				</li>
+				<li class="footer-shop-info__item">
+					<linl class="footer-shop-info__link"></linl>
+				</li>
+				<li class="footer-shop-info__item">
+					<linl class="footer-shop-info__link"></linl>
+				</li>
+			</ul>
+
+			<div class="footer-external-links">
+				<ul class="partner-list">
+					<li class="partner-list__item"><a href="" class="partner-list__link"><img src="" alt="" class="partner-list__img"></a></li>
+					<li class="partner-list__item"><a href="" class="partner-list__link"><img src="" alt="" class="partner-list__img"></a></li>
+				</ul>
+
+				<ul class="social-net-list">
+					<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
+					<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
+					<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
+					<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
+					<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
+				</ul>
+			</div>
+
+			<ul class="footer-shop-info">
+				<li class="footer-shop-info__item">
+					<linl class="footer-shop-info__link"></linl>
+				</li>
+				<li class="footer-shop-info__item">
+					<linl class="footer-shop-info__link"></linl>
+				</li>
+				<li class="footer-shop-info__item">
+					<linl class="footer-shop-info__link"></linl>
+				</li>
+				<li class="footer-shop-info__item">
+					<linl class="footer-shop-info__link"></linl>
+				</li>
+				<li class="footer-shop-info__item">
+					<linl class="footer-shop-info__link"></linl>
+				</li>
+				<li class="footer-shop-info__item">
+					<linl class="footer-shop-info__link"></linl>
+				</li>
+			</ul>
+			<footer class="footer-bottom"></footer>
+		</div>
 	</body>
 </html>
