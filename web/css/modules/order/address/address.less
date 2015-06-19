@@ -9,6 +9,21 @@
         left: 0;
 
         width: 100%;
+        
+        .common-control{
+
+            float: left;
+
+            
+
+            .box-sizing(border-box);
+            &.half-wide {
+                width: 48%;
+                &:nth-child(2n-1) {
+                    margin-left: 4%;
+                }
+            }
+        }
     }
     .form-control__container {
         width: 100%;
@@ -23,6 +38,7 @@
             width: 100%;
         }
     }
+
     .form-control-group {
         float: left;
 
