@@ -67,11 +67,13 @@ class ProductCard {
         $page->content->product->cartButtonBlock = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, null, ['position' => 'product']);
         $page->content->product->slotPartnerOffer = $product->getSlotPartnerOffer();
 
-        $page->content->product->brand = new \EnterMobile\Model\Page\ProductCard\Content\Product\Brand();
-        $page->content->product->brand->id = $product->brand->id;
-        $page->content->product->brand->name = $product->brand->name;
-        $page->content->product->brand->token = $product->brand->token;
-        $page->content->product->brand->imageUrl = $mediaRepository->getSourceObjectByList($product->brand->media->photos, 'main', 'original')->url;
+        if ($product->brand) {
+            $page->content->product->brand = new \EnterMobile\Model\Page\ProductCard\Content\Product\Brand();
+            $page->content->product->brand->id = $product->brand->id;
+            $page->content->product->brand->name = $product->brand->name;
+            $page->content->product->brand->token = $product->brand->token;
+            $page->content->product->brand->imageUrl = $mediaRepository->getSourceObjectByList($product->brand->media->photos, 'main', 'original')->url;
+        }
 
         // шильдики
         $page->content->product->labels = [];
