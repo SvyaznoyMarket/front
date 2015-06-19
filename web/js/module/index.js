@@ -7,15 +7,14 @@ define(
     ) {
         var $body = $('body');
 
-		$('.goods-slider-slides').each(function() {
+		$('.items-slider-slides').each(function() {
 			var current = $(this).data('slick-slider');
 
-			$('.js-main-goods-slider-' + current).slick({
-				autoplaySpeed: 2000,
+			$('.js-main-items-slider-' + current).slick({
 				dots: true,
 				infinite: false,
-				prevArrow: '.js-main-goods-slider-btn-prev-' + current,
-	   			nextArrow: '.js-main-goods-slider-btn-next-' + current,
+				prevArrow: '.js-main-items-slider-btn-prev-' + current,
+	   			nextArrow: '.js-main-items-slider-btn-next-' + current,
 	   			responsive: [
 			    {
 			      breakpoint: 480,
@@ -24,8 +23,33 @@ define(
         			slidesToScroll: 2
 			      }
 			    }
-			  ]
+			  	]
 			});
+		})
+
+		$('.js-main-banner-slider').slick({
+			autoplaySpeed: 5000,
+			autoplay: true,
+			dots: true,
+			infinite: true,
+			centerMode: true,
+			slidesToShow: 1,
+        	slidesToScroll: 1,
+        	focusOnSelect: true,
+        	arrows: false,
+        	centerPadding: '160px',
+        	responsive: [
+		    {
+		      breakpoint: 800,
+		      settings: {
+		      	centerPadding: '50px',
+		      },
+		      breakpoint: 750,
+		      settings: {
+		      	centerMode: false
+		      }
+		    }
+		    ]
 		})
     }
 );
