@@ -62,8 +62,12 @@ namespace EnterMobileApplication\Controller\User\Favorite {
                     )
                 );
                 if ($productUis) {
-                    $productListQuery = new Query\Product\GetListByUiList($productUis, $config->region->defaultId);
-                    $curl->prepare($productListQuery);
+                    $productListQueries = [];
+                    foreach (array_chunk($productUis, $config->curl->queryChunkSize) as $uisInChunk) {
+                        $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $config->region->defaultId);
+                        $curl->prepare($productListQuery);
+                        $productListQueries[] = $productListQuery;
+                    }
 
                     // запрос списка медиа для товаров
                     $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
@@ -80,7 +84,7 @@ namespace EnterMobileApplication\Controller\User\Favorite {
 
                     $curl->execute();
 
-                    $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+                    $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList($productListQueries);
 
                     // медиа для товаров
                     (new \EnterRepository\Product())->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);

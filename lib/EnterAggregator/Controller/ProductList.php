@@ -210,10 +210,13 @@ namespace EnterAggregator\Controller {
             $response->productUiPager = $productUiPagerQuery ? (new Repository\Product\UiPager())->getObjectByQuery($productUiPagerQuery) : null;
 
             // запрос списка товаров
-            $productListQuery = null;
-            if ($response->productUiPager && (bool)$response->productUiPager->uis) {
-                $productListQuery = new Query\Product\GetListByUiList($response->productUiPager->uis, $response->region->id);
-                $curl->prepare($productListQuery);
+            $productListQueries = [];
+            if ($response->productUiPager && $response->productUiPager->uis) {
+                foreach (array_chunk($response->productUiPager->uis, $config->curl->queryChunkSize) as $uisInChunk) {
+                    $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $response->region->id);
+                    $curl->prepare($productListQuery);
+                    $productListQueries[] = $productListQuery;
+                }
             }
 
             // запрос списка медиа для товаров
@@ -271,19 +274,11 @@ namespace EnterAggregator\Controller {
             $curl->execute();
 
             // список товаров
-            $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
-
-            // товары по ui
-            $productsByUi = [];
-            call_user_func(function() use (&$productsById, &$productsByUi) {
-                foreach ($productsById as $product) {
-                    $productsByUi[$product->ui] = $product;
-                }
-            });
+            $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
 
             // медиа для товаров
             if ($descriptionListQuery) {
-                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
             }
 
             // доставка товаров

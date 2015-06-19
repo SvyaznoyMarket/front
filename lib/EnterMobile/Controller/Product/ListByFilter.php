@@ -124,11 +124,14 @@ class ListByFilter {
         $productUiPager = (new \EnterRepository\Product\UiPager())->getObjectByQuery($productUiPagerQuery);
 
         // запрос списка товаров
-        $productListQuery = null;
+        $productListQueries = [];
         $descriptionListQuery = null;
         if ($productUiPager && $productUiPager->uis) {
-            $productListQuery = new Query\Product\GetListByUiList($productUiPager->uis, $region->id);
-            $curl->prepare($productListQuery);
+            foreach (array_chunk($productUiPager->uis, $config->curl->queryChunkSize) as $uisInChunk) {
+                $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $region->id);
+                $curl->prepare($productListQuery);
+                $productListQueries[] = $productListQuery;
+            }
 
             $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
                 $productUiPager->uis,
@@ -153,7 +156,7 @@ class ListByFilter {
         $curl->execute();
 
         // список товаров
-        $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
+        $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
 
         // медиа для товаров
         if ($descriptionListQuery) {
