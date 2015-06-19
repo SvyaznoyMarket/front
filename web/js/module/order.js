@@ -1,6 +1,6 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'jquery.ui', 'jquery.maskedinput',
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'jquery.ui', 'jquery.validate', 'jquery.maskedinput',
         'module/order/user.form', 'module/order/common', 'module/order/toggle'
     ],
     function(
@@ -54,6 +54,7 @@ define(
             $discountPopupTemplate      = $('#tpl-order-delivery-discount-popup'),
             $modalWindowTemplate        = $('#tpl-modalWindow'),
             $discountScroll             = $('[data-scroll]'),
+            $validatedForm              = $('.js-validate'),
 
             initPointMap = function($container, options) {
                 var defer = $.Deferred();
@@ -529,6 +530,7 @@ define(
                         $modalWindow.find('.js-modal-content').append(mustache.render($addressPopupTemplate.html(), data));
 
                         initSmartAddress($modalWindow);
+                        validateForm('.js-validate');
 
                         require(['yandexmaps'], function() {
                             var $mapContainer = $($el.data('mapContainerSelector'));
@@ -794,6 +796,57 @@ define(
                         }
                     });
                 }
+            },
+
+            validateForm = function( el ){
+                var $this = $(el);
+
+                $this.validate({
+                    rules : {
+                        'user[email]': {
+                          required: true,
+                          email: true
+                        }
+                    },
+                    messages:{
+                        'user[email]': {
+                          required: "Введите email",
+                          email: "Введите email в формате name@email.ru"
+                        }
+
+                    },
+                    highlight: function(element, errorClass, validClass) {
+                        console.log('error!');
+                        $(element).parent().addClass(errorClass).removeClass(validClass);
+                      },
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).parent().removeClass(errorClass).addClass(validClass);
+                      },
+                    errorPlacement: function(error,element){
+                        
+                        if (element.attr('type') !== 'checkbox') {
+                            var parent = element.parent();
+                            error.insertAfter(parent);
+                            console.log('error-pl');
+                        }
+                        
+                        
+                    },
+                    submitHandler: function(form) {
+                          // отправка запроса
+                        var url = $(form).attr('action');
+
+                        $.ajax({
+                            type: 'POST',
+                            url: url,
+                            data: $(form).serialize(),
+                            success: successForm
+                        });
+
+                        return false;
+                    },
+                    ignore: '', // do not ignore hidden elements
+                })
             }
         ;
 
@@ -901,7 +954,51 @@ define(
                 }
             }
         });
+        // устанавливаем маску в поле номера телефона
+        $.mask.definitions['x'] = "[0-9]";
+        $('.js-field-phone').mask("+7(xxx)xxx-xx-xx", {
+            placeholder: "+7(xxx)xxx-xx-xx"
+        });
 
+        $('.js-field-mnogoru').mask("xxxx xxxx", {
+            placeholder: "xxxx xxxx"
+        });
+        // Валидация форм - может быть вынести ее в отдельный файл, чтобы можно было обращаться везде, где нужна валидация?
+        $.validator.messages.required = 'Поле не заполнено!';
+        $('.js-validate').each(function(index, elem){
+            validateForm(elem);
+        });
+        
+        // запрос прошел успешно
+        function successForm( result ) {
+            console.log('success form');
+            console.log(result);
+
+            // маркируем поля с ошибками
+            if ( result.errors.length ) {
+                $field.each(function(index) {
+                    for ( i = 0; i < result.errors.length; i++ ) {
+                        index = result.errors[i].field;
+                        message = result.errors[i].name;
+
+                        if ( $(this).data('field-name') == index && !( $(this).hasClass(errClass) ) ) {
+                            tmpl = '<div class="error-text js-field-error">' + message + '</div>';
+
+                            $(this)
+                                .addClass(errClass)
+                                .closest('.js-user-wrap').prepend(tmpl);
+                        }
+                    }
+                })
+            }
+
+            // если ошибок нет переход на следущий шаг
+            if ( result.redirect !=null && result.redirect.length ) {
+                window.location.href = result.redirect;
+            }
+
+            return false;
+        }
         try {
             if (!navigator.geolocation) {
                 $('.js-order-delivery-geolocation-link').hide();

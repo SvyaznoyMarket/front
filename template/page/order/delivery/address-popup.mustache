@@ -2,9 +2,34 @@
     <div id="order-{{order.id}}-address-map-container" data-map-option="{{&mapDataValue}}" class="order-popup-map"></div>
 
     <div class="address-pick-snippet__form">
-        <form class="js-smartAddress-form js-user-form" action="{{url}}" method="post" data-map-container-selector="#order-{{order.id}}-address-map-container" data-kladr-id-selector="#order-delivery-address-kladrId">
+        <form class="js-smartAddress-form js-validate" action="{{url}}" method="post" data-map-container-selector="#order-{{order.id}}-address-map-container" data-kladr-id-selector="#order-delivery-address-kladrId">
             <div class="form-control__container">
-                <div class="form-control-group js-user-wrap">
+                <div class="common-control">
+                    <div class="common-control-group required">
+                        <label class="common-control-label" for="order-delivery-address-street">Улица</label>
+                        <input class="common-control-input js-smartAddress-input" id="order-delivery-address-street" type="text" name="{{fields.street.name}}" autocomplete="off" data-kladr-type="street" required>
+                        <input type="hidden" name="{{fields.streetType.name}}" data-field="streetType" />
+                    </div>
+                    <span class="common-control-hint">&nbsp;</span>
+                </div>
+                <div class="common-control half-wide">
+                    <div class="common-control-group required">
+                        <label class="common-control-label" for="id-userForm-phone">Дом</label>
+                        <input class="common-control-input js-smartAddress-input" id="order-delivery-address-building" type="text" name="{{fields.building.name}}" autocomplete="off" data-kladr-type="building" required>
+                    </div>
+                    <span class="common-control-hint">&nbsp;</span>
+                </div>
+                <div class="common-control half-wide">
+                    <div class="common-control-group">
+                        <label class="common-control-label" for="order-delivery-address-apartment">Квартира</label>
+                        <input class="common-control-input js-smartAddress-input" id="order-delivery-address-apartment" type="text" name="{{fields.apartment.name}}">
+                    </div>
+                    <span class="common-control-hint">&nbsp;</span>
+                </div>
+
+
+
+                <!--div class="form-control-group">
                     <input required="required" class="form-control-group__tx textfield js-user-field js-smartAddress-input" id="order-delivery-address-street" type="text" name="{{fields.street.name}}" autocomplete="off" data-kladr-type="street" />
                     <input type="hidden" name="{{fields.streetType.name}}" data-field="streetType" />
                     <label class="form-control-group__lbl required" for="order-delivery-address-street">Улица</label>
@@ -18,12 +43,12 @@
                 <div class="form-control-group half-wide">
                     <input class="form-control-group__tx textfield" id="order-delivery-address-apartment" type="text" name="{{fields.apartment.name}}">
                     <label class="form-control-group__lbl" for="order-delivery-address-apartment">Квартира</label>
-                </div>
+                </div-->
 
                 <input id="order-delivery-address-kladrId" type="hidden" name="{{fields.kladrId.name}}">
 
                 <div class="btn-container">
-                    <button class="btn btn--submit btn--orange btn--medium js-user-submit" type="submit">Готово</button>
+                    <button class="btn btn--submit btn--orange btn--medium" type="submit">Готово</button>
                 </div>
             </div>
         </form>
