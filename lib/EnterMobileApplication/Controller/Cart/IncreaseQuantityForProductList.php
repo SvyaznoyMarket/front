@@ -27,7 +27,7 @@ class IncreaseQuantityForProductList {
 
         $ids = (array)$request->data['ids'];
         $uis = (array)$request->data['uis'];
-        $quantity = isset($request->data['quantity']) ? $request->data['quantity'] : 1;
+        $quantity = isset($request->data['quantity']) ? (int)$request->data['quantity'] : 1;
 
         if (!$ids && !$uis) {
             throw new \Exception('Не переданы параметры ids и uis', Http\Response::STATUS_BAD_REQUEST);
