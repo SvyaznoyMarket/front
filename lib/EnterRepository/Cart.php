@@ -88,6 +88,10 @@ class Cart {
         return $products;
     }
 
+    /**
+     * @param $pointToken
+     * @return string
+     */
     public function getPointImageUrl($pointToken) {
         switch ($pointToken) {
             case 'shops':
@@ -120,28 +124,16 @@ class Cart {
 
     /**
      * @param Http\Session $session
+     * @param string $key
      * @return Model\Cart
      */
-    public function getObjectByHttpSession(Http\Session $session) {
+    public function getObjectByHttpSession(Http\Session $session, $key) {
         $cart = new Model\Cart();
 
         $cartData = array_merge([
             'product' => [],
             'cacheId' => 0,
-        ], (array)$session->get('cart'));
-
-        // импорт старой корзины
-        $oldCartData = array_merge([
-            'productList' => [],
-        ], (array)$session->get('userCart'));
-        foreach ($oldCartData['productList'] as $productId => $productQuantity) {
-            if (!isset($cartData['product'][$productId])) {
-                $cartData['product'][$productId] = [
-                    'id'       => $productId,
-                    'quantity' => $productQuantity,
-                ];
-            }
-        }
+        ], (array)$session->get($key));
 
         foreach ($cartData['product'] as $productItem) {
             $productItem = array_merge([
@@ -170,21 +162,9 @@ class Cart {
     /**
      * @param Http\Session $session
      * @param Model\Cart $cart
+     * @param string $key
      */
-    public function saveObjectToHttpSession(Http\Session $session, Model\Cart $cart) {
-        // TODO: купоны, ...
-
-        // сохранение в старой корзине
-        $oldCartData = [
-            'productList' => [],
-        ];
-
-        foreach ($cart->product as $cartProduct) {
-            $oldCartData['productList'][$cartProduct->id] = $cartProduct->quantity;
-        }
-        $session->set('userCart', $oldCartData);
-
-        // новая корзина
+    public function saveObjectToHttpSession(Http\Session $session, Model\Cart $cart, $key) {
         $cartData = [
             'product' => [],
             'cacheId' => $cart->cacheId,
@@ -212,7 +192,8 @@ class Cart {
 
             $cartData['product'][$cartProduct->id] = $cartItem;
         }
-        $session->set('cart', $cartData);
+
+        $session->set($key, $cartData);
     }
 
     /**
@@ -424,6 +405,9 @@ class Cart {
             if (array_key_exists('address', $changeData['user'])) {
                 if (array_key_exists('street', $changeData['user']['address'])) {
                     $dump['user_info']['address']['street'] = $changeData['user']['address']['street'];
+                }
+                if (array_key_exists('streetType', $changeData['user']['address']) && !empty($dump['user_info']['address']['street'])) {
+                    $dump['user_info']['address']['street'] = $changeData['user']['address']['streetType'] . ' ' . $dump['user_info']['address']['street'];
                 }
                 if (array_key_exists('building', $changeData['user']['address'])) {
                     $dump['user_info']['address']['building'] = $changeData['user']['address']['building'];

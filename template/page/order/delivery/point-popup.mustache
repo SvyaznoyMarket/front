@@ -1,11 +1,11 @@
 <div class="flexbox-two-rows">
-    <div class="order-popup__top-block search flexbox-two-rows__header">
+    <div class="order-popup__top-block order-popup-points search flexbox-two-rows__header">
         <form class="search__section">
             <div class="search-control {{! suggest-open }}">
                 <i class="sprite-icon sprite-icon--search"></i>
 
                 <input id="order-{{order.id}}-suggest-input" class="js-order-delivery-point-search-input search-control__input" data-suggest-container-selector="#order-{{order.id}}-suggest-container" type="text" placeholder="Искать по улице, метро">
-                <input class="search-control__submit" type="submit" value="">
+                <input class="search-control__submit js-order-delivery-geolocation-link" type="submit" value="" data-suggest-input-selector="#order-{{order.id}}-suggest-input">
                 <div id="order-{{order.id}}-suggest-container" data-input-selector="#order-{{order.id}}-suggest-input" class="form-control-group__suggest suggest-control"></div>
             </div>
             <div id="order-{{order.id}}-delivery-point-tab-link" class="js-order-delivery-point-tab-link btn btn--white btn--medium" data-index="0" data-storage-selector="#order-{{order.id}}-point-data" data-filter-form-selector="#order-{{order.id}}-delivery-point-filter-form">
@@ -77,11 +77,11 @@
         </form>
 
         {{! show-map показывает, что отображается в данный момент - если класс есть, то карта, если нет - список. }}
-        <div class="pick-point">
-            <div id="order-{{order.id}}-map-container" class="js-order-delivery-map-container order-popup-map" data-map-option="{{&mapDataValue}}"></div>
+        <div id="order-{{order.id}}-point-parent-container" class="pick-point" data-toggle-class="show-map">
+            <div id="order-{{order.id}}-map-container" class="js-order-delivery-map-container order-popup-map" data-map-option="{{&mapDataValue}}" data-parent-container-selector="#order-{{order.id}}-point-parent-container"></div>
 
             <div class="content-scroll">
-                <div id="order-{{order.id}}-point-container" class="js-order-delivery-point-container pick-point-list table">
+                <div id="order-{{order.id}}-point-container" class="js-order-delivery-point-container pick-point-list table" data-parent-container-selector="#order-{{order.id}}-point-parent-container">
                     {{>page/order/delivery/point-list}}
                 </div>
             </div>

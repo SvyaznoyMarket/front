@@ -1,6 +1,6 @@
 <div class="checkout-order__box checkout-order__box--light">
 {{#products}}
-    <div class="checkout-order-items table">
+    <div class="checkout-order-items table{{#hasError}} error{{/hasError}}">
         <div class="checkout-order-items__left table_cell checkout-img-container">
             <img alt="{{name}}" src="{{image}}">
         </div>

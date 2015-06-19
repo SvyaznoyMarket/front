@@ -3,11 +3,12 @@
 namespace EnterMobileApplication\Controller\Cart;
 
 use Enter\Http;
+use EnterMobileApplication\ConfigTrait;
 use EnterAggregator\SessionTrait;
 use EnterMobileApplication\Controller;
 
 class DeleteProductList {
-    use SessionTrait;
+    use ConfigTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -15,6 +16,7 @@ class DeleteProductList {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
         $session = $this->getSession();
         $cartRepository = new \EnterRepository\Cart();
 
@@ -29,7 +31,7 @@ class DeleteProductList {
             throw new \Exception('Не переданы параметры ids и uis', Http\Response::STATUS_BAD_REQUEST);
         }
 
-        $cart = $cartRepository->getObjectByHttpSession($session);
+        $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
         foreach ($ids as $id) {
             unset($cart->product[$id]);
@@ -50,7 +52,7 @@ class DeleteProductList {
 
         $cart->cacheId++;
 
-        $cartRepository->saveObjectToHttpSession($session, $cart);
+        $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
         return new Http\JsonResponse([]);
     }
 }
