@@ -408,6 +408,19 @@ class Product {
                         }
                     }
                 }
+
+                $isSlotPartnerOffer = false;
+                foreach ($product->partnerOffers as $partnerOffer) {
+                    if (2 == $partnerOffer->partner->type) {
+                        $isSlotPartnerOffer = true;
+                        break;
+                    }
+                }
+
+                if (!$product->isInShopStockOnly && !$product->isInShopShowroomOnly && $product->category->ascendants[0] && $product->category->ascendants[0]->isFurniture && $product->isStore && !$isSlotPartnerOffer) {
+                    $product->storeLabel = new \EnterModel\Product\StoreLabel();
+                    $product->storeLabel->name = 'Товар со склада';
+                }
             }
         } catch (\Exception $e) {
             $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
