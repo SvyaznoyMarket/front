@@ -44,7 +44,7 @@ class Slice {
         // сортировка
         $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
 
-        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
 
         // запрос среза
         $sliceItemQuery = new Query\Product\Slice\GetItemByToken($sliceToken);

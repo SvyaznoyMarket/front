@@ -30,7 +30,7 @@ class Index {
 
         $page->dataModule = 'order';
 
-        $page->content->form->url = $router->getUrlByRoute(new Routing\Order\SetUser());
+        $page->content->form->url = $router->getUrlByRoute(new Routing\Order\SetUser(), ['shopId' => $request->shopId]);
         $page->content->form->errorDataValue = $templateHelper->json($request->formErrors);
 
         if ($request->user && $request->user->firstName) {

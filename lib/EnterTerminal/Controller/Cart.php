@@ -33,7 +33,7 @@ namespace EnterTerminal\Controller {
             }
 
             // корзина из сессии
-            $cart = $cartRepository->getObjectByHttpSession($session);
+            $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
             $productsById = [];
             foreach ($cart->product as $cartProduct) {

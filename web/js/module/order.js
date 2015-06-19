@@ -71,7 +71,7 @@ define(
                                 {
                                     center: [options.center.lat, options.center.lng],
                                     zoom: options.zoom,
-                                    controls: []
+                                    controls: ['zoomControl']
                                 },
                                 {
                                     autoFitToViewport: 'always'
@@ -111,7 +111,8 @@ define(
                                 $container.attr('id'),
                                 {
                                     center: [options.center.lat, options.center.lng],
-                                    zoom: options.zoom
+                                    zoom: options.zoom,
+                                    controls: ['zoomControl']
                                 },
                                 {
                                     autoFitToViewport: 'always'

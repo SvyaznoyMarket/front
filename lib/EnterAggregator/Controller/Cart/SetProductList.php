@@ -87,7 +87,7 @@ namespace EnterAggregator\Controller\Cart {
             }
 
             // сохранение корзины в сессию
-            $cartRepository->saveObjectToHttpSession($session, $cart);
+            $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
 
             // запрос корзины
             $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);

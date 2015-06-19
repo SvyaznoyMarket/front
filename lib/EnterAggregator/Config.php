@@ -80,6 +80,8 @@ namespace EnterAggregator {
         public $mediaHosts = [];
         /** @var Config\Order */
         public $order;
+        /** @var Config\Cart */
+        public $cart;
         /** @var Config\Product */
         public $product;
         /** @var Config\ProductReview */
@@ -129,6 +131,7 @@ namespace EnterAggregator {
 
             $this->kladr = new Config\Kladr();
 
+            $this->cart = new Config\Cart();
             $this->order = new Config\Order();
             $this->product = new Config\Product();
             $this->productReview = new Config\ProductReview();
@@ -352,6 +355,13 @@ namespace EnterAggregator\Config {
         public $key;
         /** @var int */
         public $limit;
+    }
+
+    class Cart {
+        /** @var string */
+        public $sessionKey;
+        /** @var string */
+        public $quickSessionKey;
     }
 
     class Order {

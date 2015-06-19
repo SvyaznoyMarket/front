@@ -125,6 +125,9 @@ return function(\EnterAggregator\Config $config) {
         9 => 'http://fs10.enter.ru',
     ];
 
+    $config->cart->sessionKey = 'cart';
+    $config->cart->quickSessionKey = 'quickCart';
+
     $config->order->splitSessionKey = 'order_split';
     $config->order->userSessionKey = 'order_user';
     $config->order->cookieName = 'last_order';

@@ -20,6 +20,7 @@ namespace EnterMobileApplication\Controller {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
+            $config = $this->getConfig();
             $session = $this->getSession();
             $curl = $this->getCurl();
             $cartRepository = new \EnterRepository\Cart();
@@ -30,7 +31,7 @@ namespace EnterMobileApplication\Controller {
             header_remove('Pragma');
 
             // корзина из сессии
-            $cart = $cartRepository->getObjectByHttpSession($session);
+            $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
             $eTags = $request->getHeader('if-none-match');
             if ($eTags) {
@@ -111,6 +112,7 @@ namespace EnterMobileApplication\Controller {
             // response
             $httpResponse = new Http\JsonResponse($response);
             $httpResponse->headers['ETag'] = '"' . $cart->cacheId . '"';
+
             return $httpResponse;
         }
     }
