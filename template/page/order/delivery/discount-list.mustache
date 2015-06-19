@@ -9,9 +9,8 @@
             <div class="checkout-order-items__name">
                 {{name}}
             </div>
-
+            <a href="#" class="checkout-order-items__data del-link js-order-delivery-form-control" data-value="{{&deleteDataValue}}"><span class="bb-dotted">удалить</span></a>
             <div class="checkout-order-items__data">&nbsp;</div>
-            <a href="#" class="checkout-order-items__data ta-c js-order-delivery-form-control" data-value="{{&deleteDataValue}}"><span class="bb-dotted">удалить</span></a>
             <div class="checkout-order-items__data checkout-order-items__data--sale l ta-r">-{{discount.value}}{{#discount.isCurrency}} <span class="rubl">p</span>{{/discount.isCurrency}}{{^discount.isCurrency}}%{{/discount.isCurrency}}</div>
         </div>
     </div>

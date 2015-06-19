@@ -7646,11 +7646,14 @@ body.noScroll {
 }
 .checkout-order-items__data {
   float: left;
-  width: 33.3%;
+  width: 33%;
   color: #777;
 }
 .checkout-order-items__data--sale {
   color: #e8303c;
+}
+.checkout-order-items__data.del-link {
+  text-align: right;
 }
 .checkout-order-items.error {
   margin-top: -1px;
@@ -7904,6 +7907,9 @@ body.noScroll {
   }
   .self-delivery-choose {
     text-align: center;
+  }
+  .checkout-order-items__data.del-link {
+    text-align: left;
   }
 }
 @media only screen and (max-width: 480px) {
