@@ -36,7 +36,8 @@ class ProductReserveButton {
     ) {
         $button = new Partial\Cart\ProductButton();
 
-        $button->url = $this->router->getUrlByRoute(new Routing\Order\Index(), [
+        $button->url = $this->router->getUrlByRoute(new Routing\Order\Quick\Index(), [
+            'product' => ['id' => $product->id, 'quantity' => 1],
             'shopId'  => $shopState->shop ? $shopState->shop->id : null,
         ]);
         $button->dataUrl = $this->router->getUrlByRoute(new Routing\User\Cart\Product\Set());
