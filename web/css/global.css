@@ -7646,7 +7646,7 @@ body.noScroll {
 }
 .checkout-order-items__data {
   float: left;
-  width: 33%;
+  width: 33.3%;
   color: #777;
 }
 .checkout-order-items__data--sale {
