@@ -212,7 +212,23 @@ class Client {
 
                     if (0 === $ready) {
                         foreach ($this->queries as $query) {
-                            if (count($query->getConnections()) >= ($query->getRetry() ?: $retryCount)) continue;
+                            if (count($query->getConnections()) >= ($query->getRetry() ?: $retryCount)) {
+                                $query->setError(new \Exception('Запрос отменен по таумауту'));
+                                if ($this->logger) $this->logger->push(['type' => 'error', 'error' => $query->getError(), 'sender' => __FILE__ . ' ' .  __LINE__, 'query' => $query, 'tag' => ['curl']]);
+
+                                foreach ($query->getConnections() as $connection) {
+                                    if (is_resource($connection)) {
+                                        curl_multi_remove_handle($this->multiConnection, $connection);
+                                        curl_close($connection);
+                                    }
+
+                                    $query->setEndAt(microtime(true));
+
+                                    unset($this->queries[$query->getId()]);
+                                }
+
+                                continue;
+                            }
                             $this->prepare($query);
                         }
                     }
