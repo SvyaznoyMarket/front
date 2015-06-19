@@ -64,9 +64,18 @@ namespace EnterMobileApplication\Controller {
             }
 
             $productListQuery = null;
-            if ((bool)$productsById) {
+            $descriptionListQuery = null;
+            if ($productsById) {
                 $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id);
                 $curl->prepare($productListQuery);
+
+                $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                    array_keys($productsById),
+                    [
+                        'media'       => true,
+                    ]
+                );
+                $curl->prepare($descriptionListQuery);
             }
 
             $cartItemQuery = new Query\Cart\GetItem($cart, $region->id);
@@ -76,6 +85,10 @@ namespace EnterMobileApplication\Controller {
 
             if ($productListQuery) {
                 $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+            }
+
+            if ($descriptionListQuery) {
+                (new \EnterRepository\Product())->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
             }
 
             // корзина из ядра
