@@ -4,8 +4,7 @@ define(
     ],
     function($) {
         var
-            $body       = $('body')
-        ;
+            $body       = $('body'),
 
             toggleBox = function toggleBox( e ) {
                 var
