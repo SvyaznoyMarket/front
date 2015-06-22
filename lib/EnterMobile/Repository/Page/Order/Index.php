@@ -28,7 +28,7 @@ class Index {
         // заголовок
         $page->title = 'Оформление заказа - Получатель - Enter';
 
-        $page->dataModule = 'order';
+        $page->dataModule = 'order-new';
 
         $page->content->form->url = $router->getUrlByRoute(new Routing\Order\SetUser(), ['shopId' => $request->shopId]);
         $page->content->form->errorDataValue = $templateHelper->json($request->formErrors);

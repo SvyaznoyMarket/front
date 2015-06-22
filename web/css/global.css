@@ -8049,9 +8049,9 @@ body.noScroll {
 .common-control-input {
   height: 100%;
   font-size: 14px;
-  padding-left: 10px;
   display: block;
-  margin-left: 80px;
+  width: 100%;
+  padding-left: 90px;
   border: none;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -8077,8 +8077,8 @@ body.noScroll {
 .common-control-label {
   width: 80px;
   border-right: 1px solid #9f9f9f;
-  float: left;
-  display: block;
+  position: absolute;
+  top: 0px;
   height: 100%;
   padding: 0 0 0 15px;
   background: #efefef;

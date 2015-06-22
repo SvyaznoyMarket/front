@@ -23,43 +23,25 @@ define(
             tmpl,
             i;
 
+        
         // запрос прошел успешно
-        function successForm( result ) {
+        function successForm( $form, result ) {
             console.log('success form');
             console.log(result);
+            
+            formValidator.validate($form, result.errors);
 
-            // маркируем поля с ошибками
-            if ( result.errors.length ) {
-                $field.each(function(index) {
-                    for ( i = 0; i < result.errors.length; i++ ) {
-                        index = result.errors[i].field;
-                        massage = result.errors[i].name;
-
-                        if ( $(this).data('field-name') == index && !( $(this).hasClass(errClass) ) ) {
-                            tmpl = '<div class="error-text js-field-error">' + massage + '</div>';
-
-                            $(this)
-                                .addClass(errClass)
-                                .closest('.js-user-wrap').prepend(tmpl);
-                        }
-                    }
-                })
-            }
 
             // если ошибок нет переход на следущий шаг
             if ( result.redirect !=null && result.redirect.length ) {
                 window.location.href = result.redirect;
             }
-
-            return false;
         }
 
         // обработка ошибок запроса
-        function errorForm( jqXHR, textStatus, errorThrown ) {
+        function errorForm( $form, result ) {
             console.log('error form');
-            console.log(jqXHR);
-            console.log(textStatus);
-            console.log(errorThrown);
+
         }
 
         // отправляем запрос с данными пользователя
@@ -75,8 +57,8 @@ define(
                 type: 'POST',
                 url: url,
                 data: $form.serialize(),
-                error: errorForm,
-                success: successForm
+                error: function(result){ errorForm($form, result); },
+                success: function(result){ successForm($form, result); }
             });
 
         });
