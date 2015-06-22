@@ -1,285 +1,6 @@
 /* ==========================================================================
    Шапка сайта .header
    ========================================================================== */
-// .header {
-// 	position: fixed;
-//     z-index: 1010;
-//     top: 0;
-//     left: 0;
-
-//     width: 100%;
-//     height: 35px;
-// 	padding: 10px 0;
-
-// 	color: @white;
-// 	background: @black;
-// 	border-bottom: 1px solid #858585;
-// }
-
-// /* Иконка меню */
-// .headerLeftAside {
-// 	position: relative;
-
-// 	float: left;
-
-// 	width: 110px;
-// 	margin-left: -100%;
-// }
-
-// .navIco {
-// 	display: inline-block;
-// 	zoom: 1;
-
-//     width: 33px;
-// 	height: 28px;
-// 	margin: 3px 20px 0 0;
-
-// 	cursor: pointer;
-// 	vertical-align: top;
-
-// 	*display: inline;
-
-// 	&_link {
-// 		display: block;
-
-//     	width: 26px;
-// 		height: 26px;
-
-// 		cursor: pointer;
-
-// 		background: url("@{base-url}/header/img/menuIco1024.png") no-repeat 0 0;
-// 	}
-// }
-
-// /* Логотип */
-// .logo {
-// 	display: inline-block;
-// 	zoom: 1;
-
-// 	width: 50px;
-
-// 	vertical-align: top;
-
-// 	*display: inline;
-
-// 	&_img {
-// 		width: 50px;
-// 	}
-// }
-
-// /* Хлебные крошки */
-// .headerCenterWrap {
-// 	float: left;
-// 	overflow: hidden;
-
-// 	width: 100%;
-// }
-
-// .headerCenter {
-// 	overflow: hidden;
-
-// 	min-height: 5px;
-// 	padding: 0 285px 0 120px;
-// }
-
-// .breadCrumbs {
-// 	width: 1000px;
-// 	margin-left: 20px;
-// 	padding: 0 0 0 20px;
-
-// 	border-left: 2px solid @white;
-
-// 	&_link {
-// 		display: inline-block;
-// 		zoom: 1;
-
-// 		padding: 5px 0;
-
-// 		vertical-align: top;
-// 		text-transform: uppercase;
-
-// 		color: @white;
-
-// 		font-size: 17px;
-
-// 		*display: inline;
-
-// 		&:hover {
-// 			text-decoration: none;
-
-// 			color: @white;
-// 		}
-// 	}
-// }
-
-// /* Панель юзера */
-// .headerRightAside {
-//     position: relative;
-//     z-index: 5;
-
-// 	float: left;
-
-//     width: 275px;
-//     margin-left: -275px;
-//     margin-top: -6px;
-// }
-
-// .transBg {
-// 	float: right;
-
-// 	width: 20px;
-// 	height: 30px;
-
-// 	background: url("@{base-url}/header/img/breadCrumbsTrans.png") no-repeat 100% 0;
-// }
-
-// .userBox {
-// 	float: right;
-
-//     background: @black;
-
-
-// 	&_item {
-// 		float: right;
-
-// 		margin: 0 0 0 21px;
-
-// 		&-last {
-// 			margin: 0;
-// 		}
-// 	}
-
-// 	&_link {
-// 		display: block;
-
-// 		padding: 0;
-
-// 		text-align: center;
-// 		text-transform: uppercase;
-
-// 		color: @white;
-// 		outline: none;
-
-// 		&-cartVal {
-// 			position: relative;
-
-// 			text-transform: none;
-
-// 			font-size: 11px;
-
-// 			.userBox_text {
-// 				color: @firmOrange;
-
-// 				font-size: 12px;
-// 			}
-
-// 			.rubl {
-// 				font-size: 12px;
-// 			}
-
-// 			.qnt {
-
-// 				border-radius: 4px;
-// 				position: absolute;
-// 				top: 13px;
-// 				left: 0;
-// 				height: 15px;
-// 				font-size: 11px;
-// 				font-weight: bold;
-// 				line-height: 15px;
-// 				width: 100%;
-// 			}
-// 		}
-
-// 		&-authVal {
-// 			position: relative;
-
-// 			overflow: hidden;
-
-// 			max-width: 50px;
-
-// 			text-align: left;
-
-// 			background-position: 50% -165px;
-
-// 			.userBox_text {
-// 				display: inline-block;
-
-// 				width: 500px;
-
-// 				color: @firmOrange;
-// 			}
-// 		}
-
-// 		&:hover {
-// 			text-decoration: none;
-
-// 			color: @white;
-
-// 			//animation: 0.3s linear 0s normal none 1 resize;
-// 			outline: none;
-// 		}
-
-// 	}
-
-// 	.transBg {
-// 	    position: absolute;
-// 	    right: 0;
-// 	    bottom: 0;
-
-// 	    width: 8px;
-// 	    height: 15px;
-
-// 		background-position: 0 0;
-// 	}
-
-// 	&_text {
-// 		 font-size: 11px;
-// 	}
-// }
-
-// .fixfixed .header {
-// 	position: absolute;
-// }
-
-// .sprite-icon{
-// 	background-image: url("@{base-url}/header/img/menu-sprite1024.png");
-// 	 &--cart-empty {
-//         .i-sprite(-2px, 1px, 30px, 30px);
-//     }
-
-//     &--cart-full {
-//         .i-sprite(-32px, 1px, 30px, 30px);
-//     }
-
-//     &--user-unauth {
-//         .i-sprite(-63px, 0px, 30px, 30px);
-//     }
-
-//     &--user-auth {
-//         .i-sprite(-93px, 0px, 30px, 30px);
-//     }
-
-//     &--user-vip {
-//         .i-sprite(-123px, 0px, 30px, 30px);
-//     }
-
-//     &--search-white {
-//         .i-sprite(-153px, 4px, 30px, 30px);
-//     }
-
-//     &--search {
-//         .i-sprite(-183px, 4px, 30px, 30px);
-//     }
-// }
-
-// .userBox_link .sprite-icon{
-// 	display: block;
-// 	margin-right:auto;
-// 	margin-left: auto;
-// 	margin-bottom: 1px;
-// }
-
 .header {
     position: fixed;
     z-index: 1010;
@@ -345,6 +66,7 @@
 
 .main-banner-slider {
 	margin: 0 0 10px;
+    display: none;
 }
 
 .content {
@@ -358,25 +80,41 @@
 }
 
 .i-header {
-    background-image: url("@{common-url}/header/i-header.png");
+    background-image: url("@{base-url}/header/img/menu-sprite1024.png");
 
-    &__cart {
-        .i-sprite(0, 0, 25px, 22px);
+    &--cart {
+        .i-sprite(-32px, 1px, 30px, 30px);
         vertical-align: middle;
     }
 
-    &__cart-full {
-        .i-sprite(-25px, 0, 25px, 22px);
+    &--cart-full {
+        .i-sprite(-32px, 1px, 30px, 30px);
         vertical-align: middle;
     }
 
-    &__menu {
+    &--menu {
+        background-image: url("@{common-url}/header/i-header.png");
         .i-sprite(-50px, 0, 19px, 17px);
         vertical-align: middle;
     }
 
-    &__search {
-        .i-sprite(-69px, 0, 24px, 23px);
+    &--search {
+        .i-sprite(-156px, 0, 24px, 23px);
+        vertical-align: middle;
+    }
+
+    &--user-auth {
+        .i-sprite(-93px, 0px, 30px, 30px);
+        vertical-align: middle;
+    }
+
+    &--user-vip {
+        .i-sprite(-123px, 0px, 30px, 30px);
+        vertical-align: middle;
+    }
+
+    &--user-unauth {
+        .i-sprite(-63px, 0px, 30px, 30px);
         vertical-align: middle;
     }
 }
@@ -385,7 +123,7 @@
     background-image: url("@{common-url}/main/i-shop-info.png");
 
     &__delivery {
-        .i-sprite(0, 50%, 37px, 44px);
+        .i-sprite(0, 10px, 37px, 44px);
     }
 
     &__phone {
@@ -393,11 +131,11 @@
     }
 
     &__self-delivery {
-        .i-sprite(-57px, 50%, 29px, 44px);
+        .i-sprite(-57px, 11px, 29px, 44px);
     }
 
     &__shops {
-        .i-sprite(-86px, 50%, 26px, 44px);
+        .i-sprite(-86px, 10px, 26px, 44px);
     }
 }
 
@@ -405,8 +143,6 @@
 // <i class="i-shop-info i-shop-info-shops-info__phone"></i>
 // <i class="i-shop-info i-shop-info-shops-info__self-delivery"></i>
 // <i class="i-shop-info i-shop-info-shops-info__shops"></i>
-
-
 
 // <i class="i-header i-header__cart"></i>
 // <i class="i-header i-header__cart-full"></i>
@@ -499,6 +235,14 @@ body {
     }
 }
 
+.slider-parent {
+
+    &.m-loader {
+        max-height: 200px;
+        min-height: 150px;
+    }
+}
+
 .items-slider {
     border: 1px solid #a0a0a0;
     border-top-width: 5px;
@@ -542,6 +286,7 @@ body {
     }
     &-slides {
     	padding: 0 0 10px;
+        display: none;
 
     	&--images {
     		height: 100px;

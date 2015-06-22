@@ -71,24 +71,17 @@
     </head>
 
     <body data-module="{{&dataModule}}" data-config="{{&dataConfig}}">
-    	<header class="header">
-			<a class="header-nav-link" href=""	><i class="i-header i-header__menu"></i></a>
-
-			<div class="header__logotype"><a href="" class="header__logotype-link"></a></div>
-
-			<manu class="header-controls">
-				<li class="header-controls__item header-controls__item--search"><a href="" class="header-controls__link"><i class="i-header i-header__search"></i></a></li>
-				<li class="header-controls__item header-controls__item--cart"><a href="" class="header-controls__link"><i class="i-header i-header__cart"></i></a></li>
-			</manu>
-		</header>
+    	{{>partial/header}}
 
 		<main class="content">
-			<div class="main-banner-slider js-main-banner-slider">
-				<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link"><img src="img/main/banner-1.png" alt="" class="main-banner-slider__img"></a></div>
-				<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link"><img src="img/main/banner-2.png" alt="" class="main-banner-slider__img"></a></div>
-				<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link"><img src="img/main/banner-3.png" alt="" class="main-banner-slider__img"></a></div>
-				<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link"><img src="img/main/banner-1.png" alt="" class="main-banner-slider__img"></a></div>
-				<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link"><img src="img/main/banner-2.png" alt="" class="main-banner-slider__img"></a></div>
+			<div class="slider-parent m-loader js-slider-parent">
+				<div class="main-banner-slider js-main-banner-slider">
+					<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link"><img src="img/main/banner-1.png" alt="" class="main-banner-slider__img"></a></div>
+					<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link"><img src="img/main/banner-2.png" alt="" class="main-banner-slider__img"></a></div>
+					<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link"><img src="img/main/banner-3.png" alt="" class="main-banner-slider__img"></a></div>
+					<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link"><img src="img/main/banner-1.png" alt="" class="main-banner-slider__img"></a></div>
+					<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link"><img src="img/main/banner-2.png" alt="" class="main-banner-slider__img"></a></div>
+				</div>
 			</div>
 
 			<ul class="shop-info grid-4cols clearfix">
@@ -132,65 +125,67 @@
 						        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-featured"></div>
 						    </div>
 
-						    <div class="items-slider-slides items-slider-slides--goods js-main-items-slider-featured" data-slick-slider="featured" data-slick='{"slidesToShow": 3, "slidesToScroll": 3}'>
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
+							<div class="slider-parent m-loader js-slider-parent">
+							    <div class="items-slider-slides items-slider-slides--goods js-main-items-slider-featured" data-slick-slider="featured" data-slick='{"slidesToShow": 3, "slidesToScroll": 3}'>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
 
-									<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
+										<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
 
-									<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-									<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-									<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-								</div>
+										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
 
-									<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
+										<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
 
-									<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-									<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-									<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-								</div>
+										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
 
-									<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
+										<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
 
-									<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-									<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-									<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-								</div>
+										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
 
-									<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
+										<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
 
-									<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-									<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-									<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-								</div>
+										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
 
-									<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
+										<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
 
-									<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-									<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-									<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -208,65 +203,67 @@
 						        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-recommended"></div>
 						    </div>
 
-						    <div class="items-slider-slides items-slider-slides--goods js-main-items-slider-recommended" data-slick-slider="recommended" data-slick='{"slidesToShow": 3, "slidesToScroll": 3}'>
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
+							<div class="slider-parent m-loader js-slider-parent">
+							    <div class="items-slider-slides items-slider-slides--goods js-main-items-slider-recommended" data-slick-slider="recommended" data-slick='{"slidesToShow": 3, "slidesToScroll": 3}'>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
 
-									<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
+										<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
 
-									<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-									<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-									<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-								</div>
+										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
 
-									<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
+										<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
 
-									<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-									<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-									<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-								</div>
+										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
 
-									<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
+										<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
 
-									<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-									<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-									<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-								</div>
+										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
 
-									<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
+										<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
 
-									<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-									<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-									<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-								</div>
+										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
 
-									<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
+										<a class="items-slider__name">Смартфон Nokia Lumia 720 черный</a>
 
-									<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-									<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-									<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -304,35 +301,37 @@
 						        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-watched"></div>
 						    </div>
 
-						    <div class="items-slider-slides items-slider-slides--images js-main-items-slider-watched" data-slick-slider="watched" data-slick='{"slidesToShow": 6, "slidesToScroll": 6}'>
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
-								</div>
+						    <div class="slider-parent m-loader js-slider-parent">
+							    <div class="items-slider-slides items-slider-slides--images js-main-items-slider-watched" data-slick-slider="watched" data-slick='{"slidesToShow": 6, "slidesToScroll": 6}'>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
-								</div>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
-								</div>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
-								</div>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+										</a>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -350,75 +349,77 @@
 						        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-brands"></div>
 						    </div>
 
-						    <div class="items-slider-slides items-slider-slides--images js-main-items-slider-brands" data-slick-slider="brands" data-slick='{"slidesToShow": 4, "slidesToScroll": 4}'>
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="img/main/logo-1.png" />
-									</a>
+						    <div class="slider-parent m-loader js-slider-parent">
+							    <div class="items-slider-slides items-slider-slides--images js-main-items-slider-brands" data-slick-slider="brands" data-slick='{"slidesToShow": 4, "slidesToScroll": 4}'>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="img/main/logo-1.png" />
+										</a>
 
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="img/main/logo-2.png" />
-									</a>
-								</div>
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="img/main/logo-2.png" />
+										</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="img/main/logo-3.png" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="img/main/logo-3.png" />
+										</a>
 
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="img/main/logo-4.png" />
-									</a>
-								</div>
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="img/main/logo-4.png" />
+										</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="img/main/logo-5.png" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="img/main/logo-5.png" />
+										</a>
 
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="img/main/logo-6.png" />
-									</a>
-								</div>
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="img/main/logo-6.png" />
+										</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="img/main/logo-7.png" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="img/main/logo-7.png" />
+										</a>
 
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="img/main/logo-8.png" />
-									</a>
-								</div>
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="img/main/logo-8.png" />
+										</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="img/main/logo-1.png" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="img/main/logo-1.png" />
+										</a>
 
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="img/main/logo-2.png" />
-									</a>
-								</div>
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="img/main/logo-2.png" />
+										</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="img/main/logo-3.png" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="img/main/logo-3.png" />
+										</a>
 
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="img/main/logo-4.png" />
-									</a>
-								</div>
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="img/main/logo-4.png" />
+										</a>
+									</div>
 
-								<div class="items-slider-slides__item">
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="img/main/logo-5.png" />
-									</a>
+									<div class="items-slider-slides__item">
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="img/main/logo-5.png" />
+										</a>
 
-									<a class="items-slider__img-link">
-										<img class="items-slider__img" src="img/main/logo-6.png" />
-									</a>
+										<a class="items-slider__img-link">
+											<img class="items-slider__img" src="img/main/logo-6.png" />
+										</a>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -427,69 +428,6 @@
 			</div>
 		</main>
 
-		<div class="footer">
-			<div class="footer-apps-list">
-				<a href="" class="footer-apps-list__link"><img src="" alt="" class="footer-apps-list__img"></a>
-				<a href="" class="footer-apps-list__link"><img src="" alt="" class="footer-apps-list__img"></a>
-			</div>
-
-			<ul class="footer-shop-info">
-				<li class="footer-shop-info__item">
-					<linl class="footer-shop-info__link"></linl>
-				</li>
-				<li class="footer-shop-info__item">
-					<linl class="footer-shop-info__link"></linl>
-				</li>
-				<li class="footer-shop-info__item">
-					<linl class="footer-shop-info__link"></linl>
-				</li>
-				<li class="footer-shop-info__item">
-					<linl class="footer-shop-info__link"></linl>
-				</li>
-				<li class="footer-shop-info__item">
-					<linl class="footer-shop-info__link"></linl>
-				</li>
-				<li class="footer-shop-info__item">
-					<linl class="footer-shop-info__link"></linl>
-				</li>
-			</ul>
-
-			<div class="footer-external-links">
-				<ul class="partner-list">
-					<li class="partner-list__item"><a href="" class="partner-list__link"><img src="" alt="" class="partner-list__img"></a></li>
-					<li class="partner-list__item"><a href="" class="partner-list__link"><img src="" alt="" class="partner-list__img"></a></li>
-				</ul>
-
-				<ul class="social-net-list">
-					<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
-					<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
-					<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
-					<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
-					<li class="social-net-list__item"><a href="" class="social-net-list__link"></a></li>
-				</ul>
-			</div>
-
-			<ul class="footer-shop-info">
-				<li class="footer-shop-info__item">
-					<linl class="footer-shop-info__link"></linl>
-				</li>
-				<li class="footer-shop-info__item">
-					<linl class="footer-shop-info__link"></linl>
-				</li>
-				<li class="footer-shop-info__item">
-					<linl class="footer-shop-info__link"></linl>
-				</li>
-				<li class="footer-shop-info__item">
-					<linl class="footer-shop-info__link"></linl>
-				</li>
-				<li class="footer-shop-info__item">
-					<linl class="footer-shop-info__link"></linl>
-				</li>
-				<li class="footer-shop-info__item">
-					<linl class="footer-shop-info__link"></linl>
-				</li>
-			</ul>
-			<footer class="footer-bottom"></footer>
-		</div>
+		{{>partial/footer}}
 	</body>
 </html>

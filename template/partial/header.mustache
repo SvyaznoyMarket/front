@@ -1,40 +1,12 @@
-<header class="header clearfix js-header">
-    <!-- Обертка в 940 px-->
-    <div class="contentBox940">
-        <!-- Хлебные крошки -->
-        <div class="headerCenterWrap">
-            <div class="headerCenter">
-                {{#breadcrumbBlock}}
-                    <div class="breadCrumbs">
-                    {{#breadcrumbs}}
-                        <a class="breadCrumbs_link" href="{{url}}">{{name}}</a>
-                    {{/breadcrumbs}}
-                    </div>
-                {{/breadcrumbBlock}}
-            </div>
-        </div>
-        <!--/ Хлебные крошки -->
+<header class="header">
+    <a class="header-nav-link js-ga-click navIco" href="" data-ga-click="{&quot;m_sidebar&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_sidebar&quot;,&quot;click&quot;]}"><i class="i-header i-header__menu"></i></a>
 
-        <!-- Меню и логотип -->
-        <div class="headerLeftAside">
-            <div class="js-ga-click navIco" data-ga-click="{&quot;m_sidebar&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_sidebar&quot;,&quot;click&quot;]}">
-                <span class="navIco_link"></span>
-            </div>
+    <div class="header__logotype"><a href="/" class="header__logotype-link"></a></div>
 
-            <a class="logo" href="/"><img class="logo_img" src="/css/modules/header/img/logo.gif" alt="" /></a>
-        </div>
-        <!--/ Меню и логотип -->
-
-        <!-- Панель юзера - личный кабинет, поиск, корзина -->
-        <div class="headerRightAside">
-            {{#userBlock}}
-                {{>partial/user}}
-            {{/userBlock}}
-            <div class="transBg"></div>
-        </div>
-        <!--/ Панель юзера - личный кабинет, поиск, корзина -->
-    </div><!--/ Обертка в 940 px-->
-</header><!--/ Шапка-->
+    {{#userBlock}}
+        {{>partial/user}}
+    {{/userBlock}}
+</header>
 
 <nav id="nav" class="nav">
     <div class="navHead">
