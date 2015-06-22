@@ -266,7 +266,7 @@ class Delivery {
                             'url'        => $productModel->url,
                             'image'      =>
                                 isset($productModel->media->photos[0])
-                                ? (string)(new Routing\Product\Media\GetPhoto($productModel->media->photos[0], 'product_160'))
+                                ? (new \EnterRepository\Media())->getSourceObjectByItem($productModel->media->photos[0], 'product_160')->url
                                 : null
                             ,
                         ];

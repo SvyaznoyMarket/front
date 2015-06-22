@@ -62,8 +62,12 @@ namespace EnterMobileApplication\Controller\User\Favorite {
                     )
                 );
                 if ($productUis) {
-                    $productListQuery = new Query\Product\GetListByUiList($productUis, $config->region->defaultId);
-                    $curl->prepare($productListQuery);
+                    $productListQueries = [];
+                    foreach (array_chunk($productUis, $config->curl->queryChunkSize) as $uisInChunk) {
+                        $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $config->region->defaultId);
+                        $curl->prepare($productListQuery);
+                        $productListQueries[] = $productListQuery;
+                    }
 
                     // запрос списка медиа для товаров
                     $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
@@ -71,23 +75,19 @@ namespace EnterMobileApplication\Controller\User\Favorite {
                         [
                             'media'       => true,
                             'media_types' => ['main'], // только главная картинка
+                            'category'    => true,
+                            'label'       => true,
+                            'brand'       => true,
                         ]
                     );
                     $curl->prepare($descriptionListQuery);
 
                     $curl->execute();
 
-                    $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+                    $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList($productListQueries);
 
-                    // товары по ui
-                    $productsByUi = [];
-                    call_user_func(function() use (&$productsById, &$productsByUi) {
-                        foreach ($productsById as $product) {
-                            $productsByUi[$product->ui] = $product;
-                        }
-                    });
                     // медиа для товаров
-                    (new \EnterRepository\Product())->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                    (new \EnterRepository\Product())->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
 
                     $response->products = array_values($productsById);
                 }

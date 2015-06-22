@@ -103,22 +103,16 @@ namespace EnterMobileApplication\Controller {
                     [
                         'media'       => true,
                         'media_types' => ['main'], // только главная картинка
+                        'category'    => true,
+                        'label'       => true,
+                        'brand'       => true,
                     ]
                 );
                 $curl->prepare($descriptionListQuery);
 
                 $curl->execute();
 
-                // товары по ui
-                $productsByUi = [];
-                call_user_func(function() use (&$productsById, &$productsByUi) {
-                    foreach ($productsById as $product) {
-                        $productsByUi[$product->ui] = $product;
-                    }
-                });
-
-                // медиа для товаров
-                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
             }
 
             // товары

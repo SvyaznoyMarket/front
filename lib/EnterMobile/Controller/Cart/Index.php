@@ -58,7 +58,10 @@ class Index {
             $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
                 $cartProductIds,
                 [
-                    'media' => true, // только картинки
+                    'media'    => true,
+                    'category' => true,
+                    'label'    => true,
+                    'brand'    => true,
                 ]
             );
             $curl->prepare($descriptionListQuery);
