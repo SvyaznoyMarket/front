@@ -1,10 +1,10 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'jquery.ui', 'jquery.maskedinput',
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'module/form-validator', 'jquery.ui', 'jquery.maskedinput',
         'module/order/user.form', 'module/order/common', 'module/order/toggle'
     ],
     function(
-        require, $, _, mustache, util, config
+        require, $, _, mustache, util, config, formValidator
     ) {
 
         var
@@ -841,7 +841,9 @@ define(
             e.stopPropagation();
             e.preventDefault();
 
-            changeSplit(data);
+            if (formValidator.validate($form).isValid) {
+                changeSplit(data);
+            }
         });
         $body.on('submit', '.js-discount-form', function(e) {
             var
@@ -957,5 +959,7 @@ define(
         } catch (error) {
             console.error(error);
         }
+
+        formValidator.init();
     }
 );
