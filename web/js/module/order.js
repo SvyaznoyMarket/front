@@ -54,7 +54,6 @@ define(
             $discountPopupTemplate      = $('#tpl-order-delivery-discount-popup'),
             $modalWindowTemplate        = $('#tpl-modalWindow'),
             $discountScroll             = $('[data-scroll]'),
-            $validatedForm              = $('.js-validate'),
 
             initPointMap = function($container, options) {
                 var defer = $.Deferred();
@@ -805,10 +804,6 @@ define(
                         }
                     });
                 }
-            },
-
-            validateForm = function( el ){
-                //TODO: валидация
             }
         ;
 
@@ -848,7 +843,7 @@ define(
             e.stopPropagation();
             e.preventDefault();
 
-            if (formValidator.validate($form).isValid) {
+            if (formValidator.validateRequired($form).isValid) {
                 changeSplit(data);
             }
         });
@@ -918,47 +913,7 @@ define(
                 }
             }
         });
-        // устанавливаем маску в поле номера телефона
-        $.mask.definitions['x'] = "[0-9]";
-        $('.js-field-phone').mask("+7(xxx)xxx-xx-xx", {
-            placeholder: "+7(xxx)xxx-xx-xx"
-        });
 
-       //TODO: универсальная валидация форм
-        $body.on('submit','.js-validate', function(){
-            //TODO: вызов фунцкии валидации
-        });
-
-        // запрос прошел успешно
-        function successForm( result ) {
-            console.log('success form');
-            console.log(result);
-
-            // маркируем поля с ошибками
-            if ( result.errors.length ) {
-                $field.each(function(index) {
-                    for ( i = 0; i < result.errors.length; i++ ) {
-                        index = result.errors[i].field;
-                        message = result.errors[i].name;
-
-                        if ( $(this).data('field-name') == index && !( $(this).hasClass(errClass) ) ) {
-                            tmpl = '<div class="error-text js-field-error">' + message + '</div>';
-
-                            $(this)
-                                .addClass(errClass)
-                                .closest('.js-user-wrap').prepend(tmpl);
-                        }
-                    }
-                })
-            }
-
-            // если ошибок нет переход на следущий шаг
-            if ( result.redirect !=null && result.redirect.length ) {
-                window.location.href = result.redirect;
-            }
-
-            return false;
-        }
         try {
             if (!navigator.geolocation) {
                 $('.js-order-delivery-geolocation-link').hide();

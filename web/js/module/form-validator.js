@@ -12,11 +12,17 @@ define(
                         $field = $(this)
                     ;
 
-                    resetFieldError($field)
+                    resetFieldError($field);
                 });
             },
+            validate = function($form, data){
+                _.each(data, function(item, i){
+                    showFieldError($form.find('[data-field="'+item.field+'"]'), item);
+                });
 
-            validate = function($form) {
+            },
+
+            validateRequired = function($form) {
                 var
                     isValid = true,
                     message
@@ -24,14 +30,15 @@ define(
 
                 console.info('form', $form);
 
-                $form.find('[required="required"]').each(function(i, el) {
+                $form.find('[required]').each(function(i, el) {
                     var $field = $(el);
+                    console.log($field);
 
                     if (!$field.val().length) { // поле пустое
                         isValid = false;
 
                         message = 'Поле пустое';
-                        showFieldError($field, {message: message});
+                        showFieldError($field, {name: message});
                     }
                 });
 
@@ -41,17 +48,21 @@ define(
             },
 
             showFieldError = function($field, error) {
-                console.warn(error, $field);
+                //console.log(error, $field);
+                $field.parent().addClass('error').parent().append('<label class="error">'+error.name+'</label>');
             },
 
             resetFieldError = function($field) {
-                console.info('reset error, $field', $field);
+                //console.info('reset error', $field);
+                $field.parent().removeClass('error').parent().find('label.error').remove();
+
             }
         ;
 
         return {
             init: init,
             validate: validate,
+            validateRequired: validateRequired,
             showFieldError: showFieldError,
             resetFieldError: resetFieldError
         };
