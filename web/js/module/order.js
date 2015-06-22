@@ -256,15 +256,22 @@ define(
             },
 
             changeSplit = function( data ) {
+                var
+                    $content    = $('.js-order-content'),
+                    loaderClass = 'm-loader';
+
+                $content.addClass(loaderClass);
+
                 $.ajax({
                     url: $deliveryForm.attr('action'),
                     data: data,
                     type: 'post',
                     timeout: 40000
                 }).done(function(response) {
-                    $($deliveryForm.data('containerSelector')).html(response)
+                    $($deliveryForm.data('containerSelector')).html(response);
                 }).always(function() {
                     console.info('unblock screen');
+                    $content.removeClass(loaderClass);
                 }).error(function(xhr, textStatus, error) {
                     var
                         response,
@@ -677,9 +684,9 @@ define(
                     },
                     centered: false
                 });
-                
-                
-                
+
+
+
                 $body.on('beforeSplit', beforeSplit);
 
                 e.preventDefault();
@@ -883,7 +890,7 @@ define(
         });
         //скролл списка фишек в попапе скидок
         $body.on('DOMNodeInserted', $discountScroll, function () {
-            
+
             $('[data-scroll]').scroll(function() {
                 clearTimeout($.data(this, 'scrollTimer'));
                 $('[data-scroll-wrap]').addClass('scrolling');
@@ -892,7 +899,7 @@ define(
                     $('[data-scroll-wrap]').removeClass('scrolling');
                 }, 600));
             });
-            
+
         });
         $body.on('submit', '.js-order-form', function(e) {
             var
@@ -921,7 +928,7 @@ define(
         $body.on('submit','.js-validate', function(){
             //TODO: вызов фунцкии валидации
         });
-        
+
         // запрос прошел успешно
         function successForm( result ) {
             console.log('success form');
