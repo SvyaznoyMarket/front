@@ -144,8 +144,9 @@ class Delivery {
                                     'id'      => $point->id,
                                     'name'    => $point->name,
                                     'group'   => [
-                                        'token' => $pointGroup->token,
-                                        'name'  => $pointGroup->blockName,
+                                        'token'     => $pointGroup->token,
+                                        'shortName' => $pointGroup->blockName,
+                                        'name'      => $this->getPointGroupName($pointGroup->blockName),
                                     ],
                                     'address' => $point->address,
                                     'icon'    => $this->getPointIcon($pointGroup->token),
@@ -170,7 +171,7 @@ class Delivery {
                             ,
                             'date'        =>
                                 $deliveryModel->date
-                                ? mb_strtolower($dateHelper->strftimeRu('%e %B2 %G, %A', $deliveryModel->date))
+                                ? mb_strtolower($dateHelper->strftimeRu('%e %B2 %G', $deliveryModel->date)) // если нужен день недели, то '%e %B2 %G, %A'
                                 : 'Выбрать'
                             ,
                             'interval'    =>
@@ -265,7 +266,7 @@ class Delivery {
                             'url'        => $productModel->url,
                             'image'      =>
                                 isset($productModel->media->photos[0])
-                                ? (string)(new Routing\Product\Media\GetPhoto($productModel->media->photos[0], 'product_160'))
+                                ? (new \EnterRepository\Media())->getSourceObjectByItem($productModel->media->photos[0], 'product_160')->url
                                 : null
                             ,
                         ];
@@ -344,7 +345,7 @@ class Delivery {
                             'id'        => $possiblePointModel->id,
                             'name'      => $point->name,
                             'group'     => [
-                                'name'  => $pointGroup->blockName,
+                                'name'  => $this->getPointGroupName($pointGroup->blockName),
                                 'value' => $pointGroup->token,
                             ],
                             'icon'      => $this->getPointIcon($pointGroup->token),
@@ -577,16 +578,19 @@ class Delivery {
                 'addressFormJson' => json_encode([
                     'url'    => $router->getUrlByRoute(new Routing\Order\Delivery()),
                     'fields' => [
-                        'street'    => [
+                        'street'     => [
                             'name' => 'change[user][address][street]',
                         ],
-                        'building'  => [
+                        'streetType' => [
+                            'name' => 'change[user][address][streetType]',
+                        ],
+                        'building'   => [
                             'name' => 'change[user][address][building]',
                         ],
-                        'apartment' => [
+                        'apartment'  => [
                             'name' => 'change[user][address][apartment]',
                         ],
-                        'kladrId'   => [
+                        'kladrId'    => [
                             'name' => 'change[user][address][kladrId]',
                         ],
                     ],
@@ -680,6 +684,12 @@ class Delivery {
 
         $page->content->isUserAuthenticated = (bool)$request->user;
 
+        $page->steps = [
+            ['name' => 'Получатель', 'isPassive' => true, 'isActive' => false, 'url' => $router->getUrlByRoute(new Routing\Order\Index())],
+            ['name' => 'Самовывоз и доставка', 'isPassive' => true, 'isActive' => true],
+            ['name' => 'Оплата', 'isPassive' => false, 'isActive' => false],
+        ];
+
         // шаблоны mustache
         (new Repository\Template())->setListForPage($page, [
             // модальное окно с точками самовывоза
@@ -740,10 +750,27 @@ class Delivery {
             case 'shops_svyaznoy':
                 $icon = 'svyaznoy';
                 break;
+            case 'self_partner_hermes_pred_supplier':
+            case 'self_partner_hermes':
+                $icon = 'hermes';
+                break;
             default:
                 $icon = 'enter';
         }
 
         return $icon . '.png';
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    private function getPointGroupName($name) {
+        return strtr($name, [
+            'Магазин'           => 'Магазин Enter',
+            'Магазин "Связной"' => 'Связной',
+            'Постамат'          => 'Постамат PickPoint',
+            'Hermes DPD'        => 'Постамат Hermes-DPD',
+        ]);
     }
 }

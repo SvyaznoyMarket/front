@@ -35,7 +35,7 @@ trait ProductListingTrait {
                     return [
                         'id'    => $label->id,
                         'name'  => $label->name,
-                        'image' => $label->image,
+                        'media' => $label->media,
                     ];
                 }, $product->labels),
                 'media'                => $product->media,
@@ -46,6 +46,7 @@ trait ProductListingTrait {
                 ] : null,
                 'favorite'        => isset($product->favorite) ? $product->favorite : null,
                 'partnerOffers'   => $product->partnerOffers,
+                'storeLabel'      => $product->storeLabel,
             ];
         }
 

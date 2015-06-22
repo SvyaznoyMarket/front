@@ -39,13 +39,13 @@ class Shop {
     public $subway = [];
     /** @var bool */
     public $hasGreenCorridor;
+    /** @var Model\MediaList */
+    public $media;
 
     /**
      * @param array $data
      */
     public function __construct(array $data = []) {
-        $this->media = new Model\Shop\Media();
-
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui']; // FIXME: deprecated
         if (array_key_exists('uid', $data)) $this->ui = (string)$data['uid'];
@@ -79,17 +79,8 @@ class Shop {
                 $this->photo[] = new Model\Shop\Photo($photoItem);
             }
         }
-        if (isset($data['medias'][0])) {
-            foreach ($data['medias'] as $mediaItem) {
-                if (!isset($mediaItem['sources'][0])) continue;
 
-                $media = new Model\Media($mediaItem);
-
-                if ('image' == $media->type) {
-                    $this->media->photos[] = new Model\Media($mediaItem);
-                }
-            }
-        }
+        $this->media = new Model\MediaList(isset($data['medias']) ? $data['medias'] : []);
 
         if (isset($data['subway'][0]['ui'])) { // FIXME: deprecated
             foreach ($data['subway'] as $subwayItem) {

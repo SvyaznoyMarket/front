@@ -18,7 +18,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Page\User\Login as Page;
 
 class Login {
-    use ConfigTrait, LoggerTrait, CurlTrait, RouterTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait, SessionTrait;
+    use ConfigTrait, LoggerTrait, CurlTrait, RouterTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -65,7 +65,7 @@ class Login {
             $curl->prepare($userItemQuery);
         }
 
-        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
         $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
         $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
 

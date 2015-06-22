@@ -20,6 +20,7 @@ namespace EnterMobileApplication\Controller {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
+            $config = $this->getConfig();
             $session = $this->getSession();
             $curl = $this->getCurl();
             $cartRepository = new \EnterRepository\Cart();
@@ -30,7 +31,7 @@ namespace EnterMobileApplication\Controller {
             header_remove('Pragma');
 
             // корзина из сессии
-            $cart = $cartRepository->getObjectByHttpSession($session);
+            $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
             $eTags = $request->getHeader('if-none-match');
             if ($eTags) {
@@ -64,9 +65,18 @@ namespace EnterMobileApplication\Controller {
             }
 
             $productListQuery = null;
-            if ((bool)$productsById) {
+            $descriptionListQuery = null;
+            if ($productsById) {
                 $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id);
                 $curl->prepare($productListQuery);
+
+                $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                    array_keys($productsById),
+                    [
+                        'media'       => true,
+                    ]
+                );
+                $curl->prepare($descriptionListQuery);
             }
 
             $cartItemQuery = new Query\Cart\GetItem($cart, $region->id);
@@ -76,6 +86,10 @@ namespace EnterMobileApplication\Controller {
 
             if ($productListQuery) {
                 $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+            }
+
+            if ($descriptionListQuery) {
+                (new \EnterRepository\Product())->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
             }
 
             // корзина из ядра
@@ -111,6 +125,7 @@ namespace EnterMobileApplication\Controller {
             // response
             $httpResponse = new Http\JsonResponse($response);
             $httpResponse->headers['ETag'] = '"' . $cart->cacheId . '"';
+
             return $httpResponse;
         }
     }

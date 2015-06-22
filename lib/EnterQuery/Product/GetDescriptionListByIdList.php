@@ -21,8 +21,10 @@ class GetDescriptionListByIdList extends Query {
     public function __construct(array $ids, array $filter = [], $regionId = null) {
         $filter += [
             'trustfactor' => false,
-            'category'    => false,
             'media'       => false,
+            'category'    => false,
+            'label'       => false,
+            'brand'       => false,
             'property'    => false,
             'tag'         => false,
             'seo'         => false,
@@ -36,11 +38,17 @@ class GetDescriptionListByIdList extends Query {
         if ($filter['trustfactor']) {
             $this->url->query['trustfactor'] = true;
         }
+        if ($filter['media']) {
+            $this->url->query['media'] = true;
+        }
         if ($filter['category']) {
             $this->url->query['category'] = true;
         }
-        if ($filter['media']) {
-            $this->url->query['media'] = true;
+        if ($filter['label']) {
+            $this->url->query['label'] = true;
+        }
+        if ($filter['brand']) {
+            $this->url->query['brand'] = true;
         }
         if ($filter['property']) {
             $this->url->query['property'] = true;

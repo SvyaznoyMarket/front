@@ -5,7 +5,7 @@ namespace EnterMobile\Controller;
 use Enter\Http;
 use Enter\Curl\Query as Query;
 use EnterModel as Model;
-use EnterRepository as Repository;
+use EnterMobile\Repository;
 
 trait SecurityTrait {
     /**

@@ -27,12 +27,16 @@
             padding-left: 90px;
 
             .inline-block();
+            &:active, &:focus{
+                outline: none;
+            }
         }
         &__hint {
             font-size: 14px;
 
             position: absolute;
             left: 0;
+            bottom: -18px;
 
             width: 100%;
             height: 16px;
@@ -52,7 +56,6 @@
             padding: 0 0 0 15px;
 
             border-right: 1px solid @inputBorder;
-            border-bottom: 1px solid @inputBorder;
             background: #efefef;
 
             .rounded(4px 0 0 4px);
@@ -106,13 +109,14 @@
         height: 35px;
 
         .inline-block();
+
         &__input {
             font-size: 14px;
-            line-height: 33px;
 
             width: 100%;
             height: 35px;
             padding-left: 35px;
+            padding-right: 35px;
 
             color: #686868;
             border: 1px solid #c7c7c7;
@@ -120,6 +124,19 @@
 
             .rounded(4px);
             .box-sizing(border-box);
+            //placeholders line-height fix
+            &::-webkit-input-placeholder {
+              line-height: normal;
+            }
+            &::-moz-placeholder { 
+              line-height: normal;
+            }
+            &:-ms-input-placeholder {
+              line-height: normal;
+            }
+            &:-moz-placeholder { 
+              line-height: normal;
+            }
         }
         .sprite-icon {
             position: absolute;
@@ -128,17 +145,21 @@
         }
         &__submit {
             position: absolute;
-            top: 11px;
-            right: 15px;
+            top: 0px;
+            right: 0px;
 
-            width: 17px;
-            height: 17px;
+            width: 35px;
+            height: 35px;
+            padding: 0;
 
             border: 0;
-            background: url('modules/order/img/map-pointer@2x.png') no-repeat;
+            background: url('modules/order/img/map-pointer@2x.png') no-repeat center;
             background-color: transparent;
 
-            .background-size(cover);
+            .background-size(17px 17px);
+        }
+        .suggest-control-lst{
+            margin-top: 0px;
         }
     }
 }
@@ -170,7 +191,7 @@
         max-height: 130px;
 
         background-color: #fff;
-        margin-top: -42px;
+        // margin-top: -42px;
         border: 1px solid #c7c7c7;
 
         &-i {
@@ -179,6 +200,7 @@
 
             height: 40px;
             padding: 0 10px;
+            white-space: nowrap;
 
             color: #616161;
             border-bottom: 1px solid #e6e6e6;
@@ -200,7 +222,7 @@
 
         content: '';
 
-        .gradient(#fff, #fff, transparent);
+        .gradient(#fff, #fff, rgba(255,255,255,0));
     }
 }
 .suggest-open {

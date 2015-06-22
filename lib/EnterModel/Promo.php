@@ -10,15 +10,13 @@ namespace EnterModel {
         public $name;
         /** @var Model\Promo\Target\Category|Model\Promo\Target\Content|Model\Promo\Target\Slice|null */
         public $target;
-        /** @var Model\Product\Category\Media */
+        /** @var Model\MediaList */
         public $media;
 
         /**
          * @param array $data
          */
         public function __construct(array $data = []) {
-            $this->media = new Model\Product\Category\Media();
-
             if (array_key_exists('uid', $data)) $this->ui = (string)$data['uid'];
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
 
@@ -30,17 +28,7 @@ namespace EnterModel {
                 $this->target = new Model\Promo\Target\Content($data['static_page']);
             }
 
-            if (isset($data['medias'][0])) {
-                foreach ($data['medias'] as $mediaItem) {
-                    if (!isset($mediaItem['sources'][0])) continue;
-
-                    $media = new Model\Media($mediaItem);
-
-                    if ('image' === $media->type) {
-                        $this->media->photos[] = $media;
-                    }
-                }
-            }
+            $this->media = new Model\MediaList(isset($data['medias']) ? $data['medias'] : []);
         }
 
         /**

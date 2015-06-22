@@ -3,13 +3,14 @@
 namespace EnterMobileApplication\Controller\Cart;
 
 use Enter\Http;
+use EnterMobileApplication\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\SessionTrait;
 use EnterMobileApplication\Controller;
 use EnterQuery as Query;
 
 class SetProductList {
-    use SessionTrait, CurlTrait;
+    use ConfigTrait, SessionTrait, CurlTrait;
 
     /**
      * @param Http\Request $request
@@ -17,6 +18,7 @@ class SetProductList {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
         $session = $this->getSession();
         $curl = $this->getCurl();
         $cartRepository = new \EnterRepository\Cart();
@@ -33,7 +35,7 @@ class SetProductList {
         }
 
         // корзина из сессии
-        $cart = $cartRepository->getObjectByHttpSession($session);
+        $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
         $productsById = [];
         foreach ($cartProducts as $cartProduct) {
@@ -51,13 +53,28 @@ class SetProductList {
         // добавление товара в корзину
         foreach ($cartProducts as $cartProduct) {
             $cartProduct->ui = $productsById[$cartProduct->id]->ui;
-            $cartRepository->setProductForObject($cart, $cartProduct);
+			
+			// MAPI-57
+			if ($cartProduct->quantity <= 0) {
+				if (isset($cart->product[$cartProduct->id])) {
+					$cartProduct->quantity = $cart->product[$cartProduct->id]->quantity;
+				}
+				
+				$cartProduct->quantity++;
+			}
+			
+			// MAPI-57
+			if (!$cartProduct->sender && isset($cart->product[$cartProduct->id])) {
+				$cartProduct->sender = $cart->product[$cartProduct->id]->sender;
+			}
+			
+			$cart->product[$cartProduct->id] = $cartProduct;
         }
 
         $cart->cacheId++;
 
         // сохранение корзины в сессию
-        $cartRepository->saveObjectToHttpSession($session, $cart);
+        $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
 
         // response
         return new Http\JsonResponse([]);

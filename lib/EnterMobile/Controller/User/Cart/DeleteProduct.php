@@ -29,7 +29,7 @@ class DeleteProduct {
         $cartRepository = new \EnterRepository\Cart();
 
         // корзина из сессии
-        $cart = $cartRepository->getObjectByHttpSession($session);
+        $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
         // товара для корзины
         $cartProduct = $cartRepository->getProductObjectByHttpRequest($request);
@@ -63,9 +63,23 @@ class DeleteProduct {
         }
 
         $productListQuery = null;
-        if ((bool)$productsById) {
+        if ($productsById) {
             $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $regionId);
             $curl->prepare($productListQuery);
+        }
+
+        $descriptionListQuery = null;
+        if ($productsById) {
+            $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                array_keys($productsById),
+                [
+                    'media'    => true,
+                    'category' => true,
+                    'label'    => true,
+                    'brand'    => true,
+                ]
+            );
+            $curl->prepare($descriptionListQuery);
         }
 
         $curl->execute();
@@ -74,7 +88,7 @@ class DeleteProduct {
         $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
 
         // сохранение корзины в сессию
-        $cartRepository->saveObjectToHttpSession($session, $cart);
+        $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
 
         // если корзина пустая
         if (!count($cart)) {
@@ -95,6 +109,13 @@ class DeleteProduct {
         // товары
         if ($productListQuery) {
             $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+        }
+
+        if ($descriptionListQuery) {
+            (new \EnterRepository\Product())->setDescriptionForIdIndexedListByQueryList(
+                $productsById,
+                [$descriptionListQuery]
+            );
         }
 
         // пользователь

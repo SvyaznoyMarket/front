@@ -64,7 +64,7 @@ class Index {
             $curl->prepare($userItemQuery);
         }
 
-        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
         $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
         $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
 
@@ -103,6 +103,9 @@ class Index {
                 [
                     'media'       => true,
                     'media_types' => ['main'], // только главная картинка
+                    'category'    => true,
+                    'label'       => true,
+                    'brand'       => true,
                 ]
             );
             $curl->prepare($descriptionListQuery);
@@ -110,16 +113,8 @@ class Index {
 
         $curl->execute();
 
-        // товары по ui
-        $productsByUi = [];
-        call_user_func(function() use (&$productsById, &$productsByUi) {
-            foreach ($productsById as $product) {
-                $productsByUi[$product->ui] = $product;
-            }
-        });
-        // медиа для товаров
         if ($descriptionListQuery) {
-            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+            $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
         }
 
         // запрос для получения страницы

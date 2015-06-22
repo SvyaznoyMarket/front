@@ -4,15 +4,11 @@ namespace EnterMobileApplication\Controller\Cart;
 
 use Enter\Http;
 use EnterMobileApplication\ConfigTrait;
-use EnterAggregator\CurlTrait;
-use EnterAggregator\LoggerTrait;
 use EnterAggregator\SessionTrait;
-use EnterQuery as Query;
-use EnterModel as Model;
 use EnterMobileApplication\Controller;
 
-class Clear {
-    use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
+class DecreaseQuantityForProductList {
+    use ConfigTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -29,18 +25,38 @@ class Clear {
             throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
         }
 
-        // корзина из сессии
+        $ids = (array)$request->data['ids'];
+        $uis = (array)$request->data['uis'];
+        $quantity = isset($request->data['quantity']) ? (int)$request->data['quantity'] : 1;
+
+        if (!$ids && !$uis) {
+            throw new \Exception('Не переданы параметры ids и uis', Http\Response::STATUS_BAD_REQUEST);
+        }
+
         $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
-        // удаление товаров
-        $cart->product = [];
+        foreach ($ids as $id) {
+            if (isset($cart->product[$id])) {
+                $cart->product[$id]->quantity -= $quantity;
+            }
+        }
+
+        if ($uis) {
+            $uisToIds = [];
+            foreach ($cart->product as $product) {
+                $uisToIds[$product->ui] = $product->id;
+            }
+
+            foreach ($uis as $ui) {
+                if (isset($uisToIds[$ui]) && isset($cart->product[$uisToIds[$ui]])) {
+                    $cart->product[$uisToIds[$ui]]->quantity -= $quantity;
+                }
+            }
+        }
 
         $cart->cacheId++;
 
-        // сохранение корзины в сессию
         $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
-
-        // response
         return new Http\JsonResponse([]);
     }
 }

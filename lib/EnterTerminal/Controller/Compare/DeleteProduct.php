@@ -3,15 +3,13 @@
 namespace EnterTerminal\Controller\Compare;
 
 use Enter\Http;
-use EnterTerminal\ConfigTrait;
-use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\SessionTrait;
 use EnterQuery as Query;
 use EnterTerminal\Controller;
 
 class DeleteProduct {
-    use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
+    use LoggerTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -19,8 +17,6 @@ class DeleteProduct {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
-        $config = $this->getConfig();
-        $curl = $this->getCurl();
         $session = $this->getSession();
         $compareRepository = new \EnterRepository\Compare();
 
@@ -41,11 +37,6 @@ class DeleteProduct {
 
         // добавление товара к сравнению
         $compareRepository->deleteProductForObject($compare, $compareProduct);
-
-        $productItemQuery = new Query\Product\GetItemById($compareProduct->id, $regionId);
-        $curl->prepare($productItemQuery);
-
-        $curl->execute();
 
         // сохранение сравнения в сессию
         $compareRepository->saveObjectToHttpSession($session, $compare);

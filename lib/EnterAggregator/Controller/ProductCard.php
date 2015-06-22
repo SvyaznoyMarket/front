@@ -193,8 +193,10 @@ namespace EnterAggregator\Controller {
                 [$response->product->ui],
                 [
                     'trustfactor' => true,
-                    'category'    => true,
                     'media'       => true,
+                    'category'    => true,
+                    'label'       => true,
+                    'brand'       => true,
                     'property'    => true,
                     'tag'         => true,
                     'seo'         => true,
@@ -208,11 +210,24 @@ namespace EnterAggregator\Controller {
                 $relatedDescriptionListQuery = new Query\Product\GetDescriptionListByIdList(
                     $relatedIds,
                     [
-                        'media' => true, // только картинки
+                        'media'    => true,
+                        'category' => true,
+                        'label'    => true,
+                        'brand'    => true,
                     ]
                 );
                 $curl->prepare($relatedDescriptionListQuery);
             }
+
+            $curl->execute();
+
+            // трастфакторы, свойства, медиа товара
+            $productRepository->setDescriptionForListByListQuery(
+                [
+                    $response->product->ui => $response->product
+                ],
+                $descriptionListQuery
+            );
 
             // запрос настроек каталога
             $categoryItemQuery = null;
@@ -324,14 +339,6 @@ namespace EnterAggregator\Controller {
             if ($ratingListQuery) {
                 $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
             }
-
-            // трастфакторы, свойства, медиа товара
-            $productRepository->setDescriptionForListByListQuery(
-                [
-                    $response->product->ui => $response->product
-                ],
-                $descriptionListQuery
-            );
 
             // товары по ui
             $productsByUi = [];

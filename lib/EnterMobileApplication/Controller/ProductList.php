@@ -66,6 +66,9 @@ class ProductList {
                 [
                     'media'       => true,
                     'media_types' => ['main'], // только главная картинка
+                    'category'    => true,
+                    'label'       => true,
+                    'brand'       => true,
                 ]
             );
             $curl->prepare($descriptionListQuery);
@@ -88,26 +91,12 @@ class ProductList {
         // список товаров
         $productsById = (bool)$productListQueries ? $productRepository->getIndexedObjectListByQueryList($productListQueries) : [];
 
-        // товары по ui
-        $productsByUi = [];
-        call_user_func(function() use (&$recommendedProductsById, &$productsByUi) {
-            foreach ($recommendedProductsById as $product) {
-                $productsByUi[$product->ui] = $product;
-            }
-        });
-
-        // медиа для товаров
-        foreach ($descriptionListQueries as $descriptionListQuery) {
-            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
-        }
+        $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, $descriptionListQueries);
 
         // список рейтингов товаров
         if ($ratingListQuery) {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
-
-        // список медиа для товаров
-        //$productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
         // ответ
         $response = [

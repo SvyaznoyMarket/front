@@ -77,7 +77,7 @@ namespace EnterAggregator\Controller\Cart {
                 $shop,
                 null,
                 (array)$request->previousSplitData,
-                $request->changeData ? $cartRepository->dumpSplitChange($request->changeData, $request->previousSplitData) : [],
+                $request->changeData ? $request->changeData : [],
                 $request->userFromSplit
             );
             $splitQuery->setTimeout(10 * $config->coreService->timeout);
@@ -150,6 +150,9 @@ namespace EnterAggregator\Controller\Cart {
                         [
                             'media'       => true,
                             'media_types' => ['main'], // только главная картинка
+                            'category'    => true,
+                            'label'       => true,
+                            'brand'       => true,
                         ]
                     );
                     $curl->prepare($descriptionListQuery);

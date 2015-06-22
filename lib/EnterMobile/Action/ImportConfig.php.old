@@ -71,7 +71,6 @@ class ImportConfig {
         $config->productReview->enabled = false; //$importedConfig->product['reviewEnabled']; // TODO: вернуть, когда починят
         $config->productPhoto->urlPaths = $importedConfig->productPhoto['url'];
         $config->search->minPhraseLength = $importedConfig->search['queryStringLimit'];
-        $config->promo->urlPaths = $importedConfig->banner['url'];
 
         // собственные настройки
         $config->mustacheRenderer->dir = $config->dir . '/v2/vendor/mustache';
