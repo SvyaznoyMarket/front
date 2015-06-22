@@ -91,15 +91,12 @@ class ProductList {
         // список товаров
         $productsById = (bool)$productListQueries ? $productRepository->getIndexedObjectListByQueryList($productListQueries) : [];
 
-        $productRepository->setDescriptionForIdIndexedListByQueryList($productIds, $descriptionListQueries);
+        $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, $descriptionListQueries);
 
         // список рейтингов товаров
         if ($ratingListQuery) {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
-
-        // список медиа для товаров
-        //$productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
         // ответ
         $response = [
