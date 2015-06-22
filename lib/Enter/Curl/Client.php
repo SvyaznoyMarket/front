@@ -213,6 +213,7 @@ class Client {
                     if (0 === $ready) {
                         foreach ($this->queries as $query) {
                             if (count($query->getConnections()) >= ($query->getRetry() ?: $retryCount)) {
+                                /*
                                 $query->setEndAt(microtime(true));
                                 $query->setError(new \Exception(sprintf('Запрос %s отменен по таумауту', mb_substr($query->getUrl(), 0, 256))));
 
@@ -226,6 +227,7 @@ class Client {
 
                                     unset($this->queries[$query->getId()]);
                                 }
+                                */
 
                                 continue;
                             }
