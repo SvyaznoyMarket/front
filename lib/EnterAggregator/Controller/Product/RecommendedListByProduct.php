@@ -131,6 +131,9 @@ namespace EnterAggregator\Controller\Product {
                     [
                         'media'       => true,
                         'media_types' => ['main'], // только главная картинка
+                        'category'    => true,
+                        'label'       => true,
+                        'brand'       => true,
                     ]
                 );
                 $curl->prepare($descriptionListQuery);

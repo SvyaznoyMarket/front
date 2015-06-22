@@ -35,7 +35,7 @@ trait ProductListingTrait {
                     return [
                         'id'    => $label->id,
                         'name'  => $label->name,
-                        'image' => $label->image,
+                        'media' => $label->media,
                     ];
                 }, $product->labels),
                 'media'                => $product->media,

@@ -76,7 +76,7 @@ class Product {
         if (is_array($items)) {
             foreach ($items as $item) {
                 $model = new Model\Product($item);
-                $products[$model->id] = $model;
+                $products[$model->ui] = $model;
             }
         }
 
@@ -318,6 +318,21 @@ class Product {
     }
 
     /**
+     * @param Model\Product[] $productsById
+     * @param Query[] $descriptionQueryList
+     */
+    public function setDescriptionForIdIndexedListByQueryList(array $productsById, array $descriptionQueryList) {
+        $productsByUi = [];
+        foreach ($productsById as $product) {
+            $productsByUi[$product->ui] = $product;
+        }
+
+        foreach ($descriptionQueryList as $descriptionQuery) {
+            $this->setDescriptionForListByListQuery($productsByUi, $descriptionQuery);
+        }
+    }
+
+    /**
      * @param Model\Product[] $productsByUi
      * @param Query $descriptionListQuery
      */
@@ -359,23 +374,72 @@ class Product {
                     }
                 }
 
-                // media
-                if (!empty($descriptionItem['medias']) && is_array($descriptionItem['medias'])) {
-                    // убеждаемся что есть именно картинки, а не другой медиа-контент
-                    foreach ($descriptionItem['medias'] as $mediaItem) {
-                        if ('image' === $mediaItem['provider']) {
-                            // удаляет фотографии товара из ядра
-                            unset($product->media);
-                            $product->media = new Model\Product\Media($descriptionItem);
+                $product->media = new Model\MediaList(isset($descriptionItem['medias']) ? $descriptionItem['medias'] : []);
 
+                if (!empty($descriptionItem['label']['medias'])) {
+                    foreach ($descriptionItem['label']['medias'] as $mediaItem) {
+                        if ('image' === $mediaItem['provider']) {
+                            $product->labels[] = new Model\Product\Label($descriptionItem['label']);
                             break;
                         }
                     }
+                }
+
+                if (!empty($descriptionItem['brand']['medias'])) {
+                    foreach ($descriptionItem['brand']['medias'] as $mediaItem) {
+                        if ('image' === $mediaItem['provider']) {
+                            $product->brand = new Model\Brand($descriptionItem['brand']);
+                            break;
+                        }
+                    }
+                }
+
+                if (!empty($descriptionItem['categories'])) {
+                    foreach ($descriptionItem['categories'] as $category) {
+                        if ($category['main']) {
+                            $product->category = new Model\Product\Category($category);
+
+                            $product->category->ascendants = [];
+                            $category = $product->category;
+                            while ($category = $category->parent) {
+                                $product->category->ascendants[] = $category;
+                            }
+                            $product->category->ascendants = array_reverse($product->category->ascendants);
+                        }
+                    }
+                }
+
+                $isSlotPartnerOffer = false;
+                foreach ($product->partnerOffers as $partnerOffer) {
+                    if (2 == $partnerOffer->partner->type) {
+                        $isSlotPartnerOffer = true;
+                        break;
+                    }
+                }
+
+                if (!$product->isInShopStockOnly && !$product->isInShopShowroomOnly && $product->category->ascendants[0] && $product->category->ascendants[0]->isFurniture && $product->isStore && !$isSlotPartnerOffer) {
+                    $product->storeLabel = new \EnterModel\Product\StoreLabel();
+                    $product->storeLabel->name = 'Товар со склада';
                 }
             }
         } catch (\Exception $e) {
             $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
+    }
+
+    /**
+     * @param Model\Product[] $products
+     * @param string $id
+     * @return Model\Product|null
+     */
+    public function getObjectFromListById(array $products, $id) {
+        foreach ($products as $product) {
+            if ($product->id === $id) {
+                return $product;
+            }
+        }
+
+        return null;
     }
 
     /**

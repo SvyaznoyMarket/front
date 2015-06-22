@@ -63,9 +63,23 @@ class DeleteProduct {
         }
 
         $productListQuery = null;
-        if ((bool)$productsById) {
+        if ($productsById) {
             $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $regionId);
             $curl->prepare($productListQuery);
+        }
+
+        $descriptionListQuery = null;
+        if ($productsById) {
+            $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                array_keys($productsById),
+                [
+                    'media'    => true,
+                    'category' => true,
+                    'label'    => true,
+                    'brand'    => true,
+                ]
+            );
+            $curl->prepare($descriptionListQuery);
         }
 
         $curl->execute();
@@ -95,6 +109,13 @@ class DeleteProduct {
         // товары
         if ($productListQuery) {
             $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+        }
+
+        if ($descriptionListQuery) {
+            (new \EnterRepository\Product())->setDescriptionForIdIndexedListByQueryList(
+                $productsById,
+                [$descriptionListQuery]
+            );
         }
 
         // пользователь

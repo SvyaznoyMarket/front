@@ -15,7 +15,7 @@ namespace EnterModel\Search {
         public $name;
         /** @var string */
         public $link;
-        /** @var Model\Product\Media */
+        /** @var Model\MediaList */
         public $media;
 
         /**
@@ -32,7 +32,7 @@ namespace EnterModel\Search {
                 ];
             }
 
-            $this->media = new Model\Product\Media();
+            $this->media = new Model\MediaList();
 
             if (array_key_exists('id', $data)) $this->id = $data['id'] ? (string)$data['id'] : null;
             if (array_key_exists('token', $data)) $this->token = $data['token'] ? (string)$data['token'] : null;

@@ -1,6 +1,6 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'jquery.ui', 'jquery.validate', 'jquery.maskedinput',
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'jquery.ui', 'jquery.maskedinput',
         'module/order/user.form', 'module/order/common', 'module/order/toggle'
     ],
     function(
@@ -530,13 +530,15 @@ define(
                         $modalWindow.find('.js-modal-content').append(mustache.render($addressPopupTemplate.html(), data));
 
                         initSmartAddress($modalWindow);
-                        validateForm('.js-validate');
+
 
                         require(['yandexmaps'], function() {
                             var $mapContainer = $($el.data('mapContainerSelector'));
 
                             updateAddressMap($mapContainer);
+
                         });
+
                     },
                     beforeClose: function() {
                         $mapContainer.append($addressMap);
@@ -799,54 +801,7 @@ define(
             },
 
             validateForm = function( el ){
-                var $this = $(el);
-
-                $this.validate({
-                    rules : {
-                        'user[email]': {
-                          required: true,
-                          email: true
-                        }
-                    },
-                    messages:{
-                        'user[email]': {
-                          required: "Введите email",
-                          email: "Введите email в формате name@email.ru"
-                        }
-
-                    },
-                    highlight: function(element, errorClass, validClass) {
-                        console.log('error!');
-                        $(element).parent().addClass(errorClass).removeClass(validClass);
-                      },
-                    unhighlight: function(element, errorClass, validClass) {
-                        $(element).parent().removeClass(errorClass).addClass(validClass);
-                      },
-                    errorPlacement: function(error,element){
-                        
-                        if (element.attr('type') !== 'checkbox') {
-                            var parent = element.parent();
-                            error.insertAfter(parent);
-                            console.log('error-pl');
-                        }
-                        
-                        
-                    },
-                    submitHandler: function(form) {
-                          // отправка запроса
-                        var url = $(form).attr('action');
-
-                        $.ajax({
-                            type: 'POST',
-                            url: url,
-                            data: $(form).serialize(),
-                            success: successForm
-                        });
-
-                        return false;
-                    },
-                    ignore: '', // do not ignore hidden elements
-                })
+                //TODO: валидация
             }
         ;
 
@@ -960,13 +915,9 @@ define(
             placeholder: "+7(xxx)xxx-xx-xx"
         });
 
-        $('.js-field-mnogoru').mask("xxxx xxxx", {
-            placeholder: "xxxx xxxx"
-        });
-        // Валидация форм - может быть вынести ее в отдельный файл, чтобы можно было обращаться везде, где нужна валидация?
-        $.validator.messages.required = 'Поле не заполнено!';
-        $('.js-validate').each(function(index, elem){
-            validateForm(elem);
+       //TODO: универсальная валидация форм
+        $body.on('submit','.js-validate', function(){
+            //TODO: вызов фунцкии валидации
         });
         
         // запрос прошел успешно
