@@ -19,22 +19,20 @@ namespace EnterModel\Product {
         public $path;
         /** @var int */
         public $level;
-        /** @var bool */
-        public $hasChildren;
-        /** @var Model\Product\Category[] */
-        public $children = [];
         /** @var int */
         public $productCount;
-        /** @var Model\Product\Category|null */
-        public $parent;
-        /** @var Model\Product\Category[] */
-        public $ascendants = [];
         /** @var Model\MediaList */
         public $media;
         /** @var Model\Product\Category\Meta */
         public $meta;
         /** @var bool */
         public $isFurniture;
+        /** @var bool */
+        public $hasChildren;
+        /** @var Model\Product\Category[] */
+        public $children = [];
+        /** @var Model\Product\Category|null */
+        public $parent;
 
         /**
          * @param mixed $data

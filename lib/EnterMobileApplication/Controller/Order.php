@@ -9,10 +9,9 @@ namespace EnterMobileApplication\Controller {
     use EnterRepository as Repository;
     use EnterQuery as Query;
     use EnterModel as Model;
-    use EnterMobileApplication\Controller\Order\Response;
 
     class Order {
-        use ConfigTrait, CurlTrait, LoggerTrait;
+        use ConfigTrait, CurlTrait, LoggerTrait, ProductListingTrait;
 
         /**
          * @param Http\Request $request
@@ -23,8 +22,6 @@ namespace EnterMobileApplication\Controller {
             $curl = $this->getCurl();
             $config = $this->getConfig();
             $productRepository = new Repository\Product();
-
-            $response = new Response();
 
             // токен для получения заказа
             $accessToken = is_string($request->query['accessToken']) ? $request->query['accessToken'] : null;
@@ -63,6 +60,7 @@ namespace EnterMobileApplication\Controller {
 
                     $shopsById = $shopRepository->getIndexedObjectListByQuery($shopListQuery);
                     foreach ($orders as $order) {
+                        /** @var Model\Order $order */
                         $shop = ($order->shopId && isset($shopsById[$order->shopId])) ? $shopsById[$order->shopId] : null;
                         if (!$shop) continue;
 
@@ -129,19 +127,27 @@ namespace EnterMobileApplication\Controller {
                 }
             }
 
-            // ответ
-            $response->order = $order;
+            $response = ['order' => [
+                'id' => $order->id,
+                'number' => $order->number,
+                'numberErp' => $order->numberErp,
+                'token' => $order->token,
+                'sum' => $order->sum,
+                'shopId' => $order->shopId,
+                'address' => $order->address,
+                'createdAt' => $order->createdAt,
+                'updatedAt' => $order->updatedAt,
+                'product' => $this->getProductList($order->product),
+                'paySum' => $order->paySum,
+                'discountSum' => $order->discountSum,
+                'subwayId' => $order->subwayId,
+                'deliveries' => $order->deliveries,
+                'interval' => $order->interval,
+                'shop' => $order->shop,
+                'point' => $order->point,
+            ]];
 
             return new Http\JsonResponse($response);
         }
-    }
-}
-
-namespace EnterMobileApplication\Controller\Order {
-    use EnterModel as Model;
-
-    class Response {
-        /** @var Model\Order|null */
-        public $order;
     }
 }
