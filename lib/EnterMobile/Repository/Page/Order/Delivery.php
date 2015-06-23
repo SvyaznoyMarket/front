@@ -31,6 +31,7 @@ class Delivery {
         $priceHelper = $this->getPriceHelper();
         $translateHelper = $this->getTranslateHelper();
         $dateHelper = $this->getDateHelper();
+        $pointRepository = new Repository\Partial\Point();
 
         // заголовок
         $page->title = 'Оформление заказа - Способ получения - Enter';
@@ -100,7 +101,7 @@ class Delivery {
                     'name'  => $priceHelper->format($orderModel->sum),
                     'value' => $orderModel->sum,
                 ],
-                'delivery'       => call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$deliveryGroupModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
+                'delivery'       => call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$deliveryGroupModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex, &$pointRepository) {
                     $delivery = false;
 
                     if ($deliveryModel = $orderModel->delivery) {
@@ -146,10 +147,10 @@ class Delivery {
                                     'group'   => [
                                         'token'     => $pointGroup->token,
                                         'shortName' => $pointGroup->blockName,
-                                        'name'      => $this->getPointGroupName($pointGroup->blockName),
+                                        'name'      => $pointRepository->translateGroupName($pointGroup->blockName),
                                     ],
                                     'address' => $point->address,
-                                    'icon'    => $this->getPointIcon($pointGroup->token),
+                                    'icon'    => $pointRepository->getIconByType($pointGroup->token),
                                     'subway'  =>
                                         isset($point->subway[0])
                                             ? [
@@ -304,7 +305,7 @@ class Delivery {
 
                     return $discounts;
                 }),
-                'pointJson'      => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$regionModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
+                'pointJson'      => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$regionModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex, &$pointRepository) {
                     $points = [];
                     $filtersByToken = [
                         'type' => [],
@@ -345,10 +346,10 @@ class Delivery {
                             'id'        => $possiblePointModel->id,
                             'name'      => $point->name,
                             'group'     => [
-                                'name'  => $this->getPointGroupName($pointGroup->blockName),
+                                'name'  => $pointRepository->translateGroupName($pointGroup->blockName),
                                 'value' => $pointGroup->token,
                             ],
-                            'icon'      => $this->getPointIcon($pointGroup->token),
+                            'icon'      => $pointRepository->getIconByType($pointGroup->token),
                             'date'      => [
                                 'name'  => $date ? $dateHelper->humanizeDate($date) : null,
                                 'value' => $date ? $date->getTimestamp() : null,
@@ -737,21 +738,24 @@ class Delivery {
      * @param string $groupToken
      * @return string
      */
-    private function getPointIcon($groupToken) {
+    public function getPointIcon($groupToken) {
         $icon = null;
 
         switch ($groupToken) {
             case 'self_partner_pickpoint_pred_supplier':
             case 'self_partner_pickpoint':
+            case 'pickpoint':
                 $icon = 'pickpoint';
                 break;
             case 'self_partner_svyaznoy_pred_supplier':
             case 'self_partner_svyaznoy':
             case 'shops_svyaznoy':
+            case 'svyaznoy':
                 $icon = 'svyaznoy';
                 break;
             case 'self_partner_hermes_pred_supplier':
             case 'self_partner_hermes':
+            case 'hermes':
                 $icon = 'hermes';
                 break;
             default:
@@ -759,18 +763,5 @@ class Delivery {
         }
 
         return $icon . '.png';
-    }
-
-    /**
-     * @param string $name
-     * @return string
-     */
-    private function getPointGroupName($name) {
-        return strtr($name, [
-            'Магазин'           => 'Магазин Enter',
-            'Магазин "Связной"' => 'Связной',
-            'Постамат'          => 'Постамат PickPoint',
-            'Hermes DPD'        => 'Постамат Hermes-DPD',
-        ]);
     }
 }

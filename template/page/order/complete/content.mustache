@@ -9,49 +9,63 @@
             {{#isSingleOrder}}<div class="checkout__tl-sum">На сумму <b>{{#orders}}{{sum.name}}{{/orders}}</b> <span class="rubl">p</span></div>{{/isSingleOrder}}
 
             {{#isSingleOrder}}
-            {{! Заказ - статика }}
-            <div class="checkout__single-order single-order">
-                <div class="single-order__greet">Ждем вас 27.06.2015</div>
+                {{#orders}}
+                <div class="checkout__single-order single-order">
+                    <script id="order-{{id}}-onlinePayment-data" type="application/json">{{&onlinePaymentJson}}</script>
 
-                <div class="single-order__address shop-snippet clearfix">
+                    {{#delivery}}
+                    <div class="single-order__greet">Ждем вас {{date.name}}</div>
+                    {{/delivery}}
 
-                    <div class="shop-snippet-name">
-                        <img src="/img/points/pickpoint.png" alt="" class="shop-snippet-name__img">
-                        <span class="shop-snippet-name__text">Постамат</span>
-                    </div>
+                    {{#point}}
+                    <div class="single-order__address shop-snippet clearfix">
 
-                    <div class="shop-snippet-info">
-
-                        <div class="shop-snippet-metro">
-                            <span class="shop-snippet-metro__bullet" style="background: green"></span>
-                            <span class="shop-snippet-metro__text">Краснопресненская</span>
+                        <div class="shop-snippet-name">
+                            <img src="/img/points/{{icon}}" alt="" class="shop-snippet-name__img" />
+                            <span class="shop-snippet-name__text">{{group.name}}</span>
                         </div>
 
-                        <div class="shop-snippet-address">Московский пр-кт, д. 129/1 <br/>10.00-18.00</div>
+                        <div class="shop-snippet-info">
+
+                            {{#subway}}
+                            <div class="shop-snippet-metro">
+                                {{#line}}
+                                    <span class="shop-snippet-metro__bullet" style="background: {{color}}"></span>
+                                {{/line}}
+                                <span class="shop-snippet-metro__text">{{name}}</span>
+                            </div>
+                            {{/subway}}
+
+                            <div class="shop-snippet-address">{{address}} <br/>{{#interval}}c {{interval.from}} до {{interval.to}}{{/interval}}</div>
+                        </div>
+
                     </div>
+                    {{/point}}
 
+                    <!--<div class="single-order__how-to-find js-how-to-find"><span class="bb-dotted">Как добраться</span></div>-->
+                    <div class="single-order__payment-info">Оплата при получении — наличными или картой.</div>
                 </div>
-                <div class="single-order__how-to-find js-how-to-find"><span class="bb-dotted">Как добраться</span></div>
-                <div class="single-order__payment-info">Оплата при получении — наличными или картой.</div>
-            </div>
-            
-            <div class="checkout__single-order single-order single-order__payment">
-                <div class="single-order__greet">Онлайн-оплата в два клика</div>
-                <div class="single-order__row">
-                    
-                    <button class="btn btn--submit btn--orange btn--medium">Оплатить</button>
-                    <span class="confirm-payment__types">
-                        <img class="confirm-payment__card" src="/css/modules/order/img/Visa.png">
-                        <img class="confirm-payment__card" src="/css/modules/order/img/master.png">
-                        <img class="confirm-payment__card" src="/css/modules/order/img/psb.png">
-                    </span>
-                </div>
-                
-            </div>
-            {{! Заказ - статика END}}
-        {{/isSingleOrder}}
 
-        {{^isSingleOrder}}{{#orders}}
+                    {{#onlinePayment}}
+                    <div class="checkout__single-order single-order single-order__payment">
+                        <div class="single-order__greet">Онлайн-оплата в два клика</div>
+                        <div class="single-order__row">
+
+                            <button class="btn btn--submit btn--orange btn--medium js-order-delivery-onlinePayment-link" data-modal-position="fixed-untill-640" data-storage-selector="#order-{{id}}-onlinePayment-data">Оплатить</button>
+                            <span class="confirm-payment__types">
+                                {{#images}}
+                                    <img class="confirm-payment__card" src="/css/modules/order/img/{{.}}" />
+                                {{/images}}
+                            </span>
+                        </div>
+
+                    </div>
+                    {{/onlinePayment}}
+                {{/orders}}
+            {{/isSingleOrder}}
+
+        {{^isSingleOrder}}
+            {{#orders}}
             <div class="confirm">
                 <script id="order-{{id}}-onlinePayment-data" type="application/json">{{&onlinePaymentJson}}</script>
 
@@ -80,15 +94,15 @@
                     {{#point}}
                         <div class="shop-snippet clearfix">
                             <div class="shop-snippet-name">
-                                <img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
-                                <span class="shop-snippet-name__text">Магазин Enter</span>
+                                <img src="/img/points/{{icon}}" alt="" class="shop-snippet-name__img" />
+                                <span class="shop-snippet-name__text">{{group.name}}</span>
                             </div>
 
                             <div class="shop-snippet-info">
                                 {{#subway}}
                                 <div class="shop-snippet-metro">
                                     {{#line}}
-                                        <span class="shop-snippet-metro__bullet" style="background: {{line.color}};"></span>
+                                        <span class="shop-snippet-metro__bullet" style="background: {{color}};"></span>
                                     {{/line}}
                                     <span class="shop-snippet-metro__text">м. {{name}}</span>
                                 </div>
@@ -130,7 +144,8 @@
                     <span class="comfirm-summary__price">{{sum.name}} <span class="rubl">p</span></span>
                 </div>
             </div>
-        {{/orders}}{{/isSingleOrder}}
+            {{/orders}}
+        {{/isSingleOrder}}
 
             <div class="btn-stretch btn-stretch--default"><a class="btn-stretch__link" href="/">Вернуться на главную</a></div>
         </section>

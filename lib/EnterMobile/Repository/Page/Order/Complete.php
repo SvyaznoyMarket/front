@@ -31,8 +31,7 @@ class Complete {
         $priceHelper = $this->getPriceHelper();
         $dateHelper = $this->getDateHelper();
         $translateHelper = $this->getTranslateHelper();
-
-        $regionModel = $request->region;
+        $pointRepository = new Repository\Partial\Point();
 
         $onlinePaymentMethodModelsById = $request->onlinePaymentMethodsById;
 
@@ -118,13 +117,17 @@ class Complete {
                     ]
                     : false
                 ,
-                'point' => call_user_func(function() use (&$orderModel) {
+                'point' => call_user_func(function() use (&$orderModel, &$pointRepository) {
                     if (!$pointModel = $orderModel->point) {
                         return false;
                     }
 
                     $point = [
-                        'type'    => $pointModel->type,
+                        'group'   => [
+                            'name'  => $pointRepository->getGroupNameByType($pointModel->type),
+                            'value' => $pointModel->type,
+                        ],
+                        'icon'      => $pointRepository->getIconByType($pointModel->type),
                         'address' => $pointModel->address,
                         'subway'  =>
                             $pointModel->subway
