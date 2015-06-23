@@ -129,32 +129,10 @@ require(
         $.cookie.defaults.path = '/';
         $.cookie.defaults.domain = config.cookie.domain;
 
-        if (config.wikimart && config.wikimart.url) {
-            require([config.wikimart.url], function() {
-                var WikimartSettings = {
-                    // Формат ссылок на товары
-                    catalogGoodUrlPattern: config.wikimart.productUrlPattern,
-                    // Ссылка на каталог
-                    catalogUrl: 'http://example.com#catalog',
-                    // Id города
-                    cityId: 1 // FIXME
-                };
-                window.WikimartAffiliate = new WikimartAffiliateCore();
-                window.WikimartAffiliate.init(WikimartSettings);
-
-                // модуль страницы
-                require([moduleName], function(module) {
-                    // партнерский модуль
-                    setTimeout(function() { require(['module/partner']); }, 600);
-                });
-            })
-        } else {
-            // модуль страницы
-            require([moduleName], function(module) {
-                // партнерский модуль
-                setTimeout(function() { require(['module/partner']); }, 600);
-            });
-
-        }
+        // модуль страницы
+        require([moduleName], function(module) {
+            // партнерский модуль
+            setTimeout(function() { require(['module/partner']); }, 600);
+        });
     }
 );

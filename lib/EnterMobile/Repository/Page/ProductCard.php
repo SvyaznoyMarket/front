@@ -63,7 +63,7 @@ class ProductCard {
         $page->content->product->shownPrice = $productModel->price ? $this->getPriceHelper()->format($productModel->price) : null;
         $page->content->product->oldPrice = $productModel->oldPrice;
         $page->content->product->shownOldPrice = $productModel->oldPrice ? $this->getPriceHelper()->format($productModel->oldPrice) : null;
-        $page->content->product->cartButtonBlock = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($productModel);
+        $page->content->product->cartButtonBlock = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($productModel, null, ['position' => 'product']);
         $page->content->product->brand = $productModel->brand;
         $page->content->product->slotPartnerOffer = $productModel->getSlotPartnerOffer();
 

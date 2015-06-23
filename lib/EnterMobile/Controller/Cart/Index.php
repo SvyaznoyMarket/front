@@ -30,6 +30,7 @@ class Index {
         $curl = $this->getCurl();
         $session = $this->getSession();
         $cartRepository = new \EnterRepository\Cart();
+        $productRepository = new \EnterRepository\Product();
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
@@ -49,9 +50,21 @@ class Index {
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
-        $productListQuery = (bool)$cart->product ? new Query\Product\GetListByIdList(array_values(array_map(function(\EnterModel\Cart\Product $cartProduct) { return $cartProduct->id; }, $cart->product)), $region->id) : null;
-        if ($productListQuery) {
+        $productIds = array_values(array_map(function(\EnterModel\Cart\Product $cartProduct) { return $cartProduct->id; }, $cart->product));
+
+        $productListQuery = null;
+        $descriptionListQuery = null;
+        if ($productIds) {
+            $productListQuery = $cart->product ? new Query\Product\GetListByIdList($productIds, $region->id) : null;
             $curl->prepare($productListQuery);
+
+            $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                $productIds,
+                [
+                    'media' => true, // только картинки
+                ]
+            );
+            $curl->prepare($descriptionListQuery);
         }
 
         // корзина из ядра
@@ -68,7 +81,21 @@ class Index {
         $curl->execute();
 
         $cartProducts = $cart->product;
-        $productsById = $productListQuery ? (new \EnterRepository\Product)->getIndexedObjectListByQueryList([$productListQuery]) : [];
+        $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
+
+        // товары по ui
+        $productsByUi = [];
+        call_user_func(function() use (&$productsById, &$productsByUi) {
+            foreach ($productsById as $product) {
+                $productsByUi[$product->ui] = $product;
+            }
+        });
+        if ($descriptionListQuery) {
+            $productRepository->setDescriptionForListByListQuery(
+                $productsByUi,
+                $descriptionListQuery
+            );
+        }
 
         // меню
         $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
@@ -93,7 +120,7 @@ class Index {
         // рендер
         $renderer = $this->getRenderer();
         $renderer->setPartials([
-            'content' => $config->wikimart->enabled ? 'page/cart/content-wikimart' : 'page/cart/content',
+            'content' => 'page/cart/content',
         ]);
         $content = $renderer->render('layout/default', $page);
 

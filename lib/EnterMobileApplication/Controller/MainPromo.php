@@ -25,12 +25,13 @@ namespace EnterMobileApplication\Controller {
 
             $promoRepository = new \EnterRepository\Promo();
 
-            // ид региона
+            // В будущей планируется ввести таргетирование по регионам, поэтому заранее закладываем получение региона от мобильных приложений
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
             if (!$regionId) {
                 throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
+            /*
             // запрос региона
             $regionQuery = new Query\Region\GetItemById($regionId);
             $curl->prepare($regionQuery);
@@ -39,6 +40,7 @@ namespace EnterMobileApplication\Controller {
 
             // регион
             $region = (new Repository\Region())->getObjectByQuery($regionQuery);
+            */
 
             // запрос баннеров
             $promoListQuery = new Query\Promo\GetList(['app-mobile']);
@@ -48,6 +50,14 @@ namespace EnterMobileApplication\Controller {
 
             // баннеры
             $promos = $promoRepository->getObjectListByQuery($promoListQuery);
+
+            // Мобильными приложениями элементы url и contentToken не используются
+            foreach ($promos as $promo) {
+                unset($promo->target->url);
+                if ($promo->target instanceof \EnterModel\Promo\Target\Slice) {
+                    unset($promo->target->categoryToken);
+                }
+            }
 
             // ответ
             $response = new Response();

@@ -1,135 +1,33 @@
 /* ==========================================================================
    Подвал сайта .footer .socLink .publicInfoList .publicInfoText .footerCopy
    ========================================================================== */
-   
-@media only screen and (max-width: 900px) {
-	.footer {
-	    height: 223px;
-	    margin: -223px auto 0;
-	}
 
-	.socLink {
-	    float: none;
-
-	    width: 125px;
-	    margin: 15px auto;
-	}
-
-	.aboutList {
-	    float: none;
-
-	    text-align: center;
-
-	    &__item {
-			margin-right: 15px;
-		}
-	}
-
-	.publicInfoList {
-	    text-align: center;
-
-	    &__item {
-			margin-right: 15px;
-		}
-	}
+@media only screen and (max-width: 750px) {
+    .footer-shop-info {
+        &__item {
+            width: 33.3333%;
+        }
+        &--5col {
+            .footer-shop-info__item {
+                width: 33.3333%;
+            }
+        }
+    }
 }
 
-@media only screen and (max-width: 610px) {
-	.footer {
-	    height: 678px;
-	    margin: -678px auto 0;
-	}
+@media only screen and (max-width: 500px) {
+    .footer-shop-info {
+        &__item {
+            width: 100%;
+        }
+        &--5col {
+            .footer-shop-info__item {
+                width: 100%;
+            }
+        }
+    }
 
-	.aboutList {
-		width: auto;
-
-		&__item {
-			display: block;
-
-    		margin: 0 0 15px;
-
-    		text-align: center;
-		}
-	}
-
-	.appList {
-		width: auto;
-
-		&__item {
-			float: none;
-
-    		margin: 0 0 15px;
-
-    		text-align: center;
-		}
-	}
-
-	.publicInfoList {
-		width: auto;
-
-		&__item {
-			display: block;
-
-    		margin: 0 0 15px;
-
-    		text-align: center;
-		}
-	}
-
-	.footerCopy__link {
-		display: block;
-	    float: none;
-	    padding: 7px 0;
-	    text-align: center;
-	}
-}
-
-@media only screen and (max-width: 610px) {
-	.footer {
-	    height: 677px;
-	    margin: -677px auto 0;
-	}
-
-	.aboutList {
-		width: auto;
-
-		&__item {
-			display: block;
-
-    		margin: 0 0 15px;
-
-    		text-align: center;
-		}
-	}
-
-	.appList {
-		width: auto;
-
-		&__item {
-			float: none;
-
-    		margin: 0 0 15px;
-
-    		text-align: center;
-		}
-	}
-
-	.publicInfoList {
-		width: auto;
-
-		&__item {
-			display: block;
-
-    		margin: 0 0 15px;
-
-    		text-align: center;
-		}
-	}
-
-	.footerCopy__link {
-		display: block;
-	    float: none;
-	    padding: 3px 0 10px;
-	    text-align: center;
-	}
+    .partner-list {
+        display: block;
+    }
 }

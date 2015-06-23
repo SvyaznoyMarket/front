@@ -248,6 +248,14 @@ define(
                 .on('click', '.js-productFilter-delete', deleteFilter)
                 .on('click', '.js-productFilter-clear', clearFilter)
                 .on('click', '.js-productFilter-sort', setSorting);
+
+
+            if ($(window).width() < 490) {
+                $('.catalogList_item_new').each(function (){
+                    var height = $(this).height();
+                    $(this).find('.catalogListItemWrapper').css('height', height);
+                });
+            }
         });
     }
 );

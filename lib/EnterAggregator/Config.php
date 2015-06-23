@@ -36,8 +36,6 @@ namespace EnterAggregator {
         public $region;
         /** @var Config\AbTest */
         public $abTest;
-        /** @var Config\Wikimart */
-        public $wikimart;
         /** @var Config\GoogleAnalytics */
         public $googleAnalytics;
         /** @var Config\GoogleTagManager */
@@ -101,8 +99,6 @@ namespace EnterAggregator {
             $this->userToken = new Config\UserToken();
 
             $this->abTest = new Config\AbTest();
-
-            $this->wikimart = new Config\Wikimart();
 
             $this->googleAnalytics = new Config\GoogleAnalytics();
             $this->googleTagManager = new Config\GoogleTagManager();
@@ -221,13 +217,6 @@ namespace EnterAggregator\Config {
         public $defaultId;
         /** @var string */
         public $cookieName;
-    }
-
-    class Wikimart {
-        /** @var bool */
-        public $enabled;
-        /** @var string */
-        public $jsUrl;
     }
 
     class Credit {

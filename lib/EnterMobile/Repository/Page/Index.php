@@ -2,7 +2,6 @@
 
 namespace EnterMobile\Repository\Page;
 
-use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
@@ -13,7 +12,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\Index as Page;
 
 class Index {
-    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait;
+    use LoggerTrait, TemplateHelperTrait, RouterTrait;
 
     /**
      * @param Page $page
@@ -22,36 +21,32 @@ class Index {
     public function buildObjectByRequest(Page $page, Index\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
-        $config = $this->getConfig();
-        $router = $this->getRouter();
         $templateHelper = $this->getTemplateHelper();
 
         $page->dataModule = 'index';
 
-        $hosts = $config->mediaHosts;
-        $host = reset($hosts);
-
         $promoData = [];
         foreach ($request->promos as $promoModel) {
-            $image = null;
-            foreach ($promoModel->media->photos as $photo) {
-                if (in_array('main', $photo->tags) && !empty($photo->sources[0]->url)) {
-                    $image = $photo->sources[0]->url;
-                    break;
-                }
-            }
+            $source = $promoModel->getPhotoMediaSource('mobile', 'original');
 
-            if (!$image) {
-                $this->getLogger()->push(['type' => 'warn', 'error' => sprintf('Нет картинки у промо #', $promoModel->id), 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['promo']]);
+            if (!$source || !$source->url) {
+                $this->getLogger()->push(['type' => 'warn', 'error' => sprintf('Нет картинки у промо #', $promoModel->ui), 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['promo']]);
                 continue;
             }
-            $promoItem = [
-                'id'    => $promoModel->id,
-                'url'   => $router->getUrlByRoute(new Routing\Promo\Redirect($promoModel->id)),
-                'image' => $image,
-            ];
 
-            $promoData[] = $promoItem;
+            if ($promoModel->target instanceof \EnterModel\Promo\Target\Content) {
+                $targetUrl = $this->getRouter()->getUrlByRoute(new \EnterMobile\Routing\Content($promoModel->target->contentId));
+            } else if ($promoModel->target instanceof \EnterModel\Promo\Target\Slice && $promoModel->target->sliceId && $promoModel->target->categoryToken) {
+                $targetUrl = $this->getRouter()->getUrlByRoute(new \EnterMobile\Routing\ProductSlice\GetCategory($promoModel->target->sliceId, $promoModel->target->categoryToken));
+            } else {
+                $targetUrl = $promoModel->target->url;
+            }
+
+            $promoData[] = [
+                'ui'    => $promoModel->ui,
+                'url'   => $targetUrl,
+                'image' => $source->url,
+            ];
         }
         $page->content->promoDataValue = $templateHelper->json($promoData);
 

@@ -1,9 +1,10 @@
 /* ==========================================================================
-   Каталог -> листинг товаров .catalogList
+   Каталог -> листинг товаров .catalogList 
    ========================================================================== */
 
 .catalogList {
 	font-size: 0;
+    margin-top: 20px;
 
 	&.productSet {
 		margin-top: 25px;
@@ -59,61 +60,68 @@
 				left: 10px;
 			}
 		}
-	}
+		.availability{
+			font-size: 12px;
+			color: #807f7f;
+			margin: 5px 0 5px;
+			text-align: center;
 
+			&--instock{
+				background-color: #f7f7f7;
+			}
+			&--selfdeliv{
+				background-color: rgba(128,195,22,0.2);
+			}
+			&--on-display{
+				background-color: rgba(128,195,22,0.2);
+			}
+			&--top{
+				display: none;
+				font-size: 10px;
+				margin: 0 0 5px;
+			}
+            &--nobg{
+              background: transparent;
+            }
+		}
+		.bottom-info{
+			text-align: center;
+		}
+	}//_item
+    &_lk{
+        display: block;
+    }
+    .list-img_lk{
+        width: 100%;
+    }
 	.name {
 		display: inline-block;
     	overflow: hidden;
 
 		height: 110px;
-		margin: 0 0 10px;
+		margin: 0 0 5px;
 
 		vertical-align: top;
 
 		font-size: 16px;
 	}
 
-	.reviews {
-		height: 15px;
-		margin: 0 0 10px;
-
-		&_star {
-			display: inline-block;
-
-		    height: 14px;
-		    margin: 0 2px 0 0;
-
-		    vertical-align: top;
-
-		    line-height: 14px;
-		}
-
-		&_count {
-			display: inline-block;
-
-		    margin: 0 0 0 5px;
-
-		    vertical-align: top;
-
-			color: #6b6b6b;
-
-			font-size: 14px;
-			line-height: 1;
-		}
-	}
+	.rating{
+        margin-bottom: 0px;
+    }
 
 	.price {
-		margin: 15px 0 20px;
+		margin: 5px 0 10px;
 
 		&_old {
 			.inline-block();
     		margin-right: 15px;
 
-			text-decoration: line-through;
-
 			color: #6b6b6b;
-
 			font-size: 18px;
+            .line-through{
+                text-decoration: line-through;
+            }
 		}
 
 		&_now {
@@ -141,3 +149,84 @@
 		}
 	}
 }
+// новые листинги
+.catalogList {
+
+  &_item {
+    height: 395px;
+  }
+
+  .name {
+      height: 45px;
+  }
+
+  .buyButtonWrapper {
+      text-align: center;
+  }
+
+  .btnBuy {
+      background: @typ-orange;
+      border-bottom: 2px solid @typ-orange-shadow;
+      color: #fff;
+
+      display: none;
+      width: auto;
+      height: 32px;
+      line-height: 30px;
+      text-align: center;
+      width: 100px;
+
+      .rounded(3px);
+      .box-sizing();
+      font-size: 14px;
+      &:hover{
+        color: #fff;
+      }
+  }
+  .btn-container{
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+  .price {
+
+    text-align: center;
+
+    &_old {
+      color: #8a8a8a;
+      font-size: 18px;
+      &:empty{
+        display: none;
+      }
+    }
+
+    &_now {
+      font-size: 18px;
+      font-weight: normal;
+
+      &-sale {
+        color: #000;
+      }
+    }
+  }
+}
+
+.buyBtnListing {
+  .btnBuy {
+    display: inline-block;
+
+    &-incart {
+      .inCart();
+    }
+  }
+}
+
+.catalogList {
+  .catalogListItemWrapper {
+    display: none;
+  }
+
+  .mediumScreenItemDescription {
+    display: block;
+  }
+}
+

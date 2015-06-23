@@ -29,13 +29,15 @@ class ProductButton {
      * @param \EnterModel\Product $product
      * @param \EnterModel\Cart\Product|null $cartProduct
      * @param bool $allowInShopOnly Позволять отображать кнопку для товаров, которые доступны только в магазине
+     * @param array $context контекст кнопки (напр. листинг, карточка товара)
      * @return Partial\Cart\ProductButton
      */
     public function getObject(
         \EnterModel\Product $product,
         \EnterModel\Cart\Product $cartProduct = null,
         $allowInShopOnly = false,
-        $isFull = true
+        $isFull = true,
+        array $context = []
     ) {
         if (!$allowInShopOnly && $product->isInShopOnly) {
             return null;
@@ -54,7 +56,6 @@ class ProductButton {
             'product' => [
                 $product->id => [
                     'id'       => $product->id,
-                    'wmId'     => $product->wikimartId,
                     'article'  => $product->article,
                     'name'     => $product->name,
                     'token'    => $product->token,
@@ -65,9 +66,19 @@ class ProductButton {
             ],
         ];
 
-        $ga = [
-            ['send', 'event', 'm_add_to_basket', $product->name, $product->article, '{product.sum}'],
-        ];
+        if (isset($context['position']) && $context['position'] == 'listing') {
+            $ga = [
+                ['send', 'event', 'm_add_to_basket', 'listing', $product->article, '{product.sum}'],
+            ];
+        } elseif (isset($context['position']) && $context['position'] == 'product') {
+            $ga = [
+                ['send', 'event', 'm_add_to_basket', 'product', $product->article, '{product.sum}'],
+            ];
+        } else {
+            $ga = [
+                ['send', 'event', 'm_add_to_basket', $product->name, $product->article, '{product.sum}'],
+            ];
+        }
 
         if ($product->ga) {
             $ga[] = [

@@ -14,7 +14,6 @@ namespace EnterAggregator\Controller\Cart {
         public function execute(Split\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            $cartRepository = new \EnterRepository\Cart();
             $orderRepository = new \EnterRepository\Order();
             $productRepository = new \EnterRepository\Product();
 
@@ -50,7 +49,7 @@ namespace EnterAggregator\Controller\Cart {
                 $shop,
                 null,
                 (array)$request->previousSplitData,
-                $request->changeData ? $cartRepository->dumpSplitChange($request->changeData, $request->previousSplitData) : []
+                $request->changeData ? $request->changeData : []
             );
             $splitQuery->setTimeout(10 * $config->coreService->timeout);
             $curl->prepare($splitQuery);

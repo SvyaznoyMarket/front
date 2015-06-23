@@ -13,8 +13,6 @@ class Product {
     /** @var string */
     public $ui;
     /** @var string */
-    public $wikimartId;
-    /** @var string */
     public $article;
     /** @var string */
     public $barcode;
@@ -96,6 +94,8 @@ class Product {
     public $sender;
     /** @var array|null */
     public $ga;
+    /** @var bool */
+    public $isStore;
 
     /**
      * @param array $data
@@ -152,45 +152,28 @@ class Product {
 
         if (isset($data['brand']['id'])) $this->brand = new Model\Brand($data['brand']);
 
-        if (isset($data['property'][0])) {
-            foreach ($data['property'] as $propertyItem) {
+        if (isset($data['properties'][0])) {
+            foreach ($data['properties'] as $propertyItem) {
                 $this->properties[] = new Model\Product\Property((array)$propertyItem);
             }
         }
 
-        if (isset($data['property_group'][0])) {
-            foreach ($data['property_group'] as $propertyGroupItem) {
+        if (isset($data['property_groups'][0])) {
+            foreach ($data['property_groups'] as $propertyGroupItem) {
                 $this->propertyGroups[] = new Model\Product\Property\Group((array)$propertyGroupItem);
             }
         }
 
         // ядерные фотографии
-        if (isset($data['media'][0])) {
-            call_user_func(function() use (&$data, &$photoUrlSizes) {
-                // host
-                $hosts = $this->getConfig()->mediaHosts;
-                $index = !empty($photoId) ? ($photoId % count($hosts)) : rand(0, count($hosts) - 1);
-                $host = isset($hosts[$index]) ? $hosts[$index] : '';
+        if (!empty($data['medias']) && is_array($data['medias'])) {
+            // убеждаемся что есть именно картинки, а не другой медиа-контент
+            foreach ($data['medias'] as $mediaItem) {
+                if ('image' === $mediaItem['provider']) {
+                    $this->media = new Model\Product\Media($mediaItem);
 
-                foreach ($data['media'] as $mediaItem) {
-                    if (!$mediaItem['source'] || ($mediaItem['type_id'] != 1)) continue;
-                    // преобразование в формат scms
-                    $item = [
-                        'content_type' => 'image/jpeg',
-                        'provider'     => 'image',
-                        'tags'         => [],
-                        'sources'      => [],
-                    ];
-                    foreach ($photoUrlSizes as $type => $prefix) {
-                        $item['sources'][] = [
-                            'type' => $type,
-                            'url'  => $host . $prefix . $mediaItem['source'],
-                        ];
-                    }
-
-                    $this->media->photos[] = new Model\Media($item);
+                    break;
                 }
-            });
+            }
         }
 
         if (isset($data['label'][0])) {
@@ -224,16 +207,10 @@ class Product {
             }
         }
 
-        // wikimart
-        if (
-            $this->getConfig()->wikimart->enabled
-            && isset($this->partnerOffers[0])
-            && (1 === count($this->partnerOffers))
-            && ('ad8fa8fb-6d74-4e2c-ae6e-71fc31ff8ce6' === $this->partnerOffers[0]->partner->ui)
-            && $this->partnerOffers[0]->productId
-        ) {
-            $this->wikimartId = $this->partnerOffers[0]->productId;
+        if (array_key_exists('state', $data)) {
+            $this->isStore = (isset($data['state']['is_store'])) ? $data['state']['is_store'] : false;
         }
+
     }
 
     /**

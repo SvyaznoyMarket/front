@@ -23,9 +23,7 @@ namespace EnterTerminal\Controller {
             }
 
             $statusQuery = new Query\Terminal\SetStatusByUi($ui, (array)$request->data->all());
-            $curl->prepare($statusQuery);
-
-            $curl->execute();
+            $curl->query($statusQuery);
 
             $result = (array)$statusQuery->getResult();
             if (!(bool)$result) {

@@ -45,6 +45,8 @@ namespace EnterModel\Product {
         public $media;
         /** @var Model\Product\Category\Meta */
         public $meta;
+        /** @var bool */
+        public $isFurniture;
 
         /**
          * @param array $data
@@ -63,6 +65,8 @@ namespace EnterModel\Product {
             if (array_key_exists('slug', $data)) $this->token = (string)$data['slug'];
             if (array_key_exists('link', $data)) $this->link = (string)$data['link']; // элемент link возвращает метод https://scms.enter.ru/api/category/tree
             if (array_key_exists('url', $data)) $this->link = (string)$data['url']; // элемент url возвращает метод https://scms.enter.ru/category/get/v1
+            if (array_key_exists('is_furniture', $data)) $this->isFurniture = (bool)$data['is_furniture'];
+
             $this->path = trim(preg_replace('/^\/catalog\//', '', $this->link), '/');
             if (isset($data['medias'][0])) {
                 foreach ($data['medias'] as $mediaItem) {

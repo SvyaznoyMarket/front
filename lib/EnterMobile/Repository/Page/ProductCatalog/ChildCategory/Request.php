@@ -31,4 +31,7 @@ class Request extends Repository\Page\ProductCatalog\RootCategory\Request {
     public $products = [];
     /** @var Http\Request */
     public $httpRequest;
+    /** @var bool */
+    public $buyBtnListing;
+
 }

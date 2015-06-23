@@ -10,10 +10,9 @@ namespace EnterTerminal\Controller\Cart\Split {
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterTerminal\Controller;
-    use EnterTerminal\Controller\Cart\Split\Update\Response;
 
     class Update {
-        use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
+        use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait, Controller\Cart\CoreFixTrait;
 
         /**
          * @param Http\Request $request
@@ -22,13 +21,12 @@ namespace EnterTerminal\Controller\Cart\Split {
          */
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
-            $curl = $this->getCurl();
             $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
-            $orderRepository = new \EnterRepository\Order();
+            $cartSplitRepository = new \EnterTerminal\Repository\Cart\Split();
 
             // ответ
-            $response = new Response();
+            $response = new \EnterTerminal\Model\ControllerResponse\Cart\Split();
 
             // ид региона
             $regionId = (new \EnterTerminal\Repository\Region())->getIdByHttpRequest($request);
@@ -59,88 +57,37 @@ namespace EnterTerminal\Controller\Cart\Split {
             // ид магазина
             $shopId = (new \EnterTerminal\Repository\Shop())->getIdByHttpRequest($request); // FIXME
 
-            // запрос магазина
-            $shopItemQuery = null;
-            if ($shopId) {
-                $shopItemQuery = new Query\Shop\GetItemById($shopId);
-                $curl->prepare($shopItemQuery);
-            }
+            $controller = new \EnterAggregator\Controller\Cart\Split();
+            // запрос для контроллера
+            $controllerRequest = $controller->createRequest();
+            $controllerRequest->regionId = $regionId;
+            $controllerRequest->shopId = $shopId;
+            $controllerRequest->changeData = $cartSplitRepository->dumpSplitChange($change);
+            $controllerRequest->previousSplitData = $splitData;
+            $controllerRequest->cart = $cart;
+            // при получении данных о разбиении корзины - записать их в сессию немедленно
+            $controllerRequest->splitReceivedSuccessfullyCallback->handler = function() use (&$controllerRequest, &$config, &$session, &$response) {
+                $session->set($config->order->splitSessionKey, $controllerRequest->splitReceivedSuccessfullyCallback->splitData);
 
-            $curl->execute();
+                try {
+                    $this->fixCoreResponse($controllerRequest->splitReceivedSuccessfullyCallback->splitData);
+                } catch (\Exception $e) {
+                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
+                }
 
-            // магазин
-            $shop = $shopItemQuery ? (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery) : null;
-            if ($shopId && !$shop) {
-                throw new \Exception(sprintf('Магазин #%s не найден', $shopId));
-            }
+                // Терминалы пока используют сырые данные, не изменённые моделями API агрегатора
+                $response->split = $controllerRequest->splitReceivedSuccessfullyCallback->splitData;
+            };
+            // ответ от контроллера
+            $controllerResponse = $controller->execute($controllerRequest);
 
-            // запрос региона
-            $regionItemQuery = new Query\Region\GetItemById($regionId);
-            $curl->prepare($regionItemQuery);
+            $response->errors = $controllerResponse->errors;
+            $response->region = $controllerResponse->region;
 
-            // запрос на разбиение корзины
-            $splitQuery = new Query\Cart\Split\GetItem(
-                $cart,
-                new Model\Region(['id' => $regionId]),
-                $shop,
-                null,
-                $splitData,
-                $change
-            );
-            $splitQuery->setTimeout($config->coreService->timeout * 3);
-            $curl->prepare($splitQuery);
-
-            $curl->execute();
-
-            // регион
-            $region = null;
-            try {
-                $region = (new \EnterRepository\Region())->getObjectByQuery($regionItemQuery);
-            } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['critical', 'cart.split', 'controller']]);
-            }
-
-            // разбиение
-            $splitData = [];
-            try {
-                $splitData = $splitQuery->getResult();
-            } catch (Query\CoreQueryException $e) {
-                $response->errors = $orderRepository->getErrorList($e);
-            }
-
-            // добавление данных о корзине
-            $splitData['cart'] = [
-                'product_list' => array_map(function(Model\Cart\Product $product) { return [
-                    'id'       => $product->id,
-                    'quantity' => $product->quantity,
-                ]; }, $cart->product),
-            ];
-
-            // добавление региона
-            if ($region) {
-                $response->region = $region;
-            }
-
-            // сохранение в сессии
-            $session->set($config->order->splitSessionKey, $splitData);
-
-            $response->split = $splitData;
+            $cartSplitRepository->correctResponse($response, $controllerResponse->split);
 
             // response
             return new Http\JsonResponse($response);
         }
-    }
-}
-
-namespace EnterTerminal\Controller\Cart\Split\Update {
-    use EnterModel as Model;
-
-    class Response {
-        /** @var array */
-        public $errors = [];
-        /** @var array */
-        public $split;
-        /** @var Model\Region|null */
-        public $region;
     }
 }

@@ -11,7 +11,8 @@ class CartButtonBlock {
 
     public function getObject(
         \EnterModel\Product $product,
-        \EnterModel\Cart\Product $cartProduct = null
+        \EnterModel\Cart\Product $cartProduct = null,
+        array $context = []
     ) {
         if ($product->relation && (bool)$product->relation->kits && !$product->isKitLocked) {
             return null;
@@ -22,13 +23,11 @@ class CartButtonBlock {
 
         $block->cartLink = (new Repository\Partial\Cart\ProductLink())->getObject($product, $cartProduct) ?: false;
         if (!$cartProduct) {
-            $block->cartButton = (new Repository\Partial\Cart\ProductButton())->getObject($product, null, false, false);
+            $block->cartButton = (new Repository\Partial\Cart\ProductButton())->getObject($product, null, false, false, $context);
 
-            if (!$product->wikimartId) {
-                $block->cartQuickButton = (new Repository\Partial\Cart\ProductQuickButton())->getObject($product);
-                if ($product->isBuyable && !$product->isInShopOnly) {
-                    $block->cartSpinner = (new Repository\Partial\Cart\ProductSpinner())->getObject($product);
-                }
+            $block->cartQuickButton = (new Repository\Partial\Cart\ProductQuickButton())->getObject($product);
+            if ($product->isBuyable && !$product->isInShopOnly) {
+                $block->cartSpinner = (new Repository\Partial\Cart\ProductSpinner())->getObject($product);
             }
         }
 
