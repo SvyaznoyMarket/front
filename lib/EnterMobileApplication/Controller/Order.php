@@ -42,40 +42,21 @@ namespace EnterMobileApplication\Controller {
                 throw new \Exception('Заказ не найден', 404);
             }
 
-            $orders = [$order];
-
-            // магазины
-            $shopsById = [];
-            foreach ([$order] as $order) {
-                if (!$order->shopId) continue;
-                $shopsById[$order->shopId] = null;
-            }
-
+            $point = null;
             try {
-                if ((bool)$shopsById) {
-                    $shopRepository = new \EnterRepository\Shop();
-
-                    $shopListQuery = new Query\Shop\GetListByIdList(array_keys($shopsById));
-                    $curl->prepare($shopListQuery)->execute();
-
-                    $shopsById = $shopRepository->getIndexedObjectListByQuery($shopListQuery);
-                    foreach ($orders as $order) {
-                        /** @var Model\Order $order */
-                        $shop = ($order->shopId && isset($shopsById[$order->shopId])) ? $shopsById[$order->shopId] : null;
-                        if (!$shop) continue;
-
-                        $order->shop = $shop;
-                    }
+                if ($order->point->ui) {
+                    $pointItemQuery = new Query\Shop\GetItemByUi($order->point->ui);
+                    $pointItemQuery->setTimeout(1.5 * $config->coreService->timeout);
+                    $curl->prepare($pointItemQuery)->execute();
+                    $point = $pointItemQuery->getResult();
                 }
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
             }
 
             $orderProductsById = [];
-            foreach ($orders as $order) {
-                foreach ((array)$order->product as $orderProduct) {
-                    $orderProductsById[$orderProduct->id] = $orderProduct;
-                }
+            foreach ((array)$order->product as $orderProduct) {
+                $orderProductsById[$orderProduct->id] = $orderProduct;
             }
 
             $productListQuery = null;
@@ -119,7 +100,6 @@ namespace EnterMobileApplication\Controller {
                 'numberErp' => $order->numberErp,
                 'token' => $order->token,
                 'sum' => $order->sum,
-                'shopId' => $order->shopId,
                 'address' => $order->address,
                 'createdAt' => $order->createdAt,
                 'updatedAt' => $order->updatedAt,
@@ -167,8 +147,23 @@ namespace EnterMobileApplication\Controller {
                 'subwayId' => $order->subwayId,
                 'deliveries' => $order->deliveries,
                 'interval' => $order->interval,
-                'shop' => $order->shop,
-                'point' => $order->point,
+                'point' => $point ? [
+                    'id' => $point['id'],
+                    'ui' => $point['uid'],
+                    'name' => 'Магазин Enter', // TODO: заменить на корректные данные, когда они появятся в scms.enter.ru/shop/get
+                    'imageUrl' => (new \EnterRepository\Cart())->getPointImageUrl('shops'), // TODO: заменить на корректные данные, когда они появятся в scms.enter.ru/shop/get
+                    'address' => $point['address'],
+                    'regime' => isset($point['working_time']['common']) ? $point['working_time']['common'] : null,
+                    'latitude' => isset($point['location']['latitude']) ? $point['location']['latitude'] : null,
+                    'longitude' => isset($point['location']['longitude']) ? $point['location']['longitude'] : null,
+                    'subway' => [
+                        'name' => isset($point['subway']['name']) ? $point['subway']['name'] : null,
+                        'line' => [
+                            'name' => isset($point['subway']['line_name']) ? $point['subway']['line_name'] : null,
+                            'color' => isset($point['subway']['line_color']) ? $point['subway']['line_color'] : null,
+                        ],
+                    ],
+                ] : null,
             ]];
 
             return new Http\JsonResponse($response);
