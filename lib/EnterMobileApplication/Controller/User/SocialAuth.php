@@ -25,7 +25,6 @@ namespace EnterMobileApplication\Controller\User {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            $session = $this->getSession();
 
             // ответ
             $response = new Response();
@@ -60,7 +59,6 @@ namespace EnterMobileApplication\Controller\User {
                     throw new \Exception('Не получен token пользователя');
                 }
 
-                $session->set($config->userToken->authName, $token);
                 $response->token = $token;
             } catch (\Exception $e) {
                 if ($config->debugLevel) $this->getDebugContainer()->error = $e;
