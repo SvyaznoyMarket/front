@@ -72,6 +72,7 @@ namespace EnterMobileApplication\Controller\User {
                 $response['orders'] = array_map(function(Model\Order $order) {
                     return [
                         'id' => $order->id,
+                        'accessToken' => $order->token,
                         'numberErp' => $order->numberErp,
                         'createdAt' => $order->createdAt,
                         'paySum' => $order->paySum,
