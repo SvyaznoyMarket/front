@@ -300,16 +300,20 @@ define(
                     $filterForm = $($el.data('filterFormSelector'))
                 ;
 
-                console.info('index', index);
+                toggle = false !== toggle;
 
                 e.stopPropagation();
+
+                if (false !== toggle) {
+                    index = (0 == index) ? 1 : 0;
+                }
+
+                console.info('index', index);
 
                 $selected = $el.find('[data-index="' + index + '"]');
                 $container = $($selected.data('containerSelector'));
                 $parentContainer = $($container.data('parentContainerSelector'));
-
-                if (false !== toggle) {
-                    index = (0 == index) ? 1 : 0;
+                if (toggle) {
                     $parentContainer.toggleClass($parentContainer.data('toggleClass'));
                 }
 
