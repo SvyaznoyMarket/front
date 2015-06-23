@@ -33,7 +33,7 @@ define(
                     searchInputVal = $('.js-search-form-input').val(),
                     url = '/search/autocomplete?q=' + searchInputVal;
 
-                if ( searchInputVal !== '' ) {
+                if ( searchInputVal !== '' && searchInputVal.length > 3 ) {
                     $.ajax({
                         type: 'POST',
                         url: url,
@@ -43,37 +43,57 @@ define(
                 }
             },
 
-            successSearch = function( result ) {
-                console.log(result);
-
+            successSearch = (function () {
                 var
-                    container   = $('.js-search-suggest'),
-                    template    = $('#tpl-search-suggest').html(), 
-                    suggestData = {
-                        categories: {
-                            category: []
-                        },
-                        products: {
-                            product: []
+                    timeWindow = 500, // time in ms
+                    timeout,
+
+                    successSearch = function ( result ) {
+                        console.log(result);
+
+                        var
+                            container   = $('.js-search-suggest'),
+                            template    = $('#tpl-search-suggest').html(), 
+                            suggestData = {
+                                categories: {
+                                    category: []
+                                },
+                                products: {
+                                    product: []
+                                }
+                            },
+                            html;
+
+                        if ( result.hasOwnProperty('categories') && _.isArray(result.categories) && result.categories.length ) {
+                            suggestData.categories.category = result.categories;
+                            suggestData.categories.hasCategories = true;
                         }
-                    },
-                    html;
 
-                if ( result.hasOwnProperty('categories') && _.isArray(result.categories) && result.categories.length ) {
-                    suggestData.categories.category = result.categories;
-                    suggestData.categories.hasCategories = true;
-                }
+                        if ( result.hasOwnProperty('products') && _.isArray(result.products) && result.products.length ) {
+                            suggestData.products.product = result.products;
+                            suggestData.products.hasProducts = true;
+                        }
 
-                if ( result.hasOwnProperty('products') && _.isArray(result.products) && result.products.length ) {
-                    suggestData.products.product = result.products;
-                    suggestData.products.hasProducts = true;
-                }
+                        console.log(suggestData);
 
-                console.log(suggestData);
+                        html = mustache.render(template, {suggestData: suggestData});
+                        container.html(html);
+                    };
+                // end of vars
 
-                html = mustache.render(template, {suggestData: suggestData});
-                container.html(html);
-            },
+                return function() {
+                    var
+                        context = this,
+                        result = arguments;
+                    // end of vars
+
+                    clearTimeout(timeout);
+
+                    timeout = setTimeout(function() {
+                        successSearch.apply(context, result);
+                    }, timeWindow);
+                };
+            }()),
 
             errorSearch = function( jqXHR, textStatus, errorThrown ) {
                 console.log(jqXHR);
@@ -82,6 +102,6 @@ define(
             };
 
         $body.on('click', 'js-searchLink', showPopup);
-        $('.js-search-form-input').on('change', submitSearch);
+        $('.js-search-form-input').on('keyup change', submitSearch);
     }
 );
