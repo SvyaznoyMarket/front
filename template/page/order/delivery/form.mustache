@@ -4,11 +4,13 @@
     <h1 class="checkout__tl">Самовывоз и доставка</h1>
 
     {{#errors}}
-        <p>{{message}}</p>
+        <div class="checkout__err">{{message}}</div>
     {{/errors}}
 
     {{#orderCountMessage}}
-        <p class="orderInf">Товары будут оформлены как <strong class="mdb">{{orderCountMessage}}</strong></p>
+        <div class="checkout-order-info clearfix">
+            <span class="checkout-order-info__tx">Товары будут оформлены как <strong class="mdb">{{orderCountMessage}}</strong></span>
+        </div>
     {{/orderCountMessage}}
 
     <div class="checkout-order-info clearfix">
