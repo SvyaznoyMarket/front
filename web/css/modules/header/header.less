@@ -550,6 +550,30 @@ body {
     height: @height;
 }
 
+@media only screen and (max-width: 450px) {
+    .header {
+        &.search {
+            .header-center {
+                padding-left: 0;
+                padding-right: 50px;
+            }
+
+            .header__logotype,
+            .header-controls__item--user {
+                display: none;
+            }
+
+            .search-form {
+                padding-left: 45px;
+
+                .i-search--search-selected {
+                    left: 53px;
+                }
+            }
+        }
+    }
+}
+
 @media only screen and (min-width: 750px) {
     .categories-grid {
         &__item {
