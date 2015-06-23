@@ -1266,6 +1266,12 @@ body.noScroll {
   display: block;
   padding-left: 70px;
 }
+.header.search .header-controls__item--search {
+  display: none;
+}
+.header.search .header-center {
+  padding-right: 90px;
+}
 .search-form {
   display: inline-block;
   vertical-align: top;
@@ -1295,7 +1301,7 @@ body.noScroll {
 .search-form .i-search--search-clear {
   position: absolute;
   right: 7px;
-  top: 17px;
+  top: 18px;
 }
 .main-banner-slider {
   margin: 0 0 10px;
