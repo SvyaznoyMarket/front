@@ -823,10 +823,13 @@ define(
                 data = $el.data('value')
             ;
 
-            console.info('changeSplit', $el);
+            console.info('changeSplit', $el, $el.is(':checkbox'));
 
             e.stopPropagation();
-            e.preventDefault();
+
+            if (!$el.is(':checkbox') && !$el.is(':radio')) {
+                e.preventDefault();
+            }
 
             if (data) {
                 changeSplit(data);

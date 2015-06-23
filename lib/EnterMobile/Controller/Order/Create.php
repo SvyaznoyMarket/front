@@ -115,14 +115,16 @@ class Create {
             $metas = [];
 
             // бонусные карты
-            foreach ($session->get($config->order->bonusCardSessionKey) as $cardItem) {
-                if (!isset($cardItem['type'])) continue;
+            if ($cardData = $session->get($config->order->bonusCardSessionKey)) {
+                foreach ($session->get($config->order->bonusCardSessionKey) as $cardItem) {
+                    if (!isset($cardItem['type'])) continue;
 
-                if ('mnogoru' === $cardItem['type']) {
-                    $meta = new Model\Order\Meta();
-                    $meta->key = 'mnogo_ru_card';
-                    $meta->value = $cardItem['number'];
-                    $metas[] = $meta;
+                    if ('mnogoru' === $cardItem['type']) {
+                        $meta = new Model\Order\Meta();
+                        $meta->key = 'mnogo_ru_card';
+                        $meta->value = $cardItem['number'];
+                        $metas[] = $meta;
+                    }
                 }
             }
 
