@@ -1,90 +1,104 @@
 /* ==========================================================================
    Шапка сайта .header
    ========================================================================== */
+@media only screen and (max-width: 450px) {
+    .header {
+        &.search {
+            .header-center {
+                padding-right: 50px;
+                padding-left: 0;
+            }
+            .header__logotype ,
+            .header-controls__item--user {
+                display: none;
+            }
+            .search-form {
+                padding-left: 45px;
+                .i-search--search-selected {
+                    left: 53px;
+                }
+            }
+        }
+    }
+}
 
 @media only screen and (max-width: 800px) {
-	/* Панель юзера */
-	.headerRightAside {
-	    width: 160px;
-	    margin-left: -160px;
-	}
+    /* Панель юзера */
+    .headerRightAside {
+        width: 160px;
+        margin-left: -160px;
+    }
 
-	.headerCenter {
-		padding-right: 140px;
-	}
+    .headerCenter {
+        padding-right: 140px;
+    }
 
-	.transBg {
-		float: left;
+    .transBg {
+        float: left;
 
-		width: 20px;
-		height: 30px;
+        width: 20px;
+        height: 30px;
 
-		background: url("@{base-url}/header/img/breadCrumbsTrans.png") no-repeat 100% 0;
-	}
+        background: url('@{base-url}/header/img/breadCrumbsTrans.png') no-repeat 100% 0;
+    }
 
     .userBox {
-		width: 140px;
-		margin: 8px 0 0;
+        width: 140px;
+        margin: 8px 0 0;
+        &_item {
+            margin: 2px 0 0 10px;
+        }
+        &_text {
+            display: none;
+        }
+        &_link {
+            width: 34px;
+            padding: 0;
+            &-authval {
+                .userBox_text {
+                    display: none;
+                }
+            }
+        }
+    }
 
-		&_item {
-			margin: 2px 0 0 10px;
-		}
+    /* Хлебные крошки */
+    .breadCrumbs {
+        &_item {
+            margin: 7px 0 0;
+        }
+    }
 
-		&_text {
-			display: none;
-		}
-
-		&_link {
-		    width: 34px;
-		    padding: 0;
-
-		    &-authVal {
-
-		    	.userBox_text {
-		    		display: none;
-		    	}
-		    }
-		}
-	}
-
-	/* Хлебные крошки */
-	.breadCrumbs {
-
-		&_item {
-			margin: 7px 0 0;
-		}
-	}
-
-	.menuIco {
-	    margin-top: 4px;
-	}
+    .menuIco {
+        margin-top: 4px;
+    }
 }
 
 @media only screen and (max-width: 580px) {
     /* Хлебные крошки */
-	.breadCrumbs {
-		padding: 0;
+    .breadCrumbs {
+        padding: 0;
 
-		border: none;
-	}
+        border: none;
+    }
 }
 
 @media only screen and (max-width: 500px) {
     /* Хлебные крошки */
-	.headerCenterWrap {
-		display: none;
-	}
+    .headerCenterWrap {
+        display: none;
+    }
 
-	.headerLeftAside {
-    	float: left;
+    .headerLeftAside {
+        float: left;
 
-	    margin-left: 0;
-	}
+        margin-left: 0;
+    }
 
-	.headerRightAside {
-	    float: right;
+    .headerRightAside {
+        float: right;
 
-	    width: 160px;
-	    margin-left: 0;
-	}
+        width: 160px;
+        margin-left: 0;
+    }
 }

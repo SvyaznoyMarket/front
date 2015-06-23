@@ -43,6 +43,50 @@ define(
 
             successSearch = function( result ) {
                 console.log(result);
+
+                var
+                    data          = {},
+                    hasCategories = false,
+                    hasProducts   = false,
+                    i;
+
+                if ( result.categories.length ) {
+                    for ( i = 0; i < result.categories.length; i++ ) {
+                        var category = [];
+                        category[i].push({
+                            name: result.categories[i].name,
+                            url: result.categories[i].link,
+                            img: result.categories[i].image
+                        })
+
+
+                    }
+                    data.categories = {
+                        hasCategories: true,
+                        category: category
+                    }
+                }
+
+                if ( result.products.length ) {
+                    for ( i = 0; i < result.products.length; i++ ) {
+                        var product = [];
+
+                        product[i].push({
+                            name: result.products[i].name,
+                            url: result.products[i].link,
+                            img: result.products[i].image
+                        })
+
+
+                    }
+                    data.products = {
+                        hasProducts: true,
+                        category: category
+                    }
+                }
+
+                console.log(data);
+
             },
 
             errorSearch = function( jqXHR, textStatus, errorThrown ) {

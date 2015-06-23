@@ -1768,22 +1768,6 @@ body {
   font-size: .75em;
   line-height: 1;
 }
-@media only screen and (max-width: 450px) {
-  .header.search .header-center {
-    padding-left: 0;
-    padding-right: 50px;
-  }
-  .header.search .header__logotype,
-  .header.search .header-controls__item--user {
-    display: none;
-  }
-  .header.search .search-form {
-    padding-left: 45px;
-  }
-  .header.search .search-form .i-search--search-selected {
-    left: 53px;
-  }
-}
 @media only screen and (min-width: 750px) {
   .categories-grid__item {
     -webkit-box-sizing: border-box;
@@ -1849,6 +1833,22 @@ body {
 /* ==========================================================================
    Шапка сайта .header
    ========================================================================== */
+@media only screen and (max-width: 450px) {
+  .header.search .header-center {
+    padding-right: 50px;
+    padding-left: 0;
+  }
+  .header.search .header__logotype,
+  .header.search .header-controls__item--user {
+    display: none;
+  }
+  .header.search .search-form {
+    padding-left: 45px;
+  }
+  .header.search .search-form .i-search--search-selected {
+    left: 53px;
+  }
+}
 @media only screen and (max-width: 800px) {
   /* Панель юзера */
   .headerRightAside {
@@ -1862,7 +1862,7 @@ body {
     float: left;
     width: 20px;
     height: 30px;
-    background: url("modules/header/img/breadCrumbsTrans.png") no-repeat 100% 0;
+    background: url('modules/header/img/breadCrumbsTrans.png') no-repeat 100% 0;
   }
   .userBox {
     width: 140px;
@@ -1878,7 +1878,7 @@ body {
     width: 34px;
     padding: 0;
   }
-  .userBox_link-authVal .userBox_text {
+  .userBox_link-authval .userBox_text {
     display: none;
   }
   /* Хлебные крошки */
