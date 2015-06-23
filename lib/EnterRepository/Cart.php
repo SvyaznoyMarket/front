@@ -142,6 +142,7 @@ class Cart {
                 'quantity' => null,
                 'parentId' => null,
                 'added'    => null,
+                'sender'   => null,
             ], $productItem);
 
             if (isset($productItem['id']) && $productItem['id']) { // На случай, если в сессию попадут некорректные данные
@@ -151,6 +152,7 @@ class Cart {
                 $cartProduct->quantity = (int)$productItem['quantity'];
                 $cartProduct->parentId = $productItem['parentId'] ? (string)$productItem['parentId'] : null;
                 $cartProduct->addedAt = $productItem['added'] ? (string)$productItem['added'] : null;
+                $cartProduct->sender = $productItem['sender'];
 
                 $cart->product[$cartProduct->id] = $cartProduct;
             }

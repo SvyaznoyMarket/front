@@ -24,6 +24,8 @@ namespace EnterMobile\Model\Page\Order\Complete {
     class Content extends Page\DefaultPage\Content {
         /** @var array */
         public $orders = [];
+        /** @var bool */
+        public $isSingleOrder;
 
         public function __construct() {
             parent::__construct();

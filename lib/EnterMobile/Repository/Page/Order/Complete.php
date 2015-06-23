@@ -221,6 +221,7 @@ class Complete {
 
             $page->content->orders[] = $order;
         }
+        $page->content->isSingleOrder = 1 === count($request->orders);
 
         // заголовок
         $page->title = 'Оформление заказа - Завершение - Enter';

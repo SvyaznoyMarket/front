@@ -114,6 +114,18 @@ class Create {
             // meta
             $metas = [];
 
+            // бонусные карты
+            foreach ($session->get($config->order->bonusCardSessionKey) as $cardItem) {
+                if (!isset($cardItem['type'])) continue;
+
+                if ('mnogoru' === $cardItem['type']) {
+                    $meta = new Model\Order\Meta();
+                    $meta->key = 'mnogo_ru_card';
+                    $meta->value = $cardItem['number'];
+                    $metas[] = $meta;
+                }
+            }
+
             $controller = new \EnterAggregator\Controller\Order\Create();
             $controllerResponse = $controller->execute(
                 $region->id,
@@ -127,7 +139,8 @@ class Create {
                 302
             );
 
-            // TODO: удалить предыдущее разбиение и очистить корзину!!!
+            $session->remove($config->order->bonusCardSessionKey);
+            $session->remove($config->cart->sessionKey);
 
             $orderData = [
                 'updatedAt' => (new \DateTime())->format('c'),

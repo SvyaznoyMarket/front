@@ -12,7 +12,6 @@ namespace EnterMobileApplication\Controller\User {
     use EnterModel as Model;
     use EnterMobileApplication\Controller;
     use EnterMobileApplication\Repository;
-    use EnterMobileApplication\Controller\User\OrderList\Response;
 
     class OrderList {
         use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait, DebugContainerTrait;
@@ -25,9 +24,8 @@ namespace EnterMobileApplication\Controller\User {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-
-            // ответ
-            $response = new Response();
+            
+            $response = [];
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
             if (!$token) {
@@ -71,56 +69,22 @@ namespace EnterMobileApplication\Controller\User {
                     $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
                 }
 
-                // магазины
-                $shopsById = [];
-                foreach ($orders as $order) {
-                    if (!$order->shopId) continue;
-                    $shopsById[$order->shopId] = null;
-                }
-
-                try {
-                    if ((bool)$shopsById) {
-                        $shopRepository = new \EnterRepository\Shop();
-
-                        $shopListQuery = new Query\Shop\GetListByIdList(array_keys($shopsById));
-                        $curl->prepare($shopListQuery)->execute();
-
-                        $shopsById = $shopRepository->getIndexedObjectListByQuery($shopListQuery, function(&$item) {
-                            // TODO
-                        });
-                        foreach ($orders as $order) {
-                            $shop = ($order->shopId && isset($shopsById[$order->shopId])) ? $shopsById[$order->shopId] : null;
-                            if (!$shop) continue;
-
-                            $order->shop = $shop;
-                        }
-                    }
-                } catch (\Exception $e) {
-                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
-                }
-
-                $response->orders = $orders;
-                $response->token = $token;
+                $response['orders'] = array_map(function(Model\Order $order) {
+                    return [
+                        'id' => $order->id,
+                        'accessToken' => $order->token,
+                        'numberErp' => $order->numberErp,
+                        'createdAt' => $order->createdAt,
+                        'paySum' => $order->paySum,
+                    ];
+                }, $orders);
             } catch (\Exception $e) {
                 if ($config->debugLevel) $this->getDebugContainer()->error = $e;
-
-                $response->token = null;
             }
 
             if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
 
             return new Http\JsonResponse($response);
         }
-    }
-}
-
-namespace EnterMobileApplication\Controller\User\OrderList {
-    use EnterModel as Model;
-
-    class Response {
-        /** @var string */
-        public $token;
-        /** @var Model\Order[] */
-        public $orders = [];
     }
 }

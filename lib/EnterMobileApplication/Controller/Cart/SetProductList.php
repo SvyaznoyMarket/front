@@ -53,7 +53,22 @@ class SetProductList {
         // добавление товара в корзину
         foreach ($cartProducts as $cartProduct) {
             $cartProduct->ui = $productsById[$cartProduct->id]->ui;
-            $cartRepository->setProductForObject($cart, $cartProduct);
+			
+			// MAPI-57
+			if ($cartProduct->quantity <= 0) {
+				if (isset($cart->product[$cartProduct->id])) {
+					$cartProduct->quantity = $cart->product[$cartProduct->id]->quantity;
+				}
+				
+				$cartProduct->quantity++;
+			}
+			
+			// MAPI-57
+			if (!$cartProduct->sender && isset($cart->product[$cartProduct->id])) {
+				$cartProduct->sender = $cart->product[$cartProduct->id]->sender;
+			}
+			
+			$cart->product[$cartProduct->id] = $cartProduct;
         }
 
         $cart->cacheId++;
