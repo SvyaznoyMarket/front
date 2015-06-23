@@ -191,6 +191,11 @@
         "pattern": "/search"
     },
 
+    "Search\\Autocomplete": {
+      "name": "Поиск",
+      "pattern": "/search/autocomplete"
+    },
+
     "Compare\\Index": {
         "name": "Сравнение товаров",
         "pattern": "/compare"
