@@ -378,7 +378,7 @@ define(
                     partial = $pointPopupTemplate.data('partial')['page/order/delivery/point-list']
                 ;
 
-                console.info('update point list ...');
+                console.info('update point list ...', data);
 
                 $container.html(mustache.render(partial, data));
                 $container.find('.content-scroll').scrollTop();
@@ -402,29 +402,30 @@ define(
                     params    = getFilterParams($form),
                     newData = {},
                     key,
-                    pointAdd,
                     latDiff,
                     lngDiff
                 ;
 
                 _.extend(newData, data);
 
-                newData.points = data.points.filter(function(points) {
-                    for ( key in points ) {
-                        if ( params[key] && params[key].length && points[key] && points[key].hasOwnProperty('value') ) {
+                newData.points = data.points.filter(function(point) {
+                    for (key in params) {
+                        if (
+                            //params[key].length
+                            (-1 === _.indexOf(params[key], point[key].value))
+                        ) {
+                            console.info('pass', key, params[key], point[key].value);
 
-                            pointAdd = params[key].indexOf(points[key].value.toString());
-
-                            if ( pointAdd === -1 ) {
-                                return false;
-                            }
+                            return false;
                         }
                     }
+
                     return true;
                 });
 
                 // проверка на строку поиска
                 if (center) {
+                    console.info(center);
                     try {
                         _.each(newData.points, function(point, i) {
                             latDiff = Math.abs(point.lat - center[0]);
@@ -459,16 +460,17 @@ define(
                 $input.each(function(key) {
                     var
                         $this = $(this),
-                        data  = $this.data('value');
+                        data  = $this.data('value')
+                    ;
 
                     key = data.name;
 
-                    if ( typeof params[key] === 'undefined' ) {
-                        params[key] = [];
-                    }
+                    if (true == $this.prop('checked')) {
+                        if (typeof params[key] === 'undefined') {
+                            params[key] = [];
+                        }
 
-                    if ( $this.prop('checked') == true ) {
-                        params[key].push(data.value.toString());
+                        params[key].push(data.value);
                     }
                 });
 
