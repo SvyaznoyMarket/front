@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'jquery.popup'],
-    function ($) {
+    ['jquery', 'underscore', 'mustache', 'jquery.popup'],
+    function ($, _, mustache) {
         var $body = $('body'),
 
         showPopup = function (e) {
@@ -33,60 +33,46 @@ define(
                     searchInputVal = $('.js-search-form-input').val(),
                     url = '/search/autocomplete?q=' + searchInputVal;
 
-                $.ajax({
-                    type: 'POST',
-                    url: url,
-                    success: successSearch,
-                    error: errorSearch
-                });
+                if ( searchInputVal !== '' ) {
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        success: successSearch,
+                        error: errorSearch
+                    });
+                }
             },
 
             successSearch = function( result ) {
                 console.log(result);
 
                 var
-                    data          = {},
-                    hasCategories = false,
-                    hasProducts   = false,
-                    i;
+                    container   = $('.js-search-suggest'),
+                    template    = $('#tpl-search-suggest').html(), 
+                    suggestData = {
+                        categories: {
+                            category: []
+                        },
+                        products: {
+                            product: []
+                        }
+                    },
+                    html;
 
-                if ( result.categories.length ) {
-                    for ( i = 0; i < result.categories.length; i++ ) {
-                        var category = [];
-                        category[i].push({
-                            name: result.categories[i].name,
-                            url: result.categories[i].link,
-                            img: result.categories[i].image
-                        })
-
-
-                    }
-                    data.categories = {
-                        hasCategories: true,
-                        category: category
-                    }
+                if ( result.hasOwnProperty('categories') && _.isArray(result.categories) && result.categories.length ) {
+                    suggestData.categories.category = result.categories;
+                    suggestData.categories.hasCategories = true;
                 }
 
-                if ( result.products.length ) {
-                    for ( i = 0; i < result.products.length; i++ ) {
-                        var product = [];
-
-                        product[i].push({
-                            name: result.products[i].name,
-                            url: result.products[i].link,
-                            img: result.products[i].image
-                        })
-
-
-                    }
-                    data.products = {
-                        hasProducts: true,
-                        category: category
-                    }
+                if ( result.hasOwnProperty('products') && _.isArray(result.products) && result.products.length ) {
+                    suggestData.products.product = result.products;
+                    suggestData.products.hasProducts = true;
                 }
 
-                console.log(data);
+                console.log(suggestData);
 
+                html = mustache.render(template, {suggestData: suggestData});
+                container.html(html);
             },
 
             errorSearch = function( jqXHR, textStatus, errorThrown ) {

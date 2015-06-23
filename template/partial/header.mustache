@@ -35,3 +35,43 @@
 </nav>
 
 <div class="fader"></div>
+
+<div class="search-suggest js-search-suggest"></div>
+
+{{={{{ }}}=}}
+    <script id="tpl-search-suggest" type="text/html">
+        {{#suggestData}}
+            {{#categories}}
+                {{#hasCategories}}
+                    <div class="search-suggest__title">Категории</div>
+                    <ul class="search-suggest-list">
+                        {{#category}}
+                        <li class="search-suggest-list__item">
+                            <a class="search-suggest-list__link" href="{{link}}">
+                                <img class="search-suggest-list__img" src="{{image}}">
+                                <span class="search-suggest-list__name">{{name}}</span>
+                            </a>
+                        </li>
+                        {{/category}}
+                    </ul>
+                {{/hasCategories}}
+            {{/categories}}
+
+            {{#products}}
+                {{#hasProducts}}
+                    <div class="search-suggest__title">Товары</div>
+                    <ul class="search-suggest-list">
+                        {{#product}}
+                        <li class="search-suggest-list__item">
+                            <a class="search-suggest-list__link" href="{{link}}">
+                                <img class="search-suggest-list__img" src="{{image}}">
+                                <span class="search-suggest-list__name">{{name}}</span>
+                            </a>
+                        </li>
+                        {{/product}}
+                    </ul>
+                {{/hasProducts}}
+            {{/products}}
+        {{/suggestData}}
+    </script>
+{{{={{ }}=}}}
