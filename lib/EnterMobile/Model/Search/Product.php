@@ -30,7 +30,7 @@ namespace EnterMobile\Model\Search {
             $index = !empty($photoId) ? ($photoId % count($hosts)) : rand(0, count($hosts) - 1);
             $host = isset($hosts[$index]) ? $hosts[$index] : '';
 
-            $this->image = $host . $photoUrlSizes['/1/1/60/'] . $data['image'];
+            $this->image = $host . $photoUrlSizes['product_60'] . $data['image'];
         }
     }
 }
