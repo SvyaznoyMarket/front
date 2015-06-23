@@ -9239,6 +9239,27 @@ body.noScroll {
 .single-order__payment .confirm-payment__types {
   margin-left: 50px;
 }
+.single-order__pay-motiv .single-order__greet {
+  color: #f99b1c;
+}
+.single-order__pay-motiv .btn--submit {
+  margin-top: 5px;
+}
+.single-order__pay-row {
+  padding: 0 10px;
+  margin-bottom: 10px;
+}
+.single-order .pay-info {
+  display: inline-block;
+  vertical-align: top;
+  *zoom: 1;
+  *display: inline;
+  width: 180px;
+  font-size: 14px;
+}
+.single-order .pay-sum {
+  font-size: 14px;
+}
 /* ==========================================================================
    Категории товаров
    ========================================================================== */
