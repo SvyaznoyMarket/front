@@ -51,7 +51,6 @@ namespace EnterTerminal\Controller {
 
             // ответ
             $response = new Response();
-            $response->catalogConfig = $controllerResponse->catalogConfig;
             $response->product = $controllerResponse->product;
             $response->reviews = $controllerResponse->product ? $controllerResponse->product->reviews : []; // FIXME: удалить
             $response->kitProducts = $controllerResponse->product ? $controllerResponse->product->relation->kits : []; // FIXME: удалить
@@ -65,8 +64,6 @@ namespace EnterTerminal\Controller\ProductCard {
     use EnterModel as Model;
 
     class Response {
-        /** @var Model\Product\Category\Config */
-        public $catalogConfig;
         /** @var Model\Product */
         public $product;
         /** @var Model\Product\Review[] */

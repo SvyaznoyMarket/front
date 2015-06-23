@@ -91,7 +91,6 @@ class Slice {
         $controllerRequest->config->mainMenu = false;
         $controllerRequest->config->parentCategory = false;
         $controllerRequest->config->branchCategory = false;
-        $controllerRequest->config->productOnlyForLeafCategory = false;
         $controllerRequest->config->favourite = true;
         $controllerRequest->regionId = $regionId;
         $controllerRequest->categoryCriteria = $categoryId ? ['id' => $categoryId] : []; // критерий получения категории товара

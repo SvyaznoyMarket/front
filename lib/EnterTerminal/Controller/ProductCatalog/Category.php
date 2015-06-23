@@ -61,6 +61,10 @@ namespace EnterTerminal\Controller\ProductCatalog {
             $controllerRequest->config->mainMenu = false;
             $controllerRequest->config->parentCategory = true;
             $controllerRequest->config->branchCategory = false;
+            // TAPI-11
+            $controllerRequest->config->loadProductsForRootCategory = false;
+            $controllerRequest->config->loadFiltersForRootCategory = false;
+            $controllerRequest->config->loadSortingsForRootCategory = false;
             $controllerRequest->config->shopState = true;
             $controllerRequest->regionId = $regionId;
             $controllerRequest->categoryCriteria = ['id' => $categoryId]; // критерий получения категории товара
@@ -81,7 +85,6 @@ namespace EnterTerminal\Controller\ProductCatalog {
             // ответ
             $response = new Response();
             $response->category = $controllerResponse->category;
-            $response->catalogConfig = $controllerResponse->catalogConfig;
             $response->products = $controllerResponse->products;
             $response->productCount = $controllerResponse->productUiPager->count;
             $response->filters = $controllerResponse->filters;
@@ -98,8 +101,6 @@ namespace EnterTerminal\Controller\ProductCatalog\Category {
     class Response {
         /** @var Model\Product\Category */
         public $category;
-        /** @var Model\Product\Category\Config */
-        public $catalogConfig;
         /** @var Model\Product[] */
         public $products = [];
         /** @var int */
