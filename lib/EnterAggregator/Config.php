@@ -381,6 +381,8 @@ namespace EnterAggregator\Config {
         public $sessionName;
         /** @var Order\Prepayment */
         public $prepayment;
+        /** @var string */
+        public $bonusCardSessionKey;
 
         public function __construct() {
             $this->prepayment = new Order\Prepayment();

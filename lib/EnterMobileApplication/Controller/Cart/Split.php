@@ -48,10 +48,33 @@ namespace EnterMobileApplication\Controller\Cart {
                 $previousSplitData = $session->get($config->order->splitSessionKey);
             }
 
+            // корзина
             $cart = new Model\Cart();
             foreach ($request->data['cart']['products'] as $productItem) {
                 $cartProduct = new Model\Cart\Product($productItem);
                 $cartRepository->setProductForObject($cart, $cartProduct);
+            }
+
+            // бонусные карты
+            $bonusCardData = call_user_func(function() use (&$request, &$changeData) {
+                $bonusCardData = [];
+
+                if (isset($request->data['user']['bonusCards'][0])) {
+                    $bonusCardData = $request->data['user']['bonusCards'];
+                } else if ($changeData['user']['bonusCards'][0]) {
+                    $bonusCardData = $changeData['user']['bonusCards'];
+                }
+
+                foreach ($bonusCardData as $i => $cardItem) {
+                    if (!isset($cardItem['type']) || !isset($cardItem['number'])) {
+                        unset($bonusCardData[$i]);
+                    }
+                }
+
+                return $bonusCardData;
+            });
+            if ($bonusCardData) {
+                $session->set($config->order->bonusCardSessionKey, $bonusCardData);
             }
 
             // контроллер
