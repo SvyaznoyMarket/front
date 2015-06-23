@@ -3,16 +3,16 @@
    ========================================================================== */
 
 .footer {
-	padding: 15px 0 0;
+    font-size: .75em;
 
-	border-top: 2px solid #a0a0a0;
-	background: #e6e6e6;
-	font-size: .75em;
-	color: #363636;
+    padding: 15px 0 0;
 
-	&-inn {
-		padding: 0 10px;
-	}
+    color: #363636;
+    border-top: 2px solid #a0a0a0;
+    background: #e6e6e6;
+    &-inn {
+        padding: 0 10px;
+    }
 }
 
 .i-footer {
@@ -120,12 +120,10 @@
 }
 
 .footer-shop-info {
-    display: table;
-
-    width: 100%;
+	overflow: hidden;
     margin: 0 0 10px;
     &__item {
-        display: table-cell;
+        float: left;
 
         width: 16.66666%;
         padding: 0 0 10px;
@@ -134,6 +132,12 @@
     }
     &__link {
         color: #363636;
+    }
+
+    &--5col {
+    	.footer-shop-info__item {
+	    	width: 20%;
+	    }
     }
 }
 

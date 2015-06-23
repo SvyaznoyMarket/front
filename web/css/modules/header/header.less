@@ -477,6 +477,12 @@ body {
     }
 }
 
+.stitches-i-shop(@x: 0, @y: 0, @width: 0, @height: 0) {
+    background-position: @x @y;
+    width: @width;
+    height: @height;
+}
+
 @media only screen and (min-width: 750px) {
     .categories-grid {
         &__item {
@@ -499,10 +505,10 @@ body {
         }
     }
     .items-slider {
-		border-bottom: none;
+        border-bottom: none;
     }
     .inn {
-    	padding: 0;
+        padding: 0;
     }
     .grid-2cols {
         &__item {
@@ -515,10 +521,10 @@ body {
     }
 
     .main-banner-slider {
-		.slick-slide {
-			margin: 0;
-		}
-	}
+        .slick-slide {
+            margin: 0;
+        }
+    }
 
     .categories-grid {
         &__item {
@@ -533,15 +539,21 @@ body {
         }
     }
     .items-slider-nav__desc {
-		margin: 0 20px;
-	}
+        margin: 0 20px;
+    }
 
     .shop-info {
-    	border-bottom: none;
-
-    	&__item {
-    		border-bottom: 1px dotted #a0a0a0;
-    	}
+        border-bottom: none;
+        &__item {
+            border-bottom: 1px dotted #a0a0a0;
+            &:nth-child(2n+1):nth-last-child(-n+2) ,
+            &:nth-child(2n+1):nth-last-child(-n+2) ~ li {
+                border-bottom: none;
+            }
+            &-text {
+                font-size: .9em;
+            }
+        }
     }
 }
 

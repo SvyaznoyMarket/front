@@ -1748,6 +1748,13 @@ body {
   .shop-info__item {
     border-bottom: 1px dotted #a0a0a0;
   }
+  .shop-info__item:nth-child(2n+1):nth-last-child(-n+2),
+  .shop-info__item:nth-child(2n+1):nth-last-child(-n+2) ~ li {
+    border-bottom: none;
+  }
+  .shop-info__item-text {
+    font-size: .9em;
+  }
 }
 /* ==========================================================================
    Шапка сайта .header
@@ -4149,11 +4156,11 @@ body {
    Подвал сайта .footer .socLink .publicInfoList .publicInfoText .footerCopy
    ========================================================================== */
 .footer {
+  font-size: .75em;
   padding: 15px 0 0;
+  color: #363636;
   border-top: 2px solid #a0a0a0;
   background: #e6e6e6;
-  font-size: .75em;
-  color: #363636;
 }
 .footer-inn {
   padding: 0 10px;
@@ -4308,18 +4315,20 @@ body {
   vertical-align: middle;
 }
 .footer-shop-info {
-  display: table;
-  width: 100%;
+  overflow: hidden;
   margin: 0 0 10px;
 }
 .footer-shop-info__item {
-  display: table-cell;
+  float: left;
   width: 16.66666%;
   padding: 0 0 10px;
   text-align: center;
 }
 .footer-shop-info__link {
   color: #363636;
+}
+.footer-shop-info--5col .footer-shop-info__item {
+  width: 20%;
 }
 .footer-bottom {
   padding: 10px 10px 20px;
@@ -4344,88 +4353,23 @@ body {
 /* ==========================================================================
    Подвал сайта .footer .socLink .publicInfoList .publicInfoText .footerCopy
    ========================================================================== */
-@media only screen and (max-width: 900px) {
-  .socLink {
-    float: none;
-    width: 125px;
-    margin: 15px auto;
+@media only screen and (max-width: 750px) {
+  .footer-shop-info__item {
+    width: 33.3333%;
   }
-  .aboutList {
-    float: none;
-    text-align: center;
-  }
-  .aboutList__item {
-    margin-right: 15px;
-  }
-  .publicInfoList {
-    text-align: center;
-  }
-  .publicInfoList__item {
-    margin-right: 15px;
+  .footer-shop-info--5col .footer-shop-info__item {
+    width: 33.3333%;
   }
 }
-@media only screen and (max-width: 610px) {
-  .aboutList {
-    width: auto;
+@media only screen and (max-width: 500px) {
+  .footer-shop-info__item {
+    width: 100%;
   }
-  .aboutList__item {
+  .footer-shop-info--5col .footer-shop-info__item {
+    width: 100%;
+  }
+  .partner-list {
     display: block;
-    margin: 0 0 15px;
-    text-align: center;
-  }
-  .appList {
-    width: auto;
-  }
-  .appList__item {
-    float: none;
-    margin: 0 0 15px;
-    text-align: center;
-  }
-  .publicInfoList {
-    width: auto;
-  }
-  .publicInfoList__item {
-    display: block;
-    margin: 0 0 15px;
-    text-align: center;
-  }
-  .footerCopy__link {
-    display: block;
-    float: none;
-    padding: 7px 0;
-    text-align: center;
-  }
-}
-@media only screen and (max-width: 610px) {
-  .aboutList {
-    width: auto;
-  }
-  .aboutList__item {
-    display: block;
-    margin: 0 0 15px;
-    text-align: center;
-  }
-  .appList {
-    width: auto;
-  }
-  .appList__item {
-    float: none;
-    margin: 0 0 15px;
-    text-align: center;
-  }
-  .publicInfoList {
-    width: auto;
-  }
-  .publicInfoList__item {
-    display: block;
-    margin: 0 0 15px;
-    text-align: center;
-  }
-  .footerCopy__link {
-    display: block;
-    float: none;
-    padding: 3px 0 10px;
-    text-align: center;
   }
 }
 /* ==========================================================================
@@ -4482,6 +4426,160 @@ body {
   .sprite-icon {
     background-image: url("modules/header/img/menu-sprite1024@2x.png");
     background-size: 207px 31px;
+  }
+  .i-shop-info {
+    background-image: url("../img/main/i-shop-info@2.png");
+    background-size: 94px 24px;
+  }
+  .i-shop-info__delivery {
+    background-position: 0 10px;
+    width: 31px;
+    height: 44px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    *zoom: 1;
+    *display: inline;
+  }
+  .i-shop-info__phone {
+    background-position: -31px 50%;
+    width: 18px;
+    height: 44px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    *zoom: 1;
+    *display: inline;
+  }
+  .i-shop-info__self-delivery {
+    background-position: -48px 11px;
+    width: 24px;
+    height: 44px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    *zoom: 1;
+    *display: inline;
+  }
+  .i-shop-info__shops {
+    background-position: -72px 10px;
+    width: 22px;
+    height: 44px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    *zoom: 1;
+    *display: inline;
+  }
+  .items-slider-nav__btn--prev {
+    background-size: 10px 22px;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAsCAQAAADPqVBGAAABV0lEQVR4AY2VJUBmQRCA37n7He6aKLjDe7sNGu4FbdBwhwYRGhZxabh7ouByuLs77D84zL7Z+o3LCrg4/KNtopXAF1pFL8gJSeRhofTi+pEGFHM0pLsMXHfWQDDnt6RHYU/0RO1JaeC2EMds6SnDJq2+I5jdNzrB7J1Re9QeKVC4pek45g5Yn9k7LDp1usawPdEYM/eK1EG2YXgvogCrwTETesjAJVslBDP4QAcgDRe8yNmA5eBuKTln0Q2ZfUYwm99klmHHohle5BLINgbHggBrFV5jA6pLthm45ayD2+sAe/4odgdKATgnyzUIDYRSt0EyMsoTi3OyCg4iEn4LQUgWRJrLAe/GjLgimNzBBZEi+avwaLloBIe0U+Ov6+MD0G/2jofmQ6SZPPffyDhypJCzh7pPhUiLOODdaSZeOCnv2EOkIWCzUeAJqbz+kKQkLuj89+aLuwTGvOrTBlMGBwAAAABJRU5ErkJggg==');
+  }
+  .items-slider-nav__btn--next {
+    background-size: 10px 22px;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAsCAQAAADPqVBGAAABQklEQVR4AWMAAUdzl8O2ogyEgHOd82+X/y4bCSvcC1QGgmkEFDrIuLwDK/xip0pAqWMYxEznkw4shKxfCFHq1ExAoTmf832w0j9OVgSUuti4/AUrvWfNS8j6VqhLFxBQaMzqcgaqNISQ79VdvoKVvnWSJqDUKQNq5m4GRkIu3QyNp0ICCq3EXF6CFf5w0SVkpg/UzEsq7ITCdBo0nvoIBRSX8w2wl/65uBAKKGPnX2ClTyyFCLm0EhpQqwmlZybnQ1Cl8YQStILLR7DCT3aKhOIpFmrmUULBFAdTSBWrmVwOQ2MoDn/wVMGCh4QApzwKXaZDre2lOJlhJlzCWcGpAL/rMhGZi6jsai1FjQLAuQ2qbD5+ZbaQQsr5rjUvNYo958VQa5vwKwtHFM3UKOyd90HjIpVQFqoHVUjOG/CrIrqKAwAmKerZZ7o+MwAAAABJRU5ErkJggg==');
+  }
+  .i-footer {
+    background-image: url("../img/footer/i-footer@2.png");
+    background-size: 140px 119px;
+  }
+  .i-footer-app-android {
+    background-position: 0 -25px;
+    width: 140px;
+    height: 33px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    *zoom: 1;
+    *display: inline;
+  }
+  .i-footer-apps-android {
+    background-position: 0 -58px;
+    width: 140px;
+    height: 33px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    *zoom: 1;
+    *display: inline;
+  }
+  .i-footer-mnogoru {
+    background-position: 0 0;
+    width: 73px;
+    height: 22px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    *zoom: 1;
+    *display: inline;
+  }
+  .i-footer-sb-spasibo {
+    background-position: -75px 0;
+    width: 57px;
+    height: 25px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    *zoom: 1;
+    *display: inline;
+  }
+  .i-footer-soc-net__fb {
+    background-position: 0 -91px;
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    *zoom: 1;
+    *display: inline;
+  }
+  .i-footer-soc-net__od {
+    background-position: -28px -91px;
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    *zoom: 1;
+    *display: inline;
+  }
+  .i-footer-soc-net__tw {
+    background-position: -56px -91px;
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    *zoom: 1;
+    *display: inline;
+  }
+  .i-footer-soc-net__vk {
+    background-position: -84px -91px;
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    *zoom: 1;
+    *display: inline;
+  }
+  .i-footer-soc-net__yt {
+    background-position: -112px -91px;
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: top;
+    *zoom: 1;
+    *display: inline;
+  }
+  .header__logotype-link {
+    background-image: url("../img/header/logo@2.png");
+    background-size: 43px 30px;
+  }
+  .i-header {
+    background-image: url("../img/header/i-header@2.png");
+    background-size: 152px 26px;
   }
 }
 /* ==========================================================================
