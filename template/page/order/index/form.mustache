@@ -48,7 +48,8 @@
             <div class="common-control toggle-box">
                 <div class="common-control-group">
                     <label class="common-control-label" for="id-userForm-mnogoruNumber">Карта</label>
-                    <input class="common-control-input js-field-mnogoru" id="id-userForm-mnogoruNumber" type="text" name="user[mnogoruNumber]" value="{{form.mnogoruNumber}}" placeholder="xxxx xxxx">
+                    <input class="common-control-input js-field-mnogoru" id="id-userForm-mnogoruNumber" type="text" name="user[bonusCards][0][number]" value="{{form.mnogoruNumber}}" placeholder="xxxx xxxx">
+                    <input type="hidden" name="user[bonusCards][0][type]" value="mnogoru" />
                 </div>
                 <span class="common-control-hint">&nbsp;</span>
             </div>
