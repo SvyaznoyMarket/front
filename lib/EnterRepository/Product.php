@@ -398,13 +398,6 @@ class Product {
                     foreach ($descriptionItem['categories'] as $category) {
                         if ($category['main']) {
                             $product->category = new Model\Product\Category($category);
-
-                            $product->category->ascendants = [];
-                            $category = $product->category;
-                            while ($category = $category->parent) {
-                                $product->category->ascendants[] = $category;
-                            }
-                            $product->category->ascendants = array_reverse($product->category->ascendants);
                         }
                     }
                 }
@@ -417,7 +410,7 @@ class Product {
                     }
                 }
 
-                if (!$product->isInShopStockOnly && !$product->isInShopShowroomOnly && $product->category->ascendants[0] && $product->category->ascendants[0]->isFurniture && $product->isStore && !$isSlotPartnerOffer) {
+                if (!$product->isInShopStockOnly && !$product->isInShopShowroomOnly && (new \EnterRepository\Product\Category())->getRootObject($product->category)->isFurniture && $product->isStore && !$isSlotPartnerOffer) {
                     $product->storeLabel = new \EnterModel\Product\StoreLabel();
                     $product->storeLabel->name = 'Товар со склада';
                 }

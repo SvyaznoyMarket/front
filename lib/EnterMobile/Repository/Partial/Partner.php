@@ -168,7 +168,7 @@ class Partner {
             $partner->id = 'sociomantic';
             $partner->dataAction = $dataAction;
             $partner->dataValue = $templateHelper->json([
-                'category' => $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge($category->ascendants, [$category])) : [],
+                'category' => $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge((new \EnterRepository\Product\Category())->getAscendantList($category), [$category])) : [],
             ]);
             $partners[] = $partner;
         }
@@ -309,7 +309,7 @@ class Partner {
 
         // sociomantic
         if ($config->sociomantic->enabled) {
-            $categoryNames = $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge($category->ascendants, [$category])) : [];
+            $categoryNames = $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge((new \EnterRepository\Product\Category())->getAscendantList($category), [$category])) : [];
             $description = $product->tagline ?: ($product->description ?: $product->name);
             if (mb_strlen($description) > 90) {
                 $description = mb_substr($description, 0, 90) . '...';
