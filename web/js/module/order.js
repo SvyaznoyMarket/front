@@ -300,15 +300,18 @@ define(
                     $filterForm = $($el.data('filterFormSelector'))
                 ;
 
-                e.stopPropagation();
+                console.info('index', index);
 
-                if (false !== toggle) {
-                    index = (0 == index) ? 1 : 0;
-                }
+                e.stopPropagation();
 
                 $selected = $el.find('[data-index="' + index + '"]');
                 $container = $($selected.data('containerSelector'));
                 $parentContainer = $($container.data('parentContainerSelector'));
+
+                if (false !== toggle) {
+                    index = (0 == index) ? 1 : 0;
+                    $parentContainer.toggleClass($parentContainer.data('toggleClass'));
+                }
 
                 $el.data('index', index);
                 $el.find('[data-index]').each(function(i, el) {
@@ -318,7 +321,6 @@ define(
                 filterPoints($el.data('storageSelector'), $filterForm);
 
                 $selected.show();
-                $parentContainer.toggleClass($parentContainer.data('toggleClass'));
                 $container.trigger('update', [Storage.get($el.data('storageSelector'), 'filtered')]);
             },
 
@@ -390,6 +392,8 @@ define(
                     $form = $($el.data('formSelector')),
                     $tab = $($form.data('tabSelector'))
                 ;
+
+                e.stopPropagation();
 
                 $tab.trigger('update', [false]); // не переключать, просто обновить
             },
