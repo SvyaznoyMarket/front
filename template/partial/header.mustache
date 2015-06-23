@@ -1,11 +1,19 @@
-<header class="header">
+<header class="header clearfix js-header">
     <a class="header-nav-link js-ga-click navIco" href="" data-ga-click="{&quot;m_sidebar&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_sidebar&quot;,&quot;click&quot;]}"><i class="i-header i-header--menu"></i></a>
-
-    <div class="header__logotype"><a href="/" class="header__logotype-link"></a></div>
 
     {{#userBlock}}
         {{>partial/user}}
     {{/userBlock}}
+
+    <div class="header-center">
+        <div class="header__logotype"><a href="/" class="header__logotype-link"></a></div>
+
+        <form action="/search" class="search-form js-search-form" data-input-selector="#js-search-input">
+            <i class="i-search i-search--search-selected"></i>
+            <input class="search-form__it js-search-form-input" id="js-search-input" type="text" placeholder="Поиск" name="q" />
+            <i class="i-search i-search--search-clear"></i>
+        </form>
+    </div>
 </header>
 
 <nav id="nav" class="nav">
