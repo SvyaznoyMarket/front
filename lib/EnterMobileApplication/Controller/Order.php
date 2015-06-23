@@ -146,6 +146,7 @@ namespace EnterMobileApplication\Controller {
                 'discountSum' => $order->discountSum,
                 'subwayId' => $order->subwayId,
                 'deliveries' => $order->deliveries,
+                'deliveryType' => $order->deliveryType,
                 'interval' => $order->interval,
                 'point' => $point ? [
                     'id' => $point['id'],
