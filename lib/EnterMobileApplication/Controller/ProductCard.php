@@ -47,7 +47,7 @@ namespace EnterMobileApplication\Controller {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Товар #%s не найден', $productId));
             }
 
-            return new Http\JsonResponse([
+            return new Http\JsonResponse(['product' => [
                 'id' => $controllerResponse->product->id,
                 'ui' => $controllerResponse->product->ui,
                 'article' => $controllerResponse->product->article,
@@ -112,7 +112,7 @@ namespace EnterMobileApplication\Controller {
                 'ga' => $controllerResponse->product->ga,
                 'isStore' => $controllerResponse->product->isStore,
                 'storeLabel' => $controllerResponse->product->storeLabel,
-            ]);
+            ]]);
         }
     }
 }
