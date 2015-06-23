@@ -111,7 +111,6 @@ namespace EnterTerminal\Controller\ProductCatalog {
             $response->slice = $slice;
             $response->category = $controllerResponse->category;
             $response->categories = $controllerResponse->category ? $controllerResponse->category->children : $controllerResponse->categories;
-            $response->catalogConfig = $controllerResponse->catalogConfig;
             $response->products = $controllerResponse->products;
             $response->productCount = $controllerResponse->productUiPager->count;
             $response->filters = $controllerResponse->filters;
@@ -132,8 +131,6 @@ namespace EnterTerminal\Controller\ProductCatalog\Slice {
         public $category;
         /** @var Model\Product\Category[] */
         public $categories = [];
-        /** @var Model\Product\Category\Config */
-        public $catalogConfig;
         /** @var Model\Product[] */
         public $products = [];
         /** @var int */

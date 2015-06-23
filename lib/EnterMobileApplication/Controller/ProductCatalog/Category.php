@@ -69,7 +69,12 @@ class Category {
         $controllerRequest->config->mainMenu = false;
         $controllerRequest->config->parentCategory = false;
         $controllerRequest->config->branchCategory = false;
-        $controllerRequest->config->productOnlyForLeafCategory = false;
+        // MAPI-43
+        $controllerRequest->config->loadProductsForRootCategory = false;
+        $controllerRequest->config->loadFiltersForRootCategory = false;
+        $controllerRequest->config->loadSortingsForRootCategory = false;
+        $controllerRequest->config->loadFiltersForMiddleCategory = false;
+        $controllerRequest->config->loadSortingsForMiddleCategory = false;
         $controllerRequest->config->favourite = true;
         $controllerRequest->regionId = $regionId;
         $controllerRequest->categoryCriteria = ['id' => $categoryId]; // критерий получения категории товара
@@ -97,47 +102,21 @@ class Category {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
         }
 
-        // ответ
-        if ($controllerResponse->productUiPager) {
-            $response = $this->getResponseForLeafCategory(
-                $controllerResponse->category,
-                $controllerResponse->productUiPager,
-                $controllerResponse->products,
-                $controllerResponse->filters,
-                $controllerResponse->sortings
-            );
-        } else {
-            $response = $this->getResponseForBranchCategory(
-                $controllerResponse->category
-            );
-        }
-
+        $response = [
+            'category' => $this->getResponseForCategory($controllerResponse->category),
+            'productCount' => $controllerResponse->productUiPager ? $controllerResponse->productUiPager->count : null,
+            'products' => $this->getProductList($controllerResponse->products),
+            'filters' => $this->getFilterList($controllerResponse->filters),
+            'sortings' => $this->getSortingList($controllerResponse->sortings),
+        ];
+        
         return new Http\JsonResponse($response);
     }
 
     /**
-     * @param Model\Product\Category $category
-     * @param Model\Product\UiPager $uiPager
-     * @param Model\Product[] $products
-     * @param Model\Product\Filter[] $filters
-     * @param Model\Product\Sorting[] $sortings
      * @return array
      */
-    private function getResponseForLeafCategory(
-        Model\Product\Category $category,
-        Model\Product\UiPager $uiPager,
-        array $products,
-        array $filters,
-        array $sortings
-    ) {
-        $response = [
-            'category'     => null,
-            'productCount' => $uiPager->count,
-            'products'     => [],
-            'filters'      => [],
-            'sortings'     => [],
-        ];
-
+    private function getResponseForCategory(Model\Product\Category $category) {
         $maxLevel = $category->level + 1;
         $walkByCategory = function(\EnterModel\Product\Category $category) use (&$walkByCategory, &$maxLevel) {
             $response = [
@@ -156,55 +135,7 @@ class Category {
 
             return $response;
         };
-
-        // категория
-        $response['category'] = $walkByCategory($category);
-
-        // товары
-        $response['products'] = $this->getProductList($products);
-
-        // фильтры
-        $response['filters'] = $this->getFilterList($filters);
-
-        // сортировка
-        $response['sortings'] = $this->getSortingList($sortings);
-
-        return $response;
-    }
-
-    /**
-     * @param Model\Product\Category $category
-     * @return array
-     */
-    private function getResponseForBranchCategory(
-        Model\Product\Category $category
-    ) {
-        $response = [
-            'category' => null,
-        ];
-
-        $maxLevel = $category->level + 1;
-        $walkByCategory = function(\EnterModel\Product\Category $category) use (&$walkByCategory, &$maxLevel) {
-            $response = [
-                'id'          => $category->id,
-                'name'        => $category->name,
-                'media'       => $category->media,
-                'hasChildren' => $category->hasChildren,
-            ];
-
-            if (($category->level < $maxLevel) && $category->children) {
-                $response['children'] = [];
-                foreach ($category->children as $child) {
-                    $response['children'][] = $walkByCategory($child);
-                }
-            }
-
-            return $response;
-        };
-
-        // категория
-        $response['category'] = $walkByCategory($category);
-
-        return $response;
+        
+        return $walkByCategory($category);
     }
 }
