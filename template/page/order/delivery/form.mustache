@@ -96,10 +96,10 @@
     {{/orders}}
 
     <div class="js-order-form btn-container btn-container--orange">
-        <form class="js-validate" action="{{form.url}}" method="post">
+        <form action="{{form.url}}" method="post" novalidate>
             <div class="custom-control">
                 <div class="common-control-checkbox-wrap">
-                    <input type="checkbox" class="custom-input custom-input--check" id="id-orderForm-accept" name="accept" data-field="accept" value="1" required/>
+                    <input type="checkbox" class="custom-input custom-input--check js-validator-form-field" id="id-orderForm-accept" name="accept" data-field="accept" value="1" required data-field="accept"/>
                     <label class="order-accept custom-label custom-label--top" for="id-orderForm-accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
                 </div>
             </div>

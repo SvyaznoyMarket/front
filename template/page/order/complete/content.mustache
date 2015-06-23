@@ -4,14 +4,52 @@
     <div class="contentBox640">
 
         <section class="checkout">
-            <h1 class="checkout__tl">{{#isSingleOrder}}Оформлен заказ №{{#orders}}{{number}}{{/orders}}{{/isSingleOrder}}
+            <h1 class="checkout__tl">{{#isSingleOrder}}Оформлен заказ №{{#orders}}<a href="#">{{number}}</a>{{/orders}}{{/isSingleOrder}}
             {{^isSingleOrder}}Ваши заказы{{/isSingleOrder}}</h1>
             {{#isSingleOrder}}<div class="checkout__tl-sum">На сумму <b>{{#orders}}{{sum.name}}{{/orders}}</b> <span class="rubl">p</span></div>{{/isSingleOrder}}
 
+            {{#isSingleOrder}}
+            {{! Заказ - статика }}
             <div class="checkout__single-order single-order">
                 <div class="single-order__greet">Ждем вас 27.06.2015</div>
+
+                <div class="single-order__address shop-snippet clearfix">
+
+                    <div class="shop-snippet-name">
+                        <img src="/img/points/pickpoint.png" alt="" class="shop-snippet-name__img">
+                        <span class="shop-snippet-name__text">Постамат</span>
+                    </div>
+
+                    <div class="shop-snippet-info">
+
+                        <div class="shop-snippet-metro">
+                            <span class="shop-snippet-metro__bullet" style="background: green"></span>
+                            <span class="shop-snippet-metro__text">Краснопресненская</span>
+                        </div>
+
+                        <div class="shop-snippet-address">Московский пр-кт, д. 129/1 <br/>10.00-18.00</div>
+                    </div>
+
+                </div>
+                <div class="single-order__how-to-find js-how-to-find"><span class="bb-dotted">Как добраться</span></div>
+                <div class="single-order__payment-info">Оплата при получении — наличными или картой.</div>
+            </div>
+            
+            <div class="checkout__single-order single-order single-order__payment">
+                <div class="single-order__greet">Онлайн-оплата в два клика</div>
+                <div class="single-order__row">
+                    
+                    <button class="btn btn--submit btn--orange btn--medium">Оплатить</button>
+                    <span class="confirm-payment__types">
+                        <img class="confirm-payment__card" src="/css/modules/order/img/Visa.png">
+                        <img class="confirm-payment__card" src="/css/modules/order/img/master.png">
+                        <img class="confirm-payment__card" src="/css/modules/order/img/psb.png">
+                    </span>
+                </div>
                 
             </div>
+            {{! Заказ - статика END}}
+        {{/isSingleOrder}}
 
         {{^isSingleOrder}}{{#orders}}
             <div class="confirm">
