@@ -28,7 +28,7 @@ define(
 				    }
 				  	]
 				}).parent().removeClass('m-loader')
-		})
+		});
 
 		$('.js-main-banner-slider')
 			.fadeIn()
@@ -62,6 +62,6 @@ define(
 			      }
 			    }
 			    ]
-			}).parent().removeClass('m-loader')
+			}).parent().removeClass('m-loader');
     }
 );
