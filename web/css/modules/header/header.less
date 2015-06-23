@@ -28,6 +28,7 @@
     	position: absolute;
     	height: 50px;
     	margin: auto;
+        text-align: center;
     	right: 0;
     	left: 0;
     	top: 0;
@@ -36,7 +37,7 @@
 
     	&-link {
     		background: url("@{common-url}/header/logo.png") no-repeat 50% 50%;
-    		display: block;
+    		.inline-block();
     		width: 43px;
     		height: 50px;
     		margin: auto;
@@ -80,41 +81,40 @@
 }
 
 .i-header {
-    background-image: url("@{base-url}/header/img/menu-sprite1024.png");
+    background-image: url("@{common-url}/header/i-header.png");
 
     &--cart {
-        .i-sprite(-32px, 1px, 30px, 30px);
+        .i-sprite(0, 0, 25px, 22px);
         vertical-align: middle;
     }
 
     &--cart-full {
-        .i-sprite(-32px, 1px, 30px, 30px);
+        .i-sprite(-25px, 0, 25px, 22px);
         vertical-align: middle;
     }
 
     &--menu {
-        background-image: url("@{common-url}/header/i-header.png");
         .i-sprite(-50px, 0, 19px, 17px);
         vertical-align: middle;
     }
 
     &--search {
-        .i-sprite(-156px, 0, 24px, 23px);
+        .i-sprite(-69px, 0, 24px, 23px);
         vertical-align: middle;
     }
 
-    &--user-auth {
-        .i-sprite(-93px, 0px, 30px, 30px);
+    &--user {
+        .i-sprite(-93px, 0, 20px, 22px);
         vertical-align: middle;
     }
 
-    &--user-vip {
-        .i-sprite(-123px, 0px, 30px, 30px);
+    &--user-ep {
+        .i-sprite(-113px, 0, 21px, 26px);
         vertical-align: middle;
     }
 
-    &--user-unauth {
-        .i-sprite(-63px, 0px, 30px, 30px);
+    &--user-log {
+        .i-sprite(-134px, 0, 20px, 22px);
         vertical-align: middle;
     }
 }

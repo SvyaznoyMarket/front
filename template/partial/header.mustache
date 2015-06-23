@@ -1,5 +1,5 @@
 <header class="header">
-    <a class="header-nav-link js-ga-click navIco" href="" data-ga-click="{&quot;m_sidebar&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_sidebar&quot;,&quot;click&quot;]}"><i class="i-header i-header__menu"></i></a>
+    <a class="header-nav-link js-ga-click navIco" href="" data-ga-click="{&quot;m_sidebar&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_sidebar&quot;,&quot;click&quot;]}"><i class="i-header i-header--menu"></i></a>
 
     <div class="header__logotype"><a href="/" class="header__logotype-link"></a></div>
 
@@ -9,15 +9,13 @@
 </header>
 
 <nav id="nav" class="nav">
-    <div class="navHead">
-        <div class="navHead_col navIco"><span class="navIco_link"></span></div>
+    <div class="nav-header">
+        <div class="nav-header__col nav-header__icon"><i class="i-header i-header--menu"></i></div>
 
-        <a class="navHead_col navHead_col-ico" href="/">
-            <img class="navHead_icoImg" src="/css/modules/header/img/logo.gif" />
-        </a>
+        <a class="header__logotype-link" href="/"></a>
 
-        <div class="navHead_colWrap">
-            <span class="navHead_col navHead_col-text jsSelectCity"><span class="text">{{regionBlock.regionName}}</span></span>
+        <div class="nav-header__col nav-header__wrap">
+            <span class="nav-header__wrap-text jsSelectCity"><span class="text">{{regionBlock.regionName}}</span></span>
 
             <div class="transBg"></div>
         </div>
