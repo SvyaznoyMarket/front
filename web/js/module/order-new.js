@@ -1,6 +1,6 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/form-validator', 'jquery.maskedinput'
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/form-validator', 'jquery.maskedinput', 'module/toggleLink'
     ],
     function(
         require, $, _, mustache, util, formValidator
@@ -15,43 +15,13 @@ define(
             placeholder: "xxxx xxxx"
         });
 
-        var $body        = $('body'),
-            $field       = $('.js-user-field'),
+        var $field       = $('.js-user-field'),
             $globalError = $('.js-global-error'),
             errClass     = 'textfield-err',
             massage,
             index,
             tmpl,
-            i,
-
-            toggleBox = function toggleBox( e ) {
-                var
-                    $toggleWrap = $('.js-toggle-wrap'),
-                    toggleClass = 'toggle--active',
-                    isActive,
-                    $el = $(e.target)
-                ;
-
-                isActive = $el.closest('.js-toggle-wrap').hasClass(toggleClass);
-
-                if ( !isActive ) {
-                    $toggleWrap.removeClass(toggleClass);
-                    $(this).closest('.js-toggle-wrap').addClass(toggleClass);
-                } else {
-                    $(this).closest('.js-toggle-wrap').removeClass(toggleClass);
-                }
-            },
-
-            toggleBoxClose = function toggleBoxClose( e ) {
-                var
-                    $container  = $('.js-toggle-wrap'),
-                    toggleClass = 'toggle--active'
-                ;
-
-                if ( !$container.is( e.target ) && $container.has( e.target ).length === 0 ) {
-                    $container.removeClass(toggleClass);
-                }
-            }
+            i
         ;
         
         // запрос прошел успешно
@@ -92,10 +62,6 @@ define(
             });
 
         });
-
-        $body.on('click', '.js-toggle-link', toggleBox);
-
-        $body.on('click', toggleBoxClose);
 
         formValidator.init();
     }

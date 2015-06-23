@@ -1,12 +1,19 @@
 {{>page/order/header}}
 
-<div class="content{{#isSingleOrder}} content-singleOrder{{/isSingleOrder}}">
+<div class="content{{#isSingleOrder}} content-single-order{{/isSingleOrder}}">
     <div class="contentBox640">
 
         <section class="checkout">
-            <h1 class="checkout__tl">Ваши заказы</h1>
+            <h1 class="checkout__tl">{{#isSingleOrder}}Оформлен заказ №{{#orders}}{{number}}{{/orders}}{{/isSingleOrder}}
+            {{^isSingleOrder}}Ваши заказы{{/isSingleOrder}}</h1>
+            {{#isSingleOrder}}<div class="checkout__tl-sum">На сумму <b>{{#orders}}{{sum.name}}{{/orders}}</b> <span class="rubl">p</span></div>{{/isSingleOrder}}
 
-        {{#orders}}
+            <div class="checkout__single-order single-order">
+                <div class="single-order__greet">Ждем вас 27.06.2015</div>
+                
+            </div>
+
+        {{^isSingleOrder}}{{#orders}}
             <div class="confirm">
                 <script id="order-{{id}}-onlinePayment-data" type="application/json">{{&onlinePaymentJson}}</script>
 
@@ -85,7 +92,7 @@
                     <span class="comfirm-summary__price">{{sum.name}} <span class="rubl">p</span></span>
                 </div>
             </div>
-        {{/orders}}
+        {{/orders}}{{/isSingleOrder}}
 
             <div class="btn-stretch btn-stretch--default"><a class="btn-stretch__link" href="/">Вернуться на главную</a></div>
         </section>
