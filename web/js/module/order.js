@@ -906,9 +906,9 @@ define(
 
             if ($accept.length) {
                 if ($accept.is(':checked')) {
-                    $accept.removeClass('error');
+                    $accept.parent().removeClass('error');
                 } else {
-                    $accept.addClass('error');
+                    $accept.parent().addClass('error');
                     e.preventDefault();
                 }
             }
