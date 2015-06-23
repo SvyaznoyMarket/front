@@ -113,20 +113,6 @@ namespace EnterMobileApplication\Controller {
                 $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
             }
 
-            // товары
-            foreach ($orders as $order) {
-                foreach ((array)$order->product as $i => $orderProduct) {
-                    $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : null;
-                    if (!$product) continue;
-
-                    $product->price = $orderProduct->price;
-                    $product->quantity = $orderProduct->quantity; // FIXME
-                    $product->sum = $orderProduct->sum; // FIXME
-
-                    $order->product[$i] = $product;
-                }
-            }
-
             $response = ['order' => [
                 'id' => $order->id,
                 'number' => $order->number,
@@ -137,7 +123,45 @@ namespace EnterMobileApplication\Controller {
                 'address' => $order->address,
                 'createdAt' => $order->createdAt,
                 'updatedAt' => $order->updatedAt,
-                'product' => $this->getProductList($order->product),
+                'product' => array_map(function(Model\Order\Product $orderProduct) use(&$productsById) {
+                    $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : new Model\Product();
+                    
+                    return [
+                        'id'                   => $orderProduct->id,
+                        'price'                => $orderProduct->price,
+                        'quantity'             => $orderProduct->quantity,
+                        'sum'                  => $orderProduct->sum,
+                        'article'              => $product->article,
+                        'webName'              => $product->webName,
+                        'namePrefix'           => $product->namePrefix,
+                        'name'                 => $product->name,
+                        'isBuyable'            => $product->isBuyable,
+                        'isInShopOnly'         => $product->isInShopOnly,
+                        'isInShopStockOnly'    => $product->isInShopStockOnly,
+                        'isInShopShowroomOnly' => $product->isInShopShowroomOnly,
+                        'brand'                => $product->brand ? [
+                            'id'   => $product->brand->id,
+                            'name' => $product->brand->name,
+                        ] : null,
+                        'oldPrice'             => $product->oldPrice,
+                        'labels'               => array_map(function(Model\Product\Label $label) {
+                            return [
+                                'id'    => $label->id,
+                                'name'  => $label->name,
+                                'media' => $label->media,
+                            ];
+                        }, $product->labels),
+                        'media'                => $product->media,
+                        'rating'               => $product->rating ? [
+                            'score'       => $product->rating->score,
+                            'starScore'   => $product->rating->starScore,
+                            'reviewCount' => $product->rating->reviewCount,
+                        ] : null,
+                        'favorite'        => isset($product->favorite) ? $product->favorite : null,
+                        'partnerOffers'   => $product->partnerOffers,
+                        'storeLabel'      => $product->storeLabel,
+                    ];
+                }, $order->product),
                 'paySum' => $order->paySum,
                 'discountSum' => $order->discountSum,
                 'subwayId' => $order->subwayId,
