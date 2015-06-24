@@ -182,6 +182,8 @@ define(
                                 address = $.kladr.getAddress('.js-smartAddress-form', function (objs) {
                                     var result = config.kladr.city.name + '';
 
+                                    console.info('objs', objs);
+
                                     if ($kladrIdInput.length) {
                                         if ($.type(objs.building) === 'object') {
                                             $kladrIdInput.val(objs.building.id);
@@ -550,9 +552,21 @@ define(
 
 
                         require(['yandexmaps'], function() {
-                            var $mapContainer = $($el.data('mapContainerSelector'));
+                            var
+                                $mapContainer = $($el.data('mapContainerSelector')),
+                                options = $mapContainer.data('mapOption')
+                            ;
 
-                            updateAddressMap($mapContainer);
+                            initAddressMap($addressMap, options).done(function() {
+                                if (!$mapContainer.find('#' + $addressMap.attr('id')).length) {
+                                    $mapContainer.append($addressMap);
+                                }
+
+                                addressMap.setCenter([options.center.lat, options.center.lng], options.zoom);
+                                addressMap.balloon.close();
+                                addressMap.geoObjects.removeAll();
+                                addressMap.container.fitToViewport();
+                            });
 
                         });
 
@@ -568,30 +582,7 @@ define(
             },
 
             updateAddressMap = function($container, address, zoom) {
-                var
-                    options = $container.data('mapOption'),
-                    ready = function() {
-                        var placemark;
-
-                        console.info('update address map ...');
-
-                        if (!$container.find('#' + $addressMap.attr('id')).length) {
-                            $container.append($addressMap);
-                        }
-
-                        //addressMap.setCenter([options.center.lat, options.center.lng], options.zoom);
-                        addressMap.balloon.close();
-                        addressMap.geoObjects.removeAll();
-                        addressMap.container.fitToViewport();
-                    };
-
-                if (addressMap) {
-                    ready();
-                } else {
-                    initAddressMap($addressMap, options).done(ready);
-                }
-
-                if (address) {
+                if (address && addressMap) {
                     require(['yandexmaps'], function(ymaps) {
                         if (!addressMap) return;
 
