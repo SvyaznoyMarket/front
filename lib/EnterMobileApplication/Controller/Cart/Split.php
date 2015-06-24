@@ -131,12 +131,10 @@ namespace EnterMobileApplication\Controller\Cart {
          * @param Model\Cart\Split\PointGroup[] $pointGroups
          */
         private function setPointImageUrls($pointGroups) {
+            $pointRepository = new \EnterRepository\Point();
+            
             foreach ($pointGroups as $pointGroup) {
-                $image = (new \EnterRepository\Cart())->getPointImageUrl($pointGroup->token);
-
-                if ($image) {
-                    $pointGroup->imageUrl = $image;
-                }
+                $pointGroup->media = $pointRepository->getMedia($pointGroup->token);
             }
         }
     }
