@@ -562,14 +562,12 @@ define(
                             placemark
                         ;
 
-                        console.info(addressMap, center, zoom);
-
                         if (center) {
                             addressMap.setCenter(center, zoom);
 
-                            addressMap.geoObjects.removeAll();
-                            placemark = new ymaps.Placemark(center, {}, {});
-                            addressMap.geoObjects.add(placemark);
+                            //addressMap.geoObjects.removeAll();
+                            //placemark = new ymaps.Placemark(center, {}, {});
+                            //addressMap.geoObjects.add(placemark);
                         }
                     });
                 });
