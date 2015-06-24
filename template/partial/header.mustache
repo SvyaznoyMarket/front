@@ -9,9 +9,11 @@
         <div class="header__logotype"><a href="/" class="header__logotype-link"></a></div>
 
         <form action="/search" class="search-form js-search-form" data-input-selector="#js-search-input">
-            <i class="i-search i-search--search-selected"></i>
-            <input class="search-form__it js-search-form-input" id="js-search-input" type="text" placeholder="Поиск" name="q" />
-            <i class="i-search i-search--search-clear"></i>
+            <div class="search-form-inn">
+                <i class="i-search i-search--search-selected"></i>
+                <input class="search-form__it js-search-form-input" id="js-search-input" type="text" placeholder="Поиск" autocomplete="off" name="q" />
+                <a class="search-form__clear js-search-input-clear" href=""><i class="i-search i-search--search-clear"></i></a>
+            </div>
         </form>
     </div>
 </header>
@@ -48,8 +50,10 @@
                         {{#category}}
                         <li class="search-suggest-list__item">
                             <a class="search-suggest-list__link" href="{{link}}">
-                                <img class="search-suggest-list__img" src="{{image}}">
-                                <span class="search-suggest-list__name">{{name}}</span>
+                                <div class="search-suggest-list__img-wrap">
+                                    <img class="search-suggest-list__img" src="{{image}}">
+                                </div>
+                                <div class="search-suggest-list__name">{{name}}</div>
                             </a>
                         </li>
                         {{/category}}
@@ -64,8 +68,10 @@
                         {{#product}}
                         <li class="search-suggest-list__item">
                             <a class="search-suggest-list__link" href="{{link}}">
-                                <img class="search-suggest-list__img" src="{{image}}">
-                                <span class="search-suggest-list__name">{{name}}</span>
+                                <div class="search-suggest-list__img-wrap">
+                                    <img class="search-suggest-list__img" src="{{image}}">
+                                </div>
+                                <div class="search-suggest-list__name">{{name}}</div>
                             </a>
                         </li>
                         {{/product}}

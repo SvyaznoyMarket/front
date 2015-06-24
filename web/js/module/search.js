@@ -4,10 +4,6 @@ define(
         var $body = $('body'),
 
         showPopup = function (e) {
-            var
-                header      = $('.js-header'),
-                searchClass = 'search';
-
             header.addClass(searchClass);
             e.stopPropagation();
             e.preventDefault();
@@ -28,10 +24,18 @@ define(
         });
 
         var
-            submitSearch = function () {
+            inputSearch = $('.js-search-form-input'),
+            container   = $('.js-search-suggest'),
+            template    = $('#tpl-search-suggest').html(),
+            header      = $('.js-header'),
+            searchClass = 'search',
+
+            submitSearch = function ( event ) {
                 var
                     searchInputVal = $('.js-search-form-input').val(),
                     url = '/search/autocomplete?q=' + searchInputVal;
+
+                event.stopPropagation();
 
                 if ( searchInputVal !== '' && searchInputVal.length > 3 ) {
                     $.ajax({
@@ -43,6 +47,23 @@ define(
                 }
             },
 
+            closeSearch = function() {
+                header.removeClass(searchClass);
+                $body.css({'overflow':'visible'});
+                inputSearch.val('');
+                container.hide().empty();
+            },
+
+            clearSuggest = function( event ) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                inputSearch.val('');
+                $body.css({'overflow':'visible'});
+                inputSearch.trigger('focus');
+                container.hide().empty();
+            },
+
             successSearch = (function () {
                 var
                     timeWindow = 500, // time in ms
@@ -52,8 +73,6 @@ define(
                         console.log(result);
 
                         var
-                            container   = $('.js-search-suggest'),
-                            template    = $('#tpl-search-suggest').html(), 
                             suggestData = {
                                 categories: {
                                     category: []
@@ -74,10 +93,9 @@ define(
                             suggestData.products.hasProducts = true;
                         }
 
-                        console.log(suggestData);
-
                         html = mustache.render(template, {suggestData: suggestData});
-                        container.html(html);
+                        $body.css({'overflow':'hidden'});
+                        container.show().html(html);
                     };
                 // end of vars
 
@@ -102,6 +120,8 @@ define(
             };
 
         $body.on('click', 'js-searchLink', showPopup);
-        $('.js-search-form-input').on('keyup change', submitSearch);
+        $body.on('keyup focus click', '.js-search-form-input', submitSearch);
+        $body.on('click', '.js-search-input-clear', clearSuggest);
+        $body.on('click', closeSearch);
     }
 );
