@@ -53,7 +53,6 @@ define(
             $pointSuggestTemplate       = $('#tpl-order-delivery-point-suggest'),
             $discountPopupTemplate      = $('#tpl-order-delivery-discount-popup'),
             $modalWindowTemplate        = $('#tpl-modalWindow'),
-            $discountScroll             = $('[data-scroll]'),
 
             initPointMap = function($container, options) {
                 var defer = $.Deferred();
