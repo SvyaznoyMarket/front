@@ -570,17 +570,25 @@ define(
 
             updateAddressMap = function($container, address, zoom) {
                 initMap().done(function(ymaps) {
-                    var geocode = ymaps.geocode(address);
+                    var
+                        geocode = ymaps.geocode(address)
+                    ;
 
                     geocode.then(function (res) {
-                        addressMap.balloon.close();
-                        addressMap.geoObjects.removeAll();
+                        var
+                            obj = res.geoObjects.get(0),
+                            position = obj ? obj.geometry.getCoordinates() : null,
+                            placemark
+                        ;
 
-                        var position = res.geoObjects.get(0).geometry.getCoordinates(),
-                            placemark = new ymaps.Placemark(position, {}, {});
+                        //addressMap.geoObjects.removeAll();
+                        console.info('position', position);
 
-                        addressMap.geoObjects.add(placemark);
-                        addressMap.setCenter(position, zoom);
+                        if (position) {
+                            //placemark = new ymaps.Placemark(position, {}, {});
+                            //addressMap.geoObjects.add(placemark);
+                            addressMap.setCenter(position, zoom);
+                        }
                     });
                 });
             },
