@@ -94,7 +94,7 @@ class Delivery {
                     $orderModel->seller
                     ? [
                         'name' => $orderModel->seller->name,
-                        'url'  => $orderModel->seller->offerUrl,
+                        'url'  => str_replace('www.enter.ru', 'm.enter.ru', $orderModel->seller->offerUrl),
                     ]
                     : false,
                 'sum'            => [
