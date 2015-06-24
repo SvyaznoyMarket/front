@@ -54,7 +54,12 @@ define(
 
             showFieldError = function($field, error) {
                 //console.log(error, $field);
-                $field.parent().addClass('error').parent().append('<label class="error">'+error.name+'</label>');
+                var $parent = $field.parent().addClass('error');
+                //выводим сообщение об ошибке только если его еще нет.
+                if (!$parent.parent().find('label.error').length){
+                    $parent.parent().append('<label class="error">'+error.name+'</label>');
+                }
+
             },
 
             resetFieldError = function($field) {

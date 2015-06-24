@@ -28,6 +28,8 @@ define(
                 $modalWindow.addClass(modalPosition);
 
                 $modalWindow.lightbox_me({
+                    fullScreen: true,
+                    modal: false,
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($onlinePaymentPopupTemplate.html(), data));
                     },
