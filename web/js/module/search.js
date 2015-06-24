@@ -3,7 +3,7 @@ define(
     function ($, _, mustache) {
         var $body = $('body'),
 
-        showPopup = function (e) {
+        showPopup = function( e ) {
             header.addClass(searchClass);
             e.stopPropagation();
             e.preventDefault();

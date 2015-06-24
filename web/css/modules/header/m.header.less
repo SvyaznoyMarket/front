@@ -1,6 +1,29 @@
 /* ==========================================================================
    Шапка сайта .header
    ========================================================================== */
+// хлебные крошки, если ширина меньше 450, то не показываем
+@media only screen and (min-width: 450px) {
+    .header {
+        &.breadcrumbs {
+            .header-center {
+                position: relative;
+                z-index: 1;
+
+                text-align: left;
+            }
+            .header__logotype {
+                float: left;
+            }
+            .header-controls {
+                position: relative;
+                z-index: 2;
+
+                background: #000;
+            }
+        }
+    }
+}
+
 @media only screen and (max-width: 450px) {
     .header {
         &.search {
@@ -16,86 +39,8 @@
                 padding-left: 45px;
             }
         }
-    }
-}
-
-@media only screen and (max-width: 800px) {
-    /* Панель юзера */
-    .headerRightAside {
-        width: 160px;
-        margin-left: -160px;
-    }
-
-    .headerCenter {
-        padding-right: 140px;
-    }
-
-    .transBg {
-        float: left;
-
-        width: 20px;
-        height: 30px;
-
-        background: url('@{base-url}/header/img/breadCrumbsTrans.png') no-repeat 100% 0;
-    }
-
-    .userBox {
-        width: 140px;
-        margin: 8px 0 0;
-        &_item {
-            margin: 2px 0 0 10px;
-        }
-        &_text {
+        .bread-crumbs {
             display: none;
         }
-        &_link {
-            width: 34px;
-            padding: 0;
-            &-authval {
-                .userBox_text {
-                    display: none;
-                }
-            }
-        }
-    }
-
-    /* Хлебные крошки */
-    .breadCrumbs {
-        &_item {
-            margin: 7px 0 0;
-        }
-    }
-
-    .menuIco {
-        margin-top: 4px;
-    }
-}
-
-@media only screen and (max-width: 580px) {
-    /* Хлебные крошки */
-    .breadCrumbs {
-        padding: 0;
-
-        border: none;
-    }
-}
-
-@media only screen and (max-width: 500px) {
-    /* Хлебные крошки */
-    .headerCenterWrap {
-        display: none;
-    }
-
-    .headerLeftAside {
-        float: left;
-
-        margin-left: 0;
-    }
-
-    .headerRightAside {
-        float: right;
-
-        width: 160px;
-        margin-left: 0;
     }
 }

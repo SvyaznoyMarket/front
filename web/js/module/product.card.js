@@ -51,7 +51,6 @@ define(
                     var dataGa = $(this).parents('.js-productSlider').data('ga');
 
                     $(this).slick({
-                        mobileFirst: true,
                         infinite: false,
                         slidesToShow: 6,
                         slidesToScroll: 6,
