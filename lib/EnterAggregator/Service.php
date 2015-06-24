@@ -169,9 +169,10 @@ class Service {
     }
 
     /**
+     * @param string|null $sessionId
      * @return Http\Session
      */
-    public function getSession() {
+    public function getSession($sessionId = null) {
         $key = 'enter.http.session';
 
         if (!isset($GLOBALS[$key])) {
@@ -179,6 +180,7 @@ class Service {
 
             $config = new Http\Session\Config();
             $config->name = $applicationConfig->session->name;
+            $config->id = $sessionId;
             $config->cookieLifetime = $applicationConfig->session->cookieLifetime;
             $config->cookieDomain = $applicationConfig->session->cookieDomain;
             $config->flashKey = $applicationConfig->session->flashKey;

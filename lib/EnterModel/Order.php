@@ -67,6 +67,8 @@ class Order {
     /** @var float */
     public $discountSum;
     /** @var string */
+    public $deliveryType;
+    /** @var string */
     public $subwayId;
     /** @var string */
     public $paymentMethodId;
@@ -129,6 +131,20 @@ class Order {
         }
         if (array_key_exists('pay_sum', $data)) $this->paySum = $this->getPriceHelper()->removeZeroFraction($data['pay_sum']);
         if (array_key_exists('discount_sum', $data)) $this->discountSum = $this->getPriceHelper()->removeZeroFraction($data['discount_sum']);
+        if (array_key_exists('delivery_type_id', $data)) {
+            switch ($data['delivery_type_id']) {
+                case 1:
+                    $this->deliveryType = 'standart';
+                    break;
+                case 4:
+                    $this->deliveryType = 'now';
+                    break;
+                default:
+                    $this->deliveryType = 'self';
+                    break;
+            }
+        }
+        
         if (array_key_exists('subway_id', $data)) $this->subwayId = (string)$data['subway_id'];
         if (array_key_exists('payment_id', $data)) $this->paymentMethodId = (string)$data['payment_id'];
         if (array_key_exists('payment_status_id', $data)) $this->paymentStatusId = $data['payment_status_id']? (string)$data['payment_status_id'] : null;

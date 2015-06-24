@@ -23,7 +23,7 @@ class Slice {
         $curl = $this->getCurl();
         $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME!!!
 
-        $userToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
+        $userAuthToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
 
         // ид региона
         $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
@@ -100,7 +100,7 @@ class Slice {
         $controllerRequest->filterRepository = $filterRepository;
         $controllerRequest->baseRequestFilters = $baseRequestFilters;
         $controllerRequest->requestFilters = $requestFilters;
-        $controllerRequest->userToken = $userToken;
+        $controllerRequest->userToken = $userAuthToken;
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);
 

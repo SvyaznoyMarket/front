@@ -22,7 +22,7 @@ namespace EnterMobileApplication\Controller {
                 throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
-            $userToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
+            $userAuthToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
 
             // ид товара
             $productId = trim((string)$request->query['productId']);
@@ -38,7 +38,7 @@ namespace EnterMobileApplication\Controller {
             $controllerRequest->config->favourite = true;
             $controllerRequest->regionId = $regionId;
             $controllerRequest->productCriteria = ['id' => $productId];
-            $controllerRequest->userToken = $userToken;
+            $controllerRequest->userToken = $userAuthToken;
             // ответ от контроллера
             $controllerResponse = $controller->execute($controllerRequest);
 

@@ -6,12 +6,13 @@ use Enter\Http;
 
 trait SessionTrait {
     /**
+     * @param string|null $sessionId
      * @return Http\Session
      */
-    protected function getSession() {
+    protected function getSession($sessionId = null) {
         /** @var Service $service */
         $service = $GLOBALS['enter.service'];
 
-        return $service->getSession();
+        return $service->getSession($sessionId);
     }
 }

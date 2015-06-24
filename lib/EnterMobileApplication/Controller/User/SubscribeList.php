@@ -22,7 +22,6 @@ namespace EnterMobileApplication\Controller\User {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            //$session = $this->getSession();
 
             // ответ
             $response = new Response();

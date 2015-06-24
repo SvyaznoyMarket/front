@@ -5,14 +5,13 @@ namespace EnterMobileApplication\Controller\Order\Slot;
 use Enter\Http;
 use EnterMobileApplication\ConfigTrait;
 use EnterAggregator\LoggerTrait;
-use EnterAggregator\SessionTrait;
 use EnterAggregator\CurlTrait;
 use EnterMobileApplication\Repository;
 use EnterQuery as Query;
 use EnterModel as Model;
 
 class Create {
-    use ConfigTrait, LoggerTrait, SessionTrait, CurlTrait;
+    use ConfigTrait, LoggerTrait, CurlTrait;
 
     /**
      * @return Http\JsonResponse
@@ -103,12 +102,12 @@ class Create {
     }
 
     /**
-     * @param string $userToken
+     * @param string $userAuthToken
      * @return Query\User\GetItemByToken|null
      */
-    private function prepareUserItemQuery($userToken) {
-        if ($userToken && (0 !== strpos($userToken, 'anonymous-'))) {
-            $userItemQuery =  new Query\User\GetItemByToken($userToken);
+    private function prepareUserItemQuery($userAuthToken) {
+        if ($userAuthToken && (0 !== strpos($userAuthToken, 'anonymous-'))) {
+            $userItemQuery =  new Query\User\GetItemByToken($userAuthToken);
             $this->getCurl()->prepare($userItemQuery);
             return $userItemQuery;
         }
