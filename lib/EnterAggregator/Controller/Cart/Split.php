@@ -33,41 +33,27 @@ namespace EnterAggregator\Controller\Cart {
                 $curl->prepare($shopItemQuery)->execute();
             }
 
+            $curl->execute();
+
+            // регион
+            $response->region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+            
             // запрос пользователя
             $userItemQuery = null;
             if ($request->userToken && (0 !== strpos($request->userToken, 'anonymous-'))) {
                 $userItemQuery = new Query\User\GetItemByToken($request->userToken);
                 $curl->prepare($userItemQuery);
             }
-
+            
             if ($request->enrichCart) {
-                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $request->regionId);
-                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $request->regionId);
+                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $response->region->id);
+                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $response->region->id);
             }
-
-            $curl->execute();
-
-            // регион
-            $response->region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
             // магазин
             $shop = $shopItemQuery ? (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery) : null;
             if ($request->shopId && !$shop) {
                 $this->getLogger()->push(['type' => 'warn', 'message' => 'Магазин не найден', 'shopId' => $request->shopId, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
-            }
-
-            // пользователь
-            $user = null;
-            try {
-                if ($userItemQuery) {
-                    $response->user = (new Repository\User())->getObjectByQuery($userItemQuery);
-                }
-            } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
-            }
-
-            if ($request->enrichCart) {
-                (new \EnterRepository\Cart())->updateObjectByQuery($request->cart, $cartItemQuery, $cartProductListQuery);
             }
 
             // запрос на разбиение корзины
@@ -84,6 +70,19 @@ namespace EnterAggregator\Controller\Cart {
             $curl->prepare($splitQuery);
 
             $curl->execute($splitQuery->getTimeout() / 2, 2);
+            
+            // пользователь
+            try {
+                if ($userItemQuery) {
+                    $response->user = (new Repository\User())->getObjectByQuery($userItemQuery);
+                }
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+            }
+
+            if ($request->enrichCart) {
+                (new \EnterRepository\Cart())->updateObjectByQuery($request->cart, $cartItemQuery, $cartProductListQuery);
+            }
 
             // индексация товаров из корзины по идентификатору
             /** @var Model\Cart\Product[] $cartProductsById */

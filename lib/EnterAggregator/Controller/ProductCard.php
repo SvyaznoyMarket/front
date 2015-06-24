@@ -55,8 +55,8 @@ namespace EnterAggregator\Controller {
             }
 
             if ($request->cart) {
-                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $request->regionId);
-                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $request->regionId);
+                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $response->region->id);
+                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $response->region->id);
             }
 
             $curl->execute();
@@ -232,7 +232,7 @@ namespace EnterAggregator\Controller {
             // запрос настроек каталога
             $categoryItemQuery = null;
             if ($response->product->category && $response->product->category->ui) {
-                $categoryItemQuery = new Query\Product\Category\GetItemByUi($response->product->category->ui, $request->regionId);
+                $categoryItemQuery = new Query\Product\Category\GetItemByUi($response->product->category->ui, $response->region->id);
                 $curl->prepare($categoryItemQuery);
             }
 

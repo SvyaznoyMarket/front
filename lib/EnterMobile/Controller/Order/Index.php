@@ -26,6 +26,7 @@ class Index {
         $config = $this->getConfig();
         $curl = $this->getCurl();
         $session = $this->getSession();
+        $regionRepository = new \EnterRepository\Region();
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
@@ -33,18 +34,25 @@ class Index {
         // ид магазина
         $shopId = is_scalar($request->query['shopId']) ? (string)$request->query['shopId']: null;
 
+        $regionQuery = new Query\Region\GetItemById($regionId);
+        $curl->prepare($regionQuery);
+        
         // запрос пользователя
         $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
         if ($userItemQuery) {
             $curl->prepare($userItemQuery);
         }
 
+        $curl->execute();
+        
+        $region = $regionRepository->getObjectByQuery($regionQuery);
+        
         $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
-        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
-        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
 
         $curl->execute();
-
+        
         (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // запрос для получения страницы
