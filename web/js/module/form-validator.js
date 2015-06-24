@@ -32,12 +32,17 @@ define(
 
                 $form.find('[required]').each(function(i, el) {
                     var $field = $(el);
-                    console.log($field);
+                    var message = '';
+                    //console.log($field);
 
                     if (!$field.val().length) { // поле пустое
                         isValid = false;
+                        //если поле имеет параметр no-msg - вывод сообщения об ошибке не требуется.
+                        nomsg = $field.attr('no-msg');
+                        if (typeof nomsg === typeof undefined || nomsg === false) {
+                            message = 'Поле пустое';
+                        }
 
-                        message = 'Поле пустое';
                         showFieldError($field, {name: message});
                     }
                 });
