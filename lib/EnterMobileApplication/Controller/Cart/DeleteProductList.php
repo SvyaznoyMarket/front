@@ -70,6 +70,7 @@ class DeleteProductList {
         $cart->cacheId++;
 
         $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
-        return new Http\JsonResponse([]);
+        
+        return new Http\JsonResponse(['cart' => (new \EnterMobileApplication\Repository\Cart())->getResponseArray($cart)]);
     }
 }

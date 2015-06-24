@@ -9,7 +9,6 @@ namespace EnterMobileApplication\Controller {
     use EnterAggregator\SessionTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
-    use EnterMobileApplication\Controller\Cart\Response;
 
     class Cart {
         use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
@@ -109,53 +108,11 @@ namespace EnterMobileApplication\Controller {
             // корзина из ядра
             $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
 
-            // ответ
-            $response = new Response();
-
-            $response->sum = $cart->sum;
-
-            foreach (array_reverse($cart->product) as $cartProduct) {
-                /** @var Model\Cart\Product $cartProduct */
-
-                $product = new \EnterMobileApplication\Model\Cart\Product();
-
-                $product->id = $cartProduct->id;
-                $product->quantity = $cartProduct->quantity;
-                $product->sum = $cartProduct->sum;
-
-                if (!empty($productsById[$cartProduct->id])) {
-                    $product->webName = $productsById[$cartProduct->id]->webName;
-                    $product->namePrefix = $productsById[$cartProduct->id]->namePrefix;
-                    $product->name = $productsById[$cartProduct->id]->name;
-                    $product->price = $productsById[$cartProduct->id]->price;
-                    $product->media = $productsById[$cartProduct->id]->media;
-                }
-
-                $response->products[] = $product;
-                $response->quantity += $cartProduct->quantity;
-                $response->uniqueQuantity++;
-            }
-
             // response
-            $httpResponse = new Http\JsonResponse($response);
+            $httpResponse = new Http\JsonResponse((new \EnterMobileApplication\Repository\Cart())->getResponseArray($cart, $productsById));
             $httpResponse->headers['ETag'] = '"' . $cart->cacheId . '"';
 
             return $httpResponse;
         }
-    }
-}
-
-namespace EnterMobileApplication\Controller\Cart {
-    use EnterModel as Model;
-
-    class Response {
-        /** @var float */
-        public $sum;
-        /** @var Model\Product[] */
-        public $products = [];
-        /** @var int */
-        public $quantity = 0;
-        /** @var int */
-        public $uniqueQuantity = 0;
     }
 }

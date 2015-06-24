@@ -51,10 +51,8 @@ class Clear {
 
         $cart->cacheId++;
 
-        // сохранение корзины в сессию
         $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
 
-        // response
-        return new Http\JsonResponse([]);
+        return new Http\JsonResponse(['cart' => (new \EnterMobileApplication\Repository\Cart())->getResponseArray($cart)]);
     }
 }
