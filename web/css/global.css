@@ -8100,7 +8100,8 @@ body.noScroll {
 }
 .common-control-hint {
   font-size: 14px;
-  float: right;
+  float: left;
+  margin-right: 5px;
   color: #5e5e5e;
   margin-top: 5px;
   height: 19px;
@@ -8304,7 +8305,8 @@ body.noScroll {
 }
 @media screen and (max-width: 639px) {
   .common-control-hint {
-    float: left;
+    float: right;
+    margin-right: 0px;
   }
 }
 .order-authorize {
