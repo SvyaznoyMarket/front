@@ -53,7 +53,6 @@ define(
             $pointSuggestTemplate       = $('#tpl-order-delivery-point-suggest'),
             $discountPopupTemplate      = $('#tpl-order-delivery-discount-popup'),
             $modalWindowTemplate        = $('#tpl-modalWindow'),
-            $discountScroll             = $('[data-scroll]'),
 
             initPointMap = function($container, options) {
                 var defer = $.Deferred();
@@ -231,15 +230,17 @@ define(
                             updateAddressMap($mapContainer, address, zoom);
 
                             if (obj) {
-                                text = (obj.type.length > 8) ? obj.typeShort : obj.type;
-                                text = text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
-
                                 if ('street' === obj.contentType) {
                                     $form.find('[data-field="streetType"]').val(obj.typeShort);
+
+                                    try {
+                                        text = (obj.type.length > 8) ? obj.typeShort : obj.type;
+                                        if (('string' === typeof text)) {
+                                            text = text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
+                                            $(this).parent().find('label').text(text);
+                                        }
+                                    } catch (error) { console.error(); }
                                 }
-
-                                $(this).parent().find('label').text(text);
-
                             } else {
                                 //showError($input, 'Введено неверно');
                             }
