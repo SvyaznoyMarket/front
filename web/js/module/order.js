@@ -646,6 +646,7 @@ define(
                                         e.stopPropagation();
 
                                         $field.val(value);
+                                        $field.closest('form').submit();
                                     });
                                 }
                             })
