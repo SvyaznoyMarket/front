@@ -61,8 +61,8 @@ namespace EnterMobileApplication\Controller\User {
             $curl->execute();
 
             $usedSeriesIds = [];
-            $coupons = (new \EnterRepository\Coupon())->getObjectListByQuery($couponListQuery);
-            foreach ($coupons as $coupon) {
+            $response->coupons = (new \EnterRepository\Coupon())->getObjectListByQuery($couponListQuery);
+            foreach ($response->coupons as $coupon) {
                 $usedSeriesIds[] = $coupon->seriesId;
             }
 
