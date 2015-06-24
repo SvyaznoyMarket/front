@@ -414,6 +414,15 @@ class Product {
                     $product->storeLabel = new \EnterModel\Product\StoreLabel();
                     $product->storeLabel->name = 'Товар со склада';
                 }
+                
+                if (isset($descriptionItem['tags'][0])) {
+                    foreach ($descriptionItem['tags'] as $tag) {
+                        if ($tag['slug'] === 'soberi-sam') {
+                            $product->assemblingLabel = new \EnterModel\Product\AssemblingLabel();
+                            $product->assemblingLabel->name = $tag['name']; 
+                        }
+                    }
+                }
             }
         } catch (\Exception $e) {
             $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
