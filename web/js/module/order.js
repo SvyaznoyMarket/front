@@ -54,6 +54,23 @@ define(
             $discountPopupTemplate      = $('#tpl-order-delivery-discount-popup'),
             $modalWindowTemplate        = $('#tpl-modalWindow'),
 
+            initMap = function() {
+                var defer = $.Deferred();
+
+                if (null !== yandexmaps) {
+                    defer.resolve(yandexmaps);
+                }
+
+                require(['yandexmaps'], function(ymaps) {
+                    ymaps.ready(function() {
+                        yandexmaps = ymaps;
+                        defer.resolve(yandexmaps);
+                    })
+                });
+
+                return defer;
+            },
+
             initPointMap = function($container, options) {
                 var defer = $.Deferred();
 
@@ -61,35 +78,33 @@ define(
                     defer.resolve($container);
                 }
 
-                require(['yandexmaps'], function(ymaps) {
-                    ymaps.ready(function() {
-                        try {
-                            pointMap = new ymaps.Map(
-                                $container.attr('id'),
-                                {
-                                    center: [options.center.lat, options.center.lng],
-                                    zoom: options.zoom,
-                                    controls: ['zoomControl']
-                                },
-                                {
-                                    autoFitToViewport: 'always'
-                                }
-                            );
+                initMap().done(function(ymaps) {
+                    try {
+                        pointMap = new ymaps.Map(
+                            $container.attr('id'),
+                            {
+                                center: [options.center.lat, options.center.lng],
+                                zoom: options.zoom,
+                                controls: ['zoomControl']
+                            },
+                            {
+                                autoFitToViewport: 'always'
+                            }
+                        );
 
-                            pointMap.geoObjects.events.remove('click'); // TODO: можно убрать
-                            pointMap.geoObjects.events.add('click', function (e) {
-                                var placemark = e.get('target');
+                        pointMap.geoObjects.events.remove('click'); // TODO: можно убрать
+                        pointMap.geoObjects.events.add('click', function (e) {
+                            var placemark = e.get('target');
 
-                                pointMap.balloon.open(e.get('coords'), mustache.render($balloonTemplate.html(), placemark.properties.get('point')));
-                            });
+                            pointMap.balloon.open(e.get('coords'), mustache.render($balloonTemplate.html(), placemark.properties.get('point')));
+                        });
 
-                            defer.resolve($container);
-                        } catch (error) {
-                            console.error(error);
+                        defer.resolve($container);
+                    } catch (error) {
+                        console.error(error);
 
-                            defer.reject(error);
-                        }
-                    });
+                        defer.reject(error);
+                    }
                 });
 
                 return defer;
@@ -102,44 +117,25 @@ define(
                     defer.resolve($container);
                 }
 
-                require(['yandexmaps'], function(ymaps) {
-                    ymaps.ready(function() {
-                        try {
-                            addressMap = new ymaps.Map(
-                                $container.attr('id'),
-                                {
-                                    center: [options.center.lat, options.center.lng],
-                                    zoom: options.zoom,
-                                    controls: ['zoomControl']
-                                },
-                                {
-                                    autoFitToViewport: 'always'
-                                }
-                            );
-                            defer.resolve($container);
-                        } catch (error) {
-                            console.error(error);
+                initMap().done(function(ymaps) {
+                    try {
+                        addressMap = new ymaps.Map(
+                            $container.attr('id'),
+                            {
+                                center: [options.center.lat, options.center.lng],
+                                zoom: options.zoom,
+                                controls: ['zoomControl']
+                            },
+                            {
+                                autoFitToViewport: 'always'
+                            }
+                        );
+                        defer.resolve($container);
+                    } catch (error) {
+                        console.error(error);
 
-                            defer.reject(error);
-                        }
-                    });
-                });
-
-                return defer;
-            },
-
-            initGeocode = function() {
-                var defer = $.Deferred();
-
-                if (null !== yandexmaps) {
-                    defer.resolve(yandexmaps);
-                }
-
-                require(['yandexmaps'], function(ymaps) {
-                    ymaps.ready(function() {
-                        yandexmaps = ymaps;
-                        defer.resolve(yandexmaps);
-                    });
+                        defer.reject(error);
+                    }
                 });
 
                 return defer;
@@ -518,10 +514,6 @@ define(
                 $body.on('beforeSplit', beforeSplit);
 
                 e.preventDefault();
-
-                setTimeout(function() {
-                    require(['yandexmaps'], function() {});
-                }, 1000)
             },
 
             showAddressPopup = function( e ) {
@@ -538,38 +530,33 @@ define(
 
                 e.stopPropagation();
 
-                require(['jquery.kladr'], function() {});
-                require(['yandexmaps'], function() {});
-
                 $modalWindow.find('.js-modal-title').text(modalTitle);
                 $modalWindow.addClass(modalPosition);
 
                 $modalWindow.lightbox_me({
                     onLoad: function() {
+                        var
+                            $mapContainer,
+                            options
+                        ;
+
                         $modalWindow.find('.js-modal-content').append(mustache.render($addressPopupTemplate.html(), data));
 
                         initSmartAddress($modalWindow);
 
+                        $mapContainer = $($el.data('mapContainerSelector'));
+                        options = $mapContainer.data('mapOption');
 
-                        require(['yandexmaps'], function() {
-                            var
-                                $mapContainer = $($el.data('mapContainerSelector')),
-                                options = $mapContainer.data('mapOption')
-                            ;
+                        initAddressMap($addressMap, options).done(function() {
+                            if (!$mapContainer.find('#' + $addressMap.attr('id')).length) {
+                                $mapContainer.append($addressMap);
+                            }
 
-                            initAddressMap($addressMap, options).done(function() {
-                                if (!$mapContainer.find('#' + $addressMap.attr('id')).length) {
-                                    $mapContainer.append($addressMap);
-                                }
-
-                                addressMap.setCenter([options.center.lat, options.center.lng], options.zoom);
-                                addressMap.balloon.close();
-                                addressMap.geoObjects.removeAll();
-                                addressMap.container.fitToViewport();
-                            });
-
+                            addressMap.setCenter([options.center.lat, options.center.lng], options.zoom);
+                            addressMap.balloon.close();
+                            addressMap.geoObjects.removeAll();
+                            addressMap.container.fitToViewport();
                         });
-
                     },
                     beforeClose: function() {
                         $mapContainer.append($addressMap);
@@ -582,24 +569,20 @@ define(
             },
 
             updateAddressMap = function($container, address, zoom) {
-                if (address && addressMap) {
-                    require(['yandexmaps'], function(ymaps) {
-                        if (!addressMap) return;
+                initMap().done(function(ymaps) {
+                    var geocode = ymaps.geocode(address);
 
-                        var geocode = ymaps.geocode(address);
+                    geocode.then(function (res) {
+                        addressMap.balloon.close();
+                        addressMap.geoObjects.removeAll();
 
-                        geocode.then(function (res) {
-                            addressMap.balloon.close();
-                            addressMap.geoObjects.removeAll();
+                        var position = res.geoObjects.get(0).geometry.getCoordinates(),
+                            placemark = new ymaps.Placemark(position, {}, {});
 
-                            var position = res.geoObjects.get(0).geometry.getCoordinates(),
-                                placemark = new ymaps.Placemark(position, {}, {});
-
-                            addressMap.geoObjects.add(placemark);
-                            addressMap.setCenter(position, zoom);
-                        });
+                        addressMap.geoObjects.add(placemark);
+                        addressMap.setCenter(position, zoom);
                     });
-                }
+                });
             },
 
             // показать календарь
@@ -707,7 +690,7 @@ define(
 
                 $input.data('center', null);
 
-                initGeocode().done(function(ymaps) {
+                initMap().done(function(ymaps) {
                     if ((text.length > 1)) {
                         try {
                             text = config.kladr.city.name + ', ' + text;
