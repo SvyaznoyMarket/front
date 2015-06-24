@@ -39,7 +39,7 @@ define(
 
             addressMap = null,
             pointMap = null,
-            yandexmaps = null,
+            ymapsDefer = null,
 
             $body                       = $('body'),
             $deliveryForm               = $('.js-order-delivery-form'),
@@ -55,90 +55,60 @@ define(
             $modalWindowTemplate        = $('#tpl-modalWindow'),
 
             initMap = function() {
-                var defer = $.Deferred();
+                if (null === ymapsDefer) {
+                    ymapsDefer = $.Deferred();
 
-                if (null !== yandexmaps) {
-                    defer.resolve(yandexmaps);
+                    require(['yandexmaps'], function(ymaps) {
+                        ymaps.ready(function() {
+                            ymapsDefer.ymaps = ymaps;
+                            ymapsDefer.resolve(ymapsDefer.ymaps);
+                        })
+                    });
+                } else if ('resolved' === ymapsDefer.state()) {
+                    ymapsDefer.resolve(ymapsDefer.ymaps);
                 }
 
-                require(['yandexmaps'], function(ymaps) {
-                    ymaps.ready(function() {
-                        yandexmaps = ymaps;
-                        defer.resolve(yandexmaps);
-                    })
-                });
-
-                return defer;
+                return ymapsDefer;
             },
 
             initPointMap = function($container, options) {
-                var defer = $.Deferred();
+                try {
+                    pointMap = new ymaps.Map(
+                        $container.attr('id'),
+                        {
+                            center: [options.center.lat, options.center.lng],
+                            zoom: options.zoom,
+                            controls: ['zoomControl']
+                        },
+                        {
+                            autoFitToViewport: 'always'
+                        }
+                    );
 
-                if (pointMap) {
-                    defer.resolve($container);
-                }
+                    pointMap.geoObjects.events.remove('click'); // TODO: можно убрать
+                    pointMap.geoObjects.events.add('click', function (e) {
+                        var placemark = e.get('target');
 
-                initMap().done(function(ymaps) {
-                    try {
-                        pointMap = new ymaps.Map(
-                            $container.attr('id'),
-                            {
-                                center: [options.center.lat, options.center.lng],
-                                zoom: options.zoom,
-                                controls: ['zoomControl']
-                            },
-                            {
-                                autoFitToViewport: 'always'
-                            }
-                        );
+                        pointMap.balloon.open(e.get('coords'), mustache.render($balloonTemplate.html(), placemark.properties.get('point')));
+                    });
 
-                        pointMap.geoObjects.events.remove('click'); // TODO: можно убрать
-                        pointMap.geoObjects.events.add('click', function (e) {
-                            var placemark = e.get('target');
-
-                            pointMap.balloon.open(e.get('coords'), mustache.render($balloonTemplate.html(), placemark.properties.get('point')));
-                        });
-
-                        defer.resolve($container);
-                    } catch (error) {
-                        console.error(error);
-
-                        defer.reject(error);
-                    }
-                });
-
-                return defer;
+                } catch (error) { console.error(error); }
             },
 
             initAddressMap = function($container, options) {
-                var defer = $.Deferred();
-
-                if (addressMap) {
-                    defer.resolve($container);
-                }
-
-                initMap().done(function(ymaps) {
-                    try {
-                        addressMap = new ymaps.Map(
-                            $container.attr('id'),
-                            {
-                                center: [options.center.lat, options.center.lng],
-                                zoom: options.zoom,
-                                controls: ['zoomControl']
-                            },
-                            {
-                                autoFitToViewport: 'always'
-                            }
-                        );
-                        defer.resolve($container);
-                    } catch (error) {
-                        console.error(error);
-
-                        defer.reject(error);
-                    }
-                });
-
-                return defer;
+                try {
+                    addressMap = new ymaps.Map(
+                        $container.attr('id'),
+                        {
+                            center: [options.center.lat, options.center.lng],
+                            zoom: options.zoom,
+                            controls: ['zoomControl']
+                        },
+                        {
+                            autoFitToViewport: 'always'
+                        }
+                    );
+                } catch (error) { console.error(error); }
             },
 
             initSmartAddress = function($context) {
@@ -337,6 +307,7 @@ define(
                         console.info('update point map ...');
 
                         if (!$container.find('#' + $pointMap.attr('id')).length) {
+                            $container.html('');
                             $container.append($pointMap);
                         }
 
@@ -373,7 +344,10 @@ define(
                 if (pointMap) {
                     ready();
                 } else {
-                    initPointMap($pointMap, options).done(ready);
+                    initMap().done(function(ymaps) {
+                        initPointMap($pointMap, options);
+                        ready();
+                    });
                 }
             },
 
@@ -536,7 +510,7 @@ define(
                 $modalWindow.lightbox_me({
                     onLoad: function() {
                         var
-                            $mapContainer,
+                            $container,
                             options
                         ;
 
@@ -544,19 +518,26 @@ define(
 
                         initSmartAddress($modalWindow);
 
-                        $mapContainer = $($el.data('mapContainerSelector'));
-                        options = $mapContainer.data('mapOption');
+                        $container = $($el.data('mapContainerSelector'));
+                        options = $container.data('mapOption');
 
-                        initAddressMap($addressMap, options).done(function() {
-                            if (!$mapContainer.find('#' + $addressMap.attr('id')).length) {
-                                $mapContainer.append($addressMap);
-                            }
+                        if (!$container.find('#' + $addressMap.attr('id')).length) {
+                            $container.html('');
+                            $container.append($addressMap);
+                        }
 
-                            addressMap.setCenter([options.center.lat, options.center.lng], options.zoom);
-                            addressMap.balloon.close();
-                            addressMap.geoObjects.removeAll();
-                            addressMap.container.fitToViewport();
-                        });
+                        if (addressMap) {
+
+                        } else {
+                            initMap().done(function(ymaps) {
+                                initAddressMap($addressMap, options);
+
+                                //addressMap.setCenter([options.center.lat, options.center.lng], options.zoom);
+                                //addressMap.balloon.close();
+                                //addressMap.geoObjects.removeAll();
+                                //addressMap.container.fitToViewport();
+                            });
+                        }
                     },
                     beforeClose: function() {
                         $mapContainer.append($addressMap);
@@ -577,17 +558,16 @@ define(
                     geocode.then(function (res) {
                         var
                             obj = res.geoObjects.get(0),
-                            position = obj ? obj.geometry.getCoordinates() : null,
+                            center = obj ? obj.geometry.getCoordinates() : null,
                             placemark
                         ;
 
-                        //addressMap.geoObjects.removeAll();
-                        console.info('position', position);
+                        if (center) {
+                            addressMap.setCenter(center, zoom);
 
-                        if (position) {
-                            //placemark = new ymaps.Placemark(position, {}, {});
+                            //addressMap.geoObjects.removeAll();
+                            //placemark = new ymaps.Placemark(center, {}, {});
                             //addressMap.geoObjects.add(placemark);
-                            addressMap.setCenter(position, zoom);
                         }
                     });
                 });
