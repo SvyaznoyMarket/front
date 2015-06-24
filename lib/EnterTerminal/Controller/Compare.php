@@ -54,6 +54,7 @@ namespace EnterTerminal\Controller {
                         'category'    => true,
                         'label'       => true,
                         'brand'       => true,
+                        'property'    => true,
                     ]
                 );
                 $curl->prepare($descriptionListQuery);
