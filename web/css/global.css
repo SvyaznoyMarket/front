@@ -764,7 +764,7 @@ textarea[contenteditable] {
 }
 .m-loader:after {
   background: url("../img/loader/loader.png") no-repeat 50% 50%;
-  position: absolute;
+  position: fixed;
   -webkit-animation: rotated 3.5s infinite linear;
   -moz-animation: rotated 3.5s infinite linear;
   -ms-animation: rotated 3.5s infinite linear;
