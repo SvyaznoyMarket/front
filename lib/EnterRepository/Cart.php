@@ -112,11 +112,14 @@ class Cart {
                 break;
         }
 
+        $result = [];
+
         if ($image) {
-            $image = 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/' . $image;
+            $result['image_url'] = 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/' . $image;
+            $result['icon'] = 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/map-points/' . $image;
         }
 
-        return $image;
+        return $result;
     }
 
     /**
