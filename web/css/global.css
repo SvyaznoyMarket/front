@@ -1259,27 +1259,30 @@ body.noScroll {
   display: none;
 }
 .bread-crumbs {
-  padding-left: 70px;
   line-height: 50px;
+  padding-left: 70px;
 }
 .bread-crumbs__link {
-  color: #ffffff;
-  display: inline-block;
-  vertical-align: top;
-  border-left: 1px solid #333;
   padding-left: 15px;
   white-space: nowrap;
+  color: #ffffff;
+  border-left: 1px solid #333;
+  display: inline-block;
+  vertical-align: top;
+}
+.bread-crumbs__link:hover {
+  color: #ffffff;
 }
 .search-form {
   display: none;
 }
 .search-form__it {
+  width: 100%;
+  padding: 7px 30px 7px 38px;
   border: none;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  padding: 7px 30px 7px 38px;
-  width: 100%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -1291,29 +1294,29 @@ body.noScroll {
 }
 .search-form .i-search--search-selected {
   position: absolute;
-  left: 7px;
   top: 12px;
+  left: 7px;
 }
 .search-form__clear {
+  line-height: 30px;
   position: absolute;
+  top: 8px;
   right: 0;
   display: block;
-  top: 8px;
-  height: 100%;
   width: 26px;
-  line-height: 30px;
+  height: 100%;
 }
 .search-suggest {
   position: fixed;
   z-index: 200;
   top: 50px;
-  height: auto;
   right: 0;
   bottom: 0;
   left: 0;
   display: none;
-  width: 100%;
   overflow: auto;
+  width: 100%;
+  height: auto;
   background: #fff;
 }
 .search-suggest__title {
@@ -1400,7 +1403,7 @@ body.noScroll {
   vertical-align: middle;
 }
 .i-header--user-log {
-  background-position: -134px 0;
+  background-position: -133px 0;
   width: 20px;
   height: 22px;
   background-repeat: no-repeat;
@@ -6099,8 +6102,8 @@ body {
 }
 .items-slider {
   border: 1px solid #a0a0a0;
-  background: #ffffff;
   border-top-width: 5px;
+  background: #ffffff;
 }
 .items-slider--left {
   border-color: #c1d837;
@@ -6282,6 +6285,7 @@ body {
 .categories-grid__link {
   line-height: 1;
   display: block;
+  height: 100%;
 }
 .categories-grid__icon {
   line-height: 57px;
@@ -6294,9 +6298,9 @@ body {
 .categories-grid__char {
   font-family: 'menuIconFont';
   font-size: 100px;
-  display: inline-block;
   height: 57px;
   margin: 0 0 15px;
+  display: inline-block;
   vertical-align: top;
   opacity: 0.9;
   -moz-opacity: 0.9;
@@ -6331,7 +6335,7 @@ body {
   .items-slider {
     border-bottom: none;
   }
-  .inn {
+  .main-inn {
     padding: 0;
   }
   .grid-2cols__item {

@@ -8,7 +8,6 @@ define(
             e.stopPropagation();
             e.preventDefault();
 
-
             // MSITE-156
             $($('.js-search-form').data('inputSelector')).focus();
         };
@@ -49,7 +48,7 @@ define(
 
             closeSearch = function() {
                 header.removeClass(searchClass);
-                $body.css({'overflow':'visible'});
+                $body.removeClass('noScroll');
                 inputSearch.val('');
                 container.hide().empty();
             },
@@ -59,7 +58,7 @@ define(
                 event.stopPropagation();
 
                 inputSearch.val('');
-                $body.css({'overflow':'visible'});
+                $body.removeClass('noScroll');
                 inputSearch.trigger('focus');
                 container.hide().empty();
             },
@@ -93,9 +92,11 @@ define(
                             suggestData.products.hasProducts = true;
                         }
 
-                        html = mustache.render(template, {suggestData: suggestData});
-                        $body.css({'overflow':'hidden'});
-                        container.show().html(html);
+                        if ( result.categories.length > 1 || result.products.length >1 ) {
+                            html = mustache.render(template, {suggestData: suggestData});
+                            $body.addClass('noScroll');
+                            container.show().html(html);
+                        }
                     };
                 // end of vars
 

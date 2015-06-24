@@ -17,6 +17,7 @@
         width: 100%;
         padding-right: 130px;
         padding-left: 40px;
+
         text-align: center;
 
         .box-sizing();
@@ -32,6 +33,7 @@
     }
     &__logotype {
         height: 50px;
+
         .inline-block();
         &-link {
             width: 63px;
@@ -43,10 +45,10 @@
             .inline-block();
         }
     }
-
     // юзербар
     &-controls {
         font-size: 0;
+
         float: right;
         &__item {
             line-height: 50px;
@@ -65,7 +67,6 @@
             padding: 0 10px;
         }
     }
-
     // показываем поле поиска
     &.search {
         .header__logotype {
@@ -73,6 +74,7 @@
         }
         .search-form {
             display: block;
+
             padding-left: 70px;
         }
         .header-controls__item--search {
@@ -89,50 +91,57 @@
 
 // хлебные крохи
 .bread-crumbs {
-    padding-left: 70px;
     line-height: 50px;
 
+    padding-left: 70px;
     &__link {
-        color: @white;
-        .inline-block();
-        border-left: 1px solid #333;
         padding-left: 15px;
+
         white-space: nowrap;
+
+        color: @white;
+        border-left: 1px solid #333;
+
+        .inline-block();
+        &:hover {
+            color: @white;
+        }
     }
 }
 
 // форма поиска
 .search-form {
     display: none;
-
     &__it {
-        border: none;
-        .rounded(5px);
+        width: 100%;
         padding: 7px 30px 7px 38px;
 
-        width: 100%;
+        border: none;
+
+        .rounded(5px);
         .box-sizing();
     }
-
     &-inn {
         position: relative;
+
         padding: 8px 0 0;
     }
-
     .i-search--search-selected {
         position: absolute;
-        left: 7px;
         top: 12px;
+        left: 7px;
     }
-
     &__clear {
-        position: absolute;
-        right: 0;
-        display: block;
-        top: 8px;
-        height: 100%;
-        width: 26px;
         line-height: 30px;
+
+        position: absolute;
+        top: 8px;
+        right: 0;
+
+        display: block;
+
+        width: 26px;
+        height: 100%;
     }
 }
 
@@ -141,14 +150,15 @@
     position: fixed;
     z-index: 200;
     top: 50px;
-    height: auto;
     right: 0;
     bottom: 0;
     left: 0;
+
     display: none;
+    overflow: auto;
 
     width: 100%;
-    overflow: auto;
+    height: auto;
 
     background: #fff;
     &__title {

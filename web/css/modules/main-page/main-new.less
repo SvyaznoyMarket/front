@@ -107,8 +107,8 @@ body {
 // слайдеры товаров, брендов
 .items-slider {
     border: 1px solid #a0a0a0;
-    background: @white;
     border-top-width: 5px;
+    background: @white;
     &--left {
         border-color: #c1d837;
     }
@@ -309,6 +309,8 @@ body {
         line-height: 1;
 
         display: block;
+
+        height: 100%;
     }
     &__icon {
         line-height: 57px;
@@ -324,13 +326,10 @@ body {
         font-family: 'menuIconFont';
         font-size: 100px;
 
-        display: inline-block;
-
         height: 57px;
         margin: 0 0 15px;
 
-        vertical-align: top;
-
+        .inline-block();
         .opacity(.9);
     }
     &__text {
