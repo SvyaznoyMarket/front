@@ -896,19 +896,7 @@ define(
             e.stopPropagation();
             e.preventDefault();
         });
-        //скролл списка фишек в попапе скидок
-        $body.on('DOMNodeInserted', $discountScroll, function () {
 
-            $('[data-scroll]').scroll(function() {
-                clearTimeout($.data(this, 'scrollTimer'));
-                $('[data-scroll-wrap]').addClass('scrolling');
-
-                $.data(this, 'scrollTimer', setTimeout(function() {
-                    $('[data-scroll-wrap]').removeClass('scrolling');
-                }, 600));
-            });
-
-        });
         $body.on('submit', '.js-order-form', function(e) {
             var
                 $form = $(this),
