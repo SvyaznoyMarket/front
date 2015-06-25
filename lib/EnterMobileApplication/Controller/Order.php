@@ -161,6 +161,7 @@ namespace EnterMobileApplication\Controller {
                 'deliveries' => $order->deliveries,
                 'deliveryType' => $order->deliveryType,
                 'interval' => $order->interval,
+                'shopId' => $order->shopId, // TODO перенести в point.id
                 'point' => $point ? [
                     'ui' => $point['uid'],
                     'name' => $pointRepository->getName($point['partner']),
