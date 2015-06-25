@@ -326,7 +326,7 @@ define(
                                     },
                                     {
                                         iconLayout: 'default#image',
-                                        iconImageHref: '/img/markers/' + point.icon,
+                                        iconImageHref: '/img/points/markers/24x34/' + point.icon,
                                         iconImageSize: [28, 39],
                                         iconImageOffset: [-14, -39],
                                         //visible: visibility,

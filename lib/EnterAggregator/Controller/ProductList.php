@@ -50,15 +50,15 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($userItemQuery);
             }
 
-            if ($request->cart) {
-                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $request->regionId);
-                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $request->regionId);
-            }
-
             $curl->execute();
 
             // регион
             $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
+            
+            if ($request->cart) {
+                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $response->region->id);
+                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $response->region->id);
+            }
 
             // пользователь
             try {
@@ -67,10 +67,6 @@ namespace EnterAggregator\Controller {
                 }
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
-            }
-
-            if ($request->cart) {
-                (new \EnterRepository\Cart())->updateObjectByQuery($request->cart, $cartItemQuery, $cartProductListQuery);
             }
 
             $categoryRootListQuery = null;
@@ -104,6 +100,10 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($categoryItemQuery);
 
                 $curl->execute();
+                
+                if ($request->cart) {
+                    (new \EnterRepository\Cart())->updateObjectByQuery($request->cart, $cartItemQuery, $cartProductListQuery);
+                }
 
                 $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery);
                 // предки и дети категории
@@ -246,6 +246,7 @@ namespace EnterAggregator\Controller {
                         'category'    => true,
                         'label'       => true,
                         'brand'       => true,
+                        'tag'         => true,
                     ]
                 );
                 $curl->prepare($descriptionListQuery);

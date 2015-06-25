@@ -11,8 +11,8 @@ class PointGroup {
     public $actionName;
     /** @var string */
     public $blockName;
-    /** @var string */
-    public $imageUrl;
+    /** @var Model\MediaList */
+    public $media;
     /** @var Point[] */
     public $points = [];
 

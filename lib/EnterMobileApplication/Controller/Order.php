@@ -22,6 +22,7 @@ namespace EnterMobileApplication\Controller {
             $curl = $this->getCurl();
             $config = $this->getConfig();
             $productRepository = new Repository\Product();
+            $pointRepository = new Repository\Point();
 
             // токен для получения заказа
             $accessToken = is_string($request->query['accessToken']) ? $request->query['accessToken'] : null;
@@ -45,8 +46,7 @@ namespace EnterMobileApplication\Controller {
             $point = null;
             try {
                 if ($order->point->ui) {
-                    $pointItemQuery = new Query\Shop\GetItemByUi($order->point->ui);
-                    $pointItemQuery->setTimeout(1.5 * $config->coreService->timeout);
+                    $pointItemQuery = new Query\Point\GetItemByUi($order->point->ui);
                     $curl->prepare($pointItemQuery)->execute();
                     $point = $pointItemQuery->getResult();
                 }
@@ -93,7 +93,7 @@ namespace EnterMobileApplication\Controller {
 
                 $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
             }
-
+            
             $response = ['order' => [
                 'id' => $order->id,
                 'number' => $order->number,
@@ -149,14 +149,13 @@ namespace EnterMobileApplication\Controller {
                 'deliveryType' => $order->deliveryType,
                 'interval' => $order->interval,
                 'point' => $point ? [
-                    'id' => $point['id'],
                     'ui' => $point['uid'],
-                    'name' => 'Магазин Enter', // TODO: заменить на корректные данные, когда они появятся в scms.enter.ru/shop/get
-                    'imageUrl' => (new \EnterRepository\Cart())->getPointImageUrl('shops'), // TODO: заменить на корректные данные, когда они появятся в scms.enter.ru/shop/get
+                    'name' => $pointRepository->getName($point['partner']),
+                    'media' => $pointRepository->getMedia($point['partner']),
                     'address' => $point['address'],
-                    'regime' => isset($point['working_time']['common']) ? $point['working_time']['common'] : null,
-                    'latitude' => isset($point['location']['latitude']) ? $point['location']['latitude'] : null,
-                    'longitude' => isset($point['location']['longitude']) ? $point['location']['longitude'] : null,
+                    'regime' => $point['working_time'],
+                    'longitude' => isset($point['location'][0]) ? $point['location'][0] : null,
+                    'latitude' => isset($point['location'][1]) ? $point['location'][1] : null,
                     'subway' => [
                         'name' => isset($point['subway']['name']) ? $point['subway']['name'] : null,
                         'line' => [

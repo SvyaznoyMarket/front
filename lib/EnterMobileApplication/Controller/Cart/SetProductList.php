@@ -23,12 +23,28 @@ class SetProductList {
         $curl = $this->getCurl();
         $cartRepository = new \EnterRepository\Cart();
         
+        $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request);
+        if (!$regionId) {
+            throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
+        }
+        
+        $regionQuery = new Query\Region\GetItemById($regionId);
+        $curl->prepare($regionQuery);
+        
         $userAuthToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
-        $user = null;
+        $userItemQuery = null;
         if ($userAuthToken && (0 !== strpos($userAuthToken, 'anonymous-'))) {
+            $userItemQuery = new Query\User\GetItemByToken($userAuthToken);
+            $curl->prepare($userItemQuery);
+        }
+        
+        $curl->execute();
+        
+        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+        
+        $user = null;
+        if ($userItemQuery) {
             try {
-                $userItemQuery = new Query\User\GetItemByToken($userAuthToken);
-                $this->getCurl()->prepare($userItemQuery)->execute();
                 $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
@@ -37,11 +53,6 @@ class SetProductList {
         
         // MAPI-56
         $session = $this->getSession($user && $user->ui ? $user->ui : null);
-
-        $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request);
-        if (!$regionId) {
-            throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
-        }
 
         // товара для корзины
         $cartProducts = $cartRepository->getProductObjectListByHttpRequest($request);
@@ -58,7 +69,7 @@ class SetProductList {
         }
 
         if ($productsById) {
-            $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $regionId);
+            $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id);
             $curl->prepare($productListQuery);
             $curl->execute();
 
@@ -88,10 +99,8 @@ class SetProductList {
 
         $cart->cacheId++;
 
-        // сохранение корзины в сессию
         $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
 
-        // response
-        return new Http\JsonResponse([]);
+        return new Http\JsonResponse(['cart' => (new \EnterMobileApplication\Repository\Cart())->getResponseArray($cart)]);
     }
 }

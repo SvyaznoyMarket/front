@@ -99,6 +99,8 @@ namespace EnterModel {
         public $isStore;
         /** @var \EnterModel\Product\StoreLabel|null Метка "Товар со склада" */
         public $storeLabel;
+        /** @var \EnterModel\Product\AssemblingLabel|null Метка "Собери сам" */
+        public $assemblingLabel;
 
         /**
          * @param array $data
@@ -266,6 +268,11 @@ namespace EnterModel {
 
 namespace EnterModel\Product {
     class StoreLabel {
+        /** @var string */
+        public $name;
+    }
+    
+    class AssemblingLabel {
         /** @var string */
         public $name;
     }

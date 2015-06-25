@@ -124,6 +124,7 @@ namespace EnterTerminal\Controller {
                         'category'    => true,
                         'label'       => true,
                         'brand'       => true,
+                        'tag'         => true,
                     ]
                 );
                 $curl->prepare($descriptionListQuery);

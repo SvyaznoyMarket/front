@@ -39,14 +39,16 @@ class Region {
     public function getObjectByQuery(Query $query) {
         $region = null;
 
-        $item = $query->getResult();
-        if (!$item) {
-            // TODO: logger
-            $region = new Model\Region();
-            $region->id = $this->getConfig()->region->defaultId;
-            $region->name = 'Москва*';
-        } else {
-            $region = new Model\Region($item);
+        try {
+            $item = $query->getResult();
+            if (!$item) {
+                // TODO: logger
+                $region = new Model\Region(['id' => $this->getConfig()->region->defaultId, 'name' => 'Москва*']);
+            } else {
+                $region = new Model\Region($item);
+            }
+        } catch (\Exception $e) {
+            $region = new Model\Region(['id' => $this->getConfig()->region->defaultId, 'name' => 'Москва*']);
         }
 
         return $region;

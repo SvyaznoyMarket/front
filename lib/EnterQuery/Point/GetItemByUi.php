@@ -1,15 +1,12 @@
 <?php
 
-namespace EnterQuery\Shop;
+namespace EnterQuery\Point;
 
 use Enter\Curl\Query;
 use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
-/**
- * @deprecated Используйте \EnterQuery\Point\GetItemByUi
- */
 class GetItemByUi extends Query {
     use ScmsQueryTrait;
 
@@ -21,9 +18,9 @@ class GetItemByUi extends Query {
      */
     public function __construct($ui) {
         $this->url = new Url();
-        $this->url->path = 'shop/get';
+        $this->url->path = 'api/point/get';
         $this->url->query = [
-            'uid' => [$ui],
+            'uids' => [$ui],
         ];
 
         $this->init();
@@ -35,6 +32,6 @@ class GetItemByUi extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data['result'][0]['uid']) ? $data['result'][0] : null;
+        $this->result = isset($data['points'][0]['uid']) ? $data['points'][0] : null;
     }
 }

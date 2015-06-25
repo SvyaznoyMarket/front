@@ -89,40 +89,6 @@ class Cart {
     }
 
     /**
-     * @param $pointToken
-     * @return string
-     */
-    public function getPointImageUrl($pointToken) {
-        switch ($pointToken) {
-            case 'shops':
-                $image = 'enter.png';
-                break;
-            case 'self_partner_pickpoint':
-                $image = 'pickpoint.png';
-                break;
-            case 'self_partner_svyaznoy':
-            case 'shops_svyaznoy':
-                $image = 'svyaznoy.png';
-                break;
-            case 'self_partner_euroset':
-                $image = 'euroset.png';
-                break;
-            case 'self_partner_hermes':
-                $image = 'hermesdpd.png';
-                break;
-            default:
-                $image = '';
-                break;
-        }
-
-        if ($image) {
-            $image = 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/' . $image;
-        }
-
-        return $image;
-    }
-
-    /**
      * @param Http\Session $session
      * @param string $key
      * @return Model\Cart

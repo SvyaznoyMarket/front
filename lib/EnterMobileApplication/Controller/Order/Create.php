@@ -140,7 +140,10 @@ namespace EnterMobileApplication\Controller\Order {
                     $metas
                 );
 
-                $session->remove($config->order->bonusCardSessionKey);
+                if (!$controllerResponse->errors) {
+                    $session->remove($config->order->bonusCardSessionKey);
+                    $session->remove($config->cart->sessionKey);
+                }
 
                 // MAPI-4
                 try {
