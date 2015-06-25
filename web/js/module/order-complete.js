@@ -1,7 +1,7 @@
 define(
     [
         'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'jquery.ui', 'jquery.maskedinput',
-        'module/order/user.form', 'module/order/common'
+        'module/order/user.form'
     ],
     function(
         require, $, _, mustache, util, config
