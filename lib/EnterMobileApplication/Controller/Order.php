@@ -93,6 +93,19 @@ namespace EnterMobileApplication\Controller {
 
                 $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
             }
+
+            $media = $pointRepository->getMedia($point['partner'], ['logo']);
+            $imageUrl = null;
+            foreach ($media->photos as $media) {
+                if (in_array('logo', $media->tags, true)) {
+                    foreach ($media->sources as $source) {
+                        if ($source->type === '100x100') {
+                            $imageUrl = $source->url;
+                            break(2);
+                        }
+                    }
+                }
+            }
             
             $response = ['order' => [
                 'id' => $order->id,
@@ -151,7 +164,8 @@ namespace EnterMobileApplication\Controller {
                 'point' => $point ? [
                     'ui' => $point['uid'],
                     'name' => $pointRepository->getName($point['partner']),
-                    'media' => $pointRepository->getMedia($point['partner']),
+                    'media' => $media,
+                    'imageUrl' => $imageUrl, // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split и point.imageUrl из ответа метода Order
                     'address' => $point['address'],
                     'regime' => $point['working_time'],
                     'longitude' => isset($point['location'][0]) ? $point['location'][0] : null,
