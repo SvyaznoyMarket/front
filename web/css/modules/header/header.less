@@ -1,11 +1,11 @@
 /* ==========================================================================
    Шапка сайта .header
    ========================================================================== */
-.fixfixed {
-    .header {
-        position: absolute;
-    }
-}
+// .fixfixed {
+//     .header {
+//         position: absolute;
+//     }
+// }
 
 .header {
     position: fixed;
@@ -153,21 +153,20 @@
 
 // автокомплит поиска
 .search-suggest {
-    position: fixed;
-    z-index: 200;
-    top: 0;
-    padding-top: 50px;
-    -webkit-overflow-scrolling: touch;
-    right: 0;
-    bottom: 0;
-    left: 0;
-
-    display: none;
-    overflow: auto;
+display:  none;
 
     width: 100%;
 
     background: #fff;
+
+    position: absolute;
+    box-sizing: border-box;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  padding-top: 50px;
+  overflow-y: auto;
+  z-index: 1000;
     &.m-body-loader {
         overflow: hidden;
     }
@@ -185,11 +184,12 @@
 
 .search-suggest-list {
     &__item {
-        overflow: hidden;
-
-        padding: 10px 20px;
-
         border-bottom: 1px solid #c7c7c7;
+    }
+    &__link {
+        padding: 10px 20px;
+        display: block;
+        overflow: hidden;
     }
     &__img {
         max-width: 40px;

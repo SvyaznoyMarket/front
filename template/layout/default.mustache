@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta http-equiv="cleartype" content="on">
 
     <meta name="apple-itunes-app" content="app-id=486318342">
@@ -37,6 +37,7 @@
     <meta name="apple-mobile-web-app-capable" content="no">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes" />
 
     <meta id="js-enter-debug" name="enter-debug" content="{{&dataDebug}}">
     <meta id="js-enter-version" name="enter-version" content="{{&dataVersion}}">
@@ -64,6 +65,8 @@
     {{#regionBlock}}
         {{>partial/region}}
     {{/regionBlock}}
+
+    {{>partial/search.suggest}}
 
     {{>partial/partner}}
 </body>

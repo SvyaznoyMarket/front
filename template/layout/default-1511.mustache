@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html class="no-js" lang="">
     <head>
@@ -7,11 +6,14 @@
         <meta name="description" content="">
         <meta name="HandheldFriendly" content="True">
         <meta name="MobileOptimized" content="320">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <meta http-equiv="cleartype" content="on">
         <meta name="format-detection" content="telephone=yes" />
 
         <link rel="canonical" href="http://www.enter.ru/" >
+
+        <meta name="apple-itunes-app" content="app-id=486318342">
+    	<meta name="google-play-app" content="app-id=ru.enter">
 
         <!-- Add to homescreen for Chrome on Android -->
         <!--
@@ -22,6 +24,7 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <meta name="apple-mobile-web-app-title" content="">
+        <meta name="apple-touch-fullscreen" content="yes" />
 
         <!-- This script prevents links from opening in Mobile Safari. https://gist.github.com/1042026 -->
         <!--
@@ -38,396 +41,400 @@
     </head>
 
     <body data-module="{{&dataModule}}" data-config="{{&dataConfig}}">
-    	{{>partial/header}}
+    	<div class="wrapper">
+	    	{{>partial/header}}
 
-		<main class="content">
-			<div class="slider-parent m-loader js-slider-parent" data-value="{{&promoDataValue}}">
-				<div class="main-banner-slider js-main-banner-slider">
-					<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link js-ga-click"><img src="img/main/banner-1.png" alt="" class="main-banner-slider__img"></a></div>
-					<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link js-ga-click"><img src="img/main/banner-2.png" alt="" class="main-banner-slider__img"></a></div>
-					<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link js-ga-click"><img src="img/main/banner-3.png" alt="" class="main-banner-slider__img"></a></div>
-					<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link js-ga-click"><img src="img/main/banner-1.png" alt="" class="main-banner-slider__img"></a></div>
-					<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link js-ga-click"><img src="img/main/banner-2.png" alt="" class="main-banner-slider__img"></a></div>
-				</div>
-			</div>
-
-			<ul class="shop-info grid-4cols clearfix">
-				<li class="shop-info__item grid-4cols__item">
-					<a class="shop-info__link" href="tel://8-800-700-0009">
-						<i class="shop-info__item-icon i-shop-info i-shop-info__phone"></i>
-						<span class="shop-info__item-text">8 (800) 700-00-09</span>
-					</a>
-				</li>
-				<li class="shop-info__item grid-4cols__item">
-					<a class="shop-info__link" href="/how_get_order">
-						<i class="shop-info__item-icon i-shop-info i-shop-info__delivery"></i>
-						<span class="shop-info__item-text">Доставка</span>
-					</a>
-				</li>
-				<li class="shop-info__item grid-4cols__item">
-					<a class="shop-info__link" href="/delivery_types#delivr_self">
-						<i class="shop-info__item-icon i-shop-info i-shop-info__self-delivery"></i>
-						<span class="shop-info__item-text">Самовывоз</span>
-					</a>
-				</li>
-				<li class="shop-info__item grid-4cols__item">
-					<a class="shop-info__link" href="/shops">
-						<i class="shop-info__item-icon i-shop-info i-shop-info__shops"></i>
-						<span class="shop-info__item-text">Магазины</span>
-					</a>
-				</li>
-			</ul>
-
-			<div class="main-inn">
-				<div class="grid-2cols clearfix">
-					<div class="grid-2cols__item">
-						<div class="items-slider items-slider--left">
-							<div class="items-slider-nav">
-						        <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-featured"></div>
-
-						        <div class="items-slider-nav__desc">
-						            <div class="items-slider-nav__title">Популярные товары</div>
-						        </div>
-
-						        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-featured"></div>
-						    </div>
-
-							<div class="slider-parent m-loader js-slider-parent">
-							    <div class="items-slider-slides items-slider-slides--goods js-main-items-slider-featured" data-slick-slider="featured" data-slick='{"slidesToShow": 3, "slidesToScroll": 3}'>
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
-
-										<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
-
-										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-									</div>
-
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
-
-										<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
-
-										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-									</div>
-
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
-
-										<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
-
-										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-									</div>
-
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
-
-										<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
-
-										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-									</div>
-
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
-
-										<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
-
-										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="grid-2cols__item">
-						<div class="items-slider items-slider--right">
-							<div class="items-slider-nav">
-						        <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-recommended"></div>
-
-						        <div class="items-slider-nav__desc">
-						            <div class="items-slider-nav__title">Мы рекомендуем</div>
-						        </div>
-
-						        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-recommended"></div>
-						    </div>
-
-							<div class="slider-parent m-loader js-slider-parent">
-							    <div class="items-slider-slides items-slider-slides--goods js-main-items-slider-recommended" data-slick-slider="recommended" data-slick='{"slidesToShow": 3, "slidesToScroll": 3}'>
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
-
-										<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
-
-										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-									</div>
-
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
-
-										<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
-
-										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-									</div>
-
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
-
-										<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
-
-										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-									</div>
-
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
-
-										<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
-
-										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-									</div>
-
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
-
-										<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
-
-										<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
-										<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
-										<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
-									</div>
-								</div>
-							</div>
-						</div>
+			<main class="content">
+				<div class="slider-parent m-loader js-slider-parent" data-value="{{&promoDataValue}}">
+					<div class="main-banner-slider js-main-banner-slider">
+						<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link js-ga-click"><img src="img/main/banner-1.png" alt="" class="main-banner-slider__img"></a></div>
+						<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link js-ga-click"><img src="img/main/banner-2.png" alt="" class="main-banner-slider__img"></a></div>
+						<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link js-ga-click"><img src="img/main/banner-3.png" alt="" class="main-banner-slider__img"></a></div>
+						<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link js-ga-click"><img src="img/main/banner-1.png" alt="" class="main-banner-slider__img"></a></div>
+						<div class="main-banner-slider__item"><a href="" class="main-banner-slider__link js-ga-click"><img src="img/main/banner-2.png" alt="" class="main-banner-slider__img"></a></div>
 					</div>
 				</div>
-			</div>
 
-			{{#mainMenu}}
-			<ul class="categories-grid clearfix">
-				{{#elements}}
-				<li class="categories-grid__item">
-					<a class="categories-grid__link js-ga-click" href="{{url}}" data-ga-click="{{&dataGa}}">
-						<span class="categories-grid__icon">
-							<span class="categories-grid__char"{{#style}} style="{{style}}"{{/style}}>{{char}}</span>
-                        	{{#image}}<img class="categories-grid__img" src="{{image}}" />{{/image}}
-						</span>
-						<span class="categories-grid__text">{{&name}}</span>
-					</a>
-				</li>
-				{{/elements}}
-			</ul>
-			{{/mainMenu}}
+				<ul class="shop-info grid-4cols clearfix">
+					<li class="shop-info__item grid-4cols__item">
+						<a class="shop-info__link" href="tel://8-800-700-0009">
+							<i class="shop-info__item-icon i-shop-info i-shop-info__phone"></i>
+							<span class="shop-info__item-text">8 (800) 700-00-09</span>
+						</a>
+					</li>
+					<li class="shop-info__item grid-4cols__item">
+						<a class="shop-info__link" href="/how_get_order">
+							<i class="shop-info__item-icon i-shop-info i-shop-info__delivery"></i>
+							<span class="shop-info__item-text">Доставка</span>
+						</a>
+					</li>
+					<li class="shop-info__item grid-4cols__item">
+						<a class="shop-info__link" href="/delivery_types#delivr_self">
+							<i class="shop-info__item-icon i-shop-info i-shop-info__self-delivery"></i>
+							<span class="shop-info__item-text">Самовывоз</span>
+						</a>
+					</li>
+					<li class="shop-info__item grid-4cols__item">
+						<a class="shop-info__link" href="/shops">
+							<i class="shop-info__item-icon i-shop-info i-shop-info__shops"></i>
+							<span class="shop-info__item-text">Магазины</span>
+						</a>
+					</li>
+				</ul>
 
-			<div class="main-inn">
-				<div class="grid-2cols clearfix">
-					<div class="grid-2cols__item">
-						<div class="items-slider">
-							<div class="items-slider-nav">
-						        <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-watched"></div>
+				<div class="main-inn">
+					<div class="grid-2cols clearfix">
+						<div class="grid-2cols__item">
+							<div class="items-slider items-slider--left">
+								<div class="items-slider-nav">
+							        <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-featured"></div>
 
-						        <div class="items-slider-nav__desc">
-						            <div class="items-slider-nav__title">Вы смотрели</div>
-						        </div>
+							        <div class="items-slider-nav__desc">
+							            <div class="items-slider-nav__title">Популярные товары</div>
+							        </div>
 
-						        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-watched"></div>
-						    </div>
+							        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-featured"></div>
+							    </div>
 
-						    <div class="slider-parent m-loader js-slider-parent">
-							    <div class="items-slider-slides items-slider-slides--images js-main-items-slider-watched" data-slick-slider="watched" data-slick='{"slidesToShow": 6, "slidesToScroll": 6}'>
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
-									</div>
+								<div class="slider-parent m-loader js-slider-parent">
+								    <div class="items-slider-slides items-slider-slides--goods js-main-items-slider-featured" data-slick-slider="featured" data-slick='{"slidesToShow": 3, "slidesToScroll": 3}'>
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
 
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
-									</div>
+											<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
 
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
-									</div>
+											<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+											<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+											<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+										</div>
 
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
-									</div>
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
 
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" href="">
-											<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
-										</a>
+											<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
+
+											<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+											<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+											<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
+
+											<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
+
+											<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+											<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+											<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
+
+											<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
+
+											<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+											<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+											<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
+
+											<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
+
+											<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+											<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+											<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
 
-					<div class="grid-2cols__item">
-						<div class="items-slider">
-							<div class="items-slider-nav">
-						        <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-brands"></div>
+						<div class="grid-2cols__item">
+							<div class="items-slider items-slider--right">
+								<div class="items-slider-nav">
+							        <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-recommended"></div>
 
-						        <div class="items-slider-nav__desc">
-						            <div class="items-slider-nav__title">Популярные бренды</div>
-						        </div>
+							        <div class="items-slider-nav__desc">
+							            <div class="items-slider-nav__title">Мы рекомендуем</div>
+							        </div>
 
-						        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-brands"></div>
-						    </div>
+							        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-recommended"></div>
+							    </div>
 
-						    <div class="slider-parent m-loader js-slider-parent">
-							    <div class="items-slider-slides items-slider-slides--images js-main-items-slider-brands" data-slick-slider="brands" data-slick='{"slidesToShow": 4, "slidesToScroll": 4}'>
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" title="Bosch" href="/slices/brands-bosch">
-							                <img src="img/main/logo/bosch.jpg" alt="Bosch" class="items-slider__img">
-							            </a>
+								<div class="slider-parent m-loader js-slider-parent">
+								    <div class="items-slider-slides items-slider-slides--goods js-main-items-slider-recommended" data-slick-slider="recommended" data-slick='{"slidesToShow": 3, "slidesToScroll": 3}'>
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
 
-							            <a class="items-slider__img-link" title="LG" href="/slices/brands-lg">
-							                <img src="img/main/logo/lg.jpg" alt="LG" class="items-slider__img">
-							            </a>
+											<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
+
+											<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+											<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+											<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
+
+											<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
+
+											<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+											<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+											<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
+
+											<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
+
+											<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+											<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+											<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
+
+											<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
+
+											<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+											<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+											<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
+
+											<a class="items-slider__name" href="">Смартфон Nokia Lumia 720 черный</a>
+
+											<span class="items-slider__old-price"><span class="line-through">45 590</span> <span class="rubl">p</span></span>
+											<span class="span items-slider__now-price">45 590 <span class="rubl">p</span></span>
+											<a href="" class="span items-slider__buy btn--buy btn--extra">Купить</a>
+										</div>
 									</div>
-
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" title="Samsung" href="/slices/brands-samsung">
-							                <img src="img/main/logo/samsung.jpg" alt="Samsung" class="items-slider__img">
-							            </a>
-
-							            <a class="items-slider__img-link" title="Philips" href="/slices/brands-philips">
-							                <img src="img/main/logo/philips.jpg" alt="Philips" class="items-slider__img">
-							            </a>
-									</div>
-
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" title="Electrolux" href="/slices/brands-electrolux">
-							                <img src="img/main/logo/electrolux.jpg" alt="Electrolux" class="items-slider__img">
-							            </a>
-
-							            <a class="items-slider__img-link" title="Sony" href="/slices/brands-sony">
-							                <img src="img/main/logo/sony.jpg" alt="Sony" class="items-slider__img">
-							            </a>
-									</div>
-
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" title="Apple" href="/slices/brands-apple">
-							                <img src="img/main/logo/apple.jpg" alt="Apple" class="items-slider__img">
-							            </a>
-
-							            <a class="items-slider__img-link" title="HP" href="/slices/brands-hp">
-							                <img src="img/main/logo/HP.jpg" alt="HP" class="items-slider__img">
-							            </a>
-									</div>
-
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" title="Lenovo" href="/slices/brands-lenovo">
-							                <img src="img/main/logo/lenovo.jpg" alt="Lenovo" class="items-slider__img">
-							            </a>
-
-							            <a class="items-slider__img-link" title="Hasbro" href="/search?q=hasbro">
-							                <img src="img/main/logo/hasHasbrobro.jpg" alt="Hasbro" class="items-slider__img">
-							            </a>
-									</div>
-
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" title="Sylvanian Families" href="/slices/brands-sylvanian-families">
-							                <img src="img/main/logo/Sylvanian-Families.jpg" alt="Sylvanian Families" class="items-slider__img">
-							            </a>
-
-							            <a class="items-slider__img-link" title="LEGO" href="/slices/brands-lego">
-							                <img src="img/main/logo/lego.jpg" alt="LEGO" class="items-slider__img">
-							            </a>
-									</div>
-
-									<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" title="Анзоли" href="/slices/brands-anzoli">
-							                <img src="img/main/logo/anzoli.jpg" alt="Anzoli" class="items-slider__img">
-							            </a>
-
-							            <a class="items-slider__img-link" title="Шатура" href="/slices/brands-shatura">
-							                <img src="img/main/logo/shatura.jpg" alt="Шатура" class="items-slider__img">
-							            </a>
-            						</div>
-
-            						<div class="items-slider-slides__item">
-										<a class="items-slider__img-link" title="Vision Fitness" href="/slices/brands-vision">
-							                <img src="img/main/logo/visionfitnes.jpg" alt="Vision Fitness" class="items-slider__img">
-							            </a>
-
-							            <a class="items-slider__img-link" title="Makita" href="/slices/brands-makita">
-							                <img src="img/main/logo/Makita.jpg" alt="Makita" class="items-slider__img">
-							            </a>
-            						</div>
-
-            						<div class="items-slider-slides__item">
-            							<a class="items-slider__img-link" title="Аскона" href="/slices/brands-askona">
-							                <img src="img/main/logo/askona.jpg" alt="Askona" class="items-slider__img">
-							            </a>
-										<a class="items-slider__img-link" title="Tefal" href="/slices/brands-tefal">
-							                <img src="img/main/logo/tefal.jpg" alt="Tefal" class="items-slider__img">
-							            </a>
-            						</div>
-
-            						<div class="items-slider-slides__item">
-            							<a class="items-slider__img-link" title="PANDORA" href="/slices/brands-pandora">
-							                <img src="img/main/logo/pandora.jpg" alt="PANDORA" class="items-slider__img">
-							            </a>
-
-										<a class="items-slider__img-link" title="GUESS" href="/slices/brands-guess">
-							                <img src="img/main/logo/guess.jpg" alt="GUESS" class="items-slider__img">
-							            </a>
-            						</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		</main>
 
-		{{>partial/footer}}
+				{{#mainMenu}}
+				<ul class="categories-grid clearfix">
+					{{#elements}}
+					<li class="categories-grid__item">
+						<a class="categories-grid__link js-ga-click" href="{{url}}" data-ga-click="{{&dataGa}}">
+							<span class="categories-grid__icon">
+								<span class="categories-grid__char"{{#style}} style="{{style}}"{{/style}}>{{char}}</span>
+	                        	{{#image}}<img class="categories-grid__img" src="{{image}}" />{{/image}}
+							</span>
+							<span class="categories-grid__text">{{&name}}</span>
+						</a>
+					</li>
+					{{/elements}}
+				</ul>
+				{{/mainMenu}}
+
+				<div class="main-inn">
+					<div class="grid-2cols clearfix">
+						<div class="grid-2cols__item">
+							<div class="items-slider">
+								<div class="items-slider-nav">
+							        <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-watched"></div>
+
+							        <div class="items-slider-nav__desc">
+							            <div class="items-slider-nav__title">Вы смотрели</div>
+							        </div>
+
+							        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-watched"></div>
+							    </div>
+
+							    <div class="slider-parent m-loader js-slider-parent">
+								    <div class="items-slider-slides items-slider-slides--images js-main-items-slider-watched" data-slick-slider="watched" data-slick='{"slidesToShow": 6, "slidesToScroll": 6}'>
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" href="">
+												<img class="items-slider__img" src="http://a.imgenter.ru/uploads/media/23/ea/50/thumb_fdd5_product_160.jpeg" />
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="grid-2cols__item">
+							<div class="items-slider">
+								<div class="items-slider-nav">
+							        <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-brands"></div>
+
+							        <div class="items-slider-nav__desc">
+							            <div class="items-slider-nav__title">Популярные бренды</div>
+							        </div>
+
+							        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-brands"></div>
+							    </div>
+
+							    <div class="slider-parent m-loader js-slider-parent">
+								    <div class="items-slider-slides items-slider-slides--images js-main-items-slider-brands" data-slick-slider="brands" data-slick='{"slidesToShow": 4, "slidesToScroll": 4}'>
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" title="Bosch" href="/slices/brands-bosch">
+								                <img src="img/main/logo/bosch.jpg" alt="Bosch" class="items-slider__img">
+								            </a>
+
+								            <a class="items-slider__img-link" title="LG" href="/slices/brands-lg">
+								                <img src="img/main/logo/lg.jpg" alt="LG" class="items-slider__img">
+								            </a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" title="Samsung" href="/slices/brands-samsung">
+								                <img src="img/main/logo/samsung.jpg" alt="Samsung" class="items-slider__img">
+								            </a>
+
+								            <a class="items-slider__img-link" title="Philips" href="/slices/brands-philips">
+								                <img src="img/main/logo/philips.jpg" alt="Philips" class="items-slider__img">
+								            </a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" title="Electrolux" href="/slices/brands-electrolux">
+								                <img src="img/main/logo/electrolux.jpg" alt="Electrolux" class="items-slider__img">
+								            </a>
+
+								            <a class="items-slider__img-link" title="Sony" href="/slices/brands-sony">
+								                <img src="img/main/logo/sony.jpg" alt="Sony" class="items-slider__img">
+								            </a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" title="Apple" href="/slices/brands-apple">
+								                <img src="img/main/logo/apple.jpg" alt="Apple" class="items-slider__img">
+								            </a>
+
+								            <a class="items-slider__img-link" title="HP" href="/slices/brands-hp">
+								                <img src="img/main/logo/HP.jpg" alt="HP" class="items-slider__img">
+								            </a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" title="Lenovo" href="/slices/brands-lenovo">
+								                <img src="img/main/logo/lenovo.jpg" alt="Lenovo" class="items-slider__img">
+								            </a>
+
+								            <a class="items-slider__img-link" title="Hasbro" href="/search?q=hasbro">
+								                <img src="img/main/logo/hasHasbrobro.jpg" alt="Hasbro" class="items-slider__img">
+								            </a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" title="Sylvanian Families" href="/slices/brands-sylvanian-families">
+								                <img src="img/main/logo/Sylvanian-Families.jpg" alt="Sylvanian Families" class="items-slider__img">
+								            </a>
+
+								            <a class="items-slider__img-link" title="LEGO" href="/slices/brands-lego">
+								                <img src="img/main/logo/lego.jpg" alt="LEGO" class="items-slider__img">
+								            </a>
+										</div>
+
+										<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" title="Анзоли" href="/slices/brands-anzoli">
+								                <img src="img/main/logo/anzoli.jpg" alt="Anzoli" class="items-slider__img">
+								            </a>
+
+								            <a class="items-slider__img-link" title="Шатура" href="/slices/brands-shatura">
+								                <img src="img/main/logo/shatura.jpg" alt="Шатура" class="items-slider__img">
+								            </a>
+	            						</div>
+
+	            						<div class="items-slider-slides__item">
+											<a class="items-slider__img-link" title="Vision Fitness" href="/slices/brands-vision">
+								                <img src="img/main/logo/visionfitnes.jpg" alt="Vision Fitness" class="items-slider__img">
+								            </a>
+
+								            <a class="items-slider__img-link" title="Makita" href="/slices/brands-makita">
+								                <img src="img/main/logo/Makita.jpg" alt="Makita" class="items-slider__img">
+								            </a>
+	            						</div>
+
+	            						<div class="items-slider-slides__item">
+	            							<a class="items-slider__img-link" title="Аскона" href="/slices/brands-askona">
+								                <img src="img/main/logo/askona.jpg" alt="Askona" class="items-slider__img">
+								            </a>
+											<a class="items-slider__img-link" title="Tefal" href="/slices/brands-tefal">
+								                <img src="img/main/logo/tefal.jpg" alt="Tefal" class="items-slider__img">
+								            </a>
+	            						</div>
+
+	            						<div class="items-slider-slides__item">
+	            							<a class="items-slider__img-link" title="PANDORA" href="/slices/brands-pandora">
+								                <img src="img/main/logo/pandora.jpg" alt="PANDORA" class="items-slider__img">
+								            </a>
+
+											<a class="items-slider__img-link" title="GUESS" href="/slices/brands-guess">
+								                <img src="img/main/logo/guess.jpg" alt="GUESS" class="items-slider__img">
+								            </a>
+	            						</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+
+			{{>partial/footer}}
+		</div>
 
 		{{#regionBlock}}
 	        {{>partial/region}}
 	    {{/regionBlock}}
+
+	    {{>partial/search.suggest}}
 	</body>
 </html>

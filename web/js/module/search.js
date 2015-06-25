@@ -50,9 +50,8 @@ define(
                     target = event.target;
 
                 if ( !formSearch.is(target) && formSearch.has(target).length === 0 ) {
-
                     header.removeClass(searchClass);
-                    body.removeClass(noScrollClass);
+                    $('html').removeClass(noScrollClass);
                     inputSearch.val('');
                     suggest.hide().empty();
                 }
@@ -63,9 +62,13 @@ define(
                 event.preventDefault();
 
                 inputSearch.val('');
-                body.removeClass(noScrollClass);
+                $('html').removeClass(noScrollClass);
                 inputSearch.trigger('focus');
                 suggest.hide().empty();
+            },
+
+            markSuggest = function() {
+                suggest.addClass('m-body-loader');
             },
 
             // Ответ по поисковому запросу, показ саджеста
@@ -100,7 +103,7 @@ define(
 
                         if ( result.categories.length > 1 || result.products.length >1 ) {
                             html = mustache.render(template, {suggestData: suggestData});
-                            body.addClass(noScrollClass);
+                            $('html').addClass(noScrollClass);
                             suggest.show().html(html);
                         }
                     };
@@ -131,16 +134,13 @@ define(
         body.on('click', '.js-searchLink', showSearch);
         body.on('keyup', '.js-search-form-input', submitSearch);
         body.on('click', '.js-search-input-clear', clearSuggest);
+        body.on('click', '.js-suggest-link', markSuggest);
 
         // закрыть блок с полем ввода поиска
         body.on('click', function() {
             // закрываем по клику если блок виден а саджест не отображен
             if( formSearch.is(':visible') && !suggest.is(':visible') ) {
                 closeSearch( event );
-            }
-            // при клике по ссылке саджеста показать лоадер
-            else if ( suggest.is(':visible') ) {
-                suggest.addClass('m-body-loader');
             }
         });
 
