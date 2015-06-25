@@ -665,6 +665,12 @@ class Delivery {
             : false
         ;
 
+        $page->content->dataValue = $templateHelper->json([
+            'order' => [
+                'count' => count($splitModel->orders),
+            ]
+        ]);
+
         $page->content->errors = call_user_func(function() use (&$splitModel) {
             $errors = [];
 

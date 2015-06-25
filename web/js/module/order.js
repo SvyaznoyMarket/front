@@ -1,9 +1,9 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'module/form-validator', 'jquery.ui', 'jquery.maskedinput', 'module/toggleLink'
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'module/form-validator', 'module/order/analytics.google', 'jquery.ui', 'jquery.maskedinput', 'module/toggleLink'
     ],
     function(
-        require, $, _, mustache, util, config, formValidator
+        require, $, _, mustache, util, config, formValidator, analytics
     ) {
 
         var
@@ -42,6 +42,7 @@ define(
 
             $body                       = $('body'),
             $deliveryForm               = $('.js-order-delivery-form'),
+            deliveryData                = $deliveryForm.data('value'),
             $pointMap                   = $('#pointYandexMap'),
             $addressMap                 = $('#addressYandexMap'),
             $mapContainer               = $('#yandexMap-container'),
@@ -887,5 +888,22 @@ define(
         }
 
         formValidator.init();
+
+        console.info('config', config);
+
+        try {
+            analytics.push(['7 Вход_Доставка_ОБЯЗАТЕЛЬНО', 'Количество заказов: ' + deliveryData.order.count]);
+
+            $body.on('submit', '.js-regionSet-form', function(e) {
+                var $form = $(this);
+
+                analytics.push(['8 Регион_Доставка', 'Было: ' + config.region.name + ', Стало: ' + $form.find('#js-regionSet-input').val()]);
+            });
+            $body.on('click', '.js-regionSet-link', function(e) {
+                var $el = $(this);
+
+                analytics.push(['8 Регион_Доставка', 'Было: ' + config.region.name + ', Стало: ' + $el.text()]);
+            })
+        } catch (error) { console.error(error); }
     }
 );

@@ -22,14 +22,16 @@ define(
                 type: 'POST',
                 url: url,
                 data: $form.serialize(),
-                error: function(){
+                error: function() {
                     analytics.push(['6_2 Далее_ошибка_Получатель']);
                 },
-                success: function(result){
+                success: function(result) {
                     formValidator.validate($form, result.errors);
 
                     // если ошибок нет переход на следущий шаг
                     if (result.redirect != null && result.redirect.length) {
+                        analytics.push(['6_1 Далее_успешно_Получатель_ОБЯЗАТЕЛЬНО']);
+
                         window.location.href = result.redirect;
                     }
 
