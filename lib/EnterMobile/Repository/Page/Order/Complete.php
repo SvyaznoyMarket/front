@@ -67,9 +67,10 @@ class Complete {
             $deliveryModel = isset($orderModel->deliveries[0]) ? $orderModel->deliveries[0] : null;
 
             $order = [
-                'id'     => $orderModel->id,
-                'number' => $orderModel->number,
-                'sum'    =>
+                'id'        => $orderModel->id,
+                'number'    => $orderModel->number,
+                'numberErp' => $orderModel->numberErp,
+                'sum'       =>
                     $orderModel->sum
                     ? [
                         'name'  => $priceHelper->format($orderModel->sum),
@@ -109,7 +110,7 @@ class Complete {
                     })
                     : false
                 ,
-                'interval' =>
+                'interval'  =>
                     $orderModel->interval
                     ? [
                         'from' => $orderModel->interval->from,
@@ -117,7 +118,7 @@ class Complete {
                     ]
                     : false
                 ,
-                'point' => call_user_func(function() use (&$orderModel, &$pointRepository) {
+                'point'     => call_user_func(function() use (&$orderModel, &$pointRepository) {
                     if (!$pointModel = $orderModel->point) {
                         return false;
                     }
@@ -147,7 +148,7 @@ class Complete {
 
                     return $point;
                 }),
-                'products' => call_user_func(function() use (&$orderModel) {
+                'products'  => call_user_func(function() use (&$orderModel) {
                     $products = [];
 
                     $i = 0;
@@ -184,7 +185,7 @@ class Complete {
                         && ($orderModel->sum >= $config->order->prepayment->priceLimit)
                     ;
                 }),
-                'onlinePayment'     => call_user_func(function() use (&$orderModel, &$onlinePaymentMethodModelsById, $onlinePaymentMethodsById) {
+                'onlinePayment' => call_user_func(function() use (&$orderModel, &$onlinePaymentMethodModelsById, $onlinePaymentMethodsById) {
                     if (!count($onlinePaymentMethodModelsById)) {
                         return false;
                     }
