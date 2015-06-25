@@ -1,6 +1,12 @@
 /* ==========================================================================
    Шапка сайта .header
    ========================================================================== */
+.fixfixed {
+    .header {
+        position: absolute;
+    }
+}
+
 .header {
     position: fixed;
     z-index: 1010;
@@ -149,7 +155,9 @@
 .search-suggest {
     position: fixed;
     z-index: 200;
-    top: 50px;
+    top: 0;
+    padding-top: 50px;
+    -webkit-overflow-scrolling: touch;
     right: 0;
     bottom: 0;
     left: 0;
@@ -158,9 +166,11 @@
     overflow: auto;
 
     width: 100%;
-    height: auto;
 
     background: #fff;
+    &.m-body-loader {
+        overflow: hidden;
+    }
     &__title {
         font-size: .875em;
         line-height: 1.4;

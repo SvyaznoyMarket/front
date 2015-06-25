@@ -83,7 +83,7 @@ a {
   outline: 0;
 }
 a:focus {
-  outline: thin dotted;
+  outline: 0;
 }
 /**
  * Improve readability when focused and also mouse hovered in all browsers.
@@ -802,6 +802,36 @@ textarea[contenteditable] {
   background-color: #000000;
   margin-right: 2px;
 }
+.m-body-loader {
+  position: relative;
+}
+.m-body-loader:before {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: '';
+  background: rgba(255, 255, 255, 0.6);
+  z-index: 99;
+}
+.m-body-loader:after {
+  background: url("../img/loader/loader.png") no-repeat 50% 50%;
+  position: fixed;
+  -webkit-animation: rotated 3.5s infinite linear;
+  -moz-animation: rotated 3.5s infinite linear;
+  -ms-animation: rotated 3.5s infinite linear;
+  -o-animation: rotated 3.5s infinite linear;
+  animation: rotated 3.5s infinite linear;
+  top: 50%;
+  margin-top: -30px;
+  left: 50%;
+  margin-left: -30px;
+  width: 60px;
+  height: 60px;
+  z-index: 99;
+  content: '';
+}
 .m-loader {
   position: relative;
 }
@@ -1185,6 +1215,9 @@ body.noScroll {
 /* ==========================================================================
    Шапка сайта .header
    ========================================================================== */
+.fixfixed .header {
+  position: absolute;
+}
 .header {
   position: fixed;
   z-index: 1010;
@@ -1309,15 +1342,19 @@ body.noScroll {
 .search-suggest {
   position: fixed;
   z-index: 200;
-  top: 50px;
+  top: 0;
+  padding-top: 50px;
+  -webkit-overflow-scrolling: touch;
   right: 0;
   bottom: 0;
   left: 0;
   display: none;
   overflow: auto;
   width: 100%;
-  height: auto;
   background: #fff;
+}
+.search-suggest.m-body-loader {
+  overflow: hidden;
 }
 .search-suggest__title {
   font-size: .875em;

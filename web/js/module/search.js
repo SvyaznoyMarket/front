@@ -1,18 +1,6 @@
 define(
     ['jquery', 'underscore', 'mustache', 'jquery.popup'],
     function ($, _, mustache) {
-        var $body = $('body'),
-
-        showPopup = function( e ) {
-            header.addClass(searchClass);
-            e.stopPropagation();
-            e.preventDefault();
-
-            // MSITE-156
-            $($('.js-search-form').data('inputSelector')).focus();
-        };
-
-        $body.on('click', '.js-searchLink', showPopup);
 
         $('.js-search-form').on('submit', function(e) {
             var $input = $($(e.target).data('inputSelector'));
@@ -23,18 +11,28 @@ define(
         });
 
         var
-            inputSearch = $('.js-search-form-input'),
-            container   = $('.js-search-suggest'),
-            template    = $('#tpl-search-suggest').html(),
-            header      = $('.js-header'),
-            searchClass = 'search',
+            body          = $('body'),
+            formSearch    = $('.js-search-form'),
+            inputSearch   = $('.js-search-form-input'),
+            suggest       = $('.js-search-suggest'),
+            template      = $('#tpl-search-suggest').html(),
+            header        = $('.js-header'),
+            searchClass   = 'search',
+            noScrollClass = 'noScroll',
 
-            submitSearch = function ( event ) {
+            // Показ блока поиска
+            showSearch = function( event ) {
+                header.addClass(searchClass);
+                inputSearch.trigger('focus');
+                event.preventDefault();
+                event.stopPropagation();
+            },
+
+            // Запрос с поисковой строкой
+            submitSearch = function () {
                 var
                     searchInputVal = $('.js-search-form-input').val(),
                     url = '/search/autocomplete?q=' + searchInputVal;
-
-                event.stopPropagation();
 
                 if ( searchInputVal !== '' && searchInputVal.length > 3 ) {
                     $.ajax({
@@ -46,23 +44,31 @@ define(
                 }
             },
 
-            closeSearch = function() {
-                header.removeClass(searchClass);
-                $body.removeClass('noScroll');
-                inputSearch.val('');
-                container.hide().empty();
+            // Закрытие блокв с полем ввода поиска
+            closeSearch = function( event ) {
+                var
+                    target = event.target;
+
+                if ( !formSearch.is(target) && formSearch.has(target).length === 0 ) {
+
+                    header.removeClass(searchClass);
+                    body.removeClass(noScrollClass);
+                    inputSearch.val('');
+                    suggest.hide().empty();
+                }
             },
 
+            // Отчистка поля ввода поиска
             clearSuggest = function( event ) {
                 event.preventDefault();
-                event.stopPropagation();
 
                 inputSearch.val('');
-                $body.removeClass('noScroll');
+                body.removeClass(noScrollClass);
                 inputSearch.trigger('focus');
-                container.hide().empty();
+                suggest.hide().empty();
             },
 
+            // Ответ по поисковому запросу, показ саджеста
             successSearch = (function () {
                 var
                     timeWindow = 500, // time in ms
@@ -94,8 +100,8 @@ define(
 
                         if ( result.categories.length > 1 || result.products.length >1 ) {
                             html = mustache.render(template, {suggestData: suggestData});
-                            $body.addClass('noScroll');
-                            container.show().html(html);
+                            body.addClass(noScrollClass);
+                            suggest.show().html(html);
                         }
                     };
                 // end of vars
@@ -119,10 +125,30 @@ define(
                 console.log(textStatus);
                 console.log(errorThrown);
             };
+        // end of vars
 
-        $body.on('click', 'js-searchLink', showPopup);
-        $body.on('keyup focus click', '.js-search-form-input', submitSearch);
-        $body.on('click', '.js-search-input-clear', clearSuggest);
-        $body.on('click', closeSearch);
+        // events
+        body.on('click', '.js-searchLink', showSearch);
+        body.on('keyup', '.js-search-form-input', submitSearch);
+        body.on('click', '.js-search-input-clear', clearSuggest);
+
+        // закрыть блок с полем ввода поиска
+        body.on('click', function() {
+            // закрываем по клику если блок виден а саджест не отображен
+            if( formSearch.is(':visible') && !suggest.is(':visible') ) {
+                closeSearch( event );
+            }
+            // при клике по ссылке саджеста показать лоадер
+            else if ( suggest.is(':visible') ) {
+                suggest.addClass('m-body-loader');
+            }
+        });
+
+        // скрыть блок поиска при движении пальца по экраны, только если саджест не показан
+        body.on('touchmove', function() {
+            if( !suggest.is(':visible') ) {
+                closeSearch( event );
+            }
+        });
     }
 );
