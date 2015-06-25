@@ -12,7 +12,7 @@ class Point {
 
     /**
      * @param string $pointToken
-     * @return string
+     * @return Model\MediaList
      */
     public function getMedia($pointToken) {
         switch ($pointToken) {

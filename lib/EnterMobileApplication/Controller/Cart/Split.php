@@ -135,6 +135,23 @@ namespace EnterMobileApplication\Controller\Cart {
             
             foreach ($pointGroups as $pointGroup) {
                 $pointGroup->media = $pointRepository->getMedia($pointGroup->token);
+                foreach ($pointGroup->media->photos as $media) {
+                    if (in_array('logo', $media->tags, true)) {
+                        foreach ($media->sources as $source) {
+                            if ($source->type === '100x100') {
+                                $pointGroup->imageUrl = $source->url; // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split
+                            }
+                        }
+                    }
+
+                    if (in_array('marker', $media->tags, true)) {
+                        foreach ($media->sources as $source) {
+                            if ($source->type === '61x80') {
+                                $pointGroup->markerUrl = $source->url; // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split
+                            }
+                        }
+                    }
+                }
             }
         }
     }
