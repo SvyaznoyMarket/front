@@ -872,9 +872,13 @@ define(
             if ($accept.length) {
                 if ($accept.is(':checked')) {
                     $accept.parent().removeClass('error');
+
+                    analytics.push(['15_1 Оформить_успешно_Доставка_ОБЯЗАТЕЛЬНО']);
                 } else {
                     $accept.parent().addClass('error');
                     e.preventDefault();
+
+                    analytics.push(['15_2 Оформить_ошибка_Доставка', 'Поле ошибки: accept']);
                 }
             }
         });
@@ -903,7 +907,28 @@ define(
                 var $el = $(this);
 
                 analytics.push(['8 Регион_Доставка', 'Было: ' + config.region.name + ', Стало: ' + $el.text()]);
-            })
+            });
+            $body.on('click', '.js-order-delivery-pointPopup-link', function(e) {
+                analytics.push(['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
+            });
+            $body.on('click', '.js-order-delivery-celendar-link', function(e) {
+                analytics.push(['11 Срок_доставки_Доставка']);
+            });
+            $body.on('click', '.js-order-delivery-discountPopup-link', function(e) {
+                analytics.push(['12 Код_скидки_Доставка']);
+            });
+            $body.on('click', '.js-order-form-accept-field', function(e) {
+                analytics.push(['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
+            });
+            $body.on('click', '.js-order-delivery-form-control', function(e) {
+                var $el = $(this);
+
+                if ('date' === $el.data('type')) {
+                    analytics.push(['11_1 Срок_Изменил_дату_Доставка']);
+                } else if (('payment' === $el.data('type')) && ('2' === $el.val())) {
+                    analytics.push(['13_1 Оплата_банковской_картой_Доставка']);
+                }
+            });
         } catch (error) { console.error(error); }
     }
 );
