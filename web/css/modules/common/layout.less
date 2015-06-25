@@ -1,73 +1,37 @@
 /* ==========================================================================
    Layout - default styles
    ========================================================================== */
-* {
-    outline: none;
-    .box-sizing();
-
-    -webkit-text-size-adjust: none;
-    -webkit-touch-callout: none;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-
 html {
-	height: 100%;
     &.noScroll {
         overflow: hidden;
         overflow-x: hidden;
         overflow-y: hidden;
+
         height: 100%;
         max-height: 100%;
-        body {
-            overflow: hidden;
-            overflow-x: hidden;
-            overflow-y: hidden;
-            height: 100%;
-            max-height: 100%;
-        }
     }
 }
 
-
 body {
-	height: 100%;
-    position: relative;
+    &.noScroll {
+        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: hidden;
 
-    width: 100%;
+        height: 100%;
+        max-height: 100%;
+    }
 }
-
 
 .wrapper {
-	  width: 100%;
-  height: auto !important;
-  height: 100%;
-  min-height: 100%;
-  margin: 0 auto;
+	width: 100%;
+  	margin: 0 auto;
 }
 
-.main-wrapper {
-  font-size: 16px;
-  overflow-x: hidden;
-  position: relative;
-  width: 100%;
-}
-
-.page-body {
-  position: relative;
-  -webkit-transition-duration: 400ms;
-  transition-duration: 400ms;
-  -webkit-transition-property: -webkit-transform;
-  transition-property: transform;
-  webkit-transition-duration: 400ms;
-  webkit-transition-property: -webkit-transform;
-  z-index: 10;
-}
 /* Middle
 -----------------------------------------------------------------------------*/
 .content {
 	margin: 0;
-	overflow-x: hidden;
-  	position: relative;
 }
 
 .pageTitle {

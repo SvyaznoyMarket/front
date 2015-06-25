@@ -44,7 +44,7 @@ define(
                 else {
                     fader.show(0);
                     navSite.stop(true, true).show(0).animate({'left' : 0},300);
-                    $('html').addClass('noScroll');
+                    $('html,body').addClass('noScroll');
                 }
 
                 e.preventDefault();
@@ -81,7 +81,7 @@ define(
              */
             closeNav = function closeNav() {
                 fader.hide(0);
-                $('html').removeClass('noScroll');
+                $('html,body').removeClass('noScroll');
                 navSite.stop(true, true).animate({'left' : -navSiteLeft},300).hide(0);
                 navSiteListLevel2.slideUp();
             };

@@ -51,7 +51,6 @@ define(
 
                 if ( !formSearch.is(target) && formSearch.has(target).length === 0 ) {
                     header.removeClass(searchClass);
-                    $('html').removeClass(noScrollClass);
                     inputSearch.val('');
                     suggest.hide().empty();
                 }
@@ -62,7 +61,6 @@ define(
                 event.preventDefault();
 
                 inputSearch.val('');
-                $('html').removeClass(noScrollClass);
                 inputSearch.trigger('focus');
                 suggest.hide().empty();
             },
@@ -103,7 +101,7 @@ define(
 
                         if ( result.categories.length > 1 || result.products.length >1 ) {
                             html = mustache.render(template, {suggestData: suggestData});
-                            $('html').addClass(noScrollClass);
+                            $('html,body').addClass('noScroll');
                             suggest.show().html(html);
                         }
                     };
@@ -141,6 +139,7 @@ define(
             // закрываем по клику если блок виден а саджест не отображен
             if( formSearch.is(':visible') && !suggest.is(':visible') ) {
                 closeSearch( event );
+                $('html,body').removeClass('noScroll');
             }
         });
 
@@ -148,6 +147,8 @@ define(
         body.on('touchmove', function() {
             if( !suggest.is(':visible') ) {
                 closeSearch( event );
+            } else {
+                inputSearch.trigger('blur');
             }
         });
     }
