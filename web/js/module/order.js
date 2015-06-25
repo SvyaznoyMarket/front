@@ -347,8 +347,8 @@ define(
                                     {
                                         iconLayout: 'default#image',
                                         iconImageHref: '/img/markers/' + point.icon,
-                                        iconImageSize: [28, 39],
-                                        iconImageOffset: [-14, -39],
+                                        iconImageSize: [23, 30],
+                                        iconImageOffset: [-12, -30],
                                         //visible: visibility,
                                         zIndex: ('shops' == point.group.token) ? 1000 : 0
                                     }
