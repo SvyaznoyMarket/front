@@ -548,7 +548,7 @@
                     });
 
                 $ac
-                    .on('touchstart' + eventNamespace + ' mousedown' + eventNamespace, 'li, a', function (event) {
+                    .on('touch' + eventNamespace + ' mousedown' + eventNamespace, 'li, a', function (event) {
                         event.preventDefault();
 
                         isActive = true;

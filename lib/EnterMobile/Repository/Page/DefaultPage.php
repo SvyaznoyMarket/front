@@ -75,6 +75,13 @@ class DefaultPage {
                     ]
                     : null,
             ],
+            'region' =>
+                $request->region
+                ? [
+                    'name' => $request->region->name,
+                ]
+                : null
+            ,
         ]);
 
         $page->dataUser = $templateHelper->json($request->user ? [

@@ -7,16 +7,18 @@ use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\SessionTrait;
 use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
 use EnterAggregator\DebugContainerTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterModel as Model;
 use EnterQuery as Query;
 use EnterMobile\Controller;
 use EnterMobile\Repository;
+use EnterMobile\Routing;
 use EnterMobile\Model\Page\Order\Complete as Page;
 
 class Complete {
-    use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, RouterTrait, MustacheRendererTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -26,6 +28,7 @@ class Complete {
         $config = $this->getConfig();
         $curl = $this->getCurl();
         $session = $this->getSession();
+        $router = $this->getRouter();
 
         $regionRepository = new \EnterRepository\Region();
 
@@ -122,6 +125,10 @@ class Complete {
                 $orders[] = $order;
             }
 
+            if (0 === count($orders)) {
+                //return (new \EnterAggregator\Controller\Redirect())->execute($router->getUrlByRoute(new Routing\Cart\Index()), 302);
+            }
+
             /** @var Model\PaymentMethod[] $onlinePaymentMethodsById */
             $onlinePaymentMethodsById = [];
             try {
@@ -163,7 +170,7 @@ class Complete {
                         /** @var Query\Payment\GetListByOrderNumberErp|null $paymentListQuery */
                         $paymentListQuery = isset($paymentListQueriesByNumberErp[$order->numberErp]) ? $paymentListQueriesByNumberErp[$order->numberErp] : null;
                         if ($paymentListQuery) {
-                            $paymentData = $paymentListQuery->getResult()['methods'];
+                            $paymentData = $paymentListQuery->getResult()['methods'] ?: [];
 
                             foreach ($paymentData as $paymentItem) {
                                 $paymentMethod = new Model\PaymentMethod($paymentItem);

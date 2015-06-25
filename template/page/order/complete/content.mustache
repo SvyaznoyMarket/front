@@ -1,18 +1,90 @@
 {{>page/order/header}}
 
-<div class="content">
+<div class="content{{#isSingleOrder}} content-single-order{{/isSingleOrder}}">
     <div class="contentBox640">
 
         <section class="checkout">
-            <h1 class="checkout__tl">Ваши заказы</h1>
+            <h1 class="checkout__tl">{{#isSingleOrder}}Оформлен заказ №<a href="#">{{orders.0.numberErp}}</a>{{/isSingleOrder}}
+            {{^isSingleOrder}}Ваши заказы{{/isSingleOrder}}</h1>
+            {{#isSingleOrder}}<div class="checkout__tl-sum">На сумму <b>{{#orders}}{{sum.name}}{{/orders}}</b> <span class="rubl">p</span></div>{{/isSingleOrder}}
 
-        {{#orders}}
+            {{#isSingleOrder}}
+                {{#orders}}
+                <div class="checkout__single-order single-order">
+                    <script id="order-{{id}}-onlinePayment-data" type="application/json">{{&onlinePaymentJson}}</script>
+
+                    {{#delivery}}
+                    <div class="single-order__greet">Доставка назначена на {{date.name}}</div>
+                    {{/delivery}}
+
+                    {{#point}}
+                    <div class="single-order__greet">Ждем вас {{date.name}}</div>
+                    <div class="single-order__address shop-snippet clearfix">
+
+                        <div class="shop-snippet-name">
+                            <img src="/img/points/logos/100x100/{{icon}}" alt="" class="shop-snippet-name__img" />
+                            <span class="shop-snippet-name__text">{{group.name}}</span>
+                        </div>
+
+                        <div class="shop-snippet-info">
+
+                            {{#subway}}
+                            <div class="shop-snippet-metro">
+                                {{#line}}
+                                    <span class="shop-snippet-metro__bullet" style="background: {{color}}"></span>
+                                {{/line}}
+                                <span class="shop-snippet-metro__text">{{name}}</span>
+                            </div>
+                            {{/subway}}
+
+                            <div class="shop-snippet-address">{{address}} <br/>{{#interval}}c {{interval.from}} до {{interval.to}}{{/interval}}</div>
+                        </div>
+
+                    </div>
+                    {{/point}}
+
+                    <!--<div class="single-order__how-to-find js-how-to-find"><span class="bb-dotted">Как добраться</span></div>-->
+                    <div class="single-order__payment-info">Оплата при получении — наличными или картой.</div>
+                </div>
+                    {{#onlinePayment}}
+                    <div class="checkout__single-order single-order single-order__payment">
+                        <div class="single-order__greet">Онлайн-оплата в два клика</div>
+                        <div class="single-order__row">
+
+                            <button class="btn btn--submit btn--orange btn--medium js-order-complete-onlinePayment-link" data-modal-position="fixed-untill-640" data-storage-selector="#order-{{id}}-onlinePayment-data">Оплатить</button>
+                            <span class="confirm-payment__types">
+                                {{#images}}
+                                    <img class="confirm-payment__card" src="/css/modules/order/img/{{.}}" />
+                                {{/images}}
+                            </span>
+                        </div>
+                    </div>
+                    {{/onlinePayment}}
+
+                    <!--{{! online мотивация}}
+                    <div class="checkout__single-order single-order single-order__payment single-order__pay-motiv">
+                        <div class="single-order__greet">Скидка 5%</div>
+                        <div class="single-order__pay-row"><span class="pay-info">Сумма заказа:</span><span class="pay-sum">47 767 <span class="rubl">p</span></span></span></div>
+                        <div class="single-order__pay-row"><span class="pay-info">При оплате онлайн:</span><span class="pay-sum">46 167 <span class="rubl">p</span></span></span></div>
+                        <button class="btn btn--submit btn--orange btn--medium js-order-complete-onlinePayment-link" data-modal-position="fixed-untill-640" data-storage-selector="#order-{{id}}-onlinePayment-data">Оплатить сейчас</button>
+                        <span class="confirm-payment__types">
+                            {{!#images}}
+                                <img class="confirm-payment__card" src="/css/modules/order/img/{{!.}}" />
+                            {{!/images}}
+                        </span>
+                    </div>-->
+
+                {{/orders}}
+            {{/isSingleOrder}}
+
+        {{^isSingleOrder}}
+            {{#orders}}
             <div class="confirm">
                 <script id="order-{{id}}-onlinePayment-data" type="application/json">{{&onlinePaymentJson}}</script>
 
                 <div class="confirm__box confirm__box--normal">
                     <strong class="confirm__title">Заказ</strong>
-                    <a href="" class="confirm__number">{{number}}</a>
+                    <a href="" class="confirm__number">{{numberErp}}</a>
                 </div>
 
                 <div class="confirm__box confirm__box--items table table--2col">
@@ -35,15 +107,15 @@
                     {{#point}}
                         <div class="shop-snippet clearfix">
                             <div class="shop-snippet-name">
-                                <img src="http://www.enter.ru/images/deliv-logo/enter.png" alt="" class="shop-snippet-name__img">
-                                <span class="shop-snippet-name__text">Магазин Enter</span>
+                                <img src="/img/points/logos/100x100/{{icon}}" alt="" class="shop-snippet-name__img" />
+                                <span class="shop-snippet-name__text">{{group.name}}</span>
                             </div>
 
                             <div class="shop-snippet-info">
                                 {{#subway}}
                                 <div class="shop-snippet-metro">
                                     {{#line}}
-                                        <span class="shop-snippet-metro__bullet" style="background: {{line.color}};"></span>
+                                        <span class="shop-snippet-metro__bullet" style="background: {{color}};"></span>
                                     {{/line}}
                                     <span class="shop-snippet-metro__text">м. {{name}}</span>
                                 </div>
@@ -67,7 +139,7 @@
                     {{/isPrepayment}}
 
                     <div class="confirm-payment__cell">
-                        <button class="confirm-payment__btn btn-transparent btn-transparent--normal js-order-delivery-onlinePayment-link" data-modal-position="fixed-untill-640" data-storage-selector="#order-{{id}}-onlinePayment-data">
+                        <button class="confirm-payment__btn btn-transparent btn-transparent--normal js-order-complete-onlinePayment-link" data-modal-position="fixed-untill-640" data-storage-selector="#order-{{id}}-onlinePayment-data">
                             <span class="bb-dotted m">Оплатить онлайн</span>
                         </button>
 
@@ -85,7 +157,8 @@
                     <span class="comfirm-summary__price">{{sum.name}} <span class="rubl">p</span></span>
                 </div>
             </div>
-        {{/orders}}
+            {{/orders}}
+        {{/isSingleOrder}}
 
             <div class="btn-stretch btn-stretch--default"><a class="btn-stretch__link" href="/">Вернуться на главную</a></div>
         </section>

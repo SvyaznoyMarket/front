@@ -176,9 +176,6 @@
         margin: 0 auto;
         padding: 10px 0px;
 
-        .align-items(center);
-        .justify-content(space-between);
-
         .custom-select {
             // width: 100%;
             &-list {
@@ -189,8 +186,24 @@
             }
             &__value {
                 text-align: center;
+                white-space: nowrap;
             }
         }
+        .custom-select__wr{
+            &-l{
+                width: 33.3%;
+            }
+            &-c{
+                width: 33.3%;
+                text-align: center;
+            }
+            &-r{
+                width: 33.3%;
+                text-align: right;
+            }
+
+        }
+
     }
     &.active {
         .custom-select__value {

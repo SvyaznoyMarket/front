@@ -31,12 +31,12 @@ class SetUser {
         $shopId = is_scalar($request->query['shopId']) ? (string)$request->query['shopId']: null;
 
         // данные пользователя
-        $defaultUserData = [
-            'firstName' => null,
-            'phone'     => null,
-            'email'     => null,
+        $userData = (array)(isset($request->data['user']) ? $request->data['user'] : []) + [
+            'firstName'  => null,
+            'phone'      => null,
+            'email'      => null,
+            'bonusCards' => [],
         ];
-        $userData = (array)(isset($request->data['user']) ? $request->data['user'] : []) + $defaultUserData;
 
         if (11 === mb_strlen($userData['phone']) && (0 === strpos($userData['phone'], '8'))) {
             $userData['phone'] = preg_replace('/^8/', '+7', $userData['phone']);
@@ -44,20 +44,6 @@ class SetUser {
 
         $errors = [];
         try {
-            foreach ($userData as $field) {
-                if (!array_key_exists($field, $defaultUserData)) {
-                    unset($userData[$field]);
-                    continue;
-                }
-
-                if (!is_string($userData[$field])) {
-                    $userData[$field] = null;
-                    continue;
-                }
-
-                $userData[$field] = trim($userData[$field]);
-            }
-
             if (!$userData['firstName']) {
                 //$errors[] = ['field' => 'firstName', 'name' => 'Не указано имя'];
             }

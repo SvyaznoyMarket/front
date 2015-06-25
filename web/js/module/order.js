@@ -1,10 +1,9 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'jquery.ui', 'jquery.maskedinput',
-        'module/order/user.form', 'module/order/common', 'module/order/toggle'
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'module/form-validator', 'module/order/analytics.google', 'jquery.ui', 'jquery.maskedinput', 'module/toggleLink'
     ],
     function(
-        require, $, _, mustache, util, config
+        require, $, _, mustache, util, config, formValidator, analytics
     ) {
 
         var
@@ -39,10 +38,11 @@ define(
 
             addressMap = null,
             pointMap = null,
-            yandexmaps = null,
+            ymapsDefer = null,
 
             $body                       = $('body'),
             $deliveryForm               = $('.js-order-delivery-form'),
+            deliveryData                = $deliveryForm.data('value'),
             $pointMap                   = $('#pointYandexMap'),
             $addressMap                 = $('#addressYandexMap'),
             $mapContainer               = $('#yandexMap-container'),
@@ -53,97 +53,62 @@ define(
             $pointSuggestTemplate       = $('#tpl-order-delivery-point-suggest'),
             $discountPopupTemplate      = $('#tpl-order-delivery-discount-popup'),
             $modalWindowTemplate        = $('#tpl-modalWindow'),
-            $discountScroll             = $('[data-scroll]'),
 
-            initPointMap = function($container, options) {
-                var defer = $.Deferred();
+            initMap = function() {
+                if (null === ymapsDefer) {
+                    ymapsDefer = $.Deferred();
 
-                if (pointMap) {
-                    defer.resolve($container);
+                    require(['yandexmaps'], function(ymaps) {
+                        ymaps.ready(function() {
+                            ymapsDefer.ymaps = ymaps;
+                            ymapsDefer.resolve(ymapsDefer.ymaps);
+                        })
+                    });
+                } else if ('resolved' === ymapsDefer.state()) {
+                    ymapsDefer.resolve(ymapsDefer.ymaps);
                 }
 
-                require(['yandexmaps'], function(ymaps) {
-                    ymaps.ready(function() {
-                        try {
-                            pointMap = new ymaps.Map(
-                                $container.attr('id'),
-                                {
-                                    center: [options.center.lat, options.center.lng],
-                                    zoom: options.zoom,
-                                    controls: ['zoomControl']
-                                },
-                                {
-                                    autoFitToViewport: 'always'
-                                }
-                            );
+                return ymapsDefer;
+            },
 
-                            pointMap.geoObjects.events.remove('click'); // TODO: можно убрать
-                            pointMap.geoObjects.events.add('click', function (e) {
-                                var placemark = e.get('target');
-
-                                pointMap.balloon.open(e.get('coords'), mustache.render($balloonTemplate.html(), placemark.properties.get('point')));
-                            });
-
-                            defer.resolve($container);
-                        } catch (error) {
-                            console.error(error);
-
-                            defer.reject(error);
+            initPointMap = function($container, options) {
+                try {
+                    pointMap = new ymaps.Map(
+                        $container.attr('id'),
+                        {
+                            center: [options.center.lat, options.center.lng],
+                            zoom: options.zoom,
+                            controls: ['zoomControl']
+                        },
+                        {
+                            autoFitToViewport: 'always'
                         }
-                    });
-                });
+                    );
 
-                return defer;
+                    pointMap.geoObjects.events.remove('click'); // TODO: можно убрать
+                    pointMap.geoObjects.events.add('click', function (e) {
+                        var placemark = e.get('target');
+
+                        pointMap.balloon.open(e.get('coords'), mustache.render($balloonTemplate.html(), placemark.properties.get('point')));
+                    });
+
+                } catch (error) { console.error(error); }
             },
 
             initAddressMap = function($container, options) {
-                var defer = $.Deferred();
-
-                if (addressMap) {
-                    defer.resolve($container);
-                }
-
-                require(['yandexmaps'], function(ymaps) {
-                    ymaps.ready(function() {
-                        try {
-                            addressMap = new ymaps.Map(
-                                $container.attr('id'),
-                                {
-                                    center: [options.center.lat, options.center.lng],
-                                    zoom: options.zoom,
-                                    controls: ['zoomControl']
-                                },
-                                {
-                                    autoFitToViewport: 'always'
-                                }
-                            );
-                            defer.resolve($container);
-                        } catch (error) {
-                            console.error(error);
-
-                            defer.reject(error);
+                try {
+                    addressMap = new ymaps.Map(
+                        $container.attr('id'),
+                        {
+                            center: [options.center.lat, options.center.lng],
+                            zoom: options.zoom,
+                            controls: ['zoomControl']
+                        },
+                        {
+                            autoFitToViewport: 'always'
                         }
-                    });
-                });
-
-                return defer;
-            },
-
-            initGeocode = function() {
-                var defer = $.Deferred();
-
-                if (null !== yandexmaps) {
-                    defer.resolve(yandexmaps);
-                }
-
-                require(['yandexmaps'], function(ymaps) {
-                    ymaps.ready(function() {
-                        yandexmaps = ymaps;
-                        defer.resolve(yandexmaps);
-                    });
-                });
-
-                return defer;
+                    );
+                } catch (error) { console.error(error); }
             },
 
             initSmartAddress = function($context) {
@@ -182,6 +147,8 @@ define(
                                 zoom = 10,
                                 address = $.kladr.getAddress('.js-smartAddress-form', function (objs) {
                                     var result = config.kladr.city.name + '';
+
+                                    console.info('objs', objs);
 
                                     if ($kladrIdInput.length) {
                                         if ($.type(objs.building) === 'object') {
@@ -231,15 +198,17 @@ define(
                             updateAddressMap($mapContainer, address, zoom);
 
                             if (obj) {
-                                text = (obj.type.length > 8) ? obj.typeShort : obj.type;
-                                text = text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
-
                                 if ('street' === obj.contentType) {
                                     $form.find('[data-field="streetType"]').val(obj.typeShort);
+
+                                    try {
+                                        text = (obj.type.length > 8) ? obj.typeShort : obj.type;
+                                        if (('string' === typeof text)) {
+                                            text = text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
+                                            $(this).parent().find('label').text(text);
+                                        }
+                                    } catch (error) { console.error(); }
                                 }
-
-                                $(this).parent().find('label').text(text);
-
                             } else {
                                 //showError($input, 'Введено неверно');
                             }
@@ -255,15 +224,22 @@ define(
             },
 
             changeSplit = function( data ) {
+                var
+                    $content    = $('.js-order-content'),
+                    loaderClass = 'm-loader';
+
+                $content.addClass(loaderClass);
+
                 $.ajax({
                     url: $deliveryForm.attr('action'),
                     data: data,
                     type: 'post',
                     timeout: 40000
                 }).done(function(response) {
-                    $($deliveryForm.data('containerSelector')).html(response)
+                    $($deliveryForm.data('containerSelector')).html(response);
                 }).always(function() {
                     console.info('unblock screen');
+                    $content.removeClass(loaderClass);
                 }).error(function(xhr, textStatus, error) {
                     var
                         response,
@@ -293,15 +269,22 @@ define(
                     $filterForm = $($el.data('filterFormSelector'))
                 ;
 
+                toggle = false !== toggle;
+
                 e.stopPropagation();
 
                 if (false !== toggle) {
                     index = (0 == index) ? 1 : 0;
                 }
 
+                console.info('index', index);
+
                 $selected = $el.find('[data-index="' + index + '"]');
                 $container = $($selected.data('containerSelector'));
                 $parentContainer = $($container.data('parentContainerSelector'));
+                if (toggle) {
+                    $parentContainer.toggleClass($parentContainer.data('toggleClass'));
+                }
 
                 $el.data('index', index);
                 $el.find('[data-index]').each(function(i, el) {
@@ -311,7 +294,6 @@ define(
                 filterPoints($el.data('storageSelector'), $filterForm);
 
                 $selected.show();
-                $parentContainer.toggleClass($parentContainer.data('toggleClass'));
                 $container.trigger('update', [Storage.get($el.data('storageSelector'), 'filtered')]);
             },
 
@@ -325,6 +307,7 @@ define(
                         console.info('update point map ...');
 
                         if (!$container.find('#' + $pointMap.attr('id')).length) {
+                            $container.html('');
                             $container.append($pointMap);
                         }
 
@@ -361,7 +344,10 @@ define(
                 if (pointMap) {
                     ready();
                 } else {
-                    initPointMap($pointMap, options).done(ready);
+                    initMap().done(function(ymaps) {
+                        initPointMap($pointMap, options);
+                        ready();
+                    });
                 }
             },
 
@@ -371,7 +357,7 @@ define(
                     partial = $pointPopupTemplate.data('partial')['page/order/delivery/point-list']
                 ;
 
-                console.info('update point list ...');
+                console.info('update point list ...', data);
 
                 $container.html(mustache.render(partial, data));
                 $container.find('.content-scroll').scrollTop();
@@ -384,6 +370,8 @@ define(
                     $tab = $($form.data('tabSelector'))
                 ;
 
+                e.stopPropagation();
+
                 $tab.trigger('update', [false]); // не переключать, просто обновить
             },
 
@@ -395,29 +383,30 @@ define(
                     params    = getFilterParams($form),
                     newData = {},
                     key,
-                    pointAdd,
                     latDiff,
                     lngDiff
                 ;
 
                 _.extend(newData, data);
 
-                newData.points = data.points.filter(function(points) {
-                    for ( key in points ) {
-                        if ( params[key] && params[key].length && points[key] && points[key].hasOwnProperty('value') ) {
+                newData.points = data.points.filter(function(point) {
+                    for (key in params) {
+                        if (
+                            //params[key].length
+                            (-1 === _.indexOf(params[key], point[key].value))
+                        ) {
+                            console.info('pass', key, params[key], point[key].value);
 
-                            pointAdd = params[key].indexOf(points[key].value.toString());
-
-                            if ( pointAdd === -1 ) {
-                                return false;
-                            }
+                            return false;
                         }
                     }
+
                     return true;
                 });
 
                 // проверка на строку поиска
                 if (center) {
+                    console.info(center);
                     try {
                         _.each(newData.points, function(point, i) {
                             latDiff = Math.abs(point.lat - center[0]);
@@ -452,16 +441,17 @@ define(
                 $input.each(function(key) {
                     var
                         $this = $(this),
-                        data  = $this.data('value');
+                        data  = $this.data('value')
+                    ;
 
                     key = data.name;
 
-                    if ( typeof params[key] === 'undefined' ) {
-                        params[key] = [];
-                    }
+                    if (true == $this.prop('checked')) {
+                        if (typeof params[key] === 'undefined') {
+                            params[key] = [];
+                        }
 
-                    if ( $this.prop('checked') == true ) {
-                        params[key].push(data.value.toString());
+                        params[key].push(data.value);
                     }
                 });
 
@@ -498,10 +488,6 @@ define(
                 $body.on('beforeSplit', beforeSplit);
 
                 e.preventDefault();
-
-                setTimeout(function() {
-                    require(['yandexmaps'], function() {});
-                }, 1000)
             },
 
             showAddressPopup = function( e ) {
@@ -518,23 +504,40 @@ define(
 
                 e.stopPropagation();
 
-                require(['jquery.kladr'], function() {});
-                require(['yandexmaps'], function() {});
-
                 $modalWindow.find('.js-modal-title').text(modalTitle);
                 $modalWindow.addClass(modalPosition);
 
                 $modalWindow.lightbox_me({
                     onLoad: function() {
+                        var
+                            $container,
+                            options
+                        ;
+
                         $modalWindow.find('.js-modal-content').append(mustache.render($addressPopupTemplate.html(), data));
 
                         initSmartAddress($modalWindow);
 
-                        require(['yandexmaps'], function() {
-                            var $mapContainer = $($el.data('mapContainerSelector'));
+                        $container = $($el.data('mapContainerSelector'));
+                        options = $container.data('mapOption');
 
-                            updateAddressMap($mapContainer);
-                        });
+                        if (!$container.find('#' + $addressMap.attr('id')).length) {
+                            $container.html('');
+                            $container.append($addressMap);
+                        }
+
+                        if (addressMap) {
+
+                        } else {
+                            initMap().done(function(ymaps) {
+                                initAddressMap($addressMap, options);
+
+                                //addressMap.setCenter([options.center.lat, options.center.lng], options.zoom);
+                                //addressMap.balloon.close();
+                                //addressMap.geoObjects.removeAll();
+                                //addressMap.container.fitToViewport();
+                            });
+                        }
                     },
                     beforeClose: function() {
                         $mapContainer.append($addressMap);
@@ -547,47 +550,27 @@ define(
             },
 
             updateAddressMap = function($container, address, zoom) {
-                var
-                    options = $container.data('mapOption'),
-                    ready = function() {
-                        var placemark;
+                initMap().done(function(ymaps) {
+                    var
+                        geocode = ymaps.geocode(address)
+                    ;
 
-                        console.info('update address map ...');
+                    geocode.then(function (res) {
+                        var
+                            obj = res.geoObjects.get(0),
+                            center = obj ? obj.geometry.getCoordinates() : null,
+                            placemark
+                        ;
 
-                        if (!$container.find('#' + $addressMap.attr('id')).length) {
-                            $container.append($addressMap);
+                        if (center) {
+                            addressMap.setCenter(center, zoom);
+
+                            //addressMap.geoObjects.removeAll();
+                            //placemark = new ymaps.Placemark(center, {}, {});
+                            //addressMap.geoObjects.add(placemark);
                         }
-
-                        //addressMap.setCenter([options.center.lat, options.center.lng], options.zoom);
-                        addressMap.balloon.close();
-                        addressMap.geoObjects.removeAll();
-                        addressMap.container.fitToViewport();
-                    };
-
-                if (addressMap) {
-                    ready();
-                } else {
-                    initAddressMap($addressMap, options).done(ready);
-                }
-
-                if (address) {
-                    require(['yandexmaps'], function(ymaps) {
-                        if (!addressMap) return;
-
-                        var geocode = ymaps.geocode(address);
-
-                        geocode.then(function (res) {
-                            addressMap.balloon.close();
-                            addressMap.geoObjects.removeAll();
-
-                            var position = res.geoObjects.get(0).geometry.getCoordinates(),
-                                placemark = new ymaps.Placemark(position, {}, {});
-
-                            addressMap.geoObjects.add(placemark);
-                            addressMap.setCenter(position, zoom);
-                        });
                     });
-                }
+                });
             },
 
             // показать календарь
@@ -663,6 +646,7 @@ define(
                                         e.stopPropagation();
 
                                         $field.val(value);
+                                        $field.closest('form').submit();
                                     });
                                 }
                             })
@@ -673,9 +657,9 @@ define(
                     },
                     centered: false
                 });
-                
-                
-                
+
+
+
                 $body.on('beforeSplit', beforeSplit);
 
                 e.preventDefault();
@@ -695,7 +679,7 @@ define(
 
                 $input.data('center', null);
 
-                initGeocode().done(function(ymaps) {
+                initMap().done(function(ymaps) {
                     if ((text.length > 1)) {
                         try {
                             text = config.kladr.city.name + ', ' + text;
@@ -803,10 +787,13 @@ define(
                 data = $el.data('value')
             ;
 
-            console.info('changeSplit', $el);
+            console.info('changeSplit', $el, $el.is(':checkbox'));
 
             e.stopPropagation();
-            e.preventDefault();
+
+            if (!$el.is(':checkbox') && !$el.is(':radio')) {
+                e.preventDefault();
+            }
 
             if (data) {
                 changeSplit(data);
@@ -833,7 +820,9 @@ define(
             e.stopPropagation();
             e.preventDefault();
 
-            changeSplit(data);
+            if (formValidator.validateRequired($form).isValid) {
+                changeSplit(data);
+            }
         });
         $body.on('submit', '.js-discount-form', function(e) {
             var
@@ -882,10 +871,14 @@ define(
 
             if ($accept.length) {
                 if ($accept.is(':checked')) {
-                    $accept.removeClass('error');
+                    $accept.parent().removeClass('error');
+
+                    analytics.push(['15_1 Оформить_успешно_Доставка_ОБЯЗАТЕЛЬНО']);
                 } else {
-                    $accept.addClass('error');
+                    $accept.parent().addClass('error');
                     e.preventDefault();
+
+                    analytics.push(['15_2 Оформить_ошибка_Доставка', 'Поле ошибки: accept']);
                 }
             }
         });
@@ -897,5 +890,45 @@ define(
         } catch (error) {
             console.error(error);
         }
+
+        formValidator.init();
+
+        console.info('config', config);
+
+        try {
+            analytics.push(['7 Вход_Доставка_ОБЯЗАТЕЛЬНО', 'Количество заказов: ' + deliveryData.order.count]);
+
+            $body.on('submit', '.js-regionSet-form', function(e) {
+                var $form = $(this);
+
+                analytics.push(['8 Регион_Доставка', 'Было: ' + config.region.name + ', Стало: ' + $form.find('#js-regionSet-input').val()]);
+            });
+            $body.on('click', '.js-regionSet-link', function(e) {
+                var $el = $(this);
+
+                analytics.push(['8 Регион_Доставка', 'Было: ' + config.region.name + ', Стало: ' + $el.text()]);
+            });
+            $body.on('click', '.js-order-delivery-pointPopup-link', function(e) {
+                analytics.push(['10 Место_самовывоза_Доставка_ОБЯЗАТЕЛЬНО']);
+            });
+            $body.on('click', '.js-order-delivery-celendar-link', function(e) {
+                analytics.push(['11 Срок_доставки_Доставка']);
+            });
+            $body.on('click', '.js-order-delivery-discountPopup-link', function(e) {
+                analytics.push(['12 Код_скидки_Доставка']);
+            });
+            $body.on('click', '.js-order-form-accept-field', function(e) {
+                analytics.push(['14 Согласен_оферта_Доставка_ОБЯЗАТЕЛЬНО']);
+            });
+            $body.on('click', '.js-order-delivery-form-control', function(e) {
+                var $el = $(this);
+
+                if ('date' === $el.data('type')) {
+                    analytics.push(['11_1 Срок_Изменил_дату_Доставка']);
+                } else if (('payment' === $el.data('type')) && ('2' === $el.val())) {
+                    analytics.push(['13_1 Оплата_банковской_картой_Доставка']);
+                }
+            });
+        } catch (error) { console.error(error); }
     }
 );

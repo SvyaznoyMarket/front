@@ -31,8 +31,7 @@ class Complete {
         $priceHelper = $this->getPriceHelper();
         $dateHelper = $this->getDateHelper();
         $translateHelper = $this->getTranslateHelper();
-
-        $regionModel = $request->region;
+        $pointRepository = new Repository\Partial\Point();
 
         $onlinePaymentMethodModelsById = $request->onlinePaymentMethodsById;
 
@@ -68,9 +67,10 @@ class Complete {
             $deliveryModel = isset($orderModel->deliveries[0]) ? $orderModel->deliveries[0] : null;
 
             $order = [
-                'id'     => $orderModel->id,
-                'number' => $orderModel->number,
-                'sum'    =>
+                'id'        => $orderModel->id,
+                'number'    => $orderModel->number,
+                'numberErp' => $orderModel->numberErp,
+                'sum'       =>
                     $orderModel->sum
                     ? [
                         'name'  => $priceHelper->format($orderModel->sum),
@@ -110,7 +110,7 @@ class Complete {
                     })
                     : false
                 ,
-                'interval' =>
+                'interval'  =>
                     $orderModel->interval
                     ? [
                         'from' => $orderModel->interval->from,
@@ -118,13 +118,17 @@ class Complete {
                     ]
                     : false
                 ,
-                'point' => call_user_func(function() use (&$orderModel) {
+                'point'     => call_user_func(function() use (&$orderModel, &$pointRepository) {
                     if (!$pointModel = $orderModel->point) {
                         return false;
                     }
 
                     $point = [
-                        'type'    => $pointModel->type,
+                        'group'   => [
+                            'name'  => $pointRepository->getGroupNameByType($pointModel->type),
+                            'value' => $pointModel->type,
+                        ],
+                        'icon'      => $pointRepository->getIconByType($pointModel->type),
                         'address' => $pointModel->address,
                         'subway'  =>
                             $pointModel->subway
@@ -144,7 +148,7 @@ class Complete {
 
                     return $point;
                 }),
-                'products' => call_user_func(function() use (&$orderModel) {
+                'products'  => call_user_func(function() use (&$orderModel) {
                     $products = [];
 
                     $i = 0;
@@ -181,7 +185,7 @@ class Complete {
                         && ($orderModel->sum >= $config->order->prepayment->priceLimit)
                     ;
                 }),
-                'onlinePayment'     => call_user_func(function() use (&$orderModel, &$onlinePaymentMethodModelsById, $onlinePaymentMethodsById) {
+                'onlinePayment' => call_user_func(function() use (&$orderModel, &$onlinePaymentMethodModelsById, $onlinePaymentMethodsById) {
                     if (!count($onlinePaymentMethodModelsById)) {
                         return false;
                     }
@@ -221,6 +225,7 @@ class Complete {
 
             $page->content->orders[] = $order;
         }
+        $page->content->isSingleOrder = 1 === count($request->orders);
 
         // заголовок
         $page->title = 'Оформление заказа - Завершение - Enter';

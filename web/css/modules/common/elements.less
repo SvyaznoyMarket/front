@@ -122,6 +122,13 @@
   -moz-box-shadow: @arguments, @arguments;
   box-shadow: @arguments, @arguments;
 }
+.animation(@animation) {
+    -webkit-animation: @animation;
+    -moz-animation: @animation;
+    -ms-animation: @animation;
+    -o-animation: @animation;
+    animation: @animation;
+}
 .box-sizing(@sizing: border-box) {
   -webkit-box-sizing: @sizing;
   -moz-box-sizing: @sizing;
