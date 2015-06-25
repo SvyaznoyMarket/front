@@ -417,6 +417,8 @@ class Product {
                 
                 if (isset($descriptionItem['tags'][0])) {
                     foreach ($descriptionItem['tags'] as $tag) {
+                        if (!isset($tag['slug'])) continue;
+
                         if ($tag['slug'] === 'soberi-sam') {
                             $product->assemblingLabel = new \EnterModel\Product\AssemblingLabel();
                             $product->assemblingLabel->name = $tag['name']; 
