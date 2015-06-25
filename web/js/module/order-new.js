@@ -1,51 +1,16 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/form-validator', 'jquery.maskedinput', 'module/toggleLink'
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/form-validator', 'module/order/analytics.google', 'jquery.maskedinput', 'module/toggleLink'
     ],
     function(
-        require, $, _, mustache, util, formValidator
+        require, $, _, mustache, util, formValidator, analytics
     ) {
-        // устанавливаем маску в поле номера телефона
-        $.mask.definitions['x'] = "[0-9]";
-        $('.js-field-phone').mask("+7(xxx)xxx-xx-xx", {
-            placeholder: "+7(xxx)xxx-xx-xx"
-        });
-
-        $('.js-field-mnogoru').mask("xxxx xxxx", {
-            placeholder: "xxxx xxxx"
-        });
-
-        var $field       = $('.js-user-field'),
-            $globalError = $('.js-global-error'),
-            errClass     = 'textfield-err',
-            massage,
-            index,
-            tmpl,
-            i
+        var
+            $form = $('.js-user-form')
         ;
-        
-        // запрос прошел успешно
-        function successForm( $form, result ) {
-            console.log('success form');
-            console.log(result);
-            
-            formValidator.validate($form, result.errors);
-
-
-            // если ошибок нет переход на следущий шаг
-            if ( result.redirect !=null && result.redirect.length ) {
-                window.location.href = result.redirect;
-            }
-        }
-
-        // обработка ошибок запроса
-        function errorForm( $form, result ) {
-            console.log('error form');
-
-        }
 
         // отправляем запрос с данными пользователя
-        $('.js-user-form').on('submit',function(event){
+        $form.on('submit',function(event){
             
             event.preventDefault();
 
@@ -57,12 +22,61 @@ define(
                 type: 'POST',
                 url: url,
                 data: $form.serialize(),
-                error: function(result){ errorForm($form, result); },
-                success: function(result){ successForm($form, result); }
+                error: function(){
+                    analytics.push(['6_2 Далее_ошибка_Получатель']);
+                },
+                success: function(result){
+                    formValidator.validate($form, result.errors);
+
+                    // если ошибок нет переход на следущий шаг
+                    if (result.redirect != null && result.redirect.length) {
+                        window.location.href = result.redirect;
+                    }
+
+                    try {
+                        if (result.errors && result.errors.length) {
+                            analytics.push(['6_2 Далее_ошибка_Получатель', 'Поле ошибки: ' + _.map(result.errors, function(error) { return error.field; })]);
+                        }
+                    } catch (error) { console.error(error); }
+                }
             });
 
         });
 
+        // устанавливаем маску в поле номера телефона
+        $.mask.definitions['x'] = "[0-9]";
+        $form.find('[data-field="phone"]')
+            .mask("+7(xxx)xxx-xx-xx", {
+                placeholder: "+7(xxx)xxx-xx-xx"
+            })
+            .on('focus', function() {
+                analytics.push(['1 Телефон_Получатель_ОБЯЗАТЕЛЬНО']);
+            })
+        ;
+        $form.find('[data-field="email"]')
+            .on('focus', function() {
+                analytics.push(['2 Email_Получатель']);
+            })
+        ;
+        $form.find('[data-field="firstName"]')
+            .on('focus', function() {
+                analytics.push(['3 Имя_Получатель_ОБЯЗАТЕЛЬНО']);
+            })
+        ;
+        $form.find('[data-field="mnogoru"]')
+            .mask("xxxx xxxx", {
+                placeholder: "xxxx xxxx"
+            })
+            .on('focus', function() {
+                analytics.push(['4 Начислить_баллы_Получатель']);
+            })
+        ;
+        $('.js-auth-link').on('click', function() {
+            analytics.push(['5 Войти_с_паролем_Получатель']);
+        });
+
         formValidator.init();
+
+        analytics.push(['1 Вход_Получатель_ОБЯЗАТЕЛЬНО']);
     }
 );

@@ -5,7 +5,7 @@
     <fieldset class="order-authorize__container">
         <div class="order-authorize">
             <div class="order-authorize__t">Уже заказывали у нас?</div>
-            <a class="order-authorize__btn btn1" href="{{authUrl}}"><span class="btn-inner">Войти с паролем</span></a>
+            <a class="order-authorize__btn btn1 js-auth-link" href="{{authUrl}}"><span class="btn-inner">Войти с паролем</span></a>
         </div>
     </fieldset>
     {{/isUserAuthenticated}}
@@ -15,7 +15,7 @@
         <div class="common-control">
             <div class="common-control-group required">
                 <label class="common-control-label" for="id-userForm-phone">Телефон</label>
-                <input class="common-control-input js-validator-form-field js-field-phone" id="id-userForm-phone" type="tel" name="user[phone]" value="{{form.phone}}" placeholder="+7(xxx)xxx-xx-xx" data-field="phone">
+                <input class="common-control-input js-validator-form-field" id="id-userForm-phone" type="tel" name="user[phone]" value="{{form.phone}}" placeholder="+7(xxx)xxx-xx-xx" data-field="phone">
             </div>
             <span class="common-control-hint">Для смс о состоянии заказа</span>
         </div>
@@ -29,7 +29,7 @@
          <div class="common-control">
             <div class="common-control-group">
                 <label class="common-control-label" for="id-userForm-firstName">Имя</label>
-                <input class="common-control-input" id="id-userForm-firstName" name="user[firstName]" value="{{form.firstName}}">
+                <input class="common-control-input" id="id-userForm-firstName" name="user[firstName]" value="{{form.firstName}}" data-field="firstName">
             </div>
             <span class="common-control-hint">Как к вам обращаться?</span>
         </div>
@@ -48,7 +48,7 @@
             <div class="common-control toggle-box">
                 <div class="common-control-group">
                     <label class="common-control-label" for="id-userForm-mnogoruNumber">Карта</label>
-                    <input class="common-control-input js-field-mnogoru" id="id-userForm-mnogoruNumber" type="text" name="user[bonusCards][0][number]" value="{{form.mnogoruNumber}}" placeholder="xxxx xxxx">
+                    <input class="common-control-input" id="id-userForm-mnogoruNumber" type="text" name="user[bonusCards][0][number]" value="{{form.mnogoruNumber}}" placeholder="xxxx xxxx" data-field="mnogoru">
                     <input type="hidden" name="user[bonusCards][0][type]" value="mnogoru" />
                 </div>
                 <span class="common-control-hint">&nbsp;</span>
