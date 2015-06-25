@@ -9,6 +9,7 @@
 
 .header {
     position: fixed;
+    overflow: hidden;
     z-index: 1010;
     top: 0;
     left: 0;
@@ -186,25 +187,28 @@
 .search-suggest-list {
     &__item {
         border-bottom: 1px solid #c7c7c7;
+        overflow: hidden;
     }
     &__link {
         padding: 10px 20px;
-        display: block;
-        overflow: hidden;
+        display: table;
     }
     &__img {
         max-width: 40px;
         max-height: 40px;
         &-wrap {
-            float: left;
+            display: table-cell;
 
             width: 40px;
 
             text-align: center;
+            vertical-align: middle;
         }
     }
     &__name {
-        padding-left: 60px;
+        padding-left: 20px;
+        display: table-cell;
+        vertical-align: middle;
 
         color: #6e6e6e;
     }

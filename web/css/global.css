@@ -1202,6 +1202,7 @@ body.noScroll {
 }
 .header {
   position: fixed;
+  overflow: hidden;
   z-index: 1010;
   top: 0;
   left: 0;
@@ -1352,23 +1353,26 @@ body.noScroll {
 }
 .search-suggest-list__item {
   border-bottom: 1px solid #c7c7c7;
+  overflow: hidden;
 }
 .search-suggest-list__link {
   padding: 10px 20px;
-  display: block;
-  overflow: hidden;
+  display: table;
 }
 .search-suggest-list__img {
   max-width: 40px;
   max-height: 40px;
 }
 .search-suggest-list__img-wrap {
-  float: left;
+  display: table-cell;
   width: 40px;
   text-align: center;
+  vertical-align: middle;
 }
 .search-suggest-list__name {
-  padding-left: 60px;
+  padding-left: 20px;
+  display: table-cell;
+  vertical-align: middle;
   color: #6e6e6e;
 }
 .i-header {
