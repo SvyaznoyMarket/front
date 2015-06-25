@@ -170,7 +170,7 @@ class Complete {
                         /** @var Query\Payment\GetListByOrderNumberErp|null $paymentListQuery */
                         $paymentListQuery = isset($paymentListQueriesByNumberErp[$order->numberErp]) ? $paymentListQueriesByNumberErp[$order->numberErp] : null;
                         if ($paymentListQuery) {
-                            $paymentData = $paymentListQuery->getResult()['methods'];
+                            $paymentData = $paymentListQuery->getResult()['methods'] ?: [];
 
                             foreach ($paymentData as $paymentItem) {
                                 $paymentMethod = new Model\PaymentMethod($paymentItem);

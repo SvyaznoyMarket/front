@@ -1,9 +1,9 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'jquery.ui', 'jquery.maskedinput'
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'module/form-validator', 'module/order/analytics.google', 'jquery.ui', 'jquery.maskedinput'
     ],
     function(
-        require, $, _, mustache, util, config
+        require, $, _, mustache, util, config, formValidator, analytics
     ) {
 
         var
@@ -46,7 +46,6 @@ define(
 
                 e.stopPropagation();
 
-                console.info($el, $container);
 
                 $.ajax({
                     url: url,
@@ -73,8 +72,24 @@ define(
             }
         ;
 
+        $body.on('click', '.js-order-complete-onlinePayment-link', showOnlinePaymentPopup);
+        $body.on('click', '.js-order-complete-onlinePayment-radio', applyOnlinePayment);
 
-        $body.on('click', '.js-order-delivery-onlinePayment-link', showOnlinePaymentPopup);
-        $body.on('click', '.js-order-delivery-onlinePayment-radio', applyOnlinePayment);
+        try {
+            analytics.push(['16 Вход_Оплата_ОБЯЗАТЕЛЬНО']);
+
+            $body.on('click', '.js-order-complete-onlinePayment-link', function(e) {
+                analytics.push(['17 Оплатить_онлайн_вход_Оплата']);
+            });
+            $body.on('click', '.js-order-complete-onlinePayment-radio', function(e) {
+                var $el = $(this);
+
+                if ('5' === $el.val()) {
+                    analytics.push(['17_1 Оплатить_онлайн_Оплата', 'Онлайн-оплата']);
+                } else if ('8' === $el.val()) {
+                    analytics.push(['17_1 Оплатить_онлайн_Оплата', 'Psb']);
+                }
+            });
+        } catch (error) { console.error(error); }
     }
 );

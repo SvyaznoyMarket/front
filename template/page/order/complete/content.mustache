@@ -51,7 +51,7 @@
                         <div class="single-order__greet">Онлайн-оплата в два клика</div>
                         <div class="single-order__row">
 
-                            <button class="btn btn--submit btn--orange btn--medium js-order-delivery-onlinePayment-link" data-modal-position="fixed-untill-640" data-storage-selector="#order-{{id}}-onlinePayment-data">Оплатить</button>
+                            <button class="btn btn--submit btn--orange btn--medium js-order-complete-onlinePayment-link" data-modal-position="fixed-untill-640" data-storage-selector="#order-{{id}}-onlinePayment-data">Оплатить</button>
                             <span class="confirm-payment__types">
                                 {{#images}}
                                     <img class="confirm-payment__card" src="/css/modules/order/img/{{.}}" />
@@ -66,7 +66,7 @@
                         <div class="single-order__greet">Скидка 5%</div>
                         <div class="single-order__pay-row"><span class="pay-info">Сумма заказа:</span><span class="pay-sum">47 767 <span class="rubl">p</span></span></span></div>
                         <div class="single-order__pay-row"><span class="pay-info">При оплате онлайн:</span><span class="pay-sum">46 167 <span class="rubl">p</span></span></span></div>
-                        <button class="btn btn--submit btn--orange btn--medium js-order-delivery-onlinePayment-link" data-modal-position="fixed-untill-640" data-storage-selector="#order-{{id}}-onlinePayment-data">Оплатить сейчас</button>
+                        <button class="btn btn--submit btn--orange btn--medium js-order-complete-onlinePayment-link" data-modal-position="fixed-untill-640" data-storage-selector="#order-{{id}}-onlinePayment-data">Оплатить сейчас</button>
                         <span class="confirm-payment__types">
                             {{!#images}}
                                 <img class="confirm-payment__card" src="/css/modules/order/img/{{!.}}" />
@@ -139,7 +139,7 @@
                     {{/isPrepayment}}
 
                     <div class="confirm-payment__cell">
-                        <button class="confirm-payment__btn btn-transparent btn-transparent--normal js-order-delivery-onlinePayment-link" data-modal-position="fixed-untill-640" data-storage-selector="#order-{{id}}-onlinePayment-data">
+                        <button class="confirm-payment__btn btn-transparent btn-transparent--normal js-order-complete-onlinePayment-link" data-modal-position="fixed-untill-640" data-storage-selector="#order-{{id}}-onlinePayment-data">
                             <span class="bb-dotted m">Оплатить онлайн</span>
                         </button>
 
