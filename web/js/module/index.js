@@ -44,23 +44,18 @@ define(
 	        	arrows: false,
 	        	centerPadding: '150px',
 	        	responsive: [
-			    {
-			      breakpoint: 900,
-			      settings: {
-					dots: true,
-					infinite: true,
-					centerMode: true,
-					slidesToShow: 1,
-		        	slidesToScroll: 1,
-		        	focusOnSelect: true,
-		        	arrows: false,
-		        	centerPadding: '50px',
-			      },
-			      breakpoint: 750,
-			      settings: {
-			      	centerMode: false
-			      }
-			    }
+				    {
+				      breakpoint: 900,
+				      settings: {
+			            centerPadding: '50px'
+				      }
+				    },
+				    {
+				      breakpoint: 750,
+				      settings: {
+				      	centerMode: false
+				      }
+				    }
 			    ]
 			}).parent().removeClass('m-loader');
     }
