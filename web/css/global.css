@@ -3551,7 +3551,7 @@ body.noScroll {
 .custom-select__value {
   line-height: 1;
   position: relative;
-  z-index: 100;
+  z-index: 80;
   display: block;
   padding: 10px;
 }
@@ -3655,6 +3655,7 @@ body.noScroll {
 .checkout-checkbox-lst__i .custom-label {
   width: 100%;
   height: 100%;
+  position: relative;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -8431,6 +8432,15 @@ body.noScroll {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+}
+.order-popup .checkout-checkbox-lst__i {
+  display: block;
+}
+.order-popup .checkout-checkbox-lst__i > * {
+  display: inline-block;
+  vertical-align: middle;
+  *zoom: 1;
+  *display: inline;
 }
 .order-popup__head {
   line-height: 54px;
