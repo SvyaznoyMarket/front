@@ -11,6 +11,7 @@ define(
         });
 
         var
+            layout        = $('html'),
             body          = $('body'),
             formSearch    = $('.js-search-form'),
             inputSearch   = $('.js-search-form-input'),
@@ -18,12 +19,14 @@ define(
             template      = $('#tpl-search-suggest').html(),
             header        = $('.js-header'),
             searchClass   = 'search',
-            noScrollClass = 'noScroll',
+            noScrollClass = 'no-scroll',
 
             // Показ блока поиска
             showSearch = function( event ) {
+                body.scrollTop(0);
                 header.addClass(searchClass);
                 inputSearch.trigger('focus');
+
                 event.preventDefault();
                 event.stopPropagation();
             },
@@ -66,7 +69,7 @@ define(
             },
 
             markSuggest = function() {
-                suggest.addClass('m-body-loader');
+                suggest.addClass('suggest-load');
             },
 
             // Ответ по поисковому запросу, показ саджеста
@@ -101,7 +104,7 @@ define(
 
                         if ( result.categories.length > 1 || result.products.length >1 ) {
                             html = mustache.render(template, {suggestData: suggestData});
-                            $('html,body').addClass('noScroll');
+                            layout.addClass(noScrollClass);
                             suggest.show().html(html);
                         }
                     };
@@ -139,7 +142,7 @@ define(
             // закрываем по клику если блок виден а саджест не отображен
             if( formSearch.is(':visible') && !suggest.is(':visible') ) {
                 closeSearch( event );
-                $('html,body').removeClass('noScroll');
+                layout.removeClass(noScrollClass);
             }
         });
 

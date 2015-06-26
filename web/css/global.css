@@ -1099,14 +1099,14 @@ html.sb-animation .content {
 /* ==========================================================================
    Layout - default styles
    ========================================================================== */
-html.noScroll {
+html.no-scroll {
   overflow: hidden;
   overflow-x: hidden;
   overflow-y: hidden;
   height: 100%;
   max-height: 100%;
 }
-body.noScroll {
+html.no-scroll body {
   overflow: hidden;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -1119,15 +1119,12 @@ body.noScroll {
 }
 /* Middle
 -----------------------------------------------------------------------------*/
-.content {
-  margin: 0;
-}
 .pageTitle {
+  font-size: 19px;
+  line-height: 40px;
   display: none;
   padding: 0 10px;
   border-bottom: 1px solid #b1b1b1;
-  font-size: 19px;
-  line-height: 40px;
 }
 .contentBox940 {
   max-width: 940px;
@@ -1143,40 +1140,8 @@ body.noScroll {
   margin: 0 auto;
 }
 .viewportSizeWrapper {
-  width: 100%;
   overflow: hidden;
-}
-.pageNav {
-  display: none;
-  padding: 15px 10px 20px;
-  border-bottom: 1px solid #D8D8D8;
-  font-size: 0;
-}
-.pageNav_link {
-  display: inline-block;
-  margin-right: 10px;
-  padding-left: 17px;
-  vertical-align: top;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAPCAYAAADZCo4zAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpBMkQwQzc1MEJDNjcxMUUzOUFCREE2NEFFNDZFRTFFNSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpBMkQwQzc1MUJDNjcxMUUzOUFCREE2NEFFNDZFRTFFNSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkEyRDBDNzRFQkM2NzExRTM5QUJEQTY0QUU0NkVFMUU1IiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkEyRDBDNzRGQkM2NzExRTM5QUJEQTY0QUU0NkVFMUU1Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+AeeXCAAAAFpJREFUeNpiYmBg4IVirIAJiC8C8S0g1sSl4AoQSwDxflyKOIF4JxD/B+IXFCvaQaoidWyKhID4PVTRTJJMwOsG8iVBYCMhr90D4ue4JFmAWB/K/oxNAUCAAQAFeSK9T1JOKgAAAABJRU5ErkJggg==) no-repeat 0 50%;
-  font-size: 19px;
-}
-.pageNav_link:first-child {
-  padding: 0;
-  background: none;
-}
-.pageNav_link:hover {
-  text-decoration: none;
-}
-.pageNav_text {
-  border-bottom: 1px dotted;
-}
-/* Footer
------------------------------------------------------------------------------*/
-.footer {
-  position: relative;
   width: 100%;
-  margin: 0 auto;
-  color: #ffffff;
 }
 /* ==========================================================================
    Layout - default styles
@@ -1330,6 +1295,7 @@ body.noScroll {
   left: 0;
   bottom: 0;
   padding-top: 50px;
+  height: 100%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -1340,8 +1306,20 @@ body.noScroll {
   width: 100%;
   background: #fff;
 }
-.search-suggest.m-body-loader {
+.search-suggest.suggest-load {
   overflow: hidden;
+}
+.search-suggest.suggest-load:after {
+  position: fixed;
+  background: rgba(255, 255, 255, 0.6);
+  content: '';
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1010;
 }
 .search-suggest__title {
   font-size: .875em;
@@ -6382,6 +6360,9 @@ body {
   }
   .main-banner-slider .slick-slide {
     margin: 0;
+  }
+  .categories-grid {
+    border-bottom: none;
   }
   .categories-grid__item {
     width: 33.333%;

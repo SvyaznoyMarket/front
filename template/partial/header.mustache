@@ -1,5 +1,5 @@
 <header class="header clearfix js-header{{#breadcrumbBlock}} breadcrumbs{{/breadcrumbBlock}}">
-    <a class="header-nav-link js-ga-click navIco" href="" data-ga-click="{&quot;m_sidebar&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_sidebar&quot;,&quot;click&quot;]}"><i class="i-header i-header--menu"></i></a>
+    <a class="header-nav-link js-ga-click js-nav-open-link" href="" data-ga-click="{&quot;m_sidebar&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_sidebar&quot;,&quot;click&quot;]}"><i class="i-header i-header--menu"></i></a>
 
     {{#userBlock}}
         {{>partial/user}}
@@ -25,23 +25,3 @@
         </form>
     </div>
 </header>
-
-<nav id="nav" class="nav">
-    <div class="nav-header">
-        <div class="nav-header__col nav-header__icon"><i class="i-header i-header--menu"></i></div>
-
-        <a class="header__logotype-link" href="/"></a>
-
-        <div class="nav-header__col nav-header__wrap">
-            <span class="nav-header__wrap-text jsSelectCity"><span class="text">{{regionBlock.regionName}}</span></span>
-
-            <div class="transBg"></div>
-        </div>
-    </div>
-
-    {{#mainMenu}}
-        {{>partial/main-menu/level-1}}
-    {{/mainMenu}}
-</nav>
-
-<div class="fader"></div>
