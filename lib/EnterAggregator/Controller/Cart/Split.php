@@ -195,6 +195,10 @@ namespace EnterAggregator\Controller\Cart {
                 }
             } catch (Query\CoreQueryException $e) {
                 $response->errors = $orderRepository->getErrorList($e);
+            } catch (\Exception $e) {
+                $response->errors = [
+                    ['code' => $e->getCode(), 'message' => 'Не удалось выполнить действие']
+                ];
             }
 
             return $response;

@@ -43,20 +43,16 @@ class Create {
 
         $splitData = (array)$session->get($config->order->splitSessionKey);
 
-        try {
-            if (!$splitData) {
-                throw new \Exception('Не найдено предыдущее разбиение');
-            }
+        if (!$splitData) {
+            $this->getLogger()->push(['type' => 'error', 'error' => ['message' => 'Не найдено предыдущее разбиение'], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order', 'controller']]);
 
-            if (!isset($splitData['cart']['product_list'])) {
-                throw new \Exception('Не найдены товары в корзине');
-            }
-        } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order', 'controller']]);
+            $session->flashBag->set('orderForm.error', [
+                ['message' => 'Корзина была обновлена']
+            ]);
 
             // http-ответ
             return (new \EnterAggregator\Controller\Redirect())->execute(
-                $router->getUrlByRoute(new Routing\Cart\Index()),
+                $router->getUrlByRoute(new Routing\Order\Delivery(), ['shopId' => $shopId]),
                 302
             );
         }
@@ -162,7 +158,7 @@ class Create {
 
             $session->remove($config->order->splitSessionKey);
             $session->remove($config->order->bonusCardSessionKey);
-            $session->remove($cartSessionKey);
+            //$session->remove($cartSessionKey);
 
             $orderData = [
                 'updatedAt' => (new \DateTime())->format('c'),

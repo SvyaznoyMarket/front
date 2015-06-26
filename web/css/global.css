@@ -4633,12 +4633,10 @@ body.noScroll {
   text-align: center;
 }
 .modal.fixed-untill-640 {
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  top: 70px;
+  left: 50%;
+  margin-left: -160px;
   height: auto;
-  margin: auto;
   max-height: 545px;
   width: 320px;
 }
@@ -4648,6 +4646,9 @@ body.noScroll {
 }
 .modal.fixed-untill-640 .modal-content {
   height: 100%;
+}
+.modal-content {
+  overflow: auto;
 }
 /* ==========================================================================
    Попапы .popupOverlay, .popupBox

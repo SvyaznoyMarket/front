@@ -61,6 +61,9 @@ class SetProductList {
         $cart = $controllerResponse->cart;
         $productsById = $controllerResponse->productsById;
 
+        // удалить разбиение заказа
+        $session->remove($config->order->splitSessionKey);
+
         // запрос пользователя
         $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
         if ($userItemQuery) {
