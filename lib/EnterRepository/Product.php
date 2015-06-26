@@ -376,13 +376,25 @@ class Product {
 
                 $product->media = new Model\MediaList(isset($descriptionItem['medias']) ? $descriptionItem['medias'] : []);
 
+                $hasAffectOldPriceLabel = false;
                 if (!empty($descriptionItem['label']['medias'])) {
                     foreach ($descriptionItem['label']['medias'] as $mediaItem) {
                         if ('image' === $mediaItem['provider']) {
                             $product->labels[] = new Model\Product\Label($descriptionItem['label']);
+
+                            if ($descriptionItem['label']['affects_price']) {
+                                $hasAffectOldPriceLabel = true;
+                            }
+
                             break;
                         }
                     }
+                }
+
+                // Т.к. из метода api.enter.ru/v2/product/get-v3 была убрана связь между выводом старой цены и наличием
+                // шильдика, реализуем эту связь пока здесь (подробности в CORE-2936)
+                if (!$hasAffectOldPriceLabel) {
+                    $product->oldPrice = null;
                 }
 
                 if (!empty($descriptionItem['brand']['medias'])) {
