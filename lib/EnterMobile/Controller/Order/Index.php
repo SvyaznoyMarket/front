@@ -17,6 +17,9 @@ use EnterMobile\Model\Page\Order\Index as Page;
 
 class Index {
     use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ControllerTrait {
+        ConfigTrait::getConfig insteadof ControllerTrait;
+    }
 
     /**
      * @param Http\Request $request
@@ -27,6 +30,7 @@ class Index {
         $curl = $this->getCurl();
         $session = $this->getSession();
         $regionRepository = new \EnterRepository\Region();
+        $cartSessionKey = $this->getCartSessionKeyByHttpRequest($request);
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);

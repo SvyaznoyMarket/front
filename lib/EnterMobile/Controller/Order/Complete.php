@@ -19,6 +19,9 @@ use EnterMobile\Model\Page\Order\Complete as Page;
 
 class Complete {
     use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, RouterTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ControllerTrait {
+        ConfigTrait::getConfig insteadof ControllerTrait;
+    }
 
     /**
      * @param Http\Request $request
@@ -29,6 +32,7 @@ class Complete {
         $curl = $this->getCurl();
         $session = $this->getSession();
         $router = $this->getRouter();
+        $cartSessionKey = $this->getCartSessionKeyByHttpRequest($request);
 
         $regionRepository = new \EnterRepository\Region();
 
@@ -49,7 +53,7 @@ class Complete {
 
         $region = $regionRepository->getObjectByQuery($regionQuery);
         
-        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $cartSessionKey);
         $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
         $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
         

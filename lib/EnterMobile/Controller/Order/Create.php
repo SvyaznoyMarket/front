@@ -17,6 +17,9 @@ use EnterMobile\Repository;
 
 class Create {
     use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, RouterTrait, DebugContainerTrait;
+    use ControllerTrait {
+        ConfigTrait::getConfig insteadof ControllerTrait;
+    }
 
     /**
      * @param Http\Request $request
@@ -29,10 +32,14 @@ class Create {
         $session = $this->getSession();
         $router = $this->getRouter();
         $cartRepository = new \EnterRepository\Cart();
+        $cartSessionKey = $this->getCartSessionKeyByHttpRequest($request);
 
         if (!isset($request->data['accept'])) {
             // TODO
         }
+
+        // ид магазина
+        $shopId = is_scalar($request->query['shopId']) ? (string)$request->query['shopId']: null;
 
         $splitData = (array)$session->get($config->order->splitSessionKey);
 
@@ -55,7 +62,7 @@ class Create {
         }
 
         $response = (new \EnterAggregator\Controller\Redirect())->execute(
-            $router->getUrlByRoute(new Routing\Order\Delivery()),
+            $router->getUrlByRoute(new Routing\Order\Delivery(), ['shopId' => $shopId]),
             302
         );
 
@@ -135,6 +142,18 @@ class Create {
                 $metas
             );
 
+            if (!$controllerResponse->orders && $controllerResponse->errors) {
+                $this->getLogger()->push(['type' => 'error', 'errors' => $controllerResponse->errors, 'tag' => ['critical', 'order']]);
+
+                $session->flashBag->set('orderForm.error', $controllerResponse->errors);
+
+                if ($error = reset($controllerResponse->errors)) {
+                    throw new \Exception($error['message'], (int)$error['code']);
+                }
+
+                throw new \Exception('Заказы не созданы');
+            }
+
             // http-ответ
             $response = (new \EnterAggregator\Controller\Redirect())->execute(
                 $router->getUrlByRoute(new Routing\Order\Complete()),
@@ -142,7 +161,7 @@ class Create {
             );
 
             $session->remove($config->order->bonusCardSessionKey);
-            $session->remove($config->cart->sessionKey);
+            $session->remove($cartSessionKey);
 
             $orderData = [
                 'updatedAt' => (new \DateTime())->format('c'),
@@ -216,7 +235,7 @@ class Create {
 
             // TODO: flash message
 
-            throw new \Exception($e->getMessage());
+
         }
 
         return $response;
