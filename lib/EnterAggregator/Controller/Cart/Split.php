@@ -15,7 +15,6 @@ namespace EnterAggregator\Controller\Cart {
         public function execute(Split\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            $cartRepository = new Repository\Cart();
             $orderRepository = new Repository\Order();
             $productRepository = new Repository\Product();
 

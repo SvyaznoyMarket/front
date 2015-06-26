@@ -160,6 +160,7 @@ class Create {
                 302
             );
 
+            $session->remove($config->order->splitSessionKey);
             $session->remove($config->order->bonusCardSessionKey);
             $session->remove($cartSessionKey);
 
