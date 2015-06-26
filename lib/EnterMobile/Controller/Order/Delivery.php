@@ -93,6 +93,10 @@ class Delivery {
         // предыдущее разбиение
         $previousSplitData = $session->get($config->order->splitSessionKey);
 
+        if ($previousSplitData && !$changeData && $userFromSplit) {
+            $changeData['user'] = $userFromSplit->toArray();
+        }
+
         // контроллер
         $controller = new \EnterAggregator\Controller\Cart\Split();
         // запрос для контроллера

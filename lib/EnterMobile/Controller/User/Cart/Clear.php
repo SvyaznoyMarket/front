@@ -31,6 +31,9 @@ class Clear {
         // сохранение корзины в сессию
         $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
 
+        // удалить разбиение заказа
+        $session->remove($config->order->splitSessionKey);
+
         // response
         return new Http\JsonResponse([
             'result' => [],

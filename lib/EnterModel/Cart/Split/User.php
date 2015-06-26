@@ -54,4 +54,11 @@ class User {
             'bonus_card_number' => $this->bonusCardNumber,
         ];
     }
+
+    /**
+     * @return array
+     */
+    public function toArray() {
+        return json_decode(json_encode($this), true);
+    }
 }

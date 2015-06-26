@@ -46,6 +46,9 @@ class DeleteProduct {
 
             // сохранение корзины в сессию
             $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
+
+            // удалить разбиение заказа
+            $session->remove($config->order->splitSessionKey);
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['cart']]);
         }
