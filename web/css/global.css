@@ -3452,6 +3452,9 @@ body.noScroll {
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
   filter: alpha(opacity=0);
 }
+.custom-input:focus {
+  outline: none;
+}
 .custom-label {
   margin: 0;
   padding: 0 0 0 25px;
@@ -3473,7 +3476,7 @@ body.noScroll {
   *zoom: 1;
   *display: inline;
 }
-.custom-label-flex {
+.custom-label-flex:not(.parced-items) {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -3488,12 +3491,6 @@ body.noScroll {
   box-align: center;
   -webkit-box-align: center;
   align-content: center;
-}
-.custom-label-flex.parced-items {
-  -webkit-justify-content: space-between;
-  -webkit-box-pack: space-between;
-  -moz-justify-content: space-between;
-  justify-content: space-between;
 }
 .custom-input--defcheck + .custom-label {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6+R8AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAVUlEQVQoFWMsKCjw/Pfv3ywGBgYZICYEnjAxMaUx5OXlPf7+/ft/YgBIHUg9E9BoGQ4ODkI2gOWh6mRAmkgGo5qgQUbfgHjy48cPouIKqu4JIzlpDwAOtUVHIztiigAAAABJRU5ErkJggg==);
@@ -3674,6 +3671,20 @@ body.noScroll {
 .checkout-checkbox-lst__i .custom-label_tx--small {
   font-size: 12px;
 }
+.checkout-checkbox-lst__i .custom-label-flex.parced-items .custom-label_tx {
+  width: 130px;
+  display: inline-block;
+  vertical-align: middle;
+  *zoom: 1;
+  *display: inline;
+}
+.checkout-checkbox-lst__i .custom-label-flex.parced-items .checkout-payment__icon-wrap {
+  display: inline-block;
+  vertical-align: middle;
+  *zoom: 1;
+  *display: inline;
+  width: 110px;
+}
 .checkout-checkbox-lst__desc {
   font-size: 12px;
   text-align: center;
@@ -3708,6 +3719,9 @@ body.noScroll {
 }
 .textfield:-moz-placeholder {
   line-height: normal;
+}
+.textfield:focus {
+  outline: none;
 }
 /* ==========================================================================
    Пользовательских input[type=radio], input[type=checkbox] .customInput
@@ -4489,20 +4503,32 @@ body.noScroll {
   width: 98px;
   padding: 0;
 }
-.regionForm_selectcity {
+.regionForm_selectCity {
   padding-right: 110px;
 }
-.regionForm_selectcitydel {
+.regionForm_selectCityInput {
+  margin: 0px 10px 0px 0px;
+  height: 30px;
+  line-height: 30px;
+  padding-left: 20px;
+}
+.regionForm_selectCityInner {
+  border: 1px solid #9f9f9f;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+.regionForm_selectCityDel {
   position: absolute;
   top: 7px;
   right: 8px;
   width: 19px;
   height: 19px;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB0ElEQVQ4EZ1UsWoCQRDdPY54CELsbLQwRYikvloLIYV9KvtImvyB+A0pEtLapQ4oWMT60CrE0kKb6ywEOSOceW/jXpb1jJiBvb3dee8xO7OzcrvdihST4/H4crPZ3EopGxhXwITABhjdKIreq9VqZPOkLTYaja7jOH4FkAKHbA3HQ6/Xe2m327EGmWIyCIJ7OB6189iMQAa5XK5RqVS+iHU04VQh8nD8+nK5fOt0OkpHRbY72ocW/sfc8n3/mWI83icEkhyVy2WxWq1EGIZ7uoVCQWSzWTGdTk3fGvhzh1UzhYigUKlUEiSaxjX36bcs43lezWX5HSdJncLoiEikca2FZrNZasTIX9PlPVIM62MKomIin8+LQ0KkQsenWJIrS09FoIUWi0VqRAanyPPtZ3mH4NEYEYU42zk0hPg7d1HNANFdWI69HOmcEadTYHKo4+DTNTf5r4lmjijAdVqVyaGOy6bFvWGvZbhJ4z0yhX52fyOi37I1dVQH4NLewflkAU5Zqg5QF4zdjzAHp7A1ljzyuU5ejclkcsamRTHqGnhsplDqq8FnpN/v30CghcEc/mX0t4jXzw/BSWQmczgcotW8GqJsYvjwFTHmiOTPl/YbgvcD/BF3fDQAAAAASUVORK5CYII=) no-repeat 0 0;
 }
 .regionForm_autocomplete .ui-autocomplete {
   overflow: scroll;
   background: #ffffff;
+  border: 1px solid #AAA;
 }
 .regionForm_autocomplete .ui-autocomplete .ui-menu-item {
   padding: 5px 0;
@@ -4531,20 +4557,20 @@ body.noScroll {
 .searchForm {
   margin: 0;
 }
-.searchForm_searchfield {
+.searchForm_searchField {
   padding: 0 80px 0 0;
 }
-.searchForm_searchfieldinner {
+.searchForm_searchFieldInner {
   position: relative;
   padding: 0 10px 0 35px;
   border: none;
 }
-.searchForm_searchfieldinner .sprite-icon {
+.searchForm_searchFieldInner .sprite-icon {
   position: absolute;
   top: 1px;
   left: 3px;
 }
-.searchForm_searchinput {
+.searchForm_searchInput {
   line-height: 36px;
   height: 36px;
 }
@@ -8405,10 +8431,6 @@ body.noScroll {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
-}
-.order-popup .checkout-payment__icon-wrap {
-  float: right;
-  min-width: 100px;
 }
 .order-popup__head {
   line-height: 54px;
