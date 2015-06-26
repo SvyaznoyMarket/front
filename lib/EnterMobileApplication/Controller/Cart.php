@@ -74,6 +74,7 @@ namespace EnterMobileApplication\Controller {
                     array_keys($productsById),
                     [
                         'media'       => true,
+                        'label'       => true,
                     ]
                 );
                 $curl->prepare($descriptionListQuery);
