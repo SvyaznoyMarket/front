@@ -81,9 +81,8 @@ class SetUser {
 
             $response = (new \EnterAggregator\Controller\Redirect())->execute(
                 $router->getUrlByRoute(
-                    $errors
-                    ? new Routing\Order\Index()
-                    : new Routing\Order\Delivery()
+                    $errors ? new Routing\Order\Index() : new Routing\Order\Delivery(),
+                    ['shopId' => $shopId]
                 ),
                 302
             );

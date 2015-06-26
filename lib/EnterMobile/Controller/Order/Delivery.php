@@ -18,6 +18,9 @@ use EnterMobile\Model\Page\Order\Delivery as Page;
 
 class Delivery {
     use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, RouterTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ControllerTrait {
+        ConfigTrait::getConfig insteadof ControllerTrait;
+    }
 
     /**
      * @param Http\Request $request
@@ -29,6 +32,7 @@ class Delivery {
         $session = $this->getSession();
         $router = $this->getRouter();
         $cartRepository = new \EnterRepository\Cart();
+        $cartSessionKey = $this->getCartSessionKeyByHttpRequest($request);
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
@@ -40,7 +44,7 @@ class Delivery {
         $userToken = (new Repository\User())->getTokenByHttpRequest($request);
 
         // корзина
-        $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
+        $cart = $cartRepository->getObjectByHttpSession($session, $cartSessionKey);
         // проверяет наличие товаров в корзине
         if (!$cart->product) {
             $this->getLogger()->push(['type' => 'error', 'message' => 'Пустая корзина', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split', 'critical']]);
@@ -118,7 +122,8 @@ class Delivery {
         $pageRequest->user = $controllerResponse->user;
         $pageRequest->cart = $cart;
         $pageRequest->split = $controllerResponse->split;
-        //$pageRequest->formErrors = $controllerResponse->errors; // TODO
+        $pageRequest->shopId = $shopId;
+        $pageRequest->formErrors = $session->flashBag->get('orderForm.error') ?: $controllerResponse->errors;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница

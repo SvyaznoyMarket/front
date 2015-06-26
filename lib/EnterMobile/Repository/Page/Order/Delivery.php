@@ -44,7 +44,7 @@ class Delivery {
 
         $page->content->deliveryForm['url'] = $router->getUrlByRoute(new Routing\Order\Delivery());
 
-        $page->content->form->url = $router->getUrlByRoute(new Routing\Order\Create());
+        $page->content->form->url = $router->getUrlByRoute(new Routing\Order\Create(), ['shopId' => $request->shopId]);
         $page->content->form->errorDataValue = $templateHelper->json($request->formErrors);
 
         $regionModel = $request->region;
@@ -671,7 +671,7 @@ class Delivery {
             ]
         ]);
 
-        $page->content->errors = call_user_func(function() use (&$splitModel) {
+        $page->content->errors = call_user_func(function() use (&$splitModel, &$request) {
             $errors = [];
 
             foreach ($splitModel->errors as $errorModel) {
@@ -686,13 +686,21 @@ class Delivery {
                 ];
             }
 
+            foreach ($request->formErrors as $errorModel) {
+                if (!isset($errorModel['message'])) continue;
+
+                $errors[] = [
+                    'message' => $errorModel['message'],
+                ];
+            }
+
             return $errors;
         });
 
         $page->content->isUserAuthenticated = (bool)$request->user;
 
         $page->steps = [
-            ['name' => 'Получатель', 'isPassive' => true, 'isActive' => false, 'url' => $router->getUrlByRoute(new Routing\Order\Index())],
+            ['name' => 'Получатель', 'isPassive' => true, 'isActive' => false, 'url' => $router->getUrlByRoute(new Routing\Order\Index(), ['shopId' => $request->shopId])],
             ['name' => 'Самовывоз и доставка', 'isPassive' => true, 'isActive' => true],
             ['name' => 'Оплата', 'isPassive' => false, 'isActive' => false],
         ];

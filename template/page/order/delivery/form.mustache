@@ -1,5 +1,5 @@
 <section class="checkout">
-    <form class="js-order-delivery-form" action="{{deliveryForm.url}}" data-container-selector=".id-order-form-container" data-value="{{&dataValue}}"></form>
+    <form class="js-order-delivery-form" action="{{deliveryForm.url}}" data-container-selector=".id-order-form-container" data-value="{{&dataValue}}" data-error="{{&form.errorDataValue}}"></form>
 
     <h1 class="checkout__tl">Самовывоз и доставка</h1>
 
@@ -95,6 +95,7 @@
     {{! разбиение заказа }}
     {{/orders}}
 
+    {{#orders.0}}
     <div class="js-order-form btn-container btn-container--orange">
         <form action="{{form.url}}" method="post" novalidate>
             <div class="custom-control">
@@ -106,4 +107,5 @@
             <button type="submit" class="btn btn--submit btn--orange btn--big">Оформить</button>
         </form>
     </div>
+    {{/orders.0}}
 </section>
