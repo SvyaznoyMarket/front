@@ -16,29 +16,23 @@ class Point {
      * @return Model\MediaList
      */
     public function getMedia($pointToken, $tags = null) {
-        // Токены *_pred_supplier почему-то начали приходить от api.enter.ru/v2/cart/split, хотя Паша Зюкин говорил, что данные токены являются токенами доставки и к группам точек отношения не имеют
         switch ($pointToken) {
-            case 'shops_pred_supplier':
             case 'shops':
             case 'enter': // Приходит из метода http://scms.enter.ru/api/point/get
                 $image = 'enter.png';
                 break;
-            case 'self_partner_pickpoint_pred_supplier':
             case 'self_partner_pickpoint':
             case 'pickpoint': // Приходит из метода http://scms.enter.ru/api/point/get
                 $image = 'pickpoint.png';
                 break;
-            case 'self_partner_svyaznoy_pred_supplier':
             case 'self_partner_svyaznoy':
             case 'shops_svyaznoy':
             case 'svyaznoy': // Приходит из метода http://scms.enter.ru/api/point/get
                 $image = 'svyaznoy.png';
                 break;
-            case 'self_partner_euroset_pred_supplier':
             case 'self_partner_euroset':
                 $image = 'euroset.png';
                 break;
-            case 'self_partner_hermes_pred_supplier':
             case 'self_partner_hermes':
             case 'hermes': // Приходит из метода http://scms.enter.ru/api/point/get
                 $image = 'hermes.png';
