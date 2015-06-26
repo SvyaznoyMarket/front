@@ -90,6 +90,9 @@ class DeleteProduct {
         // сохранение корзины в сессию
         $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
 
+        // удалить разбиение заказа
+        $session->remove($config->order->splitSessionKey);
+
         // если корзина пустая
         if (!count($cart)) {
             return new Http\JsonResponse([

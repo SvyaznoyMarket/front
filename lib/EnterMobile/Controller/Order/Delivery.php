@@ -67,7 +67,7 @@ class Delivery {
         $changeData = $request->data['change'] ?: null;
         // если это первый запрос на разбиение, то подставляет данные пользователя
         $userFromSplit = null;
-        if (!$changeData) {
+        if (!$request->isXmlHttpRequest()) {
             $userForm = new Model\Form\Order\UserForm((array)$session->get($config->order->userSessionKey));
             if (!$userForm->isValid()) {
                 $this->getLogger()->push(['type' => 'error', 'message' => 'Нет данных о пользователе', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split', 'critical']]);
@@ -91,9 +91,10 @@ class Delivery {
         }
 
         // предыдущее разбиение
-        $previousSplitData = null;
-        if ($changeData) {
-            $previousSplitData = $session->get($config->order->splitSessionKey);
+        $previousSplitData = $session->get($config->order->splitSessionKey);
+
+        if ($previousSplitData && !$changeData && $userFromSplit) {
+            $changeData['user'] = $userFromSplit->toArray();
         }
 
         // контроллер

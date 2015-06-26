@@ -170,10 +170,21 @@
 }
 
 .regionForm {
-    &_selectcity {
+    &_selectCity {
         padding-right: 110px;
+        &Input{
+            margin: 0px 10px 0px 0px;
+            height: 30px;
+            line-height: 30px;
+            padding-left: 20px;
+        }
+        &Inner{
+            border: 1px solid @inputBorder;
+            .rounded(3px);
+
+        }
     }
-    &_selectcitydel {
+    &_selectCityDel {
         position: absolute;
         top: 7px;
         right: 8px;
@@ -181,13 +192,14 @@
         width: 19px;
         height: 19px;
 
-        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB0ElEQVQ4EZ1UsWoCQRDdPY54CELsbLQwRYikvloLIYV9KvtImvyB+A0pEtLapQ4oWMT60CrE0kKb6ywEOSOceW/jXpb1jJiBvb3dee8xO7OzcrvdihST4/H4crPZ3EopGxhXwITABhjdKIreq9VqZPOkLTYaja7jOH4FkAKHbA3HQ6/Xe2m327EGmWIyCIJ7OB6189iMQAa5XK5RqVS+iHU04VQh8nD8+nK5fOt0OkpHRbY72ocW/sfc8n3/mWI83icEkhyVy2WxWq1EGIZ7uoVCQWSzWTGdTk3fGvhzh1UzhYigUKlUEiSaxjX36bcs43lezWX5HSdJncLoiEikca2FZrNZasTIX9PlPVIM62MKomIin8+LQ0KkQsenWJIrS09FoIUWi0VqRAanyPPtZ3mH4NEYEYU42zk0hPg7d1HNANFdWI69HOmcEadTYHKo4+DTNTf5r4lmjijAdVqVyaGOy6bFvWGvZbhJ4z0yhX52fyOi37I1dVQH4NLewflkAU5Zqg5QF4zdjzAHp7A1ljzyuU5ejclkcsamRTHqGnhsplDqq8FnpN/v30CghcEc/mX0t4jXzw/BSWQmczgcotW8GqJsYvjwFTHmiOTPl/YbgvcD/BF3fDQAAAAASUVORK5CYII=) no-repeat 0 0;
     }
     &_autocomplete {
         .ui-autocomplete {
             overflow: scroll;
 
             background: @white;
+            border: 1px solid #AAA;
+
             .ui-menu-item {
                 padding: 5px 0;
 
@@ -227,10 +239,10 @@
 
 .searchForm {
     margin: 0;
-    &_searchfield {
+    &_searchField {
         padding: 0 80px 0 0;
     }
-    &_searchfieldinner {
+    &_searchFieldInner {
         position: relative;
 
         padding: 0 10px 0 35px;
@@ -242,7 +254,7 @@
             left: 3px;
         }
     }
-    &_searchinput {
+    &_searchInput {
         line-height: 36px;
 
         height: 36px;
@@ -326,12 +338,10 @@
         text-align: center;
     }
     &.fixed-untill-640 {
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        top: 70px;
+        left: 50%;
+        margin-left: -160px;
         height: auto;
-        margin: auto;
         max-height: 545px;
 
         width: 320px;
@@ -342,6 +352,9 @@
         .modal-content {
             height: 100%;
         }
+    }
+    &-content {
+        overflow: auto;
     }
 }
 
