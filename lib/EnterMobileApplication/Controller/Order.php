@@ -91,7 +91,7 @@ namespace EnterMobileApplication\Controller {
 
                 $curl->execute();
 
-                $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
+                $productRepository->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
             }
 
             $media = $pointRepository->getMedia($point['partner'], ['logo']);

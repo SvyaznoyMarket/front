@@ -54,7 +54,7 @@ class DeleteProduct {
         }
 
         // запрос корзины
-        $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
+        $cartItemQuery = new Query\Cart\Price\GetItem($cart, $regionId);
         $curl->prepare($cartItemQuery);
 
         $productsById = [];
@@ -112,7 +112,7 @@ class DeleteProduct {
         }
 
         if ($descriptionListQuery) {
-            (new \EnterRepository\Product())->setDescriptionForIdIndexedListByQueryList(
+            (new \EnterRepository\Product())->setDescriptionForListByListQuery(
                 $productsById,
                 [$descriptionListQuery]
             );

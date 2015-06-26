@@ -24,20 +24,7 @@ namespace EnterMobileApplication\Controller\Cart {
             $config = $this->getConfig();
             $cartRepository = new \EnterRepository\Cart();
             
-            $userAuthToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
-            $user = null;
-            if ($userAuthToken && (0 !== strpos($userAuthToken, 'anonymous-'))) {
-                try {
-                    $userItemQuery = new Query\User\GetItemByToken($userAuthToken);
-                    $this->getCurl()->prepare($userItemQuery)->execute();
-                    $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
-                } catch (\Exception $e) {
-                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
-                }
-            }
-            
-            // MAPI-56
-            $session = $this->getSession($user && $user->ui ? $user->ui : null);
+            $session = $this->getSession();
 
             // ответ
             $response = new Response();

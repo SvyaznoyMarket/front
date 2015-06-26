@@ -59,7 +59,7 @@ namespace EnterTerminal\Controller {
                 $curl->prepare($descriptionListQuery);
             }
 
-            $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
+            $cartItemQuery = new Query\Cart\Price\GetItem($cart, $regionId);
             $curl->prepare($cartItemQuery);
 
             $curl->execute();
@@ -77,7 +77,7 @@ namespace EnterTerminal\Controller {
 
                 // медиа для товаров
                 if ($descriptionListQuery) {
-                    $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                    $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
                 }
             }
 

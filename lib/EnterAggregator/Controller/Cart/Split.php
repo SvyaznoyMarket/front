@@ -167,7 +167,7 @@ namespace EnterAggregator\Controller\Cart {
                     });
 
                     // медиа для товаров
-                    $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                    $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
 
                     foreach ($response->split->orders as $order) {
                         foreach ($order->products as $product) {

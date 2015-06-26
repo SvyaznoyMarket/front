@@ -91,7 +91,7 @@ class Index {
         if ($descriptionListQuery) {
             (new \EnterRepository\Product())->setDescriptionForListByListQuery(
                 $cartProductsByUi,
-                $descriptionListQuery
+                [$descriptionListQuery]
             );
         }
 

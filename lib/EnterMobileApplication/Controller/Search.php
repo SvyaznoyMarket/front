@@ -164,7 +164,7 @@ class Search {
 
         // медиа для товаров
         if ($descriptionListQuery) {
-            $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
+            $productRepository->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
         }
 
         // список рейтингов товаров

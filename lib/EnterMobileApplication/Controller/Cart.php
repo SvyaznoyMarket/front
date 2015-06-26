@@ -3,7 +3,6 @@
 namespace EnterMobileApplication\Controller {
 
     use Enter\Http;
-    use EnterMobileApplication\ConfigTrait;
     use EnterAggregator\CurlTrait;
     use EnterAggregator\LoggerTrait;
     use EnterAggregator\SessionTrait;
@@ -11,7 +10,7 @@ namespace EnterMobileApplication\Controller {
     use EnterModel as Model;
 
     class Cart {
-        use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
+        use LoggerTrait, CurlTrait, SessionTrait;
 
         /**
          * @param Http\Request $request
@@ -19,101 +18,104 @@ namespace EnterMobileApplication\Controller {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
-            $config = $this->getConfig();
             $curl = $this->getCurl();
             $cartRepository = new \EnterRepository\Cart();
             
+            $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
             $userAuthToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
-            $user = null;
-            if ($userAuthToken && (0 !== strpos($userAuthToken, 'anonymous-'))) {
-                try {
-                    $userItemQuery = new Query\User\GetItemByToken($userAuthToken);
-                    $curl->prepare($userItemQuery)->execute();
-                    $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
-                } catch (\Exception $e) {
-                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
-                }
-            }
-            
-            // MAPI-56
-            $session = $this->getSession($user && $user->ui ? $user->ui : null);
 
-            // Данные заголовки добавляются при вызове session_start
+            if (!$regionId) {
+                throw new \Exception('Не задан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
+            }
+
+            if (!$userAuthToken) {
+                throw new \Exception('Не задан параметр token', Http\Response::STATUS_BAD_REQUEST);
+            }
+
+            if (0 === strpos($userAuthToken, 'anonymous-')) {
+                throw new \Exception('Параметр token содержит идентификатор анонимного пользователя (данный метод предназначен для работы только с токенами аутентифицированных пользователей)', Http\Response::STATUS_BAD_REQUEST);
+            }
+
+            $userItemQuery = new Query\User\GetItemByToken($userAuthToken);
+            $curl->prepare($userItemQuery);
+
+            $regionQuery = new Query\Region\GetItemById($regionId);
+            $curl->prepare($regionQuery);
+            $curl->execute();
+
+            $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
+            $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+
+            if (!$user || !$user->ui) {
+                throw new \Exception('Не удалось получить ui пользователя', Http\Response::STATUS_BAD_REQUEST);
+            }
+
+            // Получение корзины
+            call_user_func(function() use(&$cart, &$user, &$region, &$curl, &$cartRepository) {
+                $cartItemQuery = new Query\Cart\GetItem($user->ui);
+                $curl->prepare($cartItemQuery);
+                $curl->execute();
+
+                $cart = $cartRepository->getObjectByQuery($cartItemQuery);
+
+                $cartProductListQuery = null;
+                if ($cart->product) {
+                    $cartProductListQuery = new \EnterQuery\Product\GetListByUiList(array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), $region->id);
+                    $curl->prepare($cartProductListQuery);
+                }
+
+                $cartProductDescriptionListQuery = null;
+                if ($cart->product) {
+                    $cartProductDescriptionListQuery = new \EnterQuery\Product\GetDescriptionListByUiList(array_map(function(\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), ['media' => true, 'label' => true]);
+                    $curl->prepare($cartProductDescriptionListQuery);
+                }
+
+                $curl->execute();
+
+                $cartRepository->updateObjectByQuery($cart, null, $cartProductListQuery, $cartProductDescriptionListQuery);
+
+                $cartPriceItemQuery = new \EnterQuery\Cart\Price\GetItem($cart, $region->id);
+                $curl->prepare($cartPriceItemQuery);
+                $curl->execute();
+
+                // TODO: избавиться от данного (повторного) вызова когда в v2/cart/get-price будет добавлена поддержка передачи ui товаров
+                $cartRepository->updateObjectByQuery($cart, $cartPriceItemQuery);
+            });
+
+            $cacheId = $this->getCacheId($cart);
+
+            // Данные заголовки добавляются при вызове session_start (хотя после перехода на серверную корзину данный
+            // метод больше не инициализирует PHP сессии, всё равно оставляем удаление данных заголовков на случай,
+            // если в будущем в данном методе появится инициализация PHP сессии)
             header_remove('Cache-Control');
             header_remove('Expires');
             header_remove('Pragma');
 
-            // корзина из сессии
-            $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
-
             $eTags = $request->getHeader('if-none-match');
             if ($eTags) {
-                $eTags = array_map(function($etag) { return trim($etag); }, explode(',', $eTags));
+                $eTags = array_map(function($eTag) { return trim($eTag); }, explode(',', $eTags));
                 // См. RFC 2616, раздел 14.26 If-None-Match
-                if (in_array('"' . $cart->cacheId . '"', $eTags) || in_array('*', $eTags)) {
+                if (in_array($cacheId, $eTags) || in_array('*', $eTags)) {
                     $httpResponse = new Http\JsonResponse([], Http\JsonResponse::STATUS_NOT_MODIFIED);
-                    $httpResponse->headers['ETag'] = '"' . $cart->cacheId . '"';
+                    $httpResponse->headers['ETag'] = $cacheId;
                     return $httpResponse;
                 }
             }
 
-            // ид региона
-            $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
-            if (!$regionId) {
-                throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
-            }
-
-            // запрос региона
-            $regionQuery = new Query\Region\GetItemById($regionId);
-            $curl->prepare($regionQuery);
-
-            $curl->execute();
-
-            // регион
-            $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
-
-            $productsById = [];
-            foreach ($cart->product as $cartProduct) {
-                $productsById[$cartProduct->id] = null;
-            }
-
-            $productListQuery = null;
-            $descriptionListQuery = null;
-            if ($productsById) {
-                $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id);
-                $curl->prepare($productListQuery);
-
-                $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
-                    array_keys($productsById),
-                    [
-                        'media'       => true,
-                        'label'       => true,
-                    ]
-                );
-                $curl->prepare($descriptionListQuery);
-            }
-
-            $cartItemQuery = new Query\Cart\GetItem($cart, $region->id);
-            $curl->prepare($cartItemQuery);
-
-            $curl->execute();
-
-            if ($productListQuery) {
-                $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
-            }
-
-            if ($descriptionListQuery) {
-                (new \EnterRepository\Product())->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
-            }
-
-            // корзина из ядра
-            $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
-
-            // response
-            $httpResponse = new Http\JsonResponse((new \EnterMobileApplication\Repository\Cart())->getResponseArray($cart, $productsById));
-            $httpResponse->headers['ETag'] = '"' . $cart->cacheId . '"';
+            $httpResponse = new Http\JsonResponse((new \EnterMobileApplication\Repository\Cart())->getResponseArray($cart, true));
+            $httpResponse->headers['ETag'] = $cacheId;
 
             return $httpResponse;
+        }
+
+        private function getCacheId(Model\Cart $cart) {
+            $cacheId = '';
+            foreach ($cart->product as $product) {
+                $cacheId .= $product->id . '-' . $product->quantity . '-' . $product->sum . '|';
+            }
+
+            // См. RFC 2616, раздел 14.19 ETag
+            return '"' . substr($cacheId, 0, -1) . '"';
         }
     }
 }

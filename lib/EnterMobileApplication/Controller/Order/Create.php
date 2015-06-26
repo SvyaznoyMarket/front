@@ -25,6 +25,7 @@ namespace EnterMobileApplication\Controller\Order {
             $config = $this->getConfig();
             $curl = $this->getCurl();
             $cartRepository = new \EnterRepository\Cart();
+            $session = $this->getSession();
 
             // ответ
             $response = new Response();
@@ -68,9 +69,6 @@ namespace EnterMobileApplication\Controller\Order {
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
             }
-            
-            // MAPI-56
-            $session = $this->getSession($user && $user->ui ? $user->ui : null);
 
             $splitData = (array)$session->get($config->order->splitSessionKey);
             if (!$splitData) {
@@ -142,7 +140,10 @@ namespace EnterMobileApplication\Controller\Order {
 
                 if (!$controllerResponse->errors) {
                     $session->remove($config->order->bonusCardSessionKey);
-                    $session->remove($config->cart->sessionKey);
+                    if ($user) {
+                        $curl->prepare(new Query\Cart\ClearItem($user->ui));
+                        $curl->execute();
+                    }
                 }
 
                 // MAPI-4

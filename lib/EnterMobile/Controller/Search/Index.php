@@ -163,7 +163,7 @@ class Index {
 
         // медиа для товаров
         if ($productsByUi && $descriptionListQuery) {
-            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+            $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
         }
 
         // меню

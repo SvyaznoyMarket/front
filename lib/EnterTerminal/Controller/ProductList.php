@@ -90,7 +90,7 @@ class ProductList {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
 
-        $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, $descriptionListQueries);
+        $productRepository->setDescriptionForListByListQuery($productsById, $descriptionListQueries);
 
         // ответ
         $response = [

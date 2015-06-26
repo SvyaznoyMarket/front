@@ -114,7 +114,7 @@ class Index {
         $curl->execute();
 
         if ($descriptionListQuery) {
-            $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
+            $productRepository->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
         }
 
         // запрос для получения страницы

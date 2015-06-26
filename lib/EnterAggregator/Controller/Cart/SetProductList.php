@@ -74,7 +74,7 @@ namespace EnterAggregator\Controller\Cart {
 
             // товары
             $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
-            $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, $descriptionListQueries);
+            $productRepository->setDescriptionForListByListQuery($productsById, $descriptionListQueries);
 
             foreach ($cartProductsById as $cartProduct) {
                 /** @var Model\Cart\Product|null $cartProduct */
@@ -103,7 +103,7 @@ namespace EnterAggregator\Controller\Cart {
             $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
 
             // запрос корзины
-            $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
+            $cartItemQuery = new Query\Cart\Price\GetItem($cart, $regionId);
             $curl->prepare($cartItemQuery);
 
             $curl->execute();

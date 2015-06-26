@@ -86,7 +86,7 @@ namespace EnterMobileApplication\Controller\User\Favorite {
                     $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList($productListQueries);
 
                     // медиа для товаров
-                    (new \EnterRepository\Product())->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
+                    (new \EnterRepository\Product())->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
 
                     $response->products = array_values($productsById);
                 }

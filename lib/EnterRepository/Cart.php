@@ -2,6 +2,7 @@
 
 namespace EnterRepository;
 
+use Enter\Curl\Client;
 use Enter\Http;
 use Enter\Curl\Query;
 use EnterAggregator\ConfigTrait;
@@ -98,7 +99,6 @@ class Cart {
 
         $cartData = array_merge([
             'product' => [],
-            'cacheId' => 0,
         ], (array)$session->get($key));
 
         foreach ($cartData['product'] as $productItem) {
@@ -124,7 +124,31 @@ class Cart {
             }
         }
 
-        $cart->cacheId = $cartData['cacheId'];
+        return $cart;
+    }
+
+    /**
+     * @return Model\Cart
+     */
+    public function getObjectByQuery(\EnterQuery\Cart\GetItem $query) {
+        $cart = new Model\Cart();
+        $result = $query->getResult();
+        if (!$result) {
+            return $cart;
+        }
+
+        foreach ($result['products'] as $productItem) {
+            if (empty($productItem['uid'])) {
+                continue;
+            }
+
+            $cartProduct = new Model\Cart\Product();
+            $cartProduct->ui = (string)$productItem['uid'];
+            $cartProduct->quantity = (int)$productItem['quantity'];
+
+            $cart->product[] = $cartProduct;
+        }
+
 
         return $cart;
     }
@@ -137,7 +161,6 @@ class Cart {
     public function saveObjectToHttpSession(Http\Session $session, Model\Cart $cart, $key) {
         $cartData = [
             'product' => [],
-            'cacheId' => $cart->cacheId,
         ];
 
         foreach ($cart->product as $cartProduct) {
@@ -169,37 +192,51 @@ class Cart {
     /**
      * @param \EnterModel\Cart $cart
      */
-    public function updateObjectByQuery(Model\Cart $cart, Query $cartItemQuery = null, Query $cartProductListQuery = null) {
-        if (!$cartItemQuery && !$cartProductListQuery) {
-            return;
-        }
-
+    public function updateObjectByQuery(Model\Cart $cart, Query $cartPriceItemQuery = null, Query $cartProductListQuery = null, Query $cartProductDescriptionListQuery = null) {
         /** @var \EnterModel\Cart\Product[] $cartProductsById */
         $cartProductsById = [];
+        /** @var \EnterModel\Cart\Product[] $cartProductsByUi */
+        $cartProductsByUi = [];
         foreach ($cart->product as $cartProduct) {
             $cartProductsById[$cartProduct->id] = $cartProduct;
+            $cartProductsByUi[$cartProduct->ui] = $cartProduct;
         }
 
-        if ($cartItemQuery) {
-            $item = $cartItemQuery->getResult();
-            $coreCart = new Model\Cart($item);
+        if ($cartPriceItemQuery) {
+            $cartPrices = new Model\Cart($cartPriceItemQuery->getResult());
 
-            $cart->sum = $coreCart->sum;
-            foreach ($coreCart->product as $coreCartProduct) {
-                $cartProduct = isset($cartProductsById[$coreCartProduct->id]) ? $cartProductsById[$coreCartProduct->id] : null;
+            $cart->sum = $cartPrices->sum;
+            foreach ($cartPrices->product as $cartPriceProduct) {
+                $cartProduct = isset($cartProductsById[$cartPriceProduct->id]) ? $cartProductsById[$cartPriceProduct->id] : null;
                 if (!$cartProduct) continue;
 
-                $cartProduct->price = $coreCartProduct->price;
-                $cartProduct->sum = $coreCartProduct->sum;
-                $cartProduct->quantity = $coreCartProduct->quantity;
+                $cartProduct->price = $cartPriceProduct->price;
+                $cartProduct->sum = $cartPriceProduct->sum;
+                $cartProduct->quantity = $cartPriceProduct->quantity;
             }
         }
 
         if ($cartProductListQuery) {
-            foreach ((new \EnterRepository\Product())->getIndexedObjectListByQueryList([$cartProductListQuery]) as $coreCartProduct) {
-                if (isset($cartProductsById[$coreCartProduct->id])) {
-                    $cartProductsById[$coreCartProduct->id]->product = $coreCartProduct;
+            $coreCartProducts = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$cartProductListQuery]);
+            $coreCartProductUis = [];
+            foreach ($coreCartProducts as $coreCartProduct) {
+                $coreCartProductUis[] = $coreCartProduct->ui;
+
+                if (isset($cartProductsByUi[$coreCartProduct->ui])) {
+                    $cartProductsByUi[$coreCartProduct->ui]->id = $coreCartProduct->id;
+                    $cartProductsByUi[$coreCartProduct->ui]->product = $coreCartProduct;
                 }
+            }
+
+            // Удаляем отсутствующие товары
+            foreach ($cart->product as $key => $cartProduct) {
+                if (!in_array($cartProduct->ui, $coreCartProductUis, true)) {
+                    unset($cart->product[$key]);
+                }
+            }
+
+            if ($cartProductDescriptionListQuery) {
+                (new \EnterRepository\Product())->setDescriptionForListByListQuery($coreCartProducts, [$cartProductDescriptionListQuery]);
             }
         }
     }

@@ -318,122 +318,114 @@ class Product {
     }
 
     /**
-     * @param Model\Product[] $productsById
+     * @param Model\Product[] $products
      * @param Query[] $descriptionQueryList
      */
-    public function setDescriptionForIdIndexedListByQueryList(array $productsById, array $descriptionQueryList) {
+    public function setDescriptionForListByListQuery(array $products, array $descriptionQueryList) {
         $productsByUi = [];
-        foreach ($productsById as $product) {
+        foreach ($products as $product) {
             $productsByUi[$product->ui] = $product;
         }
 
-        foreach ($descriptionQueryList as $descriptionQuery) {
-            $this->setDescriptionForListByListQuery($productsByUi, $descriptionQuery);
-        }
-    }
-
-    /**
-     * @param Model\Product[] $productsByUi
-     * @param Query $descriptionListQuery
-     */
-    public function setDescriptionForListByListQuery(array $productsByUi, Query $descriptionListQuery) {
         try {
-            foreach ($descriptionListQuery->getResult() as $descriptionItem) {
-                /** @var Model\Product|null $product */
-                $product =
-                    (isset($descriptionItem['uid']) && isset($productsByUi[$descriptionItem['uid']]))
-                    ? $productsByUi[$descriptionItem['uid']]
-                    : null
-                ;
-                if (!$product) continue;
+            foreach ($descriptionQueryList as $descriptionQuery) {
+                foreach ($descriptionQuery->getResult() as $descriptionItem) {
+                    /** @var Model\Product|null $product */
+                    $product =
+                        (isset($descriptionItem['uid']) && isset($productsByUi[$descriptionItem['uid']]))
+                        ? $productsByUi[$descriptionItem['uid']]
+                        : null
+                    ;
+                    if (!$product) continue;
 
-                // trustfactors
-                if (isset($descriptionItem['trustfactors']) && is_array($descriptionItem['trustfactors'])) {
-                    foreach ($descriptionItem['trustfactors'] as $trustfactorItem) {
-                        if (!isset($trustfactorItem['uid'])) continue;
+                    // trustfactors
+                    if (isset($descriptionItem['trustfactors']) && is_array($descriptionItem['trustfactors'])) {
+                        foreach ($descriptionItem['trustfactors'] as $trustfactorItem) {
+                            if (!isset($trustfactorItem['uid'])) continue;
 
-                        $product->trustfactors[] = new Model\Product\Trustfactor($trustfactorItem);
+                            $product->trustfactors[] = new Model\Product\Trustfactor($trustfactorItem);
+                        }
                     }
-                }
 
-                // property groups
-                if (isset($descriptionItem['property_groups'][0])) {
-                    foreach ($descriptionItem['property_groups'] as $propertyGroupItem) {
-                        if (!isset($propertyGroupItem['uid'])) continue;
+                    // property groups
+                    if (isset($descriptionItem['property_groups'][0])) {
+                        foreach ($descriptionItem['property_groups'] as $propertyGroupItem) {
+                            if (!isset($propertyGroupItem['uid'])) continue;
 
-                        $product->propertyGroups[] = new Model\Product\Property\Group($propertyGroupItem);
+                            $product->propertyGroups[] = new Model\Product\Property\Group($propertyGroupItem);
+                        }
                     }
-                }
 
-                // property
-                if (isset($descriptionItem['properties'][0])) {
-                    foreach ($descriptionItem['properties'] as $propertyItem) {
-                        if (!isset($propertyItem['uid'])) continue;
+                    // property
+                    if (isset($descriptionItem['properties'][0])) {
+                        foreach ($descriptionItem['properties'] as $propertyItem) {
+                            if (!isset($propertyItem['uid'])) continue;
 
-                        $product->properties[] = new Model\Product\Property($propertyItem);
+                            $product->properties[] = new Model\Product\Property($propertyItem);
+                        }
                     }
-                }
 
-                $product->media = new Model\MediaList(isset($descriptionItem['medias']) ? $descriptionItem['medias'] : []);
+                    $product->media = new Model\MediaList(isset($descriptionItem['medias']) ? $descriptionItem['medias'] : []);
 
-                $hasAffectOldPriceLabel = false;
-                if (!empty($descriptionItem['label']['medias'])) {
-                    foreach ($descriptionItem['label']['medias'] as $mediaItem) {
-                        if ('image' === $mediaItem['provider']) {
-                            $product->labels[] = new Model\Product\Label($descriptionItem['label']);
+                    $hasAffectOldPriceLabel = false;
+                    if (!empty($descriptionItem['label']['medias'])) {
+                        foreach ($descriptionItem['label']['medias'] as $mediaItem) {
+                            if ('image' === $mediaItem['provider']) {
+                                $product->labels[] = new Model\Product\Label($descriptionItem['label']);
 
-                            if ($descriptionItem['label']['affects_price']) {
-                                $hasAffectOldPriceLabel = true;
+                                if ($descriptionItem['label']['affects_price']) {
+                                    $hasAffectOldPriceLabel = true;
+                                }
+
+                                break;
                             }
+                        }
+                    }
 
+                    // Т.к. из метода api.enter.ru/v2/product/get-v3 была убрана связь между выводом старой цены и наличием
+                    // шильдика, реализуем эту связь пока здесь (подробности в CORE-2936)
+                    if (!$hasAffectOldPriceLabel) {
+                        $product->oldPrice = null;
+                    }
+
+                    if (!empty($descriptionItem['brand']['medias'])) {
+                        foreach ($descriptionItem['brand']['medias'] as $mediaItem) {
+                            if ('image' === $mediaItem['provider']) {
+                                $product->brand = new Model\Brand($descriptionItem['brand']);
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!empty($descriptionItem['categories'])) {
+                        foreach ($descriptionItem['categories'] as $category) {
+                            if ($category['main']) {
+                                $product->category = new Model\Product\Category($category);
+                            }
+                        }
+                    }
+
+                    $isSlotPartnerOffer = false;
+                    foreach ($product->partnerOffers as $partnerOffer) {
+                        if (2 == $partnerOffer->partner->type) {
+                            $isSlotPartnerOffer = true;
                             break;
                         }
                     }
-                }
 
-                // Т.к. из метода api.enter.ru/v2/product/get-v3 была убрана связь между выводом старой цены и наличием
-                // шильдика, реализуем эту связь пока здесь (подробности в CORE-2936)
-                if (!$hasAffectOldPriceLabel) {
-                    $product->oldPrice = null;
-                }
-
-                if (!empty($descriptionItem['brand']['medias'])) {
-                    foreach ($descriptionItem['brand']['medias'] as $mediaItem) {
-                        if ('image' === $mediaItem['provider']) {
-                            $product->brand = new Model\Brand($descriptionItem['brand']);
-                            break;
-                        }
+                    if (!$product->isInShopStockOnly && !$product->isInShopShowroomOnly && $product->category && (new \EnterRepository\Product\Category())->getRootObject($product->category)->isFurniture && $product->isStore && !$isSlotPartnerOffer) {
+                        $product->storeLabel = new \EnterModel\Product\StoreLabel();
+                        $product->storeLabel->name = 'Товар со склада';
                     }
-                }
 
-                if (!empty($descriptionItem['categories'])) {
-                    foreach ($descriptionItem['categories'] as $category) {
-                        if ($category['main']) {
-                            $product->category = new Model\Product\Category($category);
-                        }
-                    }
-                }
+                    if (isset($descriptionItem['tags'][0])) {
+                        foreach ($descriptionItem['tags'] as $tag) {
+                            if (!isset($tag['slug'])) continue;
 
-                $isSlotPartnerOffer = false;
-                foreach ($product->partnerOffers as $partnerOffer) {
-                    if (2 == $partnerOffer->partner->type) {
-                        $isSlotPartnerOffer = true;
-                        break;
-                    }
-                }
-
-                if (!$product->isInShopStockOnly && !$product->isInShopShowroomOnly && (new \EnterRepository\Product\Category())->getRootObject($product->category)->isFurniture && $product->isStore && !$isSlotPartnerOffer) {
-                    $product->storeLabel = new \EnterModel\Product\StoreLabel();
-                    $product->storeLabel->name = 'Товар со склада';
-                }
-                
-                if (isset($descriptionItem['tags'][0])) {
-                    foreach ($descriptionItem['tags'] as $tag) {
-                        if (!isset($tag['slug'])) continue;
-
-                        if ($tag['slug'] === 'soberi-sam') {
-                            $product->assemblingLabel = new \EnterModel\Product\AssemblingLabel();
-                            $product->assemblingLabel->name = $tag['name']; 
+                            if ($tag['slug'] === 'soberi-sam') {
+                                $product->assemblingLabel = new \EnterModel\Product\AssemblingLabel();
+                                $product->assemblingLabel->name = $tag['name'];
+                            }
                         }
                     }
                 }

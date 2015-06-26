@@ -117,7 +117,7 @@ class ListBySearchPhrase {
         // список товаров
         $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
         if ($descriptionListQuery) {
-            $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
+            $productRepository->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
         }
 
         // список рейтингов товаров

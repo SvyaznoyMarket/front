@@ -7,19 +7,23 @@ use EnterQuery\CrmQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
-class GetItem extends Query {
+class SetQuantityForProductItem extends Query {
     use CrmQueryTrait;
 
     /** @var array|null */
     protected $result;
 
     /**
+     * @param string $productUi
+     * @param string $quantity
      * @param string $userUi
      */
-    public function __construct($userUi) {
+    public function __construct($productUi, $quantity, $userUi) {
         $this->url = new Url();
-        $this->url->path = 'api/cart';
-        $this->url->query = [
+        $this->url->path = 'api/cart/set';
+        $this->data = [
+            'uid' => $productUi,
+            'quantity' => $quantity,
             'user_uid' => $userUi,
         ];
 
@@ -30,8 +34,6 @@ class GetItem extends Query {
      * @param $response
      */
     public function callback($response) {
-        $data = $this->parse($response);
-
-        $this->result = isset($data['products']) ? $data : null;
+        $this->result = $this->parse($response);
     }
 }

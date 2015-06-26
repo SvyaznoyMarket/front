@@ -8,19 +8,20 @@ use EnterModel as Model;
 class Cart {
     /**
      * @param Model\Cart $cart
-     * @param Model\Product[] $productsById
+     * @param bool $returnProducts
      * @return array
      */
-    public function getResponseArray($cart, $productsById = []) {
+    public function getResponseArray($cart, $returnProducts = false) {
         $response = [];
-        if ($cart->sum !== null) {
+
+        if ($returnProducts) {
             $response['sum'] = $cart->sum;
         }
-        
+
         $response['quantity'] = 0;
         $response['uniqueQuantity'] = 0;
         
-        if ($productsById) {
+        if ($returnProducts) {
             $response['products'] = [];
         }
 
@@ -30,19 +31,19 @@ class Cart {
             $response['quantity'] += $cartProduct->quantity;
             $response['uniqueQuantity']++;
             
-            if ($productsById) {
-                $product = new \EnterMobileApplication\Model\Cart\Product();
+            if ($returnProducts) {
+                $product = [
+                    'id' => $cartProduct->id,
+                    'quantity' => $cartProduct->quantity,
+                    'sum' => $cartProduct->sum,
+                ];
 
-                $product->id = $cartProduct->id;
-                $product->quantity = $cartProduct->quantity;
-                $product->sum = $cartProduct->sum;
-
-                if (!empty($productsById[$cartProduct->id])) {
-                    $product->webName = $productsById[$cartProduct->id]->webName;
-                    $product->namePrefix = $productsById[$cartProduct->id]->namePrefix;
-                    $product->name = $productsById[$cartProduct->id]->name;
-                    $product->price = $productsById[$cartProduct->id]->price;
-                    $product->media = $productsById[$cartProduct->id]->media;
+                if ($cartProduct->product) {
+                    $product['webName'] = $cartProduct->product->webName;
+                    $product['namePrefix'] = $cartProduct->product->namePrefix;
+                    $product['name'] = $cartProduct->product->name;
+                    $product['price'] = $cartProduct->product->price;
+                    $product['media'] = $cartProduct->product->media;
                 }
 
                 $response['products'][] = $product;

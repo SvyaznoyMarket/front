@@ -226,7 +226,7 @@ namespace EnterAggregator\Controller {
                 [
                     $response->product->ui => $response->product
                 ],
-                $descriptionListQuery
+                [$descriptionListQuery]
             );
 
             // запрос настроек каталога
@@ -292,7 +292,7 @@ namespace EnterAggregator\Controller {
             }
             
             if ($relatedDescriptionListQuery) {
-                $productRepository->setDescriptionForIdIndexedListByQueryList(
+                $productRepository->setDescriptionForListByListQuery(
                     $productsById,
                     [$relatedDescriptionListQuery]
                 );

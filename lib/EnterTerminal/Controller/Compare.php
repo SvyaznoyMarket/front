@@ -80,7 +80,7 @@ namespace EnterTerminal\Controller {
 
                 // медиа для товаров
                 if ($productsByUi && $descriptionListQuery) {
-                    $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                    $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
                 }
             }
 
