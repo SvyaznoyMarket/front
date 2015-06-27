@@ -24,7 +24,7 @@ class SetProductList extends Query {
             'user_uid' => $userUi,
             'products' => array_map(function(\EnterModel\Cart\Product $cartProduct) { return [
                 'uid' => $cartProduct->ui,
-                'quantity' => $cartProduct->quantity,
+                'quantity' => $cartProduct->quantity ?: 1,
             ]; }, $cartProducts),
         ];
 
