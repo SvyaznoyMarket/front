@@ -428,7 +428,7 @@ textarea {
 }
 body {
   font-family: Tahoma, Geneva, Kalimati, sans-serif, helvetica, sans-serif;
-  font-size: 12px;
+  font-size: 100%;
   line-height: 1.4;
 }
 a {
@@ -3982,7 +3982,6 @@ html.no-scroll body {
    Подвал сайта .footer .socLink .publicInfoList .publicInfoText .footerCopy
    ========================================================================== */
 .footer {
-  font-size: .75em;
   padding: 15px 0 0;
   color: #363636;
   border-top: 2px solid #a0a0a0;
@@ -3990,6 +3989,7 @@ html.no-scroll body {
 }
 .footer-inn {
   padding: 0 10px;
+  font-size: .75em;
 }
 .i-footer {
   background-image: url("../img/footer/i-footer.png");
@@ -4130,12 +4130,13 @@ html.no-scroll body {
 }
 .footer-bottom {
   padding: 10px 10px 20px;
+  font-size: .75em;
   text-align: center;
   color: #c7c7c7;
   background: #000;
 }
 .footer-bottom__copy {
-  font-size: .9em;
+  font-size: 10px;
   margin: 0 0 8px;
 }
 .footer-bottom__full-site {
@@ -6327,12 +6328,6 @@ html.no-scroll body {
 }
 .slidesImgBtn-right {
   right: 0;
-}
-html {
-  font-size: 100%;
-}
-body {
-  font-size: 100%;
 }
 .content {
   overflow: hidden;
