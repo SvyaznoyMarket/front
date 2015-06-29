@@ -95,6 +95,9 @@ class Complete {
                         $delivery->type->token = $orderItem['delivery']['type']['token'];
                         $delivery->type->shortName = $orderItem['delivery']['type']['shortName'];
                     }
+                    if (!empty($orderItem['address'])) {
+                        $order->address = $orderItem['address'];
+                    }
                     if (!empty($orderItem['point']['ui'])) {
                         $order->point = new Model\Point($orderItem['point']);
                         $pointUis[] = $orderItem['point']['ui'];

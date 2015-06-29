@@ -205,6 +205,7 @@ class Create {
                                 : null
                             ,
                             'paymentMethodId' => $order->paymentMethodId,
+                            'address'         => $order->address,
                             'point'           =>
                                 $order->point
                                 ? [
