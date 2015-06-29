@@ -2,7 +2,7 @@
 
 namespace EnterQuery;
 
-class CoreQueryException extends \Exception {
+class CoreQueryException extends \Exception implements \JsonSerializable {
     /** @var array */
     private $detail = [];
 
@@ -18,5 +18,18 @@ class CoreQueryException extends \Exception {
      */
     public function getDetail() {
         return $this->detail;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize() {
+        return [
+            'code'    => $this->getCode(),
+            'message' => $this->getMessage(),
+            'detail'  => $this->getDetail(),
+            'file'    => $this->getFile(),
+            'line'    => $this->getLine(),
+        ];
     }
 }
