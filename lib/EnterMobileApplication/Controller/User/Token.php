@@ -18,29 +18,17 @@ namespace EnterMobileApplication\Controller\User {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
-            $config = $this->getConfig();
-            $session = $this->getSession();
-
-            $token = $session->get($config->userToken->authName);
-            if (!$token) {
-                // TODO: вынести в репозиторий
-                $bytes = openssl_random_pseudo_bytes(32, $strong);
-                if (true !== $strong) {
-                    $bytes = false;
-                }
-
-                if (false === $bytes) {
-                    $bytes = hash('sha256', uniqid(mt_rand(), true), true);
-                }
-
-                $token = 'anonymous-' . base_convert(bin2hex($bytes), 16, 36);
-
-                $session->set($config->userToken->authName, $token);
+            $bytes = openssl_random_pseudo_bytes(32, $strong);
+            if (true !== $strong) {
+                $bytes = false;
             }
 
-            // ответ
+            if (false === $bytes) {
+                $bytes = hash('sha256', uniqid(mt_rand(), true), true);
+            }
+
             $response = new Response();
-            $response->token = $token;
+            $response->token = 'anonymous-' . base_convert(bin2hex($bytes), 16, 36);
 
             return new Http\JsonResponse($response);
         }

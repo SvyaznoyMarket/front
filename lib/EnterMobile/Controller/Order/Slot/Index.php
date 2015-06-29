@@ -20,7 +20,8 @@ class Index {
     public function execute(Http\Request $request) {
         $referer = isset($request->server['HTTP_REFERER']) ? $request->server['HTTP_REFERER'] : '/';
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
-        $userToken = (new \EnterRepository\User)->getTokenByHttpRequest($request);
+        $curl = $this->getCurl();
+        $productRepository = new \EnterRepository\Product();
         $userItemQuery = null;
         $cartSplitQuery = null;
         $createOrderQuery = null;
@@ -32,10 +33,14 @@ class Index {
                 throw new \Exception('Не подтверждено согласие с офертой');
             }
 
-            $userItemQuery = $this->prepareUserItemQuery($userToken);
+            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+            if ($userItemQuery) {
+                $curl->prepare($userItemQuery);
+            }
+
             $cartSplitQuery = $this->prepareCartSplitQuery($request->data['productId'], $regionId);
 
-            $this->getCurl()->execute();
+            $curl->execute();
 
             $split = new Model\Cart\Split($cartSplitQuery->getResult());
             $split->region = new Model\Region(['id' => $regionId]);
@@ -45,14 +50,10 @@ class Index {
             }
 
             // пользователь
-            if ($userItemQuery) {
-                try {
-                    $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
-                    $split->user->id = $user->id;
-                    $split->user->ui = $user->ui;
-                } catch (\Exception $e) {
-                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['critical', 'order', 'slot']]);
-                }
+            $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+            if ($user) {
+                $split->user->id = $user->id;
+                $split->user->ui = $user->ui;
             }
 
             // обновление email и телефона
@@ -67,14 +68,37 @@ class Index {
             }
 
             $createOrderQuery = $this->prepareOrderCreatePacketQuery($split, $request->data['productId'], $regionId);
-            $this->getCurl()->query($createOrderQuery);
+            $curl->query($createOrderQuery);
             $orderCreatePacketResponse = $createOrderQuery->getResult();
 
             if (!isset($orderCreatePacketResponse[0]['number_erp'])) {
                 throw new \Exception('Ошибка при создании заявки');
             }
 
-            $products = $this->getProducts($orderCreatePacketResponse[0]['product'], $regionId);
+            $productIds = [];
+            foreach ($orderCreatePacketResponse[0]['product'] as $product) {
+                $productIds[] = $product['id'];
+            }
+
+            $curl = $this->getCurl();
+
+            $productQuery = new Query\Product\GetListByIdList($productIds, $regionId);
+            $curl->prepare($productQuery);
+
+            $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                $productIds,
+                [
+                    'category' => true,
+                    'label'    => true,
+                    'brand'    => true,
+                ]
+            );
+            $curl->prepare($descriptionListQuery);
+
+            $curl->execute();
+
+            $products = $productRepository->getIndexedObjectListByQuery($productQuery);
+            $productRepository->setDescriptionForListByListQuery($products, $descriptionListQuery);
 
             return $request->isXmlHttpRequest() ? new Http\JsonResponse([
                 'order' => [
@@ -87,16 +111,19 @@ class Index {
                     'region' => [
                         'name' => $orderCreatePacketResponse[0]['geo']['name'],
                     ],
-                    'products' => array_map(function($product) use(&$products) {
+                    'products' => array_map(function($product) use(&$products, $productRepository) {
+                        $coreProduct = $productRepository->getObjectFromListById($products, $product['id']);
+                        if (!$coreProduct) {
+                            return [];
+                        }
+
                         return [
-                            'id' => $product['id'],
-                            'name' => $products[$product['id']]->name,
-                            'article' => $products[$product['id']]->article,
-                            'categories' => $products[$product['id']]->category ? array_map(function(Model\Product\Category $category) {
-                                return [
-                                    'name' => $category->name
-                                ];
-                            }, array_merge($products[$product['id']]->category->ascendants, [$products[$product['id']]->category])) : [],
+                            'id' => $coreProduct->id,
+                            'name' => $coreProduct->name,
+                            'article' => $coreProduct->article,
+                            'categories' => $coreProduct->category ? call_user_func($self = function(Model\Product\Category $category) use (&$self) {
+                                return array_merge($category->parent ? $self($category->parent) : [], [['name' => $category->name]]);
+                            }, $coreProduct->category) : [],
                             'price' => $product['price'],
                             'quantity' => $product['quantity'],
                         ];
@@ -137,20 +164,6 @@ class Index {
         }
 
         return $phone;
-    }
-
-    /**
-     * @param string $userToken
-     * @return Query\User\GetItemByToken|null
-     */
-    private function prepareUserItemQuery($userToken) {
-        if ($userToken) {
-            $userItemQuery =  new Query\User\GetItemByToken($userToken);
-            $this->getCurl()->prepare($userItemQuery);
-            return $userItemQuery;
-        }
-
-        return null;
     }
 
     /**
@@ -203,20 +216,5 @@ class Index {
         }
 
         return $metas;
-    }
-
-    /**
-     * @return Model\Product[]
-     */
-    private function getProducts(array $products, $regionId) {
-        $productIds = [];
-        foreach ($products as $product) {
-            $productIds[] = $product['id'];
-        }
-
-        $productQuery = new Query\Product\GetListByIdList($productIds, $regionId);
-        $this->getCurl()->query($productQuery);
-
-        return (new \EnterRepository\Product())->getIndexedObjectListByQuery($productQuery);
     }
 }

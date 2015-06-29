@@ -1,0 +1,113 @@
+<section class="checkout">
+    <form class="js-order-delivery-form" action="{{deliveryForm.url}}" data-container-selector=".id-order-form-container" data-value="{{&dataValue}}" data-error="{{&form.errorDataValue}}"></form>
+
+    <h1 class="checkout__tl">Самовывоз и доставка</h1>
+
+    <div class="js-order-error-container">
+    {{#errors}}
+        <div class="checkout__err">{{message}}</div>
+    {{/errors}}
+    </div>
+
+    {{#orderCountMessage}}
+        <div class="checkout-order-info clearfix">
+            <span class="checkout-order-info__tx">Товары будут оформлены как <strong class="mdb">{{orderCountMessage}}</strong></span>
+        </div>
+    {{/orderCountMessage}}
+
+    <div class="checkout-order-info clearfix">
+        <div class="checkout-order-info__tx ">Ваш регион: <strong>{{region.name}}</strong></div>
+
+        <div class="checkout-order-info__l">От региона зависят доступные способы получения и оплаты заказов.</div>
+
+        <button class="jsSelectCity checkout-order-info__r btn-transparent btn-transparent--normal"><span class="bb-dotted">Изменить регион</span></button>
+    </div>
+
+    {{#orders}}
+    {{! разбиение заказа }}
+        <div class="checkout-order">
+            <div class="checkout-order-head checkout-order__box checkout-order__box--head">
+                <strong class="checkout-order-head__title">{{name}}</strong>
+                {{#seller}}
+                    <a class="checkout-order-head__info checkout-order-head__right" href="{{url}}" target="_blank"><span class="bb-dotted">Информация и оферта</span></a>
+                    <span class="checkout-order-head__vendor checkout-order-head__right">продавец: {{name}}</span>
+                {{/seller}}
+            </div>
+
+            <div class="checkout-order__box checkout-order__box--stretch{{#delivery.isCompleted}} complete{{/delivery.isCompleted}}">
+                <menu class="checkout-delivery-type clearfix">
+                    {{#deliveries}}
+                        <li class="checkout-delivery-type__item js-order-delivery-form-control {{#isActive}}active{{/isActive}}" data-value="{{&dataValue}}">
+                            <span class="checkout-delivery-type__text">{{name}}</span>
+                        </li>
+                    {{/deliveries}}
+                </menu>
+
+                <div>
+                    <script id="order-{{id}}-date-data" type="application/json">{{&dateJson}}</script>
+                    <script id="order-{{id}}-point-data" type="application/json">{{&pointJson}}</script>
+                    <script id="order-{{id}}-address-data" type="application/json">{{&addressFormJson}}</script>
+                    <script id="order-{{id}}-discount-data" type="application/json">{{&discountFormJson}}</script>
+
+                    {{#delivery.isSelf}}
+                        {{>page/order/delivery/group/self}}
+                    {{/delivery.isSelf}}
+
+                    {{#delivery.isStandart}}
+                        {{>page/order/delivery/group/standart}}
+                    {{/delivery.isStandart}}
+                </div>
+            </div>
+
+            {{>page/order/delivery/product-list}}
+
+            {{>page/order/delivery/discount-list}}
+
+            {{>page/order/delivery/discount}}
+
+            {{! общая стоимость заказа }}
+            <div class="checkout-summary checkout-order__box table">
+                <div class="table_cell">
+                    <button class="btn-transparent btn-transparent--normal js-order-delivery-discountPopup-link" data-modal-position="fixed" data-modal-title="Добавить скидку" data-storage-selector="#order-{{id}}-discount-data"><span class="bb-dotted">Добавить скидку</span></button>
+                </div>
+
+                <div class="table_cell ta-r">
+                    <div class="checkout-summary__item checkout-summary__item--val mb-10">
+                        {{delivery.price.name}} {{#delivery.price.isCurrency}}<span class="rubl">p</span>{{/delivery.price.isCurrency}}
+                    </div>
+                    <div class="checkout-summary__item mb-10">{{delivery.name}}:</div>
+
+                    <div class="checkout-summary__item checkout-summary__item--val clear-r l">{{sum.name}} <span class="rubl">p</span></div>
+                    <div class="checkout-summary__item l">Итого:</div>
+                </div>
+            </div>
+            {{! общая стоимость заказа }}
+
+            {{#messages}}
+                {{#isPrepayment}}
+                    <div class="checkout-order-err">
+                        <span class="checkout-order-err__msg">Требуется предоплата.</span>
+                        <span class="checkout-order-err__info">Сумма заказа превышает {{cost}} <span class="rubl">p</span>. <a href="/how_pay" target="_blank" class="bb-dotted">Подробнее</a></span>
+                    </div>
+                {{/isPrepayment}}
+            {{/messages}}
+
+            {{>page/order/delivery/payment}}
+        </div>
+    {{! разбиение заказа }}
+    {{/orders}}
+
+    {{#orders.0}}
+    <div class="js-order-form btn-container btn-container--orange">
+        <form action="{{form.url}}" method="post" novalidate>
+            <div class="custom-control">
+                <div class="common-control-checkbox-wrap">
+                    <input type="checkbox" class="custom-input custom-input--check js-order-form-accept-field js-validator-form-field" id="id-orderForm-accept" name="accept" data-field="accept" value="1" required data-field="accept"/>
+                    <label class="order-accept custom-label custom-label--top" for="id-orderForm-accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn--submit btn--orange btn--big">Оформить</button>
+        </form>
+    </div>
+    {{/orders.0}}
+</section>

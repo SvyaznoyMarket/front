@@ -3,6 +3,7 @@
 namespace EnterMobile\Controller\Search;
 
 use Enter\Http;
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
@@ -15,9 +16,10 @@ use EnterAggregator\RouterTrait;
 use EnterMobile\Routing;
 use EnterMobile\Model;
 use EnterMobile\Model\Page\Search\Index as Page;
+use EnterAggregator\AbTestTrait as AbTestTrait;
 
 class Index {
-    use ConfigTrait, LoggerTrait, RouterTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, AbTestTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -56,10 +58,20 @@ class Index {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
+
         $curl->execute();
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+        
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
 
         // фильтры в http-запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
@@ -80,6 +92,8 @@ class Index {
         $curl->prepare($categoryTreeQuery);
 
         $curl->execute();
+        
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // листинг идентификаторов товаров
         try {
@@ -115,6 +129,9 @@ class Index {
                 [
                     'media'       => true,
                     'media_types' => ['main'], // только главная картинка
+                    'category'    => true,
+                    'label'       => true,
+                    'brand'       => true,
                 ]
             );
             $curl->prepare($descriptionListQuery);
@@ -166,6 +183,8 @@ class Index {
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
         $pageRequest->pageNum = $pageNum;
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->cart = $cart;
         $pageRequest->limit = $limit;
         $pageRequest->count = $searchResult->productCount; // TODO: передавать searchResult
         $pageRequest->requestFilters = $requestFilters;
@@ -174,6 +193,14 @@ class Index {
         $pageRequest->sortings = $sortings;
         $pageRequest->products = $productsById;
         $pageRequest->httpRequest = $request;
+
+        $chosenListingType = $this->getAbTest()->getObjectByToken('product_listing')->chosenItem->token;
+
+        if ($chosenListingType == 'old_listing') {
+            $pageRequest->buyBtnListing = false;
+        } else if ($chosenListingType == 'new_listing') {
+            $pageRequest->buyBtnListing = true;
+        }
 
         // страница
         $page = new Page();

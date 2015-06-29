@@ -1,0 +1,96 @@
+<div class="flexbox-two-rows">
+    <div class="order-popup__top-block order-popup-points search flexbox-two-rows__header">
+        <form class="search__section">
+            <div class="search-control {{! suggest-open }}">
+                <i class="sprite-icon sprite-icon--search"></i>
+
+                <input id="order-{{order.id}}-suggest-input" class="js-order-delivery-point-search-input search-control__input" data-suggest-container-selector="#order-{{order.id}}-suggest-container" type="text" placeholder="Искать по улице, метро">
+                <input class="search-control__submit js-order-delivery-geolocation-link" type="submit" value="" data-suggest-input-selector="#order-{{order.id}}-suggest-input">
+                <div id="order-{{order.id}}-suggest-container" data-input-selector="#order-{{order.id}}-suggest-input" class="form-control-group__suggest suggest-control"></div>
+            </div>
+            <div id="order-{{order.id}}-delivery-point-tab-link" class="js-order-delivery-point-tab-link btn btn--white btn--medium" data-index="0" data-storage-selector="#order-{{order.id}}-point-data" data-filter-form-selector="#order-{{order.id}}-delivery-point-filter-form">
+                <span class="map-link" data-index="0" data-container-selector="#order-{{order.id}}-point-container">Карта</span>
+                <span class="map-link" data-index="1" data-container-selector="#order-{{order.id}}-map-container" style="display: none;">Список</span>
+            </div>
+        </form>
+    </div>
+
+    <div class="flexbox-two-rows__content flexbox-two-rows">
+        <form id="order-{{order.id}}-delivery-point-filter-form" class="dropdowns flexbox-two-rows__header" data-tab-selector="#order-{{order.id}}-delivery-point-tab-link" data-suggest-input-selector="#order-{{order.id}}-suggest-input">
+                <div class="custom-select__kit custom-filter__kit">
+
+                    <div class="custom-select__wr-l">
+                        <div class="custom-select custom-filter toggle js-toggle-wrap js-order-delivery-points-filter-params-list">
+                            <span class="custom-select__value toggle-link js-toggle-link">
+                                <span class="bb-dotted">Все точки</span>
+                                <i class="caret"></i>
+                            </span>
+    
+                            <ul class="custom-select-list toggle-box">
+                            {{#filters.type}}
+                                <li class="custom-select-list__item">
+                                    <input type="checkbox" id="order-{{order.id}}-delivery-filter-type-{{id}}" name="order-{{order.id}}-delivery-filter-type" class="custom-input custom-input--square-check js-order-delivery-point-filter" data-value="{{&dataValue}}" data-form-selector="#order-{{order.id}}-delivery-point-filter-form" />
+    
+                                    <label class="custom-label flex-hor-vertical-between js-order-delivery-points-filter-param" for="order-{{order.id}}-delivery-filter-type-{{id}}">
+                                        <span class="custom-label_tx">{{name}}</span>
+                                    </label>
+                                </li>
+                            {{/filters.type}}
+                            </ul>
+                        </div>
+                    </div>
+
+                     <div class="custom-select__wr-c">
+                        <div class="custom-select custom-filter toggle js-toggle-wrap js-order-delivery-points-filter-params-list">
+                             <span class="custom-select__value toggle-link js-toggle-link">
+                                 <span class="bb-dotted">Стоимость</span>
+                                 <i class="caret"></i>
+                             </span>
+ 
+                             <ul class="custom-select-list toggle-box">
+                             {{#filters.cost}}
+                                 <li class="custom-select-list__item">
+                                     <input type="checkbox" id="order-{{order.id}}-delivery-filter-cost-{{id}}" name="order-{{order.id}}-delivery-filter-cost" class="custom-input custom-input--square-check js-order-delivery-point-filter" data-value="{{&dataValue}}" data-form-selector="#order-{{order.id}}-delivery-point-filter-form" />
+ 
+                                     <label class="custom-label flex-hor-vertical-between js-order-delivery-points-filter-param" for="order-{{order.id}}-delivery-filter-cost-{{id}}">
+                                         <span class="custom-label_tx">{{^name}}Бесплатно{{/name}}{{#name}}{{name}} <span class="rubl">p</span>{{/name}}</span>
+                                     </label>
+                                 </li>
+                             {{/filters.cost}}
+                             </ul>
+                         </div>
+                    </div>
+
+                <div class="custom-select__wr-r">
+                    <div class="custom-select custom-filter toggle js-toggle-wrap js-order-delivery-points-filter-params-list">
+                        <span class="custom-select__value toggle-link js-toggle-link">
+                            <span class="bb-dotted">Дата</span>
+                            <i class="caret"></i>
+                        </span>
+    
+                        <ul class="custom-select-list toggle-box">
+                        {{#filters.date}}
+                            <li class="custom-select-list__item">
+                                <input type="checkbox" id="order-{{order.id}}-delivery-filter-date-{{id}}" name="order-{{order.id}}-delivery-filter-date" class="custom-input custom-input--square-check js-order-delivery-point-filter" data-value="{{&dataValue}}" data-form-selector="#order-{{order.id}}-delivery-point-filter-form" />
+    
+                                <label class="custom-label flex-hor-vertical-between js-order-delivery-points-filter-param" for="order-{{order.id}}-delivery-filter-date-{{id}}"><span class="custom-label_tx">{{name}}</span></label>
+                            </li>
+                        {{/filters.date}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        {{! show-map показывает, что отображается в данный момент - если класс есть, то карта, если нет - список. }}
+        <div id="order-{{order.id}}-point-parent-container" class="pick-point" data-toggle-class="show-map">
+            <div id="order-{{order.id}}-map-container" class="js-order-delivery-map-container order-popup-map" data-map-option="{{&mapDataValue}}" data-parent-container-selector="#order-{{order.id}}-point-parent-container"></div>
+
+            <div class="content-scroll">
+                <div id="order-{{order.id}}-point-container" class="js-order-delivery-point-container pick-point-list table" data-parent-container-selector="#order-{{order.id}}-point-parent-container">
+                    {{>page/order/delivery/point-list}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

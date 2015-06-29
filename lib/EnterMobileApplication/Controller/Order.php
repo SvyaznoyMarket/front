@@ -9,10 +9,9 @@ namespace EnterMobileApplication\Controller {
     use EnterRepository as Repository;
     use EnterQuery as Query;
     use EnterModel as Model;
-    use EnterMobileApplication\Controller\Order\Response;
 
     class Order {
-        use ConfigTrait, CurlTrait, LoggerTrait;
+        use ConfigTrait, CurlTrait, LoggerTrait, ProductListingTrait;
 
         /**
          * @param Http\Request $request
@@ -23,8 +22,7 @@ namespace EnterMobileApplication\Controller {
             $curl = $this->getCurl();
             $config = $this->getConfig();
             $productRepository = new Repository\Product();
-
-            $response = new Response();
+            $pointRepository = new Repository\Point();
 
             // токен для получения заказа
             $accessToken = is_string($request->query['accessToken']) ? $request->query['accessToken'] : null;
@@ -45,39 +43,20 @@ namespace EnterMobileApplication\Controller {
                 throw new \Exception('Заказ не найден', 404);
             }
 
-            $orders = [$order];
-
-            // магазины
-            $shopsById = [];
-            foreach ([$order] as $order) {
-                if (!$order->shopId) continue;
-                $shopsById[$order->shopId] = null;
-            }
-
+            $point = null;
             try {
-                if ((bool)$shopsById) {
-                    $shopRepository = new \EnterRepository\Shop();
-
-                    $shopListQuery = new Query\Shop\GetListByIdList(array_keys($shopsById));
-                    $curl->prepare($shopListQuery)->execute();
-
-                    $shopsById = $shopRepository->getIndexedObjectListByQuery($shopListQuery);
-                    foreach ($orders as $order) {
-                        $shop = ($order->shopId && isset($shopsById[$order->shopId])) ? $shopsById[$order->shopId] : null;
-                        if (!$shop) continue;
-
-                        $order->shop = $shop;
-                    }
+                if ($order->point->ui) {
+                    $pointItemQuery = new Query\Point\GetItemByUi($order->point->ui);
+                    $curl->prepare($pointItemQuery)->execute();
+                    $point = $pointItemQuery->getResult();
                 }
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
             }
 
             $orderProductsById = [];
-            foreach ($orders as $order) {
-                foreach ((array)$order->product as $orderProduct) {
-                    $orderProductsById[$orderProduct->id] = $orderProduct;
-                }
+            foreach ((array)$order->product as $orderProduct) {
+                $orderProductsById[$orderProduct->id] = $orderProduct;
             }
 
             $productListQuery = null;
@@ -103,51 +82,106 @@ namespace EnterMobileApplication\Controller {
                     [
                         'media'       => true,
                         'media_types' => ['main'], // только главная картинка
+                        'category'    => true,
+                        'label'       => true,
+                        'brand'       => true,
                     ]
                 );
                 $curl->prepare($descriptionListQuery);
 
                 $curl->execute();
 
-                // товары по ui
-                $productsByUi = [];
-                call_user_func(function() use (&$productsById, &$productsByUi) {
-                    foreach ($productsById as $product) {
-                        $productsByUi[$product->ui] = $product;
-                    }
-                });
-
-                // медиа для товаров
-                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
             }
 
-            // товары
-            foreach ($orders as $order) {
-                foreach ((array)$order->product as $i => $orderProduct) {
-                    $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : null;
-                    if (!$product) continue;
-
-                    $product->price = $orderProduct->price;
-                    $product->quantity = $orderProduct->quantity; // FIXME
-                    $product->sum = $orderProduct->sum; // FIXME
-
-                    $order->product[$i] = $product;
+            $media = $pointRepository->getMedia($point['partner'], ['logo']);
+            $imageUrl = null;
+            foreach ($media->photos as $media) {
+                if (in_array('logo', $media->tags, true)) {
+                    foreach ($media->sources as $source) {
+                        if ($source->type === '100x100') {
+                            $imageUrl = $source->url;
+                            break(2);
+                        }
+                    }
                 }
             }
-
-            // ответ
-            $response->order = $order;
+            
+            $response = ['order' => [
+                'id' => $order->id,
+                'number' => $order->number,
+                'numberErp' => $order->numberErp,
+                'token' => $order->token,
+                'sum' => $order->sum,
+                'address' => $order->address,
+                'createdAt' => $order->createdAt,
+                'updatedAt' => $order->updatedAt,
+                'product' => array_map(function(Model\Order\Product $orderProduct) use(&$productsById) {
+                    $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : new Model\Product();
+                    
+                    return [
+                        'id'                   => $orderProduct->id,
+                        'price'                => $orderProduct->price,
+                        'quantity'             => $orderProduct->quantity,
+                        'sum'                  => $orderProduct->sum,
+                        'article'              => $product->article,
+                        'webName'              => $product->webName,
+                        'namePrefix'           => $product->namePrefix,
+                        'name'                 => $product->name,
+                        'isBuyable'            => $product->isBuyable,
+                        'isInShopOnly'         => $product->isInShopOnly,
+                        'isInShopStockOnly'    => $product->isInShopStockOnly,
+                        'isInShopShowroomOnly' => $product->isInShopShowroomOnly,
+                        'brand'                => $product->brand ? [
+                            'id'   => $product->brand->id,
+                            'name' => $product->brand->name,
+                        ] : null,
+                        'oldPrice'             => $product->oldPrice,
+                        'labels'               => array_map(function(Model\Product\Label $label) {
+                            return [
+                                'id'    => $label->id,
+                                'name'  => $label->name,
+                                'media' => $label->media,
+                            ];
+                        }, $product->labels),
+                        'media'                => $product->media,
+                        'rating'               => $product->rating ? [
+                            'score'       => $product->rating->score,
+                            'starScore'   => $product->rating->starScore,
+                            'reviewCount' => $product->rating->reviewCount,
+                        ] : null,
+                        'favorite'        => isset($product->favorite) ? $product->favorite : null,
+                        'partnerOffers'   => $product->partnerOffers,
+                        'storeLabel'      => $product->storeLabel,
+                    ];
+                }, $order->product),
+                'paySum' => $order->paySum,
+                'discountSum' => $order->discountSum,
+                'subwayId' => $order->subwayId,
+                'deliveries' => $order->deliveries,
+                'deliveryType' => $order->deliveryType,
+                'interval' => $order->interval,
+                'shopId' => $order->shopId, // TODO перенести в point.id
+                'point' => $point ? [
+                    'ui' => $point['uid'],
+                    'name' => $pointRepository->getName($point['partner']),
+                    'media' => $media,
+                    'imageUrl' => $imageUrl, // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split и point.imageUrl из ответа метода Order
+                    'address' => $point['address'],
+                    'regime' => $point['working_time'],
+                    'longitude' => isset($point['location'][0]) ? $point['location'][0] : null,
+                    'latitude' => isset($point['location'][1]) ? $point['location'][1] : null,
+                    'subway' => [[
+                        'name' => isset($point['subway']['name']) ? $point['subway']['name'] : null,
+                        'line' => [
+                            'name' => isset($point['subway']['line_name']) ? $point['subway']['line_name'] : null,
+                            'color' => isset($point['subway']['line_color']) ? $point['subway']['line_color'] : null,
+                        ],
+                    ]],
+                ] : null,
+            ]];
 
             return new Http\JsonResponse($response);
         }
-    }
-}
-
-namespace EnterMobileApplication\Controller\Order {
-    use EnterModel as Model;
-
-    class Response {
-        /** @var Model\Order|null */
-        public $order;
     }
 }

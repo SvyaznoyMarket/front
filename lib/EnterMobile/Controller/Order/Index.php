@@ -5,6 +5,8 @@ namespace EnterMobile\Controller\Order;
 use Enter\Http;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
+use EnterAggregator\SessionTrait;
+use EnterAggregator\LoggerTrait;
 use EnterAggregator\DebugContainerTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterModel as Model;
@@ -14,7 +16,10 @@ use EnterMobile\Repository;
 use EnterMobile\Model\Page\Order\Index as Page;
 
 class Index {
-    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ControllerTrait {
+        ConfigTrait::getConfig insteadof ControllerTrait;
+    }
 
     /**
      * @param Http\Request $request
@@ -23,42 +28,50 @@ class Index {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
+        $session = $this->getSession();
+        $regionRepository = new \EnterRepository\Region();
+        $cartSessionKey = $this->getCartSessionKeyByHttpRequest($request);
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
-        // запрос региона
+        // ид магазина
+        $shopId = is_scalar($request->query['shopId']) ? (string)$request->query['shopId']: null;
+
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
+        
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
 
         $curl->execute();
-
-        // регион
-        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
-
-        // запрос категорий
-        $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
-        $curl->prepare($categoryTreeQuery);
-
-        // запрос меню
-        $mainMenuQuery = new Query\MainMenu\GetItem();
-        $curl->prepare($mainMenuQuery);
+        
+        $region = $regionRepository->getObjectByQuery($regionQuery);
+        
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
 
         $curl->execute();
-
-        // меню
-        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
+        
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Order\Index\Request();
         $pageRequest->httpRequest = $request;
-        $pageRequest->region = $region;
-        $pageRequest->mainMenu = $mainMenu;
+        $pageRequest->formErrors = (array)$session->flashBag->get('orderForm.error');
+        $pageRequest->userData = $session->get($config->order->userSessionKey);
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->shopId = $shopId;
+        $pageRequest->cart = $cart;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница
         $page = new Page();
-        (new Repository\Page\Order\Index())->buildObjectByRequest($page, $pageRequest);
+        (new Repository\Page\Order\Index())->buildObjectByRequest($page, $pageRequest, $session->get($config->order->userSessionKey));
 
         // debug
         if ($config->debugLevel) $this->getDebugContainer()->page = $page;
@@ -67,7 +80,7 @@ class Index {
         // рендер
         $renderer = $this->getRenderer();
         $renderer->setPartials([
-            'content' => 'page/order/content',
+            'content' => 'page/order/index/content',
         ]);
         $content = $renderer->render('layout/simple', $page);
 

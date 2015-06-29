@@ -74,10 +74,14 @@ namespace EnterAggregator {
         public $retailRocketService;
         /** @var Config\MustacheRenderer */
         public $mustacheRenderer;
+        /** @var Config\Kladr */
+        public $kladr;
         /** @var array */
         public $mediaHosts = [];
         /** @var Config\Order */
         public $order;
+        /** @var Config\Cart */
+        public $cart;
         /** @var Config\Product */
         public $product;
         /** @var Config\ProductReview */
@@ -86,10 +90,6 @@ namespace EnterAggregator {
         public $productPhoto;
         /** @var Config\Search */
         public $search;
-        /** @var Config\Promo */
-        public $promo;
-        /** @var Config\ProductLabel */
-        public $productLabel;
 
         public function __construct() {
             $this->logger = new Config\Logger();
@@ -125,13 +125,14 @@ namespace EnterAggregator {
 
             $this->mustacheRenderer = new Config\MustacheRenderer();
 
+            $this->kladr = new Config\Kladr();
+
+            $this->cart = new Config\Cart();
             $this->order = new Config\Order();
             $this->product = new Config\Product();
             $this->productReview = new Config\ProductReview();
             $this->productPhoto = new Config\ProductPhoto();
             $this->search = new Config\Search();
-            $this->promo = new Config\Promo();
-            $this->productLabel = new Config\ProductLabel();
         }
     }
 }
@@ -182,11 +183,11 @@ namespace EnterAggregator\Config {
     class AbTest {
         /** @var string */
         public $cookieName;
+        /** @var string */
+        public $cookieDomain;
     }
 
     class GoogleAnalytics {
-        /** @var string */
-        public $id;
         /** @var bool */
         public $enabled;
     }
@@ -341,9 +342,53 @@ namespace EnterAggregator\Config {
         public $checkEscape;
     }
 
-    class Order {
+    class Kladr {
         /** @var string */
+        public $token;
+        /** @var string */
+        public $key;
+        /** @var int */
+        public $limit;
+    }
+
+    class Cart {
+        /** @var string */
+        public $sessionKey;
+        /** @var string */
+        public $quickSessionKey;
+    }
+
+    class Order {
+        /**
+         * Ключ сессии, в котором хранится предыдущее разбиение корзины
+         * @var string
+         */
         public $splitSessionKey;
+        /**
+         * Ключ сессии, в котором хранятся данные пользователя
+         * @var string
+         */
+        public $userSessionKey;
+        /**
+         * Кука, в которой хранятся данные о последнем созданном заказе
+         * @var string
+         */
+        public $cookieName;
+        /**
+         * Ключ сессии, в котором хранится созданный заказ
+         * @var string
+         */
+        public $sessionName;
+        /** @var Order\Prepayment */
+        public $prepayment;
+        /** @var string */
+        public $bonusCardSessionKey;
+        /** @var bool */
+        public $enabled;
+
+        public function __construct() {
+            $this->prepayment = new Order\Prepayment();
+        }
     }
 
     class Product {
@@ -380,23 +425,6 @@ namespace EnterAggregator\Config {
         /** @var int */
         public $minPhraseLength;
     }
-
-    class Promo {
-        /**
-         * @deprecated
-         * @var int
-         */
-        public $typeId;
-        /**
-         * @var array
-         */
-        public $urlPaths = [];
-    }
-
-    class ProductLabel {
-        /** @var array */
-        public $urlPaths = [];
-    }
 }
 
 namespace EnterAggregator\Config\Logger {
@@ -408,6 +436,18 @@ namespace EnterAggregator\Config\Logger {
     class FileAppender extends BaseAppender {
         /** @var string */
         public $file;
+    }
+}
+
+namespace EnterAggregator\Config\Order {
+    class Prepayment {
+        /** @var bool */
+        public $enabled;
+        /**
+         * Если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
+         * @var int|null
+         */
+        public $priceLimit;
     }
 }
 

@@ -20,6 +20,8 @@ class GetItem extends Query {
      * @param Model\PaymentMethod|null $paymentMethod
      * @param array $previousSplit
      * @param array $change
+     * @param Model\Cart\Split\User|null $user
+     * @param bool $checkStocks
      */
     public function __construct(
         Model\Cart $cart,
@@ -27,7 +29,9 @@ class GetItem extends Query {
         Model\Shop $shop = null,
         Model\PaymentMethod $paymentMethod = null,
         array $previousSplit = [],
-        array $change = []
+        array $change = [],
+        Model\Cart\Split\User $user = null,
+        $checkStocks = true
     ) {
         $this->retry = 1;
 
@@ -81,6 +85,14 @@ class GetItem extends Query {
                     return $item;
                 }, $cart->product)),
             ];
+            if ($user) {
+                $this->data['user_info'] = $user->dump();
+            }
+        }
+
+        // CAPI-4
+        if (!$checkStocks) {
+            $this->data['check_stocks'] = $checkStocks;
         }
 
         $this->init();

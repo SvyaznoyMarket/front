@@ -30,6 +30,7 @@ namespace EnterAggregator\Controller\Cart {
             $config = $this->getConfig();
             $curl = $this->getCurl();
             $cartRepository = new Repository\Cart();
+            $productRepository = new \EnterRepository\Product();
 
             $response = new Response();
 
@@ -51,17 +52,29 @@ namespace EnterAggregator\Controller\Cart {
 
             // запрос списка товаров
             $productListQueries = [];
+            $descriptionListQueries = [];
             foreach (array_chunk(array_keys($productsById), $config->curl->queryChunkSize) as $idsInChunk) {
                 $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $regionId);
                 $curl->prepare($productListQuery);
-
                 $productListQueries[] = $productListQuery;
+
+                $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                    $idsInChunk,
+                    [
+                        'category' => true,
+                        'label'    => true,
+                        'brand'    => true,
+                    ]
+                );
+                $curl->prepare($descriptionListQuery);
+                $descriptionListQueries[] = $descriptionListQuery;
             }
 
             $curl->execute();
 
             // товары
-            $productsById = (new Repository\Product())->getIndexedObjectListByQueryList($productListQueries);
+            $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
+            $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, $descriptionListQueries);
 
             foreach ($cartProductsById as $cartProduct) {
                 /** @var Model\Cart\Product|null $cartProduct */
@@ -87,7 +100,7 @@ namespace EnterAggregator\Controller\Cart {
             }
 
             // сохранение корзины в сессию
-            $cartRepository->saveObjectToHttpSession($session, $cart);
+            $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
 
             // запрос корзины
             $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);

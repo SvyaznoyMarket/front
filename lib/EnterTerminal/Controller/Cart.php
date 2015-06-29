@@ -33,7 +33,7 @@ namespace EnterTerminal\Controller {
             }
 
             // корзина из сессии
-            $cart = $cartRepository->getObjectByHttpSession($session);
+            $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
             $productsById = [];
             foreach ($cart->product as $cartProduct) {
@@ -51,6 +51,9 @@ namespace EnterTerminal\Controller {
                     [
                         'media'       => true,
                         'media_types' => ['main'], // только главная картинка
+                        'category'    => true,
+                        'label'       => true,
+                        'brand'       => true,
                     ]
                 );
                 $curl->prepare($descriptionListQuery);

@@ -28,47 +28,44 @@ class Index {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
-        $session = $this->getSession();
-        $cartRepository = new \EnterRepository\Cart();
-        $productRepository = new \EnterRepository\Product();
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
-
-        // корзина из сессии
-        $cart = $cartRepository->getObjectByHttpSession($session);
 
         // запрос региона
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
-        $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
-        $curl->prepare($cartItemQuery);
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
 
         $curl->execute();
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+        
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
 
-        $productIds = array_values(array_map(function(\EnterModel\Cart\Product $cartProduct) { return $cartProduct->id; }, $cart->product));
+        $cartProductIds = array_values(array_map(function(\EnterModel\Cart\Product $cartProduct) { return $cartProduct->id; }, $cart->product));
 
-        $productListQuery = null;
         $descriptionListQuery = null;
-        if ($productIds) {
-            $productListQuery = $cart->product ? new Query\Product\GetListByIdList($productIds, $region->id) : null;
-            $curl->prepare($productListQuery);
-
+        if ($cartProductIds) {
             $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
-                $productIds,
+                $cartProductIds,
                 [
-                    'media' => true, // только картинки
+                    'media'    => true,
+                    'category' => true,
+                    'label'    => true,
+                    'brand'    => true,
                 ]
             );
             $curl->prepare($descriptionListQuery);
         }
-
-        // корзина из ядра
-        $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
 
         // запрос дерева категорий для меню
         $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
@@ -79,20 +76,21 @@ class Index {
         $curl->prepare($mainMenuQuery);
 
         $curl->execute();
-
-        $cartProducts = $cart->product;
-        $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
+        
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // товары по ui
-        $productsByUi = [];
-        call_user_func(function() use (&$productsById, &$productsByUi) {
-            foreach ($productsById as $product) {
-                $productsByUi[$product->ui] = $product;
+        $cartProductsByUi = [];
+        call_user_func(function() use ($cart, &$cartProductsByUi) {
+            foreach ($cart->product as $product) {
+                if ($product->product) {
+                    $cartProductsByUi[$product->ui] = $product->product;
+                }
             }
         });
         if ($descriptionListQuery) {
-            $productRepository->setDescriptionForListByListQuery(
-                $productsByUi,
+            (new \EnterRepository\Product())->setDescriptionForListByListQuery(
+                $cartProductsByUi,
                 $descriptionListQuery
             );
         }
@@ -105,9 +103,8 @@ class Index {
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
         $pageRequest->cart = $cart;
-        $pageRequest->productsById = $productsById;
-        $pageRequest->cartProducts = $cartProducts;
 
         // страница
         $page = new Page();

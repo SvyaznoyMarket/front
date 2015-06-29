@@ -37,46 +37,58 @@ class ProductCard {
         $productCardRepository = new Repository\Partial\ProductCard();
         $ratingRepository = new Repository\Partial\Rating();
         $productSliderRepository = new Repository\Partial\ProductSlider();
+        $mediaRepository = (new \EnterRepository\Media());
 
-        $productModel = $request->product;
+        $product = $request->product;
 
         // заголовок
-        $page->title = $productModel->name . ' - Enter';
+        $page->title = $product->name . ' - Enter';
 
         $page->dataModule = 'product.card';
 
         // хлебные крошки
         $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
         $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
-        $breadcrumb->name = $productModel->name;
-        $breadcrumb->url = $productModel->link;
+        $breadcrumb->name = $product->name;
+        $breadcrumb->url = $product->link;
 
         $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
 
         // содержание
-        $page->content->product->name = $productModel->webName;
-        $page->content->product->id = $productModel->id;
-        $page->content->product->namePrefix = $productModel->namePrefix;
-        $page->content->product->article = $productModel->article;
-        $page->content->product->description = $productModel->description;
-        $page->content->product->price = $productModel->price;
-        $page->content->product->shownPrice = $productModel->price ? $this->getPriceHelper()->format($productModel->price) : null;
-        $page->content->product->oldPrice = $productModel->oldPrice;
-        $page->content->product->shownOldPrice = $productModel->oldPrice ? $this->getPriceHelper()->format($productModel->oldPrice) : null;
-        $page->content->product->cartButtonBlock = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($productModel, null, ['position' => 'product']);
-        $page->content->product->brand = $productModel->brand;
-        $page->content->product->slotPartnerOffer = $productModel->getSlotPartnerOffer();
+        $page->content->product->name = $product->webName;
+        $page->content->product->id = $product->id;
+        $page->content->product->namePrefix = $product->namePrefix;
+        $page->content->product->article = $product->article;
+        $page->content->product->description = $product->description;
+        $page->content->product->price = $product->price;
+        $page->content->product->shownPrice = $product->price ? $this->getPriceHelper()->format($product->price) : null;
+        $page->content->product->oldPrice = $product->oldPrice;
+        $page->content->product->shownOldPrice = $product->oldPrice ? $this->getPriceHelper()->format($product->oldPrice) : null;
+        $page->content->product->cartButtonBlock = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, null, ['position' => 'product']);
+        $page->content->product->slotPartnerOffer = $product->getSlotPartnerOffer();
+
+        if ($product->brand) {
+            $page->content->product->brand = new \EnterMobile\Model\Page\ProductCard\Content\Product\Brand();
+            $page->content->product->brand->id = $product->brand->id;
+            $page->content->product->brand->name = $product->brand->name;
+            $page->content->product->brand->token = $product->brand->token;
+            $page->content->product->brand->imageUrl = $mediaRepository->getSourceObjectByList($product->brand->media->photos, 'main', 'original')->url;
+        }
 
         // шильдики
-        foreach ($productModel->labels as $label) {
-            $label->imageUrl = (string)(new Routing\Product\Label\Get($label->id, $label->image, 1)); // FIXME
+        $page->content->product->labels = [];
+        foreach ($product->labels as $label) {
+            $viewLabel = new \EnterMobile\Model\Page\ProductCard\Content\Product\Label();
+            $viewLabel->id = $label->id;
+            $viewLabel->name = $label->name;
+            $viewLabel->imageUrl = $mediaRepository->getSourceObjectByList($label->media->photos, '124x38', 'original')->url;
+            $page->content->product->labels[] = $viewLabel;
         }
-        $page->content->product->labels = $productModel->labels;
 
         // доставка товара
-        if ((bool)$productModel->nearestDeliveries) {
+        if ((bool)$product->nearestDeliveries) {
             $page->content->product->deliveryBlock = new Page\Content\Product\DeliveryBlock();
-            foreach ($productModel->nearestDeliveries as $deliveryModel) {
+            foreach ($product->nearestDeliveries as $deliveryModel) {
                 if (\EnterModel\Product\NearestDelivery::TOKEN_NOW == $deliveryModel->token) continue;
 
                 $delivery = new Page\Content\Product\DeliveryBlock\Delivery();
@@ -108,9 +120,9 @@ class ProductCard {
         }
 
         // состояние магазинов
-        if ((bool)$productModel->shopStates) {
+        if ((bool)$product->shopStates) {
             $page->content->product->shopStateBlock = new Page\Content\Product\ShopStateBlock();
-            foreach ($productModel->shopStates as $shopStateModel) {
+            foreach ($product->shopStates as $shopStateModel) {
                 if (!$shopStateModel->shop) continue;
 
                 $shopState = new Page\Content\Product\ShopStateBlock\State();
@@ -122,7 +134,7 @@ class ProductCard {
                     : $router->getUrlByRoute(new Routing\Shop\Index());
                 $shopState->regime = $shopStateModel->shop->regime;
                 $shopState->isInShowroomOnly = !$shopStateModel->quantity && ($shopStateModel->showroomQuantity > 0);
-                $shopState->cartButton = $cartProductReserveButtonRepository->getObject($productModel, $shopStateModel);
+                $shopState->cartButton = $cartProductReserveButtonRepository->getObject($product, $shopStateModel);
                 $shopState->subway = isset($shopStateModel->shop->subway[0]) ? [
                     'name'  => $shopStateModel->shop->subway[0]->name,
                     'color' => isset($shopStateModel->shop->subway[0]->line)
@@ -144,12 +156,12 @@ class ProductCard {
         }
 
         // фотографии товара
-        foreach ($productModel->media->photos as $i => $photoModel) {
+        foreach ($product->media->photos as $i => $photoModel) {
             $photo = new Page\Content\Product\Photo();
-            $photo->name = $productModel->name;
-            $photo->url = (string)(new Routing\Product\Media\GetPhoto($photoModel, 'product_500'));
-            $photo->previewUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel, 'product_60'));
-            $photo->originalUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel, 'product_1500'));
+            $photo->name = $product->name;
+            $photo->url = $mediaRepository->getSourceObjectByItem($photoModel, 'product_500')->url;
+            $photo->previewUrl = $mediaRepository->getSourceObjectByItem($photoModel, 'product_60')->url;
+            $photo->originalUrl = $mediaRepository->getSourceObjectByItem($photoModel, 'product_1500')->url;
 
             $page->content->product->photos[] = $photo;
 
@@ -160,7 +172,7 @@ class ProductCard {
 
         // характеристики товара
         $groupedPropertyModels = [];
-        foreach ($productModel->properties as $propertyModel) {
+        foreach ($product->properties as $propertyModel) {
             if (!isset($groupedPropertyModels[$propertyModel->groupId])) {
                 $groupedPropertyModels[$propertyModel->groupId] = [];
             }
@@ -168,7 +180,7 @@ class ProductCard {
             $groupedPropertyModels[$propertyModel->groupId][] = $propertyModel;
         }
 
-        foreach ($productModel->propertyGroups as $propertyGroupModel) {
+        foreach ($product->propertyGroups as $propertyGroupModel) {
             if (!isset($groupedPropertyModels[$propertyGroupModel->id][0])) continue;
 
             $propertyChunk = new Page\Content\Product\PropertyChunk();
@@ -191,24 +203,24 @@ class ProductCard {
         }
 
         // рейтинг товара
-        if ($productModel->rating) {
+        if ($product->rating) {
             $rating = new Partial\Rating();
-            $rating->reviewCount = $productModel->rating->reviewCount;
-            $rating->stars = $ratingRepository->getStarList($productModel->rating->starScore);
+            $rating->reviewCount = $product->rating->reviewCount;
+            $rating->stars = $ratingRepository->getStarList($product->rating->starScore);
 
             $page->content->product->rating = $rating;
         }
 
         // состав набора
         $page->content->product->kitBlock = false;
-        if ($productModel->relation && (bool)$productModel->relation->kits) {
+        if ($product->relation && (bool)$product->relation->kits) {
             $page->content->product->kitBlock = new Page\Content\Product\KitBlock();
-            $page->content->product->kitBlock->isLocked = $productModel->isKitLocked;
+            $page->content->product->kitBlock->isLocked = $product->isKitLocked;
 
             $cartProductsById = [];
             $count = 0;
             $sum = 0;
-            foreach ($productModel->relation->kits as $kitProductModel) {
+            foreach ($product->relation->kits as $kitProductModel) {
                 $cartProductsById[$kitProductModel->id] = new \EnterModel\Cart\Product([
                     'id'       => $kitProductModel->id,
                     'quantity' => $kitProductModel->kitCount,
@@ -224,8 +236,7 @@ class ProductCard {
                 $kit->shownPrice = $kitProductModel->price ? $this->getPriceHelper()->format($kitProductModel->price) : null;
                 $kit->shownSum = $kitProductModel->price ? $this->getPriceHelper()->format($kitProductModel->price * $kitProductModel->kitCount) : null;
                 if (isset($kitProductModel->media->photos[0])) {
-                    $photoModel = $kitProductModel->media->photos[0];
-                    $kit->photoUrl = (string)(new Routing\Product\Media\GetPhoto($photoModel, 'product_500'));
+                    $kit->photoUrl = $mediaRepository->getSourceObjectByItem($kitProductModel->media->photos[0], 'product_500')->url;
                 }
 
                 if (isset($kitProductModel->nearestDeliveries[0])) {
@@ -254,7 +265,7 @@ class ProductCard {
                     $kitProductModel,
                     new \EnterModel\Cart\Product(['quantity' => $kitProductModel->kitCount]),
                     true,
-                    Repository\Partial\Cart\ProductButton::getId($productModel->id, false),
+                    Repository\Partial\Cart\ProductButton::getId($product->id, false),
                     false,
                     $router->getUrlByRoute(new Routing\Product\QuantityAvailabilityList())
                 );
@@ -267,9 +278,9 @@ class ProductCard {
             $page->content->product->kitBlock->shownSum = $this->getPriceHelper()->format($sum);
             $page->content->product->kitBlock->shownQuantity = 'Итого за ' . $count . ' ' . $translateHelper->numberChoice($count, ['предмет', 'предмета', 'предметов']);
             $page->content->product->kitBlock->cartButton = $cartProductButtonRepository->getListObject(
-                array_reverse($productModel->relation->kits),
+                array_reverse($product->relation->kits),
                 $cartProductsById,
-                $productModel->id,
+                $product->id,
                 false,
                 '+' // quantitySign
             );
@@ -277,10 +288,10 @@ class ProductCard {
         }
 
         // аксессуары товара
-        if ((bool)$productModel->relation->accessories) {
+        if ((bool)$product->relation->accessories) {
             $page->content->product->accessorySlider = $productSliderRepository->getObject('accessorySlider');
-            $page->content->product->accessorySlider->count = count($productModel->relation->accessories);
-            foreach ($productModel->relation->accessories as $accessoryModel) {
+            $page->content->product->accessorySlider->count = count($product->relation->accessories);
+            foreach ($product->relation->accessories as $accessoryModel) {
                 $page->content->product->accessorySlider->productCards[] = $productCardRepository->getObject($accessoryModel, $cartProductButtonRepository->getObject($accessoryModel, null, false));
             }
 
@@ -303,7 +314,7 @@ class ProductCard {
         }
 
         // рекомендации товара
-        $recommendListUrl = $router->getUrlByRoute(new Routing\Product\GetRecommendedList($productModel->id));
+        $recommendListUrl = $router->getUrlByRoute(new Routing\Product\GetRecommendedList($product->id));
         // alsoBought slider
         $page->content->product->alsoBoughtSlider = $productSliderRepository->getObject('alsoBoughtSlider', $recommendListUrl);
         $page->content->product->alsoBoughtSlider->count = 0;
@@ -318,9 +329,9 @@ class ProductCard {
         $page->content->product->similarSlider->hasCategories = false;
 
         // отзывы товара
-        if ((bool)$productModel->reviews) {
+        if ((bool)$product->reviews) {
             $page->content->product->reviewBlock = new Page\Content\Product\ReviewBlock();
-            foreach ($productModel->reviews as $reviewModel) {
+            foreach ($product->reviews as $reviewModel) {
                 $review = new Partial\ProductReview();
                 $review->author = $reviewModel->author;
                 $review->createdAt = $reviewModel->createdAt ? $dateHelper->dateToRu($reviewModel->createdAt): null;
@@ -332,25 +343,25 @@ class ProductCard {
                 $page->content->product->reviewBlock->reviews[] = $review;
             }
 
-            if ($productModel->rating && ($productModel->rating->reviewCount > $config->productReview->itemsInCard)) {
+            if ($product->rating && ($product->rating->reviewCount > $config->productReview->itemsInCard)) {
 
                 $page->content->product->reviewBlock->moreLink = new Partial\Link();
                 $page->content->product->reviewBlock->moreLink->name = 'Еще отзывы';
 
                 //$page->content->product->reviewBlock->moreLink = null;
 
-                $page->content->product->reviewBlock->url = $router->getUrlByRoute(new Routing\Product\Review\GetList($productModel->id));
+                $page->content->product->reviewBlock->url = $router->getUrlByRoute(new Routing\Product\Review\GetList($product->id));
                 $page->content->product->reviewBlock->dataValue = $templateHelper->json(['page' => 2]);
             }
         }
 
         // модели товара
-        if ((bool)$productModel->model && (bool)$productModel->model->properties) {
+        if ((bool)$product->model && (bool)$product->model->properties) {
             $page->content->product->hasModel = true;
 
             // значения свойств, индексированные по ид
             $propertyValuesById = [];
-            foreach ($productModel->properties as $propertyModel) {
+            foreach ($product->properties as $propertyModel) {
                 if ($propertyModel->isMultiple) {
                     $propertyValuesById[$propertyModel->id] = [];
                     foreach ($propertyModel->options as $option) {
@@ -363,10 +374,10 @@ class ProductCard {
 
             foreach ([
                  0 => [0, 1], // первое свойство модели
-                 1 => [1, count($productModel->properties) - 1] // остальные свойства модели (будут скрыты по умолчанию)
+                 1 => [1, count($product->properties) - 1] // остальные свойства модели (будут скрыты по умолчанию)
             ] as $i => $range) {
                 $modelBlock = new Page\Content\Product\ModelBlock();
-                foreach (array_slice($productModel->model->properties, $range[0], $range[1]) as $propertyModel) {
+                foreach (array_slice($product->model->properties, $range[0], $range[1]) as $propertyModel) {
                     /** @var \EnterModel\Product\ProductModel\Property $propertyModel */
                     $property = new Page\Content\Product\ModelBlock\Property();
                     //$property->name = !$propertyModel->isImage ? $propertyModel->name : null;
@@ -441,7 +452,7 @@ class ProductCard {
         // direct credit
         if ($request->hasCredit) {
             $page->content->product->credit = (new Repository\Partial\DirectCredit())->getObject([
-                $productModel->id => $productModel,
+                $product->id => $product,
             ]);
         }
 

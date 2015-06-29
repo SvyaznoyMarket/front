@@ -21,11 +21,11 @@ class Order {
 
         $messagesByCode = json_decode(file_get_contents($this->getConfig()->dir . '/data/core-error.json'), true);
         if (isset($messagesByCode[(string)$error->getCode()])) {
-            $errors[] = ['code' => $error->getCode(), 'message' => $messagesByCode[(string)$error->getCode()]];
+            $errors[] = ['code' => $error->getCode(), 'message' => $messagesByCode[(string)$error->getCode()], 'detail' => $error->getDetail()];
         }
 
         if (!(bool)$errors) {
-            $errors[] = ['code' => $error->getCode(), 'message' => 'Невозможно создать заказ'];
+            $errors[] = ['code' => $error->getCode(), 'message' => 'Невозможно создать заказ', 'detail' => $error->getDetail()];
         }
 
         return $errors;

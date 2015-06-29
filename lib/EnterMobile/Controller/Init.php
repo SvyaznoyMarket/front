@@ -26,6 +26,9 @@ class Init {
             $this->getConfig()->redirectManager->enabled
             && !$request->isXmlHttpRequest()
             && ('/' !== $url)
+            && (0 !== strpos($url, '/orders/'))
+            && (0 !== strpos($url, '/cart'))
+            && (0 !== strpos($url, '/private'))
         ) {
             $redirectQuery = new Query\RedirectManager\GetItem($url);
             $curl->prepare($redirectQuery);

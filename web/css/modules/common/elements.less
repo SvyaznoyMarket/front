@@ -73,7 +73,7 @@
   -o-transition-duration: @duration;
   transition-duration: @duration;
 }
-.transform(...) {
+.transform(@arguments) {
   -webkit-transform: @arguments;
   -moz-transform: @arguments;
   -ms-transform: @arguments;
@@ -230,6 +230,15 @@
        -moz-box-flex: @grow @shrink @basis;
         -ms-flex: @grow @shrink @basis;
             flex: @grow @shrink @basis;
+}
+// Flex Direction and Wrap
+// - applies to: flex containers
+// <flex-direction> || <flex-wrap>
+.flex-flow(@flow) {
+  -webkit-flex-flow: @flow;
+     -moz-flex-flow: @flow;
+      -ms-flex-flow: @flow;
+          flex-flow: @flow;
 }
 
 /* sprties */

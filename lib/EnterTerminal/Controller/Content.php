@@ -140,7 +140,7 @@ namespace EnterTerminal\Controller {
                         } catch (\Exception $e) {
                             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['content']]);
                         }
-                        if ((bool)$productIds) {
+                        if ($productIds) {
                             $attributes = ' data-type="ProductList" data-product-ids="' . implode(',', $productIds) . '"';
                         }
                     } else if (0 === strpos($path, '/')) {

@@ -35,6 +35,10 @@ class Session {
         ];
 
         session_name($options['session_name']);
+        
+        if ($this->config->id) {
+            session_id($this->config->id);
+        }
 
         session_set_cookie_params(
             $options['session_cookie_lifetime'],

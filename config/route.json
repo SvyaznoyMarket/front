@@ -94,7 +94,7 @@
         "pattern": "/cart"
     },
     "User\\Get": {
-        "name": "Информация о пользователе, его корзине, ...",
+        "name": "Инфо пользователя",
         "pattern": "/ajax/user"
     },
     "User\\Cart\\Product\\Set": {
@@ -106,6 +106,10 @@
         "name": "Удалить товар из корзины",
         "pattern": "/ajax/user/cart/product/delete",
         "method": ["POST"]
+    },
+    "User\\Coupon\\Get": {
+        "name": "Купоны пользователя",
+        "pattern": "/ajax/user/coupons"
     },
 
     "Order\\Slot\\Index": {
@@ -119,6 +123,27 @@
     "Order\\Index": {
         "name": "Оформление заказа",
         "pattern": "/orders/new"
+    },
+    "Order\\SetUser": {
+        "name": "Оформление заказа - инфо пользователя",
+        "pattern": "/orders/set-user"
+    },
+    "Order\\Delivery": {
+        "name": "Оформление заказа - выбор доставки",
+        "pattern": "/orders/delivery"
+    },
+    "Order\\Create": {
+        "name": "Оформление заказа - создание",
+        "pattern": "/orders/create"
+    },
+    "Order\\Complete": {
+        "name": "Оформление заказа - завершение",
+        "pattern": "/orders/complete"
+    },
+    "Order\\Payment\\GetForm": {
+        "name": "Оформление заказа - форма онлайн-оплаты",
+        "pattern": "/orders/payment/get-form",
+        "method": ["POST"]
     },
 
     "Product\\Review\\GetList": {
@@ -213,6 +238,12 @@
         "require": {
             "productId": "[\\w\\d-_]+"
         }
+    },
+
+    "Certificate\\Check": {
+        "name": "Проверить сертификат",
+        "pattern": "/ajax/certificate/check",
+        "method": ["POST"]
     },
 
     "Router": {

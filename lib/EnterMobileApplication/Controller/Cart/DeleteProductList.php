@@ -3,11 +3,15 @@
 namespace EnterMobileApplication\Controller\Cart;
 
 use Enter\Http;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\LoggerTrait;
+use EnterMobileApplication\ConfigTrait;
 use EnterAggregator\SessionTrait;
 use EnterMobileApplication\Controller;
+use EnterQuery as Query;
 
 class DeleteProductList {
-    use SessionTrait;
+    use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -15,8 +19,23 @@ class DeleteProductList {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
-        $session = $this->getSession();
+        $config = $this->getConfig();
         $cartRepository = new \EnterRepository\Cart();
+        
+        $userAuthToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
+        $user = null;
+        if ($userAuthToken && (0 !== strpos($userAuthToken, 'anonymous-'))) {
+            try {
+                $userItemQuery = new Query\User\GetItemByToken($userAuthToken);
+                $this->getCurl()->prepare($userItemQuery)->execute();
+                $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+            }
+        }
+        
+        // MAPI-56
+        $session = $this->getSession($user && $user->ui ? $user->ui : null);
 
         $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request);
         if (!$regionId) {
@@ -29,7 +48,7 @@ class DeleteProductList {
             throw new \Exception('Не переданы параметры ids и uis', Http\Response::STATUS_BAD_REQUEST);
         }
 
-        $cart = $cartRepository->getObjectByHttpSession($session);
+        $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
         foreach ($ids as $id) {
             unset($cart->product[$id]);
@@ -48,7 +67,10 @@ class DeleteProductList {
             }
         }
 
-        $cartRepository->saveObjectToHttpSession($session, $cart);
-        return new Http\JsonResponse([]);
+        $cart->cacheId++;
+
+        $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
+        
+        return new Http\JsonResponse(['cart' => (new \EnterMobileApplication\Repository\Cart())->getResponseArray($cart)]);
     }
 }

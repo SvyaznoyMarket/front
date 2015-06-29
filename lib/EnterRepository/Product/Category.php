@@ -99,7 +99,7 @@ class Category {
 
                 $iCategory = new Model\Product\Category($item);
                 $iCategory->hasChildren = (bool)$item['has_children'];
-                $iCategory->parentId = $parent ? $parent->id : null;
+                $iCategory->parent = $parent;
 
                 // фильтрация
                 if ((null !== $availableDataByUi)) {
@@ -109,10 +109,9 @@ class Category {
                 }
 
                 if ($iCategory->level < $category->level) { // предки
-                    $category->ascendants[] = $iCategory;
+                    $category->parent = $iCategory;
                 } else if ($iCategory->ui == $category->ui) { // категория
                     $category->hasChildren = $iCategory->hasChildren;
-                    $category->parentId = $parent ? $parent->id : null;
                 } else if ($parent && ($parent->ui == $category->ui)) { // дети
                     $category->children[] = $iCategory;
                 }
@@ -124,10 +123,32 @@ class Category {
         $walk($query->getResult());
 
         $category->children = array_values($category->children);
-        $category->parent = end($category->ascendants);
-        $category->ascendants = array_values(array_reverse($category->ascendants, true));
     }
 
+    /**
+     * @return Model\Product\Category
+     */
+    public function getRootObject(Model\Product\Category $category) {
+        $root = $category;
+        while ($root->parent) {
+            $root = $root->parent;
+        }
+        
+        return $root;
+    }
+    
+    /**
+     * @return Model\Product\Category
+     */
+    public function getAscendantList(Model\Product\Category $category) {
+        $ascendants = [];
+        while ($category = $category->parent) {
+            $ascendants[] = $category;
+        }
+        
+        return array_reverse($ascendants);
+    }
+    
     /**
      * @param Model\Product[] $products
      * @param string[] $categoryTokens
@@ -140,13 +161,14 @@ class Category {
             if (!$product->category) continue;
 
             $isValid = false;
-            foreach (array_merge([$product->category], $product->category->ascendants) as $category) {
-                /** @var Model\Product\Category $category */
+            
+            $category = $product->category;
+            do {
                 if (in_array($category->token, $categoryTokens)) {
                     $isValid = true;
                     break;
                 }
-            }
+            } while ($category = $category->parent);
 
             if ($isValid && !isset($categoriesById[$product->category->id])) {
                 $categoriesById[$product->category->id] = $product->category;
@@ -167,7 +189,6 @@ class Category {
             $category->id = $searchCategory->id;
             $category->name = $searchCategory->name;
             $category->productCount = $searchCategory->productCount;
-            $category->image = $searchCategory->image;
 
             $categories[] = $category;
         }

@@ -195,8 +195,8 @@
         <!--/ мобильная версия -->
 
         <div class="lineKitFooter clearfix">
-            <input type="checkbox" id="defaultSet" class="js-productKit-reset customInput customInput-checkbox" checked="checked" data-value="{{&resetDataValue}}" data-spinner-selector=".id-productKit-content .js-buySpinner-value" />
-            <label for="defaultSet" class="customLabel">Базовый комплект</label>
+            <input type="checkbox" id="defaultSet" class="js-productKit-reset custom-input custom-input--check" checked="checked" data-value="{{&resetDataValue}}" data-spinner-selector=".id-productKit-content .js-buySpinner-value" />
+            <label for="defaultSet" class="custom-label">Базовый комплект</label>
 
             <div class="lineKitFooter_summ fl-r">
                 &nbsp;
@@ -246,11 +246,11 @@
                     </div>
                 {{/product.labels.0}}
 
-                {{#product.brand.image}}
+                {{#product.brand.imageUrl}}
                     <div class="sticker right">
-                        <img src="{{product.brand.image}}" alt="{{product.brand.name}}" />
+                        <img src="{{product.brand.imageUrl}}" alt="{{product.brand.name}}" />
                     </div>
-                {{/product.brand.image}}
+                {{/product.brand.imageUrl}}
                 <div class="detail-slider js-detailSlider">
                     {{#product.photos}}
                         <div class="slide-item">
@@ -289,9 +289,9 @@
                             {{! Цена }}
                             <div class="prodBuy_i">
                                 {{#product.credit}}
-                                <input class="js-creditButton-remove customInput customInput-radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
+                                <input class="js-creditButton-remove custom-input custom-input--radio jsCustomRadio" type="radio" id="buyprice" name="selectbuy" checked="checked" />
 
-                                <label class="customLabel customLabel-bigRadio" for="buyprice">
+                                <label class="custom-label custom-label-bigRadio" for="buyprice">
                                     {{#product.shownOldPrice}}<span class="oldP">{{product.shownOldPrice}} <span class="rubl">p</span></span>{{/product.shownOldPrice}}
                                     <span class="nowP">{{product.shownPrice}} <span class="rubl">p</span></span>
                                 </label>
@@ -307,9 +307,9 @@
                             {{! Цена в кредит }}
                             {{#product.credit}}
                                 <div class="js-creditPayment prodBuy_i prodBuy_i-credit" data-template-selector="#tpl-creditPayment" data-value="{{&product.credit.dataValue}}" data-price-selector=".{{product.credit.widgetId}}">
-                                    <input class="js-creditButton customInput customInput-radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" />
+                                    <input class="js-creditButton custom-input custom-input--radio jsCustomRadio" type="radio" id="creditinput" name="selectbuy" />
 
-                                    <label class="{{product.credit.widgetId}} customLabel customLabel-bigRadio" for="creditinput">
+                                    <label class="{{product.credit.widgetId}} custom-label custom-label-bigRadio" for="creditinput">
                                         <span class="creditP">В кредит</span>
                                     </label>
 

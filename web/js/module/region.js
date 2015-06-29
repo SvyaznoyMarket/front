@@ -2,7 +2,7 @@ define(
     [
         'jquery',
         'module/analytics.google',
-        'jquery.ui',
+        'jquery.ui'
     ],
     function ($, googleAnalytics) {
         // автоподстановка регионов
@@ -59,8 +59,7 @@ define(
 
         var selectCity = function() {
             var body = $('body'),
-                popupCity = $('.jsCitySelectBox'),
-                popupOpen = $('.jsSelectCity');
+                popupCity = $('.jsCitySelectBox')
             // end of vars
 
             var
@@ -76,7 +75,7 @@ define(
             };
             //end of functions
 
-            popupOpen.on('click', selectCityPopup);
+            body.on('click', '.jsSelectCity', selectCityPopup);
         };
 
         selectCity();

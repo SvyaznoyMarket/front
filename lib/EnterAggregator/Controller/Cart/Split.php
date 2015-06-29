@@ -7,6 +7,7 @@ namespace EnterAggregator\Controller\Cart {
     use EnterAggregator\LoggerTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
+    use EnterRepository as Repository;
 
     class Split {
         use ConfigTrait, LoggerTrait, CurlTrait;
@@ -14,8 +15,8 @@ namespace EnterAggregator\Controller\Cart {
         public function execute(Split\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            $orderRepository = new \EnterRepository\Order();
-            $productRepository = new \EnterRepository\Product();
+            $orderRepository = new Repository\Order();
+            $productRepository = new Repository\Product();
 
             // ответ
             $response = new Split\Response();
@@ -35,6 +36,18 @@ namespace EnterAggregator\Controller\Cart {
 
             // регион
             $response->region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+            
+            // запрос пользователя
+            $userItemQuery = null;
+            if ($request->userToken && (0 !== strpos($request->userToken, 'anonymous-'))) {
+                $userItemQuery = new Query\User\GetItemByToken($request->userToken);
+                $curl->prepare($userItemQuery);
+            }
+            
+            if ($request->enrichCart) {
+                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $response->region->id);
+                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $response->region->id);
+            }
 
             // магазин
             $shop = $shopItemQuery ? (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery) : null;
@@ -49,12 +62,26 @@ namespace EnterAggregator\Controller\Cart {
                 $shop,
                 null,
                 (array)$request->previousSplitData,
-                $request->changeData ? $request->changeData : []
+                $request->changeData ? $request->changeData : [],
+                $request->userFromSplit
             );
             $splitQuery->setTimeout(10 * $config->coreService->timeout);
             $curl->prepare($splitQuery);
 
-            $curl->execute();
+            $curl->execute($splitQuery->getTimeout() / 2, 2);
+            
+            // пользователь
+            try {
+                if ($userItemQuery) {
+                    $response->user = (new Repository\User())->getObjectByQuery($userItemQuery);
+                }
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+            }
+
+            if ($request->enrichCart) {
+                (new \EnterRepository\Cart())->updateObjectByQuery($request->cart, $cartItemQuery, $cartProductListQuery);
+            }
 
             // индексация товаров из корзины по идентификатору
             /** @var Model\Cart\Product[] $cartProductsById */
@@ -121,6 +148,9 @@ namespace EnterAggregator\Controller\Cart {
                         [
                             'media'       => true,
                             'media_types' => ['main'], // только главная картинка
+                            'category'    => true,
+                            'label'       => true,
+                            'brand'       => true,
                         ]
                     );
                     $curl->prepare($descriptionListQuery);
@@ -140,7 +170,7 @@ namespace EnterAggregator\Controller\Cart {
 
                     foreach ($response->split->orders as $order) {
                         foreach ($order->products as $product) {
-                            $product->media = isset($productsById[$product->id]) ? $productsById[$product->id]->media : []; // FIXME
+                            $product->media = isset($productsById[$product->id]) ? $productsById[$product->id]->media : [];
                         }
                     }
                 }
@@ -163,14 +193,6 @@ namespace EnterAggregator\Controller\Cart {
                 } catch (\Exception $e) {
                     $this->getLogger()->push(['type' => 'warn', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
                 }
-
-                // type fix
-                foreach ($response->split->orders as $order) {
-                    if (!(bool)$order->groupedPossiblePointIds) {
-                        $order->groupedPossiblePointIds = null;
-                    }
-                }
-
             } catch (Query\CoreQueryException $e) {
                 $response->errors = $orderRepository->getErrorList($e);
             }
@@ -192,11 +214,15 @@ namespace EnterAggregator\Controller\Cart\Split {
 
     class Request {
         /** @var string|null */
+        public $userToken;
+        /** @var string|null */
         public $regionId;
         /** @var string|null */
         public $shopId;
         /** @var Model\Cart */
         public $cart;
+        /** @var bool */
+        public $enrichCart = false;
         /**
          * Сырые данные от ядра о предыдущем разбиении
          *
@@ -209,6 +235,8 @@ namespace EnterAggregator\Controller\Cart\Split {
          * @var array
          */
         public $changeData;
+        /** @var Model\Cart\Split\User */
+        public $userFromSplit;
         /**
          * Обработчик, который вызывается немедленно при получении разбиения от ядра
          *
@@ -224,10 +252,12 @@ namespace EnterAggregator\Controller\Cart\Split {
     class Response {
         /** @var array */
         public $errors = [];
-        /** @var Model\Cart\Split */
+        /** @var Model\Cart\Split|null */
         public $split;
         /** @var Model\Region|null */
         public $region;
+        /** @var Model\User|null */
+        public $user;
      }
 }
 

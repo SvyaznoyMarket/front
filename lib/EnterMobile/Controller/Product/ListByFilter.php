@@ -124,20 +124,23 @@ class ListByFilter {
         $productUiPager = (new \EnterRepository\Product\UiPager())->getObjectByQuery($productUiPagerQuery);
 
         // запрос списка товаров
-        $productListQuery = null;
-        if ((bool)$productUiPager->uis) {
-            $productListQuery = new Query\Product\GetListByUiList($productUiPager->uis, $region->id);
-            $curl->prepare($productListQuery);
-        }
-
-        // запрос списка медиа для товаров
+        $productListQueries = [];
         $descriptionListQuery = null;
-        if ($productUiPager && (bool)$productUiPager->uis) {
+        if ($productUiPager && $productUiPager->uis) {
+            foreach (array_chunk($productUiPager->uis, $config->curl->queryChunkSize) as $uisInChunk) {
+                $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $region->id);
+                $curl->prepare($productListQuery);
+                $productListQueries[] = $productListQuery;
+            }
+
             $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
                 $productUiPager->uis,
                 [
                     'media'       => true,
                     'media_types' => ['main'], // только главная картинка
+                    'category'    => true,
+                    'label'       => true,
+                    'brand'       => true,
                 ]
             );
             $curl->prepare($descriptionListQuery);
@@ -153,18 +156,11 @@ class ListByFilter {
         $curl->execute();
 
         // список товаров
-        $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
+        $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
 
-        // товары по ui
-        $productsByUi = [];
-        call_user_func(function() use (&$productsById, &$productsByUi) {
-            foreach ($productsById as $product) {
-                $productsByUi[$product->ui] = $product;
-            }
-        });
         // медиа для товаров
         if ($descriptionListQuery) {
-            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+            $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, [$descriptionListQuery]);
         }
 
         // список рейтингов товаров

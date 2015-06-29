@@ -29,7 +29,7 @@ class DeleteProduct {
         $cartRepository = new \EnterRepository\Cart();
 
         // корзина из сессии
-        $cart = $cartRepository->getObjectByHttpSession($session);
+        $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
         // товара для корзины
         $cartProduct = $cartRepository->getProductObjectByHttpRequest($request);
@@ -47,11 +47,8 @@ class DeleteProduct {
         $productItemQuery = new Query\Product\GetItemById($cartProduct->id, $regionId);
         $curl->prepare($productItemQuery);
 
-        // токен пользователя
-        $userToken = (new \EnterRepository\User)->getTokenByHttpRequest($request);
-
         // запрос пользователя
-        $userItemQuery = $userToken ? new Query\User\GetItemByToken($userToken) : null;
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
         if ($userItemQuery) {
             $curl->prepare($userItemQuery);
         }
@@ -66,9 +63,23 @@ class DeleteProduct {
         }
 
         $productListQuery = null;
-        if ((bool)$productsById) {
+        if ($productsById) {
             $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $regionId);
             $curl->prepare($productListQuery);
+        }
+
+        $descriptionListQuery = null;
+        if ($productsById) {
+            $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                array_keys($productsById),
+                [
+                    'media'    => true,
+                    'category' => true,
+                    'label'    => true,
+                    'brand'    => true,
+                ]
+            );
+            $curl->prepare($descriptionListQuery);
         }
 
         $curl->execute();
@@ -77,7 +88,7 @@ class DeleteProduct {
         $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
 
         // сохранение корзины в сессию
-        $cartRepository->saveObjectToHttpSession($session, $cart);
+        $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
 
         // если корзина пустая
         if (!count($cart)) {
@@ -100,8 +111,15 @@ class DeleteProduct {
             $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
         }
 
+        if ($descriptionListQuery) {
+            (new \EnterRepository\Product())->setDescriptionForIdIndexedListByQueryList(
+                $productsById,
+                [$descriptionListQuery]
+            );
+        }
+
         // пользователь
-        $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
+        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
         $page = new Page();
         // кнопка купить

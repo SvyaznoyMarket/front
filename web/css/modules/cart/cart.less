@@ -13,19 +13,24 @@
 
 	&_col {
 		display: table-cell;
+		overflow: hidden;
 
 		vertical-align: top;
 
 		&-img {
 			width: 120px;
+			height: 100px;
+			text-align: center;
 
 			.img {
-				width: 100px;
+				max-width: 90%;
+				max-height: 100%;
 			}
 		}
 
 		&-desc {
 			vertical-align: top;
+			overflow: visible;
 
 			font-size: 20px;
 
@@ -131,7 +136,7 @@
 
 		background: #ffefcb;
 
-		.customLabel {
+		.custom-label {
 			line-height: 1.9;
 		}
 

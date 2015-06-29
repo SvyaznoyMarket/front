@@ -2,6 +2,7 @@
 
 namespace EnterMobile\Repository\Page;
 
+use EnterAggregator\AbTestTrait;
 use EnterAggregator\RequestIdTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
@@ -13,7 +14,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Page\DefaultPage as Page;
 
 class DefaultPage {
-    use RequestIdTrait, ConfigTrait, RouterTrait, LoggerTrait, TemplateHelperTrait;
+    use RequestIdTrait, ConfigTrait, RouterTrait, LoggerTrait, TemplateHelperTrait, AbTestTrait;
 
     /**
      * @param Page $page
@@ -33,12 +34,17 @@ class DefaultPage {
         $page->fullHost = $this->getConfig()->fullHost;
         $page->dataDebug = $config->debugLevel ? 'true' : '';
         try {
-            $page->dataVersion = file_get_contents($config->dir . '/version') ?: date('ymd');
+            if (file_exists($config->dir . '/version')) {
+                $page->dataVersion = file_get_contents($config->dir . '/version');
+            }
         } catch (\Exception $e) {
-            $page->dataVersion = date('ymd');
-
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
+
+        if (!$page->dataVersion) {
+            $page->dataVersion = date('ymd');
+        }
+
         $page->dataModule = 'default';
 
         // body[data-value]
@@ -50,9 +56,6 @@ class DefaultPage {
                 'domain'   => $config->session->cookieDomain,
                 'lifetime' => $config->session->cookieLifetime,
             ],
-            'user'      => [
-                'infoUrl'    => $router->getUrlByRoute(new Routing\User\Get()),
-            ],
             'credit'    => [
                 'cookieName' => $config->credit->cookieName,
             ],
@@ -60,12 +63,102 @@ class DefaultPage {
                 'cookieName' => $config->siteVersionSwitcher->cookieName,
                 'cookieLifetime' => $config->siteVersionSwitcher->cookieLifetime,
             ],
+            'kladr' => [
+                'token'  => $config->kladr->token,
+                'key'    => $config->kladr->key,
+                'limit'  => $config->kladr->limit,
+                'city'   =>
+                    $request->region
+                    ? [
+                        'id'   => $request->region->kladrId,
+                        'name' => $request->region->name,
+                    ]
+                    : null,
+            ],
+            'region' =>
+                $request->region
+                ? [
+                    'name' => $request->region->name,
+                ]
+                : null
+            ,
         ]);
+
+        $page->dataUser = $templateHelper->json($request->user ? [
+            'id' => $request->user->id,
+        ] : null);
+
+        call_user_func(function() use($page, $request, $templateHelper) {
+            $dataCart = ['products' => []];
+
+            foreach ($request->cart->product as $cartProduct) {
+                $dataCart['products'][] = [
+                    'id' => $cartProduct->id,
+                    'name' => $cartProduct->product ? $cartProduct->product->name : null,
+                    'price' => $cartProduct->price,
+                    'quantity' => $cartProduct->quantity,
+                ];
+            }
+
+            $page->dataCart = $templateHelper->json($dataCart ? $dataCart : null);
+        });
+
+        // Виджеты, выполняемые при загрузке страницы
+        call_user_func(function() use($page, $request, $templateHelper) {
+            $dataWidget = [];
+
+            $userBlock = (new Repository\Partial\UserBlock())->getObject($request->cart, $request->user);
+            $dataWidget['.' . $userBlock->widgetId] = $userBlock;
+
+            foreach ($request->cart->product as $cartProduct) {
+                $product = $cartProduct->product ?: new \EnterModel\Product(['id' => $cartProduct->id]);
+
+                if ($widget = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, $cartProduct)) {
+                    $dataWidget['.' . $widget->widgetId] = $widget;
+                }
+
+                if ($widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct)) {
+                    $dataWidget['.' . $widget->widgetId] = $widget;
+                }
+
+                // кнопка купить для родительского товара
+                if ($cartProduct->parentId && $widget = (new Repository\Partial\Cart\ProductButton())->getObject(
+                        new \EnterModel\Product(['id' => $cartProduct->parentId]),
+                        new \EnterModel\Cart\Product(['id' => $cartProduct->parentId, 'quantity' => 1])
+                    )) {
+                    $dataWidget['.' . $widget->widgetId] = $widget;
+                }
+
+                if ($widget = (new Repository\Partial\Cart\ProductSpinner())->getObject(
+                    $product,
+                    $cartProduct,
+                    false
+                )) {
+                    $dataWidget['.' . $widget->widgetId] = $widget;
+                }
+            }
+
+            $page->dataWidget = $templateHelper->json($dataWidget ? $dataWidget : null);
+        });
+
 
         $page->googleAnalytics = false;
         if ($config->googleAnalytics->enabled) {
             $page->googleAnalytics = new Page\GoogleAnalytics();
-            $page->googleAnalytics->id = $config->googleAnalytics->id;
+            $page->googleAnalytics->regionName = $request->region ? $request->region->name : null;
+            $page->googleAnalytics->userAuth = $request->user ? '1' : '0';
+            $page->googleAnalytics->hostname = $config->hostname;
+
+            foreach ($this->getAbTest()->getObjectList() as $test) {
+                if ($test->gaSlotNumber) {
+                    $abTest = new Page\GoogleAnalytics\AbTest();
+                    $abTest->gaSlotNumber = $test->gaSlotNumber;
+                    $abTest->gaSlotScope = $test->gaSlotScope;
+                    $abTest->chosenToken = $test->token . '_' . $test->chosenItem->token;
+
+                    $page->googleAnalytics->abTests[] = $abTest;
+                }
+            }
         }
 
         $page->googleTagManager = false;
@@ -90,7 +183,7 @@ class DefaultPage {
         }
 
         // регион
-        $page->regionBlock->regionName = $request->region->name;
+        $page->regionBlock->regionName = $request->region ? $request->region->name : null;
         $page->regionBlock->setUrl = $router->getUrlByRoute(new Routing\Region\SetByName());
         $page->regionBlock->autocompleteUrl = $router->getUrlByRoute(new Routing\Region\Autocomplete());
         foreach ([ // TODO: вынести в конфиг
@@ -127,7 +220,9 @@ class DefaultPage {
                 }
             }
         };
-        $walkByMenu($request->mainMenu->elements);
+        if ($request->mainMenu) {
+            $walkByMenu($request->mainMenu->elements);
+        }
 
         // partner
         try {
@@ -157,6 +252,10 @@ class DefaultPage {
             [
                 'id'   => 'tpl-cart-slot-form-result',
                 'name' => 'partial/cart/slot/form/result',
+            ],
+            [
+                'id'   => 'tpl-modalWindow',
+                'name' => 'partial/modalWindow',
             ],
         ]);
     }

@@ -1,0 +1,61 @@
+.order-authorize {
+    margin: 0 10px;
+    padding: 10px 0px 15px;
+
+    text-align: center;
+
+    border: 1px solid @darkGrey3;
+    background: rgba(252, 171, 47, .2);
+
+    .rounded(4px);
+    .box-sizing(border-box);
+
+    &__t {
+        font-size: 16px;
+
+        margin: 0 0 10px;
+    }
+    &__btn {
+        line-height: 32px;
+
+        width: 150px;
+        height: 32px;
+        margin: 12px auto;
+
+        border: none;
+        background: rgba(255, 255, 255, .75);
+
+        .rounded(3px);
+        .btn-inner {
+            border-bottom: 1px dotted;
+        }
+    }
+    &__container {
+        margin: 0 0 20px;
+    }
+}
+.bonus-cnt {
+    width: 300px;
+    margin: 10px 0 0;
+    &__head {
+        font-size: 14px;
+
+        margin-bottom: 10px;
+    }
+    &-card {
+        margin-bottom: 10px;
+        &__tl {
+            cursor: pointer;
+
+            border-bottom: 1px dotted;
+        }
+    }
+    &.active {
+        .form-control-group {
+            display: block;
+        }
+    }
+    .form-control-group {
+        margin-bottom: 0;
+    }
+}

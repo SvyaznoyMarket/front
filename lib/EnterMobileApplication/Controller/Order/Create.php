@@ -24,13 +24,12 @@ namespace EnterMobileApplication\Controller\Order {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
 
             // ответ
             $response = new Response();
 
-            $userToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
+            $userAuthToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
 
             // данные пользователя
             $userData = (array)(isset($request->data['user']) ? $request->data['user'] : []);
@@ -47,8 +46,8 @@ namespace EnterMobileApplication\Controller\Order {
 
             // запрос пользователя
             $userItemQuery = null;
-            if ($userToken && (0 !== strpos($userToken, 'anonymous-'))) {
-                $userItemQuery = new Query\User\GetItemByToken($userToken);
+            if ($userAuthToken && (0 !== strpos($userAuthToken, 'anonymous-'))) {
+                $userItemQuery = new Query\User\GetItemByToken($userAuthToken);
                 $curl->prepare($userItemQuery);
             }
 
@@ -69,6 +68,9 @@ namespace EnterMobileApplication\Controller\Order {
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
             }
+            
+            // MAPI-56
+            $session = $this->getSession($user && $user->ui ? $user->ui : null);
 
             $splitData = (array)$session->get($config->order->splitSessionKey);
             if (!$splitData) {
@@ -120,11 +122,28 @@ namespace EnterMobileApplication\Controller\Order {
                 // meta
                 $metas = [];
 
+                // бонусные карты
+                foreach ($session->get($config->order->bonusCardSessionKey) as $cardItem) {
+                    if (!isset($cardItem['type'])) continue;
+
+                    if ('mnogoru' === $cardItem['type']) {
+                        $meta = new Model\Order\Meta();
+                        $meta->key = 'mnogo_ru_card';
+                        $meta->value = $cardItem['number'];
+                        $metas[] = $meta;
+                    }
+                }
+
                 $controllerResponse = (new \EnterAggregator\Controller\Order\Create())->execute(
                     $region->id,
                     $split,
                     $metas
                 );
+
+                if (!$controllerResponse->errors) {
+                    $session->remove($config->order->bonusCardSessionKey);
+                    $session->remove($config->cart->sessionKey);
+                }
 
                 // MAPI-4
                 try {

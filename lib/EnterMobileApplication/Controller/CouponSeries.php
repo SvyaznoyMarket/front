@@ -22,6 +22,7 @@ namespace EnterMobileApplication\Controller {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
+            $couponSeriesRepository = new \EnterRepository\Coupon\Series();
 
             // ответ
             $response = new Response();
@@ -71,44 +72,14 @@ namespace EnterMobileApplication\Controller {
 
             $curl->execute();
 
-            $usedSeriesIds = []; // ид серий купонов
-            if ($couponListQuery) {
-                try {
-                    $couponListData = $couponListQuery->getResult();
-                } catch (\Exception $e) {
-                    if (402 == $e->getCode()) {
-                        throw new \Exception('Пользователь не авторизован', 401);
-                    }
-                    throw $e;
-                }
-
-                foreach ($couponListData as $couponItem) {
-                    if (empty($couponItem['number'])) continue;
-
-                    $coupon = new Model\Coupon($couponItem); // TODO: вынести в репозиторий
-                    $usedSeriesIds[] = $coupon->seriesId;
-                }
+            $usedSeriesIds = [];
+            $coupons = (new \EnterRepository\Coupon())->getObjectListByQuery($couponListQuery);
+            foreach ($coupons as $coupon) {
+                $usedSeriesIds[] = $coupon->seriesId;
             }
 
-            $response->couponSeries = array_values(
-                array_filter(
-                    (new \EnterRepository\Coupon\Series())->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery),
-                    function(Model\Coupon\Series $series) use (&$usedSeriesIds, $user, &$couponSeriesId) {
-                        return (
-                            $couponSeriesId
-                            || (
-                                !in_array($series->id, $usedSeriesIds) // ... которые не были получены ранее
-                                && $series->limit > 0 // ... у которых не исчерпан лимит
-                                && ($series->isForNotMember || $series->isForNotMember) // ... которые хотя бы для участника ИЛИ неучастника // TODO: кажись, лишнее условие
-                                && (
-                                    (!$user || (!$user->isEnterprizeMember && $series->isForNotMember)) // ... которые для неучастников ИЛИ ...
-                                    || ($user && $user->isEnterprizeMember && $series->isForMember) // ... которые для участников
-                                )
-                            )
-                        );
-                    }
-                )
-            );
+            $response->couponSeries = $couponSeriesRepository->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery);
+            $couponSeriesRepository->filterObjectList($response->couponSeries, $usedSeriesIds, $user, $couponSeriesId);
 
             if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
 

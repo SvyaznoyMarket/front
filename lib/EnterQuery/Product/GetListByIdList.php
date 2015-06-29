@@ -19,7 +19,7 @@ class GetListByIdList extends Query {
      */
     public function __construct(array $ids, $regionId) {
         $this->url = new Url();
-        $this->url->path = 'v2/product/get';
+        $this->url->path = 'v2/product/get-v3';
         $this->url->query = [
             'select_type' => 'id',
             'id'          => $ids,

@@ -67,6 +67,8 @@ class Order {
     /** @var float */
     public $discountSum;
     /** @var string */
+    public $deliveryType;
+    /** @var string */
     public $subwayId;
     /** @var string */
     public $paymentMethodId;
@@ -78,10 +80,17 @@ class Order {
     public $paymentUrl;
     /** @var Model\Order\Delivery[] */
     public $deliveries = [];
+    /** @var Model\Order\Interval|null */
+    public $interval;
     /** @var Model\PaymentMethod[] */
     public $paymentMethods = [];
-    /** @var Model\Shop|null */
+    /**
+     * @deprecated
+     * @var Model\Shop|null
+     */
     public $shop;
+    /** @var Model\Point|null */
+    public $point;
     /** @var Model\Seller|null */
     public $seller;
     /** @var Model\Order\Meta[] */
@@ -122,6 +131,20 @@ class Order {
         }
         if (array_key_exists('pay_sum', $data)) $this->paySum = $this->getPriceHelper()->removeZeroFraction($data['pay_sum']);
         if (array_key_exists('discount_sum', $data)) $this->discountSum = $this->getPriceHelper()->removeZeroFraction($data['discount_sum']);
+        if (array_key_exists('delivery_type_id', $data)) {
+            switch ($data['delivery_type_id']) {
+                case 1:
+                    $this->deliveryType = 'standart';
+                    break;
+                case 4:
+                    $this->deliveryType = 'now';
+                    break;
+                default:
+                    $this->deliveryType = 'self';
+                    break;
+            }
+        }
+        
         if (array_key_exists('subway_id', $data)) $this->subwayId = (string)$data['subway_id'];
         if (array_key_exists('payment_id', $data)) $this->paymentMethodId = (string)$data['payment_id'];
         if (array_key_exists('payment_status_id', $data)) $this->paymentStatusId = $data['payment_status_id']? (string)$data['payment_status_id'] : null;
@@ -133,7 +156,8 @@ class Order {
 
                 $this->deliveries[] = new Model\Order\Delivery($deliveryItem);
             }
-        };
+        }
+        if (array_key_exists('interval', $data) && (bool)is_array($data['interval'])) $this->interval = new Model\Order\Interval($data['interval']);
 
         if (isset($data['seller']['ui'])) {
             $this->seller = new Model\Seller($data['seller']);
@@ -152,5 +176,7 @@ class Order {
                 $this->meta[] = $meta;
             }
         }
+
+        if (isset($data['point_ui'])) $this->point = new Model\Point(['ui' => $data['point_ui']]);
     }
 }

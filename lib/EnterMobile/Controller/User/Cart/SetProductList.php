@@ -21,6 +21,7 @@ class SetProductList {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
         $curl = $this->getCurl();
         $session = $this->getSession();
         $cartRepository = new \EnterRepository\Cart();
@@ -29,7 +30,7 @@ class SetProductList {
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
         // корзина из сессии
-        $cart = $cartRepository->getObjectByHttpSession($session);
+        $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
         // товара для корзины
         $cartProducts = $cartRepository->getProductListByHttpRequest($request);
@@ -60,17 +61,14 @@ class SetProductList {
         $cart = $controllerResponse->cart;
         $productsById = $controllerResponse->productsById;
 
-        // токен пользователя
-        $userToken = (new \EnterRepository\User)->getTokenByHttpRequest($request);
-
         // запрос пользователя
-        $userItemQuery = $userToken ? new Query\User\GetItemByToken($userToken) : null;
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
         if ($userItemQuery) {
             $curl->prepare($userItemQuery)->execute();
         }
 
         // пользователь
-        $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
+        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
         // страница
         $page = new Page();

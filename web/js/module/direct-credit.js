@@ -2,10 +2,10 @@ define(
     ['direct-credit'],
     function () {
         return {
-            getPayment: function(config, user, products, done) {
+            getPayment: function(partnerId, sessionId, products, done) {
                 dc_getCreditForTheProduct (
-                    config.partnerId,
-                    user.sessionId,
+                    partnerId,
+                    sessionId,
                     'getPayment',
                     {
                         products: products

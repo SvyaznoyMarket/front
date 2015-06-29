@@ -47,7 +47,7 @@ class Login {
         }
 
         // редирект
-        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest(
+        $redirectUrl = (new \EnterMobile\Repository\User())->getRedirectUrlByHttpRequest(
             $request,
             $referer ?: $router->getUrlByRoute(new Routing\User\Index())
         );
@@ -59,10 +59,20 @@ class Login {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
+
         $curl->execute();
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+        
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
 
         // запрос дерева категорий для меню
         $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
@@ -73,6 +83,8 @@ class Login {
         $curl->prepare($mainMenuQuery);
 
         $curl->execute();
+        
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // меню
         $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
@@ -81,6 +93,8 @@ class Login {
         $pageRequest = new Repository\Page\User\Login\Request();
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->cart = $cart;
         $pageRequest->redirectUrl = $redirectUrl;
 
         $pageRequest->authFormErrors = array_map(function(\EnterModel\Message $message) { return $message->name; }, $messageRepository->getObjectListByHttpSession('authForm.error', $session));

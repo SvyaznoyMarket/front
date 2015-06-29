@@ -8,9 +8,9 @@
         {{#credit}}
         <div class="js-creditPayment" data-template-selector="#tpl-creditPayment" data-value="{{&dataValue}}" data-price-selector=".{{widgetId}}">
             <div class="cartLine_right"{{#credit.isHidden}} style="display: none;"{{/credit.isHidden}}>
-                <input class="js-creditButton customInput customInput-checkbox jsCustomRadio" type="checkbox" id="id-credit-input" name="" />
+                <input class="js-creditButton custom-input custom-input--check jsCustomRadio" type="checkbox" id="id-credit-input" name="" />
 
-                <label class="{{widgetId}} customLabel" for="id-credit-input"{{#isHidden}} style="display: none;"{{/isHidden}}>
+                <label class="{{widgetId}} custom-label" for="id-credit-input"{{#isHidden}} style="display: none;"{{/isHidden}}>
                     <strong class="creditText">Купить в кредит</strong>
                     <strong class="creditSum">&nbsp;</strong>
                 </label>
@@ -26,7 +26,7 @@
 
     <!-- оформить заказ -->
     <div class="cartBuy">
-        <a class="js-ga-click btnStyleOrange cartBuy_btn" href="{{orderUrl}}" data-ga-click="{{&orderDataGa}}">Оформление заказа</a>
+        <a class="js-ga-click btn--orange btn--big btn--tall" href="{{orderUrl}}" data-ga-click="{{&orderDataGa}}">Оформление заказа</a>
     </div>
     <!--/ оформить заказ -->
 </div>

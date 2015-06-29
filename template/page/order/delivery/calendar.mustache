@@ -1,0 +1,17 @@
+<div class="celedr_tb">
+    <div class="celedr_row celedr_row-h clearfix">
+        <div class="celedr_col">Пн</div>
+        <div class="celedr_col">Вт</div>
+        <div class="celedr_col">Ср</div>
+        <div class="celedr_col">Чт</div>
+        <div class="celedr_col">Пт</div>
+        <div class="celedr_col">Сб</div>
+        <div class="celedr_col">Вс</div>
+    </div>
+
+    <div class="celedr_row clearfix">
+    {{#items}}
+        <div class="{{^isMonth}}celedr_col{{/isMonth}}{{#isMonth}}celedr_month{{/isMonth}}{{#isDisabled}} celedr_col-disbl{{/isDisabled}}{{#dataValue}} js-order-delivery-form-control{{/dataValue}}" data-value="{{&dataValue}}" data-type="date">{{name}}</div>
+    {{/items}}
+    </div>
+</div>

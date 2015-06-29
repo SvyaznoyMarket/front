@@ -5,6 +5,7 @@ namespace EnterMobile\Controller\User;
 use Enter\Http;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
+use EnterAggregator\SessionTrait;
 use EnterAggregator\RouterTrait;
 use EnterMobile\Controller;
 use EnterMobile\Repository;
@@ -14,7 +15,7 @@ use EnterMobile\Model\Form;
 use EnterMobile\Routing;
 
 class Logout {
-    use ConfigTrait, CurlTrait, RouterTrait;
+    use ConfigTrait, CurlTrait, SessionTrait, RouterTrait;
 
     /**
      * @param Http\Request $request
@@ -23,6 +24,7 @@ class Logout {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $router = $this->getRouter();
+        $session = $this->getSession();
 
         // редирект
         $redirectUrl = !empty($request->query['redirect_to']) ? $request->query['redirect_to'] : null;
@@ -32,7 +34,9 @@ class Logout {
         // http-ответ
         $response = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
         // сброс cookie
-        (new \EnterRepository\User())->setTokenToHttpResponse(null, $response);
+        (new \EnterMobile\Repository\User())->setTokenToHttpResponse(null, $response);
+
+        $session->remove($config->order->userSessionKey);
 
         return $response;
     }

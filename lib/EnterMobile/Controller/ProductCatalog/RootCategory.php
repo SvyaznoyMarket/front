@@ -3,6 +3,7 @@
 namespace EnterMobile\Controller\ProductCatalog;
 
 use Enter\Http;
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\MustacheRendererTrait;
@@ -14,7 +15,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Page\ProductCatalog\RootCategory as Page;
 
 class RootCategory {
-    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -35,10 +36,20 @@ class RootCategory {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+        }
+
         $curl->execute();
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+        
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
 
         // наличие категорий в данном регионе
         $categoryListQuery = new Query\Product\Category\GetAvailableList(['token' => $categoryToken], $region->id, 1);
@@ -59,6 +70,8 @@ class RootCategory {
         $curl->prepare($mainMenuQuery);
 
         $curl->execute();
+        
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         $availableDataByUi = null;
         try {
@@ -98,6 +111,8 @@ class RootCategory {
         $pageRequest = new Repository\Page\ProductCatalog\RootCategory\Request();
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
+        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->cart = $cart;
         $pageRequest->category = $category;
 
         // страница

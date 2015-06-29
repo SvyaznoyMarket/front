@@ -1,0 +1,78 @@
+.confirm {
+    margin: 0 0 20px;
+
+    border-width: 1px 1px 1px 5px;
+    border-style: solid;
+    border-color: @typGray;
+    &__title {
+        font-size: 16px;
+    }
+    &__number {
+        margin: 0 15px;
+
+        border-bottom: 1px solid #a6a6a6;
+    }
+    &__box {
+        font-size: 14px;
+
+        padding: 10px 10px;
+        &--normal {
+            background: @lightGrey6;
+        }
+        &--payment {
+            background: #feeed4;
+        }
+        &--items {
+            line-height: 1.2;
+        }
+    }
+
+    .shop-snippet {
+    	margin: 5px 0 8px;
+    }
+}
+
+.confirm-items {
+    color: #474747;
+    &__lk {
+        color: #474747;
+        border-bottom: 1px solid;
+    }
+}
+
+.confirm-payment {
+    text-align: center;
+    &__cell {
+        .inline-block-middle();
+    }
+    &__title {
+        font-size: 16px;
+
+        margin-right: 55px;
+    }
+    &__btn {
+        margin-right: 15px;
+
+        .inline-block-middle();
+    }
+    &__types {
+        .inline-block-middle();
+    }
+    &__img {
+        .inline-block-middle();
+    }
+}
+
+.comfirm-summary {
+    font-size: 16px;
+    &__title {
+        .inline-block-middle();
+    }
+    &__price {
+        width: 90px;
+
+        text-align: right;
+
+        .inline-block-middle();
+    }
+}

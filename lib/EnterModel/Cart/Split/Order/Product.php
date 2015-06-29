@@ -1,6 +1,8 @@
 <?php
 namespace EnterModel\Cart\Split\Order;
 
+use EnterModel as Model;
+
 class Product {
     /** @var string|null */
     public $id;
@@ -28,7 +30,7 @@ class Product {
     public $stockQuantity;
     /** @var array */
     public $sender;
-    /** @var \EnterModel\Product\Media */
+    /** @var Model\MediaList */
     public $media;
 
     /**
@@ -48,6 +50,7 @@ class Product {
         $this->quantity = (int)$data['quantity'];
         $this->stockQuantity = (int)$data['stock'];
         $this->sender = isset($data['meta_data']['sender']['name']) ? $data['meta_data']['sender'] : null;
+        $this->media = new Model\MediaList();
     }
 
     /**

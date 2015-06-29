@@ -88,60 +88,18 @@ class Cart {
         return $products;
     }
 
-    public function getPointImageUrl($pointToken) {
-        // Возможные типы см. в коде https://github.com/SvyaznoyMarket/core/blob/euroset/application/models/V2/PickupPoint/Repository.php#L10
-        switch ($pointToken) {
-            case 'shops':
-                $image = 'enter.png';
-                break;
-            case 'self_partner_pickpoint_pred_supplier':
-            case 'self_partner_pickpoint':
-                $image = 'pickpoint.png';
-                break;
-            case 'self_partner_svyaznoy_pred_supplier':
-            case 'self_partner_svyaznoy':
-            case 'shops_svyaznoy':
-                $image = 'svyaznoy.png';
-                break;
-            case 'self_partner_euroset_pred_supplier':
-            case 'self_partner_euroset':
-                $image = 'euroset.png';
-                break;
-            default:
-                $image = '';
-                break;
-        }
-
-        if ($image) {
-            $image = 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/' . $image;
-        }
-
-        return $image;
-    }
-
     /**
      * @param Http\Session $session
+     * @param string $key
      * @return Model\Cart
      */
-    public function getObjectByHttpSession(Http\Session $session) {
+    public function getObjectByHttpSession(Http\Session $session, $key) {
         $cart = new Model\Cart();
 
         $cartData = array_merge([
             'product' => [],
-        ], (array)$session->get('cart'));
-
-        // импорт старой корзины
-        $oldCartData = array_merge([
-            'productList' => [],
-        ], (array)$session->get('userCart'));
-        foreach ($oldCartData['productList'] as $productId => $productQuantity) {
-            if (!isset($cartData['product'][$productId])) {
-                $cartData['product'][$productId] = [
-                    'id'       => $productId,
-                    'quantity' => $productQuantity,
-                ];
-            }
-        }
+            'cacheId' => 0,
+        ], (array)$session->get($key));
 
         foreach ($cartData['product'] as $productItem) {
             $productItem = array_merge([
@@ -150,17 +108,23 @@ class Cart {
                 'quantity' => null,
                 'parentId' => null,
                 'added'    => null,
+                'sender'   => null,
             ], $productItem);
 
-            $cartProduct = new Model\Cart\Product();
-            $cartProduct->id = (string)$productItem['id'];
-            $cartProduct->ui = (string)$productItem['ui'];
-            $cartProduct->quantity = (int)$productItem['quantity'];
-            $cartProduct->parentId = $productItem['parentId'] ? (string)$productItem['parentId'] : null;
-            $cartProduct->addedAt = $productItem['added'] ? (string)$productItem['added'] : null;
+            if (isset($productItem['id']) && $productItem['id']) { // На случай, если в сессию попадут некорректные данные
+                $cartProduct = new Model\Cart\Product();
+                $cartProduct->id = (string)$productItem['id'];
+                $cartProduct->ui = (string)$productItem['ui'];
+                $cartProduct->quantity = (int)$productItem['quantity'];
+                $cartProduct->parentId = $productItem['parentId'] ? (string)$productItem['parentId'] : null;
+                $cartProduct->addedAt = $productItem['added'] ? (string)$productItem['added'] : null;
+                $cartProduct->sender = $productItem['sender'];
 
-            $cart->product[$cartProduct->id] = $cartProduct;
+                $cart->product[$cartProduct->id] = $cartProduct;
+            }
         }
+
+        $cart->cacheId = $cartData['cacheId'];
 
         return $cart;
     }
@@ -168,23 +132,12 @@ class Cart {
     /**
      * @param Http\Session $session
      * @param Model\Cart $cart
+     * @param string $key
      */
-    public function saveObjectToHttpSession(Http\Session $session, Model\Cart $cart) {
-        // TODO: купоны, ...
-
-        // сохранение в старой корзине
-        $oldCartData = [
-            'productList' => [],
-        ];
-
-        foreach ($cart->product as $cartProduct) {
-            $oldCartData['productList'][$cartProduct->id] = $cartProduct->quantity;
-        }
-        $session->set('userCart', $oldCartData);
-
-        // новая корзина
+    public function saveObjectToHttpSession(Http\Session $session, Model\Cart $cart, $key) {
         $cartData = [
             'product' => [],
+            'cacheId' => $cart->cacheId,
         ];
 
         foreach ($cart->product as $cartProduct) {
@@ -209,31 +162,45 @@ class Cart {
 
             $cartData['product'][$cartProduct->id] = $cartItem;
         }
-        $session->set('cart', $cartData);
+
+        $session->set($key, $cartData);
     }
 
     /**
      * @param \EnterModel\Cart $cart
-     * @param Query $query
      */
-    public function updateObjectByQuery(Model\Cart $cart, Query $query) {
+    public function updateObjectByQuery(Model\Cart $cart, Query $cartItemQuery = null, Query $cartProductListQuery = null) {
+        if (!$cartItemQuery && !$cartProductListQuery) {
+            return;
+        }
+
+        /** @var \EnterModel\Cart\Product[] $cartProductsById */
         $cartProductsById = [];
         foreach ($cart->product as $cartProduct) {
             $cartProductsById[$cartProduct->id] = $cartProduct;
         }
 
-        $item = $query->getResult();
-        $coreCart = new Model\Cart($item);
+        if ($cartItemQuery) {
+            $item = $cartItemQuery->getResult();
+            $coreCart = new Model\Cart($item);
 
-        $cart->sum = $coreCart->sum;
-        foreach ($coreCart->product as $coreCartProduct) {
-            /** @var \EnterModel\Cart\Product|null $cartProduct */
-            $cartProduct = isset($cartProductsById[$coreCartProduct->id]) ? $cartProductsById[$coreCartProduct->id] : null;
-            if (!$cartProduct) continue;
+            $cart->sum = $coreCart->sum;
+            foreach ($coreCart->product as $coreCartProduct) {
+                $cartProduct = isset($cartProductsById[$coreCartProduct->id]) ? $cartProductsById[$coreCartProduct->id] : null;
+                if (!$cartProduct) continue;
 
-            $cartProduct->price = $coreCartProduct->price;
-            $cartProduct->sum = $coreCartProduct->sum;
-            $cartProduct->quantity = $coreCartProduct->quantity;
+                $cartProduct->price = $coreCartProduct->price;
+                $cartProduct->sum = $coreCartProduct->sum;
+                $cartProduct->quantity = $coreCartProduct->quantity;
+            }
+        }
+
+        if ($cartProductListQuery) {
+            foreach ((new \EnterRepository\Product())->getIndexedObjectListByQueryList([$cartProductListQuery]) as $coreCartProduct) {
+                if (isset($cartProductsById[$coreCartProduct->id])) {
+                    $cartProductsById[$coreCartProduct->id]->product = $coreCartProduct;
+                }
+            }
         }
     }
 
@@ -352,7 +319,7 @@ class Cart {
                 }
 
                 // скидки
-                if (isset($orderItem['discounts'][0])) {
+                if (isset($orderItem['discounts']) && is_array($orderItem['discounts'])) {
                     $discountItem = null;
                     foreach ($orderItem['discounts'] as $discountItem) {
                         $this->getLogger()->push(['message' => 'Применение купона', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
@@ -375,7 +342,10 @@ class Cart {
                                 $this->getLogger()->push(['type' => 'warn', 'message' => 'Купон не найден', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
                             }
                         } else { // добавление купона
-                            $dump['orders'][$blockName]['discounts'][] = ['number' => $discountItem['number'], 'name' => null, 'type' => null, 'discount' => null];
+                            $dump['orders'][$blockName]['discounts'][] =
+                                ['number' => $discountItem['number'], 'name' => null, 'type' => null, 'discount' => null]
+                                + (!empty($discountItem['pin']) ? ['pin' => $discountItem['pin']] : [])
+                            ;
                         }
                     }
                     unset($discountItem);
@@ -405,6 +375,9 @@ class Cart {
             if (array_key_exists('address', $changeData['user'])) {
                 if (array_key_exists('street', $changeData['user']['address'])) {
                     $dump['user_info']['address']['street'] = $changeData['user']['address']['street'];
+                }
+                if (array_key_exists('streetType', $changeData['user']['address']) && !empty($dump['user_info']['address']['street'])) {
+                    $dump['user_info']['address']['street'] = $changeData['user']['address']['streetType'] . ' ' . $dump['user_info']['address']['street'];
                 }
                 if (array_key_exists('building', $changeData['user']['address'])) {
                     $dump['user_info']['address']['building'] = $changeData['user']['address']['building'];

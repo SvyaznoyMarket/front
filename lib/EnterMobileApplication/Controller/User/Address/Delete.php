@@ -25,7 +25,6 @@ namespace EnterMobileApplication\Controller\User\Address {
         {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            //$session = $this->getSession();
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
             if (!$token) {

@@ -10,6 +10,8 @@ class PaymentMethod {
     public $name;
     /** @var string|null */
     public $description;
+    /** @var bool */
+    public $isOnline;
 
     /**
      * @param array $data
@@ -19,6 +21,7 @@ class PaymentMethod {
         $this->ui = $data['ui'] ? (string)$data['ui'] : null;
         $this->name = $data['name'] ? (string)$data['name'] : null;
         $this->description = $data['description'] ? (string)$data['description'] : null;
+        $this->isOnline = (bool)$data['is_online'];
     }
 
     /**
@@ -30,6 +33,7 @@ class PaymentMethod {
             'ui'          => $this->ui,
             'name'        => $this->name,
             'description' => $this->description,
+            'is_online'   => $this->isOnline,
         ];
     }
 }

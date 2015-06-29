@@ -130,7 +130,7 @@ namespace EnterAggregator\Controller\Order {
 
             $curl->execute();
 
-            // товары сгруппированные по id
+            // товары индексированные по id
             $productsById = [];
             try {
                 $productsById = $productListQuery ? (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]) : [];
@@ -144,6 +144,9 @@ namespace EnterAggregator\Controller\Order {
                     [
                         'media'       => true,
                         'media_types' => ['main'], // только главная картинка
+                        'category'    => true,
+                        'label'       => true,
+                        'brand'       => true,
                     ]
                 );
                 $curl->prepare($descriptionListQuery);

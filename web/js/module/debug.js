@@ -9,12 +9,13 @@ define(
         var $document = $(document),
             $body = $('body'),
             $debug = $('.js-debug'),
+            $template = $('#tpl-debug-container').html(),
 
             handleResponse = function(e, xhr, options, error) {
+                var response;
+
                 try {
-                    var response = JSON.parse(xhr.responseText),
-                        $template = $('#tpl-debug-container').html()
-                        ;
+                    response = JSON.parse(xhr.responseText);
 
                     if (response && response.debug) {
                         var templateData = response.debug || {};
@@ -29,7 +30,7 @@ define(
                         }
                     }
                 } catch (error) {
-                    console.error(error);
+                    console.warn(error);
                 }
             }
         ;

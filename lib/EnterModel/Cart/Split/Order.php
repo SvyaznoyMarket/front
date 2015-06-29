@@ -32,7 +32,7 @@ class Order {
     /** @var array */
     public $groupedPossiblePointIds = [];
     /** @var Model\Cart\Split\Order\Point[] */
-    public $possiblePoints;
+    public $possiblePoints = [];
     /** @var string|null */
     public $comment;
 

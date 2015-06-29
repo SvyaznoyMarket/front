@@ -1,0 +1,83 @@
+// float
+.clear-r {
+	clear: right;
+}
+
+.clear-l {
+	clear: left;
+}
+
+.clear {
+	clear: both;
+}
+
+.mb-5 {
+    margin-bottom: 5px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.mb-15 {
+    margin-bottom: 15px;
+}
+
+// colors
+@grey-light: #777777;
+
+.grey-light {
+    color: @grey-light;
+}
+
+.flex-hor-vertical-between {
+    .flexbox();
+
+    .justify-content(space-between);
+    .align-items();
+    width: 100%;
+    max-width: 100%;
+}
+
+.flex-hor-vertical {
+    .flexbox();
+
+    .align-items();
+    width: 100%;
+    max-width: 100%;
+}
+
+.toggle {
+
+    &--active {
+        .toggle-box {
+            display: block;
+        }
+    }
+
+    &-box {
+        display: none;
+    }
+}
+
+.table {
+    display: table;
+
+    box-sizing: border-box;
+    width: 100%;
+    &_cell {
+        display: table-cell;
+
+        vertical-align: middle;
+    }
+    &_row {
+        display: table-row;
+
+        vertical-align: middle;
+    }
+    &--2col {
+        .table_cell {
+            width: 50%;
+        }
+    }
+}

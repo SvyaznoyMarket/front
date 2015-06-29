@@ -38,7 +38,9 @@ class Split {
             new Model\Shop(['ui' => $requestData['shop_ui']]),
             new Model\PaymentMethod(['ui' => $requestData['payment_method_ui']]),
             isset($requestData['previous_split']) && is_array($requestData['previous_split']) ? $splitRepository->convertXmlArrayToCoreArray($requestData['previous_split']) : [],
-            isset($requestData['changes']) && is_array($requestData['changes']) ? $splitRepository->convertXmlArrayToCoreArray($requestData['changes']) : []
+            isset($requestData['changes']) && is_array($requestData['changes']) ? $splitRepository->convertXmlArrayToCoreArray($requestData['changes']) : [],
+            null,
+            false
         );
 
         $splitQuery->setTimeout($config->coreService->timeout * 2);
@@ -60,7 +62,9 @@ class Split {
                     isset($requestData['point']['token']) ? $requestData['point']['token'] : null,
                     isset($requestData['point']['id']) ? $requestData['point']['id'] : null,
                     isset($requestData['point']['ui']) ? $requestData['point']['ui'] : null
-                )
+                ),
+                null,
+                false
             );
 
             $splitQuery->setTimeout($config->coreService->timeout * 2);

@@ -168,7 +168,7 @@ class Partner {
             $partner->id = 'sociomantic';
             $partner->dataAction = $dataAction;
             $partner->dataValue = $templateHelper->json([
-                'category' => $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge($category->ascendants, [$category])) : [],
+                'category' => $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge((new \EnterRepository\Product\Category())->getAscendantList($category), [$category])) : [],
             ]);
             $partners[] = $partner;
         }
@@ -309,7 +309,7 @@ class Partner {
 
         // sociomantic
         if ($config->sociomantic->enabled) {
-            $categoryNames = $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge($category->ascendants, [$category])) : [];
+            $categoryNames = $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge((new \EnterRepository\Product\Category())->getAscendantList($category), [$category])) : [];
             $description = $product->tagline ?: ($product->description ?: $product->name);
             if (mb_strlen($description) > 90) {
                 $description = mb_substr($description, 0, 90) . '...';
@@ -328,7 +328,7 @@ class Partner {
                     'description' => $description,
                     'fn'          => $product->name,
                     'identifier'  => $product->article . '_' . $request->region->id,
-                    'photo'       => $photo ? ((string)(new Routing\Product\Media\GetPhoto($photo, 'product_500'))) : null,
+                    'photo'       => $photo ? (new \EnterRepository\Media())->getSourceObjectByItem($photo, 'product_500')->url : null,
                     'price' => $product->price,
                     'url'   => $request->httpRequest->getSchemeAndHttpHost() . $product->link,
                     'valid' => $product->isBuyable ? 0 : time(),
@@ -385,7 +385,6 @@ class Partner {
         $templateHelper = $this->getTemplateHelper();
 
         $cart = $request->cart;
-        $productsById = $request->productsById;
         $dataAction = 'cart';
 
         $partners = [];
@@ -427,13 +426,11 @@ class Partner {
             $partner->id = 'sociomantic';
             $partner->dataAction = $dataAction;
             $partner->dataValue = $templateHelper->json([
-                'cartProduct' => array_values(array_map(function(\EnterModel\Cart\Product $cartProduct) use (&$productsById, &$request) {
-                    $product = isset($productsById[$cartProduct->id]) ? $productsById[$cartProduct->id] : null;
-
+                'cartProduct' => array_values(array_map(function(\EnterModel\Cart\Product $cartProduct) use (&$request) {
                     return [
                         'amount'     => $cartProduct->price * $cartProduct->quantity,
                         'currency'   => 'RUB',
-                        'identifier' => $product ? ($product->article . '_' . $request->region->id) : null,
+                        'identifier' => $cartProduct->product ? ($cartProduct->product->article . '_' . $request->region->id) : null,
                         'quantity'   => $cartProduct->quantity,
                     ];
                 }, $cart->product))
@@ -451,12 +448,11 @@ class Partner {
             $dataValue = $this->getGoogleRetargetingDataValue();
             $tagParams = ['pagetype' => 'cart', 'cartvalue' => $cart->sum, 'prodid' => [], 'pname' => [], 'pcat' => []];
             foreach ($cart->product as $cartProduct) {
-                $product = isset($productsById[$cartProduct->id]) ? $productsById[$cartProduct->id] : null;
-                if (!$product) continue;
+                if (!$cartProduct->product) continue;
 
-                $tagParams['prodid'][] = $product->id;
-                $tagParams['pname'][] = $product->name;
-                $tagParams['pcat'][] = $product->category ? $product->category->token : '';
+                $tagParams['prodid'][] = $cartProduct->product->id;
+                $tagParams['pname'][] = $cartProduct->product->name;
+                $tagParams['pcat'][] = $cartProduct->product->category ? $cartProduct->product->category->token : '';
             }
             $dataValue['tagParams'] = array_merge($dataValue['tagParams'], $tagParams);
             $partner->dataValue = $templateHelper->json($dataValue);
