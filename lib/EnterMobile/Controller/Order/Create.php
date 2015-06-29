@@ -158,7 +158,7 @@ class Create {
 
             $session->remove($config->order->splitSessionKey);
             $session->remove($config->order->bonusCardSessionKey);
-            //$session->remove($cartSessionKey);
+            $session->remove($cartSessionKey);
 
             $orderData = [
                 'updatedAt' => (new \DateTime())->format('c'),
