@@ -144,6 +144,13 @@ class Create {
                 $session->flashBag->set('orderForm.error', $controllerResponse->errors);
 
                 if ($error = reset($controllerResponse->errors)) {
+                    if (in_array($error['code'], [759])) { // Некорректный email
+                        $response = (new \EnterAggregator\Controller\Redirect())->execute(
+                            $router->getUrlByRoute(new Routing\Order\Index(), ['shopId' => $shopId]),
+                            302
+                        );
+                    }
+
                     throw new \Exception($error['message'], (int)$error['code']);
                 }
 
