@@ -49,7 +49,7 @@ define(
         $.mask.definitions['x'] = "[0-9]";
         $form.find('[data-field="phone"]')
             .mask("+7(xxx)xxx-xx-xx", {
-                placeholder: "+7(xxx)xxx-xx-xx"
+                placeholder: "+7(___)___-__-__"
             })
             .on('focus', function() {
                 analytics.push(['1 Телефон_Получатель_ОБЯЗАТЕЛЬНО']);
