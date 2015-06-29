@@ -6,6 +6,12 @@
 	    <section class="checkout">
 	        <h1 class="checkout__tl">Оформление заказа</h1>
 
+            <div class="js-order-error-container">
+			{{#errors}}
+				<div class="checkout__err">{{message}}</div>
+			{{/errors}}
+            </div>
+
 			{{>page/order/index/form}}
 	    </section>
 

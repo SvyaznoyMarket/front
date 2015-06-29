@@ -53,6 +53,9 @@ class SetUser {
             if (!$userData['email']) {
                 $errors[] = ['field' => 'email', 'name' => 'Не указан email'];
             }
+            if (!filter_var($userData['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors[] = ['field' => 'email', 'name' => 'Неправильный email'];
+            }
 
             if (count($errors) > 0) {
                 throw new \Exception('Не заполнены обязательные поля');

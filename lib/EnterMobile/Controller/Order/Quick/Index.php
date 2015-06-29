@@ -48,6 +48,7 @@ class Index {
         ];
 
         $session->set($config->cart->quickSessionKey, $cartData);
+        $session->remove($config->order->splitSessionKey);
 
         return (new \EnterAggregator\Controller\Redirect())->execute($router->getUrlByRoute(new Routing\Order\Index(), ['shopId' => $shopId]), 302);
     }

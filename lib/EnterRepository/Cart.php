@@ -409,7 +409,7 @@ class Cart {
             if (array_key_exists('bonusCardNumber', $changeData['user'])) {
                 $dump['user_info']['bonus_card_number'] = $changeData['user']['bonusCardNumber'];
             }
-            if (array_key_exists('address', $changeData['user'])) {
+            if (array_key_exists('address', $changeData['user']) && is_array($changeData['user']['address'])) {
                 if (array_key_exists('street', $changeData['user']['address'])) {
                     $dump['user_info']['address']['street'] = $changeData['user']['address']['street'];
                 }

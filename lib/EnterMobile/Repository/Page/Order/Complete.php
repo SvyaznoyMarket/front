@@ -100,7 +100,7 @@ class Complete {
                             'date' =>
                                 $date
                                 ? [
-                                    'name' => $dateHelper->dateToRu($date),
+                                    'name' => $date->format('d.m.Y'),
                                 ]
                                 : false
                             ,
@@ -118,6 +118,7 @@ class Complete {
                     ]
                     : false
                 ,
+                'address'   => $orderModel->address,
                 'point'     => call_user_func(function() use (&$orderModel, &$pointRepository) {
                     if (!$pointModel = $orderModel->point) {
                         return false;

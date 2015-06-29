@@ -23,6 +23,8 @@ namespace EnterMobile\Model\Page\Order\Index {
     use EnterMobile\Model\Form;
 
     class Content extends Page\DefaultPage\Content {
+        /** @var array */
+        public $errors = [];
         /** @var Form\Order\UserForm */
         public $form;
         /** @var bool */

@@ -42,7 +42,7 @@ class Delivery {
             'name' => $request->region->name,
         ];
 
-        $page->content->deliveryForm['url'] = $router->getUrlByRoute(new Routing\Order\Delivery());
+        $page->content->deliveryForm['url'] = $router->getUrlByRoute(new Routing\Order\Delivery(), ['shopId' => $request->shopId]);
 
         $page->content->form->url = $router->getUrlByRoute(new Routing\Order\Create(), ['shopId' => $request->shopId]);
         $page->content->form->errorDataValue = $templateHelper->json($request->formErrors);
@@ -577,7 +577,7 @@ class Delivery {
                     return $messages;
                 }),
                 'addressFormJson' => json_encode([
-                    'url'    => $router->getUrlByRoute(new Routing\Order\Delivery()),
+                    'url'    => $router->getUrlByRoute(new Routing\Order\Delivery(), ['shopId' => $request->shopId]),
                     'fields' => [
                         'street'     => [
                             'name' => 'change[user][address][street]',
@@ -607,7 +607,7 @@ class Delivery {
                     ]),
                 ], JSON_UNESCAPED_UNICODE),
                 'discountFormJson' => json_encode([
-                    'url'       => $router->getUrlByRoute(new Routing\Order\Delivery()),
+                    'url'       => $router->getUrlByRoute(new Routing\Order\Delivery(), ['shopId' => $request->shopId]),
                     'checkUrl'  => $router->getUrlByRoute(new Routing\Certificate\Check()),
                     'couponUrl' => $request->user ? $router->getUrlByRoute(new Routing\User\Coupon\Get()) : '',
                     'fields'    => [

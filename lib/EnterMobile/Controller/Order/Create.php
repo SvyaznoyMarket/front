@@ -144,6 +144,13 @@ class Create {
                 $session->flashBag->set('orderForm.error', $controllerResponse->errors);
 
                 if ($error = reset($controllerResponse->errors)) {
+                    if (in_array($error['code'], [759])) { // Некорректный email
+                        $response = (new \EnterAggregator\Controller\Redirect())->execute(
+                            $router->getUrlByRoute(new Routing\Order\Index(), ['shopId' => $shopId]),
+                            302
+                        );
+                    }
+
                     throw new \Exception($error['message'], (int)$error['code']);
                 }
 
@@ -158,7 +165,7 @@ class Create {
 
             $session->remove($config->order->splitSessionKey);
             $session->remove($config->order->bonusCardSessionKey);
-            //$session->remove($cartSessionKey);
+            $session->remove($cartSessionKey);
 
             $orderData = [
                 'updatedAt' => (new \DateTime())->format('c'),
@@ -198,6 +205,7 @@ class Create {
                                 : null
                             ,
                             'paymentMethodId' => $order->paymentMethodId,
+                            'address'         => $order->address,
                             'point'           =>
                                 $order->point
                                 ? [
