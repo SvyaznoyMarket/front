@@ -13,7 +13,7 @@ define(
                 }
                 if (typeof ga === 'function') {
                     console.info('ga', ['send', 'event', 'Воронка_m.enter'].concat(data));
-                    ga.apply(ga, ['send', 'event', 'Воронка_m.enter'].concat(data));
+                    ga.apply(window, ['send', 'event', 'Воронка_m.enter'].concat(data));
                 }
             }
         ;
