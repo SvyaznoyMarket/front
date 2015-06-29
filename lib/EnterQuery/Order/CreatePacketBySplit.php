@@ -58,7 +58,7 @@ class CreatePacketBySplit extends Query {
                 'last_name'           => $split->user ? $split->user->lastName : null,
                 'first_name'          => $split->user ? $split->user->firstName : null,
                 'email'               => ($split->user && !empty($split->user->email)) ? $split->user->email : null,
-                'mobile'              => ($split->user && !empty($split->user->phone)) ? $split->user->phone : null,
+                'mobile'              => ($split->user && !empty($split->user->phone)) ? preg_replace('/[^\d]/', '', preg_replace('/^\+7/', '8', $split->user->phone)) : null,
                 'address_street'      => null,
                 'address_number'      => null,
                 'address_building'    => null,
