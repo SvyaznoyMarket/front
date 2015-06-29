@@ -77,6 +77,10 @@ class CreatePacketBySplit extends Query {
                 'product'             => [],
             ];
 
+            if ($order->delivery && $order->delivery->boxUi) {
+                $orderData['box_ui'] = $order->delivery->boxUi;
+            }
+
             if ($split->user->smsCode) {
                 $orderData['sms_code'] = $split->user->smsCode;
             }
