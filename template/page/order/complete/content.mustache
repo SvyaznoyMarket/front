@@ -6,7 +6,7 @@
         <section class="checkout">
             <h1 class="checkout__tl">{{#isSingleOrder}}Оформлен заказ <nobr>№<a href="#">{{orders.0.numberErp}}</a></nobr>{{/isSingleOrder}}
             {{^isSingleOrder}}Ваши заказы{{/isSingleOrder}}</h1>
-            {{#isSingleOrder}}<div class="checkout__tl-sum">На сумму <b>{{#orders}}{{sum.name}}{{/orders}}</b> <span class="rubl">p</span></div>{{/isSingleOrder}}
+            {{#isSingleOrder}}<div class="checkout__tl-sum">на сумму <b>{{#orders}}{{sum.name}}{{/orders}}</b> <span class="rubl">p</span></div>{{/isSingleOrder}}
 
             {{#isSingleOrder}}
                 {{#orders}}
