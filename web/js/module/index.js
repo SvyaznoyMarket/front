@@ -10,7 +10,6 @@ define(
 		initializeBannerSlider();
 		initializeProductSliders();
 
-
 		function initializeBannerSlider() {
 			$('.js-main-banner-slider')
 				.fadeIn()
@@ -49,7 +48,9 @@ define(
 			function collectRecommendationUrls() {
 				var recommendedUrls = [];
 				$('.js-productSlider').each(function(i, el) {
-					var url = $(el).data('url');
+					var
+						url = $(el).data('url');
+
 					if (!url) return;
 
 					recommendedUrls.push(url);
@@ -60,7 +61,8 @@ define(
 			}
 
 			function appendSliders(recommendedUrls) {
-				var $sliders =$('.items-slider-slides');
+				var
+					$sliders = $('.items-slider-slides');
 
 				_.each(recommendedUrls, function(url) {
 					$.get(url).done(function(response) {
@@ -70,7 +72,8 @@ define(
 								return;
 							}
 
-							var $widget = $(widgetSelector);
+							var
+								$widget = $(widgetSelector);
 
 
 							if (templateData.count <= 0 && $widget) {
@@ -86,9 +89,10 @@ define(
 						});
 
 						$sliders.each(function() {
-							var dataGa = $(this).parents('.js-productSlider').data('ga');
-							var	current = $(this).data('slick-slider');
-							var responsToShow = $(this).data('respons-show');
+							var
+								dataGa        = $(this).parents('.js-productSlider').data('ga'),
+								current       = $(this).data('slick-slider'),
+								responsToShow = $(this).data('respons-show');
 
 							$('.js-main-items-slider-' + current)
 								.fadeIn()

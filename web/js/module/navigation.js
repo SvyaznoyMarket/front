@@ -19,7 +19,9 @@ define(
          * Навигация сайта, показывается при клике по иконке .navIco
          */
 
-        var navIco = $('.js-nav-open-link'),
+        var
+            body = $('body'),
+            navIco = $('.js-nav-open-link'),
             navSite = $('.js-site-nav'),
             navSiteLeft = navSite.width(),
 
@@ -84,25 +86,27 @@ define(
                 $('html').removeClass('no-scroll');
                 navSite.stop(true, true).animate({'left' : -navSiteLeft},300).hide(0);
                 navSiteListLevel2.slideUp();
+            },
+
+            footerResize = function footerResize() {
+                var
+                    footer = $('.footer');
+
+                footer.css('position', body.height() + footer.innerHeight() > $(window).height() ? 'inherit' : 'fixed');
             };
         // end of vars
 
         navIco.on('click', slideNav);
-
         navSiteItemLevel1.on('click', slideNavLevel2);
-
         fader.live('click touchend', closeNav);
-
-
-        var $body = $('body');
+        $(window).on('load resize', footerResize);
 
         $(document)
-        .on('focus', 'input, textarea, input + label, select', function(e) {
-            $body.addClass('fixfixed');
-        })
-        .on('blur', 'input, textarea, input + label, select', function(e) {
-            $body.removeClass('fixfixed');
-        });
-
+            .on('focus', 'input, textarea, input + label, select', function(e) {
+                body.addClass('fixfixed');
+            })
+            .on('blur', 'input, textarea, input + label, select', function(e) {
+                body.removeClass('fixfixed');
+            });
     }
 );
