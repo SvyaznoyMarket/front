@@ -118,7 +118,7 @@ class Complete {
                     ]
                     : false
                 ,
-                'address'   => $orderModel->address,
+                'address'   => !$orderModel->point ? $orderModel->address : false,
                 'point'     => call_user_func(function() use (&$orderModel, &$pointRepository) {
                     if (!$pointModel = $orderModel->point) {
                         return false;
@@ -129,7 +129,7 @@ class Complete {
                             'name'  => $pointRepository->getGroupNameByType($pointModel->type),
                             'value' => $pointModel->type,
                         ],
-                        'icon'      => $pointRepository->getIconByType($pointModel->type),
+                        'icon'    => $pointRepository->getIconByType($pointModel->type),
                         'address' => $pointModel->address,
                         'subway'  =>
                             $pointModel->subway
