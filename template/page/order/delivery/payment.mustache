@@ -7,7 +7,7 @@
                 type="radio"
                 id="order-{{order.id}}-delivery-payment-method-{{id}}"
                 name="order-{{order.id}}-delivery-payment-method"
-                class="js-order-delivery-form-control custom-input custom-input--defradio"
+                class="js-order-delivery-form-control custom-input custom-input--defradio-big"
                 {{#isActive}} checked{{/isActive}}
                 data-value="{{&dataValue}}"
                 data-type="payment"
@@ -15,6 +15,7 @@
             />
             <label class="custom-label" for="order-{{order.id}}-delivery-payment-method-{{id}}">
                 <span class="custom-label_tx">{{name}}</span>
+                <span class="custom-label__sm">Иначе курьер сможет принять только наличные</span>
             </label>
         </li>
     {{/paymentMethods}}
