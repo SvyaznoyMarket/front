@@ -19,7 +19,7 @@ class GetListByUiList extends Query {
      * @param array $view
      */
     public function __construct(array $uis, $regionId, $view = []) {
-        $view += ['model' => true, 'related' => true, 'availability' => true];
+        $view = array_merge(['model' => true, 'related' => true, 'availability' => true], $view);
 
         $this->url = new Url();
         $this->url->path = 'v2/product/get-v3';
@@ -27,11 +27,14 @@ class GetListByUiList extends Query {
             'select_type' => 'ui',
             'ui'          => $uis,
         ];
-        if ($view['model']) {
-            $this->url->query['withModels'] = true;
+        if (false === $view['model']) {
+            $this->url->query['withModels'] = 0;
         }
-        if ($view['related']) {
-            $this->url->query['withRelated'] = true;
+        if (false === $view['related']) {
+            $this->url->query['withRelated'] = 0;
+        }
+        if (false === $view['availability']) {
+            $this->url->query['getCoreAvailability'] = 0;
         }
 
         if ($regionId) {
