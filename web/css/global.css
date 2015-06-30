@@ -8053,6 +8053,15 @@ body.noScroll {
 .common-control.half-wide {
   width: 48%;
 }
+.common-control-2col {
+  white-space: nowrap;
+}
+.common-control-2col .common-control.half-wide.half-wide__l {
+  float: left;
+}
+.common-control-2col .common-control.half-wide.half-wide__r {
+  float: right;
+}
 .common-control-group {
   position: relative;
   display: block;
@@ -8710,12 +8719,6 @@ body.noScroll {
   box-sizing: border-box;
   -ms-box-sizing: border-box;
 }
-.address-pick-snippet__form .common-control.half-wide {
-  width: 48%;
-}
-.address-pick-snippet__form .common-control.half-wide:nth-child(2n-1) {
-  margin-left: 4%;
-}
 .address-pick-snippet .form-control__container {
   width: 100%;
   max-width: 300px;
@@ -8725,9 +8728,11 @@ body.noScroll {
   -webkit-box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.3);
   box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.3);
+  overflow: hidden;
 }
 .address-pick-snippet .form-control__container .btn-container {
   width: 100%;
+  float: left;
 }
 .address-pick-snippet .form-control-group {
   float: left;
