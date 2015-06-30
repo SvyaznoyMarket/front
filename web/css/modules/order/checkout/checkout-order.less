@@ -95,10 +95,24 @@
 
     color: #383a3c;
     border: 1px solid @lightGrey1;
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAAXCAYAAADgKtSgAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAi0lEQVRIDe2UAQqAIAxFW3TG9Ih2StsgYeo3hRoROJB0xN/jJVGMcbGq1SpYcmc4tGuqZYMjuem9G75GIRyEckzJ/xvedC4O2SVSmfX422RnffhWSyJrPTVptZcfF1rO7dzu1/UezOhqaRGnfkWrG8wGp75Bfntbhug0abEnIbeqrvMng2c4tGeq5QTHpa3kCpv6MAAAAABJRU5ErkJggg==) no-repeat 99% 5px @white;
 
+    position: relative;
+    background-color: @white;
+    
     .inline-block();
     .rounded(4px);
+    
+    &:after{
+        content:'';
+        background: url('@{base-url}/order/img/calendar@2x.png') no-repeat;
+        .background-size(cover);
+        width: 11px;
+        height: 11px;
+        display: block;
+        position: absolute;
+        right: 7px;
+        top: 12px;
+    }
 }
 
 .sale-select {
@@ -371,8 +385,20 @@
     &__info {
         margin-left: 10px;
         padding: 0 0 1px 22px;
+        position: relative;
+        &:after{
+            content: '';
+            position: absolute;
+            left: 0px;
+            top: 50%;
+            margin-top: -8.5px;
+            width: 17px;
+            height: 17px;
+        
+            background: url('@{base-url}/order/img/info@2x.png') no-repeat 0 0;
+            .background-size(cover);
+        }
 
-        background: url('@{base-url}/order/img/icon_info.png') no-repeat 0 0;
     }
 }
 
