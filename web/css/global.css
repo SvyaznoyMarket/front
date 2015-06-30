@@ -9832,7 +9832,8 @@ html.no-scroll body {
   float: right;
 }
 .slick-slide img {
-  display: block;
+  display: inline-block;
+  vertical-align: top;
 }
 .slick-slide.slick-loading img {
   display: none;
