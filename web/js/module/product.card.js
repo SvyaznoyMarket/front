@@ -1,11 +1,11 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util',
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config',
         'jquery.photoswipe', 'module/product.card.tab',
         'module/product.card.fullimg', 'module/product.card.kit', 'jquery.slick'
     ],
     function (
-        require, $, _, mustache, util
+        require, $, _, mustache, util, config
     ) {
         var $body = $('body');
 
@@ -208,6 +208,21 @@ define(
                 console.error(error);
             }
         });
+
+        // ставим куку для просмотренных товаров
+        (function setProductViewedCookie(config, _, $){
+            var productId = parseInt(config['productId'], 10);
+            var viewedProducts = ($.cookie('product_viewed')) ? $.cookie('product_viewed').split(',') : [];
+
+            var result = _.find(viewedProducts, function(id){ return id === productId; });
+
+            if (!result) {
+                viewedProducts.push(productId);
+                $.cookie('product_viewed', viewedProducts.join(','), { expires: 7 });
+            }
+        })(config, _, $);
+
+
 
     }
 );

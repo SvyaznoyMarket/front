@@ -4,6 +4,11 @@
         "pattern": "/"
     },
 
+    "Index\\Recommendations": {
+        "name": "Рекомендации главной страницы",
+        "pattern": "/index-recommend"
+    },
+
     "ProductCard\\Get": {
         "name": "Карточка товара",
         "pattern": "/product/{productPath}",

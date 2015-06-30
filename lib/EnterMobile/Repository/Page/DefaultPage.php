@@ -47,6 +47,9 @@ class DefaultPage {
 
         $page->dataModule = 'default';
 
+        $castedRequest = (array)$request;
+        $productId = (isset($castedRequest['product'])) ? $castedRequest['product']->id : null;
+
         // body[data-value]
         $page->dataConfig = $templateHelper->json([
             'requestId' => $this->getRequestId(),
@@ -82,6 +85,7 @@ class DefaultPage {
                 ]
                 : null
             ,
+            'productId' => $productId
         ]);
 
         $page->dataUser = $templateHelper->json($request->user ? [
