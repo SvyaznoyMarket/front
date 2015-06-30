@@ -6520,21 +6520,16 @@ html.no-scroll body {
   -ms-box-sizing: border-box;
 }
 .items-slider__img-link {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-justify-content: center;
-  -webkit-box-pack: center;
-  -moz-justify-content: center;
-  justify-content: center;
+  line-height: 90px;
+  min-height: 90px;
+  margin: 0 0 8px;
+  vertical-align: middle;
 }
 .items-slider__img {
   display: block;
   max-width: 100%;
   height: auto;
-  max-height: 100%;
+  max-height: 90px;
 }
 .items-slider__name {
   font-size: .688rem;
@@ -9833,7 +9828,7 @@ html.no-scroll body {
 }
 .slick-slide img {
   display: inline-block;
-  vertical-align: top;
+  vertical-align: middle;
 }
 .slick-slide.slick-loading img {
   display: none;

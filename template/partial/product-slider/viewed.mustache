@@ -1,6 +1,6 @@
 <div class="js-widget {{widgetId}}" data-template-selector="#tpl-product-slider-viewed">
     <div class="slider-parent m-loader js-productSlider {{#hasCategories}}sliderCat{{/hasCategories}} clearfix" data-url="{{&dataUrl}}" data-name="{{&dataName}}" data-ga="{{&dataGa}}" style="margin:0 30px;">
-        <div class="items-slider-slides items-slider-slides--goods js-main-items-slider-{{widgetId}} js-productSliderList" data-slick-slider="{{widgetId}}" data-slick='{"slidesToShow": 5, "slidesToScroll": 5}'>
+        <div class="items-slider-slides items-slider-slides--images js-main-items-slider-{{widgetId}} js-productSliderList" data-slick-slider="{{widgetId}}" data-slick='{"slidesToShow": 5, "slidesToScroll": 5}'>
             {{#productCards}}
                 <div class="items-slider-slides__item" data-category="{{categoryId}}">
                     <a class="items-slider__img-link js-ga-click" href="{{url}}" data-ga-click="{{&dataGa}}">
