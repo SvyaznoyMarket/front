@@ -7969,7 +7969,8 @@ body.fixed {
 .custom-input--check + .order-accept:before {
   font-size: 14px;
   position: absolute;
-  top: 6px;
+  top: 50%;
+  margin-top: -13px;
   left: 10px;
   content: '*';
   color: #f99b1c;
