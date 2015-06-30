@@ -41,6 +41,8 @@ define(
             ymapsDefer = null,
 
             $body                       = $('body'),
+            $orderContent               = $('.js-order-content'),
+            loaderClass                 = 'm-loader';
             $deliveryForm               = $('.js-order-delivery-form'),
             deliveryData                = $deliveryForm.data('value'),
             $pointMap                   = $('#pointYandexMap'),
@@ -224,11 +226,7 @@ define(
             },
 
             changeSplit = function( data ) {
-                var
-                    $content    = $('.js-order-content'),
-                    loaderClass = 'm-loader';
-
-                $content.addClass(loaderClass);
+                $orderContent.addClass(loaderClass);
 
                 $.ajax({
                     url: $deliveryForm.attr('action'),
@@ -239,7 +237,7 @@ define(
                     $($deliveryForm.data('containerSelector')).html(response);
                 }).always(function() {
                     console.info('unblock screen');
-                    $content.removeClass(loaderClass);
+                    $orderContent.removeClass(loaderClass);
                 }).error(function(xhr, textStatus, error) {
                     var
                         response,
@@ -832,6 +830,8 @@ define(
             ;
 
             if (checkUrl) {
+                $orderContent.addClass(loaderClass);
+
                 $.ajax({
                     url: checkUrl,
                     data: {
@@ -849,6 +849,7 @@ define(
                         changeSplit(data);
                     }
                 }).always(function() {
+                    $orderContent.removeClass(loaderClass);
                     console.info('unblock screen');
                 }).error(function(xhr, textStatus, error) {
                     changeSplit(data);
