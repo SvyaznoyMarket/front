@@ -9,7 +9,8 @@ define(
 
 		$('.items-slider-slides').each(function() {
 			var
-				current = $(this).data('slick-slider');
+				current       = $(this).data('slick-slider'),
+				responsToShow = $(this).data('respons-show');
 
 			$('.js-main-items-slider-' + current)
 				.fadeIn()
@@ -22,8 +23,8 @@ define(
 				    {
 				      breakpoint: 480,
 				      settings: {
-				        slidesToShow: 2,
-	        			slidesToScroll: 2
+				        slidesToShow: responsToShow,
+	        			slidesToScroll: responsToShow
 				      }
 				    }
 				  	]
