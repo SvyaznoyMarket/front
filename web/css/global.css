@@ -6470,6 +6470,10 @@ html.no-scroll body {
 .items-slider-slides--images .items-slider-slides__item {
   padding: 0;
 }
+.items-slider-slides--logos .items-slider__img-link {
+  line-height: 1;
+  display: block;
+}
 .items-slider-slides--goods .items-slider__img-link {
   height: 90px;
   margin: 0 0 8px;
@@ -6521,7 +6525,6 @@ html.no-scroll body {
 }
 .items-slider__img-link {
   line-height: 90px;
-  min-height: 90px;
   margin: 0 0 8px;
   vertical-align: middle;
 }
