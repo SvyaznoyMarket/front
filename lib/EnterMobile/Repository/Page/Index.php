@@ -101,6 +101,10 @@ class Index {
                 'partials' => [
                     'partial/cart/flat_button',
                 ],
+            ],
+            [
+                'id'       => 'tpl-product-slider-viewed',
+                'name'     => 'partial/product-slider/viewed'
             ]
         ]);
 
