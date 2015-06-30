@@ -1,0 +1,11 @@
+html, body.fixed{
+    height:100%;
+    width: 100%;
+    overflow:hidden;
+}
+// враппер для фикса бага хедера с position: fixed на iOS.
+.block-fixer{
+    height:100%;
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+}
