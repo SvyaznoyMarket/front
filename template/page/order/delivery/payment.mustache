@@ -15,7 +15,7 @@
             />
             <label class="custom-label" for="order-{{order.id}}-delivery-payment-method-{{id}}">
                 <span class="custom-label_tx">{{name}}</span>
-                <span class="custom-label__sm">Иначе курьер сможет принять только наличные</span>
+                {{#description}}<span class="custom-label__sm">{{description}}</span>{{/description}}
             </label>
         </li>
     {{/paymentMethods}}

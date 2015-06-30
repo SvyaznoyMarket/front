@@ -529,14 +529,15 @@ class Delivery {
 
                         if (in_array($paymentMethodId, ['1', '2', '5'])) {
                             $paymentMethods[] = [
-                                'id'        => $paymentMethodModel->id,
-                                'name'      => $paymentMethodModel->name,
-                                'isActive'  =>
+                                'id'          => $paymentMethodModel->id,
+                                'name'        => $paymentMethodModel->name,
+                                'description' => $paymentMethodModel->description,
+                                'isActive'    =>
                                     $orderModel->paymentMethodId
                                     ? ($orderModel->paymentMethodId == $paymentMethodModel->id)
                                     : ('1' == $paymentMethodModel->id)
                                 ,
-                                'dataValue' => $templateHelper->json([
+                                'dataValue'   => $templateHelper->json([
                                     'change' => [
                                         'orders' => [
                                             [
@@ -546,10 +547,10 @@ class Delivery {
                                         ],
                                     ],
                                 ]),
-                                'order'     => [
+                                'order'       => [
                                     'id' => $orderModel->blockName,
                                 ],
-                                'isOnline'  => $paymentMethodModel->isOnline,
+                                'isOnline'    => $paymentMethodModel->isOnline,
                             ];
                         }
                     }
