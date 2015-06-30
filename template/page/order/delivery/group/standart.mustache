@@ -1,5 +1,5 @@
 <div class="checkout-order__inn box-show">
-    <div class="checkout-celendar js-order-delivery-celendar-link" data-data-selector="#order-{{id}}-date-data" data-modal-position="fixed-untill-640" data-modal-title="Дата">{{delivery.date}}</div>
+    <a href="#order-delivery-celendar-link" class="checkout-celendar js-order-delivery-celendar-link" data-data-selector="#order-{{id}}-date-data" data-modal-position="fixed-untill-640" data-modal-title="Дата">{{delivery.date}}</a>
 
     <div class="custom-select custom-select--button toggle js-toggle-wrap">
         {{#delivery.interval}}
@@ -22,7 +22,7 @@
             <p class="checkout-address__selected">{{user.address.name}}</p>
         {{/user.address}}
 
-        <a class="btn {{^user.address}}btn-transparent btn-transparent--normal{{/user.address}} js-order-delivery-addressPopup-link" data-modal-title="Адрес доставки" data-modal-position="fixed" data-data-selector="#order-{{id}}-address-data" data-map-container-selector="#order-{{id}}-address-map-container">
+        <a href="#order-delivery-addressPopup-link" class="btn {{^user.address}}btn-transparent btn-transparent--normal{{/user.address}} js-order-delivery-addressPopup-link" data-modal-title="Адрес доставки" data-modal-position="fixed" data-data-selector="#order-{{id}}-address-data" data-map-container-selector="#order-{{id}}-address-map-container">
             <span class="bb-dotted">{{^user.address}}Указать адрес{{/user.address}}{{#user.address}}Изменить адрес{{/user.address}}</span>
         </a>
 
