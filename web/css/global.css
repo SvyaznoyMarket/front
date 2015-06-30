@@ -426,9 +426,12 @@ select,
 textarea {
   color: #222;
 }
+html {
+  font-size: 100%;
+}
 body {
   font-family: Tahoma, Geneva, Kalimati, sans-serif, helvetica, sans-serif;
-  font-size: 100%;
+  font-size: 75%;
   line-height: 1.4;
 }
 a {
@@ -3989,7 +3992,6 @@ html.no-scroll body {
 }
 .footer-inn {
   padding: 0 10px;
-  font-size: .75em;
 }
 .i-footer {
   background-image: url("../img/footer/i-footer.png");
@@ -4130,13 +4132,12 @@ html.no-scroll body {
 }
 .footer-bottom {
   padding: 10px 10px 20px;
-  font-size: .75em;
   text-align: center;
   color: #c7c7c7;
   background: #000;
 }
 .footer-bottom__copy {
-  font-size: 10px;
+  font-size: 0.625rem;
   margin: 0 0 8px;
 }
 .footer-bottom__full-site {
@@ -6436,7 +6437,7 @@ html.no-scroll body {
   vertical-align: top;
 }
 .items-slider-nav__title {
-  font-size: 1em;
+  font-size: 1rem;
   margin: 0 0 5px;
   color: #363636;
 }
@@ -6534,7 +6535,7 @@ html.no-scroll body {
   max-height: 100%;
 }
 .items-slider__name {
-  font-size: .688em;
+  font-size: .688rem;
   line-height: 1.2;
   display: block;
   overflow: hidden;
@@ -6542,12 +6543,12 @@ html.no-scroll body {
   margin: 0 0 5px;
 }
 .items-slider__old-price {
-  font-size: .875em;
+  font-size: .875rem;
   line-height: 1.2;
   display: block;
 }
 .items-slider__now-price {
-  font-size: 1.125em;
+  font-size: 1.125rem;
   line-height: 1.2;
   display: block;
   margin: 0 0 6px;
@@ -6568,7 +6569,7 @@ html.no-scroll body {
   margin-right: 3px;
 }
 .shop-info__item-text {
-  font-size: 1.125em;
+  font-size: 1.125rem;
   color: #666;
   display: inline-block;
   vertical-align: top;
@@ -6621,7 +6622,6 @@ html.no-scroll body {
   filter: alpha(opacity=90);
 }
 .categories-grid__text {
-  font-size: .75em;
   line-height: 1;
 }
 @media only screen and (min-width: 750px) {
