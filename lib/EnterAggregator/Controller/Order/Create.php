@@ -186,15 +186,15 @@ namespace EnterAggregator\Controller\Order {
 
             // товары
             foreach ($orders as $order) {
-                foreach ((array)$order->product as $i => $orderProduct) {
+                foreach ($order->product as $orderProduct) {
                     $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : null;
                     if (!$product) continue;
 
-                    $product->price = $orderProduct->price;
-                    $product->quantity = $orderProduct->quantity; // FIXME
-                    $product->sum = $orderProduct->sum; // FIXME
-
-                    $order->product[$i] = $product;
+                    $orderProduct->fromArray(array_merge(json_decode(json_encode($product), true), [
+                        'price' => $orderProduct->price,
+                        'quantity' => $orderProduct->quantity,
+                        'sum' => $orderProduct->sum,
+                    ]));
                 }
             }
 

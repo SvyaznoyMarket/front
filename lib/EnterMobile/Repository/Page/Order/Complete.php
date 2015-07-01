@@ -229,6 +229,34 @@ class Complete {
         }
         $page->content->isSingleOrder = 1 === count($request->orders);
 
+        if (!$request->isCompletePageReaded) {
+            $page->content->dataGoogleAnalyticOrders = $templateHelper->json(array_map(function(\EnterModel\Order $orderModel) {
+                return [
+                    'number' => $orderModel->numberErp,
+                    'isPartner' => $orderModel->isPartner,
+                    'paySum' => $orderModel->paySum,
+                    'delivery' => [
+                        'price' => isset($orderModel->deliveries[0]) ? $orderModel->deliveries[0]->price : '',
+                    ],
+                    'region' => [
+                        'name' => $orderModel->region->name,
+                    ],
+                    'products' => array_map(function (\EnterModel\Order\Product $product) {
+                        return [
+                            'id' => $product->id,
+                            'name' => $product->name,
+                            'article' => $product->article,
+                            'categories' => $product->category ? call_user_func($self = function (\EnterModel\Product\Category $category) use (&$self) {
+                                return array_merge($category->parent ? $self($category->parent) : [], [['name' => $category->name]]);
+                            }, $product->category) : [],
+                            'price' => $product->price,
+                            'quantity' => $product->quantity,
+                        ];
+                    }, $orderModel->product),
+                ];
+            }, $request->orders));
+        }
+
         // заголовок
         $page->title = 'Оформление заказа - Завершение - Enter';
 

@@ -36,6 +36,8 @@ class Order {
     public $statusId;
     /** @var Model\Order\Status|null */
     public $status;
+    /** @var bool */
+    public $isPartner;
     /** @var string */
     public $number;
     /** @var string */
@@ -104,6 +106,7 @@ class Order {
         if (array_key_exists('type_id', $data)) $this->typeId = (int)$data['type_id'];
         if (array_key_exists('status_id', $data)) $this->statusId = (int)$data['status_id'];
         if ($this->statusId) $this->status = new Model\Order\Status(['id' => $this->statusId]);
+        if (array_key_exists('is_partner', $data)) $this->isPartner = (bool)$data['is_partner'];
         if (array_key_exists('number', $data)) $this->number = (string)$data['number'];
         if (array_key_exists('number_erp', $data)) $this->numberErp = (string)$data['number_erp'];
         if (array_key_exists('access_token', $data)) $this->token = $data['access_token'] ? (string)$data['access_token'] : null;
@@ -188,13 +191,17 @@ class Order {
         if (array_key_exists('typeId', $data)) $this->typeId = (int)$data['typeId'];
         if (array_key_exists('statusId', $data)) $this->statusId = (int)$data['statusId'];
         if ($this->statusId) $this->status = new Model\Order\Status(['id' => $this->statusId]);
+        if (array_key_exists('isPartner', $data)) $this->isPartner = (bool)$data['isPartner'];
         if (array_key_exists('number', $data)) $this->number = (string)$data['number'];
         if (array_key_exists('numberErp', $data)) $this->numberErp = (string)$data['numberErp'];
         if (array_key_exists('token', $data)) $this->token = $data['token'] ? (string)$data['token'] : null;
         if (array_key_exists('sum', $data)) $this->sum = $this->getPriceHelper()->removeZeroFraction($data['sum']);
         if (array_key_exists('shopId', $data)) $this->shopId = (string)$data['shopId'];
         if (array_key_exists('regionId', $data)) $this->regionId = (string)$data['regionId'];
-        //if (isset($data['region']['id'])) $this->region = call_user_func(function($data) { $region = new Model\Region(); $region->fromArray($data); return $region; }, $data['region']); // TODO
+        if (isset($data['region']['id'])) {
+            $this->region = new Model\Region();
+            $this->region->fromArray($data['region']);;
+        }
         if (array_key_exists('address', $data)) $this->address = (string)$data['address'];
         if (array_key_exists('comment', $data)) $this->comment = (string)$data['comment'];
         if (array_key_exists('ipAddress', $data)) $this->ipAddress = (string)$data['ipAddress'];

@@ -72,10 +72,14 @@ namespace EnterModel\Product {
          * @param array $data
          */
         public function fromArray(array $data) {
-            if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
-            if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
-            if (array_key_exists('name', $data)) $this->id = (string)$data['name'];
-            if (array_key_exists('link', $data)) $this->link = (string)$data['link'];
+            if (isset($data['id'])) $this->id = (string)$data['id'];
+            if (isset($data['ui'])) $this->ui = (string)$data['ui'];
+            if (isset($data['name'])) $this->name = (string)$data['name'];
+            if (isset($data['link'])) $this->link = (string)$data['link'];
+            if (isset($data['parent'])) {
+                $this->parent = new Model\Product\Category();
+                $this->parent->fromArray($data['parent']);
+            }
         }
     }
 }

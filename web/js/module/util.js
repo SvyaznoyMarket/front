@@ -174,6 +174,10 @@ define(
             },
 
             sendOrdersToGoogleAnalytics: function(orders) {
+                if (!orders) {
+                    return;
+                }
+
                 $.each(orders, function(i, order) {
                     util.trackGoogleAnalyticsTransaction({
                         transaction: {
