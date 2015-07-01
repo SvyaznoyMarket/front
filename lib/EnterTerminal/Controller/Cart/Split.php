@@ -103,12 +103,7 @@ namespace EnterTerminal\Controller\Cart {
             $response->errors = $controllerResponse->errors;
             $response->split = $controllerResponse->split;
 
-            // type fix
-            foreach ($response->split->orders as $order) {
-                if (!(bool)$order->groupedPossiblePointIds) {
-                    $order->groupedPossiblePointIds = null;
-                }
-            }
+            $this->formatResponse($response);
 
             // response
             return new Http\JsonResponse($response);
@@ -140,6 +135,59 @@ namespace EnterTerminal\Controller\Cart {
                     }
                 }
             }
+        }
+
+        private function formatResponse(Response $response) {
+            $deliveryGroupsById = [];
+            foreach ($response->split->deliveryGroups as $deliveryGroup) {
+                $deliveryGroupsById[$deliveryGroup->id] = $deliveryGroup;
+                unset($deliveryGroup->id);
+            }
+            $response->split->deliveryGroups = $deliveryGroupsById;
+
+            $deliveryMethodsByToken = [];
+            foreach ($response->split->deliveryMethods as $deliveryMethod) {
+                $deliveryMethodsByToken[$deliveryMethod->token] = $deliveryMethod;
+                unset($deliveryMethod->token);
+            }
+            $response->split->deliveryMethods = $deliveryMethodsByToken;
+
+            $paymentMethodsById = [];
+            foreach ($response->split->paymentMethods as $paymentMethod) {
+                $paymentMethodsById[$paymentMethod->id] = $paymentMethod;
+                unset($paymentMethod->id);
+            }
+            $response->split->paymentMethods = $paymentMethodsById;
+
+            /** @var Model\Cart\Split\PointGroup[] $pointGroupsByToken */
+            $pointGroupsByToken = [];
+            foreach ($response->split->pointGroups as $pointGroup) {
+                $pointGroupsByToken[$pointGroup->token] = $pointGroup;
+
+                $pointsById = [];
+                foreach ($pointGroup->points as $point) {
+                    $pointsById[$point->id] = $point;
+                    unset($point->id);
+                }
+
+                $pointGroupsByToken[$pointGroup->token]->points = $pointsById;
+                unset($pointGroup->token);
+            }
+            $response->split->pointGroups = $pointGroupsByToken;
+
+            /** @var Model\Cart\Split\Order[] $ordersByBlockName */
+            $ordersByBlockName = [];
+            foreach ($response->split->orders as $order) {
+                $ordersByBlockName[$order->blockName] = $order;
+
+                $groupedPossiblePointsById = [];
+                foreach ($order->possiblePoints as $possiblePoint) {
+                    $groupedPossiblePointsById[$possiblePoint->groupToken][$possiblePoint->id] = $possiblePoint;
+                    unset($possiblePoint->id, $possiblePoint->groupToken);
+                }
+                $ordersByBlockName[$order->blockName]->possiblePoints = $groupedPossiblePointsById;
+            }
+            $response->split->orders = $ordersByBlockName;
         }
     }
 }
