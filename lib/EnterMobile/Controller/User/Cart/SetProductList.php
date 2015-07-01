@@ -40,13 +40,13 @@ class SetProductList {
 
         // добавление товаров в корзину
         foreach ($cartProducts as $cartProduct) {
+            /** @var \EnterModel\Cart\Product|null $existsCartProduct */
+            $existsCartProduct = isset($cart->product[$cartProduct->id]) ? $cart->product[$cartProduct->id] : null;
             // если у товара есть знак количества (+|-) ...
-            if (isset($cartProduct->quantitySign)) {
-                /** @var \EnterModel\Cart\Product|null $existsCartProduct */
-                $existsCartProduct = isset($cart->product[$cartProduct->id]) ? $cart->product[$cartProduct->id] : null;
-                if ($existsCartProduct) {
+            if (isset($cartProduct->quantitySign) && $existsCartProduct) {
                     $cartProduct->quantity = $existsCartProduct->quantity + (int)($cartProduct->quantitySign . $cartProduct->quantity);
-                }
+            } elseif($existsCartProduct) {
+                $cartProduct->quantity = $existsCartProduct->quantity + 1;
             }
         }
 
@@ -76,11 +76,6 @@ class SetProductList {
         foreach ($cart->product as $cartProduct) {
             $product = isset($productsById[$cartProduct->id]) ? $productsById[$cartProduct->id] : null;
             if (!$product) continue;
-
-            // кнопка купить
-            if ($widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct)) {
-                $page->widgets['.' . $widget->widgetId] = $widget;
-            }
 
             // кнопка купить для родительского товара
             if ($cartProduct->parentId && $widget = (new Repository\Partial\Cart\ProductButton())->getObject(
