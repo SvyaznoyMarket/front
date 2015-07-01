@@ -33,6 +33,11 @@ class Product extends Model\Product {
         if (array_key_exists('quantity', $data)) $this->quantity = (int)$data['quantity'];
         if (array_key_exists('sum', $data)) $this->sum = (float)$data['sum'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
+        if (array_key_exists('article', $data)) $this->article = (string)$data['article'];
         if (array_key_exists('link', $data)) $this->link = (string)$data['link'];
+        if (isset($data['category']['name'])) {
+            $this->category = new Model\Product\Category();
+            $this->category->fromArray($data['category']);
+        }
     }
 }

@@ -159,8 +159,9 @@ class Complete {
                             'id'       => $productModel->id,
                             'quantity' => $productModel->quantity,
                             'sum'      => $productModel->sum,
-                            'name'     => isset($productModel->name) ? $productModel->name : null,
-                            'link'     => isset($productModel->link) ? $productModel->link : null,
+                            'article'  => $productModel->article,
+                            'name'     => $productModel->name,
+                            'link'     => $productModel->link,
                             'isHidden' => $i > 2,
                         ];
                     }
