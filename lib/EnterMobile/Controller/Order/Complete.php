@@ -67,8 +67,12 @@ class Complete {
             $orderData = ($session->get($config->order->sessionName) ?: []) + [
                 'updatedAt' => null,
                 'expired'   => null,
+                'isCompletePageReaded' => false,
                 'orders'    => [],
             ];
+
+            $session->set($config->order->sessionName, array_merge($orderData, ['isCompletePageReaded' => true]));
+
             // FIXME fixture
             //die(json_encode($orderData, JSON_UNESCAPED_UNICODE));
             //$orderData = json_decode('{"updatedAt":"2015-06-15T15:38:08+03:00","expired":false,"orders":[{"number":"TG071064","sum":3980,"delivery":{"type":{"token":"self","shortName":"Самовывоз"},"price":0,"date":1434402000},"interval":{"from":"16:00","to":"21:00"},"paymentMethodId":"1","point":{"ui":"57ba26a3-ea68-11e0-83b4-005056af265b"}}]}', true);
@@ -164,6 +168,7 @@ class Complete {
         $pageRequest->httpRequest = $request;
         $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
         $pageRequest->cart = $cart;
+        $pageRequest->isCompletePageReaded = $orderData['isCompletePageReaded'];
         $pageRequest->orders = $orders;
         $pageRequest->onlinePaymentMethodsById = $onlinePaymentMethodsById;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));

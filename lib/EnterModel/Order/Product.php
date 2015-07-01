@@ -20,24 +20,18 @@ class Product extends Model\Product {
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('price', $data)) $this->price = (float)$data['price'];
-        if (array_key_exists('quantity', $data)) $this->quantity = (int)$data['quantity'];
         if (array_key_exists('sum', $data)) $this->sum = (float)$data['sum'];
+        if (array_key_exists('quantity', $data)) $this->quantity = (int)$data['quantity'];
     }
 
     /**
      * @param array $data
      */
     public function fromArray(array $data) {
+        parent::fromArray($data);
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('price', $data)) $this->price = (float)$data['price'];
-        if (array_key_exists('quantity', $data)) $this->quantity = (int)$data['quantity'];
         if (array_key_exists('sum', $data)) $this->sum = (float)$data['sum'];
-        if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
-        if (array_key_exists('article', $data)) $this->article = (string)$data['article'];
-        if (array_key_exists('link', $data)) $this->link = (string)$data['link'];
-        if (isset($data['category']['name'])) {
-            $this->category = new Model\Product\Category();
-            $this->category->fromArray($data['category']);
-        }
+        if (array_key_exists('quantity', $data)) $this->quantity = (int)$data['quantity'];
     }
 }
