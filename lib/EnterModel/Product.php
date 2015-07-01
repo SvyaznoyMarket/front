@@ -189,6 +189,146 @@ namespace EnterModel {
         }
 
         /**
+         * @param array $data
+         */
+        public function fromArray(array $data) {
+            if (isset($data['id'])) $this->id = (string)$data['id'];
+            if (isset($data['ui'])) $this->ui = (string)$data['ui'];
+            if (isset($data['article'])) $this->article = (string)$data['article'];
+            if (isset($data['barcode'])) $this->barcode = (string)$data['barcode'];
+            if (isset($data['typeId'])) $this->typeId = (string)$data['typeId'];
+            if (isset($data['webName'])) $this->webName = (string)$data['webName'];
+            if (isset($data['namePrefix'])) $this->namePrefix = (string)$data['namePrefix'];
+            if (isset($data['name'])) $this->name = (string)$data['name'];
+            if (isset($data['token'])) $this->token = (string)$data['token'];
+            if (isset($data['link'])) $this->link = (string)$data['link'];
+            if (isset($data['description'])) $this->description = (string)$data['description'];
+            if (isset($data['tagline'])) $this->tagline = (string)$data['tagline'];
+            if (isset($data['isBuyable'])) $this->isBuyable = (bool)$data['isBuyable'];
+            if (isset($data['isInShopOnly'])) $this->isInShopOnly = (bool)$data['isInShopOnly'];
+            if (isset($data['isInShopStockOnly'])) $this->isInShopStockOnly = (bool)$data['isInShopStockOnly'];
+            if (isset($data['isInShopShowroomOnly'])) $this->isInShopShowroomOnly = (bool)$data['isInShopShowroomOnly'];
+            if (isset($data['isInWarehouse'])) $this->isInWarehouse = (bool)$data['isInWarehouse'];
+            if (isset($data['isKitLocked'])) $this->isKitLocked = (bool)$data['isKitLocked'];
+            if (isset($data['kitCount'])) $this->kitCount = (int)$data['kitCount'];
+            if (isset($data['category'])) {
+                $this->category = new Model\Product\Category();
+                $this->category->fromArray($data['category']);
+            }
+//            if (isset($data['brand'])) {
+//                $this->brand = new Model\Brand();
+//                $this->brand->fromArray($data['brand']);
+//            }
+//            if (isset($data['properties'][0])) {
+//                foreach ($data['properties'] as $item) {
+//                    $entity = new Model\Product\Property();
+//                    $entity->fromArray($item);
+//                    $this->properties[] = $entity;
+//                }
+//            }
+//            if (isset($data['propertyGroups'][0])) {
+//                foreach ($data['propertyGroups'] as $item) {
+//                    $entity = new Model\Product\Property\Group();
+//                    $entity->fromArray($item);
+//                    $this->propertyGroups[] = $entity;
+//                }
+//            }
+//            if (isset($data['stock'][0])) {
+//                foreach ($data['stock'] as $item) {
+//                    $entity = new Model\Product\Stock();
+//                    $entity->fromArray($item);
+//                    $this->stock[] = $entity;
+//                }
+//            }
+//            if (isset($data['shopStates'][0])) {
+//                foreach ($data['shopStates'] as $item) {
+//                    $entity = new Model\Product\ShopState();
+//                    $entity->fromArray($item);
+//                    $this->shopStates[] = $entity;
+//                }
+//            }
+//            if (isset($data['price'])) $this->price = (float)$data['price'];
+//            if (isset($data['oldPrice'])) $this->oldPrice = (float)$data['oldPrice'];
+//            if (isset($data['labels'][0])) {
+//                foreach ($data['labels'] as $item) {
+//                    $entity = new Model\Product\Label();
+//                    $entity->fromArray($item);
+//                    $this->labels[] = $entity;
+//                }
+//            }
+//            if (isset($data['media'])) {
+//                $this->media = new Model\MediaList();
+//                $this->media->fromArray($data['media']);
+//            }
+//            if (isset($data['rating'])) {
+//                $this->rating = new Model\Product\Rating();
+//                $this->rating->fromArray($data['rating']);
+//            }
+//            if (isset($data['model'])) {
+//                $this->model = new Model\Product\ProductModel();
+//                $this->model->fromArray($data['model']);
+//            }
+//            if (isset($data['line'])) {
+//                $this->line = new Model\Product\Line();
+//                $this->line->fromArray($data['line']);
+//            }
+//            if (isset($data['nearestDeliveries'][0])) {
+//                foreach ($data['nearestDeliveries'] as $item) {
+//                    $entity = new Model\Product\NearestDelivery();
+//                    $entity->fromArray($item);
+//                    $this->nearestDeliveries[] = $entity;
+//                }
+//            }
+//            if (isset($data['accessoryIds'][0])) $this->accessoryIds = $data['accessoryIds'];
+//            if (isset($data['relatedIds'][0])) $this->relatedIds = $data['relatedIds'];
+//            if (isset($data['relation'])) {
+//                $this->relation = new Model\Product\Relation();
+//                $this->relation->fromArray($data['relation']);
+//            }
+//            if (isset($data['kit'][0])) {
+//                foreach ($data['kit'] as $item) {
+//                    $entity = new Model\Product\Kit();
+//                    $entity->fromArray($item);
+//                    $this->kit[] = $entity;
+//                }
+//            }
+//            if (isset($data['reviews'][0])) {
+//                foreach ($data['reviews'] as $item) {
+//                    $entity = new Model\Product\Review();
+//                    $entity->fromArray($item);
+//                    $this->reviews[] = $entity;
+//                }
+//            }
+//            if (isset($data['trustfactors'][0])) {
+//                foreach ($data['trustfactors'] as $item) {
+//                    $entity = new Model\Product\Trustfactor();
+//                    $entity->fromArray($item);
+//                    $this->trustfactors[] = $entity;
+//                }
+//            }
+//            if (isset($data['partnerOffers'][0])) {
+//                foreach ($data['partnerOffers'] as $item) {
+//                    $entity = new Model\Product\PartnerOffer();
+//                    $entity->fromArray($item);
+//                    $this->partnerOffers[] = $entity;
+//                }
+//            }
+//            if (isset($data['availableStoreQuantity'])) $this->availableStoreQuantity = (int)$data['availableStoreQuantity'];
+//            if (isset($data['favorite'][0])) $this->favorite = $data['favorite'];
+//            if (isset($data['sender'][0])) $this->sender = $data['sender'];
+//            if (isset($data['ga'][0])) $this->ga = $data['ga'];
+//            if (isset($data['isStore'])) $this->isStore = (bool)$data['isStore'];
+//            if (isset($data['storeLabel'])) {
+//                $this->storeLabel = new Model\Product\StoreLabel();
+//                $this->storeLabel->fromArray($data['storeLabel']);
+//            }
+//            if (isset($data['assemblingLabel'])) {
+//                $this->assemblingLabel = new Model\Product\AssemblingLabel();
+//                $this->assemblingLabel->fromArray($data['assemblingLabel']);
+//            }
+        }
+
+        /**
          * @param array $stockData
          * @param array $partnerData
          */
