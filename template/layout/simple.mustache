@@ -47,10 +47,9 @@
     {{>partial/javascript}}
 </head>
 
-<body class="fixed" data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="{{&dataUser}}" data-cart="{{&dataCart}}" data-widget="{{&dataWidget}}">
+<body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="{{&dataUser}}" data-cart="{{&dataCart}}" data-widget="{{&dataWidget}}">
 
-<div class="block-fixer">
-         {{>partial/counters}}
+        {{>partial/counters}}
 
         <div class="wrapper wrapper-smpl">
             {{#content}}
@@ -59,14 +58,14 @@
         </div><!--/ Оболочка -->
 
         {{>partial/template}}
-
         {{>partial/footerSimple}}
+
+
 
         {{#regionBlock}}
             {{>partial/region}}
         {{/regionBlock}}
 
         {{>partial/partner}}
-     </div>
 </body>
 </html>
