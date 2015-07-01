@@ -9148,10 +9148,10 @@ body.flex .wrapper.wrapper-smpl .content {
     vertical-align: top;
   }
   .map-baloon .btn-choose-point {
-    margin-top: -10px;
-    height: 28px;
+    margin-top: -6px;
+    height: 24px;
     font-size: 12px;
-    line-height: 23px;
+    line-height: 20px;
   }
 }
 .popupFl {
