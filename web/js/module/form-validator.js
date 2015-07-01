@@ -38,9 +38,8 @@ define(
                     if (!$field.val().length) { // поле пустое
                         isValid = false;
                         //если поле имеет параметр no-msg - вывод сообщения об ошибке не требуется.
-                        nomsg = $field.attr('no-msg');
                         if (typeof nomsg === typeof undefined || nomsg === false) {
-                            message = 'Поле пустое';
+                            message = $field.data('requiredMessage') || 'Поле пустое';
                         }
 
                         showFieldError($field, {name: message});

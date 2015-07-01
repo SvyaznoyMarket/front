@@ -30,7 +30,7 @@
                 <strong class="checkout-order-head__title">{{name}}</strong>
                 {{#seller}}
                     <a class="checkout-order-head__info checkout-order-head__right" href="{{url}}" target="_blank"><span class="bb-dotted">Информация и оферта</span></a>
-                    <span class="checkout-order-head__vendor checkout-order-head__right">продавец: {{name}}</span>
+                    <span class="checkout-order-head__vendor checkout-order-head__right">{{name}}</span>
                 {{/seller}}
             </div>
 
@@ -68,7 +68,7 @@
             {{! общая стоимость заказа }}
             <div class="checkout-summary checkout-order__box table">
                 <div class="table_cell">
-                    <button class="btn-transparent btn-transparent--normal js-order-delivery-discountPopup-link" data-modal-position="fixed" data-modal-title="Добавить скидку" data-storage-selector="#order-{{id}}-discount-data"><span class="bb-dotted">Добавить скидку</span></button>
+                    <a href="#" class="btn-transparent btn-transparent--normal js-order-delivery-discountPopup-link" data-modal-position="fixed" data-modal-title="Добавить скидку" data-storage-selector="#order-{{id}}-discount-data"><span class="bb-dotted">Добавить скидку</span></a>
                 </div>
 
                 <div class="table_cell ta-r">

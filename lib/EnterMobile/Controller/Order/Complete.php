@@ -77,53 +77,16 @@ class Complete {
             $pointUis = [];
             $orderNumberErps = [];
             foreach ($orderData['orders'] as $orderItem) {
+                if (empty($orderItem['numberErp'])) {
+                    $this->getLogger()->push(['type' => 'error', 'error' => ['message' => 'Некорректные данные'], 'orderItem' => $orderItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order', 'critical']]);
+                    continue;
+                }
+
                 $order = new Model\Order();
-                $order->sum = $orderItem['sum'];
-                $order->id = $orderItem['id'];
-                $order->number = $orderItem['number'];
-                $order->numberErp = $orderItem['numberErp'];
-                if (!empty($orderItem['delivery'])) {
-                    $delivery = new Model\Order\Delivery();
-                    try {
-                        $delivery->date = !empty($orderItem['delivery']['date']) ? $orderItem['delivery']['date'] : null;
-                    } catch (\Exception $e) {
-                        $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order', 'critical']]);
-                    }
+                $order->fromArray($orderItem);
 
-                    if (!empty($orderItem['delivery']['type']['shortName'])) {
-                        $delivery->type = new Model\DeliveryType();
-                        $delivery->type->token = $orderItem['delivery']['type']['token'];
-                        $delivery->type->shortName = $orderItem['delivery']['type']['shortName'];
-                    }
-                    if (!empty($orderItem['point']['ui'])) {
-                        $order->point = new Model\Point($orderItem['point']);
-                        $pointUis[] = $orderItem['point']['ui'];
-                    }
-                    if (!empty($orderItem['interval'])) {
-                        $interval = new Model\Order\Interval($orderItem['interval']);
-                        $interval->from = $orderItem['interval']['from'];
-                        $interval->to = $orderItem['interval']['to'];
-                        $order->interval = $interval;
-                    }
-                    if (!empty($orderItem['product'][0])) {
-                        foreach ($orderItem['product'] as $productItem) {
-                            if (empty($productItem['id'])) continue;
-
-                            $product = new Model\Order\Product($productItem);
-                            if (isset($productItem['name'])) {
-                                $product->name = $productItem['name'];
-                            }
-                            if (isset($productItem['link'])) {
-                                $product->link = $productItem['link'];
-                            }
-
-                            $order->product[] = $product;
-                        }
-                    }
-
-                    $orderNumberErps[] = $order->numberErp;
-
-                    $order->deliveries[] = $delivery;
+                if ($order->point) {
+                    $pointUis[] = $order->point->ui;
                 }
 
                 $orders[] = $order;

@@ -89,7 +89,7 @@ class Complete {
                         }
 
                         $delivery = [
-                            'type' =>
+                            'type'     =>
                                 $deliveryModel->type
                                 ? [
                                     'name'  => $deliveryModel->type->shortName,
@@ -97,10 +97,10 @@ class Complete {
                                 ]
                                 : false
                             ,
-                            'date' =>
+                            'date'     =>
                                 $date
                                 ? [
-                                    'name' => $dateHelper->dateToRu($date),
+                                    'name' => $date->format('d.m.Y'),
                                 ]
                                 : false
                             ,
@@ -118,6 +118,7 @@ class Complete {
                     ]
                     : false
                 ,
+                'address'   => !$orderModel->point ? $orderModel->address : false,
                 'point'     => call_user_func(function() use (&$orderModel, &$pointRepository) {
                     if (!$pointModel = $orderModel->point) {
                         return false;
@@ -128,7 +129,7 @@ class Complete {
                             'name'  => $pointRepository->getGroupNameByType($pointModel->type),
                             'value' => $pointModel->type,
                         ],
-                        'icon'      => $pointRepository->getIconByType($pointModel->type),
+                        'icon'    => $pointRepository->getIconByType($pointModel->type),
                         'address' => $pointModel->address,
                         'subway'  =>
                             $pointModel->subway
@@ -158,8 +159,9 @@ class Complete {
                             'id'       => $productModel->id,
                             'quantity' => $productModel->quantity,
                             'sum'      => $productModel->sum,
-                            'name'     => isset($productModel->name) ? $productModel->name : null,
-                            'link'     => isset($productModel->link) ? $productModel->link : null,
+                            'article'  => $productModel->article,
+                            'name'     => $productModel->name,
+                            'link'     => $productModel->link,
                             'isHidden' => $i > 2,
                         ];
                     }

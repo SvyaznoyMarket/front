@@ -74,6 +74,16 @@ define(
 
         $body.on('click', '.js-order-complete-onlinePayment-link', showOnlinePaymentPopup);
         $body.on('click', '.js-order-complete-onlinePayment-radio', applyOnlinePayment);
+        $('.js-moreLink').on('click', function(e) {
+            var
+                $el = $(this)
+            ;
+
+            $el.siblings().show();
+            $el.hide();
+
+            e.preventDefault();
+        });
 
         try {
             analytics.push(['16 Вход_Оплата_ОБЯЗАТЕЛЬНО']);
