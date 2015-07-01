@@ -170,68 +170,7 @@ class Create {
             $orderData = [
                 'updatedAt' => (new \DateTime())->format('c'),
                 'expired'   => false,
-                'orders'    => call_user_func(function() use (&$controllerResponse) {
-                    $orders = [];
-
-                    foreach ($controllerResponse->orders as $order) {
-                        $orders[] = [
-                            'id'              => $order->id,
-                            'number'          => $order->number,
-                            'numberErp'       => $order->numberErp,
-                            'sum'             => $order->sum,
-                            'delivery'        =>
-                                isset($order->deliveries[0])
-                                ? call_user_func(function() use ($order) {
-                                    $delivery = $order->deliveries[0];
-
-                                    return [
-                                        'type'  =>
-                                            $delivery->type
-                                            ? [
-                                                'token'     => $delivery->type->token,
-                                                'shortName' => $delivery->type->shortName,
-                                            ]
-                                            : null
-                                        ,
-                                        'price' => $delivery->price,
-                                        'date'  => $delivery->date,
-                                    ];
-                                })
-                                : null
-                            ,
-                            'interval'        =>
-                                $order->interval
-                                ? ['from' => $order->interval->from, 'to' => $order->interval->to]
-                                : null
-                            ,
-                            'paymentMethodId' => $order->paymentMethodId,
-                            'address'         => $order->address,
-                            'point'           =>
-                                $order->point
-                                ? [
-                                    'ui' => $order->point->ui,
-                                ]
-                                : null
-                            ,
-                            'product' => call_user_func(function() use (&$order) {
-                                $data = [];
-
-                                foreach ($order->product as $product) {
-                                    $data[] = [
-                                        'id'       => $product->id,
-                                        'quantity' => $product->quantity,
-                                        'name'     => isset($product->name) ? $product->name : null,
-                                        'link'     => isset($product->link) ? $product->link : null,
-                                    ];
-                                }
-
-                                return $data;
-                            }),
-                        ];
-                    }
-
-                    return $orders;
-                }),
+                'orders'    => json_decode(json_encode($controllerResponse->orders), true),
             ];
 
             $session->set($config->order->sessionName, $orderData);

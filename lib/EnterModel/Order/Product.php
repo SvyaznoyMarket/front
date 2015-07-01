@@ -4,7 +4,7 @@ namespace EnterModel\Order;
 
 use EnterModel as Model;
 
-class Product {
+class Product extends Model\Product {
     /** @var string */
     public $id;
     /** @var float */
@@ -22,5 +22,17 @@ class Product {
         if (array_key_exists('price', $data)) $this->price = (float)$data['price'];
         if (array_key_exists('quantity', $data)) $this->quantity = (int)$data['quantity'];
         if (array_key_exists('sum', $data)) $this->sum = (float)$data['sum'];
+    }
+
+    /**
+     * @param array $data
+     */
+    public function fromArray(array $data) {
+        if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+        if (array_key_exists('price', $data)) $this->price = (float)$data['price'];
+        if (array_key_exists('quantity', $data)) $this->quantity = (int)$data['quantity'];
+        if (array_key_exists('sum', $data)) $this->sum = (float)$data['sum'];
+        if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
+        if (array_key_exists('link', $data)) $this->link = (string)$data['link'];
     }
 }

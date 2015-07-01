@@ -89,7 +89,7 @@ class Complete {
                         }
 
                         $delivery = [
-                            'type' =>
+                            'type'     =>
                                 $deliveryModel->type
                                 ? [
                                     'name'  => $deliveryModel->type->shortName,
@@ -97,7 +97,7 @@ class Complete {
                                 ]
                                 : false
                             ,
-                            'date' =>
+                            'date'     =>
                                 $date
                                 ? [
                                     'name' => $date->format('d.m.Y'),
