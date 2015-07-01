@@ -91,10 +91,10 @@
                     <div class="table_cell">
                         <ul class="confirm-items">
                         {{#products}}
-                            <li class="confirm-items__i"{{#isHidden}} style="display: none;"{{/isHidden}}>{{name}} {{quantity}} шт.</li>
+                            <li class="confirm-items__i"{{#isHidden}} style="display: none;"{{/isHidden}}><a href="{{link}}" target="_blank">{{name}}</a> {{quantity}} шт.</li>
                         {{/products}}
                         {{#productMoreLink}}
-                            <li class="confirm-items__i"><a class="confirm-items__lk" href="">{{name}}</a></li>
+                            <li class="confirm-items__i js-moreLink"><span class="confirm-items__lk">{{name}}</span></li>
                         {{/productMoreLink}}
                         </ul>
                     </div>

@@ -89,7 +89,7 @@ class Complete {
                         }
 
                         $delivery = [
-                            'type' =>
+                            'type'     =>
                                 $deliveryModel->type
                                 ? [
                                     'name'  => $deliveryModel->type->shortName,
@@ -97,7 +97,7 @@ class Complete {
                                 ]
                                 : false
                             ,
-                            'date' =>
+                            'date'     =>
                                 $date
                                 ? [
                                     'name' => $date->format('d.m.Y'),
@@ -159,8 +159,9 @@ class Complete {
                             'id'       => $productModel->id,
                             'quantity' => $productModel->quantity,
                             'sum'      => $productModel->sum,
-                            'name'     => isset($productModel->name) ? $productModel->name : null,
-                            'link'     => isset($productModel->link) ? $productModel->link : null,
+                            'article'  => $productModel->article,
+                            'name'     => $productModel->name,
+                            'link'     => $productModel->link,
                             'isHidden' => $i > 2,
                         ];
                     }
