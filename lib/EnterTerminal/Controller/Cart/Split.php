@@ -141,7 +141,7 @@ namespace EnterTerminal\Controller\Cart {
             $deliveryGroupsById = [];
             foreach ($response->split->deliveryGroups as $deliveryGroup) {
                 $deliveryGroupsById[$deliveryGroup->id] = $deliveryGroup;
-                unset($deliveryGroup->id);
+                //unset($deliveryGroup->id);
             }
             $response->split->deliveryGroups = $deliveryGroupsById;
 
@@ -180,6 +180,9 @@ namespace EnterTerminal\Controller\Cart {
             /** @var Model\Cart\Split\Order[] $ordersByBlockName */
             $ordersByBlockName = [];
             foreach ($response->split->orders as $order) {
+                $order->sum = (float)$order->sum;
+                $order->originalSum = (float)$order->originalSum;
+
                 $ordersByBlockName[$order->blockName] = $order;
 
                 $groupedPossiblePointsById = [];
