@@ -7,13 +7,14 @@ namespace EnterTerminal\Controller\Cart {
     use EnterAggregator\LoggerTrait;
     use EnterTerminal\ConfigTrait;
     use EnterAggregator\SessionTrait;
+    use EnterAggregator\DateHelperTrait;
     use EnterModel as Model;
     use EnterQuery as Query;
     use EnterTerminal\Controller;
     use EnterTerminal\Controller\Cart\Split\Response;
 
     class Split {
-        use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
+        use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait, DateHelperTrait;
 
         /**
          * @param Http\Request $request
@@ -137,7 +138,12 @@ namespace EnterTerminal\Controller\Cart {
             }
         }
 
+        /**
+         * @param Response $response
+         */
         private function formatResponse(Response $response) {
+            $dateHelper = $this->getDateHelper();
+
             $deliveryGroupsById = [];
             foreach ($response->split->deliveryGroups as $deliveryGroup) {
                 $deliveryGroupsById[$deliveryGroup->id] = $deliveryGroup;
@@ -189,8 +195,46 @@ namespace EnterTerminal\Controller\Cart {
                 foreach ($order->possiblePoints as $possiblePoint) {
                     $groupedPossiblePointsById[$possiblePoint->groupToken][] = $possiblePoint;
                     //unset($possiblePoint->id, $possiblePoint->groupToken);
+
+                    switch ($possiblePoint->groupToken) {
+                        case 'self_partner_pickpoint_pred_supplier':
+                        case 'self_partner_pickpoint':
+                            $name = 'Пункты выдачи Pickpoint';
+                            break;
+                        case 'self_partner_svyaznoy_pred_supplier':
+                        case 'self_partner_svyaznoy':
+                        case 'shops_svyaznoy':
+                            $name = 'Магазины Связной';
+                            break;
+                        case 'self_partner_euroset_pred_supplier':
+                        case 'self_partner_euroset':
+                            $name = 'Магазины Евросеть';
+                            break;
+                        case 'shops':
+                            $name = 'Магазины Enter';
+                            break;
+                        default:
+                            $name = isset($response->split->pointGroups[$possiblePoint->groupToken]) ? $response->split->pointGroups[$possiblePoint->groupToken]->blockName : null;
+                    }
+
+                    $response->pointFilters[$order->blockName]['type'][$possiblePoint->groupToken] = [
+                        'name'  => $name,
+                        'value' => $possiblePoint->groupToken,
+                    ];
+                    $response->pointFilters[$order->blockName]['cost'][$possiblePoint->cost] = [
+                        'name'  => (0 == $possiblePoint->cost) ? 'Бесплатно' : $possiblePoint->cost,
+                        'value' => $possiblePoint->cost,
+                    ];
+                    $response->pointFilters[$order->blockName]['nearestDay'][$possiblePoint->nearestDay] = [
+                        'name'  => $dateHelper->humanizeDate(\DateTime::createFromFormat('Y-m-d', $possiblePoint->nearestDay)),
+                        'value' => $possiblePoint->nearestDay,
+                    ];
                 }
                 $ordersByBlockName[$order->blockName]->possiblePoints = $groupedPossiblePointsById;
+
+                $response->pointFilters[$order->blockName]['type'] = array_values($response->pointFilters[$order->blockName]['type']);
+                $response->pointFilters[$order->blockName]['cost'] = array_values($response->pointFilters[$order->blockName]['cost']);
+                $response->pointFilters[$order->blockName]['nearestDay'] = array_values($response->pointFilters[$order->blockName]['nearestDay']);
 
                 $possibleDay = null;
                 foreach ($order->possibleDays as &$possibleDay) {
@@ -212,5 +256,7 @@ namespace EnterTerminal\Controller\Cart\Split {
         public $errors = [];
         /** @var Model\Cart\Split */
         public $split;
+        /** @var array */
+        public $pointFilters = [];
     }
 }
