@@ -35,4 +35,117 @@
             text-decoration: none;
         }
     }
+    .delivery-point-name{
+        margin-top: 5px;
+        font-size: 14px;
+    }
+    .shop-snippet{
+        &-name{
+            vertical-align: top;
+            width: 50px;
+        }
+        &-metro{
+            &__text{
+                font-size: 12px;
+            }
+            &__bullet{
+                width: 6px;
+                height: 6px;
+                margin: 0 2px 0 -11px;
+            }
+            &-address{
+                color: #363636;
+            }
+        }
+    }
+}
+.order-item{
+    border-bottom: 1px solid #cccccc;
+    padding: 10px;
+
+    &__tbl{
+        width: 100%;
+    }
+    &-img{
+        vertical-align: top;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        img{
+            max-width: 60px;
+            max-height: 60px;
+        }
+    }
+    &:last-child{
+        border-bottom: 0;
+    }
+    &-info{
+        padding-left: 20px;
+    }
+    &-description{
+        margin-top: 20px;
+        font-size: 0px;
+        white-space: nowrap;
+        &-price{
+            .inline-block(middle);
+            color: #777777;
+            width: 33.3%;
+            font-size: 14px;
+        }
+        &-quantity{
+            .inline-block(middle);
+            color: #777777;
+            width: 33.3%;
+            text-align: center;
+            font-size: 14px;
+        }
+        &-total{
+            .inline-block(middle);
+            color: #777777;
+            width: 33.3%;
+            text-align: right;
+            font-size: 14px;
+        }
+    }
+}
+.order-total{
+    padding: 10px;
+    text-align: right;
+    background-color: #ebebeb;
+
+    &-amount{
+        display: block;
+        clear: both;
+        &__name{
+            font-size: 16px;
+        }
+        &__price{
+            float: right;
+            width: 100px;
+            font-size: 16px;
+        }
+    }
+    &-delivery{
+        display: block;
+        clear: both;
+        margin-bottom: 10px;
+        &__name{
+            font-size: 14px;
+        }
+        &__price{
+            float: right;
+            width: 100px;
+            font-size: 14px;
+        }
+    }
+}
+.address-simple{
+    font-size: 14px;
+    &__name{
+        float: left;
+        width: 63px;
+    }
+    &__val{
+
+    }
 }

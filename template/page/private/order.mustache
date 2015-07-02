@@ -13,10 +13,11 @@
                 {{/is_delivery}}
             {{/delivery}}
         </div>
+        <!--Адрес для самовывоза-->
+        <div class="delivery-point-name">Магазин Enter</div>
         <div class="shop-snippet table_row">
             <div class="shop-snippet-name table_cell">
                 <img src="/img/points/logos/100x100/enter.png" alt="" class="shop-snippet-name__img">
-                <span class="shop-snippet-name__text">Магазин Enter</span>
             </div>
 
             <div class="shop-snippet-info table_cell">
@@ -26,22 +27,34 @@
                 </div>
 
                 <div class="shop-snippet-address">Адрес: {{address}} <br>Режим работы: с 10.00 до 22.00</div>
+                <a href="#" class="how-to-find">Как добраться?</a>
             </div>
         </div>
-        <a href="#" class="how-to-find">Как добраться?</a>
+        <!--Адрес для самовывоза END-->
+        <!--Адрес для доставки-->
+        <div class="address-simple">
+            <span class="address-simple__name">Адрес:</span>
+            <span class="address-simple__val">{{address}}</span>
+        </div>
+        <!--Адрес для доставки END-->
     </div>
     <div class="order-items">
         {{#product}}
-            <div class="order-item">
-                <div class="order-item-img">
+            <div class="order-item ">
+                <div class="order-item__tbl table_row">
+                <div class="order-item-img table_cell">
                     <img src="{{image}}" alt=""/>
                 </div>
-                <div class="order-item-description">
-                    <h5>{{name}}</h5>
-                    <div class="order-item-description-price">{{price}}</div>
-                    <div class="order-item-description-quantity">{{quantity}}</div>
+                <div class="order-item-info table_cell">
+                    <div class="order-item__name">{{name}}</div>
+                    <div class="order-item-description">
+                        <div class="order-item-description-price">{{price}}&thinsp;<span class="rubl">p</span></div>
+                        <div class="order-item-description-quantity">{{quantity}} шт</div>
+                        <div class="order-item-description-total">{{sum}}&thinsp;<span class="rubl">p</span></div>
+                    </div>
+
                 </div>
-                <div class="order-item-amount">{{sum}}</div>
+                </div>
             </div>
         {{/product}}
     </div>
@@ -55,8 +68,19 @@
     </div>
 
     <div class="order-total">
-        <div class="order-total-delivery">Доставка: {{#delivery}}{{price}}{{/delivery}}</div>
-        <div class="order-total-amount">Итого: {{sum}}</div>
+        <div class="order-total-delivery">
+            <span class="order-total-delivery__name">Доставка:</span><span class="order-total-delivery__price">100&thinsp;<span class="rubl">p</span></span>
+        </div>
+        {{#delivery}}
+            {{#is_delivery}}
+                <div class="order-total-delivery">
+                    <span class="order-total-delivery__name">Доставка:</span><span class="order-total-delivery__price">{{#delivery}}{{price}}{{/delivery}}&thinsp;<span class="rubl">p</span></span>
+                </div>
+            {{/is_delivery}}
+        {{/delivery}}
+        <div class="order-total-amount">
+            <span class="order-total-amount__name">Итого:</span><span class="order-total-amount__price">{{sum}}&thinsp;<span class="rubl">p</span></span>
+        </div>
     </div>
 
 
