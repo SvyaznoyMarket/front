@@ -122,6 +122,13 @@
   -moz-box-shadow: @arguments, @arguments;
   box-shadow: @arguments, @arguments;
 }
+.animation(@animation) {
+    -webkit-animation: @animation;
+    -moz-animation: @animation;
+    -ms-animation: @animation;
+    -o-animation: @animation;
+    animation: @animation;
+}
 .box-sizing(@sizing: border-box) {
   -webkit-box-sizing: @sizing;
   -moz-box-sizing: @sizing;
@@ -262,7 +269,12 @@
       -ms-flex-flow: @flow;
           flex-flow: @flow;
 }
-
+.flex_direction_column() {
+    -webkit-box-orient: vertical;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
 /* sprties */
 .i-sprite(@x: 0, @y: 0, @width: 0, @height: 0) {
   background-position: @x @y;

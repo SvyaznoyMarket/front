@@ -23,12 +23,16 @@ namespace EnterMobile\Model\Page\Order\Index {
     use EnterMobile\Model\Form;
 
     class Content extends Page\DefaultPage\Content {
+        /** @var array */
+        public $errors = [];
         /** @var Form\Order\UserForm */
         public $form;
         /** @var bool */
         public $isUserAuthenticated; // TODO: перенести на уровень выше
         /** @var string */
         public $authUrl;
+        /** @var bool */
+        public $hasMnogoRu;
 
         public function __construct() {
             parent::__construct();

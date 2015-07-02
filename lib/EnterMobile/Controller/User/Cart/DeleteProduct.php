@@ -54,7 +54,7 @@ class DeleteProduct {
         }
 
         // запрос корзины
-        $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
+        $cartItemQuery = new Query\Cart\Price\GetItem($cart, $regionId);
         $curl->prepare($cartItemQuery);
 
         $productsById = [];
@@ -90,6 +90,9 @@ class DeleteProduct {
         // сохранение корзины в сессию
         $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
 
+        // удалить разбиение заказа
+        $session->remove($config->order->splitSessionKey);
+
         // если корзина пустая
         if (!count($cart)) {
             return new Http\JsonResponse([
@@ -112,7 +115,7 @@ class DeleteProduct {
         }
 
         if ($descriptionListQuery) {
-            (new \EnterRepository\Product())->setDescriptionForIdIndexedListByQueryList(
+            (new \EnterRepository\Product())->setDescriptionForListByListQuery(
                 $productsById,
                 [$descriptionListQuery]
             );

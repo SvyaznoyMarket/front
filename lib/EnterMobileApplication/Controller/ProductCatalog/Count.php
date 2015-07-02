@@ -3,7 +3,6 @@
 namespace EnterMobileApplication\Controller\ProductCatalog;
 
 use Enter\Http;
-use EnterMobileApplication\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterQuery as Query;
 use EnterModel as Model;
@@ -11,7 +10,7 @@ use EnterMobileApplication\Controller;
 
 class Count {
     use Controller\ProductListingTrait;
-    use ConfigTrait, CurlTrait;
+    use CurlTrait;
 
     /**
      * @param Http\Request $request
@@ -19,11 +18,8 @@ class Count {
      * @return Http\Response
      */
     public function execute(Http\Request $request) {
-        $config = $this->getConfig();
         $curl = $this->getCurl();
         $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME!!!
-
-        $userToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
 
         // ид региона
         $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME

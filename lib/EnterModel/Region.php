@@ -50,4 +50,11 @@ class Region {
 
         if (array_key_exists('tk_available', $data)) $this->transportCompanyAvailable = (bool)$data['tk_available'];
     }
+
+    /**
+     * @param array $data
+     */
+    public function fromArray(array $data) {
+        if (isset($data['name'])) $this->name = (string)$data['name'];
+    }
 }

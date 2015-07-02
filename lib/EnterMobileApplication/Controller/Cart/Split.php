@@ -3,14 +3,17 @@
 namespace EnterMobileApplication\Controller\Cart {
 
     use Enter\Http;
+    use EnterAggregator\CurlTrait;
+    use EnterAggregator\LoggerTrait;
     use EnterMobileApplication\ConfigTrait;
     use EnterAggregator\SessionTrait;
     use EnterModel as Model;
+    use EnterQuery as Query;
     use EnterMobileApplication\Controller;
     use EnterMobileApplication\Controller\Cart\Split\Response;
 
     class Split {
-        use ConfigTrait, SessionTrait;
+        use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
 
         /**
          * @param Http\Request $request
@@ -19,8 +22,9 @@ namespace EnterMobileApplication\Controller\Cart {
          */
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
-            $session = $this->getSession();
             $cartRepository = new \EnterRepository\Cart();
+            
+            $session = $this->getSession();
 
             // ответ
             $response = new Response();
@@ -48,10 +52,33 @@ namespace EnterMobileApplication\Controller\Cart {
                 $previousSplitData = $session->get($config->order->splitSessionKey);
             }
 
+            // корзина
             $cart = new Model\Cart();
             foreach ($request->data['cart']['products'] as $productItem) {
                 $cartProduct = new Model\Cart\Product($productItem);
                 $cartRepository->setProductForObject($cart, $cartProduct);
+            }
+
+            // бонусные карты
+            $bonusCardData = call_user_func(function() use (&$request, &$changeData) {
+                $bonusCardData = [];
+
+                if (isset($request->data['user']['bonusCards'][0])) {
+                    $bonusCardData = $request->data['user']['bonusCards'];
+                } else if ($changeData['user']['bonusCards'][0]) {
+                    $bonusCardData = $changeData['user']['bonusCards'];
+                }
+
+                foreach ($bonusCardData as $i => $cardItem) {
+                    if (!isset($cardItem['type']) || !isset($cardItem['number'])) {
+                        unset($bonusCardData[$i]);
+                    }
+                }
+
+                return $bonusCardData;
+            });
+            if ($bonusCardData) {
+                $session->set($config->order->bonusCardSessionKey, $bonusCardData);
             }
 
             // контроллер
@@ -91,11 +118,26 @@ namespace EnterMobileApplication\Controller\Cart {
          * @param Model\Cart\Split\PointGroup[] $pointGroups
          */
         private function setPointImageUrls($pointGroups) {
+            $pointRepository = new \EnterRepository\Point();
+            
             foreach ($pointGroups as $pointGroup) {
-                $image = (new \EnterRepository\Cart())->getPointImageUrl($pointGroup->token);
+                $pointGroup->media = $pointRepository->getMedia($pointGroup->token);
+                foreach ($pointGroup->media->photos as $media) {
+                    if (in_array('logo', $media->tags, true)) {
+                        foreach ($media->sources as $source) {
+                            if ($source->type === '100x100') {
+                                $pointGroup->imageUrl = $source->url; // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split
+                            }
+                        }
+                    }
 
-                if ($image) {
-                    $pointGroup->imageUrl = $image;
+                    if (in_array('marker', $media->tags, true)) {
+                        foreach ($media->sources as $source) {
+                            if ($source->type === '61x80') {
+                                $pointGroup->markerUrl = $source->url; // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split
+                            }
+                        }
+                    }
                 }
             }
         }

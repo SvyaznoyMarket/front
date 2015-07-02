@@ -66,6 +66,7 @@ class ProductList {
                     'category' => true,
                     'label'    => true,
                     'brand'    => true,
+                    'tag'      => true,
                 ]
             );
             $curl->prepare($descriptionListQuery);
@@ -89,7 +90,7 @@ class ProductList {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
 
-        $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, $descriptionListQueries);
+        $productRepository->setDescriptionForListByListQuery($productsById, $descriptionListQueries);
 
         // ответ
         $response = [

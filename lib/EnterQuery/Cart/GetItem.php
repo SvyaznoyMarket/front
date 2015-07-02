@@ -3,35 +3,24 @@
 namespace EnterQuery\Cart;
 
 use Enter\Curl\Query;
-use EnterQuery\CoreQueryTrait;
+use EnterQuery\CrmQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
 class GetItem extends Query {
-    use CoreQueryTrait;
+    use CrmQueryTrait;
 
     /** @var array|null */
     protected $result;
 
     /**
-     * @param Model\Cart $cart
-     * @param string $regionId
+     * @param string $userUi
      */
-    public function __construct(Model\Cart $cart, $regionId) {
+    public function __construct($userUi) {
         $this->url = new Url();
-        $this->url->path = 'v2/cart/get-price';
+        $this->url->path = 'api/cart';
         $this->url->query = [
-            'geo_id' => $regionId,
-        ];
-        $this->data = [
-            'product_list'  => array_values(array_map(function(Model\Cart\Product $cartProduct) {
-                return [
-                    'id'       => $cartProduct->id,
-                    'quantity' => $cartProduct->quantity,
-                ];
-            }, $cart->product)),
-            'service_list'  => [],
-            'warranty_list' => [],
+            'user_uid' => $userUi,
         ];
 
         $this->init();
@@ -43,6 +32,6 @@ class GetItem extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data['sum']) ? $data : null;
+        $this->result = isset($data['products']) ? $data : null;
     }
 }

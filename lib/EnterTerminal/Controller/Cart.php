@@ -59,7 +59,7 @@ namespace EnterTerminal\Controller {
                 $curl->prepare($descriptionListQuery);
             }
 
-            $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
+            $cartItemQuery = new Query\Cart\Price\GetItem($cart, $regionId);
             $curl->prepare($cartItemQuery);
 
             $curl->execute();
@@ -77,7 +77,7 @@ namespace EnterTerminal\Controller {
 
                 // медиа для товаров
                 if ($descriptionListQuery) {
-                    $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                    $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
                 }
             }
 
@@ -91,6 +91,7 @@ namespace EnterTerminal\Controller {
             $response->quantity = count($cart);
 
             foreach (array_reverse($cart->product) as $cartProduct) {
+                /** @var Model\Cart\Product $cartProduct */
                 $product = !empty($productsById[$cartProduct->id])
                     ? $productsById[$cartProduct->id]
                     : new Model\Product([
@@ -99,6 +100,7 @@ namespace EnterTerminal\Controller {
 
                 $product->quantity = $cartProduct->quantity; // FIXME
                 $product->sum = $cartProduct->sum; // FIXME
+                $product->sender = $cartProduct->sender; // FIXME
 
                 $response->products[] = $product;
             }

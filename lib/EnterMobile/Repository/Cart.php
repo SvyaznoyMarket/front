@@ -11,11 +11,11 @@ class Cart {
 
     /**
      * @param string $regionId
-     * @return \EnterQuery\Cart\GetItem|null
+     * @return \EnterQuery\Cart\Price\GetItem|null
      */
     public function getPreparedCartItemQuery(\EnterModel\Cart $cart, $regionId) {
         if ($cart->product) {
-            $cartItemQuery = new \EnterQuery\Cart\GetItem($cart, $regionId);
+            $cartItemQuery = new \EnterQuery\Cart\Price\GetItem($cart, $regionId);
             $this->getCurl()->prepare($cartItemQuery);
 
             return $cartItemQuery;

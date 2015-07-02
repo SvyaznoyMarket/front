@@ -7,6 +7,9 @@ use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
+/**
+ * @deprecated Используйте \EnterQuery\Point\GetItemByUi
+ */
 class GetItemByUi extends Query {
     use ScmsQueryTrait;
 

@@ -11,4 +11,6 @@ class Request extends Repository\Page\DefaultPage\Request {
     public $formErrors;
     /** @var \EnterModel\Cart\Split */
     public $split;
+    /** @var string */
+    public $shopId;
 }

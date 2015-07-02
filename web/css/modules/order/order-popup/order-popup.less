@@ -5,10 +5,15 @@
 
     .rounded(0px);
     .box-sizing(border-box);
-
-    .checkout-payment__icon-wrap {
-        float: right;
+    .checkout-checkbox-lst{
+        &__i{
+            display: block;
+            &>*{
+                .inline-block(middle);
+            }
+        }
     }
+
     &__head {
         line-height: 54px;
         position: relative;
@@ -94,6 +99,7 @@
     background-color: #fff;
     z-index: 2;
     position: relative;
+    height: 74px;
 }
 
 #yandexMap {

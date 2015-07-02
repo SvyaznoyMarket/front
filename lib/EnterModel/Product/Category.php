@@ -19,22 +19,20 @@ namespace EnterModel\Product {
         public $path;
         /** @var int */
         public $level;
-        /** @var bool */
-        public $hasChildren;
-        /** @var Model\Product\Category[] */
-        public $children = [];
         /** @var int */
         public $productCount;
-        /** @var Model\Product\Category|null */
-        public $parent;
-        /** @var Model\Product\Category[] */
-        public $ascendants = [];
         /** @var Model\MediaList */
         public $media;
         /** @var Model\Product\Category\Meta */
         public $meta;
         /** @var bool */
         public $isFurniture;
+        /** @var bool */
+        public $hasChildren;
+        /** @var Model\Product\Category[] */
+        public $children = [];
+        /** @var Model\Product\Category|null */
+        public $parent;
 
         /**
          * @param mixed $data
@@ -68,6 +66,20 @@ namespace EnterModel\Product {
             if (isset($data['html_title'])) $this->meta->title = (string)$data['html_title'];
             if (isset($data['meta_keywords'])) $this->meta->keywords = (string)$data['meta_keywords'];
             if (isset($data['meta_description'])) $this->meta->description = (string)$data['meta_description'];
+        }
+
+        /**
+         * @param array $data
+         */
+        public function fromArray(array $data) {
+            if (isset($data['id'])) $this->id = (string)$data['id'];
+            if (isset($data['ui'])) $this->ui = (string)$data['ui'];
+            if (isset($data['name'])) $this->name = (string)$data['name'];
+            if (isset($data['link'])) $this->link = (string)$data['link'];
+            if (isset($data['parent'])) {
+                $this->parent = new Model\Product\Category();
+                $this->parent->fromArray($data['parent']);
+            }
         }
     }
 }

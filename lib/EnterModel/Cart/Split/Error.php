@@ -22,12 +22,13 @@ class Error {
                 case 708:
                     $this->detail = [
                         'product'              => [
-                            'id' => @$detailItem['product_id'] ?: null,
-                            'ui' => @$detailItem['product_ui'] ?: null,
+                            'id'   => isset($detailItem['product_id']) ? $detailItem['product_id'] : null,
+                            'ui'   => isset($detailItem['product_ui']) ? $detailItem['product_ui'] : null,
+                            'name' => isset($detailItem['product_name']) ? $detailItem['product_name'] : null,
                         ],
-                        'maxAvailableQuantity' => @$detailItem['max_available_quantity'] ? (int)$detailItem['max_available_quantity'] : 0,
-                        'requestedQuantity'    => @$detailItem['requested_amount'] ? (int)$detailItem['requested_amount'] : 0,
-                        'blockName'            => @$detailItem['block_name'] ?: null,
+                        'maxAvailableQuantity' => isset($detailItem['max_available_quantity']) ? (int)$detailItem['max_available_quantity'] : 0,
+                        'requestedQuantity'    => isset($detailItem['requested_amount']) ? (int)$detailItem['requested_amount'] : 0,
+                        'blockName'            => isset($detailItem['block_name']) ?: null,
                     ];
                     $this->message = $this->detail['maxAvailableQuantity'] ? sprintf('Доступно только %d шт', $this->detail['maxAvailableQuantity']) : 'Товар закончился';
                     break;

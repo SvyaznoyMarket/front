@@ -134,7 +134,6 @@ namespace EnterTerminal\Controller\ProductCatalog {
 
             // ответ
             $response = new Response();
-            $response->catalogConfig = $controllerResponse->catalogConfig;
             $response->products = $controllerResponse->products;
             $response->productCount = $controllerResponse->productUiPager->count;
             $response->filters = $filters;
@@ -228,8 +227,6 @@ namespace EnterTerminal\Controller\ProductCatalog\Gift {
     use EnterModel as Model;
 
     class Response {
-        /** @var Model\Product\Category\Config */
-        public $catalogConfig;
         /** @var Model\Product[] */
         public $products = [];
         /** @var int */

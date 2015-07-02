@@ -98,7 +98,7 @@ class Index {
             $curl->execute();
 
             $products = $productRepository->getIndexedObjectListByQuery($productQuery);
-            $productRepository->setDescriptionForListByListQuery($products, $descriptionListQuery);
+            $productRepository->setDescriptionForListByListQuery($products, [$descriptionListQuery]);
 
             return $request->isXmlHttpRequest() ? new Http\JsonResponse([
                 'order' => [

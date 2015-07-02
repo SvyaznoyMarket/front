@@ -153,10 +153,7 @@ namespace EnterAggregator\Controller\Product {
                 }
             });
 
-            // медиа для товаров
-            foreach ($descriptionListQueries as $descriptionListQuery) {
-                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
-            }
+            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQueries);
 
             foreach ($alsoBoughtIdList as $i => $alsoBoughtId) {
                 // SITE-2818 из списка товаров "с этим товаром также покупают" убираем товары, которые есть только в магазинах

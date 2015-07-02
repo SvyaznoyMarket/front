@@ -91,7 +91,7 @@ class ProductList {
         // список товаров
         $productsById = (bool)$productListQueries ? $productRepository->getIndexedObjectListByQueryList($productListQueries) : [];
 
-        $productRepository->setDescriptionForIdIndexedListByQueryList($productsById, $descriptionListQueries);
+        $productRepository->setDescriptionForListByListQuery($productsById, $descriptionListQueries);
 
         // список рейтингов товаров
         if ($ratingListQuery) {

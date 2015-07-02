@@ -28,7 +28,7 @@ class Index {
         // заголовок
         $page->title = 'Оформление заказа - Получатель - Enter';
 
-        $page->dataModule = 'order';
+        $page->dataModule = 'order-new';
 
         $page->content->form->url = $router->getUrlByRoute(new Routing\Order\SetUser(), ['shopId' => $request->shopId]);
         $page->content->form->errorDataValue = $templateHelper->json($request->formErrors);
@@ -60,6 +60,16 @@ class Index {
             new Routing\User\Login(),
             ['redirect_to' => $router->getUrlByRoute(new Routing\Order\Index())]
         );
+
+        foreach ($request->formErrors as $errorModel) {
+            if (!isset($errorModel['message'])) continue;
+
+            $page->content->errors[] = [
+                'message' => $errorModel['message'],
+            ];
+        }
+
+        $page->content->hasMnogoRu = isset($request->bonusCardsByType[\EnterModel\BonusCard::TYPE_MNOGORU]);
 
         $page->steps = [
             ['name' => 'Получатель', 'isPassive' => true, 'isActive' => true],

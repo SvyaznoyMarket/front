@@ -1,36 +1,41 @@
-<form class="js-user-form checkout-form form-control clearfix" action="{{form.url}}" method="post" accept-charset="utf-8" data-error="{{&form.errorDataValue}}">
+<form class="js-user-form checkout-form form-control clearfix" action="{{form.url}}" method="post" accept-charset="utf-8" data-error="{{&form.errorDataValue}}" novalidate>
     <div class="global-error js-global-error"></div>
 
     {{^isUserAuthenticated}}
     <fieldset class="order-authorize__container">
         <div class="order-authorize">
             <div class="order-authorize__t">Уже заказывали у нас?</div>
-            <a class="order-authorize__btn btn1" href="{{authUrl}}"><span class="btn-inner">Войти с паролем</span></a>
+            <a class="order-authorize__btn btn1 js-auth-link" href="{{authUrl}}"><span class="btn-inner">Войти с паролем</span></a>
         </div>
     </fieldset>
     {{/isUserAuthenticated}}
 
-    <fieldset class="form-control__container lr-padding">
-        <div class="form-control-group js-user-wrap">
-            <input class="form-control-group__tx textfield js-user-field js-field-phone" data-field-name="phone" id="id-userForm-phone" type="tel" name="user[phone]" value="{{form.phone}}" placeholder="+7(xxx)xxx-xx-xx">
-            <label class="form-control-group__lbl required" for="id-userForm-phone">Телефон</label>
-            <span class="form-control-group__hint">Для смс о состоянии заказа</span>
+    <fieldset class="common-control__container lr-padding">
+        
+        <div class="common-control">
+            <div class="common-control-group required">
+                <label class="common-control-label" for="id-userForm-phone">Телефон</label>
+                <input class="common-control-input js-validator-form-field" id="id-userForm-phone" type="tel" name="user[phone]" value="{{form.phone}}" placeholder="+7(___)___-__-__" data-field="phone">
+            </div>
+            <span class="common-control-hint">Для смс о состоянии заказа</span>
         </div>
-
-        <div class="form-control-group js-user-wrap">
-            <input class="form-control-group__tx textfield js-user-field js-field-email" data-field-name="email" id="id-userForm-email" type="email" name="user[email]" value="{{form.email}}" placeholder="email@email.ru">
-            <label class="form-control-group__lbl required" for="id-userForm-email">E-mail</label>
+        <div class="common-control">
+            <div class="common-control-group required">
+                <label class="common-control-label" for="id-userForm-email">E-mail</label>
+                <input class="common-control-input js-validator-form-field" id="id-userForm-email" name="user[email]" value="{{form.email}}" placeholder="email@email.ru" data-field="email">
+            </div>
+            <span class="common-control-hint">&nbsp;</span>
         </div>
-
-        <div class="form-control-group">
-            <input class="form-control-group__tx textfield" id="id-userForm-firstName" type="text" name="user[firstName]" value="{{form.firstName}}" placeholder="">
-            <label class="form-control-group__lbl" for="id-userForm-firstName">Имя</label>
-            <span class="form-control-group__hint">Как к вам обращаться?</span>
+         <div class="common-control">
+            <div class="common-control-group">
+                <label class="common-control-label" for="id-userForm-firstName">Имя</label>
+                <input class="common-control-input" id="id-userForm-firstName" name="user[firstName]" value="{{form.firstName}}" data-field="firstName">
+            </div>
+            <span class="common-control-hint">Как к вам обращаться?</span>
         </div>
-
-        <div class="error"></div>
     </fieldset>
 
+    {{#hasMnogoRu}}
     <fieldset class="form-control__container lr-padding">
         {{! Чтобы показать/скрыть поле с картой, надо добавить/убрать класс active: }}
         <div class="bonus-cnt toggle js-toggle-wrap">
@@ -41,14 +46,19 @@
                 <span class="bonus-cnt-card__tl">Карта Много.ру</span>
             </div>
 
-            <div class="form-control-group toggle-box">
-                <input class="form-control-group__tx textfield js-field-mnogoru" id="id-userForm-mnogoruNumber" type="text" name="user[mnogoruNumber]" value="{{form.mnogoruNumber}}" placeholder="xxxx xxxx">
-                <label class="form-control-group__lbl" for="id-userForm-mnogoruNumber">Карта</label>
+            <div class="common-control toggle-box">
+                <div class="common-control-group">
+                    <label class="common-control-label" for="id-userForm-mnogoruNumber">Карта</label>
+                    <input class="common-control-input" id="id-userForm-mnogoruNumber" type="text" name="user[bonusCards][0][number]" value="{{form.mnogoruNumber}}" placeholder="xxxx xxxx" data-field="mnogoru">
+                    <input type="hidden" name="user[bonusCards][0][type]" value="mnogoru" />
+                </div>
+                <span class="common-control-hint">&nbsp;</span>
             </div>
         </div>
     </fieldset>
-
+    {{/hasMnogoRu}}
+    
     <div class="btn-container btn-container--orange">
-        <button type="submit" class="btn btn--submit btn--orange btn--big js-user-submit">Далее</button>
+        <button type="submit" class="btn btn--submit btn--orange btn--big">Далее</button>
     </div>
 </form>

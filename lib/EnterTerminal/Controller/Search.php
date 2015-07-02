@@ -124,6 +124,7 @@ namespace EnterTerminal\Controller {
                         'category'    => true,
                         'label'       => true,
                         'brand'       => true,
+                        'tag'         => true,
                     ]
                 );
                 $curl->prepare($descriptionListQuery);
@@ -155,7 +156,7 @@ namespace EnterTerminal\Controller {
 
             // медиа для товаров
             if ($productsByUi && $descriptionListQuery) {
-                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
             }
 
             // список рейтингов товаров

@@ -35,7 +35,7 @@ class Session {
         ];
 
         session_name($options['session_name']);
-
+        
         session_set_cookie_params(
             $options['session_cookie_lifetime'],
             $options['session_cookie_path'],

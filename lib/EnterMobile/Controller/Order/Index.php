@@ -17,6 +17,9 @@ use EnterMobile\Model\Page\Order\Index as Page;
 
 class Index {
     use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ControllerTrait {
+        ConfigTrait::getConfig insteadof ControllerTrait;
+    }
 
     /**
      * @param Http\Request $request
@@ -26,6 +29,8 @@ class Index {
         $config = $this->getConfig();
         $curl = $this->getCurl();
         $session = $this->getSession();
+        $regionRepository = new \EnterRepository\Region();
+        $cartSessionKey = $this->getCartSessionKeyByHttpRequest($request);
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
@@ -33,19 +38,40 @@ class Index {
         // ид магазина
         $shopId = is_scalar($request->query['shopId']) ? (string)$request->query['shopId']: null;
 
+        $regionQuery = new Query\Region\GetItemById($regionId);
+        $curl->prepare($regionQuery);
+        
         // запрос пользователя
         $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
         if ($userItemQuery) {
             $curl->prepare($userItemQuery);
         }
 
+        $curl->execute();
+        
+        $region = $regionRepository->getObjectByQuery($regionQuery);
+        
         $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
-        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
-        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
+
+        $bonusCardListQuery = new Query\PaymentMethod\GetBonusCardListByCart($region->id, $cart);
+        $bonusCardListQuery->setTimeout($config->coreService->timeout / 3);
+        $curl->prepare($bonusCardListQuery);
 
         $curl->execute();
-
+        
         (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
+
+        // бонусные карты
+        /** @var Model\BonusCard[] $bonusCardsByType */
+        $bonusCardsByType = [];
+        try {
+            foreach ($bonusCardListQuery->getResult() as $bonusCardItem) {
+                $bonusCard = new Model\BonusCard($bonusCardItem);
+                $bonusCardsByType[$bonusCard->type] = $bonusCard;
+            }
+        } catch (\Exception $e) {}
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Order\Index\Request();

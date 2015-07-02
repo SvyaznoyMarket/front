@@ -63,8 +63,13 @@ class ProductCard {
             $card->rating = $rating;
         }
 
+        $rootCategory = $category ? (new \EnterRepository\Product\Category())->getRootObject($category) : null;
+
         // Не показываем этикетку бренда в списке товаров категории tchibo
-        if ((!$category || !$category->ascendants || 'tchibo' !== $category->ascendants[0]->token) && $product->brand) {
+        if (
+            (!$category || !$category->parent || ($rootCategory && ('tchibo' !== $rootCategory->token)))
+            && $product->brand
+        ) {
             $card->brand = new \EnterMobile\Model\Partial\ProductCard\Brand();
             $card->brand->id = $product->brand->id;
             $card->brand->name = $product->brand->name;
