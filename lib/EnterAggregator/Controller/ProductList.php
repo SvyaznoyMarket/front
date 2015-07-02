@@ -50,15 +50,15 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($userItemQuery);
             }
 
-            if ($request->cart) {
-                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $request->regionId);
-                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $request->regionId);
-            }
-
             $curl->execute();
 
             // регион
             $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
+            
+            if ($request->cart) {
+                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $response->region->id);
+                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $response->region->id);
+            }
 
             // пользователь
             try {
@@ -67,10 +67,6 @@ namespace EnterAggregator\Controller {
                 }
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
-            }
-
-            if ($request->cart) {
-                (new \EnterRepository\Cart())->updateObjectByQuery($request->cart, $cartItemQuery, $cartProductListQuery);
             }
 
             $categoryRootListQuery = null;
@@ -104,6 +100,10 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($categoryItemQuery);
 
                 $curl->execute();
+                
+                if ($request->cart) {
+                    (new \EnterRepository\Cart())->updateObjectByQuery($request->cart, $cartItemQuery, $cartProductListQuery);
+                }
 
                 $response->category = $productCategoryRepository->getObjectByQuery($categoryItemQuery);
                 // предки и дети категории
@@ -149,8 +149,14 @@ namespace EnterAggregator\Controller {
                 $request->filterRequestFilters = $response->baseRequestFilters;
             }
 
-            $filterListQuery = new Query\Product\Filter\GetList($request->filterRepository->dumpRequestObjectList($request->filterRequestFilters), $response->region->id);
-            $curl->prepare($filterListQuery);
+            $filterListQuery = null;
+            if (
+                ($request->config->loadFiltersForRootCategory || ($response->category && $response->category->parent)) &&
+                ($request->config->loadFiltersForMiddleCategory || ($response->category && (!$response->category->parent || !$response->category->hasChildren)))
+            ) {
+                $filterListQuery = new Query\Product\Filter\GetList($request->filterRepository->dumpRequestObjectList($request->filterRequestFilters), $response->region->id);
+                $curl->prepare($filterListQuery);
+            }
 
             $curl->execute();
 
@@ -173,10 +179,7 @@ namespace EnterAggregator\Controller {
 
             // запрос листинга идентификаторов товаров
             $productUiPagerQuery = null;
-            if (
-                !$request->config->productOnlyForLeafCategory
-                || ($request->config->productOnlyForLeafCategory && $response->category && !$response->category->hasChildren)
-            ) {
+            if ($request->config->loadProductsForRootCategory || ($response->category && $response->category->parent)) {
                 $productUiPagerQuery = new Query\Product\GetUiPager(
                     array_merge(
                         $request->filterRepository->dumpRequestObjectList($response->requestFilters),
@@ -201,19 +204,35 @@ namespace EnterAggregator\Controller {
 
             $curl->execute();
 
-            // фильтры
-            $response->filters = $request->filterRepository->getObjectListByQuery($filterListQuery);
-            // значения для фильтров
-            $request->filterRepository->setValueForObjectList($response->filters, $response->requestFilters);
+            if ($filterListQuery) {
+                // фильтры
+                $response->filters = $request->filterRepository->getObjectListByQuery($filterListQuery);
+                // значения для фильтров
+                $request->filterRepository->setValueForObjectList($response->filters, $response->requestFilters);
+                
+                // MSITE-2 Срезы товаров: удаление фильтров, которые уже есть в срезах
+                foreach ($response->filters as $i => $filter) {
+                    foreach ($response->baseRequestFilters as $requestFilter) {
+                        if ($requestFilter->token == $filter->token) {
+                            unset($response->filters[$i]);
+                        }
+                    }
+                }
+                
+                $response->filters = array_values($response->filters);
+            }
 
             // листинг идентификаторов товаров
             $response->productUiPager = $productUiPagerQuery ? (new Repository\Product\UiPager())->getObjectByQuery($productUiPagerQuery) : null;
 
             // запрос списка товаров
-            $productListQuery = null;
-            if ($response->productUiPager && (bool)$response->productUiPager->uis) {
-                $productListQuery = new Query\Product\GetListByUiList($response->productUiPager->uis, $response->region->id);
-                $curl->prepare($productListQuery);
+            $productListQueries = [];
+            if ($response->productUiPager && $response->productUiPager->uis) {
+                foreach (array_chunk($response->productUiPager->uis, $config->curl->queryChunkSize) as $uisInChunk) {
+                    $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $response->region->id, ['model' => false, 'related' => false, 'availability' => false]);
+                    $curl->prepare($productListQuery);
+                    $productListQueries[] = $productListQuery;
+                }
             }
 
             // запрос списка медиа для товаров
@@ -224,6 +243,10 @@ namespace EnterAggregator\Controller {
                     [
                         'media'       => true,
                         'media_types' => ['main'], // только главная картинка
+                        'category'    => true,
+                        'label'       => true,
+                        'brand'       => true,
+                        'tag'         => true,
                     ]
                 );
                 $curl->prepare($descriptionListQuery);
@@ -268,19 +291,11 @@ namespace EnterAggregator\Controller {
             $curl->execute();
 
             // список товаров
-            $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
-
-            // товары по ui
-            $productsByUi = [];
-            call_user_func(function() use (&$productsById, &$productsByUi) {
-                foreach ($productsById as $product) {
-                    $productsByUi[$product->ui] = $product;
-                }
-            });
+            $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
 
             // медиа для товаров
             if ($descriptionListQuery) {
-                $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                $productRepository->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
             }
 
             // доставка товаров
@@ -344,15 +359,6 @@ namespace EnterAggregator\Controller {
 
             $response->products = array_values($productsById);
 
-            // удаление фильтров
-            foreach ($response->filters as $i => $filter) {
-                foreach ($response->baseRequestFilters as $requestFilter) {
-                    if ($requestFilter->token == $filter->token) {
-                        unset($response->filters[$i]);
-                    }
-                }
-            }
-
             // AB тест
             $chosenListingType = $this->getAbTest()->getObjectByToken('product_listing')->chosenItem->token;
 
@@ -362,7 +368,12 @@ namespace EnterAggregator\Controller {
                 $response->buyBtnListing = true;
             }
 
-            $response->filters = array_values($response->filters);
+            if (
+                !(($request->config->loadSortingsForRootCategory || ($response->category && $response->category->parent)) &&
+                ($request->config->loadSortingsForMiddleCategory || ($response->category && (!$response->category->parent || !$response->category->hasChildren))))
+            ) {
+                $response->sortings = [];
+            }
 
             return $response;
         }
@@ -464,11 +475,25 @@ namespace EnterAggregator\Controller\ProductList\Request {
          */
         public $branchCategory = false;
         /**
-         * Загружать товары только для конечных категорий
-         *
          * @var bool
          */
-        public $productOnlyForLeafCategory = false;
+		public $loadProductsForRootCategory = true;
+        /**
+         * @var bool
+         */
+        public $loadFiltersForRootCategory = true;
+        /**
+         * @var bool
+         */
+        public $loadSortingsForRootCategory = true;
+        /**
+         * @var bool
+         */
+		public $loadFiltersForMiddleCategory = true;
+        /**
+         * @var bool
+         */
+  		public $loadSortingsForMiddleCategory = true;
         /**
          * Загружать остатки товаров по магазинам
          *

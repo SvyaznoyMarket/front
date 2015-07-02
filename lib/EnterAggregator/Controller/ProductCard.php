@@ -55,8 +55,8 @@ namespace EnterAggregator\Controller {
             }
 
             if ($request->cart) {
-                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $request->regionId);
-                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $request->regionId);
+                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $response->region->id);
+                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $response->region->id);
             }
 
             $curl->execute();
@@ -193,8 +193,10 @@ namespace EnterAggregator\Controller {
                 [$response->product->ui],
                 [
                     'trustfactor' => true,
-                    'category'    => true,
                     'media'       => true,
+                    'category'    => true,
+                    'label'       => true,
+                    'brand'       => true,
                     'property'    => true,
                     'tag'         => true,
                     'seo'         => true,
@@ -208,16 +210,29 @@ namespace EnterAggregator\Controller {
                 $relatedDescriptionListQuery = new Query\Product\GetDescriptionListByIdList(
                     $relatedIds,
                     [
-                        'media' => true, // только картинки
+                        'media'    => true,
+                        'category' => true,
+                        'label'    => true,
+                        'brand'    => true,
                     ]
                 );
                 $curl->prepare($relatedDescriptionListQuery);
             }
 
+            $curl->execute();
+
+            // трастфакторы, свойства, медиа товара
+            $productRepository->setDescriptionForListByListQuery(
+                [
+                    $response->product->ui => $response->product
+                ],
+                [$descriptionListQuery]
+            );
+
             // запрос настроек каталога
             $categoryItemQuery = null;
             if ($response->product->category && $response->product->category->ui) {
-                $categoryItemQuery = new Query\Product\Category\GetItemByUi($response->product->category->ui, $request->regionId);
+                $categoryItemQuery = new Query\Product\Category\GetItemByUi($response->product->category->ui, $response->region->id);
                 $curl->prepare($categoryItemQuery);
             }
 
@@ -275,6 +290,13 @@ namespace EnterAggregator\Controller {
                 /** @var Model\Product $iProduct */
                 $productsById[$iProduct->id] = $iProduct;
             }
+            
+            if ($relatedDescriptionListQuery) {
+                $productRepository->setDescriptionForListByListQuery(
+                    $productsById,
+                    [$relatedDescriptionListQuery]
+                );
+            }
 
             // доставка товара
             if ($deliveryListQuery) {
@@ -323,28 +345,6 @@ namespace EnterAggregator\Controller {
             // список рейтингов товаров
             if ($ratingListQuery) {
                 $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
-            }
-
-            // трастфакторы, свойства, медиа товара
-            $productRepository->setDescriptionForListByListQuery(
-                [
-                    $response->product->ui => $response->product
-                ],
-                $descriptionListQuery
-            );
-
-            // товары по ui
-            $productsByUi = [];
-            call_user_func(function() use (&$productsById, &$productsByUi) {
-                foreach ($productsById as $product) {
-                    $productsByUi[$product->ui] = $product;
-                }
-            });
-            if ($relatedDescriptionListQuery) {
-                $productRepository->setDescriptionForListByListQuery(
-                    $productsByUi,
-                    $relatedDescriptionListQuery
-                );
             }
 
             // доступность кредита

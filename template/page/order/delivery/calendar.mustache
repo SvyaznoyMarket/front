@@ -11,13 +11,7 @@
 
     <div class="celedr_row clearfix">
     {{#items}}
-        <div class="{{^isMonth}}celedr_col{{/isMonth}}{{#isMonth}}celedr_month{{/isMonth}}{{#isDisabled}} celedr_col-disbl{{/isDisabled}}{{#dataValue}} js-order-delivery-form-control{{/dataValue}}" data-value="{{&dataValue}}">{{name}}</div>
+        <div class="{{^isMonth}}celedr_col{{/isMonth}}{{#isMonth}}celedr_month{{/isMonth}}{{#isDisabled}} celedr_col-disbl{{/isDisabled}}{{#dataValue}} js-order-delivery-form-control{{/dataValue}}" data-value="{{&dataValue}}" data-type="date">{{name}}</div>
     {{/items}}
     </div>
 </div>
-
-<!--
-<div class="btn-container">
-    <button class="btn btn--submit btn--orange btn--medium" type="submit">Готово</button>
-</div>
--->

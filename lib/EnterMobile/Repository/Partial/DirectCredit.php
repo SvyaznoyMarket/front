@@ -22,6 +22,7 @@ class DirectCredit {
         \EnterModel\Cart $cartModel = null
     ) {
         $directCredit = new Partial\DirectCredit();
+        $categoryRepository = new \EnterRepository\Product\Category();
 
         $cartProductsById = [];
         if ($cartModel) {
@@ -33,7 +34,7 @@ class DirectCredit {
         $productData = [];
         foreach ($products as $product) {
             /** @var \EnterModel\Product\Category|null $rootCategory */
-            $rootCategory = ($product->category && !empty($product->category->ascendants[0])) ? $product->category->ascendants[0] : null;
+            $rootCategory = $product->category ? $categoryRepository->getRootObject($product->category) : null;
             /** @var \EnterModel\Cart\Product|null $cartProduct */
             $cartProduct = !empty($cartProductsById[$product->id]) ? $cartProductsById[$product->id] : null;
 

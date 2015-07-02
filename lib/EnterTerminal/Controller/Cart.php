@@ -33,7 +33,7 @@ namespace EnterTerminal\Controller {
             }
 
             // корзина из сессии
-            $cart = $cartRepository->getObjectByHttpSession($session);
+            $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
 
             $productsById = [];
             foreach ($cart->product as $cartProduct) {
@@ -51,12 +51,15 @@ namespace EnterTerminal\Controller {
                     [
                         'media'       => true,
                         'media_types' => ['main'], // только главная картинка
+                        'category'    => true,
+                        'label'       => true,
+                        'brand'       => true,
                     ]
                 );
                 $curl->prepare($descriptionListQuery);
             }
 
-            $cartItemQuery = new Query\Cart\GetItem($cart, $regionId);
+            $cartItemQuery = new Query\Cart\Price\GetItem($cart, $regionId);
             $curl->prepare($cartItemQuery);
 
             $curl->execute();
@@ -74,7 +77,7 @@ namespace EnterTerminal\Controller {
 
                 // медиа для товаров
                 if ($descriptionListQuery) {
-                    $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                    $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
                 }
             }
 
@@ -88,6 +91,7 @@ namespace EnterTerminal\Controller {
             $response->quantity = count($cart);
 
             foreach (array_reverse($cart->product) as $cartProduct) {
+                /** @var Model\Cart\Product $cartProduct */
                 $product = !empty($productsById[$cartProduct->id])
                     ? $productsById[$cartProduct->id]
                     : new Model\Product([
@@ -96,6 +100,7 @@ namespace EnterTerminal\Controller {
 
                 $product->quantity = $cartProduct->quantity; // FIXME
                 $product->sum = $cartProduct->sum; // FIXME
+                $product->sender = $cartProduct->sender; // FIXME
 
                 $response->products[] = $product;
             }

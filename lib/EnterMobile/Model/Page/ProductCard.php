@@ -94,9 +94,9 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
         public $moreModelBlock;
         /** @var Partial\DirectCredit|null */
         public $credit;
-        /** @var \EnterModel\Brand|null */
+        /** @var Product\Brand|null */
         public $brand;
-        /** @var \EnterModel\Product\Label[] */
+        /** @var Product\Label[] */
         public $labels = [];
         /** @var \EnterModel\Product\PartnerOffer|null */
         public $slotPartnerOffer;
@@ -107,6 +107,26 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
 
 namespace EnterMobile\Model\Page\ProductCard\Content\Product {
     use EnterMobile\Model\Partial;
+
+    class Label {
+        /** @var string */
+        public $id;
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $imageUrl;
+    }
+
+    class Brand {
+        /** @var string */
+        public $id;
+        /** @var string */
+        public $name;
+        /** @var string */
+        public $token;
+        /** @var string */
+        public $imageUrl;
+    }
 
     class DeliveryBlock {
         /** @var DeliveryBlock\Delivery[] */

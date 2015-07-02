@@ -5,10 +5,15 @@
 
     .rounded(0px);
     .box-sizing(border-box);
-
-    .checkout-payment__icon-wrap {
-        float: right;
+    .checkout-checkbox-lst{
+        &__i{
+            display: block;
+            &>*{
+                .inline-block(middle);
+            }
+        }
     }
+
     &__head {
         line-height: 54px;
         position: relative;
@@ -71,14 +76,22 @@
     .btn-container {
         margin-top: 0;
     }
+    .checkout-done-popup{
+        .btn-container{
+            margin: 20px 0;
+        }
+    }
     &__top-block {
         padding: 20px 0;
 
         text-align: center;
 
         background-color: #f7f7f7;
-        z-index: 2;
+        z-index: 3;
         position: relative;
+    }
+    &-points{
+        border-bottom: 1px solid #e6e6e6;
     }
 }
 .dropdowns{
@@ -86,9 +99,15 @@
     background-color: #fff;
     z-index: 2;
     position: relative;
+    height: 74px;
 }
 
 #yandexMap {
     width: 100% !important;
     height: 100% !important;
+}
+@media screen and (max-width: 639px){
+    .order-popup-points{
+        border-bottom: 1px solid #a6a6a6;
+    }
 }

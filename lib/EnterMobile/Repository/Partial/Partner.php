@@ -168,7 +168,7 @@ class Partner {
             $partner->id = 'sociomantic';
             $partner->dataAction = $dataAction;
             $partner->dataValue = $templateHelper->json([
-                'category' => $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge($category->ascendants, [$category])) : [],
+                'category' => $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge((new \EnterRepository\Product\Category())->getAscendantList($category), [$category])) : [],
             ]);
             $partners[] = $partner;
         }
@@ -309,7 +309,7 @@ class Partner {
 
         // sociomantic
         if ($config->sociomantic->enabled) {
-            $categoryNames = $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge($category->ascendants, [$category])) : [];
+            $categoryNames = $category ? array_map(function(\EnterModel\Product\Category $category) { return $category->name; }, array_merge((new \EnterRepository\Product\Category())->getAscendantList($category), [$category])) : [];
             $description = $product->tagline ?: ($product->description ?: $product->name);
             if (mb_strlen($description) > 90) {
                 $description = mb_substr($description, 0, 90) . '...';
@@ -328,7 +328,7 @@ class Partner {
                     'description' => $description,
                     'fn'          => $product->name,
                     'identifier'  => $product->article . '_' . $request->region->id,
-                    'photo'       => $photo ? ((string)(new Routing\Product\Media\GetPhoto($photo, 'product_500'))) : null,
+                    'photo'       => $photo ? (new \EnterRepository\Media())->getSourceObjectByItem($photo, 'product_500')->url : null,
                     'price' => $product->price,
                     'url'   => $request->httpRequest->getSchemeAndHttpHost() . $product->link,
                     'valid' => $product->isBuyable ? 0 : time(),

@@ -2,22 +2,33 @@
     <div id="order-{{order.id}}-address-map-container" data-map-option="{{&mapDataValue}}" class="order-popup-map"></div>
 
     <div class="address-pick-snippet__form">
-        <form class="js-smartAddress-form" action="{{url}}" method="post" data-map-container-selector="#order-{{order.id}}-address-map-container" data-kladr-id-selector="#order-delivery-address-kladrId">
+        <form class="js-smartAddress-form" action="{{url}}" method="post" data-map-container-selector="#order-{{order.id}}-address-map-container" data-kladr-id-selector="#order-delivery-address-kladrId" novalidate>
             <div class="form-control__container">
-                <div class="form-control-group">
-                    <input required="required" class="form-control-group__tx textfield js-smartAddress-input" id="order-delivery-address-street" type="text" name="{{fields.street.name}}" autocomplete="off" data-kladr-type="street" />
-                    <label class="form-control-group__lbl" for="order-delivery-address-street">Улица</label>
+                <div class="common-control">
+                    <div class="common-control-group required">
+                        <label class="common-control-label" for="order-delivery-address-street">Улица</label>
+                        <input class="common-control-input js-smartAddress-input js-validator-form-field" id="order-delivery-address-street" type="text" name="{{fields.street.name}}" autocomplete="off" data-kladr-type="street" data-required-message="Укажите улицу" required />
+                        <input type="hidden" name="{{fields.streetType.name}}" data-field="streetType" />
+                    </div>
+                    <span class="common-control-hint">&nbsp;</span>
+                </div>
+                <div class="common-control-2col">
+                    <div class="common-control half-wide half-wide__l ">
+                        <div class="common-control-group required">
+                            <label class="common-control-label" for="id-userForm-phone">Дом</label>
+                            <input class="common-control-input js-smartAddress-input js-validator-form-field" id="order-delivery-address-building" type="text" name="{{fields.building.name}}" autocomplete="off" data-kladr-type="building" data-required-message="Укажите дом" required />
+                        </div>
+                        <span class="common-control-hint">&nbsp;</span>
+                    </div>
+                    <div class="common-control half-wide half-wide__r">
+                        <div class="common-control-group">
+                            <label class="common-control-label" for="order-delivery-address-apartment">Квартира</label>
+                            <input class="common-control-input js-smartAddress-input" id="order-delivery-address-apartment" type="text" name="{{fields.apartment.name}}" />
+                        </div>
+                        <span class="common-control-hint">&nbsp;</span>
+                    </div>
                 </div>
 
-                <div class="form-control-group half-wide">
-                    <input class="form-control-group__tx textfield js-smartAddress-input" id="order-delivery-address-building" type="text" name="{{fields.building.name}}" autocomplete="off" data-kladr-type="building" />
-                    <label class="form-control-group__lbl" for="order-delivery-address-building">Дом</label>
-                </div>
-
-                <div class="form-control-group half-wide">
-                    <input class="form-control-group__tx textfield" id="order-delivery-address-apartment" type="text" name="{{fields.apartment.name}}">
-                    <label class="form-control-group__lbl" for="order-delivery-address-apartment">Квартира</label>
-                </div>
 
                 <input id="order-delivery-address-kladrId" type="hidden" name="{{fields.kladrId.name}}">
 

@@ -81,9 +81,24 @@ class ListBySearchPhrase {
 
         // запрос списка товаров
         $productListQuery = null;
-        if ((bool)$searchResult->productIds) {
+        if ($searchResult->productIds) {
             $productListQuery = new Query\Product\GetListByIdList($searchResult->productIds, $region->id);
             $curl->prepare($productListQuery);
+        }
+
+        $descriptionListQuery = null;
+        if ($searchResult->productIds) {
+            $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                $searchResult->productIds,
+                [
+                    'media'       => true,
+                    'media_types' => ['main'], // только главная картинка
+                    'category'    => true,
+                    'label'       => true,
+                    'brand'       => true,
+                ]
+            );
+            $curl->prepare($descriptionListQuery);
         }
 
         // запрос списка рейтингов товаров
@@ -101,6 +116,9 @@ class ListBySearchPhrase {
 
         // список товаров
         $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
+        if ($descriptionListQuery) {
+            $productRepository->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
+        }
 
         // список рейтингов товаров
         if ($ratingListQuery) {

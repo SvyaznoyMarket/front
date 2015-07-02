@@ -125,12 +125,17 @@ return function(\EnterAggregator\Config $config) {
         9 => 'http://fs10.enter.ru',
     ];
 
+    $config->cart->sessionKey = 'cart';
+    $config->cart->quickSessionKey = 'quickCart';
+
     $config->order->splitSessionKey = 'order_split';
     $config->order->userSessionKey = 'order_user';
     $config->order->cookieName = 'last_order';
     $config->order->sessionName = 'createdOrder';
     $config->order->prepayment->enabled = true;
     $config->order->prepayment->priceLimit = 100000;
+    $config->order->bonusCardSessionKey = 'order_bonusCards';
+    $config->order->enabled = true;
 
     $config->product->itemPerPage = 19;
     $config->product->itemsInSlider = 60;
@@ -148,18 +153,6 @@ return function(\EnterAggregator\Config $config) {
     ];
 
     $config->search->minPhraseLength = 2;
-
-    $config->promo->typeId = 3;
-    $config->promo->urlPaths =[
-        0 => '/4/1/230x302/',
-        1 => '/4/1/768x302/',
-        2 => '/4/1/920x320/',
-    ];
-
-    $config->productLabel->urlPaths = [
-        0 => '/7/1/66x23/',
-        1 => '/7/1/124x38/',
-    ];
 
     $config->credit->directCredit->enabled = false;
     $config->credit->directCredit->minPrice = 3000;

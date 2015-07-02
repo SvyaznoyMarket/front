@@ -15,7 +15,6 @@ namespace EnterAggregator\Controller\Cart {
         public function execute(Split\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            $cartRepository = new Repository\Cart();
             $orderRepository = new Repository\Order();
             $productRepository = new Repository\Product();
 
@@ -33,22 +32,22 @@ namespace EnterAggregator\Controller\Cart {
                 $curl->prepare($shopItemQuery)->execute();
             }
 
+            $curl->execute();
+
+            // регион
+            $response->region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+            
             // запрос пользователя
             $userItemQuery = null;
             if ($request->userToken && (0 !== strpos($request->userToken, 'anonymous-'))) {
                 $userItemQuery = new Query\User\GetItemByToken($request->userToken);
                 $curl->prepare($userItemQuery);
             }
-
+            
             if ($request->enrichCart) {
-                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $request->regionId);
-                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $request->regionId);
+                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($request->cart, $response->region->id);
+                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($request->cart, $response->region->id);
             }
-
-            $curl->execute();
-
-            // регион
-            $response->region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
             // магазин
             $shop = $shopItemQuery ? (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery) : null;
@@ -56,8 +55,22 @@ namespace EnterAggregator\Controller\Cart {
                 $this->getLogger()->push(['type' => 'warn', 'message' => 'Магазин не найден', 'shopId' => $request->shopId, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
             }
 
+            // запрос на разбиение корзины
+            $splitQuery = new Query\Cart\Split\GetItem(
+                $request->cart,
+                $response->region,
+                $shop,
+                null,
+                (array)$request->previousSplitData,
+                $request->changeData ? $request->changeData : [],
+                $request->userFromSplit
+            );
+            $splitQuery->setTimeout(10 * $config->coreService->timeout);
+            $curl->prepare($splitQuery);
+
+            $curl->execute($splitQuery->getTimeout() / 2, 2);
+            
             // пользователь
-            $user = null;
             try {
                 if ($userItemQuery) {
                     $response->user = (new Repository\User())->getObjectByQuery($userItemQuery);
@@ -69,21 +82,6 @@ namespace EnterAggregator\Controller\Cart {
             if ($request->enrichCart) {
                 (new \EnterRepository\Cart())->updateObjectByQuery($request->cart, $cartItemQuery, $cartProductListQuery);
             }
-
-            // запрос на разбиение корзины
-            $splitQuery = new Query\Cart\Split\GetItem(
-                $request->cart,
-                $response->region,
-                $shop,
-                null,
-                (array)$request->previousSplitData,
-                $request->changeData ? $cartRepository->dumpSplitChange($request->changeData, $request->previousSplitData) : [],
-                $request->userFromSplit
-            );
-            $splitQuery->setTimeout(10 * $config->coreService->timeout);
-            $curl->prepare($splitQuery);
-
-            $curl->execute($splitQuery->getTimeout() / 2, 2);
 
             // индексация товаров из корзины по идентификатору
             /** @var Model\Cart\Product[] $cartProductsById */
@@ -150,6 +148,9 @@ namespace EnterAggregator\Controller\Cart {
                         [
                             'media'       => true,
                             'media_types' => ['main'], // только главная картинка
+                            'category'    => true,
+                            'label'       => true,
+                            'brand'       => true,
                         ]
                     );
                     $curl->prepare($descriptionListQuery);
@@ -165,7 +166,7 @@ namespace EnterAggregator\Controller\Cart {
                     });
 
                     // медиа для товаров
-                    $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+                    $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
 
                     foreach ($response->split->orders as $order) {
                         foreach ($order->products as $product) {
@@ -194,6 +195,10 @@ namespace EnterAggregator\Controller\Cart {
                 }
             } catch (Query\CoreQueryException $e) {
                 $response->errors = $orderRepository->getErrorList($e);
+            } catch (\Exception $e) {
+                $response->errors = [
+                    ['code' => $e->getCode(), 'message' => 'Не удалось выполнить действие']
+                ];
             }
 
             return $response;

@@ -80,6 +80,8 @@ namespace EnterAggregator {
         public $mediaHosts = [];
         /** @var Config\Order */
         public $order;
+        /** @var Config\Cart */
+        public $cart;
         /** @var Config\Product */
         public $product;
         /** @var Config\ProductReview */
@@ -88,10 +90,6 @@ namespace EnterAggregator {
         public $productPhoto;
         /** @var Config\Search */
         public $search;
-        /** @var Config\Promo */
-        public $promo;
-        /** @var Config\ProductLabel */
-        public $productLabel;
 
         public function __construct() {
             $this->logger = new Config\Logger();
@@ -129,13 +127,12 @@ namespace EnterAggregator {
 
             $this->kladr = new Config\Kladr();
 
+            $this->cart = new Config\Cart();
             $this->order = new Config\Order();
             $this->product = new Config\Product();
             $this->productReview = new Config\ProductReview();
             $this->productPhoto = new Config\ProductPhoto();
             $this->search = new Config\Search();
-            $this->promo = new Config\Promo();
-            $this->productLabel = new Config\ProductLabel();
         }
     }
 }
@@ -354,6 +351,13 @@ namespace EnterAggregator\Config {
         public $limit;
     }
 
+    class Cart {
+        /** @var string */
+        public $sessionKey;
+        /** @var string */
+        public $quickSessionKey;
+    }
+
     class Order {
         /**
          * Ключ сессии, в котором хранится предыдущее разбиение корзины
@@ -377,6 +381,10 @@ namespace EnterAggregator\Config {
         public $sessionName;
         /** @var Order\Prepayment */
         public $prepayment;
+        /** @var string */
+        public $bonusCardSessionKey;
+        /** @var bool */
+        public $enabled;
 
         public function __construct() {
             $this->prepayment = new Order\Prepayment();
@@ -416,23 +424,6 @@ namespace EnterAggregator\Config {
     class Search {
         /** @var int */
         public $minPhraseLength;
-    }
-
-    class Promo {
-        /**
-         * @deprecated
-         * @var int
-         */
-        public $typeId;
-        /**
-         * @var array
-         */
-        public $urlPaths = [];
-    }
-
-    class ProductLabel {
-        /** @var array */
-        public $urlPaths = [];
     }
 }
 

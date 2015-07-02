@@ -1,12 +1,10 @@
 define(
     [
-        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'jquery.ui', 'jquery.maskedinput',
-        'module/order/user.form', 'module/order/common', 'module/order/toggle'
+        'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config', 'module/form-validator', 'module/order/analytics.google', 'jquery.ui', 'jquery.maskedinput'
     ],
     function(
-        require, $, _, mustache, util, config
+        require, $, _, mustache, util, config, formValidator, analytics
     ) {
-
         var
             $body = $('body'),
             $onlinePaymentPopupTemplate = $('#tpl-order-complete-onlinePayment-popup'),// TODO: перенести на 3-й шаг
@@ -28,6 +26,8 @@ define(
                 $modalWindow.addClass(modalPosition);
 
                 $modalWindow.lightbox_me({
+                    fullScreen: true,
+                    modal: false,
                     onLoad: function() {
                         $modalWindow.find('.js-modal-content').append(mustache.render($onlinePaymentPopupTemplate.html(), data));
                     },
@@ -45,7 +45,6 @@ define(
 
                 e.stopPropagation();
 
-                console.info($el, $container);
 
                 $.ajax({
                     url: url,
@@ -72,8 +71,36 @@ define(
             }
         ;
 
+        $body.on('click', '.js-order-complete-onlinePayment-link', showOnlinePaymentPopup);
+        $body.on('click', '.js-order-complete-onlinePayment-radio', applyOnlinePayment);
+        $('.js-moreLink').on('click', function(e) {
+            var
+                $el = $(this)
+            ;
 
-        $body.on('click', '.js-order-delivery-onlinePayment-link', showOnlinePaymentPopup);
-        $body.on('click', '.js-order-delivery-onlinePayment-radio', applyOnlinePayment);
+            $el.siblings().show();
+            $el.hide();
+
+            e.preventDefault();
+        });
+
+        try {
+            util.sendOrdersToGoogleAnalytics($('.js-order-complete').data('google-analytic-orders'));
+
+            analytics.push(['16 Вход_Оплата_ОБЯЗАТЕЛЬНО']);
+
+            $body.on('click', '.js-order-complete-onlinePayment-link', function(e) {
+                analytics.push(['17 Оплатить_онлайн_вход_Оплата']);
+            });
+            $body.on('click', '.js-order-complete-onlinePayment-radio', function(e) {
+                var $el = $(this);
+
+                if ('5' === $el.val()) {
+                    analytics.push(['17_1 Оплатить_онлайн_Оплата', 'Онлайн-оплата']);
+                } else if ('8' === $el.val()) {
+                    analytics.push(['17_1 Оплатить_онлайн_Оплата', 'Psb']);
+                }
+            });
+        } catch (error) { console.error(error); }
     }
 );

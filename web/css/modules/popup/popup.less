@@ -44,12 +44,12 @@
 
         display: none;
 
-        width: 44px;
-        height: 44px;
+        width: 22px;
+        height: 22px;
 
         cursor: pointer;
 
-        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAACXBIWXMAAAsTAAALEwEAmpwYAAACS0lEQVQ4EZVUPW8aQRCdO8SHEAiCkBA6yUhYKeAPpLBCJJwqLkwq/wI3cRE37uI+dhzJken8C9Ig0VA5BY6pnAaJjyKioEA0CDcnPgXkPaQ7wx52kpGWZWfnvZudnbfaYrGQDeZuNBo57OWwt4MRx5hg3dE07Rbjezqd/qHiNJWs2Wy+n8/nX0Kh0HYwGBS32y0AL3GMnUwm0u/3ZTAYlF0u12Eqlfptka6S6cjms9frPYnFYoJAK2bjPB6PpdPpPOBD+8jyJ4NsMhCdBwKBk2g0ameykWXFOZvNpN1uP+i6/ooZ6tzj0ZjR/xARx+wNw3gB0muumZm7Xq83E4nE9t+ORsAm63a7MhqN3rJOORZbJeIRptOpAwuQwxeJRARJHej4yfHWVKtUKpLP54WFtuzX/b2cn50JP7RqHo+HZBnWbIfXr1omk5HE1pZ8u7yU4XAoJC8Wi/Lh6Mhx02wdDEOr1WrjZDLpUcmsdalUksrdnfDrH4+PJRwOW1trc6vVEmY2WfMqC7YrjqB4nUtkZrJmnaeCC4WCVKtV+XR6KtlsVr5eXEiv13MwEU8eHYy3lIhq5XJZmDqP5vf75TVq+G5vT/JXV44LIJ48Gnps1+fz3cTj1PKjsS2gUUEzPzrxzzRNgVLWfHafUf0U7WoLMJI3rBLRrxIRRzx5lnJCwx5StGr/EPycMZ444hm3JKNIceZ9ilbN8CkyxjGeOOsZsl8NgiD4l/jaNQr+hhJhbyHY5uOt/et7ZoOg110ADzAyIDMwBzCbmJ99af8ArqY5ldB+T2sAAAAASUVORK5CYII=) no-repeat 100% 0;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAACXBIWXMAAAsTAAALEwEAmpwYAAACS0lEQVQ4EZVUPW8aQRCdO8SHEAiCkBA6yUhYKeAPpLBCJJwqLkwq/wI3cRE37uI+dhzJken8C9Ig0VA5BY6pnAaJjyKioEA0CDcnPgXkPaQ7wx52kpGWZWfnvZudnbfaYrGQDeZuNBo57OWwt4MRx5hg3dE07Rbjezqd/qHiNJWs2Wy+n8/nX0Kh0HYwGBS32y0AL3GMnUwm0u/3ZTAYlF0u12Eqlfptka6S6cjms9frPYnFYoJAK2bjPB6PpdPpPOBD+8jyJ4NsMhCdBwKBk2g0ameykWXFOZvNpN1uP+i6/ooZ6tzj0ZjR/xARx+wNw3gB0muumZm7Xq83E4nE9t+ORsAm63a7MhqN3rJOORZbJeIRptOpAwuQwxeJRARJHej4yfHWVKtUKpLP54WFtuzX/b2cn50JP7RqHo+HZBnWbIfXr1omk5HE1pZ8u7yU4XAoJC8Wi/Lh6Mhx02wdDEOr1WrjZDLpUcmsdalUksrdnfDrH4+PJRwOW1trc6vVEmY2WfMqC7YrjqB4nUtkZrJmnaeCC4WCVKtV+XR6KtlsVr5eXEiv13MwEU8eHYy3lIhq5XJZmDqP5vf75TVq+G5vT/JXV44LIJ48Gnps1+fz3cTj1PKjsS2gUUEzPzrxzzRNgVLWfHafUf0U7WoLMJI3rBLRrxIRRzx5lnJCwx5StGr/EPycMZ444hm3JKNIceZ9ilbN8CkyxjGeOOsZsl8NgiD4l/jaNQr+hhJhbyHY5uOt/et7ZoOg110ADzAyIDMwBzCbmJ99af8ArqY5ldB+T2sAAAAASUVORK5CYII=) no-repeat center;
     }
     &_title {
         font-size: 28px;
@@ -170,10 +170,21 @@
 }
 
 .regionForm {
-    &_selectcity {
+    &_selectCity {
         padding-right: 110px;
+        &Input{
+            margin: 0px 10px 0px 0px;
+            height: 30px;
+            line-height: 30px;
+            padding-left: 20px;
+        }
+        &Inner{
+            border: 1px solid @inputBorder;
+            .rounded(3px);
+
+        }
     }
-    &_selectcitydel {
+    &_selectCityDel {
         position: absolute;
         top: 7px;
         right: 8px;
@@ -181,13 +192,14 @@
         width: 19px;
         height: 19px;
 
-        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB0ElEQVQ4EZ1UsWoCQRDdPY54CELsbLQwRYikvloLIYV9KvtImvyB+A0pEtLapQ4oWMT60CrE0kKb6ywEOSOceW/jXpb1jJiBvb3dee8xO7OzcrvdihST4/H4crPZ3EopGxhXwITABhjdKIreq9VqZPOkLTYaja7jOH4FkAKHbA3HQ6/Xe2m327EGmWIyCIJ7OB6189iMQAa5XK5RqVS+iHU04VQh8nD8+nK5fOt0OkpHRbY72ocW/sfc8n3/mWI83icEkhyVy2WxWq1EGIZ7uoVCQWSzWTGdTk3fGvhzh1UzhYigUKlUEiSaxjX36bcs43lezWX5HSdJncLoiEikca2FZrNZasTIX9PlPVIM62MKomIin8+LQ0KkQsenWJIrS09FoIUWi0VqRAanyPPtZ3mH4NEYEYU42zk0hPg7d1HNANFdWI69HOmcEadTYHKo4+DTNTf5r4lmjijAdVqVyaGOy6bFvWGvZbhJ4z0yhX52fyOi37I1dVQH4NLewflkAU5Zqg5QF4zdjzAHp7A1ljzyuU5ejclkcsamRTHqGnhsplDqq8FnpN/v30CghcEc/mX0t4jXzw/BSWQmczgcotW8GqJsYvjwFTHmiOTPl/YbgvcD/BF3fDQAAAAASUVORK5CYII=) no-repeat 0 0;
     }
     &_autocomplete {
         .ui-autocomplete {
             overflow: scroll;
 
             background: @white;
+            border: 1px solid #AAA;
+
             .ui-menu-item {
                 padding: 5px 0;
 
@@ -227,10 +239,10 @@
 
 .searchForm {
     margin: 0;
-    &_searchfield {
+    &_searchField {
         padding: 0 80px 0 0;
     }
-    &_searchfieldinner {
+    &_searchFieldInner {
         position: relative;
 
         padding: 0 10px 0 35px;
@@ -242,7 +254,7 @@
             left: 3px;
         }
     }
-    &_searchinput {
+    &_searchInput {
         line-height: 36px;
 
         height: 36px;
@@ -306,6 +318,7 @@
     height: 100%;
 
     background-color: #fff;
+
     &.fixed {
         position: fixed;
         top: 0;
@@ -326,12 +339,10 @@
         text-align: center;
     }
     &.fixed-untill-640 {
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        top: 70px;
+        left: 50%;
+        margin-left: -160px;
         height: auto;
-        margin: auto;
         max-height: 545px;
 
         width: 320px;
@@ -342,6 +353,9 @@
         .modal-content {
             height: 100%;
         }
+    }
+    &-content {
+        overflow: auto;
     }
 }
 

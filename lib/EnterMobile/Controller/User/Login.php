@@ -18,7 +18,7 @@ use EnterMobile\Model;
 use EnterMobile\Model\Page\User\Login as Page;
 
 class Login {
-    use ConfigTrait, LoggerTrait, CurlTrait, RouterTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait, SessionTrait;
+    use ConfigTrait, LoggerTrait, CurlTrait, RouterTrait, SessionTrait, MustacheRendererTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -65,16 +65,14 @@ class Login {
             $curl->prepare($userItemQuery);
         }
 
-        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
-        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
-        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
-
         $curl->execute();
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
-
-        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
+        
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
 
         // запрос дерева категорий для меню
         $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
@@ -85,6 +83,8 @@ class Login {
         $curl->prepare($mainMenuQuery);
 
         $curl->execute();
+        
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // меню
         $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);

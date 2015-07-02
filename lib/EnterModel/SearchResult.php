@@ -44,8 +44,6 @@ namespace EnterModel\SearchResult {
         public $id;
         /** @var string */
         public $name;
-        /** @var string */
-        public $image;
         /** @var int */
         public $productCount;
 
@@ -55,7 +53,6 @@ namespace EnterModel\SearchResult {
         public function __construct(array $data = []) {
             if (array_key_exists('category_id', $data)) $this->id = (string)$data['category_id'];
             if (array_key_exists('category_name', $data)) $this->name = (string)$data['category_name'];
-            if (array_key_exists('category_image', $data)) $this->image = (string)$data['category_image'];
             if (array_key_exists('count', $data)) $this->productCount = (int)$data['count'];
         }
     }

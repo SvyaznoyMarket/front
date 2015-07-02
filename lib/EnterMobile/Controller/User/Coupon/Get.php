@@ -49,7 +49,7 @@ class Get {
         $curl->prepare($seriesLimitListQuery);
 
         // список серий купонов
-        $seriesListQuery = new Query\Coupon\Series\GetList(/*$user->isEnterprizeMember ? '1' : null*/null);
+        $seriesListQuery = new Query\Coupon\Series\GetList($user->isEnterprizeMember ? '1' : null);
         $seriesListQuery->setTimeout(3 * $config->coreService->timeout);
         $curl->prepare($seriesListQuery);
 

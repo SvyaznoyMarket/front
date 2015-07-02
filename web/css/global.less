@@ -4,6 +4,7 @@
 
 //основной путь всех файлов
 @base-url:"modules";
+@common-url:"../img";
 
 @displayTable:"display-table.min.htc";
 
@@ -257,6 +258,7 @@
 
 
 /*---------Оформление заказа 3.0----------*/
+@import "modules/order/order-layout.less";
 @import "modules/order/order.less";
 @import "modules/order/m.order.less";
 
@@ -265,6 +267,7 @@
 @import "modules/order/checkout/checkout-order.less";
 @import "modules/order/checkout/m.checkout-order.less";
 @import "modules/order/controls/controls.less";
+@import "modules/order/controls/m.controls.less";
 
 //форма личных данных пользователя
 @import "modules/order/authorize/order-authorize.less";
@@ -276,12 +279,15 @@
 //сниппеты для заказа
 @import "modules/order/shop-snippet/shop-snippet.less";
 @import "modules/order/address/address.less";
+@import "modules/order/address/m.address.less";
 
 //календарь .celedr
 @import "modules/order/popupFl/popupFl.less";
 @import "modules/order/popupFl/celedr.less";
 @import "modules/order/popupFl/selShop.less";
 @import "modules/order/popupFl/shopLst.less" ;
+
+@import "modules/order/single-order.less";
 
 
 /* ==========================================================================

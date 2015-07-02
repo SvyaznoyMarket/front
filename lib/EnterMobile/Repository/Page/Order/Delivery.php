@@ -31,6 +31,7 @@ class Delivery {
         $priceHelper = $this->getPriceHelper();
         $translateHelper = $this->getTranslateHelper();
         $dateHelper = $this->getDateHelper();
+        $pointRepository = new Repository\Partial\Point();
 
         // заголовок
         $page->title = 'Оформление заказа - Способ получения - Enter';
@@ -41,9 +42,9 @@ class Delivery {
             'name' => $request->region->name,
         ];
 
-        $page->content->deliveryForm['url'] = $router->getUrlByRoute(new Routing\Order\Delivery());
+        $page->content->deliveryForm['url'] = $router->getUrlByRoute(new Routing\Order\Delivery(), ['shopId' => $request->shopId]);
 
-        $page->content->form->url = $router->getUrlByRoute(new Routing\Order\Create());
+        $page->content->form->url = $router->getUrlByRoute(new Routing\Order\Create(), ['shopId' => $request->shopId]);
         $page->content->form->errorDataValue = $templateHelper->json($request->formErrors);
 
         $regionModel = $request->region;
@@ -93,14 +94,14 @@ class Delivery {
                     $orderModel->seller
                     ? [
                         'name' => $orderModel->seller->name,
-                        'url'  => $orderModel->seller->offerUrl,
+                        'url'  => str_replace('www.enter.ru', 'm.enter.ru', $orderModel->seller->offerUrl),
                     ]
                     : false,
                 'sum'            => [
                     'name'  => $priceHelper->format($orderModel->sum),
                     'value' => $orderModel->sum,
                 ],
-                'delivery'       => call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$deliveryGroupModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
+                'delivery'       => call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$orderModel, &$deliveryGroupModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex, &$pointRepository) {
                     $delivery = false;
 
                     if ($deliveryModel = $orderModel->delivery) {
@@ -144,11 +145,12 @@ class Delivery {
                                     'id'      => $point->id,
                                     'name'    => $point->name,
                                     'group'   => [
-                                        'token' => $pointGroup->token,
-                                        'name'  => $pointGroup->blockName,
+                                        'token'     => $pointGroup->token,
+                                        'shortName' => $pointGroup->blockName,
+                                        'name'      => $pointRepository->translateGroupName($pointGroup->blockName),
                                     ],
                                     'address' => $point->address,
-                                    'icon'    => $this->getPointIcon($pointGroup->token),
+                                    'icon'    => $pointRepository->getIconByType($pointGroup->token),
                                     'subway'  =>
                                         isset($point->subway[0])
                                             ? [
@@ -170,7 +172,7 @@ class Delivery {
                             ,
                             'date'        =>
                                 $deliveryModel->date
-                                ? mb_strtolower($dateHelper->strftimeRu('%e %B2 %G, %A', $deliveryModel->date))
+                                ? mb_strtolower($dateHelper->strftimeRu('%e %B2 %G', $deliveryModel->date)) // если нужен день недели, то '%e %B2 %G, %A'
                                 : 'Выбрать'
                             ,
                             'interval'    =>
@@ -265,7 +267,7 @@ class Delivery {
                             'url'        => $productModel->url,
                             'image'      =>
                                 isset($productModel->media->photos[0])
-                                ? (string)(new Routing\Product\Media\GetPhoto($productModel->media->photos[0], 'product_160'))
+                                ? (new \EnterRepository\Media())->getSourceObjectByItem($productModel->media->photos[0], 'product_160')->url
                                 : null
                             ,
                         ];
@@ -303,7 +305,7 @@ class Delivery {
 
                     return $discounts;
                 }),
-                'pointJson'      => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$regionModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex) {
+                'pointJson'      => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$regionModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex, &$pointRepository) {
                     $points = [];
                     $filtersByToken = [
                         'type' => [],
@@ -344,10 +346,10 @@ class Delivery {
                             'id'        => $possiblePointModel->id,
                             'name'      => $point->name,
                             'group'     => [
-                                'name'  => $pointGroup->blockName,
+                                'name'  => $pointRepository->translateGroupName($pointGroup->blockName),
                                 'value' => $pointGroup->token,
                             ],
-                            'icon'      => $this->getPointIcon($pointGroup->token),
+                            'icon'      => $pointRepository->getIconByType($pointGroup->token),
                             'date'      => [
                                 'name'  => $date ? $dateHelper->humanizeDate($date) : null,
                                 'value' => $date ? $date->getTimestamp() : null,
@@ -527,14 +529,15 @@ class Delivery {
 
                         if (in_array($paymentMethodId, ['1', '2', '5'])) {
                             $paymentMethods[] = [
-                                'id'        => $paymentMethodModel->id,
-                                'name'      => $paymentMethodModel->name,
-                                'isActive'  =>
+                                'id'          => $paymentMethodModel->id,
+                                'name'        => $paymentMethodModel->name,
+                                'description' => $paymentMethodModel->description,
+                                'isActive'    =>
                                     $orderModel->paymentMethodId
                                     ? ($orderModel->paymentMethodId == $paymentMethodModel->id)
                                     : ('1' == $paymentMethodModel->id)
                                 ,
-                                'dataValue' => $templateHelper->json([
+                                'dataValue'   => $templateHelper->json([
                                     'change' => [
                                         'orders' => [
                                             [
@@ -544,10 +547,10 @@ class Delivery {
                                         ],
                                     ],
                                 ]),
-                                'order'     => [
+                                'order'       => [
                                     'id' => $orderModel->blockName,
                                 ],
-                                'isOnline'  => $paymentMethodModel->isOnline,
+                                'isOnline'    => $paymentMethodModel->isOnline,
                             ];
                         }
                     }
@@ -575,18 +578,21 @@ class Delivery {
                     return $messages;
                 }),
                 'addressFormJson' => json_encode([
-                    'url'    => $router->getUrlByRoute(new Routing\Order\Delivery()),
+                    'url'    => $router->getUrlByRoute(new Routing\Order\Delivery(), ['shopId' => $request->shopId]),
                     'fields' => [
-                        'street'    => [
+                        'street'     => [
                             'name' => 'change[user][address][street]',
                         ],
-                        'building'  => [
+                        'streetType' => [
+                            'name' => 'change[user][address][streetType]',
+                        ],
+                        'building'   => [
                             'name' => 'change[user][address][building]',
                         ],
-                        'apartment' => [
+                        'apartment'  => [
                             'name' => 'change[user][address][apartment]',
                         ],
-                        'kladrId'   => [
+                        'kladrId'    => [
                             'name' => 'change[user][address][kladrId]',
                         ],
                     ],
@@ -602,7 +608,7 @@ class Delivery {
                     ]),
                 ], JSON_UNESCAPED_UNICODE),
                 'discountFormJson' => json_encode([
-                    'url'       => $router->getUrlByRoute(new Routing\Order\Delivery()),
+                    'url'       => $router->getUrlByRoute(new Routing\Order\Delivery(), ['shopId' => $request->shopId]),
                     'checkUrl'  => $router->getUrlByRoute(new Routing\Certificate\Check()),
                     'couponUrl' => $request->user ? $router->getUrlByRoute(new Routing\User\Coupon\Get()) : '',
                     'fields'    => [
@@ -660,7 +666,13 @@ class Delivery {
             : false
         ;
 
-        $page->content->errors = call_user_func(function() use (&$splitModel) {
+        $page->content->dataValue = $templateHelper->json([
+            'order' => [
+                'count' => count($splitModel->orders),
+            ]
+        ]);
+
+        $page->content->errors = call_user_func(function() use (&$splitModel, &$request) {
             $errors = [];
 
             foreach ($splitModel->errors as $errorModel) {
@@ -675,10 +687,24 @@ class Delivery {
                 ];
             }
 
+            foreach ($request->formErrors as $errorModel) {
+                if (!isset($errorModel['message'])) continue;
+
+                $errors[] = [
+                    'message' => $errorModel['message'],
+                ];
+            }
+
             return $errors;
         });
 
         $page->content->isUserAuthenticated = (bool)$request->user;
+
+        $page->steps = [
+            ['name' => 'Получатель', 'isPassive' => true, 'isActive' => false, 'url' => $router->getUrlByRoute(new Routing\Order\Index(), ['shopId' => $request->shopId])],
+            ['name' => 'Самовывоз и доставка', 'isPassive' => true, 'isActive' => true],
+            ['name' => 'Оплата', 'isPassive' => false, 'isActive' => false],
+        ];
 
         // шаблоны mustache
         (new Repository\Template())->setListForPage($page, [
@@ -727,18 +753,25 @@ class Delivery {
      * @param string $groupToken
      * @return string
      */
-    private function getPointIcon($groupToken) {
+    public function getPointIcon($groupToken) {
         $icon = null;
 
         switch ($groupToken) {
             case 'self_partner_pickpoint_pred_supplier':
             case 'self_partner_pickpoint':
+            case 'pickpoint':
                 $icon = 'pickpoint';
                 break;
             case 'self_partner_svyaznoy_pred_supplier':
             case 'self_partner_svyaznoy':
             case 'shops_svyaznoy':
+            case 'svyaznoy':
                 $icon = 'svyaznoy';
+                break;
+            case 'self_partner_hermes_pred_supplier':
+            case 'self_partner_hermes':
+            case 'hermes':
+                $icon = 'hermes';
                 break;
             default:
                 $icon = 'enter';

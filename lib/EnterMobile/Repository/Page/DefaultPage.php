@@ -75,6 +75,13 @@ class DefaultPage {
                     ]
                     : null,
             ],
+            'region' =>
+                $request->region
+                ? [
+                    'name' => $request->region->name,
+                ]
+                : null
+            ,
         ]);
 
         $page->dataUser = $templateHelper->json($request->user ? [
@@ -138,7 +145,7 @@ class DefaultPage {
         $page->googleAnalytics = false;
         if ($config->googleAnalytics->enabled) {
             $page->googleAnalytics = new Page\GoogleAnalytics();
-            $page->googleAnalytics->regionName = $request->region->name;
+            $page->googleAnalytics->regionName = $request->region ? $request->region->name : null;
             $page->googleAnalytics->userAuth = $request->user ? '1' : '0';
             $page->googleAnalytics->hostname = $config->hostname;
 

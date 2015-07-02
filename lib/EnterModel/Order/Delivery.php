@@ -32,4 +32,13 @@ class Delivery {
             } catch(\Exception $e) {}
         }
     }
+
+    /**
+     * @param array $data
+     */
+    public function fromArray(array $data) {
+        if (array_key_exists('price', $data)) $this->price = (float)$data['price'];
+        if (array_key_exists('date', $data) && $data['date']) $this->date = $data['date'];
+        if (array_key_exists('typeId', $data)) $this->typeId = (string)$data['typeId'];
+    }
 }

@@ -6,6 +6,8 @@ namespace EnterMobile\Model\Page\Order {
     class Delivery extends Page\DefaultPage {
         /** @var Delivery\Content */
         public $content;
+        /** @var array */
+        public $steps = [];
 
         public function __construct() {
             parent::__construct();
@@ -37,6 +39,8 @@ namespace EnterMobile\Model\Page\Order\Delivery {
         public $orderCountMessage;
         /** @var bool */
         public $isUserAuthenticated; // TODO: перенести на уровень выше
+        /** @var string */
+        public $dataValue;
 
         public function __construct() {
             parent::__construct();

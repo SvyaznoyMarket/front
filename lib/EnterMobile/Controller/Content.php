@@ -42,15 +42,13 @@ class Content {
             $curl->prepare($userItemQuery);
         }
 
-        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
-        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
-        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
-
         $curl->execute();
 
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
-
-        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
+        
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
 
         $categoryListQuery = new Query\Product\Category\GetTreeList($region->id, 3);
         $curl->prepare($categoryListQuery);
@@ -60,8 +58,10 @@ class Content {
 
         $contentItemQuery = new Query\Content\GetItemByToken($contentToken, false);
         $curl->prepare($contentItemQuery);
-
+        
         $curl->execute();
+        
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // wordpress (content.enter.ru) при отсутствии запрашиваемой страницы вместо 404 отдаёт 301 редирект на запрашиваемую страницу со слешем в конце
         if ($contentItemQuery->getError() && in_array($contentItemQuery->getError()->getCode(), [404, 301]))

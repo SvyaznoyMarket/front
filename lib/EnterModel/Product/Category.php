@@ -3,17 +3,12 @@
 namespace EnterModel\Product {
 
     use EnterModel as Model;
-    use EnterAggregator\ConfigTrait; // FIXME!!!
 
     class Category {
-        use ConfigTrait;
-
         /** @var string */
         public $id;
         /** @var string */
         public $ui;
-        /** @var string|null */
-        public $parentId;
         /** @var string */
         public $name;
         /** @var string */
@@ -22,68 +17,40 @@ namespace EnterModel\Product {
         public $link;
         /** @var string */
         public $path;
-        /**
-         * @deprecated
-         * @var string
-         */
-        public $image;
         /** @var int */
         public $level;
-        /** @var bool */
-        public $hasChildren;
-        /** @var Model\Product\Category[] */
-        public $children = [];
         /** @var int */
         public $productCount;
-        /** @var int */
-        public $productGlobalCount;
-        /** @var Model\Product\Category|null */
-        public $parent;
-        /** @var Model\Product\Category[] */
-        public $ascendants = [];
-        /** @var Model\Product\Category\Media */
+        /** @var Model\MediaList */
         public $media;
         /** @var Model\Product\Category\Meta */
         public $meta;
         /** @var bool */
         public $isFurniture;
+        /** @var bool */
+        public $hasChildren;
+        /** @var Model\Product\Category[] */
+        public $children = [];
+        /** @var Model\Product\Category|null */
+        public $parent;
 
         /**
-         * @param array $data
+         * @param mixed $data
          */
-        public function __construct(array $data = []) {
-            //$applicationTags = (array)$this->getConfig()->applicationTags;
-
-            $this->media = new Model\Product\Category\Media();
-
+        public function __construct($data = []) {
             if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
-            if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui']; // FIXME: deprecated
+            if (array_key_exists('core_id', $data)) $this->id = (string)$data['core_id'];
             if (array_key_exists('uid', $data)) $this->ui = (string)$data['uid'];
-            if (array_key_exists('parent_id', $data)) $this->parentId = $data['parent_id'] ? (string)$data['parent_id'] : null;
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
-            if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
             if (array_key_exists('slug', $data)) $this->token = (string)$data['slug'];
-            if (array_key_exists('link', $data)) $this->link = (string)$data['link']; // элемент link возвращает метод https://scms.enter.ru/api/category/tree
-            if (array_key_exists('url', $data)) $this->link = (string)$data['url']; // элемент url возвращает метод https://scms.enter.ru/category/get/v1
+            if (array_key_exists('link', $data)) $this->link = (string)$data['link']; // Возвращается методом https://scms.enter.ru/api/category/tree
+            if (array_key_exists('url', $data)) $this->link = (string)$data['url']; // Возвращается методами https://scms.enter.ru/category/get/v1 и https://scms.enter.ru/product/get-description/v1
             if (array_key_exists('is_furniture', $data)) $this->isFurniture = (bool)$data['is_furniture'];
-
             $this->path = trim(preg_replace('/^\/catalog\//', '', $this->link), '/');
-            if (isset($data['medias'][0])) {
-                foreach ($data['medias'] as $mediaItem) {
-                    if (!isset($mediaItem['sources'][0])) continue;
-
-                    $media = new Model\Media($mediaItem);
-
-                    if ('image' == $media->type) {
-                        $this->media->photos[] = new Model\Media($mediaItem);
-                    }
-                }
-            }
+            $this->media = new Model\MediaList(isset($data['medias']) ? $data['medias'] : []);
             if (array_key_exists('level', $data)) $this->level = (int)$data['level'];
             if (array_key_exists('has_children', $data)) $this->hasChildren = (bool)$data['has_children'];
             if (array_key_exists('product_count', $data)) $this->productCount = (int)$data['product_count'];
-            if (array_key_exists('product_count_global', $data
-            )) $this->productGlobalCount = (int)$data['product_count_global'];
             if (isset($data['children']) && is_array($data['children'])) {
                 foreach ($data['children'] as $childItem) {
                     if (!isset($childItem['uid'])) continue;
@@ -91,7 +58,7 @@ namespace EnterModel\Product {
                 }
             }
 
-            if (isset($data['parent']['uid'])) {
+            if (!empty($data['parent'])) {
                 $this->parent = new Model\Product\Category($data['parent']);
             }
 
@@ -99,6 +66,20 @@ namespace EnterModel\Product {
             if (isset($data['html_title'])) $this->meta->title = (string)$data['html_title'];
             if (isset($data['meta_keywords'])) $this->meta->keywords = (string)$data['meta_keywords'];
             if (isset($data['meta_description'])) $this->meta->description = (string)$data['meta_description'];
+        }
+
+        /**
+         * @param array $data
+         */
+        public function fromArray(array $data) {
+            if (isset($data['id'])) $this->id = (string)$data['id'];
+            if (isset($data['ui'])) $this->ui = (string)$data['ui'];
+            if (isset($data['name'])) $this->name = (string)$data['name'];
+            if (isset($data['link'])) $this->link = (string)$data['link'];
+            if (isset($data['parent'])) {
+                $this->parent = new Model\Product\Category();
+                $this->parent->fromArray($data['parent']);
+            }
         }
     }
 }

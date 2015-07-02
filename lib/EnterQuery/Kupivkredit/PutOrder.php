@@ -59,11 +59,12 @@ class PutOrder extends Query {
 
             $categoryNames = [];
             if ($product->category) {
-                foreach ($product->category->ascendants as $ascendant) {
-                    $categoryNames[] = $ascendant->name;
-                }
-
-                $categoryNames[] = $product->category->name;
+                $category = $product->category;
+                do {
+                    $categoryNames[] = $category->name;
+                } while ($category = $category->parent);
+                
+                $categoryNames = array_reverse($categoryNames);
             }
 
             $orderData['items'][] = [

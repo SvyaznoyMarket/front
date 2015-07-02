@@ -1,4 +1,4 @@
-<div>
+<div class="checkout-done-popup">
     <ul class="checkout-checkbox-lst">
     {{#paymentMethods}}
         <li class="checkout-checkbox-lst__i">
@@ -6,24 +6,23 @@
                 type="radio"
                 id="order-{{order.id}}-delivery-onlinePayment-method-{{id}}"
                 name="order-{{order.id}}-onlinePayment"
-                class="js-order-delivery-onlinePayment-radio custom-input custom-input--defradio"
+                class="js-order-complete-onlinePayment-radio custom-input custom-input--defradio-big"
                 data-container-selector="#order-{{order.id}}-delivery-onlinePayment-container"
                 data-value="{{&dataValue}}"
+                value="{{id}}"
             />
 
             <label class="custom-label" for="order-{{order.id}}-delivery-onlinePayment-method-{{id}}">
-                <div class="custom-label-flex">
+                <div class="custom-label-flex parced-items">
                     <span class="custom-label_tx">{{name}}</span>
-                        <span class="checkout-payment__icon-wrap">
-                        {{#images}}<img src="/css/modules/order/img/{{.}}" />{{/images}}
-                        </span>
+                    <span class="checkout-payment__icon-wrap">
+                    {{#images}}<img src="/css/modules/order/img/{{.}}" />{{/images}}
+                    </span>
                 </div>
             </label>
         </li>
     {{/paymentMethods}}
     </ul>
 
-    <div id="order-{{order.id}}-delivery-onlinePayment-container" data-url="{{url}}"></div>
-
-    <p class="checkout-checkbox-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
+    <div class="btn-container" id="order-{{order.id}}-delivery-onlinePayment-container" data-url="{{url}}"></div>
 </div>

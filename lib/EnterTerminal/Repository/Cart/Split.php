@@ -22,12 +22,9 @@ class Split {
 
                 // Подмешиваем URL картинок для типов точек самовывоза
                 call_user_func(function() use(&$response) {
+                    $pointRepository = new \EnterRepository\Point();
                     foreach ($response->split['points'] as $pointToken => &$pointGroup) {
-                        $image = (new \EnterRepository\Cart())->getPointImageUrl($pointToken);
-
-                        if ($image) {
-                            $pointGroup['image_url'] = $image;
-                        }
+                        $pointGroup['media'] = $pointRepository->getMedia($pointToken);
                     }
                 });
 

@@ -21,6 +21,7 @@ class Index {
         $referer = isset($request->server['HTTP_REFERER']) ? $request->server['HTTP_REFERER'] : '/';
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
         $curl = $this->getCurl();
+        $productRepository = new \EnterRepository\Product();
         $userItemQuery = null;
         $cartSplitQuery = null;
         $createOrderQuery = null;
@@ -74,7 +75,30 @@ class Index {
                 throw new \Exception('Ошибка при создании заявки');
             }
 
-            $products = $this->getProducts($orderCreatePacketResponse[0]['product'], $regionId);
+            $productIds = [];
+            foreach ($orderCreatePacketResponse[0]['product'] as $product) {
+                $productIds[] = $product['id'];
+            }
+
+            $curl = $this->getCurl();
+
+            $productQuery = new Query\Product\GetListByIdList($productIds, $regionId);
+            $curl->prepare($productQuery);
+
+            $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                $productIds,
+                [
+                    'category' => true,
+                    'label'    => true,
+                    'brand'    => true,
+                ]
+            );
+            $curl->prepare($descriptionListQuery);
+
+            $curl->execute();
+
+            $products = $productRepository->getIndexedObjectListByQuery($productQuery);
+            $productRepository->setDescriptionForListByListQuery($products, [$descriptionListQuery]);
 
             return $request->isXmlHttpRequest() ? new Http\JsonResponse([
                 'order' => [
@@ -87,16 +111,19 @@ class Index {
                     'region' => [
                         'name' => $orderCreatePacketResponse[0]['geo']['name'],
                     ],
-                    'products' => array_map(function($product) use(&$products) {
+                    'products' => array_map(function($product) use(&$products, $productRepository) {
+                        $coreProduct = $productRepository->getObjectFromListById($products, $product['id']);
+                        if (!$coreProduct) {
+                            return [];
+                        }
+
                         return [
-                            'id' => $product['id'],
-                            'name' => $products[$product['id']]->name,
-                            'article' => $products[$product['id']]->article,
-                            'categories' => $products[$product['id']]->category ? array_map(function(Model\Product\Category $category) {
-                                return [
-                                    'name' => $category->name
-                                ];
-                            }, array_merge($products[$product['id']]->category->ascendants, [$products[$product['id']]->category])) : [],
+                            'id' => $coreProduct->id,
+                            'name' => $coreProduct->name,
+                            'article' => $coreProduct->article,
+                            'categories' => $coreProduct->category ? call_user_func($self = function(Model\Product\Category $category) use (&$self) {
+                                return array_merge($category->parent ? $self($category->parent) : [], [['name' => $category->name]]);
+                            }, $coreProduct->category) : [],
                             'price' => $product['price'],
                             'quantity' => $product['quantity'],
                         ];
@@ -189,20 +216,5 @@ class Index {
         }
 
         return $metas;
-    }
-
-    /**
-     * @return Model\Product[]
-     */
-    private function getProducts(array $products, $regionId) {
-        $productIds = [];
-        foreach ($products as $product) {
-            $productIds[] = $product['id'];
-        }
-
-        $productQuery = new Query\Product\GetListByIdList($productIds, $regionId);
-        $this->getCurl()->query($productQuery);
-
-        return (new \EnterRepository\Product())->getIndexedObjectListByQuery($productQuery);
     }
 }

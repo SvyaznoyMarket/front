@@ -20,7 +20,7 @@ class Order {
 
         $orderId = $request->query['orderId'];
 
-        $user = new \EnterRepository\User();
+        $user = new \EnterMobile\Repository\User();
         $token = $user->getTokenByHttpRequest($request);
 
         $orderQuery = new Query\Order\GetItemById('site', $token, $orderId);

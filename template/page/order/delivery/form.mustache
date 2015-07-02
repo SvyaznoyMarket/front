@@ -1,141 +1,27 @@
 <section class="checkout">
-    <form class="js-order-delivery-form" action="{{deliveryForm.url}}" data-container-selector=".id-order-form-container"></form>
+    <form class="js-order-delivery-form" action="{{deliveryForm.url}}" data-container-selector=".id-order-form-container" data-value="{{&dataValue}}" data-error="{{&form.errorDataValue}}"></form>
 
     <h1 class="checkout__tl">Самовывоз и доставка</h1>
 
+    <div class="js-order-error-container">
     {{#errors}}
-        <p>{{message}}</p>
+        <div class="checkout__err">{{message}}</div>
     {{/errors}}
-
-    {{#orderCountMessage}}
-        <p class="orderInf">Товары будут оформлены как <strong class="mdb">{{orderCountMessage}}</strong></p>
-    {{/orderCountMessage}}
-
-    <div class="orderInf clearfix">
-        <div class="orderInf_tx">Ваш регион: <strong>{{region.name}}</strong></div>
-
-        <div class="orderInf_l">От региона зависят доступные способы получения и оплаты заказов.</div>
-
-        <button class="jsSelectCity orderInf_r btn-transparent btn-transparent--normal"><span class="bb-dotted">Изменить регион</span></button>
     </div>
 
-    <!--
-            {{! разбиение заказа, адрес доставки не выбран }}
-            <div class="checkout-order">
-                <div class="checkout-order-head checkout-order__box checkout-order__box--head">
-                    <strong class="checkout-order-head__title">Заказ №1</strong>
-                    <a class="checkout-order-head__info checkout-order-head__right" href=""><span class="bb-dotted">Информация и оферта</span></a>
-                    <span class="checkout-order-head__vendor checkout-order-head__right">продавец: ООО «Связной»</span>
-                </div>
+    {{#orderCountMessage}}
+        <div class="checkout-order-info clearfix">
+            <span class="checkout-order-info__tx">Товары будут оформлены как <strong class="mdb">{{orderCountMessage}}</strong></span>
+        </div>
+    {{/orderCountMessage}}
 
-                <div class="checkout-order__box checkout-order__box--stretch">
-                    <menu class="checkout-delivery-type clearfix">
-                        <li class="checkout-delivery-type__item active js-delivery-type-name" data-type="delivery-type-self">
-                            <span class="checkout-delivery-type__text">Самовывоз</span>
-                        </li>
+    <div class="checkout-order-info clearfix">
+        <div class="checkout-order-info__tx ">Ваш регион: <strong>{{region.name}}</strong></div>
 
-                        <li class="checkout-delivery-type__item js-delivery-type-name" data-type="delivery-type-buy">
-                            <span class="checkout-delivery-type__text">Доставка</span>
-                        </li>
-                    </menu>
+        <div class="checkout-order-info__l">От региона зависят доступные способы получения и оплаты заказов.</div>
 
-                    <div class="checkout-order__inn box-show js-delivery-type" id="delivery-type-self">
-
-                        <button class="btn-transparent btn-transparent--normal js-order-btn" data-btn="select-shop">
-                            <span class="bb-dotted">Выбрать точку самовывоза</span>
-                        </button>
-
-                    </div>
-
-                    <div class="checkout-order__inn js-delivery-type" id="delivery-type-buy">
-                        <div class="checkout-celendar js-popup-box-celendar-link">15 сентября 2014, воскресенье</div>
-
-                        <div class="custom-select custom-select--button">
-                            <span class="custom-select__value js-order-btn" data-btn="select-time">10:00…18:00 <i class="caret"></i></span>
-
-                            <ul class="custom-select-list js-order-box" data-box="data-select-time">
-                                <li class="custom-select-list__item">10:00…18:00</li>
-                                <li class="custom-select-list__item">8:00…12:00</li>
-                                <li class="custom-select-list__item">12:00…18:00</li>
-                            </ul>
-                        </div>
-
-                        <div class="checkout-address">
-                            <div class="checkout-address__title"><strong>Адрес</strong> для всех заказов с доставкой</div>
-
-                            <button class="orderInf_r btn-transparent btn-transparent--normal"><span class="bb-dotted">Указать адрес</span></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="checkout-order__box checkout-order__box--light">
-                    <div class="checkout-order-items table error">
-                        <div class="checkout-order-items__left table_cell">
-                            <img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg">
-                        </div>
-
-                        <div class="checkout-order-items__right table_cell">
-                            <div class="checkout-order-items__name">
-                                <a href="">
-                                    Самокат<br>
-                                    JD Bug Classic MS-305 синий JD Bug Classic MS-305 синий
-                                </a>
-                            </div>
-
-                            <div class="checkout-order-items__data l">5 200 <span class="rubl">p</span></div>
-                            <div class="checkout-order-items__data l ta-c">1 шт.</div>
-                            <div class="checkout-order-items__data l ta-r">5 200 <span class="rubl">p</span></div>
-                        </div>
-                    </div>
-
-                    <div class="checkout-order-items table">
-                        <div class="checkout-order-items__left table_cell">
-                            <img alt="" src="http://fs03.enter.ru/1/1/163/4a/108293.jpg">
-                        </div>
-
-                        <div class="checkout-order-items__right table_cell">
-                            <div class="checkout-order-items__name">
-                                <a href="">
-                                    Самокат<br>
-                                    JD Bug Classic MS-305 синий JD Bug Classic MS-305 синий
-                                </a>
-                            </div>
-
-                            <div class="checkout-order-items__data l">5 200 <span class="rubl">p</span></div>
-                            <div class="checkout-order-items__data l ta-c">1 шт.</div>
-                            <div class="checkout-order-items__data l ta-r">5 200 <span class="rubl">p</span></div>
-                        </div>
-                    </div>
-                </div>
-
-
-        {{! общая стоимость заказа }}
-                <div class="checkout-summary checkout-order__box table">
-                    <div class="table_cell">
-                        <button class="btn-transparent btn-transparent--normal"><span class="bb-dotted">Добавить скидку</span></button>
-                    </div>
-
-                    <div class="table_cell ta-r">
-                        <div class="checkout-summary__item checkout-summary__item--val mb-10">150 <span class="rubl">p</span></div>
-                        <div class="checkout-summary__item mb-10">Доставка:</div>
-
-                        <div class="checkout-summary__item checkout-summary__item--val mb-5 grey-light clear-r l">42 334 <span class="rubl">p</span></div>
-
-                        <div class="checkout-summary__item checkout-summary__item--val clear-r l">2 334 <span class="rubl">p</span></div>
-                        <div class="checkout-summary__item l">Итого:</div>
-                    </div>
-                </div>
-                {{! общая стоимость заказа }}
-
-            </div>
-            {{! разбиение заказа, адрес доставки не выбран }}
-            <div class="btn-container btn-container--orange">
-                <input type="checkbox" class="custom-input custom-input--check" id="accept" name="" value="" />
-                <label class="order-accept custom-label custom-label--top" for="accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
-
-                <button class="btn btn--submit btn--orange btn--big">Оформить</button>
-            </div>
-            -->
+        <button class="jsSelectCity checkout-order-info__r btn-transparent btn-transparent--normal"><span class="bb-dotted">Изменить регион</span></button>
+    </div>
 
     {{#orders}}
     {{! разбиение заказа }}
@@ -144,7 +30,7 @@
                 <strong class="checkout-order-head__title">{{name}}</strong>
                 {{#seller}}
                     <a class="checkout-order-head__info checkout-order-head__right" href="{{url}}" target="_blank"><span class="bb-dotted">Информация и оферта</span></a>
-                    <span class="checkout-order-head__vendor checkout-order-head__right">продавец: {{name}}</span>
+                    <span class="checkout-order-head__vendor checkout-order-head__right">{{name}}</span>
                 {{/seller}}
             </div>
 
@@ -182,7 +68,7 @@
             {{! общая стоимость заказа }}
             <div class="checkout-summary checkout-order__box table">
                 <div class="table_cell">
-                    <button class="btn-transparent btn-transparent--normal js-order-delivery-discountPopup-link" data-modal-position="fixed" data-modal-title="Добавить скидку" data-storage-selector="#order-{{id}}-discount-data"><span class="bb-dotted">Добавить скидку</span></button>
+                    <a href="#" class="btn-transparent btn-transparent--normal js-order-delivery-discountPopup-link" data-modal-position="fixed" data-modal-title="Добавить скидку" data-storage-selector="#order-{{id}}-discount-data"><span class="bb-dotted">Добавить скидку</span></a>
                 </div>
 
                 <div class="table_cell ta-r">
@@ -211,12 +97,17 @@
     {{! разбиение заказа }}
     {{/orders}}
 
-    <div class="btn-container btn-container--orange">
-        <form action="{{form.url}}" method="post">
-            <input required="required" type="checkbox" class="custom-input custom-input--check" id="id-orderForm-accept" name="accept" value="1" />
-            <label class="order-accept custom-label custom-label--top" for="id-orderForm-accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
-
+    {{#orders.0}}
+    <div class="js-order-form btn-container btn-container--orange">
+        <form action="{{form.url}}" method="post" novalidate>
+            <div class="custom-control">
+                <div class="common-control-checkbox-wrap">
+                    <input type="checkbox" class="custom-input custom-input--check js-order-form-accept-field js-validator-form-field" id="id-orderForm-accept" name="accept" data-field="accept" value="1" required data-field="accept"/>
+                    <label class="order-accept custom-label custom-label--top" for="id-orderForm-accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
+                </div>
+            </div>
             <button type="submit" class="btn btn--submit btn--orange btn--big">Оформить</button>
         </form>
     </div>
+    {{/orders.0}}
 </section>

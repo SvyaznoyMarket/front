@@ -1,10 +1,16 @@
 {{>page/order/header}}
 
-<div class="content">
+<div class="content js-order-content">
     <div class="contentBox640">
 
 	    <section class="checkout">
 	        <h1 class="checkout__tl">Оформление заказа</h1>
+
+            <div class="js-order-error-container">
+			{{#errors}}
+				<div class="checkout__err">{{message}}</div>
+			{{/errors}}
+            </div>
 
 			{{>page/order/index/form}}
 	    </section>

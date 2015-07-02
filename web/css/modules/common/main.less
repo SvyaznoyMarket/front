@@ -308,24 +308,6 @@ textarea[contenteditable] {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAYAAACQN/8FAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAuElEQVQoFYXR3QnCMBSG4XOlRfBGvA/1ZwQXcAjH6BiCFnUQdQq9EeoSjiAiFIX4nsIJsa148dA235c0JOK9lzYi0sUYiea/SgMKS9wxby0S9JHjjStco8hgDxlKXDDT0leRwQRbPHDAyEqhyGAHK2jpDBeX4uKE8IkbFvVSXNQV19AVT3D1cjgeQt3jDlreo7lHm004xAYvHJGGzF7sSRifY8G30yz82orVoMj/m7EJrKR3PUV11x/05fDNuFCCQAAAAABJRU5ErkJggg==) no-repeat 10px 50%;
 }
 // основные стили элементов форм
-.textfield {
-    line-height: 35px;
-
-    display: block;
-
-    height: 35px;
-    margin: 0 0 15px;
-    padding-left: 10px;
-
-    border: 1px solid @inputBorder;
-
-    .rounded(4px);
-    .box-sizing();
-    &-err {
-        border-width: 3px;
-        border-color: @redErr;
-    }
-}
 
 .btnsubmit {
     font-size: 14px;
@@ -471,4 +453,57 @@ textarea[contenteditable] {
     &-box {
         display: none;
     }
+}
+
+.m-loader {
+    position: relative;
+    &:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        content: '';
+
+        background: rgba(255,255,255,.6);
+        z-index: 99;
+    }
+    &:after {
+        background: url("@{common-url}/loader/loader.png") no-repeat 50% 50%;
+        position: fixed;
+        .animation(rotated 3.5s infinite linear);
+        top: 50%;
+        margin-top: -30px;
+        left: 50%;
+        margin-left: -30px;
+
+        width: 60px;
+        height: 60px;
+        z-index: 99;
+
+        content: '';
+    }
+}
+
+@keyframes rotated {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+        /* transform-origin: 50% 50%; */}
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+        /* transform-origin: 50% 50%; */}
+}
+@-webkit-keyframes rotated {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+        /* transform-origin: 50% 50%; */}
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+        /* transform-origin: 50% 50%; */}
 }

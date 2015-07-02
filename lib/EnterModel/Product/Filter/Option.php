@@ -15,7 +15,7 @@ class Option {
     public $quantity;
     /** @var int */
     public $globalQuantity;
-    /** @var Model\Media|null */
+    /** @var Model\MediaList|null */
     public $media;
 
     /**

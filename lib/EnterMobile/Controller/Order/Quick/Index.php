@@ -5,12 +5,14 @@ namespace EnterMobile\Controller\Order\Quick;
 use Enter\Http;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
-use EnterMobile\Controller;
 use EnterAggregator\SessionTrait;
+use EnterAggregator\RouterTrait;
+use EnterMobile\Controller;
+use EnterMobile\Routing;
 use EnterMobile\Repository;
 
 class Index {
-    use ConfigTrait, LoggerTrait, SessionTrait;
+    use ConfigTrait, LoggerTrait, SessionTrait, RouterTrait;
 
     /**
      * @param Http\Request $request
@@ -18,7 +20,9 @@ class Index {
      * @throws \Exception
      */
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
         $session = $this->getSession();
+        $router = $this->getRouter();
 
         $cartProduct = (new \EnterRepository\Cart())->getProductObjectByHttpRequest($request);
         if (!$cartProduct) {
@@ -28,27 +32,24 @@ class Index {
             throw new \Exception('Количество товара должно быть большим нуля');
         }
 
-        // FIXME: заглушка
-        $sessionKey = 'user/cart/one-click';
+        $shopId = is_scalar($request->query['shopId']) ? $request->query['shopId'] : null;
+        if (!$shopId) {
+            throw new \Exception('Не передан ид магазина');
+        }
 
         $cartData = [
             'product' => [
                 $cartProduct->id => [
+                    'id'       => $cartProduct->id,
                     'quantity' => $cartProduct->quantity,
                 ],
             ],
+            'shopId'  => $shopId,
         ];
 
-        $session->set($sessionKey, $cartData);
+        $session->set($config->cart->quickSessionKey, $cartData);
+        $session->remove($config->order->splitSessionKey);
 
-        $url = strtr($request->getSchemeAndHttpHost(), [
-            'm.'    => '',
-            ':8080' => '', //FIXME: костыль для nginx-а
-        ]) . '/orders/one-click/new';
-        if ($request->query['shopId']) {
-            $url .= (false === strpos($url, '?') ? '?' : '&') . http_build_query(['shopId' => $request->query['shopId']]);
-        }
-
-        return (new \EnterAggregator\Controller\Redirect())->execute($url, 302);
+        return (new \EnterAggregator\Controller\Redirect())->execute($router->getUrlByRoute(new Routing\Order\Index(), ['shopId' => $shopId]), 302);
     }
 }

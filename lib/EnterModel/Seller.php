@@ -26,4 +26,15 @@ class Seller {
         if (array_key_exists('offer', $data)) $this->offerUrl = (string)$data['offer'];
         if (array_key_exists('offer_text', $data)) $this->offerText = (string)$data['offer_text'];
     }
+
+    /**
+     * @param array $data
+     */
+    public function fromArray(array $data) {
+        if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+        if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
+        if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
+        if (array_key_exists('offerUrl', $data)) $this->offerUrl = (string)$data['offerUrl'];
+        if (array_key_exists('offerText', $data)) $this->offerText = (string)$data['offerText'];
+    }
 }

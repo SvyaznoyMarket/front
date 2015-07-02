@@ -64,16 +64,14 @@ class Index {
             $curl->prepare($userItemQuery);
         }
 
-        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
-        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $regionId);
-        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $regionId);
-
         $curl->execute();
-
-        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+        
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
+        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
+        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
 
         // фильтры в http-запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
@@ -94,6 +92,8 @@ class Index {
         $curl->prepare($categoryTreeQuery);
 
         $curl->execute();
+        
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // листинг идентификаторов товаров
         try {
@@ -129,6 +129,9 @@ class Index {
                 [
                     'media'       => true,
                     'media_types' => ['main'], // только главная картинка
+                    'category'    => true,
+                    'label'       => true,
+                    'brand'       => true,
                 ]
             );
             $curl->prepare($descriptionListQuery);
@@ -160,7 +163,7 @@ class Index {
 
         // медиа для товаров
         if ($productsByUi && $descriptionListQuery) {
-            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
+            $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
         }
 
         // меню

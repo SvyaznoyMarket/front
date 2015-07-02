@@ -18,6 +18,9 @@ use EnterMobile\Model\Page\Order\Delivery as Page;
 
 class Delivery {
     use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, RouterTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ControllerTrait {
+        ConfigTrait::getConfig insteadof ControllerTrait;
+    }
 
     /**
      * @param Http\Request $request
@@ -29,15 +32,19 @@ class Delivery {
         $session = $this->getSession();
         $router = $this->getRouter();
         $cartRepository = new \EnterRepository\Cart();
+        $cartSessionKey = $this->getCartSessionKeyByHttpRequest($request);
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
+        // ид магазина
+        $shopId = is_scalar($request->query['shopId']) ? (string)$request->query['shopId']: null;
+
         // токен пользователя
-        $userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request);
+        $userToken = (new Repository\User())->getTokenByHttpRequest($request);
 
         // корзина
-        $cart = $cartRepository->getObjectByHttpSession($session);
+        $cart = $cartRepository->getObjectByHttpSession($session, $cartSessionKey);
         // проверяет наличие товаров в корзине
         if (!$cart->product) {
             $this->getLogger()->push(['type' => 'error', 'message' => 'Пустая корзина', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split', 'critical']]);
@@ -60,7 +67,7 @@ class Delivery {
         $changeData = $request->data['change'] ?: null;
         // если это первый запрос на разбиение, то подставляет данные пользователя
         $userFromSplit = null;
-        if (!$changeData) {
+        if (!$request->isXmlHttpRequest()) {
             $userForm = new Model\Form\Order\UserForm((array)$session->get($config->order->userSessionKey));
             if (!$userForm->isValid()) {
                 $this->getLogger()->push(['type' => 'error', 'message' => 'Нет данных о пользователе', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split', 'critical']]);
@@ -84,9 +91,10 @@ class Delivery {
         }
 
         // предыдущее разбиение
-        $previousSplitData = null;
-        if ($changeData) {
-            $previousSplitData = $session->get($config->order->splitSessionKey);
+        $previousSplitData = $session->get($config->order->splitSessionKey);
+
+        if ($previousSplitData && !$changeData && $userFromSplit) {
+            $changeData['user'] = $userFromSplit->toArray();
         }
 
         // контроллер
@@ -95,8 +103,8 @@ class Delivery {
         $controllerRequest = $controller->createRequest();
         $controllerRequest->regionId = $regionId;
         $controllerRequest->userToken = $userToken;
-        $controllerRequest->shopId = null;
-        $controllerRequest->changeData = $changeData;
+        $controllerRequest->shopId = $shopId;
+        $controllerRequest->changeData = (new \EnterRepository\Cart())->dumpSplitChange($changeData, $previousSplitData);
         $controllerRequest->previousSplitData = $previousSplitData;
         $controllerRequest->cart = $cart;
         $controllerRequest->enrichCart = true;
@@ -108,6 +116,19 @@ class Delivery {
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);
 
+        // если в разбиении нет заказа или произошла ошибка из-за предыдущего разбиения, то удаляем предыдущее разбиение
+        if (!$controllerResponse->split->orders) {
+            $session->remove($config->order->splitSessionKey);
+        }
+        foreach ($controllerResponse->errors as $error) {
+            if (!isset($error['code'])) continue;
+
+            if (in_array($error['code'], [600])) {
+                $session->remove($config->order->splitSessionKey);
+                break;
+            }
+        }
+
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Order\Delivery\Request();
         $pageRequest->httpRequest = $request;
@@ -115,7 +136,8 @@ class Delivery {
         $pageRequest->user = $controllerResponse->user;
         $pageRequest->cart = $cart;
         $pageRequest->split = $controllerResponse->split;
-        //$pageRequest->formErrors = $controllerResponse->errors; // TODO
+        $pageRequest->shopId = $shopId;
+        $pageRequest->formErrors = $session->flashBag->get('orderForm.error') ?: $controllerResponse->errors;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница

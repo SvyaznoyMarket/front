@@ -38,7 +38,7 @@ class ChildCategory {
         // сортировка
         $sorting = (new Repository\Product\Sorting())->getObjectByHttpRequest($request);
 
-        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
 
         // фильтры в http-запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);

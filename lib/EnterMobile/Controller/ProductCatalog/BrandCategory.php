@@ -38,7 +38,7 @@ class BrandCategory {
         // токен бренда
         $brandToken = is_scalar($request->query['brandToken']) ? (string)$request->query['brandToken'] : null;
 
-        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
 
         $brandQuery = new Query\Brand\GetItemByToken($brandToken, $regionId);
         $curl->prepare($brandQuery)->execute();

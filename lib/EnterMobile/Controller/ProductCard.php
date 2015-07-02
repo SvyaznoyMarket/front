@@ -30,7 +30,7 @@ class ProductCard {
         // токен товара
         $productToken = $productRepository->getTokenByHttpRequest($request);
 
-        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession());
+        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
 
         // контроллер
         $controller = new \EnterAggregator\Controller\ProductCard();

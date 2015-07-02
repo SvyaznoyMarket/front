@@ -31,8 +31,7 @@ class Complete {
         $priceHelper = $this->getPriceHelper();
         $dateHelper = $this->getDateHelper();
         $translateHelper = $this->getTranslateHelper();
-
-        $regionModel = $request->region;
+        $pointRepository = new Repository\Partial\Point();
 
         $onlinePaymentMethodModelsById = $request->onlinePaymentMethodsById;
 
@@ -68,9 +67,10 @@ class Complete {
             $deliveryModel = isset($orderModel->deliveries[0]) ? $orderModel->deliveries[0] : null;
 
             $order = [
-                'id'     => $orderModel->id,
-                'number' => $orderModel->number,
-                'sum'    =>
+                'id'        => $orderModel->id,
+                'number'    => $orderModel->number,
+                'numberErp' => $orderModel->numberErp,
+                'sum'       =>
                     $orderModel->sum
                     ? [
                         'name'  => $priceHelper->format($orderModel->sum),
@@ -89,7 +89,7 @@ class Complete {
                         }
 
                         $delivery = [
-                            'type' =>
+                            'type'     =>
                                 $deliveryModel->type
                                 ? [
                                     'name'  => $deliveryModel->type->shortName,
@@ -97,10 +97,10 @@ class Complete {
                                 ]
                                 : false
                             ,
-                            'date' =>
+                            'date'     =>
                                 $date
                                 ? [
-                                    'name' => $dateHelper->dateToRu($date),
+                                    'name' => $date->format('d.m.Y'),
                                 ]
                                 : false
                             ,
@@ -110,7 +110,7 @@ class Complete {
                     })
                     : false
                 ,
-                'interval' =>
+                'interval'  =>
                     $orderModel->interval
                     ? [
                         'from' => $orderModel->interval->from,
@@ -118,13 +118,18 @@ class Complete {
                     ]
                     : false
                 ,
-                'point' => call_user_func(function() use (&$orderModel) {
+                'address'   => !$orderModel->point ? $orderModel->address : false,
+                'point'     => call_user_func(function() use (&$orderModel, &$pointRepository) {
                     if (!$pointModel = $orderModel->point) {
                         return false;
                     }
 
                     $point = [
-                        'type'    => $pointModel->type,
+                        'group'   => [
+                            'name'  => $pointRepository->getGroupNameByType($pointModel->type),
+                            'value' => $pointModel->type,
+                        ],
+                        'icon'    => $pointRepository->getIconByType($pointModel->type),
                         'address' => $pointModel->address,
                         'subway'  =>
                             $pointModel->subway
@@ -144,7 +149,7 @@ class Complete {
 
                     return $point;
                 }),
-                'products' => call_user_func(function() use (&$orderModel) {
+                'products'  => call_user_func(function() use (&$orderModel) {
                     $products = [];
 
                     $i = 0;
@@ -154,8 +159,9 @@ class Complete {
                             'id'       => $productModel->id,
                             'quantity' => $productModel->quantity,
                             'sum'      => $productModel->sum,
-                            'name'     => isset($productModel->name) ? $productModel->name : null,
-                            'link'     => isset($productModel->link) ? $productModel->link : null,
+                            'article'  => $productModel->article,
+                            'name'     => $productModel->name,
+                            'link'     => $productModel->link,
                             'isHidden' => $i > 2,
                         ];
                     }
@@ -181,7 +187,7 @@ class Complete {
                         && ($orderModel->sum >= $config->order->prepayment->priceLimit)
                     ;
                 }),
-                'onlinePayment'     => call_user_func(function() use (&$orderModel, &$onlinePaymentMethodModelsById, $onlinePaymentMethodsById) {
+                'onlinePayment' => call_user_func(function() use (&$orderModel, &$onlinePaymentMethodModelsById, $onlinePaymentMethodsById) {
                     if (!count($onlinePaymentMethodModelsById)) {
                         return false;
                     }
@@ -221,11 +227,46 @@ class Complete {
 
             $page->content->orders[] = $order;
         }
+        $page->content->isSingleOrder = 1 === count($request->orders);
+
+        if (!$request->isCompletePageReaded) {
+            $page->content->dataGoogleAnalyticOrders = $templateHelper->json(array_map(function(\EnterModel\Order $orderModel) {
+                return [
+                    'number' => $orderModel->numberErp,
+                    'isPartner' => $orderModel->isPartner,
+                    'paySum' => $orderModel->paySum,
+                    'delivery' => [
+                        'price' => isset($orderModel->deliveries[0]) ? $orderModel->deliveries[0]->price : '',
+                    ],
+                    'region' => [
+                        'name' => $orderModel->region->name,
+                    ],
+                    'products' => array_map(function (\EnterModel\Order\Product $product) {
+                        return [
+                            'id' => $product->id,
+                            'name' => $product->name,
+                            'article' => $product->article,
+                            'categories' => $product->category ? call_user_func($self = function (\EnterModel\Product\Category $category) use (&$self) {
+                                return array_merge($category->parent ? $self($category->parent) : [], [['name' => $category->name]]);
+                            }, $product->category) : [],
+                            'price' => $product->price,
+                            'quantity' => $product->quantity,
+                        ];
+                    }, $orderModel->product),
+                ];
+            }, $request->orders));
+        }
 
         // заголовок
         $page->title = 'Оформление заказа - Завершение - Enter';
 
         $page->dataModule = 'order-complete';
+
+        $page->steps = [
+            ['name' => 'Получатель', 'isPassive' => false, 'isActive' => false],
+            ['name' => 'Самовывоз и доставка', 'isPassive' => false, 'isActive' => false],
+            ['name' => 'Оплата', 'isPassive' => false, 'isActive' => true],
+        ];
 
         // шаблоны mustache
         (new Repository\Template())->setListForPage($page, [

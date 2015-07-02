@@ -6,6 +6,8 @@ namespace EnterMobile\Model\Page\Order {
     class Complete extends Page\DefaultPage {
         /** @var Complete\Content */
         public $content;
+        /** @var array */
+        public $steps = [];
 
         public function __construct() {
             parent::__construct();
@@ -22,6 +24,10 @@ namespace EnterMobile\Model\Page\Order\Complete {
     class Content extends Page\DefaultPage\Content {
         /** @var array */
         public $orders = [];
+        /** @var string */
+        public $dataGoogleAnalyticOrders = '';
+        /** @var bool */
+        public $isSingleOrder;
 
         public function __construct() {
             parent::__construct();
