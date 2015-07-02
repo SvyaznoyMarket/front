@@ -31,6 +31,8 @@ namespace EnterMobile\Model\Page\Order\Index {
         public $isUserAuthenticated; // TODO: перенести на уровень выше
         /** @var string */
         public $authUrl;
+        /** @var bool */
+        public $hasMnogoRu;
 
         public function __construct() {
             parent::__construct();

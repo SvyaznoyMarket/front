@@ -69,6 +69,8 @@ class Index {
             ];
         }
 
+        $page->content->hasMnogoRu = isset($request->bonusCardsByType[\EnterModel\BonusCard::TYPE_MNOGORU]);
+
         $page->steps = [
             ['name' => 'Получатель', 'isPassive' => true, 'isActive' => true],
             ['name' => 'Самовывоз и доставка', 'isPassive' => false, 'isActive' => false],
