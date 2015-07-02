@@ -1,68 +1,50 @@
 <div class="content">
-    <div class="contentBox960">
-        <form class="form-horizontal" method="post" action="/ajax/private/password/change">
+        <form class="private-form" method="post" action="/ajax/private/password/change">
             <fieldset>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="username">Имя</label>
-                    <div class="col-md-4">
-                        <input id="username" name="username" type="text" placeholder="" class="textfield">
+                <div class="p-control-group">
+                    <input id="username" name="username" type="text" placeholder="Имя" class="p-control p-control-input">
+                </div>
+                <div class="p-control-group">
+                    <input id="middlename" name="middlename" type="text" placeholder="Отчество" class="p-control p-control-input">
+                </div>
+                <div class="p-control-group">
+                    <input id="lastname" name="lastname" type="text" placeholder="Фамилия" class="p-control p-control-input">
+                </div>
+                <div class="p-control-group inline-group">
+                    <label class="p-control-label" for="birthdate">Дата рождения</label>
+                    <div class="p-control p-control-date-group">
+                        <input class="p-control p-control-input" id="birthdate" name="birthdate" type="date" placeholder="">
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="middlename">Отчество</label>
-                    <div class="col-md-4">
-                        <input id="middlename" name="middlename" type="text" placeholder="" class="textfield">
+                <div class="p-control-group inline-group">
+                    <label class="p-control-label" for="sex">Пол</label>
+
+                    <div class="p-control p-control-select-group">
+                        <select id="sex" name="sex">
+                            <option>женский</option>
+                            <option>мужской</option>
+                        </select>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="lastname">Фамилия</label>
-                    <div class="col-md-4">
-                        <input id="lastname" name="lastname" type="text" placeholder="" class="textfield">
-                    </div>
+                <div class="p-control-group__error">
+                   Одно из полей обязательно для заполнения
                 </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="birthdate">Дата рождения</label>
-                    <div class="col-md-4">
-                        <input id="birthdate" name="birthdate" type="text" placeholder="" class="textfield">
-                    </div>
+                <div class="p-control-group">
+                    <input id="email" name="email" type="text" placeholder="Email" class="p-control p-control-input">
                 </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="sex">Пол</label>
-                    <div class="col-md-4">
-                        <input id="sex" name="sex" type="text" placeholder="" class="textfield">
-                    </div>
+                <div class="p-control-group">
+                    <input id="phone" name="phone" type="text" placeholder="Мобильный телефон" class="p-control p-control-input">
                 </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="email">Email</label>
-                    <div class="col-md-4">
-                        <input id="email" name="email" type="text" placeholder="" class="textfield">
-                    </div>
+                <div class="p-control-group">
+                    <input id="phone_2" name="phone_2" type="text" placeholder="Домашний телефон" class="p-control p-control-input">
                 </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="phone">Мобильный телефон</label>
-                    <div class="col-md-4">
-                        <input id="phone" name="phone" type="text" placeholder="" class="textfield">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="phone_2">Домашний телефон</label>
-                    <div class="col-md-4">
-                        <input id="phone_2" name="phone_2" type="text" placeholder="" class="textfield">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="occupation">Род деятельности</label>
-                    <div class="col-md-4">
-                        <input id="occupation" name="occupation" type="text" placeholder="" class="textfield">
-                    </div>
+                <div class="p-control-group">
+                    <input id="occupation" name="occupation" type="text" placeholder="Род деятельности" class="p-control p-control-input">
                 </div>
 
-                <div class="form-group">
-                    <div class="col-md-4">
-                        <input type="submit" value="сохранить изменения"/>
-                    </div>
+                <div class="p-control-group btn-container">
+                        <input type="submit" value="Сохранить изменения" class="btn btn--submit btn--orange btn--medium"/>
                 </div>
             </fieldset>
         </form>
-    </div>
 </div>
