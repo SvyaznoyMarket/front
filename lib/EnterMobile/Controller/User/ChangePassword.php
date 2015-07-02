@@ -24,7 +24,7 @@ class ChangePassword {
         $router = $this->getRouter();
         $messageRepository = new Repository\Message();
 
-        $redirectUrl = (new \EnterRepository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Password()));
+        $redirectUrl = (new \EnterMobile\Repository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Password()));
 
         $postData = $request->data->all();
 
@@ -69,7 +69,7 @@ class ChangePassword {
                 );
             }
 
-            $user = new Repository\User();
+            $user = new \EnterMobile\Repository\User();
             $token = $user->getTokenByHttpRequest($request);
             if (empty($token)) {
                 throw new \Exception('Не получен токен пользователя');

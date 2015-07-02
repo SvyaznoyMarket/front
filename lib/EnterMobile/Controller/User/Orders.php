@@ -17,7 +17,7 @@ class Orders {
 
     public function execute(Http\Request $request) {
         $curl = $this->getCurl();
-        $user = new \EnterRepository\User();
+        $user = new \EnterMobile\Repository\User();
 
         $token = $user->getTokenByHttpRequest($request);
 
