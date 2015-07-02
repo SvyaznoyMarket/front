@@ -10004,6 +10004,9 @@ body.flex .wrapper.wrapper-smpl .content {
   *display: inline;
   width: auto;
 }
+.p-control-group.btn-container {
+  margin-top: 20px;
+}
 .p-control-input {
   padding: 0 10px;
   width: 100%;
@@ -10163,6 +10166,119 @@ body.flex .wrapper.wrapper-smpl .content {
 }
 .delivery-info .how-to-find:hover {
   text-decoration: none;
+}
+.delivery-info .delivery-point-name {
+  margin-top: 5px;
+  font-size: 14px;
+}
+.delivery-info .shop-snippet-name {
+  vertical-align: top;
+  width: 50px;
+}
+.delivery-info .shop-snippet-metro__text {
+  font-size: 12px;
+}
+.delivery-info .shop-snippet-metro__bullet {
+  width: 6px;
+  height: 6px;
+  margin: 0 2px 0 -11px;
+}
+.delivery-info .shop-snippet-metro-address {
+  color: #363636;
+}
+.order-item {
+  border-bottom: 1px solid #cccccc;
+  padding: 10px;
+}
+.order-item__tbl {
+  width: 100%;
+}
+.order-item-img {
+  vertical-align: top;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+}
+.order-item-img img {
+  max-width: 60px;
+  max-height: 60px;
+}
+.order-item:last-child {
+  border-bottom: 0;
+}
+.order-item-info {
+  padding-left: 20px;
+}
+.order-item-description {
+  margin-top: 20px;
+  font-size: 0px;
+  white-space: nowrap;
+}
+.order-item-description-price {
+  display: inline-block;
+  vertical-align: middle;
+  *zoom: 1;
+  *display: inline;
+  color: #777777;
+  width: 33.3%;
+  font-size: 14px;
+}
+.order-item-description-quantity {
+  display: inline-block;
+  vertical-align: middle;
+  *zoom: 1;
+  *display: inline;
+  color: #777777;
+  width: 33.3%;
+  text-align: center;
+  font-size: 14px;
+}
+.order-item-description-total {
+  display: inline-block;
+  vertical-align: middle;
+  *zoom: 1;
+  *display: inline;
+  color: #777777;
+  width: 33.3%;
+  text-align: right;
+  font-size: 14px;
+}
+.order-total {
+  padding: 10px;
+  text-align: right;
+  background-color: #ebebeb;
+}
+.order-total-amount {
+  display: block;
+  clear: both;
+}
+.order-total-amount__name {
+  font-size: 16px;
+}
+.order-total-amount__price {
+  float: right;
+  width: 100px;
+  font-size: 16px;
+}
+.order-total-delivery {
+  display: block;
+  clear: both;
+  margin-bottom: 10px;
+}
+.order-total-delivery__name {
+  font-size: 14px;
+}
+.order-total-delivery__price {
+  float: right;
+  width: 100px;
+  font-size: 14px;
+}
+.address-simple {
+  font-size: 14px;
+}
+.address-simple__name {
+  float: left;
+  width: 63px;
 }
 /* =======
    Helpers
