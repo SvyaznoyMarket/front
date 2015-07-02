@@ -47,8 +47,13 @@ class SetUser {
             if (!$userData['firstName']) {
                 //$errors[] = ['field' => 'firstName', 'name' => 'Не указано имя'];
             }
-            if (!$userData['phone']) {
+
+            $phone = preg_replace('/^\+7/', '8', $userData['phone']);
+            $phone = preg_replace('/[^\d]/', '', $phone);
+            if (!$phone) {
                 $errors[] = ['field' => 'phone', 'name' => 'Не указан телефон'];
+            } else if (11 !== strlen($phone)) {
+                $errors[] = ['field' => 'phone', 'name' => 'Неверный номер телефона'];
             }
             if (!$userData['email']) {
                 $errors[] = ['field' => 'email', 'name' => 'Не указан email'];
