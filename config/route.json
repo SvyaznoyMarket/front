@@ -225,6 +225,17 @@
         "pattern": "/ajax/user/cart/clear",
         "method": ["DELETE"]
     },
+    "User\\EnterPrize\\EnterPrizeList": {
+        "name": "Список фишек",
+        "pattern": "/private/enterprize"
+    },
+    "User\\EnterPrize\\Coupon": {
+        "name": "Список фишек",
+        "pattern": "/private/enterprize/coupon/{coupon}",
+        "require": {
+            "coupon": "[\\w\\d-_]+"
+        }
+    },
 
     "Search\\Index": {
         "name": "Поиск",
