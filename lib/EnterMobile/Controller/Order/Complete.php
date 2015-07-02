@@ -89,6 +89,7 @@ class Complete {
                 $order = new Model\Order();
                 $order->fromArray($orderItem);
 
+                $orderNumberErps[] = $order->numberErp;
                 if ($order->point) {
                     $pointUis[] = $order->point->ui;
                 }
