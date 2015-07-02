@@ -1,0 +1,50 @@
+<div class="content">
+        <form class="private-form" method="post" action="/ajax/private/password/change">
+            <fieldset>
+                <div class="p-control-group">
+                    <input id="username" name="username" type="text" placeholder="Имя" class="p-control p-control-input">
+                </div>
+                <div class="p-control-group">
+                    <input id="middlename" name="middlename" type="text" placeholder="Отчество" class="p-control p-control-input">
+                </div>
+                <div class="p-control-group">
+                    <input id="lastname" name="lastname" type="text" placeholder="Фамилия" class="p-control p-control-input">
+                </div>
+                <div class="p-control-group inline-group">
+                    <label class="p-control-label" for="birthdate">Дата рождения</label>
+                    <div class="p-control p-control-date-group">
+                        <input class="p-control p-control-input" id="birthdate" name="birthdate" type="date" placeholder="">
+                    </div>
+                </div>
+                <div class="p-control-group inline-group">
+                    <label class="p-control-label" for="sex">Пол</label>
+
+                    <div class="p-control p-control-select-group">
+                        <select id="sex" name="sex">
+                            <option>женский</option>
+                            <option>мужской</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="p-control-group__error">
+                   Одно из полей обязательно для заполнения
+                </div>
+                <div class="p-control-group">
+                    <input id="email" name="email" type="text" placeholder="Email" class="p-control p-control-input">
+                </div>
+                <div class="p-control-group">
+                    <input id="phone" name="phone" type="text" placeholder="Мобильный телефон" class="p-control p-control-input">
+                </div>
+                <div class="p-control-group">
+                    <input id="phone_2" name="phone_2" type="text" placeholder="Домашний телефон" class="p-control p-control-input">
+                </div>
+                <div class="p-control-group">
+                    <input id="occupation" name="occupation" type="text" placeholder="Род деятельности" class="p-control p-control-input">
+                </div>
+
+                <div class="p-control-group btn-container">
+                        <input type="submit" value="Сохранить изменения" class="btn btn--submit btn--orange btn--medium"/>
+                </div>
+            </fieldset>
+        </form>
+</div>

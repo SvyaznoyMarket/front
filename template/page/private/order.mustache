@@ -1,0 +1,65 @@
+<div class="content private-order">
+    <div class="private-order__head">
+    <h1 class="private-order__tl">Заказ №{{number}}</h1><span class="private-order__date">от {{added}}</span>
+    </div>
+    <div class="delivery-info">
+        <div class="delivery-date">
+            {{#delivery}}
+                {{#is_delivery}}
+                    Доставка <span class="delivery-date__d">{{delivery_date}}</span>
+                {{/is_delivery}}
+                {{^is_delivery}}
+                    Самовывоз <span class="delivery-date__d">{{delivery_date}}</span>
+                {{/is_delivery}}
+            {{/delivery}}
+        </div>
+        <div class="shop-snippet table_row">
+            <div class="shop-snippet-name table_cell">
+                <img src="/img/points/logos/100x100/enter.png" alt="" class="shop-snippet-name__img">
+                <span class="shop-snippet-name__text">Магазин Enter</span>
+            </div>
+
+            <div class="shop-snippet-info table_cell">
+                <div class="shop-snippet-metro">
+                    <span class="shop-snippet-metro__bullet" style="background: #B61D8E;"></span>
+                    <span class="shop-snippet-metro__text">Кузьминки</span>
+                </div>
+
+                <div class="shop-snippet-address">Адрес: {{address}} <br>Режим работы: с 10.00 до 22.00</div>
+            </div>
+        </div>
+        <a href="#" class="how-to-find">Как добраться?</a>
+    </div>
+    <div class="order-items">
+        {{#product}}
+            <div class="order-item">
+                <div class="order-item-img">
+                    <img src="{{image}}" alt=""/>
+                </div>
+                <div class="order-item-description">
+                    <h5>{{name}}</h5>
+                    <div class="order-item-description-price">{{price}}</div>
+                    <div class="order-item-description-quantity">{{quantity}}</div>
+                </div>
+                <div class="order-item-amount">{{sum}}</div>
+            </div>
+        {{/product}}
+    </div>
+
+    <div class="order-discount">
+        <div class="order-discount-item">
+            <div class="order-discount-item-img">
+                <img src="{{discount_item_img}}" alt=""/>
+            </div>
+        </div>
+    </div>
+
+    <div class="order-total">
+        <div class="order-total-delivery">Доставка: {{#delivery}}{{price}}{{/delivery}}</div>
+        <div class="order-total-amount">Итого: {{sum}}</div>
+    </div>
+
+
+
+</div>
+

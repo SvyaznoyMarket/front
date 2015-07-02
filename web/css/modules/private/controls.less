@@ -1,0 +1,150 @@
+.p-control{
+    height: 34px;
+    .box-sizing(border-box);
+    border: 1px solid #afafaf;
+    .rounded(3px);
+    font-size: 14px;
+    background-color: #fff;
+    width: 100%;
+
+    &-group{
+        margin-top: 30px;
+        width: 100%;
+        .box-sizing(border-box);
+        padding: 0 10px;
+        &__error{
+            color: #f99b1c;
+            font-size: 14px;
+            margin-top:25px;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+        &__error + &{
+            margin-top: 20px;
+        }
+        &.inline-group{
+            .inline-block();
+            width: auto;
+        }
+    }
+
+
+
+    &-input{
+        padding: 0 10px;
+        width: 100%;
+        .box-sizing(border-box);
+
+        //placeholders line-height fix
+        &::-webkit-input-placeholder {
+            line-height: 1.7;
+            color: #868686;
+            font-size: 12px;
+        }
+        &::-moz-placeholder {
+            line-height: 1.7;
+            color: #868686;
+            font-size: 12px;
+        }
+        &:-ms-input-placeholder {
+            line-height: 1.7;
+            color: #868686;
+            font-size: 12px;
+        }
+        &:-moz-placeholder {
+            line-height: 1.7;
+            color: #868686;
+            font-size: 12px;
+        }
+        &:focus{
+            outline: none;
+        }
+        &.error{
+            border-color: #f99b1c;
+        }
+        &.incorrect{
+            border-color: #d45745;
+        }
+        &[type="password"]{
+            color: #868686;
+            font-size: 18px;
+        }
+
+    }
+    &-label{
+        font-size: 12px;
+        color: #363636;
+        margin-left: 5px;
+        margin-bottom: 4px;
+        .inline-block();
+    }
+    &-select-group{
+        padding: 0;
+        margin: 0;
+        width: 98px;
+        overflow: hidden;
+        background-color: #fff;
+
+
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAgCAYAAAAffCjxAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAABYlAAAWJQFJUiTwAAABSklEQVRIDe2VMY6DMBBFMQVFSrgFfY6yddIhJS0NJ6ChzUp02TpHSc8toExBQ+YjGY0HTwzaNkiWPZ4/H/MAO4oCV13XZ7SALDKfBE3T5OM4PqFJkuRYlmWn6WMt0bbtgUwelD+gYYw5Ta8aDcPwS0U5K8xp7sZiZ+g1ApNpmk6OkgKaU3mtGDEu2mO8fLycFQkuckE29vJyjDxcbLHsV7wWI42LdLCx5DUz2sDF1st+4WXApe97fHT8VcuCT3GXZdkx3sFFMwMvfHPf60vg3wQM/WN3396zx9kY8xenaXqhInUv3mDYwSMuigI/3g8VvDYUSclcC495G8HpQMu7SlUoRo09WZytdg8vcKmq6mxvtmxsmNjBa+ZiTdA7Rht5LVxUIyRCvDgXbuQw4gkfL8mF651H4wkPrxUXrleNBC8vF24UHOOYQgsJ3zo9p9ggx9JvAAAAAElFTkSuQmCC');
+        .background-size(9px 16px);
+        background-repeat: no-repeat;
+        background-position: 90% 50%;
+
+        select{
+            padding: 7px 8px;
+            width: 130%;
+            border: none;
+            box-shadow: none;
+            background-color: transparent;
+            background-image: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            &:focus{
+                :focus {
+                    outline: none;
+                }
+            }
+        }
+    }
+    &-date-group{
+        width: 154px;
+        overflow: hidden;
+
+        .p-control-input{
+            border: none;
+
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAgCAYAAAAffCjxAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAABYlAAAWJQFJUiTwAAABSklEQVRIDe2VMY6DMBBFMQVFSrgFfY6yddIhJS0NJ6ChzUp02TpHSc8toExBQ+YjGY0HTwzaNkiWPZ4/H/MAO4oCV13XZ7SALDKfBE3T5OM4PqFJkuRYlmWn6WMt0bbtgUwelD+gYYw5Ta8aDcPwS0U5K8xp7sZiZ+g1ApNpmk6OkgKaU3mtGDEu2mO8fLycFQkuckE29vJyjDxcbLHsV7wWI42LdLCx5DUz2sDF1st+4WXApe97fHT8VcuCT3GXZdkx3sFFMwMvfHPf60vg3wQM/WN3396zx9kY8xenaXqhInUv3mDYwSMuigI/3g8VvDYUSclcC495G8HpQMu7SlUoRo09WZytdg8vcKmq6mxvtmxsmNjBa+ZiTdA7Rht5LVxUIyRCvDgXbuQw4gkfL8mF651H4wkPrxUXrleNBC8vF24UHOOYQgsJ3zo9p9ggx9JvAAAAAElFTkSuQmCC');
+            background-repeat: no-repeat;
+            .background-size(9px 16px);
+            background-position: 92% 50%;
+
+            &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                display: none;
+            }
+            &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                display: none;
+            }
+            &::-webkit-calendar-picker-indicator{
+                color: transparent;
+                background-color: transparent;
+            }
+        }
+    }
+    &-head{
+        font-size: 14px;
+        margin: 10px 0 10px 10px;
+    }
+    &-info{
+        color: #616161;
+        margin-left: 10px;
+    }
+
+}
+.datepicker{
+    width: 154px;
+    .inline-block();
+}
