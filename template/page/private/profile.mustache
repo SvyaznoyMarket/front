@@ -1,5 +1,4 @@
 <div class="content">
-    <div class="contentBox960">
         <form class="private-form" method="post" action="/ajax/private/password/change">
             <fieldset>
                 <div class="p-control-group">
@@ -11,10 +10,11 @@
                 <div class="p-control-group">
                     <input id="lastname" name="lastname" type="text" placeholder="Фамилия" class="p-control p-control-input">
                 </div>
-                <div class="p-control-group datepicker">
+                <div class="p-control-group inline-group">
                     <label class="p-control-label" for="birthdate">Дата рождения</label>
-
-                    <input class="p-control p-control-input" id="birthdate" name="birthdate" type="text" placeholder=""  datepicker>
+                    <div class="p-control p-control-date-group">
+                        <input class="p-control p-control-input" id="birthdate" name="birthdate" type="date" placeholder="">
+                    </div>
                 </div>
                 <div class="p-control-group inline-group">
                     <label class="p-control-label" for="sex">Пол</label>
@@ -47,5 +47,4 @@
                 </div>
             </fieldset>
         </form>
-    </div>
 </div>
