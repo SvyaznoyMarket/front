@@ -4418,10 +4418,10 @@ body.noScroll {
   top: 10px;
   right: 10px;
   display: none;
-  width: 44px;
-  height: 44px;
+  width: 22px;
+  height: 22px;
   cursor: pointer;
-  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAACXBIWXMAAAsTAAALEwEAmpwYAAACS0lEQVQ4EZVUPW8aQRCdO8SHEAiCkBA6yUhYKeAPpLBCJJwqLkwq/wI3cRE37uI+dhzJken8C9Ig0VA5BY6pnAaJjyKioEA0CDcnPgXkPaQ7wx52kpGWZWfnvZudnbfaYrGQDeZuNBo57OWwt4MRx5hg3dE07Rbjezqd/qHiNJWs2Wy+n8/nX0Kh0HYwGBS32y0AL3GMnUwm0u/3ZTAYlF0u12Eqlfptka6S6cjms9frPYnFYoJAK2bjPB6PpdPpPOBD+8jyJ4NsMhCdBwKBk2g0ameykWXFOZvNpN1uP+i6/ooZ6tzj0ZjR/xARx+wNw3gB0muumZm7Xq83E4nE9t+ORsAm63a7MhqN3rJOORZbJeIRptOpAwuQwxeJRARJHej4yfHWVKtUKpLP54WFtuzX/b2cn50JP7RqHo+HZBnWbIfXr1omk5HE1pZ8u7yU4XAoJC8Wi/Lh6Mhx02wdDEOr1WrjZDLpUcmsdalUksrdnfDrH4+PJRwOW1trc6vVEmY2WfMqC7YrjqB4nUtkZrJmnaeCC4WCVKtV+XR6KtlsVr5eXEiv13MwEU8eHYy3lIhq5XJZmDqP5vf75TVq+G5vT/JXV44LIJ48Gnps1+fz3cTj1PKjsS2gUUEzPzrxzzRNgVLWfHafUf0U7WoLMJI3rBLRrxIRRzx5lnJCwx5StGr/EPycMZ444hm3JKNIceZ9ilbN8CkyxjGeOOsZsl8NgiD4l/jaNQr+hhJhbyHY5uOt/et7ZoOg110ADzAyIDMwBzCbmJ99af8ArqY5ldB+T2sAAAAASUVORK5CYII=) no-repeat 100% 0;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAACXBIWXMAAAsTAAALEwEAmpwYAAACS0lEQVQ4EZVUPW8aQRCdO8SHEAiCkBA6yUhYKeAPpLBCJJwqLkwq/wI3cRE37uI+dhzJken8C9Ig0VA5BY6pnAaJjyKioEA0CDcnPgXkPaQ7wx52kpGWZWfnvZudnbfaYrGQDeZuNBo57OWwt4MRx5hg3dE07Rbjezqd/qHiNJWs2Wy+n8/nX0Kh0HYwGBS32y0AL3GMnUwm0u/3ZTAYlF0u12Eqlfptka6S6cjms9frPYnFYoJAK2bjPB6PpdPpPOBD+8jyJ4NsMhCdBwKBk2g0ameykWXFOZvNpN1uP+i6/ooZ6tzj0ZjR/xARx+wNw3gB0muumZm7Xq83E4nE9t+ORsAm63a7MhqN3rJOORZbJeIRptOpAwuQwxeJRARJHej4yfHWVKtUKpLP54WFtuzX/b2cn50JP7RqHo+HZBnWbIfXr1omk5HE1pZ8u7yU4XAoJC8Wi/Lh6Mhx02wdDEOr1WrjZDLpUcmsdalUksrdnfDrH4+PJRwOW1trc6vVEmY2WfMqC7YrjqB4nUtkZrJmnaeCC4WCVKtV+XR6KtlsVr5eXEiv13MwEU8eHYy3lIhq5XJZmDqP5vf75TVq+G5vT/JXV44LIJ48Gnps1+fz3cTj1PKjsS2gUUEzPzrxzzRNgVLWfHafUf0U7WoLMJI3rBLRrxIRRzx5lnJCwx5StGr/EPycMZ444hm3JKNIceZ9ilbN8CkyxjGeOOsZsl8NgiD4l/jaNQr+hhJhbyHY5uOt/et7ZoOg110ADzAyIDMwBzCbmJ99af8ArqY5ldB+T2sAAAAASUVORK5CYII=) no-repeat center;
 }
 .popupBox_title {
   font-size: 28px;
@@ -8929,6 +8929,7 @@ body.flex .wrapper.wrapper-smpl .content {
   overflow: hidden;
   width: 100%;
   height: 100%;
+  position: absolute;
 }
 .order-popup-map > div {
   width: 100%!important;
@@ -9018,13 +9019,6 @@ body.flex .wrapper.wrapper-smpl .content {
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
-.ymaps-2-1-26-balloon__layout {
-  position: relative;
-  width: 300px;
-}
-.ymaps-2-1-26-balloon__content > div {
-  width: auto!important;
-}
 .content-scroll {
   z-index: 1;
   overflow: auto;
@@ -9113,6 +9107,51 @@ body.flex .wrapper.wrapper-smpl .content {
 @media screen and (min-width: 480px) {
   .address-pick-snippet .form-control__container {
     max-width: 340px;
+  }
+}
+@media screen and (max-width: 360px) {
+  .map-baloon {
+    height: 80px;
+    overflow: hidden;
+  }
+  .map-baloon .deliv-info-snippet {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .map-baloon .deliv-info-snippet__price {
+    font-size: 11px;
+    display: inline-block;
+  }
+  .map-baloon .deliv-info-snippet__date {
+    padding: 0px 3px;
+  }
+  .map-baloon .shop-snippet-metro__text {
+    font-size: 12px;
+  }
+  .map-baloon .shop-snippet-address {
+    line-height: 14px;
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .map-baloon .shop-snippet-name {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  .map-baloon .shop-snippet-name__text {
+    line-height: 12px;
+    margin-bottom: 5px;
+  }
+  .map-baloon .shop-snippet-info {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    vertical-align: top;
+  }
+  .map-baloon .btn-choose-point {
+    margin-top: -6px;
+    height: 24px;
+    font-size: 12px;
+    line-height: 20px;
   }
 }
 .popupFl {

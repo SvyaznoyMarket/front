@@ -821,6 +821,8 @@ define(
             if (formValidator.validateRequired($form).isValid) {
                 changeSplit(data);
             }
+
+            setTimeout(function() { analytics.push(['10_1 Доставки_Доставка_ОБЯЗАТЕЛЬНО']); }, 250);
         });
         $body.on('submit', '.js-discount-form', function(e) {
             var
@@ -928,6 +930,8 @@ define(
                     analytics.push(['11_1 Срок_Изменил_дату_Доставка']);
                 } else if (('payment' === $el.data('type')) && ('2' === $el.val())) {
                     analytics.push(['13_1 Оплата_банковской_картой_Доставка']);
+                } else if ('point' === $el.data('type')) {
+                    analytics.push(['10_1 Ввод_данных_Самовывоза']);
                 }
             });
         } catch (error) { console.error(error); }
