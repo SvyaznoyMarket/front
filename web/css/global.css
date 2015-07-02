@@ -10172,6 +10172,28 @@ body.flex .wrapper.wrapper-smpl .content {
   color: #5e5e5e;
   margin-left: 2px;
 }
+.private-order__brcr {
+  padding: 10px 0;
+  background: #ebebeb;
+  border-bottom: 1px solid #cccccc;
+  text-align: center;
+  display: block;
+  width: 100%;
+  font-size: 14px;
+}
+.private-order__brcr:before {
+  content: '';
+  width: 10px;
+  height: 13px;
+  background: url('modules/private/img/left-arrow@2x.png') no-repeat;
+  background-size: cover;
+  display: inline-block;
+  vertical-align: middle;
+  *zoom: 1;
+  *display: inline;
+  margin-right: 4px;
+  margin-top: -3px;
+}
 .delivery-info {
   border-bottom: 1px solid #cccccc;
   padding: 10px;
