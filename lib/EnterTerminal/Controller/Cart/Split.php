@@ -148,16 +148,18 @@ namespace EnterTerminal\Controller\Cart {
             $deliveryMethodsByToken = [];
             foreach ($response->split->deliveryMethods as $deliveryMethod) {
                 $deliveryMethodsByToken[$deliveryMethod->token] = $deliveryMethod;
-                unset($deliveryMethod->token);
+                //unset($deliveryMethod->token);
             }
             $response->split->deliveryMethods = $deliveryMethodsByToken;
 
-            $paymentMethodsById = [];
-            foreach ($response->split->paymentMethods as $paymentMethod) {
-                $paymentMethodsById[$paymentMethod->id] = $paymentMethod;
-                unset($paymentMethod->id);
+            if (false) {
+                $paymentMethodsById = [];
+                foreach ($response->split->paymentMethods as $paymentMethod) {
+                    $paymentMethodsById[$paymentMethod->id] = $paymentMethod;
+                    //unset($paymentMethod->id);
+                }
+                $response->split->paymentMethods = $paymentMethodsById;
             }
-            $response->split->paymentMethods = $paymentMethodsById;
 
             /** @var Model\Cart\Split\PointGroup[] $pointGroupsByToken */
             $pointGroupsByToken = [];
@@ -167,11 +169,11 @@ namespace EnterTerminal\Controller\Cart {
                 $pointsById = [];
                 foreach ($pointGroup->points as $point) {
                     $pointsById[$point->id] = $point;
-                    unset($point->id);
+                    //unset($point->id);
                 }
 
                 $pointGroupsByToken[$pointGroup->token]->points = $pointsById;
-                unset($pointGroup->token);
+                //unset($pointGroup->token);
             }
             $response->split->pointGroups = $pointGroupsByToken;
 
@@ -183,9 +185,16 @@ namespace EnterTerminal\Controller\Cart {
                 $groupedPossiblePointsById = [];
                 foreach ($order->possiblePoints as $possiblePoint) {
                     $groupedPossiblePointsById[$possiblePoint->groupToken][$possiblePoint->id] = $possiblePoint;
-                    unset($possiblePoint->id, $possiblePoint->groupToken);
+                    //unset($possiblePoint->id, $possiblePoint->groupToken);
                 }
                 $ordersByBlockName[$order->blockName]->possiblePoints = $groupedPossiblePointsById;
+
+                $possibleDay = null;
+                foreach ($order->possibleDays as &$possibleDay) {
+                    $possibleDay = (int)$possibleDay;
+                }
+                unset($possibleDay);
+
             }
             $response->split->orders = $ordersByBlockName;
         }
