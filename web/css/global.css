@@ -9863,6 +9863,9 @@ body.flex .wrapper.wrapper-smpl .content {
 .private section.main-section {
   border-right: 1px solid #c7c7c7;
 }
+.private section.ep {
+  margin-bottom: 0;
+}
 .private-menu-lst {
   width: 100%;
 }
@@ -10325,6 +10328,111 @@ body.flex .wrapper.wrapper-smpl .content {
 .address-simple__name {
   float: left;
   width: 63px;
+}
+.ep-list-i {
+  padding: 10px;
+  border-bottom: 1px solid #a0a0a0;
+  min-height: 60px;
+}
+.ep-list-i__img {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  float: left;
+}
+.ep-list-i__img img {
+  width: 100%;
+  height: 100%;
+}
+.ep-list-i__lbl {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  line-height: 60px;
+  text-align: center;
+  top: 0px;
+  left: 0px;
+  font-size: 25px;
+}
+.ep-list-i__lbl .icon {
+  font-family: 'menuIconFont';
+  font-size: 70px;
+  height: 40px;
+  margin: 0 0 10px 0;
+  color: #000;
+}
+.ep-list-i__tl {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 16px;
+  display: block;
+  white-space: nowrap;
+}
+.ep-list-i__tl .accented {
+  font-size: 18px;
+}
+.ep-list-i__desc {
+  font-size: 14px;
+  display: block;
+}
+.ep-list-i__txt {
+  margin-left: 70px;
+  margin-top: 10px;
+}
+.ep-coupon {
+  width: 210px;
+  height: 210px;
+  margin: 15px auto 5px;
+  position: relative;
+}
+.ep-coupon img {
+  width: 100%;
+  height: 100%;
+}
+.ep-coupon__lbl {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  text-align: center;
+}
+.ep-coupon__lbl .icon {
+  font-family: 'menuIconFont';
+  font-size: 100px;
+  height: 86px;
+  margin: 0 0 10px 0;
+  color: #000;
+  display: block;
+}
+.ep-coupon__lbl .type {
+  font-size: 14px;
+  display: block;
+}
+.ep-coupon__lbl .discount {
+  font-size: 24px;
+  display: block;
+}
+.ep-coupon__info {
+  padding: 0 10px 10px;
+  display: block;
+  text-align: center;
+}
+.ep-coupon__txt {
+  font-size: 16px;
+  display: block;
+}
+.ep-coupon__disc {
+  font-size: 12px;
+  margin-top: 10px;
+  display: block;
+}
+.ep-coupon__term {
+  color: #a0a0a0;
+  font-size: 14px;
+  margin-top: 5px;
+  display: block;
 }
 /* =======
    Helpers
