@@ -5684,6 +5684,7 @@ body.noScroll {
   .catalogList .name {
     height: auto;
     margin-bottom: 15px;
+    height: 32px;
   }
   .catalogList .price {
     margin: 5px 0 0;
