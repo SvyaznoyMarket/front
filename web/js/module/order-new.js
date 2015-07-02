@@ -53,6 +53,7 @@ define(
 
         // устанавливаем маску в поле номера телефона
         $.mask.definitions['x'] = "[0-9]";
+        $.mask.autoclear = false;
         $form.find('[data-field="phone"]')
             .mask("+7(xxx)xxx-xx-xx", {
                 placeholder: "+7(___)___-__-__"
