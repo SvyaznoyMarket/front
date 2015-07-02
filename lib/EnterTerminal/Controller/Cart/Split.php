@@ -185,12 +185,14 @@ namespace EnterTerminal\Controller\Cart {
 
                 $ordersByBlockName[$order->blockName] = $order;
 
-                $groupedPossiblePointsById = [];
-                foreach ($order->possiblePoints as $possiblePoint) {
-                    $groupedPossiblePointsById[$possiblePoint->groupToken][$possiblePoint->id] = $possiblePoint;
-                    //unset($possiblePoint->id, $possiblePoint->groupToken);
+                if (false) {
+                    $groupedPossiblePointsById = [];
+                    foreach ($order->possiblePoints as $possiblePoint) {
+                        $groupedPossiblePointsById[$possiblePoint->groupToken][$possiblePoint->id] = $possiblePoint;
+                        //unset($possiblePoint->id, $possiblePoint->groupToken);
+                    }
+                    $ordersByBlockName[$order->blockName]->possiblePoints = $groupedPossiblePointsById;
                 }
-                $ordersByBlockName[$order->blockName]->possiblePoints = $groupedPossiblePointsById;
 
                 $possibleDay = null;
                 foreach ($order->possibleDays as &$possibleDay) {
