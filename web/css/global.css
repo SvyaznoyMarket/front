@@ -1886,7 +1886,7 @@ body.noScroll {
 }
 .btn--pay {
   font-size: 18px;
-  line-height: 40px;
+  line-height: 37px;
   width: 120px;
   height: 37px;
   -webkit-border-radius: 3px;
@@ -3654,20 +3654,7 @@ body.noScroll {
 .checkout-checkbox-lst__i {
   padding: 12px 15px;
   border-bottom: 1px solid #e6e6e6;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-  -webkit-align-content: center;
-  -moz-align-content: center;
-  box-align: center;
-  -webkit-box-align: center;
-  align-content: center;
+  display: block;
 }
 .checkout-checkbox-lst__i .custom-label {
   width: 100%;
@@ -3678,6 +3665,11 @@ body.noScroll {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+  display: inline-block;
+  vertical-align: top;
+  *zoom: 1;
+  *display: inline;
+  min-height: 19px;
 }
 .checkout-checkbox-lst__i .custom-label_tx {
   font-size: 14px;
