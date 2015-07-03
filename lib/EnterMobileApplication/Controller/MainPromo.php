@@ -51,9 +51,13 @@ namespace EnterMobileApplication\Controller {
             // баннеры
             $promos = $promoRepository->getObjectListByQuery($promoListQuery);
 
-            // Мобильными приложениями элементы url и contentToken не используются
             foreach ($promos as $promo) {
-                unset($promo->target->url);
+                if (!$promo->target instanceof \EnterModel\Promo\Target\Content) {
+                    unset($promo->target->url);
+                } else {
+                    $promo->target->url = 'http://m.enter.ru/' . $promo->target->contentId;
+                }
+
                 if ($promo->target instanceof \EnterModel\Promo\Target\Slice) {
                     unset($promo->target->categoryToken);
                 }
