@@ -90,6 +90,7 @@ namespace EnterTerminal\Controller\Cart {
             $controllerRequest->shopId = $shopId;
             $controllerRequest->changeData = (new \EnterRepository\Cart())->dumpSplitChange($changeData, $previousSplitData);
             $controllerRequest->previousSplitData = $previousSplitData;
+            $controllerRequest->indexSplit = true;
             $controllerRequest->cart = $cart;
             // при получении данных о разбиении корзины - записать их в сессию немедленно
             $controllerRequest->splitReceivedSuccessfullyCallback->handler = function() use (&$controllerRequest, &$config, &$session) {
@@ -144,52 +145,9 @@ namespace EnterTerminal\Controller\Cart {
         private function formatResponse(Response $response) {
             $dateHelper = $this->getDateHelper();
 
-            $deliveryGroupsById = [];
-            foreach ($response->split->deliveryGroups as $deliveryGroup) {
-                $deliveryGroupsById[$deliveryGroup->id] = $deliveryGroup;
-                //unset($deliveryGroup->id);
-            }
-            $response->split->deliveryGroups = $deliveryGroupsById;
-
-            $deliveryMethodsByToken = [];
-            foreach ($response->split->deliveryMethods as $deliveryMethod) {
-                $deliveryMethodsByToken[$deliveryMethod->token] = $deliveryMethod;
-                //unset($deliveryMethod->token);
-            }
-            $response->split->deliveryMethods = $deliveryMethodsByToken;
-
-            if (false) {
-                $paymentMethodsById = [];
-                foreach ($response->split->paymentMethods as $paymentMethod) {
-                    $paymentMethodsById[$paymentMethod->id] = $paymentMethod;
-                    //unset($paymentMethod->id);
-                }
-                $response->split->paymentMethods = $paymentMethodsById;
-            }
-
-            /** @var Model\Cart\Split\PointGroup[] $pointGroupsByToken */
-            $pointGroupsByToken = [];
-            foreach ($response->split->pointGroups as $pointGroup) {
-                $pointGroupsByToken[$pointGroup->token] = $pointGroup;
-
-                $pointsById = [];
-                foreach ($pointGroup->points as $point) {
-                    $pointsById[$point->id] = $point;
-                    //unset($point->id);
-                }
-
-                $pointGroupsByToken[$pointGroup->token]->points = $pointsById;
-                //unset($pointGroup->token);
-            }
-            $response->split->pointGroups = $pointGroupsByToken;
-
-            /** @var Model\Cart\Split\Order[] $ordersByBlockName */
-            $ordersByBlockName = [];
             foreach ($response->split->orders as $order) {
                 $order->sum = (float)$order->sum;
                 $order->originalSum = (float)$order->originalSum;
-
-                $ordersByBlockName[$order->blockName] = $order;
 
                 $groupedPossiblePointsById = [];
                 foreach ($order->possiblePoints as $possiblePoint) {
@@ -230,7 +188,6 @@ namespace EnterTerminal\Controller\Cart {
                         'value' => $possiblePoint->nearestDay,
                     ];
                 }
-                $ordersByBlockName[$order->blockName]->possiblePoints = $groupedPossiblePointsById;
 
                 $response->pointFilters[$order->blockName]['type'] = array_values($response->pointFilters[$order->blockName]['type']);
                 $response->pointFilters[$order->blockName]['cost'] = array_values($response->pointFilters[$order->blockName]['cost']);
@@ -241,9 +198,7 @@ namespace EnterTerminal\Controller\Cart {
                     $possibleDay = (int)$possibleDay;
                 }
                 unset($possibleDay);
-
             }
-            $response->split->orders = $ordersByBlockName;
         }
     }
 }

@@ -107,7 +107,7 @@ class Order {
             'payment_method_id'        => $this->paymentMethodId ? (int)$this->paymentMethodId : null,
             'possible_deliveries'      => $this->possibleDeliveryMethodTokens,
             'possible_intervals'       => array_map(function(Model\Cart\Split\Interval $interval) { return $interval->dump(); }, $this->possibleIntervals),
-            'possible_days'            => $this->possibleDays,
+            'possible_days'            => array_map(function($day) { return (string)$this->possibleDays; }, $this->possibleDays),
             'possible_payment_methods' => $this->possiblePaymentMethodIds,
             'possible_points'          => $this->groupedPossiblePointIds,
             'possible_point_data'      => $possiblePointsData,

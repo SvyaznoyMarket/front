@@ -24,30 +24,51 @@ class Split {
     public $sum;
     /** @var Model\Cart\Split\Error[] */
     public $errors = [];
+    /** @var bool */
+    private $index;
 
     /**
      * @param array $data
+     * @param bool $index
      */
-    public function __construct($data = []) {
-        foreach ($data['delivery_groups'] as $item) {
-            $this->deliveryGroups[] = new Split\DeliveryGroup($item);
+    public function __construct($data = [], $index = false) {
+        $this->index = $index;
+
+        foreach ($data['delivery_groups'] as $key => $item) {
+            if ($this->index) {
+                $this->deliveryGroups[$key] = new Split\DeliveryGroup($item);
+            } else {
+                $this->deliveryGroups[] = new Split\DeliveryGroup($item);
+            }
         }
 
-        foreach ($data['delivery_methods'] as $item) {
-            $this->deliveryMethods[] = new Split\DeliveryMethod($item);
+        foreach ($data['delivery_methods'] as $key => $item) {
+            if ($this->index) {
+                $this->deliveryMethods[$key] = new Split\DeliveryMethod($item);
+            } else {
+                $this->deliveryMethods[] = new Split\DeliveryMethod($item);
+            }
         }
 
         foreach ($data['payment_methods'] as $item) {
             $this->paymentMethods[] = new Split\PaymentMethod($item);
         }
 
-        foreach ((array)$data['points'] as $token => $item) { // FIXME
-            $item['token'] = $token;
-            $this->pointGroups[] = new Split\PointGroup($item);
+        foreach ((array)$data['points'] as $key => $item) {
+            $item['token'] = $key;
+            if ($this->index) {
+                $this->pointGroups[$key] = new Split\PointGroup($item, $this->index);
+            } else {
+                $this->pointGroups[] = new Split\PointGroup($item);
+            }
         }
 
-        foreach ($data['orders'] as $item) {
-            $this->orders[] = new Split\Order($item);
+        foreach ($data['orders'] as $key => $item) {
+            if ($this->index) {
+                $this->orders[$key] = new Split\Order($item);
+            } else {
+                $this->orders[] = new Split\Order($item);
+            }
         }
 
         $this->user = $data['user_info'] ? new Split\User($data['user_info']) : null;
