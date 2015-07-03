@@ -149,44 +149,42 @@ namespace EnterTerminal\Controller\Cart {
                 $order->sum = (float)$order->sum;
                 $order->originalSum = (float)$order->originalSum;
 
-                $groupedPossiblePointsById = [];
-                foreach ($order->possiblePoints as $possiblePoint) {
-                    $groupedPossiblePointsById[$possiblePoint->groupToken][] = $possiblePoint;
-                    //unset($possiblePoint->id, $possiblePoint->groupToken);
+                foreach ($order->possiblePoints as $possiblePoints) {
+                    foreach ($possiblePoints as $possiblePoint) {
+                        switch ($possiblePoint->groupToken) {
+                            case 'self_partner_pickpoint_pred_supplier':
+                            case 'self_partner_pickpoint':
+                                $name = 'Пункты выдачи Pickpoint';
+                                break;
+                            case 'self_partner_svyaznoy_pred_supplier':
+                            case 'self_partner_svyaznoy':
+                            case 'shops_svyaznoy':
+                                $name = 'Магазины Связной';
+                                break;
+                            case 'self_partner_euroset_pred_supplier':
+                            case 'self_partner_euroset':
+                                $name = 'Магазины Евросеть';
+                                break;
+                            case 'shops':
+                                $name = 'Магазины Enter';
+                                break;
+                            default:
+                                $name = isset($response->split->pointGroups[$possiblePoint->groupToken]) ? $response->split->pointGroups[$possiblePoint->groupToken]->blockName : null;
+                        }
 
-                    switch ($possiblePoint->groupToken) {
-                        case 'self_partner_pickpoint_pred_supplier':
-                        case 'self_partner_pickpoint':
-                            $name = 'Пункты выдачи Pickpoint';
-                            break;
-                        case 'self_partner_svyaznoy_pred_supplier':
-                        case 'self_partner_svyaznoy':
-                        case 'shops_svyaznoy':
-                            $name = 'Магазины Связной';
-                            break;
-                        case 'self_partner_euroset_pred_supplier':
-                        case 'self_partner_euroset':
-                            $name = 'Магазины Евросеть';
-                            break;
-                        case 'shops':
-                            $name = 'Магазины Enter';
-                            break;
-                        default:
-                            $name = isset($response->split->pointGroups[$possiblePoint->groupToken]) ? $response->split->pointGroups[$possiblePoint->groupToken]->blockName : null;
+                        $response->pointFilters[$order->blockName]['type'][$possiblePoint->groupToken] = [
+                            'name'  => $name,
+                            'value' => $possiblePoint->groupToken,
+                        ];
+                        $response->pointFilters[$order->blockName]['cost'][$possiblePoint->cost] = [
+                            'name'  => (0 == $possiblePoint->cost) ? 'Бесплатно' : $possiblePoint->cost,
+                            'value' => $possiblePoint->cost,
+                        ];
+                        $response->pointFilters[$order->blockName]['nearestDay'][$possiblePoint->nearestDay] = [
+                            'name'  => $dateHelper->humanizeDate(\DateTime::createFromFormat('Y-m-d', $possiblePoint->nearestDay)),
+                            'value' => $possiblePoint->nearestDay,
+                        ];
                     }
-
-                    $response->pointFilters[$order->blockName]['type'][$possiblePoint->groupToken] = [
-                        'name'  => $name,
-                        'value' => $possiblePoint->groupToken,
-                    ];
-                    $response->pointFilters[$order->blockName]['cost'][$possiblePoint->cost] = [
-                        'name'  => (0 == $possiblePoint->cost) ? 'Бесплатно' : $possiblePoint->cost,
-                        'value' => $possiblePoint->cost,
-                    ];
-                    $response->pointFilters[$order->blockName]['nearestDay'][$possiblePoint->nearestDay] = [
-                        'name'  => $dateHelper->humanizeDate(\DateTime::createFromFormat('Y-m-d', $possiblePoint->nearestDay)),
-                        'value' => $possiblePoint->nearestDay,
-                    ];
                 }
 
                 $response->pointFilters[$order->blockName]['type'] = array_values($response->pointFilters[$order->blockName]['type']);

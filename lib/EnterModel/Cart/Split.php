@@ -65,7 +65,7 @@ class Split {
 
         foreach ($data['orders'] as $key => $item) {
             if ($this->index) {
-                $this->orders[$key] = new Split\Order($item);
+                $this->orders[$key] = new Split\Order($item, $index);
             } else {
                 $this->orders[] = new Split\Order($item);
             }
