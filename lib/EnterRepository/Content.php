@@ -13,7 +13,7 @@ class Content {
         $segments = explode('/', $path);
         // TODO: добавить поддержку для путей из 4х сегментов
         if (count($segments) <= 3) {
-            return end($segments);
+            return trim(end($segments));
         }
 
         return null;
