@@ -92,7 +92,7 @@ namespace EnterTerminal\Controller\Cart {
             $controllerRequest->shopId = $shopId;
             $controllerRequest->changeData = (new \EnterRepository\Cart())->dumpSplitChange($changeData, $previousSplitData);
             $controllerRequest->previousSplitData = $previousSplitData;
-            $controllerRequest->indexSplit = true;
+            $controllerRequest->formatSplit = false;
             $controllerRequest->cart = $cart;
             // при получении данных о разбиении корзины - записать их в сессию немедленно
             $controllerRequest->splitReceivedSuccessfullyCallback->handler = function() use (&$controllerRequest, &$config, &$session) {

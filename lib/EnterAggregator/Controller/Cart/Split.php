@@ -119,7 +119,7 @@ namespace EnterAggregator\Controller\Cart {
                     }
                 }
 
-                $response->split = new Model\Cart\Split($splitData, (bool)$request->indexSplit);
+                $response->split = new Model\Cart\Split($splitData, (bool)$request->formatSplit);
                 $response->split->region = $response->region;
 
                 // MAPI-4
@@ -243,7 +243,7 @@ namespace EnterAggregator\Controller\Cart\Split {
          * Индексация разбиения как на ядре
          * @var bool
          */
-        public $indexSplit;
+        public $formatSplit = true;
         /** @var Model\Cart\Split\User */
         public $userFromSplit;
         /**
