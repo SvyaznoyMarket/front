@@ -85,7 +85,7 @@ namespace EnterAggregator\Controller\Index {
                 }
             });
 
-            $productRepository->setDescriptionForListByListQuery($viewedProductsByUI, $descriptionListQuery);
+            $productRepository->setDescriptionForListByListQuery($viewedProductsByUI, [$descriptionListQuery]);
 
             return $viewedProductsByUI;
         }
