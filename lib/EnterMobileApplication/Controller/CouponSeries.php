@@ -82,7 +82,7 @@ namespace EnterMobileApplication\Controller {
             }
 
             $response->couponSeries = $couponSeriesRepository->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery);
-            $couponSeriesRepository->filterObjectList($response->couponSeries, $usedSeriesIds, $user, $couponSeriesId);
+            $response->couponSeries = $couponSeriesRepository->filterObjectList($response->couponSeries, $usedSeriesIds, $user, $couponSeriesId);
 
             if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
 
