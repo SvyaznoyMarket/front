@@ -19,6 +19,8 @@ class GetListByIdList extends Query {
      * @param array $view
      */
     public function __construct(array $ids, $regionId, $view = []) {
+        $view = array_merge(['model' => true, 'related' => true, 'availability' => true], $view);
+
         $this->url = new Url();
         $this->url->path = 'v2/product/get-v3';
         $this->url->query = [
