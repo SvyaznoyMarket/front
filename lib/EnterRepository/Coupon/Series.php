@@ -51,11 +51,11 @@ class Series {
     /**
      * @param Model\Coupon\Series[] $couponSeries
      * @param array $usedSeriesIds
-     * @param Model\User $user
+     * @param Model\User|null $user
      * @param $couponSeriesId
      * @return array
      */
-    public function filterObjectList(array &$couponSeries, array $usedSeriesIds, Model\User $user, $couponSeriesId = null) {
+    public function filterObjectList(array &$couponSeries, array $usedSeriesIds, Model\User $user = null, $couponSeriesId = null) {
         return array_values(
             array_filter(
                 $couponSeries,
