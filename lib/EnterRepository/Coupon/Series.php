@@ -51,11 +51,11 @@ class Series {
     /**
      * @param Model\Coupon\Series[] $couponSeries
      * @param array $usedSeriesIds
-     * @param Model\User $user
+     * @param Model\User|null $user
      * @param $couponSeriesId
      * @return array
      */
-    public function filterObjectList(array &$couponSeries, array $usedSeriesIds, Model\User $user, $couponSeriesId = null) {
+    public function filterObjectList(array &$couponSeries, array $usedSeriesIds, Model\User $user = null, $couponSeriesId = null) {
         return array_values(
             array_filter(
                 $couponSeries,
@@ -65,7 +65,7 @@ class Series {
                         || (
                             !in_array($series->id, $usedSeriesIds) // ... которые не были получены ранее
                             && $series->limit > 0 // ... у которых не исчерпан лимит
-                            && ($series->isForNotMember || $series->isForNotMember) // ... которые хотя бы для участника ИЛИ неучастника // TODO: кажись, лишнее условие
+                            && ($series->isForMember || $series->isForNotMember) // MAPI-67 если оба false, то фишка не должна возвращаться вообще (даже для незалогиненных пользователей)
                             && (
                                 (!$user || (!$user->isEnterprizeMember && $series->isForNotMember)) // ... которые для неучастников ИЛИ ...
                                 || ($user && $user->isEnterprizeMember && $series->isForMember) // ... которые для участников

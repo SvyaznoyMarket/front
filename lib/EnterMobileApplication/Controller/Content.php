@@ -4,6 +4,7 @@ namespace EnterMobileApplication\Controller {
 
     use Enter\Curl\Client;
     use Enter\Http;
+    use EnterAggregator\LoggerTrait;
     use EnterMobileApplication\ConfigTrait;
     use EnterAggregator\CurlTrait;
     use EnterAggregator\TemplateHelperTrait;
@@ -13,7 +14,7 @@ namespace EnterMobileApplication\Controller {
     use EnterMobileApplication\Controller\Content\Response;
 
     class Content {
-        use ConfigTrait, CurlTrait, TemplateHelperTrait;
+        use ConfigTrait, CurlTrait, TemplateHelperTrait, LoggerTrait;
 
         /**
          * @param Http\Request $request
@@ -92,18 +93,22 @@ namespace EnterMobileApplication\Controller {
                     $path = $this->getPathFromHrefAttributeValue($match[1][0]);
                     $newAttributes = null;
 
-                    if (0 === strpos($path, '/catalog/')) {
-                        $category = $categoryRepository->getObjectByQuery($match['query']);
-                        if (null !== $category)
-                            $newAttributes = ' data-type="ProductCatalog/Category" data-category-id="' . $this->getTemplateHelper()->escape($category->id) . '"';
-                    }
-                    else if (0 === strpos($path, '/product/')) {
-                        $product = $productRepository->getObjectByQuery($match['query']);
-                        if (null !== $product)
-                            $newAttributes = ' data-type="ProductCard" data-product-id="' . $this->getTemplateHelper()->escape($product->id) . '"';
-                    }
-                    else if (0 === strpos($path, '/')) {
-                        $newAttributes = ' data-type="Content" data-content-token="' . $contentRepository->getTokenByPath($path) . '"';
+                    try {
+                        if (0 === strpos($path, '/catalog/')) {
+                            $category = $categoryRepository->getObjectByQuery($match['query']);
+                            if (null !== $category)
+                                $newAttributes = ' data-type="ProductCatalog/Category" data-category-id="' . $this->getTemplateHelper()->escape($category->id) . '"';
+                        }
+                        else if (0 === strpos($path, '/product/')) {
+                            $product = $productRepository->getObjectByQuery($match['query']);
+                            if (null !== $product)
+                                $newAttributes = ' data-type="ProductCard" data-product-id="' . $this->getTemplateHelper()->escape($product->id) . '"';
+                        }
+                        else if (0 === strpos($path, '/')) {
+                            $newAttributes = ' data-type="Content" data-content-token="' . $contentRepository->getTokenByPath($path) . '"';
+                        }
+                    } catch (\Exception $e) {
+                        $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'content']]);
                     }
 
                     if ($newAttributes !== null) {
