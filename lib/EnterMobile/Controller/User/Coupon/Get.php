@@ -64,7 +64,7 @@ class Get {
 
         /** @var Model\Coupon\Series[] $couponSeries */
         $couponSeries = $couponSeriesRepository->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery);
-        $couponSeriesRepository->filterObjectList($couponSeries, $usedSeriesIds, $user);
+        $couponSeries = $couponSeriesRepository->filterObjectList($couponSeries, $usedSeriesIds, $user);
 
         $couponSeriesById = [];
         foreach ($couponSeries as $iCouponSeries) {
