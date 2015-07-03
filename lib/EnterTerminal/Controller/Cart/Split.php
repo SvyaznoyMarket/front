@@ -51,6 +51,8 @@ namespace EnterTerminal\Controller\Cart {
             $previousSplitData = null;
             if ($changeData) {
                 $previousSplitData = $session->get($config->order->splitSessionKey);
+            } else {
+                $session->remove($config->order->splitSessionKey);
             }
 
             // корзина
