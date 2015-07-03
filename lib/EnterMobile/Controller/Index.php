@@ -15,64 +15,38 @@ use EnterMobile\Model;
 use EnterMobile\Model\Page\Index as Page;
 
 class Index {
-    use ConfigTrait, LoggerTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait, SessionTrait;
+    use ConfigTrait,
+        LoggerTrait,
+        CurlTrait,
+        MustacheRendererTrait,
+        DebugContainerTrait,
+        SessionTrait;
 
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
-        $promoRepository = new \EnterRepository\Promo();
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
-        // запрос региона
-        $regionQuery = new Query\Region\GetItemById($regionId);
-        $curl->prepare($regionQuery);
-
-        // запрос пользователя
-        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
-        if ($userItemQuery) {
-            $curl->prepare($userItemQuery);
-        }
-
-        $curl->execute();
-
-        // регион
-        $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
-        
-        $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
-        $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
-        $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
-
-        // запрос категорий
-        $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
-        $curl->prepare($categoryTreeQuery);
-
-        // запрос баннеров
-        $promoListQuery = new Query\Promo\GetList(['site-mobile']);
-        $curl->prepare($promoListQuery);
-
-        // запрос меню
-        $mainMenuQuery = new Query\MainMenu\GetItem();
-        $curl->prepare($mainMenuQuery);
-
-        $curl->execute();
-        
-        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
-
-        // баннеры
-        $promos = $promoRepository->getObjectListByQuery($promoListQuery);
-
-        // меню
-        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
+        // контроллер
+        $controller = new \EnterAggregator\Controller\Index();
+        // запрос для контроллера
+        $controllerRequest = $controller->createRequest();
+        $controllerRequest->regionId = $regionId;
+        $controllerRequest->httpRequest = $request;
+        // ответ
+        $controllerResponse = $controller->execute($controllerRequest);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Index\Request();
-        $pageRequest->region = $region;
-        $pageRequest->mainMenu = $mainMenu;
-        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
-        $pageRequest->cart = $cart;
-        $pageRequest->promos = $promos;
+        $pageRequest->httpRequest = $request;
+        $pageRequest->region = $controllerResponse->region;
+        $pageRequest->user = $controllerResponse->user;
+        $pageRequest->cart = $controllerResponse->cart;
+        $pageRequest->mainMenu = $controllerResponse->mainMenu;
+        $pageRequest->promos = $controllerResponse->promos;
+
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница
@@ -86,9 +60,9 @@ class Index {
         // рендер
         $renderer = $this->getRenderer();
         $renderer->setPartials([
-            'content' => 'page/main/content',
+            'content' => 'page/main/content_updated',
         ]);
-        $content = $renderer->render('layout/default', $page);
+        $content = $renderer->render('layout/default-1511', $page);
 
         // http-ответ
         $response = new Http\Response($content);

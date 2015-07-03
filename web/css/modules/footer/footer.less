@@ -3,143 +3,164 @@
    ========================================================================== */
 
 .footer {
-	padding: 15px 0 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 
-	border-top: 1px solid @tabGreyBorder;
-	background: @tabGrey;
+    padding: 15px 0 0;
+
+    color: #363636;
+    border-top: 2px solid #a0a0a0;
+    background: #e6e6e6;
+    &-inn {
+        padding: 0 10px;
+    }
 }
 
-.aboutList {
-	float: left;
-
-	margin: 6px 0 0;
-
-	&__item {
-		display: inline-block;
-		zoom: 1;
-
-		margin-right: 20px;
-
-		vertical-align: top;
-
-		*display: inline;
-	}
+.i-footer {
+    background-image: url('@{common-url}/footer/i-footer.png');
+    &-app-android {
+        .i-sprite(0, 0, 140px, 33px);
+    }
+    &-apps-android {
+        .i-sprite(0, -33px, 140px, 33px);
+    }
+    &-mnogoru {
+        .i-sprite(0, -66px, 73px, 22px);
+    }
+    &-sb-spasibo {
+        .i-sprite(0, -88px, 68px, 30px);
+    }
+    &-soc-net__fb {
+        .i-sprite(-73px, -66px, 28px, 28px);
+    }
+    &-soc-net__od {
+        .i-sprite(-101px, -66px, 28px, 28px);
+    }
+    &-soc-net__tw {
+        .i-sprite(-68px, -94px, 28px, 28px);
+    }
+    &-soc-net__vk {
+        .i-sprite(-96px, -94px, 28px, 28px);
+    }
+    &-soc-net__yt {
+        .i-sprite(-140px, 0, 28px, 28px);
+    }
 }
 
-.socLink {
-	float: right;
+// <i class="i-footer i-footer-app-android"></i>
+// <i class="i-footer i-footer-apps-android"></i>
+// <i class="i-footer i-footer-mnogoru"></i>
+// <i class="i-footer i-footer-sb-spasibo"></i>
+// <i class="i-footer i-footer-soc-net__fb"></i>
+// <i class="i-footer i-footer-soc-net__od"></i>
+// <i class="i-footer i-footer-soc-net__tw"></i>
+// <i class="i-footer i-footer-soc-net__vk"></i>
+// <i class="i-footer i-footer-soc-net__yt"></i>
 
-	margin: 0 0 15px;
+.footer-apps-list {
+    margin: 0 0 10px;
 
-	font-size: 0;
+    text-align: center;
+    &__link {
+        margin: 0 8px 10px;
 
-	&__item {
-		display: inline-block;
-		zoom: 1;
-
-		width: 26px;
-		height: 26px;
-		margin-right: 5px;
-
-		vertical-align: top;
-		vertical-align: top;
-
-		color: #515151;
-		background: url("@{base-url}/footer/img/socialicon.png") no-repeat 0 0;
-
-		*display: inline;
-
-		&.mTw {
-			background-position: -27px 0;
-		} 
-
-		&.mVk {
-			background-position: -54px 0;
-		}
-
-		&.mYt {
-			background-position: -81px 0;
-		}
-	}
-
-	&__link {
-		display: block;
-
-		width: 26px;
-		height: 26px;
-	}
+        .inline-block();
+        &:first-child {
+            margin-left: 0;
+        }
+        &:last-child {
+            margin-right: 0;
+        }
+    }
 }
 
-.publicInfoList {
-	clear: both;
+.footer-rules {
+    font-size: .9em;
 
-	margin: 0 0 20px;
-
-	&__item {
-		display: inline-block;
-		zoom: 1;
-
-		margin: 0 20px 0 0;
-
-		vertical-align: top;
-
-		*display: inline;
-	}
-
-	&__link {
-		color: #5e5d5d;
-	}
+    text-align: center;
 }
 
-.appList {
-	width: 550px;
-	margin: 0 auto;
-
-	text-align: center;
-	font-size: 0;
-
-	&__item {
-		.inline-block();
-		vertical-align: middle;
-		margin-right: 15px;
-
-		&-last {
-			margin-right: 0;
-		}
-
-		img {
-			.rounded(4px);
-		}
-	}
+.footer-external-links {
+    text-align: center;
 }
 
-.publicInfoText {
-	text-align: center;
+.partner-list {
+    margin: 0 0 10px;
 
-	color: #8c8b8b;
+    vertical-align: middle;
+
+    .inline-block();
+    &__item {
+        margin: 0 4px 10px;
+
+        vertical-align: middle;
+
+        .inline-block();
+    }
 }
 
-.footerCopy {
-	line-height: 1.1;
-    padding: 7px 0;
+.social-net-list {
+    margin: 0 0 10px;
 
-	background: @black;
+    vertical-align: middle;
 
-	&__link {
-		float: right;
-		color: @lightGrey1;
-		text-decoration: none;
-	}
+    .inline-block();
+    &__item {
+        margin: 0 2px 10px;
 
-	&__link:hover {
-		color: @lightGrey1;
-		text-decoration: underline;
-	}
+        vertical-align: middle;
+
+        .inline-block();
+    }
+}
+
+.footer-shop-info {
+    overflow: hidden;
+
+    margin: 0 0 10px;
+    &__item {
+        float: left;
+
+        width: 16.66666%;
+        padding: 0 0 10px;
+
+        text-align: center;
+    }
+    &__link {
+        color: #363636;
+    }
+    &--5col {
+        .footer-shop-info__item {
+            width: 20%;
+        }
+    }
+}
+
+.footer-bottom {
+    padding: 10px 10px 20px;
+
+    text-align: center;
+
+    color: #c7c7c7;
+    background: #000;
+    &__copy {
+        font-size: .625rem;
+
+        margin: 0 0 8px;
+    }
+    &__full-site {
+        text-decoration: underline;
+
+        color: #c7c7c7;
+    }
 }
 
 .footerSmpl {
-	color: @white;
-	position: relative;
-	height: 27px;
-	margin-top: -27px;
+    position: relative;
+
+    height: 27px;
+    margin-top: -27px;
+
+    color: @white;
 }

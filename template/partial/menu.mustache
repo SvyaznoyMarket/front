@@ -1,0 +1,19 @@
+<nav class="nav js-site-nav">
+    <div class="nav-header">
+        <div class="nav-header__col nav-header__icon js-nav-open-link"><i class="i-header i-header--menu"></i></div>
+
+        <a class="header__logotype-link" href="/"></a>
+
+        <div class="nav-header__col nav-header__wrap">
+            <span class="nav-header__wrap-text jsSelectCity"><span class="text">{{regionBlock.regionName}}</span></span>
+
+            <div class="transBg"></div>
+        </div>
+    </div>
+
+    {{#mainMenu}}
+        {{>partial/main-menu/level-1}}
+    {{/mainMenu}}
+</nav>
+
+<div class="fader js-fader"></div>

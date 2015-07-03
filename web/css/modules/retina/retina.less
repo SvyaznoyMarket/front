@@ -81,13 +81,90 @@
 		background-image: url("@{base-url}/header/img/menu-sprite1024@2x.png");
 		background-size: 207px 31px;
 	}
+
+	.i-shop-info {
+        background-image: url("@{common-url}/main/i-shop-info@2.png");
+        background-size: 94px 24px;
+
+        &__delivery {
+            .i-sprite(0, 10px, 31px, 44px);
+        }
+
+        &__phone {
+            .i-sprite(-31px, 50%, 18px, 44px);
+        }
+
+        &__self-delivery {
+            .i-sprite(-48px, 11px, 24px, 44px);
+        }
+
+        &__shops {
+            .i-sprite(-72px, 10px, 22px, 44px);
+        }
+    }
+
+    .items-slider-nav__btn--prev {
+    	background-size: 10px 22px;
+		background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAsCAQAAADPqVBGAAABV0lEQVR4AY2VJUBmQRCA37n7He6aKLjDe7sNGu4FbdBwhwYRGhZxabh7ouByuLs77D84zL7Z+o3LCrg4/KNtopXAF1pFL8gJSeRhofTi+pEGFHM0pLsMXHfWQDDnt6RHYU/0RO1JaeC2EMds6SnDJq2+I5jdNzrB7J1Re9QeKVC4pek45g5Yn9k7LDp1usawPdEYM/eK1EG2YXgvogCrwTETesjAJVslBDP4QAcgDRe8yNmA5eBuKTln0Q2ZfUYwm99klmHHohle5BLINgbHggBrFV5jA6pLthm45ayD2+sAe/4odgdKATgnyzUIDYRSt0EyMsoTi3OyCg4iEn4LQUgWRJrLAe/GjLgimNzBBZEi+avwaLloBIe0U+Ov6+MD0G/2jofmQ6SZPPffyDhypJCzh7pPhUiLOODdaSZeOCnv2EOkIWCzUeAJqbz+kKQkLuj89+aLuwTGvOrTBlMGBwAAAABJRU5ErkJggg==');
+    }
+
+    .items-slider-nav__btn--next {
+    	background-size: 10px 22px;
+		background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAsCAQAAADPqVBGAAABQklEQVR4AWMAAUdzl8O2ogyEgHOd82+X/y4bCSvcC1QGgmkEFDrIuLwDK/xip0pAqWMYxEznkw4shKxfCFHq1ExAoTmf832w0j9OVgSUuti4/AUrvWfNS8j6VqhLFxBQaMzqcgaqNISQ79VdvoKVvnWSJqDUKQNq5m4GRkIu3QyNp0ICCq3EXF6CFf5w0SVkpg/UzEsq7ITCdBo0nvoIBRSX8w2wl/65uBAKKGPnX2ClTyyFCLm0EhpQqwmlZybnQ1Cl8YQStILLR7DCT3aKhOIpFmrmUULBFAdTSBWrmVwOQ2MoDn/wVMGCh4QApzwKXaZDre2lOJlhJlzCWcGpAL/rMhGZi6jsai1FjQLAuQ2qbD5+ZbaQQsr5rjUvNYo958VQa5vwKwtHFM3UKOyd90HjIpVQFqoHVUjOG/CrIrqKAwAmKerZZ7o+MwAAAABJRU5ErkJggg==');
+    }
+
+	.i-footer {
+	    background-image: url("@{common-url}/footer/i-footer@2.png");
+	    background-size: 140px 119px;
+
+	    &-app-android {
+	        .i-sprite(0, -25px, 140px, 33px);
+	    }
+
+	    &-apps-android {
+	        .i-sprite(0, -58px, 140px, 33px);
+	    }
+
+	    &-mnogoru {
+	        .i-sprite(0, 0, 73px, 22px);
+	    }
+
+	    &-sb-spasibo {
+	        .i-sprite(-75px, 0, 57px, 25px);
+	    }
+
+	    &-soc-net__fb {
+	        .i-sprite(0, -91px, 28px, 28px);
+	    }
+
+	    &-soc-net__od {
+	        .i-sprite(-28px, -91px, 28px, 28px);
+	    }
+
+	    &-soc-net__tw {
+	        .i-sprite(-56px, -91px, 28px, 28px);
+	    }
+
+	    &-soc-net__vk {
+	        .i-sprite(-84px, -91px, 28px, 28px);
+	    }
+
+	    &-soc-net__yt {
+	        .i-sprite(-112px, -91px, 28px, 28px);
+	    }
+	}
+
+	.header__logotype-link {
+		background-image: url("@{common-url}/header/logo@2.png");
+	    background-size: 43px 30px;
+	}
+
+	.i-header {
+	    background-image: url("@{common-url}/header/i-header@2.png");
+	    background-size: 152px 26px;
+	}
+	.i-search {
+	    background-image: url("@{common-url}/header/i-search@2.png");
+	    background-size: 38px 24px;
+	}
 }
-
-
-// @media
-// only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 760px),
-// only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 760px),
-// only screen and (-o-min-device-pixel-ratio: 2/1) and (max-width: 760px),
-// only screen and (min-device-pixel-ratio: 2) and (max-width: 760px),
-// only screen and (min-resolution: 192dpi) and (max-width: 760px),
-// only screen and (min-resolution: 2dppx) and (max-width: 760px)
