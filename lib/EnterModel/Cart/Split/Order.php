@@ -35,16 +35,12 @@ class Order {
     public $possiblePoints = [];
     /** @var string|null */
     public $comment;
-    /** @var bool */
-    private $index;
 
     /**
      * @param array $data
-     * @param $index
+     * @param $format
      */
-    public function __construct($data = [], $index) {
-        $this->index = $index;
-
+    public function __construct($data = [], $format = true) {
         $this->blockName = $data['block_name'] ? (string)$data['block_name'] : null;
         $this->seller = $data['seller'] ? new Order\Seller($data['seller']) : null;
 
@@ -84,10 +80,10 @@ class Order {
                 $possiblePoint = new Order\Point($item);
                 $possiblePoint->groupToken = $key;
 
-                if ($index) {
-                    $this->possiblePoints[$key][] = $possiblePoint;
-                } else {
+                if ($format) {
                     $this->possiblePoints[] = $possiblePoint;
+                } else {
+                    $this->possiblePoints[$key][] = $possiblePoint;
                 }
             }
         }

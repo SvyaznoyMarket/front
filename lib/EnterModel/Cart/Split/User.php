@@ -23,14 +23,18 @@ class User {
 
     /**
      * @param array $data
+     * @param bool $format
      */
-    public function __construct($data = []) {
+    public function __construct($data = [], $format = true) {
         if (array_key_exists('phone', $data)) {
             $this->phone = trim((string)$data['phone']);
-            $this->phone = preg_replace('/^\+7/', '8', $this->phone);
-            $this->phone = preg_replace('/[^\d]/', '', $this->phone);
-            if (10 == strlen($this->phone)) {
-                $this->phone = '8' . $this->phone;
+
+            if ($format) {
+                $this->phone = preg_replace('/^\+7/', '8', $this->phone);
+                $this->phone = preg_replace('/[^\d]/', '', $this->phone);
+                if (10 == strlen($this->phone)) {
+                    $this->phone = '8' . $this->phone;
+                }
             }
         }
 

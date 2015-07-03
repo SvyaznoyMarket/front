@@ -24,29 +24,25 @@ class Split {
     public $sum;
     /** @var Model\Cart\Split\Error[] */
     public $errors = [];
-    /** @var bool */
-    private $index;
 
     /**
      * @param array $data
-     * @param bool $index
+     * @param bool $format
      */
-    public function __construct($data = [], $index = false) {
-        $this->index = $index;
-
+    public function __construct($data = [], $format = true) {
         foreach ($data['delivery_groups'] as $key => $item) {
-            if ($this->index) {
-                $this->deliveryGroups[$key] = new Split\DeliveryGroup($item);
-            } else {
+            if ($format) {
                 $this->deliveryGroups[] = new Split\DeliveryGroup($item);
+            } else {
+                $this->deliveryGroups[$key] = new Split\DeliveryGroup($item);
             }
         }
 
         foreach ($data['delivery_methods'] as $key => $item) {
-            if ($this->index) {
-                $this->deliveryMethods[$key] = new Split\DeliveryMethod($item);
-            } else {
+            if ($format) {
                 $this->deliveryMethods[] = new Split\DeliveryMethod($item);
+            } else {
+                $this->deliveryMethods[$key] = new Split\DeliveryMethod($item);
             }
         }
 
@@ -56,22 +52,22 @@ class Split {
 
         foreach ((array)$data['points'] as $key => $item) {
             $item['token'] = $key;
-            if ($this->index) {
-                $this->pointGroups[$key] = new Split\PointGroup($item, $this->index);
-            } else {
+            if ($format) {
                 $this->pointGroups[] = new Split\PointGroup($item);
+            } else {
+                $this->pointGroups[$key] = new Split\PointGroup($item, $format);
             }
         }
 
         foreach ($data['orders'] as $key => $item) {
-            if ($this->index) {
-                $this->orders[$key] = new Split\Order($item, $index);
-            } else {
+            if ($format) {
                 $this->orders[] = new Split\Order($item);
+            } else {
+                $this->orders[$key] = new Split\Order($item, $format);
             }
         }
 
-        $this->user = $data['user_info'] ? new Split\User($data['user_info']) : null;
+        $this->user = $data['user_info'] ? new Split\User($data['user_info'], $format) : null;
         $this->sum = (string)$data['total_cost'];
 
         if (isset($data['errors']) && is_array($data['errors'])) {

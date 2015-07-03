@@ -15,24 +15,20 @@ class PointGroup {
     public $media;
     /** @var Point[] */
     public $points = [];
-    /** @var bool */
-    private $index;
 
     /**
-     * @param bool $index
+     * @param bool $format
      * @param array $data
      */
-    public function __construct($data = [], $index = false) {
-        $this->index = $index;
-
+    public function __construct($data = [], $format = true) {
         $this->token = $data['token'] ? (string)$data['token'] : null;
         $this->actionName = $data['action_name'] ? (string)$data['action_name'] : null;
         $this->blockName = $data['block_name'] ? (string)$data['block_name'] : null;
         foreach ($data['list'] as $key => $item) {
-            if ($this->index) {
-                $this->points[$key] = new Point($item);
-            } else {
+            if ($format) {
                 $this->points[] = new Point($item);
+            } else {
+                $this->points[$key] = new Point($item);
             }
         }
     }
