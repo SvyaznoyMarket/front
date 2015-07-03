@@ -11,8 +11,16 @@ use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\Index as Page;
 
+use EnterAggregator\CurlTrait;
+use EnterMobile\ConfigTrait;
+
+
 class Index {
-    use LoggerTrait, TemplateHelperTrait, RouterTrait;
+    use LoggerTrait,
+        TemplateHelperTrait,
+        RouterTrait,
+        CurlTrait,
+        ConfigTrait;
 
     /**
      * @param Page $page
@@ -21,7 +29,11 @@ class Index {
     public function buildObjectByRequest(Page $page, Index\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
+        $config = $this->getConfig();
+        $router = $this->getRouter();
         $templateHelper = $this->getTemplateHelper();
+
+        $productSliderRepository = new Repository\Partial\ProductSlider();
 
         $page->dataModule = 'index';
 
@@ -49,6 +61,7 @@ class Index {
             ];
         }
         $page->content->promoDataValue = $templateHelper->json($promoData);
+        $page->content->promos = $promoData;
 
         // ga
         $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$templateHelper) {
@@ -72,9 +85,28 @@ class Index {
         } catch (\Exception $e) {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
         }
+        $recommendListUrl = $router->getUrlByRoute(new Routing\Index\Recommendations());
+        $page->content->popularSlider = $productSliderRepository->getObject('popularSlider', $recommendListUrl);
+        $page->content->personalSlider = $productSliderRepository->getObject('personalSlider', $recommendListUrl);
+        $page->content->viewedSlider = $productSliderRepository->getObject('viewedSlider', $recommendListUrl);
+
 
         // шаблоны mustache
         // ...
+
+        (new Repository\Template())->setListForPage($page, [
+            [
+                'id'       => 'tpl-product-slider',
+                'name'     => 'partial/product-slider/mainPage',
+                'partials' => [
+                    'partial/cart/flat_button',
+                ],
+            ],
+            [
+                'id'       => 'tpl-product-slider-viewed',
+                'name'     => 'partial/product-slider/viewed'
+            ]
+        ]);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }

@@ -1,0 +1,236 @@
+{{#content}}
+<main class="content">
+    <div class="slider-parent m-loader js-slider-parent" data-value="{{&promoDataValue}}">
+        <div class="main-banner-slider js-main-banner-slider">
+            {{#promos}}
+                <div class="main-banner-slider__item">
+                    <a href="{{url}}" class="main-banner-slider__link js-ga-click">
+                        <img src="{{image}}" alt="" class="main-banner-slider__img">
+                    </a>
+                </div>
+            {{/promos}}
+        </div>
+    </div>
+
+    <ul class="shop-info grid-4cols clearfix">
+        <li class="shop-info__item grid-4cols__item">
+            <a class="shop-info__link" href="tel://8-800-700-0009">
+                <i class="shop-info__item-icon i-shop-info i-shop-info__phone"></i>
+                <span class="shop-info__item-text">8 (800) 700-00-09</span>
+            </a>
+        </li>
+        <li class="shop-info__item grid-4cols__item">
+            <a class="shop-info__link" href="/how_get_order">
+                <i class="shop-info__item-icon i-shop-info i-shop-info__delivery"></i>
+                <span class="shop-info__item-text">Доставка</span>
+            </a>
+        </li>
+        <li class="shop-info__item grid-4cols__item">
+            <a class="shop-info__link" href="/delivery_types#delivr_self">
+                <i class="shop-info__item-icon i-shop-info i-shop-info__self-delivery"></i>
+                <span class="shop-info__item-text">Самовывоз</span>
+            </a>
+        </li>
+        <li class="shop-info__item grid-4cols__item">
+            <a class="shop-info__link" href="/shops">
+                <i class="shop-info__item-icon i-shop-info i-shop-info__shops"></i>
+                <span class="shop-info__item-text">Магазины</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="main-inn">
+        <div class="grid-2cols clearfix">
+            <div class="grid-2cols__item">
+                {{#popularSlider}}
+                    <div class="items-slider items-slider--left">
+                        <div class="items-slider-nav">
+                            <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-id-productSlider-popularSlider js-ga-click"></div>
+
+                            <div class="items-slider-nav__desc">
+                                <div class="items-slider-nav__title">Популярные товары</div>
+                            </div>
+
+                            <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-id-productSlider-popularSlider js-ga-click"></div>
+                        </div>
+
+                        {{>partial/product-slider/mainPage}}
+                    </div>
+                {{/popularSlider}}
+            </div>
+
+            <div class="grid-2cols__item">
+                {{#personalSlider}}
+                <div class="items-slider items-slider--right">
+                    <div class="items-slider-nav">
+                        <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-id-productSlider-personalSlider js-ga-click"></div>
+
+                        <div class="items-slider-nav__desc">
+                            <div class="items-slider-nav__title">Мы рекомендуем</div>
+                        </div>
+
+                        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-id-productSlider-personalSlider js-ga-click"></div>
+                    </div>
+
+                    {{>partial/product-slider/mainPage}}
+                </div>
+                {{/personalSlider}}
+            </div>
+        </div>
+    </div>
+
+    {{#mainMenu}}
+        <ul class="categories-grid clearfix">
+            {{#elements}}
+                <li class="categories-grid__item">
+                    <a class="categories-grid__link js-ga-click" href="{{url}}" data-ga-click="{{&dataGa}}">
+							<span class="categories-grid__icon">
+								<span class="categories-grid__char"{{#style}} style="{{style}}"{{/style}}>{{char}}</span>
+                                {{#image}}<img class="categories-grid__img" src="{{image}}" />{{/image}}
+							</span>
+                        <span class="categories-grid__text">{{&name}}</span>
+                    </a>
+                </li>
+            {{/elements}}
+        </ul>
+    {{/mainMenu}}
+
+    <div class="main-inn">
+        <div class="grid-2cols clearfix">
+            <div class="grid-2cols__item">
+                {{#viewedSlider}}
+                <div class="items-slider">
+                    <div class="items-slider-nav">
+                        <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-id-productSlider-viewedSlider js-ga-click"></div>
+
+                        <div class="items-slider-nav__desc">
+                            <div class="items-slider-nav__title">Вы смотрели</div>
+                        </div>
+
+                        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-id-productSlider-viewedSlider js-ga-click"></div>
+                    </div>
+                    {{>partial/product-slider/viewed}}
+                </div>
+                {{/viewedSlider}}
+            </div>
+
+            <div class="grid-2cols__item">
+                <div class="items-slider">
+                    <div class="items-slider-nav">
+                        <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-brands"></div>
+
+                        <div class="items-slider-nav__desc">
+                            <div class="items-slider-nav__title">Популярные бренды</div>
+                        </div>
+
+                        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-brands"></div>
+                    </div>
+
+                    <div class="slider-parent m-loader js-slider-parent">
+                        <div class="items-slider-slides items-slider-slides--images items-slider-slides--logos js-main-items-slider-brands" data-slick-slider="brands" data-slick='{"slidesToShow": 4, "slidesToScroll": 4}'>
+                            <div class="items-slider-slides__item">
+                                <a class="items-slider__img-link" title="Bosch" href="/slices/brands-bosch">
+                                    <img src="img/main/logo/bosch.jpg" alt="Bosch" class="items-slider__img">
+                                </a>
+
+                                <a class="items-slider__img-link" title="LG" href="/slices/brands-lg">
+                                    <img src="img/main/logo/lg.jpg" alt="LG" class="items-slider__img">
+                                </a>
+                            </div>
+
+                            <div class="items-slider-slides__item">
+                                <a class="items-slider__img-link" title="Samsung" href="/slices/brands-samsung">
+                                    <img src="img/main/logo/samsung.jpg" alt="Samsung" class="items-slider__img">
+                                </a>
+
+                                <a class="items-slider__img-link" title="Philips" href="/slices/brands-philips">
+                                    <img src="img/main/logo/philips.jpg" alt="Philips" class="items-slider__img">
+                                </a>
+                            </div>
+
+                            <div class="items-slider-slides__item">
+                                <a class="items-slider__img-link" title="Electrolux" href="/slices/brands-electrolux">
+                                    <img src="img/main/logo/electrolux.jpg" alt="Electrolux" class="items-slider__img">
+                                </a>
+
+                                <a class="items-slider__img-link" title="Sony" href="/slices/brands-sony">
+                                    <img src="img/main/logo/sony.jpg" alt="Sony" class="items-slider__img">
+                                </a>
+                            </div>
+
+                            <div class="items-slider-slides__item">
+                                <a class="items-slider__img-link" title="Apple" href="/slices/brands-apple">
+                                    <img src="img/main/logo/apple.jpg" alt="Apple" class="items-slider__img">
+                                </a>
+
+                                <a class="items-slider__img-link" title="HP" href="/slices/brands-hp">
+                                    <img src="img/main/logo/HP.jpg" alt="HP" class="items-slider__img">
+                                </a>
+                            </div>
+
+                            <div class="items-slider-slides__item">
+                                <a class="items-slider__img-link" title="Lenovo" href="/slices/brands-lenovo">
+                                    <img src="img/main/logo/lenovo.jpg" alt="Lenovo" class="items-slider__img">
+                                </a>
+
+                                <a class="items-slider__img-link" title="Hasbro" href="/search?q=hasbro">
+                                    <img src="img/main/logo/hasHasbrobro.jpg" alt="Hasbro" class="items-slider__img">
+                                </a>
+                            </div>
+
+                            <div class="items-slider-slides__item">
+                                <a class="items-slider__img-link" title="Sylvanian Families" href="/slices/brands-sylvanian-families">
+                                    <img src="img/main/logo/Sylvanian-Families.jpg" alt="Sylvanian Families" class="items-slider__img">
+                                </a>
+
+                                <a class="items-slider__img-link" title="LEGO" href="/slices/brands-lego">
+                                    <img src="img/main/logo/lego.jpg" alt="LEGO" class="items-slider__img">
+                                </a>
+                            </div>
+
+                            <div class="items-slider-slides__item">
+                                <a class="items-slider__img-link" title="Анзоли" href="/slices/brands-anzoli">
+                                    <img src="img/main/logo/anzoli.jpg" alt="Anzoli" class="items-slider__img">
+                                </a>
+
+                                <a class="items-slider__img-link" title="Шатура" href="/slices/brands-shatura">
+                                    <img src="img/main/logo/shatura.jpg" alt="Шатура" class="items-slider__img">
+                                </a>
+                            </div>
+
+                            <div class="items-slider-slides__item">
+                                <a class="items-slider__img-link" title="Vision Fitness" href="/slices/brands-vision">
+                                    <img src="img/main/logo/visionfitnes.jpg" alt="Vision Fitness" class="items-slider__img">
+                                </a>
+
+                                <a class="items-slider__img-link" title="Makita" href="/slices/brands-makita">
+                                    <img src="img/main/logo/Makita.jpg" alt="Makita" class="items-slider__img">
+                                </a>
+                            </div>
+
+                            <div class="items-slider-slides__item">
+                                <a class="items-slider__img-link" title="Аскона" href="/slices/brands-askona">
+                                    <img src="img/main/logo/askona.jpg" alt="Askona" class="items-slider__img">
+                                </a>
+                                <a class="items-slider__img-link" title="Tefal" href="/slices/brands-tefal">
+                                    <img src="img/main/logo/tefal.jpg" alt="Tefal" class="items-slider__img">
+                                </a>
+                            </div>
+
+                            <div class="items-slider-slides__item">
+                                <a class="items-slider__img-link" title="PANDORA" href="/slices/brands-pandora">
+                                    <img src="img/main/logo/pandora.jpg" alt="PANDORA" class="items-slider__img">
+                                </a>
+
+                                <a class="items-slider__img-link" title="GUESS" href="/slices/brands-guess">
+                                    <img src="img/main/logo/guess.jpg" alt="GUESS" class="items-slider__img">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{{/content}}
