@@ -37,7 +37,7 @@ namespace EnterAggregator\Controller\Product {
             $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
             // запрос товара
-            $productListQuery = new Query\Product\GetListByIdList($request->productIds, $region->id);
+            $productListQuery = new Query\Product\GetListByIdList($request->productIds, $region->id, ['model' => false, 'related' => false, 'availability' => false]);
             $curl->prepare($productListQuery);
 
             $curl->execute();
