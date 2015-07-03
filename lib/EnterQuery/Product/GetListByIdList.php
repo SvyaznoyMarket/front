@@ -16,8 +16,9 @@ class GetListByIdList extends Query {
     /**
      * @param array $ids
      * @param string $regionId
+     * @param array $view
      */
-    public function __construct(array $ids, $regionId) {
+    public function __construct(array $ids, $regionId, $view = []) {
         $this->url = new Url();
         $this->url->path = 'v2/product/get-v3';
         $this->url->query = [
@@ -26,6 +27,15 @@ class GetListByIdList extends Query {
         ];
         if ($regionId) {
             $this->url->query['geo_id'] = $regionId;
+        }
+        if (false === $view['model']) {
+            $this->url->query['withModels'] = 0;
+        }
+        if (false === $view['related']) {
+            $this->url->query['withRelated'] = 0;
+        }
+        if (false === $view['availability']) {
+            $this->url->query['getCoreAvailability'] = 0;
         }
 
         $this->init();
