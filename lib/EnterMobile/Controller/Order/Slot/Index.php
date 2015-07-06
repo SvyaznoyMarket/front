@@ -82,7 +82,7 @@ class Index {
 
             $curl = $this->getCurl();
 
-            $productQuery = new Query\Product\GetListByIdList($productIds, $regionId);
+            $productQuery = new Query\Product\GetListByIdList($productIds, $regionId, ['model' => false, 'related' => false]);
             $curl->prepare($productQuery);
 
             $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(

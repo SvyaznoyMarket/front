@@ -143,7 +143,7 @@ class Create {
     }
 
     private function getOrderCreatePacketMetas(Model\Cart\Split $cartSplitResponse, $productId, $regionId) {
-        $productListQuery = new Query\Product\GetListByIdList([$productId], $regionId);
+        $productListQuery = new Query\Product\GetListByIdList([$productId], $regionId, ['model' => false, 'related' => false]);
         $this->getCurl()->query($productListQuery);
 
         $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);

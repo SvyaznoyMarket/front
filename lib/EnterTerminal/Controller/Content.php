@@ -76,10 +76,10 @@ namespace EnterTerminal\Controller {
                         $matches[$key]['query'] = new Query\Product\Category\GetItemByToken($contentRepository->getTokenByPath($path), $regionId);
                         $curl->prepare($matches[$key]['query']);
                     } else if (0 === strpos($path, '/product/')) {
-                        $matches[$key]['query'] = new Query\Product\GetItemByToken($contentRepository->getTokenByPath($path), $regionId);
+                        $matches[$key]['query'] = new Query\Product\GetItemByToken($contentRepository->getTokenByPath($path), $regionId, ['model' => false, 'related' => false]);
                         $curl->prepare($matches[$key]['query']);
                     } else if (0 === strpos($path, '/products/set/')) {
-                        $matches[$key]['query'] = new Query\Product\GetListByBarcodeList($contentRepository->getProductBarcodesByPath($path), $regionId);
+                        $matches[$key]['query'] = new Query\Product\GetListByBarcodeList($contentRepository->getProductBarcodesByPath($path), $regionId, ['model' => false, 'related' => false]);
                         $curl->prepare($matches[$key]['query']);
                     }
                 }
