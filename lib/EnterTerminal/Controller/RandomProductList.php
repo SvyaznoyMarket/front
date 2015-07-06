@@ -65,7 +65,7 @@ class RandomProductList {
             $curl->prepare($productListQuery);
             $productListQueries[] = $productListQuery;
 
-            $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+            $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
                 $uisInChunk,
                 [
                     'media'    => true,
