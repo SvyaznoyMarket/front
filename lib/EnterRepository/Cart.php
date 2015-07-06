@@ -286,7 +286,7 @@ class Cart {
                 $blockName = isset($orderItem['blockName']) ? $orderItem['blockName'] : null;
 
                 if (!$blockName || !isset($previousSplitData['orders'][$blockName])) {
-                    $this->getLogger()->push(['type' => 'warn', 'message' => 'Передан несуществующий блок заказа', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                    $this->getLogger()->push(['type' => 'error', 'message' => 'Передан несуществующий блок заказа', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
                     continue;
                 }
 
@@ -307,7 +307,6 @@ class Cart {
                     $dump['orders'][$blockName]['delivery']['point'] = [
                         'id'    => $orderItem['delivery']['point']['id'],
                         'token' => $orderItem['delivery']['point']['groupToken'],
-
                     ];
                 }
 
