@@ -1221,9 +1221,10 @@ html.no-scroll body {
   line-height: 50px;
   height: 50px;
   list-style-type: none;
-  vertical-align: middle;
+  position: relative;
   display: inline-block;
   vertical-align: top;
+  vertical-align: middle;
 }
 .header-controls__link {
   display: block;
@@ -1245,13 +1246,26 @@ html.no-scroll body {
 .header.search .bread-crumbs {
   display: none;
 }
+.cart-qnt {
+  font-size: 11px;
+  font-weight: bold;
+  position: absolute;
+  z-index: 3;
+  top: 4px;
+  left: 0;
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: #ffffff;
+  text-shadow: 0 0 2px #000000;
+}
 .bread-crumbs {
   line-height: 50px;
   padding-left: 70px;
 }
 .bread-crumbs__link {
-  padding-left: 15px;
   font-size: 1rem;
+  padding-left: 15px;
   white-space: nowrap;
   color: #ffffff;
   border-left: 1px solid #333;

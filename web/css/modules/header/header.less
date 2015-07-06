@@ -65,9 +65,10 @@
 
             list-style-type: none;
 
-            vertical-align: middle;
+            position: relative;
 
             .inline-block();
+            vertical-align: middle;
         }
         &__link {
             display: block;
@@ -97,14 +98,34 @@
     }
 }
 
+.cart-qnt {
+    font-size: 11px;
+    font-weight: bold;
+
+    position: absolute;
+    z-index: 3;
+    top: 4px;
+    left: 0;
+
+    display: block;
+
+    width: 100%;
+
+    text-align: center;
+
+    color: @white;
+    text-shadow: 0 0 2px @black;
+}
+
 // хлебные крохи
 .bread-crumbs {
     line-height: 50px;
 
     padding-left: 70px;
     &__link {
-        padding-left: 15px;
         font-size: 1rem;
+
+        padding-left: 15px;
 
         white-space: nowrap;
 
