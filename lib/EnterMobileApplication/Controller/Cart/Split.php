@@ -158,6 +158,41 @@ namespace EnterMobileApplication\Controller\Cart {
                 $response->errors = $orderRepository->getErrorList($e);
             }
 
+            // MAPI-? Временно убираем из MAPI 1.3 hermes
+            // MAPI-72 Не возвращать "Евросеть" в карт-сплите в версии 1.3
+            call_user_func(function() use(&$response) {
+                foreach ($response->split->deliveryMethods as $key => $value) {
+                    if (in_array($value->pointToken, ['self_partner_hermes', 'self_partner_euroset'], true)) {
+                        unset($response->split->deliveryMethods[$key]);
+                    }
+                }
+                $response->split->deliveryMethods = array_values($response->split->deliveryMethods);
+
+                foreach ($response->split->pointGroups as $key => $value) {
+                    if (in_array($value->token, ['self_partner_hermes', 'self_partner_euroset'], true)) {
+                        unset($response->split->pointGroups[$key]);
+                    }
+                }
+                $response->split->pointGroups = array_values($response->split->pointGroups);
+
+                foreach ($response->split->orders as $key => $value) {
+                    foreach ($value->possibleDeliveryMethodTokens as $key2 => $value2) {
+                        if (in_array($value2, ['self_partner_hermes', 'self_partner_euroset'], true)) {
+                            unset($response->split->orders[$key]->possibleDeliveryMethodTokens[$key2]);
+                        }
+                    }
+                    $response->split->orders[$key]->possibleDeliveryMethodTokens = array_values($response->split->orders[$key]->possibleDeliveryMethodTokens);
+
+
+                    foreach ($value->possiblePoints as $key2 => $value2) {
+                        if (in_array($value2->groupToken, ['self_partner_hermes', 'self_partner_euroset'], true)) {
+                            unset($response->split->orders[$key]->possiblePoints[$key2]);
+                        }
+                    }
+                    $response->split->orders[$key]->possiblePoints = array_values($response->split->orders[$key]->possiblePoints);
+                }
+            });
+
             // response
             return new Http\JsonResponse($response);
         }
@@ -332,7 +367,7 @@ namespace EnterMobileApplication\Controller\Cart\Split {
     class Response {
         /** @var array */
         public $errors = [];
-        /** @var array */
+        /** @var Model\Cart\Split */
         public $split;
      }
 }
