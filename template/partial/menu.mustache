@@ -1,6 +1,5 @@
 <nav class="nav js-site-nav">
     <div class="nav-header">
-        <div class="nav-header__col nav-header__icon js-nav-open-link"><i class="i-header i-header--menu"></i></div>
 
         <a class="header__logotype-link" href="/"></a>
 
@@ -11,9 +10,54 @@
         </div>
     </div>
 
-    {{#mainMenu}}
-        {{>partial/main-menu/level-1}}
-    {{/mainMenu}}
+    {{!#mainMenu}}
+        {{!>partial/main-menu/level-1}}
+    {{!/mainMenu}}
+    <div class="nav-menu">
+        <ul class="nav-breadcrumbs nav-list">
+            <li class="nav-list-i"><a class="nav-list-i__lk">Электроника</a></li>
+            <li class="nav-list-i"><a class="nav-list-i__lk">Планшетные компьютеры</a></li>
+            <li class="nav-list-i"><a class="nav-list-i__lk">Планшеты</a></li>
+        </ul>
+        <ul class="nav-links nav-list">
+            <li class="nav-list-i"><a class="nav-list-i__lk"><i class="nav-icon nav-icon--shops"></i>Магазины и самовывоз</a></li>
+            <li class="nav-list-i"><a class="nav-list-i__lk"><i class="nav-icon nav-icon--lk"></i>Личный кабинет</a></li>
+            <li class="nav-list-i"><a class="nav-list-i__lk"><i class="nav-icon nav-icon--callback"></i>Обратная связь</a></li>
+            <li class="nav-list-i"><a class="nav-list-i__lk"><i class="nav-icon nav-icon--phone"></i>+7 495 775-00-06</a></li>
+        </ul>
+        <div class="nav-catalog">
+            <div class="nav-catalog__h">КАТАЛОГ</div>
+            <ul class="nav-catalog-items nav-list">
+
+                <li class="nav-list-i">
+                    <a class="nav-list-i__lk">
+                         <span class="nav-icon">
+                             C
+                         </span>
+                        <span class="nav-name">Мебель</span>
+                    </a>
+                </li>
+                <li class="nav-list-i">
+                    <a class="nav-list-i__lk">
+                         <span class="nav-icon">
+                             A
+                         </span>
+                        <span class="nav-name">Товары для дома</span>
+                    </a>
+                </li>
+                <li class="nav-list-i">
+                    <a class="nav-list-i__lk">
+                         <span class="nav-icon">
+                             B
+                         </span>
+                        <span class="nav-name">Бытовая техника</span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
 </nav>
 
 <div class="fader js-fader"></div>
