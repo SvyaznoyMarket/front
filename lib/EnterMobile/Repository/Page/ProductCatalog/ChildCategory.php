@@ -55,6 +55,12 @@ class ChildCategory {
             $breadcrumb->url = $categoryModel->link;
             $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
         }
+        if ($brandModel = $request->brand) {
+            $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
+            $breadcrumb->name = $brandModel->name;
+            $breadcrumb->url = $router->getUrlByRoute(new Routing\ProductCatalog\GetBrandCategory($request->category->path, $brandModel->token));
+            $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
+        }
 
         $currentRoute = new Routing\ProductCatalog\GetChildCategory($request->category->path);
 
