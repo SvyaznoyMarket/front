@@ -96,6 +96,8 @@ class Point {
         switch ($pointToken) {
             case 'svyaznoy':
                 return 'Магазин Связной';
+            case 'euroset':
+                return 'Евросеть';
             case 'hermes':
                 return 'Hermes DPD';
             case 'pickpoint':
