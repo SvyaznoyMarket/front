@@ -166,6 +166,21 @@ namespace EnterMobileApplication\Controller\Cart {
                     }
                 }
                 $response->split->deliveryMethods = array_values($response->split->deliveryMethods);
+                
+                foreach ($response->split->deliveryGroups as $key => $value) {
+                    $hasGroup = false;
+                    foreach ($response->split->deliveryMethods as $value2) {
+                        if ($value2->groupId == $value->id) {
+                            $hasGroup = true;
+                            break;
+                        }
+                    }
+                    
+                    if (!$hasGroup) {
+                        unset($response->split->deliveryGroups[$key]);
+                    }
+                }
+                $response->split->deliveryGroups = array_values($response->split->deliveryGroups);
 
                 foreach ($response->split->pointGroups as $key => $value) {
                     if ($value->token && !in_array($value->token, ['shops', 'shops_svyaznoy', 'self_partner_pickpoint'], true)) {
@@ -176,7 +191,7 @@ namespace EnterMobileApplication\Controller\Cart {
 
                 foreach ($response->split->orders as $key => $value) {
                     foreach ($value->possibleDeliveryMethodTokens as $key2 => $value2) {
-                        if ($value2 && !in_array($value2, ['shops', 'shops_svyaznoy', 'self_partner_pickpoint'], true)) {
+                        if ($value2 && strpos($value2, 'self_partner_') === 0 && !preg_match('/^self_partner_pickpoint($|_)/', $value2)) {
                             unset($response->split->orders[$key]->possibleDeliveryMethodTokens[$key2]);
                         }
                     }
