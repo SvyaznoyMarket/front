@@ -9,48 +9,40 @@ use EnterAggregator\DebugContainerTrait;
 use EnterAggregator\CurlTrait;
 use EnterMobile\Repository;
 use EnterQuery as Query;
-use EnterMobile\Model\Page\DefaultPage as Page;
+use EnterMobile\Model\Page\User\Order as Page;
 
 class Order {
 
-    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait,
+        CurlTrait,
+        MustacheRendererTrait,
+        DebugContainerTrait;
 
     public function execute(Http\Request $request) {
         $curl = $this->getCurl();
 
-        $orderId = $request->query['orderId'];
+        // ид региона
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
+        // контроллер
+        $controller = new \EnterAggregator\Controller\User\Order();
+        // запрос для контроллера
+        $controllerRequest = $controller->createRequest();
+        $controllerRequest->regionId = $regionId;
+        $controllerRequest->httpRequest = $request;
+        // ответ
+        $controllerResponse = $controller->execute($controllerRequest);
 
-        $user = new \EnterMobile\Repository\User();
-        $token = $user->getTokenByHttpRequest($request);
-
-        $orderQuery = new Query\Order\GetItemById('site', $token, $orderId);
-        $curl->prepare($orderQuery);
-        $curl->execute();
-
-        $productIds = [];
-        $productMap = [];
-        $orderResult = $orderQuery->getResult();
-        foreach ($orderResult['product'] as $key => $product) {
-            $productIds[] = $product['id'];
-            $productMap[$product['id']] = $key;
-        }
-
-        $productsInfo = new Query\Product\GetDescriptionListByIdList($productIds, ['media' => 1]);
-        $curl->prepare($productsInfo);
-        $curl->execute();
-
-        $productsInfoResult = $productsInfo->getResult();
-
-        foreach ($productsInfoResult as $key => $productInfo) {
-            $coreId = $productInfo['core_id'];
-
-            $orderResult['product'][$productMap[$coreId]]['image'] = $productInfo['medias'][0]['sources'][0]['url'];
-            $orderResult['product'][$productMap[$coreId]]['name'] = $productInfo['name'];
-        }
+        //запрос для получения страницы
+        $pageRequest = new Repository\Page\User\Order\Request();
+        $pageRequest->httpRequest = $request;
+        $pageRequest->region = $controllerResponse->region;
+        $pageRequest->user = $controllerResponse->user;
+        $pageRequest->cart = $controllerResponse->cart;
+        $pageRequest->mainMenu = $controllerResponse->mainMenu;
+        $pageRequest->order = $controllerResponse->order;
 
         $page = new Page();
-        $page->title = 'Заголовок';
-        $page->content = $orderResult;
+        (new Repository\Page\User\Order())->buildObjectByRequest($page, $pageRequest);
 
         // рендер
         $renderer = $this->getRenderer();
