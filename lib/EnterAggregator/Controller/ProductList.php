@@ -69,7 +69,6 @@ namespace EnterAggregator\Controller {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
             }
 
-            $categoryTreeQuery = null;
             $categoryRootListQuery = null;
             if ((bool)$request->categoryCriteria) {
                 // наличие категорий в данном регионе с учетом фильтров
@@ -195,6 +194,14 @@ namespace EnterAggregator\Controller {
                 $curl->prepare($productUiPagerQuery);
             }
 
+            // запрос дерева категорий для меню
+            $rootCategoryTreeQuery = null;
+            if ($request->config->mainMenu) {
+                // запрос дерева категорий для меню
+                $rootCategoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(0);
+                $curl->prepare($rootCategoryTreeQuery);
+            }
+
             $curl->execute();
 
             if ($filterListQuery) {
@@ -297,8 +304,8 @@ namespace EnterAggregator\Controller {
             }
 
             // меню
-            if ($mainMenuQuery && $categoryTreeQuery) {
-                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
+            if ($mainMenuQuery && $rootCategoryTreeQuery) {
+                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $rootCategoryTreeQuery);
             }
 
             // список рейтингов товаров

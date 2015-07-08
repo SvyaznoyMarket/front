@@ -8,11 +8,14 @@
     </div>
 
     <div class="nav-menu">
+        {{#breadcrumbBlock}}
         <ul class="nav-breadcrumbs nav-list">
-            <li class="nav-list-i"><a class="nav-list-i__lk">Электроника</a></li>
-            <li class="nav-list-i"><a class="nav-list-i__lk">Планшетные компьютеры</a></li>
-            <li class="nav-list-i"><a class="nav-list-i__lk">Планшеты</a></li>
+            {{#breadcrumbs}}
+                <li class="nav-list-i"><a href="{{url}}" class="nav-list-i__lk">{{name}}</a></li>
+            {{/breadcrumbs}}
         </ul>
+        {{/breadcrumbBlock}}
+
         <ul class="nav-links nav-list">
             <li class="nav-list-i"><a class="nav-list-i__lk"><i class="nav-icon nav-icon--shops"></i>Магазины и самовывоз</a></li>
             <li class="nav-list-i"><a class="nav-list-i__lk"><i class="nav-icon nav-icon--lk"></i>Личный кабинет</a></li>
