@@ -1,13 +1,21 @@
 <div class="content private">
-<section>
-    <table class="private-orders-list">
-        {{#orders}}
-        <tr class="private-orders-list-i">
-            <td class="private-orders-list-i__num"><a href="/private/order/{{id}}">{{number}}</a></td>
-            <td class="private-orders-list-i__date"><a href="/private/order/{{id}}">{{added}}</a></td>
-            <td class="private-orders-list-i__sum"><a href="/private/order/{{id}}">{{pay_sum}} <span class="rubl">p</span></a></td>
-        </tr>
-        {{/orders}}
-    </table>
-</section>
+    <section class="main-section">
+        <ul class="private-menu-lst">
+            <li class="private-menu-lst-i active"><a class="private-menu-lst-i__lk" href="/private/orders">Заказы</a></li>
+            <li class="private-menu-lst-i"><a class="private-menu-lst-i__lk" href="/private/edit">Личные данные</a></li>
+            <li class="private-menu-lst-i"><a class="private-menu-lst-i__lk" href="/private/password">Изменить пароль</a></li>
+        </ul>
+        <a class="btn btn-exit">Выход</a>
+    </section>
+    <section>
+        <table class="private-orders-list">
+            {{#orders}}
+            <tr class="private-orders-list-i">
+                <td class="private-orders-list-i__num"><a href="/private/order/{{id}}">{{number}}</a></td>
+                <td class="private-orders-list-i__date"><a href="/private/order/{{id}}">{{added}}</a></td>
+                <td class="private-orders-list-i__sum"><a href="/private/order/{{id}}">{{pay_sum}} <span class="rubl">p</span></a></td>
+            </tr>
+            {{/orders}}
+        </table>
+    </section>
 </div>

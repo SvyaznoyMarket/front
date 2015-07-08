@@ -28,11 +28,10 @@ class Index {
     public function buildObjectByRequest(Page $page, Index\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
-        $config = $this->getConfig();
-        $router = $this->getRouter();
         $templateHelper = $this->getTemplateHelper();
 
         $page->dataModule = 'user.index';
+        $page->title = 'Заказы';
 
         // ga
         $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$templateHelper) {
@@ -50,24 +49,14 @@ class Index {
         };
         $walkByMenu($request->mainMenu->elements);
 
-        // partner
-        try {
-            $page->partners = (new Repository\Partial\Partner())->getListForIndex($request);
-        } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);
-        }
+        // заказы
+        $page->content->orders = $request->orders['orders'];
 
         // шаблоны mustache
         // ...
 
         (new Repository\Template())->setListForPage($page, [
-//            [
-//                'id'       => 'tpl-product-slider',
-//                'name'     => 'partial/product-slider/mainPage',
-//                'partials' => [
-//                    'partial/cart/flat_button',
-//                ],
-//            ]
+
         ]);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));

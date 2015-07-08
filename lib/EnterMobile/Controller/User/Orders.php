@@ -9,25 +9,38 @@ use EnterAggregator\DebugContainerTrait;
 use EnterAggregator\CurlTrait;
 use EnterMobile\Repository;
 use EnterQuery as Query;
-use EnterMobile\Model\Page\DefaultPage as Page;
+use EnterMobile\Model\Page\User\Index as Page;
 
 class Orders {
-
-    use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
+    use ConfigTrait,
+        CurlTrait,
+        MustacheRendererTrait,
+        DebugContainerTrait;
 
     public function execute(Http\Request $request) {
-        $curl = $this->getCurl();
-        $user = new \EnterMobile\Repository\User();
+        // ид региона
+        $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
-        $token = $user->getTokenByHttpRequest($request);
+        // контроллер
+        $controller = new \EnterAggregator\Controller\User\Orders();
+        // запрос для контроллера
+        $controllerRequest = $controller->createRequest();
+        $controllerRequest->regionId = $regionId;
+        $controllerRequest->httpRequest = $request;
+        // ответ
+        $controllerResponse = $controller->execute($controllerRequest);
 
-        $ordersQuery = new Query\Order\GetListByUserToken($token, 0, 40);
-        $curl->prepare($ordersQuery);
-        $curl->execute();
+        // запрос для получения страницы
+        $pageRequest = new Repository\Page\User\Index\Request();
+        $pageRequest->httpRequest = $request;
+        $pageRequest->region = $controllerResponse->region;
+        $pageRequest->user = $controllerResponse->user;
+        $pageRequest->cart = $controllerResponse->cart;
+        $pageRequest->mainMenu = $controllerResponse->mainMenu;
+        $pageRequest->orders = $controllerResponse->orders;
 
         $page = new Page();
-        $page->title = 'Заголовок';
-        $page->content = $ordersQuery->getResult();
+        (new Repository\Page\User\Index())->buildObjectByRequest($page, $pageRequest);
 
         // рендер
         $renderer = $this->getRenderer();

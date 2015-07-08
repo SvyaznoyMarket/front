@@ -20,10 +20,11 @@ namespace EnterMobile\Model\Page\User\Index {
     use EnterMobile\Model\Partial;
 
     class Content extends Page\DefaultPage\Content {
+        /** @var array */
+        public $orders;
 
         public function __construct() {
             parent::__construct();
         }
     }
 }
-
