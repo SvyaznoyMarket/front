@@ -10830,6 +10830,54 @@ body.flex .wrapper.wrapper-smpl .content {
   margin-top: 5px;
   display: block;
 }
+.favorit-item {
+  padding: 10px 10px 5px;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  position: relative;
+  border-bottom: 1px solid #d3d3d3;
+}
+.favorit-item__img {
+  width: 74px;
+  height: 74px;
+  float: left;
+  text-align: center;
+}
+.favorit-item__img img {
+  max-width: 100%;
+  max-height: 100%;
+}
+.favorit-item__name {
+  padding-right: 30px;
+  display: block;
+}
+.favorit-item__type {
+  color: #616161;
+  display: block;
+}
+.favorit-item__descr {
+  margin-left: 80px;
+  min-height: 74px;
+}
+.favorit-item__change {
+  max-width: 0;
+  width: 100%;
+}
+.favorit-delete {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 20px;
+  height: 20px;
+  background: url("modules/favorit/img/close@2x.png") no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
 /* =======
    Helpers
    ========================================================================== */
