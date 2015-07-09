@@ -6621,6 +6621,7 @@ html.no-scroll body {
   overflow: hidden;
   height: 26px;
   margin: 0 0 5px;
+  position: relative;
 }
 .items-slider__old-price {
   font-size: .875rem;
@@ -10358,4 +10359,35 @@ body.flex .wrapper.wrapper-smpl .content {
 }
 .bb-dotted {
   border-bottom: 1px dotted;
+}
+.ellipsis {
+  overflow: hidden;
+}
+.ellipsis:before {
+  content: "";
+  float: left;
+  width: 5px;
+  height: 100%;
+}
+.ellipsis > *:first-child {
+  float: right;
+  width: 100%;
+  margin-left: -5px;
+}
+.ellipsis:after {
+  content: "\02026";
+  float: right;
+  position: relative;
+  top: -13px;
+  left: 100%;
+  width: 3em;
+  margin-left: -3em;
+  padding-right: 5px;
+  text-align: right;
+  background-color: white;
+  background: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0)), to(#ffffff), color-stop(50%, #ffffff));
+  background: -moz-linear-gradient(to right, rgba(255, 255, 255, 0), #ffffff 50%, #ffffff);
+  background: -o-linear-gradient(to right, rgba(255, 255, 255, 0), #ffffff 50%, #ffffff);
+  background: -ms-linear-gradient(to right, rgba(255, 255, 255, 0), #ffffff 50%, #ffffff);
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), #ffffff 50%, #ffffff);
 }
