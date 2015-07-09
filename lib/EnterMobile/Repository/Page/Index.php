@@ -34,6 +34,7 @@ class Index {
         $templateHelper = $this->getTemplateHelper();
 
         $productSliderRepository = new Repository\Partial\ProductSlider();
+        $mediaRepository = new \EnterRepository\Media();
 
         $page->dataModule = 'index';
 
@@ -89,7 +90,22 @@ class Index {
         $page->content->popularSlider = $productSliderRepository->getObject('popularSlider', $recommendListUrl);
         $page->content->personalSlider = $productSliderRepository->getObject('personalSlider', $recommendListUrl);
         $page->content->viewedSlider = $productSliderRepository->getObject('viewedSlider', $recommendListUrl);
-
+        
+        call_user_func(function() use(&$page, &$request, &$mediaRepository) {
+            foreach ($request->popularBrands as $brand) {
+                if (!isset($lastGroup) || count($lastGroup) == 2) {
+                    unset($lastGroup);
+                    $lastGroup = [];
+                    $page->content->popularBrands[] = &$lastGroup;
+                }
+                
+                $lastGroup[] = [
+                    'name' => $brand->name,
+                    'url' => $brand->url,
+                    'imageUrl' => $mediaRepository->getSourceObjectByList($brand->media->photos, 'main', '70x35')->url,
+                ];
+            }
+        });
 
         // шаблоны mustache
         // ...

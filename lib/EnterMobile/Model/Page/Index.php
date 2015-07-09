@@ -30,6 +30,8 @@ namespace EnterMobile\Model\Page\Index {
         public $personalSlider;
         /** @var Partial\ProductSlider|null */
         public $viewedSlider;
+        /** @var array */
+        public $popularBrands = [];
 
         public function __construct() {
             parent::__construct();

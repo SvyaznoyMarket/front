@@ -61,7 +61,7 @@ class ProductButton {
                     'token'    => $product->token,
                     'price'    => $product->price,
                     'url'      => $product->link,
-                    'quantity' => $cartProduct ? $cartProduct->quantity : 1,
+                    'quantity' => $cartProduct ? $cartProduct->quantity + 1  : 1,
                 ],
             ],
         ];
@@ -108,10 +108,10 @@ class ProductButton {
             $dataValue['product'][$product->id]['partnerOfferUrl'] = $slotPartnerOffer->partner->offerUrl;
             $dataValue['isFull'] = $isFull;
         } else if ($cartProduct) {
-            $button->text = 'В корзине';
-            $button->url = '/cart'; // TODO: route
-            $button->dataUrl = '';
-            $button->isInCart = true;
+//            $button->text = 'В корзине';
+//            $button->url = '/cart'; // TODO: route
+//            $button->dataUrl = '';
+//            $button->isInCart = true;
         } else if ($product->isInShopOnly && $context['position'] !== 'listing') {
             $button->isInShopOnly = true;
             $button->text = 'Резерв';
