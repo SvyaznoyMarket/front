@@ -6491,6 +6491,7 @@ html.no-scroll body {
 .items-slider-nav {
   margin: 0 0 8px;
   padding: 8px;
+  height: 32px;
   text-align: center;
   -webkit-box-shadow: 0 3px 7px -2px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 3px 7px -2px rgba(0, 0, 0, 0.2);
@@ -6510,8 +6511,11 @@ html.no-scroll body {
   width: 10px;
   height: 22px;
   padding: 5px 10px;
-  display: inline-block;
-  vertical-align: top;
+  display: none;
+}
+.items-slider-nav__btn[style="display: block;"] {
+  display: inline-block !important;
+  vertical-align: top !important;
 }
 .items-slider-nav__btn--prev {
   background: no-repeat 50% 50% url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAnUlEQVR4AWNABq5SLiscdBhQgctM1/8uNqhCUS4fXBZ58iEL8bscd35tq4Wizjne9b9TAoqQo77LA+fFDiJIQg4CzrNdvjpYoKoLdvvvPBtFyE3W+bHzBTdFJKFQNuepLp+c41Fdp+vyx2UZnIsQdF4OYmFoh7sQ0yICTsJ0PMKbzvch3sQMkEQoBzPoMALZebEnH5bocLYFMzEjDgAlaTveSK5ZEgAAAABJRU5ErkJggg==');
@@ -6537,6 +6541,7 @@ html.no-scroll body {
 }
 .items-slider-slides--images {
   height: 100px;
+  padding-bottom: 0;
 }
 .items-slider-slides--images .items-slider__img {
   max-height: 80px;
