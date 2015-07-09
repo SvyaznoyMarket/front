@@ -241,6 +241,10 @@
             "coupon": "[\\w\\d-_]+"
         }
     },
+    "User\\Favorit": {
+      "name": "Избранное",
+      "pattern": "/private/favorit"
+    },
 
     "Search\\Index": {
         "name": "Поиск",
