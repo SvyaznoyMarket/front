@@ -7919,6 +7919,15 @@ body.flex .wrapper.wrapper-smpl .content {
 .checkout-order__box--head {
   padding: 10px;
   border: none;
+  *zoom: 1;
+}
+.checkout-order__box--head:before,
+.checkout-order__box--head:after {
+  display: table;
+  content: ' ';
+}
+.checkout-order__box--head:after {
+  clear: both;
 }
 .checkout-order__box--light {
   background: #ffffff;
@@ -8397,8 +8406,9 @@ body.flex .wrapper.wrapper-smpl .content {
 @media only screen and (max-width: 480px) {
   .checkout-order-head__vendor {
     display: block;
-    float: none;
+    float: left;
     clear: both;
+    margin-top: -10px;
   }
   .checkout-order-head__info {
     width: 70px;
@@ -10339,4 +10349,7 @@ body.flex .wrapper.wrapper-smpl .content {
 }
 .table--2col .table_cell {
   width: 50%;
+}
+.bb-dotted {
+  border-bottom: 1px dotted;
 }
