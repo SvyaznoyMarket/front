@@ -125,7 +125,7 @@ namespace EnterTerminal\Controller\Cart {
                     if (in_array('logo', $media->tags, true)) {
                         foreach ($media->sources as $source) {
                             if ($source->type === '100x100') {
-                                $pointGroup->imageUrl = $source->url; // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split
+                                $pointGroup->imageUrl = $source->url; // TODO Удалить после перехода терминалов на pointGroups.<int>.media
                             }
                         }
                     }
@@ -133,7 +133,7 @@ namespace EnterTerminal\Controller\Cart {
                     if (in_array('marker', $media->tags, true)) {
                         foreach ($media->sources as $source) {
                             if ($source->type === '61x80') {
-                                $pointGroup->markerUrl = $source->url; // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split
+                                $pointGroup->markerUrl = $source->url; // TODO Удалить после перехода терминалов на pointGroups.<int>.media
                             }
                         }
                     }
