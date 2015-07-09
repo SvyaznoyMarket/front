@@ -47,9 +47,11 @@ namespace EnterAggregator\Controller\Index {
                 }
             }
 
-            $response->viewedItems = $this->buildProductObjects(
-                explode(',', (string)$request->httpRequest->cookies['product_viewed']),
-                $response->region->id);
+            if (isset($request->httpRequest->cookies['product_viewed'])) {
+                $response->viewedItems = $this->buildProductObjects(
+                    explode(',', (string)$request->httpRequest->cookies['product_viewed']),
+                    $response->region->id);
+            }
 
             return $response;
         }
