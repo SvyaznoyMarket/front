@@ -77,12 +77,18 @@ define(
 
 
 							if (templateData.count <= 0 && $widget) {
+								$widget.parents('.grid-parent-row').addClass('grid-1cols').removeClass('grid-2cols');
 								$widget.remove();
 								return;
 							}
 
 							console.info('slider', templateData, $widget);
 
+
+							var $parent = $widget.parents('.js-container');
+							if ($parent.length) {
+								$parent.show();
+							}
 
 							$widget.trigger('render', templateData);
 							$body.trigger('render');
