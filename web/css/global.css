@@ -6621,6 +6621,7 @@ html.no-scroll body {
   overflow: hidden;
   height: 26px;
   margin: 0 0 5px;
+  position: relative;
 }
 .items-slider__old-price {
   font-size: .875rem;
@@ -6769,6 +6770,14 @@ html.no-scroll body {
   .shop-info__item-text {
     font-size: .9rem;
   }
+}
+.viewedSliderContainer,
+.popularSliderContainer,
+.personalSliderContainer {
+  display: none;
+}
+.grid-1cols .grid-2cols__item {
+  width: 100%;
 }
 .i-shop-info {
   background-image: url("../img/main/i-shop-info.png");
@@ -9268,16 +9277,28 @@ body.flex .wrapper.wrapper-smpl .content {
 }
 .content-scroll {
   z-index: 1;
-  overflow: auto;
+  overflow: hidden;
+  position: absolute;
   width: 100%;
   max-width: 640px;
   height: 100%;
-  margin: auto;
-  padding: 0 10px 140px;
+  padding: 0 10px 10px;
+  top: 0;
+  left: 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+}
+.content-scroll__inn {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  padding-bottom: 130px;
 }
 .content-scroll:after {
   position: absolute;
@@ -9395,10 +9416,16 @@ body.flex .wrapper.wrapper-smpl .content {
     vertical-align: top;
   }
   .map-baloon .btn-choose-point {
-    margin-top: -6px;
+    margin-top: -3px;
     height: 24px;
     font-size: 12px;
     line-height: 20px;
+  }
+}
+@media screen and (min-width: 640px) {
+  .content-scroll {
+    left: 50%;
+    margin-left: -320px;
   }
 }
 .popupFl {
@@ -10358,4 +10385,35 @@ body.flex .wrapper.wrapper-smpl .content {
 }
 .bb-dotted {
   border-bottom: 1px dotted;
+}
+.ellipsis {
+  overflow: hidden;
+}
+.ellipsis:before {
+  content: "";
+  float: left;
+  width: 5px;
+  height: 100%;
+}
+.ellipsis > *:first-child {
+  float: right;
+  width: 100%;
+  margin-left: -5px;
+}
+.ellipsis:after {
+  content: "\02026";
+  float: right;
+  position: relative;
+  top: -13px;
+  left: 100%;
+  width: 3em;
+  margin-left: -3em;
+  padding-right: 5px;
+  text-align: right;
+  background-color: white;
+  background: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0)), to(#ffffff), color-stop(50%, #ffffff));
+  background: -moz-linear-gradient(to right, rgba(255, 255, 255, 0), #ffffff 50%, #ffffff);
+  background: -o-linear-gradient(to right, rgba(255, 255, 255, 0), #ffffff 50%, #ffffff);
+  background: -ms-linear-gradient(to right, rgba(255, 255, 255, 0), #ffffff 50%, #ffffff);
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), #ffffff 50%, #ffffff);
 }

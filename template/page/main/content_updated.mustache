@@ -40,9 +40,11 @@
     </ul>
 
     <div class="main-inn">
-        <div class="grid-2cols clearfix">
-            <div class="grid-2cols__item">
-                {{#popularSlider}}
+        <div class="{{#popularSlider}}{{#personalSlider}}grid-2cols{{/personalSlider}}{{/popularSlider}}
+                    {{#popularSlider}}{{^personalSlider}}grid-1cols{{/personalSlider}}{{/popularSlider}}
+                    {{#personalSlider}}{{^popularSlider}}grid-1cols{{/popularSlider}}{{/personalSlider}} clearfix">
+            {{#popularSlider}}
+                <div class="grid-2cols__item js-container popularSliderContainer">
                     <div class="items-slider items-slider--left">
                         <div class="items-slider-nav">
                             <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-id-productSlider-popularSlider js-ga-click"></div>
@@ -56,11 +58,11 @@
 
                         {{>partial/product-slider/mainPage}}
                     </div>
-                {{/popularSlider}}
             </div>
+            {{/popularSlider}}
 
-            <div class="grid-2cols__item">
-                {{#personalSlider}}
+            {{#personalSlider}}
+                <div class="grid-2cols__item js-container personalSliderContainer">
                 <div class="items-slider items-slider--right">
                     <div class="items-slider-nav">
                         <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-id-productSlider-personalSlider js-ga-click"></div>
@@ -74,8 +76,8 @@
 
                     {{>partial/product-slider/mainPage}}
                 </div>
-                {{/personalSlider}}
             </div>
+            {{/personalSlider}}
         </div>
     </div>
 
@@ -96,23 +98,23 @@
     {{/mainMenu}}
 
     <div class="main-inn">
-        <div class="grid-2cols clearfix">
-            <div class="grid-2cols__item">
-                {{#viewedSlider}}
-                <div class="items-slider">
-                    <div class="items-slider-nav">
-                        <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-id-productSlider-viewedSlider js-ga-click"></div>
+        <div class="{{#viewedSlider}}grid-2cols{{/viewedSlider}}{{^viewedSlider}}grid-1cols{{/viewedSlider}} grid-parent-row clearfix">
+            {{#viewedSlider}}
+                <div class="grid-2cols__item js-container viewedSliderContainer">
+                    <div class="items-slider">
+                        <div class="items-slider-nav">
+                            <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-id-productSlider-viewedSlider js-ga-click"></div>
 
-                        <div class="items-slider-nav__desc">
-                            <div class="items-slider-nav__title">Вы смотрели</div>
+                            <div class="items-slider-nav__desc">
+                                <div class="items-slider-nav__title">Вы смотрели</div>
+                            </div>
+
+                            <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-id-productSlider-viewedSlider js-ga-click"></div>
                         </div>
-
-                        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-id-productSlider-viewedSlider js-ga-click"></div>
+                        {{>partial/product-slider/viewed}}
                     </div>
-                    {{>partial/product-slider/viewed}}
                 </div>
-                {{/viewedSlider}}
-            </div>
+            {{/viewedSlider}}
 
             <div class="grid-2cols__item">
                 <div class="items-slider">
@@ -127,7 +129,7 @@
                     </div>
 
                     <div class="slider-parent m-loader js-slider-parent">
-                        <div class="items-slider-slides items-slider-slides--images items-slider-slides--logos js-main-items-slider-brands" data-slick-slider="brands" data-slick='{"slidesToShow": 4, "slidesToScroll": 4}'>
+						<div class="items-slider-slides items-slider-slides--images items-slider-slides--logos js-main-items-slider-brands" data-slick-slider="brands" data-slick='{"slidesToShow": 4, "slidesToScroll": 4}' data-respons-show="3">
 							{{#popularBrands}}
 								<div class="items-slider-slides__item">
 									{{#.}}
