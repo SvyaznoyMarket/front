@@ -6771,6 +6771,14 @@ html.no-scroll body {
     font-size: .9rem;
   }
 }
+.viewedSliderContainer,
+.popularSliderContainer,
+.personalSliderContainer {
+  display: none;
+}
+.grid-1cols .grid-2cols__item {
+  width: 100%;
+}
 .i-shop-info {
   background-image: url("../img/main/i-shop-info.png");
 }
