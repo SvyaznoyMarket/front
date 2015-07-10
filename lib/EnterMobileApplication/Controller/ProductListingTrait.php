@@ -14,13 +14,15 @@ trait ProductListingTrait {
     ) {
         $result = [];
 
+        $helper = new \Enter\Helper\Template();
+
         foreach ($products as $product) {
             $result[] = [
                 'id'                   => $product->id,
                 'article'              => $product->article,
-                'webName'              => $product->webName,
-                'namePrefix'           => $product->namePrefix,
-                'name'                 => $product->name,
+                'webName'              => $helper->unescape($product->webName),
+                'namePrefix'           => $helper->unescape($product->namePrefix),
+                'name'                 => $helper->unescape($product->name),
                 'isBuyable'            => $product->isBuyable,
                 'isInShopOnly'         => $product->isInShopOnly,
                 'isInShopStockOnly'    => $product->isInShopStockOnly,

@@ -106,6 +106,8 @@ namespace EnterMobileApplication\Controller {
                     }
                 }
             }
+
+            $helper = new \Enter\Helper\Template();
             
             $response = ['order' => [
                 'id' => $order->id,
@@ -116,7 +118,7 @@ namespace EnterMobileApplication\Controller {
                 'address' => $order->address,
                 'createdAt' => $order->createdAt,
                 'updatedAt' => $order->updatedAt,
-                'product' => array_map(function(Model\Order\Product $orderProduct) use(&$productsById) {
+                'product' => array_map(function(Model\Order\Product $orderProduct) use(&$productsById, &$helper) {
                     $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : new Model\Product();
                     
                     return [
@@ -125,9 +127,9 @@ namespace EnterMobileApplication\Controller {
                         'quantity'             => $orderProduct->quantity,
                         'sum'                  => $orderProduct->sum,
                         'article'              => $product->article,
-                        'webName'              => $product->webName,
-                        'namePrefix'           => $product->namePrefix,
-                        'name'                 => $product->name,
+                        'webName'              => $helper->unescape($product->webName),
+                        'namePrefix'           => $helper->unescape($product->namePrefix),
+                        'name'                 => $helper->unescape($product->name),
                         'isBuyable'            => $product->isBuyable,
                         'isInShopOnly'         => $product->isInShopOnly,
                         'isInShopStockOnly'    => $product->isInShopStockOnly,

@@ -47,15 +47,17 @@ namespace EnterMobileApplication\Controller {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Товар #%s не найден', $productId));
             }
 
+            $helper = new \Enter\Helper\Template();
+
             return new Http\JsonResponse(['product' => [
                 'id' => $controllerResponse->product->id,
                 'ui' => $controllerResponse->product->ui,
                 'article' => $controllerResponse->product->article,
                 'barcode' => $controllerResponse->product->barcode,
                 'typeId' => $controllerResponse->product->typeId,
-                'webName' => $controllerResponse->product->webName,
-                'namePrefix' => $controllerResponse->product->namePrefix,
-                'name' => $controllerResponse->product->name,
+                'webName' => $helper->unescape($controllerResponse->product->webName),
+                'namePrefix' => $helper->unescape($controllerResponse->product->namePrefix),
+                'name' => $helper->unescape($controllerResponse->product->name),
                 'token' => $controllerResponse->product->token,
                 'link' => $controllerResponse->product->link,
                 'description' => $controllerResponse->product->description,
