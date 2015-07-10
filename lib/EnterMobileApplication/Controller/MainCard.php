@@ -42,8 +42,7 @@ namespace EnterMobileApplication\Controller {
 
             $popularItemsQuery = new Query\Product\Relation\ItemsToMain\GetIdList();
             $curl->prepare($popularItemsQuery);
-            $curl->execute();
-            
+
             $curl->execute();
 
             $region = (new Repository\Region())->getObjectByQuery($regionQuery);
