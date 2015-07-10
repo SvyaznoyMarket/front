@@ -3,12 +3,13 @@
 namespace EnterMobileApplication\Controller {
 
     use Enter\Http;
+    use EnterAggregator\SessionTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterMobileApplication\Controller;
 
     class ProductCard {
-        use ProductListingTrait;
+        use ProductListingTrait, SessionTrait;
         
         /**
          * @param Http\Request $request
@@ -16,6 +17,8 @@ namespace EnterMobileApplication\Controller {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
+            $session = $this->getSession();
+            
             // ид региона
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
             if (!$regionId) {
@@ -46,6 +49,14 @@ namespace EnterMobileApplication\Controller {
             if (!$controllerResponse->product) {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Товар #%s не найден', $productId));
             }
+            
+            $viewedProductIds = array_unique(explode(' ', trim($session->get('viewedProductIds'))));
+            $viewedProductIds = array_slice($viewedProductIds, -20);
+            if (!in_array($controllerResponse->product->id, $viewedProductIds)) {
+                $viewedProductIds = array_slice($viewedProductIds, -19);
+                $viewedProductIds[] = $controllerResponse->product->id;
+            }
+            $session->set('viewedProductIds', implode(' ', $viewedProductIds));
 
             $helper = new \Enter\Helper\Template();
 
