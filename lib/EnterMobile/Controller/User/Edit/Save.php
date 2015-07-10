@@ -68,9 +68,6 @@ class Save {
 
             $userQuery->getData();
             $oldUserModel = new \EnterModel\User($userQuery->getResult());
-            echo '<pre>';
-            print_r ($oldUserModel);
-            echo '</pre>';
 
             // модель нового пользователя
             $newUserModel = new \EnterModel\User($postData);
