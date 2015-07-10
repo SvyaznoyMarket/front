@@ -217,6 +217,10 @@
         "name": "Изменение данных",
         "pattern": "/private/edit"
     },
+    "User\\Edit\\Save": {
+        "name": "Сохранение данных профиля",
+        "pattern": "/ajax/private/edit/save"
+    },
     "User\\Password": {
         "name": "Изменение пароля",
         "pattern": "/private/password"

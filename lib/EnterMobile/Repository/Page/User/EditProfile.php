@@ -5,6 +5,7 @@ namespace EnterMobile\Repository\Page\User;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
+use EnterAggregator\SessionTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
@@ -16,6 +17,7 @@ class EditProfile {
     use ConfigTrait,
         LoggerTrait,
         RouterTrait,
+        SessionTrait,
         TemplateHelperTrait;
 
     /**
@@ -48,7 +50,7 @@ class EditProfile {
         $walkByMenu($request->mainMenu->elements);
 
         $page->content->editProfileForm = new Model\Form\User\EditProfileForm((array)$request->user);
-        $page->content->editProfileForm->url = $router->getUrlByRoute(new Routing\User\Edit());
+        $page->content->editProfileForm->url = $router->getUrlByRoute(new Routing\User\Edit\Save());
         $page->content->editProfileForm->errors = (bool)$request->formErrors ? $request->formErrors : false;
 
         $page->content->messages = (new Repository\Partial\Message())->getList($request->messages);
