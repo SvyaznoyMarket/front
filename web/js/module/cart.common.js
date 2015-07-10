@@ -204,7 +204,7 @@ define(
                     dataValue = $value.data('value')
                 ;
 
-                console.info('incSpinnerValue', { '$el': $el, '$target': $target, '$value': $value, '$widget': $widget});
+                console.info('decSpinnerValue', { '$el': $el, '$target': $target, '$value': $value, '$widget': $widget});
 
                 var product = (targetDataValue && dataValue) ? targetDataValue.product[dataValue.product.id] : null;
                 if (product) {

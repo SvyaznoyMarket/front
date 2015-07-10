@@ -61,7 +61,8 @@ namespace EnterMobileApplication\Controller\User {
                     $result = (array)$orderListQuery->getResult() + ['orders' => [], 'total' => null];
 
                     foreach ($result['orders'] as $item) {
-                        if (!isset($item['number'])) continue;
+                        // MAPI-71
+                        if (!isset($item['number']) || !isset($item['meta_data']['access_token'])) continue;
 
                         $orders[] = new Model\Order($item);
                     }

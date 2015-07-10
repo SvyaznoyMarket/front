@@ -36,7 +36,7 @@ class UserBlock {
         $userBlock->isCartNotEmpty = (bool)$cart->product;
         $userBlock->cart->url = $router->getUrlByRoute(new Routing\Cart\Index());
         if ($userBlock->isCartNotEmpty) {
-            $userBlock->cart->quantity = count($cart->product);
+            $userBlock->cart->quantity = count($cart);
             $userBlock->cart->shownSum = $cart->sum ? $this->getPriceHelper()->format($cart->sum) : null;
             $userBlock->cart->sum = $cart->sum;
         }

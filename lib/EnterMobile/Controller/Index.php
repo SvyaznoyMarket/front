@@ -46,6 +46,7 @@ class Index {
         $pageRequest->cart = $controllerResponse->cart;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
         $pageRequest->promos = $controllerResponse->promos;
+        $pageRequest->popularBrands = (new \EnterRepository\Brand())->getPopularObjects();
 
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
