@@ -24,7 +24,10 @@ class ChangePassword {
         $router = $this->getRouter();
         $messageRepository = new Repository\Message();
 
+        // редирект
         $redirectUrl = (new \EnterMobile\Repository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Password()));
+        // http-ответ
+        $response = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
 
         $postData = $request->data->all();
 
@@ -86,6 +89,13 @@ class ChangePassword {
                 );
             }
 
+            $messageRepository->setObjectListToHttpSesion('messages', [
+                new \EnterModel\Message([
+                    'name' => 'Пароль успешно изменен',
+                    'type' => \EnterModel\Message::TYPE_SUCCESS
+                ]),
+            ], $session);
+
         } catch (\Exception $e) {
             $errors = [];
 
@@ -119,15 +129,6 @@ class ChangePassword {
 
         }
 
-        $page = new Page();
-//        if ($result['confirmed']) {
-            $page->result = [
-                'success' => true
-            ];
-//        }
-
-
-
-        return new Http\Response('');
+        return $response;
     }
 }
