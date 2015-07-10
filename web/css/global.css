@@ -6403,9 +6403,6 @@ html.no-scroll body {
   padding: 10px;
   background-color: #fafafa;
 }
-.grid-4cols {
-  margin-right: -10px;
-}
 .grid-4cols__item {
   float: left;
   width: 25%;
