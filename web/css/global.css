@@ -6778,6 +6778,7 @@ html.no-scroll body {
 }
 .grid-1cols .grid-2cols__item {
   width: 100%;
+  padding-right: 0px;
 }
 .i-shop-info {
   background-image: url("../img/main/i-shop-info.png");
