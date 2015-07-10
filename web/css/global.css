@@ -6403,6 +6403,9 @@ html.no-scroll body {
   padding: 10px;
   background-color: #fafafa;
 }
+.grid-4cols {
+  margin-right: -10px;
+}
 .grid-4cols__item {
   float: left;
   width: 25%;
@@ -6635,6 +6638,7 @@ html.no-scroll body {
 .shop-info {
   border-top: 1px dotted #a0a0a0;
   border-bottom: 1px dotted #a0a0a0;
+  margin-right: 0px;
 }
 .shop-info__item {
   line-height: 44px;
