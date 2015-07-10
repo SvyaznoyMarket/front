@@ -1,50 +1,63 @@
-<div class="content">
-        <form class="private-form" method="post" action="/ajax/private/password/change">
+<div class="content private">
+    <section class="main-section">
+        <ul class="private-menu-lst">
+            <li class="private-menu-lst-i"><a class="private-menu-lst-i__lk" href="/private/orders">Заказы</a></li>
+            <li class="private-menu-lst-i active"><a class="private-menu-lst-i__lk" href="/private/edit">Личные данные</a></li>
+            <li class="private-menu-lst-i"><a class="private-menu-lst-i__lk" href="/private/password">Изменить пароль</a></li>
+        </ul>
+        <a class="btn btn-exit">Выход</a>
+    </section>
+    <section>
+        {{#editProfileForm}}
+            <form class="private-form" method="post" action="{{url}}">
             <fieldset>
                 <div class="p-control-group">
-                    <input id="username" name="username" type="text" placeholder="Имя" class="p-control p-control-input">
+                    <input id="username" name="first_name" type="text" placeholder="Имя" class="p-control p-control-input" value="{{firstName}}">
                 </div>
                 <div class="p-control-group">
-                    <input id="middlename" name="middlename" type="text" placeholder="Отчество" class="p-control p-control-input">
+                    <input id="middlename" name="middle_name" type="text" placeholder="Отчество" class="p-control p-control-input" value="{{middleName}}">
                 </div>
                 <div class="p-control-group">
-                    <input id="lastname" name="lastname" type="text" placeholder="Фамилия" class="p-control p-control-input">
+                    <input id="lastname" name="last_name" type="text" placeholder="Фамилия" class="p-control p-control-input" value="{{lastName}}">
                 </div>
                 <div class="p-control-group inline-group">
-                    <label class="p-control-label" for="birthdate">Дата рождения</label>
+                    <label class="p-control-label" for="birthday">Дата рождения</label>
                     <div class="p-control p-control-date-group">
-                        <input class="p-control p-control-input" id="birthdate" name="birthdate" type="date" placeholder="">
+                        <input class="p-control p-control-input" id="birthday" name="birthday" type="date" placeholder="" value="{{birthday}}">
                     </div>
                 </div>
                 <div class="p-control-group inline-group">
                     <label class="p-control-label" for="sex">Пол</label>
 
                     <div class="p-control p-control-select-group">
-                        <select id="sex" name="sex">
-                            <option>женский</option>
-                            <option>мужской</option>
+                        <select name="sex" id="sex">
+                            <option value="1">Мужской</option>
+                            <option value="2">Женский</option>
+                            <option value="0">Не определился</option>
                         </select>
                     </div>
                 </div>
                 <div class="p-control-group__error">
-                   Одно из полей обязательно для заполнения
+                    Одно из полей обязательно для заполнения
                 </div>
                 <div class="p-control-group required"><!-- класс required - для ошибки -->
-                    <input id="email" name="email" type="text" placeholder="Email" class="p-control p-control-input">
+                    <input id="email" name="email" type="text" placeholder="Email" class="p-control p-control-input" value="{{birthday}}">
                 </div>
                 <div class="p-control-group required">
-                    <input id="phone" name="phone" type="text" placeholder="Мобильный телефон" class="p-control p-control-input">
+                    <input id="mobile" name="mobile" type="text" placeholder="Мобильный телефон" class="p-control p-control-input" value="{{phone}}">
                 </div>
                 <div class="p-control-group">
-                    <input id="phone_2" name="phone_2" type="text" placeholder="Домашний телефон" class="p-control p-control-input">
+                    <input id="phone" name="phone" type="text" placeholder="Домашний телефон" class="p-control p-control-input" value="{{homePhone}}">
                 </div>
                 <div class="p-control-group">
-                    <input id="occupation" name="occupation" type="text" placeholder="Род деятельности" class="p-control p-control-input">
+                    <input id="occupation" name="occupation" type="text" placeholder="Род деятельности" class="p-control p-control-input" value="{{occupation}}">
                 </div>
 
                 <div class="p-control-group btn-container">
-                        <input type="submit" value="Сохранить изменения" class="btn btn--submit btn--orange btn--medium"/>
+                    <input type="submit" value="Сохранить изменения" class="btn btn--submit btn--orange btn--medium"/>
                 </div>
             </fieldset>
         </form>
+        {{/editProfileForm}}
+    </section>
 </div>

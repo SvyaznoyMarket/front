@@ -1,0 +1,58 @@
+<?php
+
+namespace EnterMobile\Repository\Page\User;
+
+use EnterMobile\ConfigTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\RouterTrait;
+use EnterAggregator\TemplateHelperTrait;
+use EnterMobile\Routing;
+use EnterMobile\Repository;
+use EnterMobile\Model;
+use EnterMobile\Model\Partial;
+use EnterMobile\Model\Page\User\EditProfile as Page;
+
+class EditProfile {
+    use ConfigTrait,
+        LoggerTrait,
+        RouterTrait,
+        TemplateHelperTrait;
+
+    /**
+     * @param Page $page
+     * @param Login\Request $request
+     */
+    public function buildObjectByRequest(Page $page, EditProfile\Request $request) {
+        (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
+
+        $config = $this->getConfig();
+        $router = $this->getRouter();
+        $templateHelper = $this->getTemplateHelper();
+
+        $page->title = 'Редактирование профиля';
+
+        // ga
+        $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$templateHelper) {
+            /** @var \EnterModel\MainMenu\Element[] $menuElements */
+            foreach ($menuElements as $menuElement) {
+                $menuElement->dataGa = $templateHelper->json([
+                    'm_main_category' => ['send', 'event', 'm_main_category', $menuElement->name],
+                ]);
+                /*
+                if ((bool)$menuElement->children) {
+                    $walkByMenu($menuElement->children);
+                }
+                */
+            }
+        };
+        $walkByMenu($request->mainMenu->elements);
+
+        $page->content->editProfileForm = new Model\Form\User\EditProfileForm((array)$request->user);
+        $page->content->editProfileForm->url = $router->getUrlByRoute(new Routing\User\Edit());
+        $page->content->editProfileForm->errors = (bool)$request->formErrors ? $request->formErrors : false;
+
+        $page->content->messages = (new Repository\Partial\Message())->getList($request->messages);
+
+        //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    }
+}
