@@ -6,3 +6,4 @@ config-local.php
 /node_modules
 sftp-config.json
 /version
+/log
