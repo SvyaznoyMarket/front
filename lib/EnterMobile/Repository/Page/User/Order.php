@@ -49,6 +49,8 @@ class Order {
         };
         $walkByMenu($request->mainMenu->elements);
 
+        $mediaList = $request->order['point']['media'];
+        $request->order['point']['logo'] = (new \EnterRepository\Media())->getSourceObjectByList($mediaList->photos, 'logo', '100x100')->url;
         // заказы
         $page->content->order = $request->order;
 

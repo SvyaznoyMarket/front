@@ -23,24 +23,27 @@
                         {{/is_delivery}}
                 </div>
                 {{^is_delivery}}
-                    <!--Адрес для самовывоза-->
-                    <div class="delivery-point-name">Магазин Enter</div>
-                    <div class="shop-snippet table_row">
-                        <div class="shop-snippet-name table_cell">
-                            <img src="/img/points/logos/100x100/enter.png" alt="" class="shop-snippet-name__img">
-                        </div>
-
-                        <div class="shop-snippet-info table_cell">
-                            <div class="shop-snippet-metro">
-                                <span class="shop-snippet-metro__bullet" style="background: #B61D8E;"></span>
-                                <span class="shop-snippet-metro__text">Кузьминки</span>
+                    {{#point}}
+                        <!--Адрес для самовывоза-->
+                        <div class="delivery-point-name">{{name}}</div>
+                        <div class="shop-snippet table_row">
+                            <div class="shop-snippet-name table_cell">
+                                <img src="{{logo}}" alt="" class="shop-snippet-name__img">
                             </div>
 
-                            <div class="shop-snippet-address">Адрес: {{address}} <br>Режим работы: с 10.00 до 22.00</div>
-                            <a href="#" class="how-to-find">Как добраться?</a>
+                            <div class="shop-snippet-info table_cell">
+                                {{#subway}}
+                                <div class="shop-snippet-metro">
+                                    <span class="shop-snippet-metro__bullet" style="background: {{line.color}};"></span>
+                                    <span class="shop-snippet-metro__text">{{name}}</span>
+                                </div>
+                                {{/subway}}
+
+                                <div class="shop-snippet-address">Адрес: {{address}} <br>{{regime}}</div>
+                            </div>
                         </div>
-                    </div>
-                    <!--Адрес для самовывоза END-->
+                        <!--Адрес для самовывоза END-->
+                    {{/point}}
                 {{/is_delivery}}
                 {{#is_delivery}}
                     <!--Адрес для доставки-->

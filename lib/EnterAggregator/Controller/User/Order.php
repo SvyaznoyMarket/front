@@ -22,6 +22,7 @@ namespace EnterAggregator\Controller\User {
             $config = $this->getConfig();
             $curl = $this->getCurl();
             $router = $this->getRouter();
+            $pointRepository = new Repository\Point();
 
             $response = new Order\Response();
 
@@ -73,10 +74,39 @@ namespace EnterAggregator\Controller\User {
             $orderQuery = new Query\Order\GetItemById('site', $token, $orderId);
             $curl->prepare($orderQuery);
             $curl->execute();
+            $orderResult = $orderQuery->getResult();
+
+            // информация по точке
+            if ($orderResult['point_ui']) {
+                $pointUI = $orderResult['point_ui'];
+                $pointItemQuery = new Query\Point\GetItemByUi($pointUI);
+                $curl->prepare($pointItemQuery)->execute();
+                $point = $pointItemQuery->getResult();
+
+                $pointResult =
+                $point ? [
+                    'ui' => $point['uid'],
+                    'name' => $pointRepository->getName($point['partner']),
+                    'media' => $pointRepository->getMedia($point['partner'], ['logo']),
+                    'address' => $point['address'],
+                    'regime' => $point['working_time'],
+                    'longitude' => isset($point['location'][0]) ? $point['location'][0] : null,
+                    'latitude' => isset($point['location'][1]) ? $point['location'][1] : null,
+                    'subway' => [[
+                        'name' => isset($point['subway']['name']) ? $point['subway']['name'] : null,
+                        'line' => [
+                            'name' => isset($point['subway']['line_name']) ? $point['subway']['line_name'] : null,
+                            'color' => isset($point['subway']['line_color']) ? $point['subway']['line_color'] : null,
+                        ],
+                    ]],
+                ] : null;
+
+                $orderResult['point'] = $pointResult;
+            }
+
 
             $productIds = [];
             $productMap = [];
-            $orderResult = $orderQuery->getResult();
             foreach ($orderResult['product'] as $key => $product) {
                 $productIds[] = $product['id'];
                 $productMap[$product['id']] = $key;
