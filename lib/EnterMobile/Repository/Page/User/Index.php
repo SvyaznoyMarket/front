@@ -30,7 +30,6 @@ class Index {
 
         $templateHelper = $this->getTemplateHelper();
 
-        $page->dataModule = 'user.index';
         $page->title = 'Заказы';
 
         // ga
