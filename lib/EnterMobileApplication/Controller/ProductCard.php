@@ -58,6 +58,33 @@ namespace EnterMobileApplication\Controller {
             }
             $session->set('viewedProductIds', implode(' ', $viewedProductIds));
 
+            // MAPI-76 Получение данных в едином формате
+            call_user_func(function() use(&$controllerResponse) {
+                if ($controllerResponse->product->model) {
+                    /** @var Model\Product\Property[] $propertiesById */
+                    $propertiesById = [];
+                    foreach ($controllerResponse->product->properties as $property) {
+                        $propertiesById[$property->id] = $property;
+                    }
+
+                    foreach ($controllerResponse->product->model->properties as $modelProperty) {
+                        if (isset($propertiesById[$modelProperty->id])) {
+                            $property = $propertiesById[$modelProperty->id];
+                            foreach ($modelProperty->options as $modelOption) {
+                                foreach ($property->options as $option) {
+                                    if (preg_replace('/^(\d+)\.(\d+)$/', '$1,$2', $modelOption->value) === $option->value) {
+                                        $modelOption->value = $option->value;
+                                        $modelOption->shownValue = $option->value;
+                                        break (3);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+
             $helper = new \Enter\Helper\Template();
 
             return new Http\JsonResponse(['product' => [

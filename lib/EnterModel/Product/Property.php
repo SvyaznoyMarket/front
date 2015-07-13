@@ -6,29 +6,29 @@ use EnterModel as Model;
 
 class Property {
     /** @var string */
-    public $id;
+    public $id = '';
     /** @var string */
-    public $name;
+    public $name = '';
     /** @var string */
-    public $unit;
+    public $unit = '';
     /** @var string */
-    public $hint;
+    public $hint = '';
     /** @var string */
-    public $valueHint;
+    public $valueHint = '';
     /** @var bool */
-    public $isMultiple;
+    public $isMultiple = false;
     /** @var string */
-    public $value;
+    public $value = '';
     /** @var string */
-    public $groupId;
+    public $groupId = '';
     /** @var int */
-    public $groupPosition;
+    public $groupPosition = 0;
     /** @var int */
-    public $position;
+    public $position = 0;
     /** @var bool */
-    public $isInList;
+    public $isInList = false;
     /** @var string */
-    public $shownValue;
+    public $shownValue = '';
     /** @var Property\Option[] */
     public $options = [];
 

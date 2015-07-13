@@ -6,13 +6,13 @@ use EnterModel as Model;
 
 class Property {
     /** @var string */
-    public $id;
+    public $id = '';
     /** @var string */
-    public $name;
+    public $name = '';
     /** @var string */
-    public $unit;
+    public $unit = '';
     /** @var bool */
-    public $isImage;
+    public $isImage = false;
     /** @var Model\Product\ProductModel\Property\Option[] */
     public $options = [];
 
@@ -22,7 +22,7 @@ class Property {
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
-        if (array_key_exists('unit', $data)) $this->unit = $data['unit'] ? (string)$data['unit'] : null;
+        if (array_key_exists('unit', $data)) $this->unit = (string)$data['unit'];
         if (array_key_exists('is_image', $data)) $this->isImage = (bool)$data['is_image'];
         if (isset($data['option'][0])) {
             foreach ($data['option'] as $optionItem) {
