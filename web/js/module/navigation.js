@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'jquery.scrollTo'],
+    ['jquery', 'jquery.scrollTo', 'snap'],
     function ($) {
 
         var chooseModelWrap = $('.chooseModel'),
@@ -10,7 +10,12 @@ define(
             chooseModelMoreModel = function chooseModelMoreModel() {
                 chooseModelMoreBox.slideToggle('800');
                 chooseModelMoreLink.toggleClass('more');
-            };
+            },
+            snapper = new Snap({
+                element: document.getElementById('wrapper'),
+                disable: 'right'
+            })
+            ;
         // end of vars
 
         chooseModelMoreLink.click(chooseModelMoreModel);
@@ -18,8 +23,19 @@ define(
         /**
          * Навигация сайта, показывается при клике по иконке .navIco
          */
-
         var
+            body = $('body'),
+            fader = $('.js-fader'),
+            navIco = $('.js-nav-open-link');
+
+        $(navIco).on('click',function(e){
+
+            e.preventDefault();
+
+            body.hasClass('snapjs-left') ? snapper.close() : snapper.open('left');
+        });
+
+        /*var
             body = $('body'),
             navIco = $('.js-nav-open-link'),
             navSite = $('.js-site-nav'),
@@ -32,12 +48,12 @@ define(
         // end of vars
 
         navSite.css({'left' : -navSiteLeft});
-        navSiteListLevel2.hide();
+        navSiteListLevel2.hide();*/
 
         var
             /**
              * Показываем/скрываем навигацию
-             */
+             *//*
             slideNav = function slideNav(e) {
                 if ( navSite.css('display') == 'block' ) {
                     closeNav();
@@ -54,7 +70,7 @@ define(
 
             /**
              * Показываем/скрываем навигацию второго уравня
-             */
+             *//*
             slideNavLevel2 = function slideNavLevel2() {
                 if ($(this).data('url')) {
                     window.location.href = $(this).data('url');
@@ -80,14 +96,14 @@ define(
 
             /**
              * Скрываем навигацию при клике в любом месте кроме .nav
-             */
+             *//*
             closeNav = function closeNav() {
                 fader.hide(0);
                 $('html').removeClass('no-scroll');
                 navSite.stop(true, true).animate({'left' : -navSiteLeft},300).hide(0);
                 navSiteListLevel2.slideUp();
             },
-
+*/
             footerResize = function footerResize() {
                 var
                     footer = $('.footer');
@@ -95,10 +111,12 @@ define(
                 footer.css('position', body.height() + footer.innerHeight() > $(window).height() ? 'inherit' : 'fixed');
             };
         // end of vars
-
+/*
         navIco.on('click', slideNav);
-        navSiteItemLevel1.on('click', slideNavLevel2);
-        fader.live('click touchend', closeNav);
+        navSiteItemLevel1.on('click', slideNavLevel2);*/
+        /*fader.live('click touchend', function(){
+            snapper.close;
+        })*/;
         $(window).on('load resize', footerResize);
 
         $(document)

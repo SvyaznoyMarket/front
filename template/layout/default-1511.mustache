@@ -49,7 +49,10 @@
     </head>
 
     <body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-widget="{{&dataWidget}}">
-    	<div class="wrapper">
+    {{>partial/menu}}
+    <div class="snap-content" id="wrapper">
+    <div class="wrapper">
+        <div class="fader js-fader"></div>
 	    	{{>partial/header}}
 
 			{{#content}}
@@ -59,12 +62,13 @@
 
 			{{>partial/footer}}
 		</div>
+    </div>
 
 		{{#regionBlock}}
 	        {{>partial/region}}
 	    {{/regionBlock}}
 
-	    {{>partial/menu}}
+
 	    {{>partial/search.suggest}}
 	</body>
 </html>

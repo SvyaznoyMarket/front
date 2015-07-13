@@ -1508,12 +1508,9 @@ html.no-scroll body {
    Навигации .nav
    ========================================================================== */
 .nav {
-  position: fixed;
-  z-index: 1025;
   top: 0;
   bottom: 0;
   left: 0;
-  display: none;
   width: 258px;
   margin: 0;
   background: #ffffff;
@@ -1524,11 +1521,11 @@ html.no-scroll body {
 .nav-header {
   border-bottom: 1px solid #404040;
   background-color: #000000;
-  position: absolute;
-  width: 100%;
+  position: fixed;
+  width: 258px;
   top: 0;
   left: 0;
-  z-index: 2;
+  z-index: 3;
 }
 .nav-header__col {
   display: inline-block;
@@ -1631,7 +1628,7 @@ html.no-scroll body {
 }
 .fader {
   position: fixed;
-  z-index: 1020;
+  z-index: 3;
   top: 0;
   left: 0;
   display: none;
@@ -1761,7 +1758,6 @@ html.no-scroll body {
   max-height: 100%;
 }
 .nav-menu {
-  position: absolute;
   top: 0px;
   left: 0px;
   width: 100%;
@@ -1771,8 +1767,79 @@ html.no-scroll body {
   box-sizing: border-box;
   -ms-box-sizing: border-box;
   padding-top: 51px;
-  overflow: scroll;
   z-index: 1;
+}
+.snap-content {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  z-index: 2;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+.snap-drawers {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  background: #ffffff;
+  display: none;
+}
+.snap-drawer {
+  position: absolute;
+  top: 0;
+  right: auto;
+  bottom: 0;
+  left: auto;
+  width: 258px;
+  height: auto;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  -webkit-transition: width 0.3s ease;
+  -moz-transition: width 0.3s ease;
+  -ms-transition: width 0.3s ease;
+  -o-transition: width 0.3s ease;
+  transition: width 0.3s ease;
+}
+.snap-drawer-left {
+  left: 0;
+  z-index: 1;
+}
+.snap-drawer-right {
+  right: 0;
+  z-index: 1;
+}
+.snapjs-left .snap-drawer-right,
+.snapjs-right .snap-drawer-left {
+  display: none;
+}
+.snapjs-expand-left .snap-drawer-left,
+.snapjs-expand-right .snap-drawer-right {
+  width: 100%;
+}
+.snapjs-left {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  overflow: hidden;
+}
+.snapjs-left .fader {
+  display: block;
+  z-index: 1008;
+}
+.snapjs-left .snap-drawers {
+  display: block;
 }
 /* ==========================================================================
    Навигации .nav

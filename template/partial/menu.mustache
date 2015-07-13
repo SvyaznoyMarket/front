@@ -1,51 +1,52 @@
-<nav class="nav js-site-nav" id="nav">
-    <div class="nav-header">
-        <a class="header__logotype-link" href="/"></a>
-        <div class="nav-header__col nav-header__wrap">
-            <span class="nav-header__wrap-text jsSelectCity"><span class="text">{{regionBlock.regionName}}</span></span>
-            <div class="transBg"></div>
+
+<div class="snap-drawers">
+    <nav class="nav snap-drawer snap-drawer-left" id="nav">
+        <div class="nav-header">
+            <a class="header__logotype-link" href="/"></a>
+            <div class="nav-header__col nav-header__wrap">
+                <span class="nav-header__wrap-text jsSelectCity"><span class="text">{{regionBlock.regionName}}</span></span>
+                <div class="transBg"></div>
+            </div>
         </div>
-    </div>
 
-    <div class="nav-menu">
-        <div class="nav-menu__top">
-            {{#breadcrumbBlock}}
-            <ul class="nav-breadcrumbs nav-list">
-                {{#breadcrumbs}}
-                    <li class="nav-list-i"><a href="{{url}}" class="nav-list-i__lk">{{name}}</a></li>
-                {{/breadcrumbs}}
-            </ul>
-            {{/breadcrumbBlock}}
+        <div class="nav-menu">
+            <div class="nav-menu__top">
+                {{#breadcrumbBlock}}
+                <ul class="nav-breadcrumbs nav-list">
+                    {{#breadcrumbs}}
+                        <li class="nav-list-i"><a href="{{url}}" class="nav-list-i__lk">{{name}}</a></li>
+                    {{/breadcrumbs}}
+                </ul>
+                {{/breadcrumbBlock}}
 
-            <ul class="nav-links nav-list">
-                <li class="nav-list-i"><a href="/delivery" class="nav-list-i__lk"><i class="nav-icon nav-icon--shops"></i>Магазины и самовывоз</a></li>
-                <li class="nav-list-i"><a href="/private" class="nav-list-i__lk"><i class="nav-icon nav-icon--lk"></i>Личный кабинет</a></li>
-                <li class="nav-list-i"><a href="mailto:feedback@enter.ru" class="nav-list-i__lk"><i class="nav-icon nav-icon--callback"></i>Обратная связь</a></li>
-                <li class="nav-list-i"><a href="tel:+74957750006" class="nav-list-i__lk"><i class="nav-icon nav-icon--phone"></i>+7 495 775-00-06</a></li>
-            </ul>
+                <ul class="nav-links nav-list">
+                    <li class="nav-list-i"><a href="/delivery" class="nav-list-i__lk"><i class="nav-icon nav-icon--shops"></i>Магазины и самовывоз</a></li>
+                    <li class="nav-list-i"><a href="/private" class="nav-list-i__lk"><i class="nav-icon nav-icon--lk"></i>Личный кабинет</a></li>
+                    <li class="nav-list-i"><a href="mailto:feedback@enter.ru" class="nav-list-i__lk"><i class="nav-icon nav-icon--callback"></i>Обратная связь</a></li>
+                    <li class="nav-list-i"><a href="tel:+74957750006" class="nav-list-i__lk"><i class="nav-icon nav-icon--phone"></i>+7 495 775-00-06</a></li>
+                </ul>
+            </div>
+            {{#mainMenu}}
+
+            <div class="nav-catalog">
+                <div class="nav-catalog__h">КАТАЛОГ</div>
+                <ul class="nav-catalog-items nav-list">
+                {{#elements}}
+                    <li class="nav-list-i">
+                        <a href="{{url}}" class="nav-list-i__lk">
+                             <span class="nav-icon">
+                                {{char}}
+                                {{^char}}
+                                    {{#image}}<img src="{{image}}" />{{/image}}
+                                {{/char}}
+                             </span>
+                            <span class="nav-name">{{&name}}</span>
+                        </a>
+                    </li>
+                {{/elements}}
+                </ul>
+            </div>
+            {{/mainMenu}}
         </div>
-        {{#mainMenu}}
-
-        <div class="nav-catalog">
-            <div class="nav-catalog__h">КАТАЛОГ</div>
-            <ul class="nav-catalog-items nav-list">
-            {{#elements}}
-                <li class="nav-list-i">
-                    <a href="{{url}}" class="nav-list-i__lk">
-                         <span class="nav-icon">
-                            {{char}}
-                            {{^char}}
-                                {{#image}}<img src="{{image}}" />{{/image}}
-                            {{/char}}
-                         </span>
-                        <span class="nav-name">{{&name}}</span>
-                    </a>
-                </li>
-            {{/elements}}
-            </ul>
-        </div>
-        {{/mainMenu}}
-    </div>
-</nav>
-
-<div class="fader js-fader"></div>
+    </nav>
+</div>
