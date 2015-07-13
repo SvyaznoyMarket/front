@@ -773,6 +773,10 @@ class Delivery {
             case 'hermes':
                 $icon = 'hermes';
                 break;
+            case 'self_partner_euroset_pred_supplier':
+            case 'self_partner_euroset':
+                $icon = 'euroset';
+                break;
             default:
                 $icon = 'enter';
         }
