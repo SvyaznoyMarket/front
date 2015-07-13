@@ -31,6 +31,7 @@ class Point {
                 $image = 'svyaznoy.png';
                 break;
             case 'self_partner_euroset':
+            case 'euroset': // Приходит из метода http://scms.enter.ru/api/point/get
                 $image = 'euroset.png';
                 break;
             case 'self_partner_hermes':
@@ -95,6 +96,8 @@ class Point {
         switch ($pointToken) {
             case 'svyaznoy':
                 return 'Магазин Связной';
+            case 'euroset':
+                return 'Евросеть';
             case 'hermes':
                 return 'Hermes DPD';
             case 'pickpoint':

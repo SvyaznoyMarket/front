@@ -87,8 +87,10 @@
             <div id="order-{{order.id}}-map-container" class="js-order-delivery-map-container order-popup-map" data-map-option="{{&mapDataValue}}" data-parent-container-selector="#order-{{order.id}}-point-parent-container"></div>
 
             <div class="content-scroll">
-                <div id="order-{{order.id}}-point-container" class="js-order-delivery-point-container pick-point-list table" data-parent-container-selector="#order-{{order.id}}-point-parent-container">
-                    {{>page/order/delivery/point-list}}
+                <div class="content-scroll__inn">
+                    <div id="order-{{order.id}}-point-container" class="js-order-delivery-point-container pick-point-list table" data-parent-container-selector="#order-{{order.id}}-point-parent-container">
+                        {{>page/order/delivery/point-list}}
+                    </div>
                 </div>
             </div>
         </div>

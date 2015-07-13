@@ -110,6 +110,7 @@
     &-nav {
         margin: 0 0 8px;
         padding: 8px;
+        height: 32px;
 
         text-align: center;
 
@@ -130,8 +131,10 @@
             width: 10px;
             height: 22px;
             padding: 5px 10px;
-
-            .inline-block();
+            display: none;
+            &[style="display: block;"] {
+                .inline-block() !important;;
+            }
             &--prev {
                 background: no-repeat 50% 50% url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAnUlEQVR4AWNABq5SLiscdBhQgctM1/8uNqhCUS4fXBZ58iEL8bscd35tq4Wizjne9b9TAoqQo77LA+fFDiJIQg4CzrNdvjpYoKoLdvvvPBtFyE3W+bHzBTdFJKFQNuepLp+c41Fdp+vyx2UZnIsQdF4OYmFoh7sQ0yICTsJ0PMKbzvch3sQMkEQoBzPoMALZebEnH5bocLYFMzEjDgAlaTveSK5ZEgAAAABJRU5ErkJggg==');
             }
@@ -157,6 +160,7 @@
         // картинки
         &--images {
             height: 100px;
+            padding-bottom: 0;
             .items-slider__img {
                 max-height: 80px;
                 margin: 5px 0;
@@ -165,6 +169,7 @@
                 padding: 0;
             }
         }
+        // бренды
         &--logos {
             .items-slider__img-link {
                 line-height: 1;
@@ -252,6 +257,7 @@
 
         height: 26px;
         margin: 0 0 5px;
+        position: relative;
     }
     &__old-price {
         font-size: .875rem;
@@ -264,6 +270,7 @@
         line-height: 1.2;
 
         display: block;
+        white-space: nowrap;
 
         margin: 0 0 6px;
     }
@@ -273,6 +280,7 @@
 .shop-info {
     border-top: 1px dotted #a0a0a0;
     border-bottom: 1px dotted #a0a0a0;
+    margin-right: 0px;
     &__item {
         line-height: 44px;
 

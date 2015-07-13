@@ -45,6 +45,8 @@ namespace EnterMobile\Model\Page {
         public $content;
         /** @var Partial\Partner[] */
         public $partners = [];
+        /** @var string */
+        public $bodyClass;
 
         public function __construct() {
             parent::__construct();

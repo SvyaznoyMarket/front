@@ -87,7 +87,7 @@ namespace EnterTerminal\Controller\Order {
 
             try {
                 // запрос товаров
-                $productListQuery = new Query\Product\GetListByIdList(array_map(function(Model\Cart\Product $cartProduct) { return $cartProduct->id; }, $cart->product), $config->region->defaultId);
+                $productListQuery = new Query\Product\GetListByIdList(array_map(function(Model\Cart\Product $cartProduct) { return $cartProduct->id; }, $cart->product), $config->region->defaultId, ['model' => false, 'related' => false]);
                 $curl->prepare($productListQuery);
 
                 $curl->execute();

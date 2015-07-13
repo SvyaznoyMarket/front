@@ -26,6 +26,7 @@
         <li class="header-controls__item header-controls__item--cart">
             <a href="{{cart.url}}" class="header-controls__link js-ga-click" data-ga-click="{&quot;m_top_menu&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_top_menu&quot;,&quot;Cart&quot;]}">
                 <i class="i-header i-header--cart-full"></i>
+                <span class="cart-qnt">{{cart.quantity}}</span>
             </a>
         </li><!-- полная корзина -->
         {{/isCartNotEmpty}}

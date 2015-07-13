@@ -11,14 +11,14 @@
             </div>
         {{/hasCategories}}
 
-        <div class="items-slider-slides items-slider-slides--goods js-main-items-slider-{{widgetId}} js-productSliderList" data-slick-slider="{{widgetId}}" data-slick='{"slidesToShow": 3, "slidesToScroll": 3}'>
+        <div class="items-slider-slides items-slider-slides--goods js-main-items-slider-{{widgetId}} js-productSliderList" data-slick-slider="{{widgetId}}" data-slick='{"slidesToShow": 3, "slidesToScroll": 3}' data-respons-show="2">
             {{#productCards}}
                 <div class="items-slider-slides__item" data-category="{{categoryId}}">
                     <a class="items-slider__img-link js-ga-click" href="{{url}}" data-ga-click="{{&dataGa}}">
                         <img class="items-slider__img" src="{{image}}" />
                     </a>
 
-                    <a class="items-slider__name js-ga-click" href="{{url}}" data-ga-click="{{&dataGa}}">{{name}}</a>
+                    <a class="items-slider__name js-ga-click ellipsis" href="{{url}}" data-ga-click="{{&dataGa}}"><div>{{name}}</div></a>
 
                     <span class="items-slider__old-price"><span class="line-through">{{shownOldPrice}}</span>{{#shownOldPrice}} <span class="rubl">p</span>{{/shownOldPrice}}</span>
                     <span class="span items-slider__now-price">{{shownPrice}} <span class="rubl">p</span></span>

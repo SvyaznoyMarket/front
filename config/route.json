@@ -299,6 +299,11 @@
         "method": ["POST"]
     },
 
+    "AbTest": {
+        "name": "Ab тест",
+        "pattern": "/switch"
+    },
+
     "Log": {
         "name": "Журнал",
         "pattern": "/log/{id}",

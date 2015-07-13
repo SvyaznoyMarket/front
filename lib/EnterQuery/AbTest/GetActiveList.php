@@ -13,11 +13,18 @@ class GetActiveList extends Query {
     /** @var array */
     protected $result;
 
-    public function __construct() {
+    /**
+     * @param string[] $tags
+     */
+    public function __construct(array $tags = null) {
+        if (null === $tags) {
+            $tags = ['site-mobile'];
+        }
+
         $this->url = new Url();
         $this->url->path = 'api/ab_test/get-active';
         $this->url->query = [
-            'tags' => ['site-mobile'],
+            'tags' => $tags,
         ];
 
         $this->init();

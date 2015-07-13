@@ -65,7 +65,7 @@ class RandomProductList {
             $curl->prepare($productListQuery);
             $productListQueries[] = $productListQuery;
 
-            $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+            $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
                 $uisInChunk,
                 [
                     'media'    => true,
@@ -82,7 +82,7 @@ class RandomProductList {
         // запрос списка рейтингов товаров
         $ratingListQuery = null;
         if ($config->productReview->enabled && (bool)$productUis) {
-            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($productUis);
+            $ratingListQuery = new Query\Product\Rating\GetListByProductUiList($productUis);
             $curl->prepare($ratingListQuery);
         }
 

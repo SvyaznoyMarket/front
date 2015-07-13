@@ -89,7 +89,7 @@ class SetProductList {
             if ($cartProduct->parentId && $widget = (new Repository\Partial\Cart\ProductButton())->getObject(
                     new \EnterModel\Product(['id' => $cartProduct->parentId]),
                     new \EnterModel\Cart\Product(['id' => $cartProduct->parentId, 'quantity' => 1])
-            )) {
+                )) {
                 $page->widgets['.' . $widget->widgetId] = $widget;
             }
 

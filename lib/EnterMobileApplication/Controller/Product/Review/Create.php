@@ -43,7 +43,7 @@ namespace EnterMobileApplication\Controller\Product\Review {
             // ответ
             $response = new Response();
 
-            $productItemQuery = new Query\Product\GetItemById($productId, $config->region->defaultId);
+            $productItemQuery = new Query\Product\GetItemById($productId, $config->region->defaultId, ['model' => false, 'related' => false]);
             $curl->prepare($productItemQuery);
 
             $curl->execute();
