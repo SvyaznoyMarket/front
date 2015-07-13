@@ -16,6 +16,9 @@
                 <td class="private-orders-list-i__sum"><a href="/private/order/{{id}}">{{pay_sum}} <span class="rubl">p</span></a></td>
             </tr>
             {{/orders}}
+            {{^orders}}
+                <p>Заказов не найдено</p>
+            {{/orders}}
         </table>
     </section>
 </div>
