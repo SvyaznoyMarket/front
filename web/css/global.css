@@ -1118,10 +1118,30 @@ html.no-scroll body {
 }
 .wrapper {
   width: 100%;
+  height: 100%;
   margin: 0 auto;
 }
+.wrapper-smpl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
 .wrapper-smpl .content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
   padding-bottom: 27px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 /* Middle
 -----------------------------------------------------------------------------*/
@@ -7570,93 +7590,6 @@ body.flex .wrapper.wrapper-smpl .content {
   width: 100%;
   overflow: hidden;
 }
-.checkout-head {
-  position: fixed;
-  z-index: 1010;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 54px;
-  background: #000000;
-}
-.checkout-head__logo {
-  float: left;
-  margin-top: 5px;
-}
-.checkout-head-steps {
-  font-size: 16px;
-  height: 54px;
-  color: #bababa;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-  -webkit-align-content: center;
-  -moz-align-content: center;
-  box-align: center;
-  -webkit-box-align: center;
-  align-content: center;
-  -webkit-justify-content: center;
-  -webkit-box-pack: center;
-  -moz-justify-content: center;
-  justify-content: center;
-}
-.checkout-head-steps__item {
-  position: relative;
-  height: 48px;
-  margin-right: 47px;
-  border-bottom: 5px solid transparent;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-align: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-}
-.checkout-head-steps__item:after {
-  position: absolute;
-  top: 50%;
-  right: -29px;
-  width: 9px;
-  height: 17px;
-  margin-top: -8px;
-  content: '';
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAgCAQAAAC1deB6AAAAjElEQVR4AWNgYPjP+p+PAT/4z/f//P93/43xK6r4DwQElP1n/7+bGGWcxCrb8P83UNn7/3b/memnbP1QV8ZBmrIPQGVM+CzdClQEUqaHWxUzw0koSwuXOTzAJPQPbE4xbiXlWJSMKpH83wVW8uB/MgVKRDCVYCry+f8XpgS3Ir3/p/7fQSjB7SYd/CoAZZIjFIGubncAAAAASUVORK5CYII=') no-repeat 100% 50%;
-  background-size: 9px 17px;
-}
-.checkout-head-steps__item:last-child {
-  margin-right: 20px;
-  padding-right: 0;
-}
-.checkout-head-steps__item:last-child:after {
-  background: none;
-}
-.checkout-head-steps__item.active {
-  color: #ffffff;
-  border-bottom: 5px solid #fb9c00;
-}
-.checkout-head-steps__item.active a {
-  color: inherit;
-}
-.checkout-head-steps__item.passive {
-  color: #ffffff;
-}
-.checkout-head-steps__item.passive a {
-  color: inherit;
-}
-.checkout-head-steps__text {
-  line-height: 1.2;
-  display: block;
-}
 .lr-padding {
   padding: 0 10px;
 }
@@ -7739,6 +7672,9 @@ body.flex .wrapper.wrapper-smpl .content {
   }
   .checkout-head-steps__item:last-child {
     margin-right: 0;
+  }
+  .checkout-head-steps__text {
+    -webkit-font-smoothing: initial;
   }
   .orderInf_l {
     float: none;
@@ -7916,6 +7852,119 @@ body.flex .wrapper.wrapper-smpl .content {
   -ms-box-sizing: border-box;
   margin-bottom: 10px;
   font-size: 14px;
+}
+.checkout-head {
+  position: absolute;
+  z-index: 1010;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 54px;
+  background: #000000;
+}
+.checkout-head__logo {
+  float: left;
+  margin-top: 5px;
+}
+.checkout-head-steps {
+  font-size: 16px;
+  height: 54px;
+  color: #bababa;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-align-content: center;
+  -moz-align-content: center;
+  box-align: center;
+  -webkit-box-align: center;
+  align-content: center;
+  -webkit-justify-content: center;
+  -webkit-box-pack: center;
+  -moz-justify-content: center;
+  justify-content: center;
+}
+.checkout-head-steps__item {
+  position: relative;
+  height: 48px;
+  margin-right: 47px;
+  border-bottom: 5px solid transparent;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-align: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.checkout-head-steps__item:after {
+  position: absolute;
+  top: 50%;
+  right: -29px;
+  width: 9px;
+  height: 17px;
+  margin-top: -8px;
+  content: '';
+  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAgCAQAAAC1deB6AAAAjElEQVR4AWNgYPjP+p+PAT/4z/f//P93/43xK6r4DwQElP1n/7+bGGWcxCrb8P83UNn7/3b/memnbP1QV8ZBmrIPQGVM+CzdClQEUqaHWxUzw0koSwuXOTzAJPQPbE4xbiXlWJSMKpH83wVW8uB/MgVKRDCVYCry+f8XpgS3Ir3/p/7fQSjB7SYd/CoAZZIjFIGubncAAAAASUVORK5CYII=') no-repeat 100% 50%;
+  background-size: 9px 17px;
+}
+.checkout-head-steps__item:last-child {
+  margin-right: 20px;
+  padding-right: 0;
+}
+.checkout-head-steps__item:last-child:after {
+  background: none;
+}
+.checkout-head-steps__item.active {
+  color: #ffffff;
+  border-bottom: 5px solid #fb9c00;
+}
+.checkout-head-steps__item.active a {
+  color: inherit;
+}
+.checkout-head-steps__item.passive {
+  color: #ffffff;
+}
+.checkout-head-steps__item.passive a {
+  color: inherit;
+}
+.checkout-head-steps__text {
+  line-height: 1.2;
+  display: block;
+}
+@media only screen and (max-width: 560px) {
+  .checkout-head {
+    font-size: 14px;
+    width: 100%;
+  }
+  .checkout-head__logo {
+    width: 50px;
+    margin: 10px 0 0 0;
+  }
+  .checkout-head-steps {
+    font-size: 14px;
+  }
+  .checkout-head-steps__item {
+    margin-right: 25px;
+    max-width: 80px;
+  }
+  .checkout-head-steps__item:after {
+    right: -17px;
+  }
+  .checkout-head-steps__item:last-child {
+    margin-right: 0;
+  }
+  .checkout-head-steps__text {
+    -webkit-font-smoothing: initial;
+  }
 }
 .checkout-order {
   font-size: 14px;
