@@ -37,6 +37,7 @@ class Index {
         $mediaRepository = new \EnterRepository\Media();
 
         $page->dataModule = 'index';
+        $page->bodyClass = 'body-main';
 
         $promoData = [];
         foreach ($request->promos as $promoModel) {
