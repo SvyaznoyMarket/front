@@ -489,11 +489,15 @@ class Delivery {
                                 'name' => $day->format('d'),
                             ];
                             if (in_array((int)$day->format('U'), $possibleDays)) {
+                                if ($firstAvailableDay == $day) {
+                                    $item['isFirst'] = true;
+                                }
+
                                 $item['dataValue'] = $templateHelper->json([
-                                'change' => [
-                                    'orders' => [
-                                        [
-                                            'blockName' => $orderModel->blockName,
+                                    'change' => [
+                                        'orders' => [
+                                            [
+                                                'blockName' => $orderModel->blockName,
                                                 'delivery'  => [
                                                     'date' => $day->format('U'),
                                                 ],
