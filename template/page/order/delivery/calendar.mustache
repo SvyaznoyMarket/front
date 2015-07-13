@@ -11,7 +11,7 @@
 
     <div class="celedr_row clearfix">
     {{#items}}
-        <div class="{{^isMonth}}celedr_col{{/isMonth}}{{#isMonth}}celedr_month{{/isMonth}}{{#isDisabled}} celedr_col-disbl{{/isDisabled}}{{#dataValue}} js-order-delivery-form-control{{/dataValue}}" data-value="{{&dataValue}}" data-type="date">{{name}}</div>
+        <div class="{{#isFirst}}celedr_col-cur {{/isFirst}}{{^isMonth}}celedr_col{{/isMonth}}{{#isMonth}}celedr_month{{/isMonth}}{{#isDisabled}} celedr_col-disbl{{/isDisabled}}{{#dataValue}} js-order-delivery-form-control{{/dataValue}}" data-value="{{&dataValue}}" data-type="date">{{name}}</div>
     {{/items}}
     </div>
 </div>
