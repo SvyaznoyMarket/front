@@ -63,6 +63,7 @@ namespace EnterMobileApplication\Controller {
                                 foreach ($property->options as $option) {
                                     if (preg_replace('/^(\d+)\.(\d+)$/', '$1,$2', $modelOption->value) === $option->value) {
                                         $modelOption->value = $option->value;
+                                        $modelOption->shownValue = $option->value;
                                         break (3);
                                     }
                                 }
