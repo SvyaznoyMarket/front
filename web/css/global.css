@@ -6517,9 +6517,11 @@ html.no-scroll body {
   padding: 5px 10px;
   display: none;
 }
-.items-slider-nav__btn[style="display: block;"] {
+.items-slider-nav__btn[style="display: block;"],
+.items-slider-nav__btn[style="^display"],
+.items-slider-nav__btn.inline {
   display: inline-block !important;
-  vertical-align: top !important;
+  vertical-align: top!important;
 }
 .items-slider-nav__btn--prev {
   background: no-repeat 50% 50% url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAnUlEQVR4AWNABq5SLiscdBhQgctM1/8uNqhCUS4fXBZ58iEL8bscd35tq4Wizjne9b9TAoqQo77LA+fFDiJIQg4CzrNdvjpYoKoLdvvvPBtFyE3W+bHzBTdFJKFQNuepLp+c41Fdp+vyx2UZnIsQdF4OYmFoh7sQ0yICTsJ0PMKbzvch3sQMkEQoBzPoMALZebEnH5bocLYFMzEjDgAlaTveSK5ZEgAAAABJRU5ErkJggg==');
