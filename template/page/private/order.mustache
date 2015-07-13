@@ -13,40 +13,44 @@
         <h1 class="private-order__tl">Заказ №{{number}}</h1><span class="private-order__date">от {{added}}</span>
         </div>
         <div class="delivery-info">
-            <div class="delivery-date">
-                {{#delivery}}
-                    {{#is_delivery}}
-                        Доставка <span class="delivery-date__d">{{delivery_date}}</span>
-                    {{/is_delivery}}
-                    {{^is_delivery}}
-                        Самовывоз <span class="delivery-date__d">{{delivery_date}}</span>
-                    {{/is_delivery}}
-                {{/delivery}}
-            </div>
-            <!--Адрес для самовывоза-->
-            <div class="delivery-point-name">Магазин Enter</div>
-            <div class="shop-snippet table_row">
-                <div class="shop-snippet-name table_cell">
-                    <img src="/img/points/logos/100x100/enter.png" alt="" class="shop-snippet-name__img">
+            {{#delivery}}
+                <div class="delivery-date">
+                        {{#is_delivery}}
+                            Доставка <span class="delivery-date__d">{{delivery_date}}</span>
+                        {{/is_delivery}}
+                        {{^is_delivery}}
+                            Самовывоз <span class="delivery-date__d">{{delivery_date}}</span>
+                        {{/is_delivery}}
                 </div>
+                {{^is_delivery}}
+                    <!--Адрес для самовывоза-->
+                    <div class="delivery-point-name">Магазин Enter</div>
+                    <div class="shop-snippet table_row">
+                        <div class="shop-snippet-name table_cell">
+                            <img src="/img/points/logos/100x100/enter.png" alt="" class="shop-snippet-name__img">
+                        </div>
 
-                <div class="shop-snippet-info table_cell">
-                    <div class="shop-snippet-metro">
-                        <span class="shop-snippet-metro__bullet" style="background: #B61D8E;"></span>
-                        <span class="shop-snippet-metro__text">Кузьминки</span>
+                        <div class="shop-snippet-info table_cell">
+                            <div class="shop-snippet-metro">
+                                <span class="shop-snippet-metro__bullet" style="background: #B61D8E;"></span>
+                                <span class="shop-snippet-metro__text">Кузьминки</span>
+                            </div>
+
+                            <div class="shop-snippet-address">Адрес: {{address}} <br>Режим работы: с 10.00 до 22.00</div>
+                            <a href="#" class="how-to-find">Как добраться?</a>
+                        </div>
                     </div>
-
-                    <div class="shop-snippet-address">Адрес: {{address}} <br>Режим работы: с 10.00 до 22.00</div>
-                    <a href="#" class="how-to-find">Как добраться?</a>
-                </div>
-            </div>
-            <!--Адрес для самовывоза END-->
-            <!--Адрес для доставки-->
-            <div class="address-simple">
-                <span class="address-simple__name">Адрес:</span>
-                <span class="address-simple__val">{{address}}</span>
-            </div>
-            <!--Адрес для доставки END-->
+                    <!--Адрес для самовывоза END-->
+                {{/is_delivery}}
+                {{#is_delivery}}
+                    <!--Адрес для доставки-->
+                    <div class="address-simple">
+                        <span class="address-simple__name">Адрес:</span>
+                        <span class="address-simple__val">{{address}}</span>
+                    </div>
+                    <!--Адрес для доставки END-->
+                {{/is_delivery}}
+            {{/delivery}}
         </div>
         <div class="order-items">
             {{#product}}
