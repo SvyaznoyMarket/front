@@ -5,6 +5,8 @@ namespace EnterAggregator\Controller\User {
     use EnterAggregator\SessionTrait;
     use EnterAggregator\CurlTrait;
     use EnterAggregator\LoggerTrait;
+    use EnterAggregator\RouterTrait;
+    use EnterMobile\Routing;
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterRepository as Repository;
@@ -13,11 +15,13 @@ namespace EnterAggregator\Controller\User {
         use ConfigTrait,
             CurlTrait,
             LoggerTrait,
-            SessionTrait;
+            SessionTrait,
+            RouterTrait;
 
         public function execute(Orders\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
+            $router = $this->getRouter();
 
             $response = new Orders\Response();
 
@@ -31,9 +35,15 @@ namespace EnterAggregator\Controller\User {
             $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request->httpRequest);
             if ($userItemQuery) {
                 $curl->prepare($userItemQuery);
+                $curl->execute();
+                $response->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+            } else {
+                // редирект
+                $redirectUrl = (new \EnterMobile\Repository\User())->getRedirectUrlByHttpRequest($request->httpRequest, $router->getUrlByRoute(new Routing\Index()));
+                // http-ответ
+                $response->redirect = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
+                return $response;
             }
-            $curl->execute();
-            $response->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
             /* корзина */
             $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
@@ -104,6 +114,7 @@ namespace EnterAggregator\Controller\User\Orders {
         public $cart;
         /** @var array */
         public $orders;
+        public $redirect;
 
 
 

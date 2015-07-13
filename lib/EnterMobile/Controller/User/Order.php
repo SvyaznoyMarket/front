@@ -32,6 +32,10 @@ class Order {
         // ответ
         $controllerResponse = $controller->execute($controllerRequest);
 
+        if ($controllerResponse->redirect) {
+            return $controllerResponse->redirect;
+        }
+
         //запрос для получения страницы
         $pageRequest = new Repository\Page\User\Order\Request();
         $pageRequest->httpRequest = $request;

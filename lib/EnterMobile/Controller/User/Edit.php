@@ -36,6 +36,10 @@ class Edit {
         // ответ
         $controllerResponse = $controller->execute($controllerRequest);
 
+        if ($controllerResponse->redirect) {
+            return $controllerResponse->redirect;
+        }
+
         //запрос для получения страницы
         $pageRequest = new \EnterMobile\Repository\Page\User\EditProfile\Request();
         $pageRequest->httpRequest = $request;

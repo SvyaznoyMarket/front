@@ -32,6 +32,10 @@ class Password {
         // ответ
         $controllerResponse = $controller->execute($controllerRequest);
 
+        if ($controllerResponse->redirect) {
+            return $controllerResponse->redirect;
+        }
+
         //запрос для получения страницы
         $pageRequest = new \EnterMobile\Repository\Page\User\PasswordReset\Request();
         $pageRequest->httpRequest = $request;
