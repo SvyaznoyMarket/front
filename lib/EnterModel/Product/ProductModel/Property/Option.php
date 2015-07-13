@@ -10,7 +10,7 @@ class Option {
     /** @var Model\Product\ProductModel\Property\Option\Product|null */
     public $product;
     /** @var string */
-    public $shownValue;
+    public $shownValue = '';
 
     /**
      * @param array $data

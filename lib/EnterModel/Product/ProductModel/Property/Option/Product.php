@@ -4,15 +4,15 @@ namespace EnterModel\Product\ProductModel\Property\Option;
 
 class Product {
     /** @var string */
-    public $id;
+    public $id = '';
     /** @var string */
-    public $name;
+    public $name = '';
     /** @var string */
-    public $link;
+    public $link = '';
     /** @var string */
-    public $token;
+    public $token = '';
     /** @var string */
-    public $image;
+    public $image = '';
 
     /**
      * @param array $data
