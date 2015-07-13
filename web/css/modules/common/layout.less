@@ -22,10 +22,34 @@ html {
 
 .wrapper {
     width: 100%;
+    height: 100%;
     margin: 0 auto;
+    //fixes for iOS position: fixed bug in header
     &-smpl {
+        position: absolute;
+
+        top: 0;
+        left: 0;
+
+        height: 100%;
+        width: 100%;
+
+        overflow: hidden;
+
         .content {
+
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            height: 100%;
+            width: 100%;
             padding-bottom: 27px;
+
+            .box-sizing(border-box);
+
+            overflow: scroll;
+            -webkit-overflow-scrolling: touch;
         }
     }
 }
