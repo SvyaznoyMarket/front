@@ -1149,6 +1149,10 @@ html.no-scroll body {
   overflow: hidden;
   width: 100%;
 }
+/* AB-test main page  */
+.body-main {
+  background-color: #000000;
+}
 /* ==========================================================================
    Layout - default styles
    ========================================================================== */
