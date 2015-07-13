@@ -748,39 +748,4 @@ class Delivery {
             ],
         ]);
     }
-
-    /**
-     * @param string $groupToken
-     * @return string
-     */
-    public function getPointIcon($groupToken) {
-        $icon = null;
-
-        switch ($groupToken) {
-            case 'self_partner_pickpoint_pred_supplier':
-            case 'self_partner_pickpoint':
-            case 'pickpoint':
-                $icon = 'pickpoint';
-                break;
-            case 'self_partner_svyaznoy_pred_supplier':
-            case 'self_partner_svyaznoy':
-            case 'shops_svyaznoy':
-            case 'svyaznoy':
-                $icon = 'svyaznoy';
-                break;
-            case 'self_partner_hermes_pred_supplier':
-            case 'self_partner_hermes':
-            case 'hermes':
-                $icon = 'hermes';
-                break;
-            case 'self_partner_euroset_pred_supplier':
-            case 'self_partner_euroset':
-                $icon = 'euroset';
-                break;
-            default:
-                $icon = 'enter';
-        }
-
-        return $icon . '.png';
-    }
 }
