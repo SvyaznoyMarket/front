@@ -132,8 +132,9 @@
             height: 22px;
             padding: 5px 10px;
             display: none;
-            &[style="display: block;"] {
-                .inline-block() !important;;
+            &[style="display: block;"], &[style="^display"], &.inline {
+                display: inline-block!important;
+                vertical-align: top!important;
             }
             &--prev {
                 background: no-repeat 50% 50% url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAnUlEQVR4AWNABq5SLiscdBhQgctM1/8uNqhCUS4fXBZ58iEL8bscd35tq4Wizjne9b9TAoqQo77LA+fFDiJIQg4CzrNdvjpYoKoLdvvvPBtFyE3W+bHzBTdFJKFQNuepLp+c41Fdp+vyx2UZnIsQdF4OYmFoh7sQ0yICTsJ0PMKbzvch3sQMkEQoBzPoMALZebEnH5bocLYFMzEjDgAlaTveSK5ZEgAAAABJRU5ErkJggg==');
