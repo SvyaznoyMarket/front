@@ -9599,6 +9599,10 @@ body.flex .wrapper.wrapper-smpl .content {
   background: #f99b1c;
   color: #ffffff;
 }
+.celedr_col-closest {
+  background-color: #feebd2;
+  color: #000000;
+}
 .celedr_col-disbl {
   color: #e0e0e0;
 }
