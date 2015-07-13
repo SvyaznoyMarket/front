@@ -33,7 +33,7 @@ define(
                 e.preventDefault();
 
                 body.hasClass('snapjs-left') ? snapper.close() : snapper.open('left');
-            }),
+            },
 
             footerResize = function footerResize() {
                 var
