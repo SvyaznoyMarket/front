@@ -9350,12 +9350,14 @@ body.flex .wrapper.wrapper-smpl .content {
 .content-scroll__inn {
   height: 100%;
   width: 100%;
-  overflow: auto;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
   padding-bottom: 130px;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
 }
 .content-scroll:after {
   position: absolute;
