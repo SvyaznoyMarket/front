@@ -36,7 +36,7 @@ class Delivery {
         // заголовок
         $page->title = 'Оформление заказа - Способ получения - Enter';
 
-        $page->dataModule = 'order';
+        $page->dataModule = 'order-delivery';
 
         $page->content->region = [
             'name' => $request->region->name,
