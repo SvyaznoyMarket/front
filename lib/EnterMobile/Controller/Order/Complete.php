@@ -31,7 +31,6 @@ class Complete {
         $config = $this->getConfig();
         $curl = $this->getCurl();
         $session = $this->getSession();
-        $router = $this->getRouter();
         $cartSessionKey = $this->getCartSessionKeyByHttpRequest($request);
 
         $regionRepository = new \EnterRepository\Region();
@@ -72,11 +71,6 @@ class Complete {
             ];
 
             $session->set($config->order->sessionName, array_merge($orderData, ['isCompletePageReaded' => true]));
-
-            // FIXME fixture
-            //die(json_encode($orderData, JSON_UNESCAPED_UNICODE));
-            //$orderData = json_decode('{"updatedAt":"2015-06-15T15:38:08+03:00","expired":false,"orders":[{"number":"TG071064","sum":3980,"delivery":{"type":{"token":"self","shortName":"Самовывоз"},"price":0,"date":1434402000},"interval":{"from":"16:00","to":"21:00"},"paymentMethodId":"1","point":{"ui":"57ba26a3-ea68-11e0-83b4-005056af265b"}}]}', true);
-            //die(var_dump($orderData));
 
             $pointUis = [];
             $orderNumberErps = [];
@@ -149,6 +143,7 @@ class Complete {
                                 if (!$paymentMethod->isOnline) continue;
 
                                 $onlinePaymentMethodsById[$paymentMethod->id] = $paymentMethod;
+                                $order->paymentMethods[] = $paymentMethod;
                             }
                         }
                     } catch (\Exception $e) {
