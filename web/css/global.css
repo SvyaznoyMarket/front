@@ -8503,7 +8503,7 @@ body.flex .wrapper.wrapper-smpl .content {
   .checkout-summary .table_cell {
     display: block;
   }
-  .checkout-summary .table_cell:first-child {
+  .checkout-summary .table_cell.discounts {
     margin: 0 -10px 10px;
     padding-bottom: 10px;
     text-align: center;
