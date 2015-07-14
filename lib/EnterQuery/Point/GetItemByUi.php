@@ -32,6 +32,17 @@ class GetItemByUi extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data['points'][0]['uid']) ? $data['points'][0] : null;
+        $point = isset($data['points'][0]['uid']) ? $data['points'][0] : null;
+
+        if (isset($data['partners'][0]) && isset($point['partner'])) {
+            foreach ($data['partners'] as $partner) {
+                if ($partner['slug'] === $point['partner']) {
+                    $point['partner'] = $partner;
+                    break;
+                }
+            }
+        }
+
+        $this->result = $point;
     }
 }
