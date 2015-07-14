@@ -29,8 +29,6 @@ class Order {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
         $templateHelper = $this->getTemplateHelper();
-
-        $page->dataModule = 'user.order';
         $page->title = 'Заказ';
 
         // ga
@@ -49,8 +47,10 @@ class Order {
         };
         $walkByMenu($request->mainMenu->elements);
 
-        $mediaList = $request->order['point']['media'];
-        $request->order['point']['logo'] = (new \EnterRepository\Media())->getSourceObjectByList($mediaList->photos, 'logo', '100x100')->url;
+        if ($request->order['point']) {
+            $mediaList = $request->order['point']['media'];
+            $request->order['point']['logo'] = (new \EnterRepository\Media())->getSourceObjectByList($mediaList->photos, 'logo', '100x100')->url;
+        }
         // заказы
         $page->content->order = $request->order;
 
