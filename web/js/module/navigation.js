@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'jquery.scrollTo', 'snap'],
+    ['jquery', 'jquery.scrollTo', 'module/snap'],
     function ($) {
 
         var chooseModelWrap = $('.chooseModel'),
