@@ -1103,7 +1103,6 @@ html.sb-animation .content {
    Layout - default styles
    ========================================================================== */
 html {
-  overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
 html.no-scroll {
@@ -1121,21 +1120,17 @@ html.no-scroll body {
   max-height: 100%;
 }
 body {
-  overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
 .wrapper {
-  overflow: auto;
   -webkit-overflow-scrolling: touch;
   width: 100%;
   margin: 0 auto;
 }
 .wrapper-smpl {
-  height: 100%;
   width: 100%;
 }
 .wrapper-smpl .content {
-  height: 100%;
   width: 100%;
   padding-bottom: 27px;
   -webkit-box-sizing: border-box;
