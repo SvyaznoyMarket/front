@@ -116,6 +116,11 @@
 
                 $iframe.remove();
                 $body.removeClass('full-screen');
+                $body.css({
+                    'position':'inherit',
+                    'overflow':'inherit',
+                    '-webkit-overflow-scrolling':'inherit'
+                });
 
                         // clean up events.
                 $self.undelegate(opts.closeSelector, "click");
