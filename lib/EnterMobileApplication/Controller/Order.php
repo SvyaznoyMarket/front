@@ -166,7 +166,7 @@ namespace EnterMobileApplication\Controller {
                 'shopId' => $point['partner']['slug'] === 'enter' ? $order->shopId : null, // TODO перенести в point.id
                 'point' => $point ? [
                     'ui' => $point['uid'],
-                    'name' => $pointRepository->getName($point['partner']['slug']),
+                    'name' => $point['partner']['name'],
                     'media' => $media,
                     'imageUrl' => $imageUrl, // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split и point.imageUrl из ответа метода Order
                     'address' => $point['address'],
