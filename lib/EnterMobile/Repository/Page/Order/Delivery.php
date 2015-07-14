@@ -96,7 +96,8 @@ class Delivery {
                         'name' => $orderModel->seller->name,
                         'url'  => str_replace('www.enter.ru', 'm.enter.ru', $orderModel->seller->offerUrl),
                     ]
-                    : false,
+                    : false
+                ,
                 'sum'            => [
                     'name'  => $priceHelper->format($orderModel->sum),
                     'value' => $orderModel->sum,
@@ -304,6 +305,11 @@ class Delivery {
                     }
 
                     return $discounts;
+                }),
+                'hasDiscountLink' => call_user_func(function() use (&$orderModel) {
+                    $sellerModel = $orderModel->seller;
+
+                    return !$sellerModel || ($sellerModel->ui === $sellerModel::UI_ENTER);
                 }),
                 'pointJson'      => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$regionModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex, &$pointRepository) {
                     $points = [];
