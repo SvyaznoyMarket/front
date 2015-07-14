@@ -839,7 +839,7 @@ textarea[contenteditable] {
   position: relative;
 }
 .m-loader:before {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -1142,6 +1142,9 @@ html.no-scroll body {
   -ms-box-sizing: border-box;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
+}
+.wrapper-smpl .content.m-loader {
+  overflow: hidden;
 }
 /* Middle
 -----------------------------------------------------------------------------*/
