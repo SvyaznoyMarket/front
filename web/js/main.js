@@ -124,6 +124,7 @@ require(
         'module/analytics.google',
         'module/util',
         'module/jira',
+        'module/snap',
         'module/navigation',
         'module/region',
         'module/search',

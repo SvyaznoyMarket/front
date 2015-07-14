@@ -104,6 +104,7 @@ class BrandCategory {
         $pageRequest->category = $controllerResponse->category;
         $pageRequest->catalogConfig = $controllerResponse->catalogConfig;
         $pageRequest->products = $controllerResponse->products;
+        $pageRequest->brand = $brand;
 
         // страница
         $page = new Page();
