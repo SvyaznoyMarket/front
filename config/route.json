@@ -234,7 +234,7 @@
         "pattern": "/ajax/user/cart/clear",
         "method": ["DELETE"]
     },
-    "User\\EnterPrize\\EnterPrizeList": {
+    "User\\EnterPrize\\CouponList": {
         "name": "Список фишек",
         "pattern": "/private/enterprize"
     },

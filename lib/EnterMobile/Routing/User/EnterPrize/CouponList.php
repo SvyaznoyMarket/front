@@ -4,9 +4,9 @@ namespace EnterMobile\Routing\User\EnterPrize;
 
 use EnterMobile\Routing\Route;
 
-class EnterPrizeList extends Route {
+class CouponList extends Route {
     public function __construct() {
-        $this->action = ['User\\EnterPrize\\EnterPrizeList', 'execute'];
+        $this->action = ['User\\EnterPrize\\CouponList', 'execute'];
         $this->parameters = [];
     }
 }
