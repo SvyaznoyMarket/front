@@ -489,11 +489,15 @@ class Delivery {
                                 'name' => $day->format('d'),
                             ];
                             if (in_array((int)$day->format('U'), $possibleDays)) {
+                                if ($firstAvailableDay == $day) {
+                                    $item['isFirst'] = true;
+                                }
+
                                 $item['dataValue'] = $templateHelper->json([
-                                'change' => [
-                                    'orders' => [
-                                        [
-                                            'blockName' => $orderModel->blockName,
+                                    'change' => [
+                                        'orders' => [
+                                            [
+                                                'blockName' => $orderModel->blockName,
                                                 'delivery'  => [
                                                     'date' => $day->format('U'),
                                                 ],
@@ -747,36 +751,5 @@ class Delivery {
                 'partials' => [],
             ],
         ]);
-    }
-
-    /**
-     * @param string $groupToken
-     * @return string
-     */
-    public function getPointIcon($groupToken) {
-        $icon = null;
-
-        switch ($groupToken) {
-            case 'self_partner_pickpoint_pred_supplier':
-            case 'self_partner_pickpoint':
-            case 'pickpoint':
-                $icon = 'pickpoint';
-                break;
-            case 'self_partner_svyaznoy_pred_supplier':
-            case 'self_partner_svyaznoy':
-            case 'shops_svyaznoy':
-            case 'svyaznoy':
-                $icon = 'svyaznoy';
-                break;
-            case 'self_partner_hermes_pred_supplier':
-            case 'self_partner_hermes':
-            case 'hermes':
-                $icon = 'hermes';
-                break;
-            default:
-                $icon = 'enter';
-        }
-
-        return $icon . '.png';
     }
 }

@@ -253,12 +253,16 @@
 
     .box-sizing(border-box);
 
+
     &__inn{
         height: 100%;
         width: 100%;
-        overflow: auto;
+
         .box-sizing(border-box);
         padding-bottom: 130px;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overflow-x: hidden;
     }
     &:after {
         position: absolute;
