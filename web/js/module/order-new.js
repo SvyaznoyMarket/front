@@ -35,7 +35,7 @@ define(
 
                     window.location.href = response.redirect;
                     $orderContent.addClass(loaderClass);
-                    setTimeout(function() { $orderContent.removeClass(loaderClass); }, 10000);
+                    setTimeout(function() { $orderContent.removeClass(loaderClass); }, 30000);
                 }
 
                 try {
