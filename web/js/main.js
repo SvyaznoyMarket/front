@@ -36,9 +36,6 @@ require.config({
         'modernizr'          : 'vendor/modernizr.custom',
         'boilerplate.helper' : 'vendor/boilerplate.helper-4.1.0',
 
-        'browserstate.history'         : 'vendor/browserstate.history-1.8b2',
-        'browserstate.history.adapter' : 'vendor/browserstate.history.adapter.jquery-1.8b2',
-
         'yandexmaps' : (debug) ? 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=debug' : 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=release',
 
         'kladr' : 'vendor/kladr/core',
@@ -94,11 +91,6 @@ require.config({
         },
         'modernizr': [],
         'boilerplate.helper': [],
-
-        'browserstate.history': [],
-        'browserstate.history.adapter': {
-            deps: ['browserstate.history', 'jquery']
-        },
 
         'yandexmaps': {
             exports: 'ymaps'
