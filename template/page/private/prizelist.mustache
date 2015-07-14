@@ -22,8 +22,9 @@
             </li>
             {{#coupons}}
                 <li class="ep-list-i">
-                    <div class="ep-list-i__img" style="background: url('{{backgroundUrl}}') no-repeat; background-size:cover">
-                        <img src="{{imageUrl}}">
+                    <div class="ep-list-i__img">
+                        <img src="{{backgroundUrl}}">
+                        <span class="ep-list-i__lbl"><img src="{{imageUrl}}"></span>
                     </div>
                     <div class="ep-list-i__txt">
                         <span class="ep-list-i__tl"><span class="accented">{{discountAmount}}&thinsp;<span class="rubl">{{discountUnit}}</span></span> на {{category}}</span>
