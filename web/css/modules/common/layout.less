@@ -2,6 +2,8 @@
    Layout - default styles
    ========================================================================== */
 html {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
     &.no-scroll {
         overflow: hidden;
         overflow-x: hidden;
@@ -20,7 +22,14 @@ html {
     }
 }
 
+body {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 .wrapper {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
     width: 100%;
     height: 100%;
     margin: 0 auto;
