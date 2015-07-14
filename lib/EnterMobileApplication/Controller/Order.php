@@ -94,7 +94,7 @@ namespace EnterMobileApplication\Controller {
                 $productRepository->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
             }
 
-            $media = $pointRepository->getMedia($point['partner'], ['logo']);
+            $media = $pointRepository->getMedia($point['partner']['slug'], ['logo']);
             $imageUrl = null;
             foreach ($media->photos as $media) {
                 if (in_array('logo', $media->tags, true)) {
@@ -108,7 +108,7 @@ namespace EnterMobileApplication\Controller {
             }
 
             $helper = new \Enter\Helper\Template();
-            
+
             $response = ['order' => [
                 'id' => $order->id,
                 'number' => $order->number,
@@ -120,7 +120,7 @@ namespace EnterMobileApplication\Controller {
                 'updatedAt' => $order->updatedAt,
                 'product' => array_map(function(Model\Order\Product $orderProduct) use(&$productsById, &$helper) {
                     $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : new Model\Product();
-                    
+
                     return [
                         'id'                   => $orderProduct->id,
                         'price'                => $orderProduct->price,
@@ -163,10 +163,10 @@ namespace EnterMobileApplication\Controller {
                 'deliveries' => $order->deliveries,
                 'deliveryType' => $order->deliveryType,
                 'interval' => $order->interval,
-                'shopId' => $point['partner'] === 'enter' ? $order->shopId : null, // TODO перенести в point.id
+                'shopId' => $point['partner']['slug'] === 'enter' ? $order->shopId : null, // TODO перенести в point.id
                 'point' => $point ? [
                     'ui' => $point['uid'],
-                    'name' => $pointRepository->getName($point['partner']),
+                    'name' => $point['partner']['name'],
                     'media' => $media,
                     'imageUrl' => $imageUrl, // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split и point.imageUrl из ответа метода Order
                     'address' => $point['address'],

@@ -87,25 +87,4 @@ class Point {
 
         return $mediaList;
     }
-    
-    /**
-     * @param string $pointToken
-     * @return string
-     */
-    public function getName($pointToken) {
-        switch ($pointToken) {
-            case 'svyaznoy':
-                return 'Магазин Связной';
-            case 'euroset':
-                return 'Евросеть';
-            case 'hermes':
-                return 'Hermes DPD';
-            case 'pickpoint':
-                return 'Пункт PickPoint';
-            case 'enter':
-                return 'Магазин Enter';
-        }
-
-        return null;
-    }
 }
