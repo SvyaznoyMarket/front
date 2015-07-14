@@ -42,7 +42,7 @@ define(
 
             $body                       = $('body'),
             $orderContent               = $('.js-order-content'),
-            loaderClass                 = 'm-loader',
+            loaderClass                 = 'm-body-loader',
             $deliveryForm               = $('.js-order-delivery-form'),
             deliveryData                = $deliveryForm.data('value'),
             $pointMap                   = $('#pointYandexMap'),
