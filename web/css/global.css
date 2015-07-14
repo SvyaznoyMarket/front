@@ -1122,17 +1122,10 @@ html.no-scroll body {
   margin: 0 auto;
 }
 .wrapper-smpl {
-  position: absolute;
-  top: 0;
-  left: 0;
   height: 100%;
   width: 100%;
-  overflow: hidden;
 }
 .wrapper-smpl .content {
-  position: absolute;
-  top: 0;
-  left: 0;
   height: 100%;
   width: 100%;
   padding-bottom: 27px;
@@ -1140,8 +1133,6 @@ html.no-scroll body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
-  overflow: scroll;
-  -webkit-overflow-scrolling: touch;
 }
 .wrapper-smpl .content.m-loader {
   overflow: hidden;
@@ -7878,7 +7869,7 @@ body.flex .wrapper.wrapper-smpl .content {
   font-size: 14px;
 }
 .checkout-head {
-  position: absolute;
+  position: fixed;
   z-index: 1010;
   top: 0;
   left: 0;
@@ -9086,7 +9077,7 @@ body.flex .wrapper.wrapper-smpl .content {
   .confirm .table {
     display: block;
   }
-  .confirm .table_cell {
+  .confirm .table.table--2col .table_cell {
     display: block;
     width: 100%;
   }
