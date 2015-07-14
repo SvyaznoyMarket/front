@@ -1127,16 +1127,8 @@ body {
   width: 100%;
   margin: 0 auto;
 }
-.wrapper-smpl {
-  width: 100%;
-}
 .wrapper-smpl .content {
-  width: 100%;
   padding-bottom: 27px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -ms-box-sizing: border-box;
 }
 /* Middle
 -----------------------------------------------------------------------------*/
@@ -10479,12 +10471,13 @@ body.flex .wrapper.wrapper-smpl .content {
   margin-left: -5px;
 }
 .ellipsis:after {
-  content: "\02026";
+  content: "";
   float: right;
   position: relative;
-  top: -13px;
+  top: -10px;
   left: 100%;
   width: 3em;
+  height: 1em;
   margin-left: -3em;
   padding-right: 5px;
   text-align: right;
