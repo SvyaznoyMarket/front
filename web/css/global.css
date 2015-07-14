@@ -839,7 +839,7 @@ textarea[contenteditable] {
   position: relative;
 }
 .m-loader:before {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -1133,9 +1133,6 @@ html.no-scroll body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
-}
-.wrapper-smpl .content.m-loader {
-  overflow: hidden;
 }
 /* Middle
 -----------------------------------------------------------------------------*/
@@ -4642,13 +4639,12 @@ html.no-scroll body {
 }
 @media screen and (min-width: 640px) and (max-height: 400px) {
   .modal.fixed-untill-640 {
-    max-height: 100%;
+    max-height: 80%;
     min-height: 280px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     -ms-box-sizing: border-box;
-    padding-bottom: 70px;
   }
   .modal.fixed-untill-640 .modal-content {
     position: absolute;
@@ -8507,7 +8503,7 @@ body.flex .wrapper.wrapper-smpl .content {
   .checkout-summary .table_cell {
     display: block;
   }
-  .checkout-summary .table_cell:first-child {
+  .checkout-summary .table_cell.discounts {
     margin: 0 -10px 10px;
     padding-bottom: 10px;
     text-align: center;
