@@ -67,10 +67,11 @@
 
             {{! общая стоимость заказа }}
             <div class="checkout-summary checkout-order__box table">
+
                 {{#hasDiscountLink}}
-                <div class="table_cell">
-                    <a href="#" class="btn-transparent btn-transparent--normal js-order-delivery-discountPopup-link" data-modal-position="fixed" data-modal-title="Добавить скидку" data-storage-selector="#order-{{id}}-discount-data"><span class="bb-dotted">Добавить скидку</span></a>
-                </div>
+                    <div class="table_cell discounts">
+                        <a href="#" class="btn-transparent btn-transparent--normal js-order-delivery-discountPopup-link" data-modal-position="fixed" data-modal-title="Добавить скидку" data-storage-selector="#order-{{id}}-discount-data"><span class="bb-dotted">Добавить скидку</span></a>
+                    </div>
                 {{/hasDiscountLink}}
 
                 <div class="table_cell ta-r">
