@@ -72,7 +72,7 @@ class ProductCard {
             $page->content->product->brand->id = $product->brand->id;
             $page->content->product->brand->name = $product->brand->name;
             $page->content->product->brand->token = $product->brand->token;
-            $page->content->product->brand->imageUrl = $mediaRepository->getSourceObjectByList($product->brand->media->photos, 'main', 'original')->url;
+            $page->content->product->brand->imageUrl = $mediaRepository->getSourceObjectByList($product->brand->media->photos, 'product', 'original')->url;
         }
 
         // шильдики

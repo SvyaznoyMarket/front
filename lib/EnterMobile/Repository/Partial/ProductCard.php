@@ -74,7 +74,7 @@ class ProductCard {
             $card->brand->id = $product->brand->id;
             $card->brand->name = $product->brand->name;
             $card->brand->token = $product->brand->token;
-            $card->brand->imageUrl = $mediaRepository->getSourceObjectByList($product->brand->media->photos, 'main', 'original')->url;
+            $card->brand->imageUrl = $mediaRepository->getSourceObjectByList($product->brand->media->photos, 'product', 'original')->url;
         }
 
         // состояние товара
