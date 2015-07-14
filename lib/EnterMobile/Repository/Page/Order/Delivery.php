@@ -340,6 +340,10 @@ class Delivery {
                             $this->getLogger()->push(['type' => 'error', 'message' => 'Точка не найдена', 'pointId' => $possiblePointModel->id, 'group' => $possiblePointModel->groupToken, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
                             continue;
                         }
+                        if (!$point->latitude || !$point->longitude) {
+                            $this->getLogger()->push(['type' => 'error', 'message' => 'Не заданы координаты точки', 'pointId' => $possiblePointModel->id, 'group' => $possiblePointModel->groupToken, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
+                            continue;
+                        }
 
                         // дата
                         $date = null;
