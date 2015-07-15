@@ -153,9 +153,9 @@ return function(\EnterAggregator\Config $config) {
 
     $config->search->minPhraseLength = 2;
 
-    $config->credit->enabled = false;
+    $config->credit->enabled = true;
 
-    $config->credit->directCredit->enabled = false;
+    $config->credit->directCredit->enabled = true;
     $config->credit->directCredit->minPrice = 3000;
     $config->credit->directCredit->partnerId = '4427';
 

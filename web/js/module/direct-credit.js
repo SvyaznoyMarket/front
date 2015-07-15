@@ -11,8 +11,8 @@ define(
                         products: products
                     },
                     function(result) {
-                        console.info('dc_getCreditForTheProduct', result);
-                        if (!'payment' in result || (result.payment <= 0)) {
+                        console.info('dc_getCreditForTheProduct', {partnerId: partnerId, sessionId: sessionId}, result);
+                        if ((!'payment' in result) || !result.payment) {
                             return;
                         }
 
