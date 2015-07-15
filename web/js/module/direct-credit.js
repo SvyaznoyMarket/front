@@ -11,10 +11,7 @@ define(
                     console.info('DCLoans', partnerId, 'getPayment', { products : products }, response);
 
                     try {
-                        for (var i in response.payment) {
-                            result.payment = response.payment[i].payment;
-                            break;
-                        }
+                        result.payment = response.allProducts;
 
                         if (result.payment) {
                             done(result);
