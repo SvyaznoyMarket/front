@@ -84,7 +84,7 @@ class ProductCard {
         $card->states['isInShopShowroomOnly'] = $product->isInShopShowroomOnly;
         $card->states['isInWarehouse'] = $product->isInWarehouse;
         $card->states['isKitLocked'] = $product->isKitLocked;
-        $card->states['isFurnitureItem'] = $product->category->isFurniture;
+        $card->states['isFurnitureItem'] = $product->category && $product->category->isFurniture;
 
         // шильдики
         $card->labels = [];
