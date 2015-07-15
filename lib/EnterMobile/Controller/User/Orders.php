@@ -9,7 +9,7 @@ use EnterAggregator\DebugContainerTrait;
 use EnterAggregator\CurlTrait;
 use EnterMobile\Repository;
 use EnterQuery as Query;
-use EnterMobile\Model\Page\User\Index as Page;
+use EnterMobile\Model\Page\User\Orders as Page;
 
 class Orders {
     use ConfigTrait,
@@ -35,7 +35,7 @@ class Orders {
         }
 
         // запрос для получения страницы
-        $pageRequest = new Repository\Page\User\Index\Request();
+        $pageRequest = new Repository\Page\User\Orders\Request();
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $controllerResponse->region;
         $pageRequest->user = $controllerResponse->user;
@@ -44,7 +44,7 @@ class Orders {
         $pageRequest->orders = $controllerResponse->orders;
 
         $page = new Page();
-        (new Repository\Page\User\Index())->buildObjectByRequest($page, $pageRequest);
+        (new Repository\Page\User\Orders())->buildObjectByRequest($page, $pageRequest);
 
         // рендер
         $renderer = $this->getRenderer();
