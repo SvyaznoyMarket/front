@@ -10330,8 +10330,7 @@ body.flex .wrapper.wrapper-smpl .content {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
-  overflow: scroll;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
 }
 .private section {
   width: 100%;
