@@ -26,7 +26,7 @@ class Favorit {
             'content' => 'page/private/favorit'
         ]);
 
-        $content = $renderer->render('layout/default', $page);
+        $content = $renderer->render('layout/footerless', $page);
 
         return new Http\Response($content);
     }

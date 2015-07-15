@@ -7,20 +7,33 @@
         float: left;
         position: relative;
         height: 100%;
-        min-height: 100vh;
-        margin-bottom: -56px;
+
         .box-sizing(border-box);
 
         &.main-section{
             border-right: 1px solid #c7c7c7;
+            //table layout
+            display: table;
+            height: 100%;
         }
         &.ep{
             margin-bottom: 0;
         }
     }
+    &-index{
+        // style for private page - for full-height
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding-bottom: 0px;
+        .box-sizing(border-box);
+    }
     &-menu-lst{
         width: 100%;
-        
+
+        //table layout
+        height: 100%;
+        display: table;
 
         &-i{
             background-color: #ebebeb;
@@ -57,11 +70,13 @@
         font-size: 14px;
         padding: 17px 0;
         text-align: center;
-        position: absolute;
-        bottom: 56px;
-        left: 0px;
+
         border-top: 1px solid #c7c7c7;
         .box-sizing(border-box);
+        //table layout
+        display: table-row;
+        height: 50px;
+        line-height: 50px;
     }
     &-orders-list{
         width: 100%;
@@ -128,7 +143,7 @@
             float: none;
         }
 
-        .main-section{
+        section.main-section{
             display: none;
         }
     }

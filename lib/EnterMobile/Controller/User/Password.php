@@ -59,7 +59,7 @@ class Password {
             'content' => 'page/private/password'
         ]);
 
-        $content = $renderer->render('layout/default', $page);
+        $content = $renderer->render('layout/footerless', $page);
 
         return new Http\Response($content);
     }

@@ -68,7 +68,7 @@ namespace EnterMobile\Controller\User\EnterPrize {
                 'content' => 'page/private/prizelist'
             ]);
 
-            $content = $renderer->render('layout/default', $page);
+            $content = $renderer->render('layout/footerless', $page);
 
             return new Http\Response($content);
         }
