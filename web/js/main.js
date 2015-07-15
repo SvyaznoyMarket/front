@@ -43,7 +43,7 @@ require.config({
 
         'kladr' : 'vendor/kladr/core',
 
-        'direct-credit' : 'http://direct-credit.ru/widget/api_script_utf'
+        'direct-credit' : 'http://api.direct-credit.ru/dc'
     },
 
     shim: {

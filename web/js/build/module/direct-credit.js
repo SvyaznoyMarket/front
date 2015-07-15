@@ -1,1 +1,1 @@
-define(["direct-credit"],function(){return{getPayment:function(t,e,n,r){dc_getCreditForTheProduct(t,e,"getPayment",{products:n},function(d){console.info("dc_getCreditForTheProduct",{partnerId:t,sessionId:e,products:n},d),!1 in d||!d.payment||r(d)})}}});
+define(["direct-credit"],function(){return{getPayment:function(n,e,t,a){window.DCLoans(n,"getPayment",{products:t},function(e){var o={payment:null};console.info("DCLoans",n,"getPayment",{products:t},e);try{for(var r in e.payment){o.payment=e.payment[r].payment;break}o.payment&&a(o)}catch(c){console.error(c)}},debug)}}});
