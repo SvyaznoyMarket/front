@@ -23,6 +23,7 @@ return function(Enter1C\Config $config) {
 
     //$config->coreService->clientId = '1c';
     $config->coreService->clientId = 'site';
+    $config->coreService->timeout = 60; // Иногда ядро сильно тупит (отвечая секунд за 20). Поскольку 1capi.enter.ru используют только сотрудники Энтер, то лучше уж чтобы ответ хоть долго, но выполнялся
 
     // TODO: убрать из настроек
     //$config->mustacheRenderer;
