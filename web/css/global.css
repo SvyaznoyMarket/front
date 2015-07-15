@@ -897,7 +897,7 @@ textarea[contenteditable] {
 @font-face {
   font-family: 'Rouble';
   src: url('/css/modules/common/fonts/rouble.eot');
-  src: url('/css/modules/common/fonts/rouble.eot?#iefix') format('embedded-opentype'), url('/css/modules/common/fonts/rouble.ttf') format('truetype');
+  src: url('/css/modules/common/fonts/rouble.eot?#iefix') format('embedded-opentype'), url('/css/modules/common/fonts/rouble.ttf') format('truetype'), url('fonts/rouble.woff2') format('woff2'), url('fonts/rouble.woff') format('woff'), url('fonts/rouble.svg#rouble') format('svg');
 }
 .rubl {
   margin: 0 0 0 -5px;
@@ -10821,6 +10821,10 @@ body.flex .wrapper.wrapper-smpl .content {
 .address-simple__name {
   float: left;
   width: 63px;
+}
+.address-simple__val {
+  display: block;
+  margin-left: 63px;
 }
 .ep-list-i {
   padding: 10px;
