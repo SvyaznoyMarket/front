@@ -10493,7 +10493,7 @@ body.flex .wrapper.wrapper-smpl .content {
   width: 100%;
 }
 .p-control-group {
-  margin-top: 30px;
+  margin-top: 10px;
   width: 100%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -10519,6 +10519,7 @@ body.flex .wrapper.wrapper-smpl .content {
 }
 .p-control-group.btn-container {
   margin-top: 20px;
+  margin-bottom: 10px;
 }
 .p-control-group.required .p-control-input {
   border-color: #f99b1c;
@@ -10576,8 +10577,16 @@ body.flex .wrapper.wrapper-smpl .content {
   color: #363636;
   margin-left: 5px;
   margin-bottom: 4px;
+  height: 16px;
   display: inline-block;
   vertical-align: top;
+  visibility: hidden;
+}
+.p-control-label .err {
+  color: #d45745;
+}
+.p-control-label.visible {
+  visibility: visible;
 }
 .p-control-select-group {
   padding: 0;

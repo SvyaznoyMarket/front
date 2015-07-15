@@ -8,7 +8,7 @@
     width: 100%;
 
     &-group{
-        margin-top: 30px;
+        margin-top: 10px;
         width: 100%;
         .box-sizing(border-box);
         padding: 0 10px;
@@ -29,6 +29,7 @@
         }
         &.btn-container{
             margin-top: 20px;
+            margin-bottom: 10px;
         }
         &.required{
             .p-control-input {
@@ -95,7 +96,17 @@
         color: #363636;
         margin-left: 5px;
         margin-bottom: 4px;
+        height: 16px;
+
         .inline-block();
+        visibility: hidden;
+
+        .err{
+            color: #d45745;
+        }
+        &.visible{
+            visibility: visible;
+        }
     }
     &-select-group{
         padding: 0;

@@ -53,6 +53,8 @@ class PasswordReset {
 
         $page->content->messages = (new Repository\Partial\Message())->getList($request->messages);
 
+        $page->dataModule = 'user.profile';
+
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }

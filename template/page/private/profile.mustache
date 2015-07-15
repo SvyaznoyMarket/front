@@ -14,22 +14,25 @@
             <form class="private-form" method="post" action="{{url}}">
             <fieldset>
                 <div class="p-control-group">
+                    <label class="p-control-label">Имя</label>
                     <input id="username" name="first_name" type="text" placeholder="Имя" class="p-control p-control-input" value="{{firstName}}">
                 </div>
                 <div class="p-control-group">
+                    <label class="p-control-label">Отчество</label>
                     <input id="middlename" name="middle_name" type="text" placeholder="Отчество" class="p-control p-control-input" value="{{middleName}}">
                 </div>
                 <div class="p-control-group">
+                    <label class="p-control-label">Фамилия</label>
                     <input id="lastname" name="last_name" type="text" placeholder="Фамилия" class="p-control p-control-input" value="{{lastName}}">
                 </div>
                 <div class="p-control-group inline-group">
-                    <label class="p-control-label" for="birthday">Дата рождения</label>
+                    <label class="p-control-label visible" for="birthday">Дата рождения</label>
                     <div class="p-control p-control-date-group">
                         <input class="p-control p-control-input" id="birthday" name="birthday" type="date" placeholder="" value="{{birthday}}">
                     </div>
                 </div>
                 <div class="p-control-group inline-group">
-                    <label class="p-control-label" for="sex">Пол</label>
+                    <label class="p-control-label visible" for="sex">Пол</label>
 
                     <div class="p-control p-control-select-group">
                         <select name="sex" id="sex">
@@ -45,15 +48,19 @@
                     </div>
                 {{/editProfileForm.errors.empty_fields}}
                 <div class="p-control-group{{#editProfileForm.errors.empty_fields}} required{{/editProfileForm.errors.empty_fields}}"><!-- класс required - для ошибки -->
+                    <label class="p-control-label">Email</label>
                     <input id="email" name="email" type="text" placeholder="Email" class="p-control p-control-input" value="{{email}}">
                 </div>
                 <div class="p-control-group{{#editProfileForm.errors.empty_fields}} required{{/editProfileForm.errors.empty_fields}}">
+                    <label class="p-control-label">Мобильный телефон</label>
                     <input id="mobile" name="phone" type="text" placeholder="Мобильный телефон" class="p-control p-control-input" value="{{phone}}">
                 </div>
                 <div class="p-control-group">
+                    <label class="p-control-label">Домашний телефон</label>
                     <input id="phone" name="homePhone" type="text" placeholder="Домашний телефон" class="p-control p-control-input" value="{{homePhone}}">
                 </div>
                 <div class="p-control-group">
+                    <label class="p-control-label">Род деятельности</label>
                     <input id="occupation" name="occupation" type="text" placeholder="Род деятельности" class="p-control p-control-input" value="{{occupation}}">
                 </div>
 
