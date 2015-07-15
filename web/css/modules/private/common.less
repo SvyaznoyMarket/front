@@ -1,12 +1,22 @@
 .private{
     overflow: hidden;
     position: relative;
+    // style for private page - for full-height
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 0px;
+    .box-sizing(border-box);
 
     section{
         width: 100%;
         float: left;
         position: relative;
         height: 100%;
+
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+
 
         .box-sizing(border-box);
 
@@ -21,12 +31,7 @@
         }
     }
     &-index{
-        // style for private page - for full-height
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        padding-bottom: 0px;
-        .box-sizing(border-box);
+
     }
     &-menu-lst{
         width: 100%;
@@ -143,14 +148,8 @@
             float: none;
         }
 
-        section.main-section{
+        &:not(.private-index) section.main-section{
             display: none;
-        }
-    }
-
-    .private-index {
-        .main-section{
-            display: block;
         }
     }
 }
