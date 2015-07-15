@@ -6,6 +6,7 @@ use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
+use EnterAggregator\PriceHelperTrait;
 use EnterMobile\ConfigTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
@@ -19,7 +20,8 @@ class Index {
         TemplateHelperTrait,
         RouterTrait,
         CurlTrait,
-        ConfigTrait;
+        ConfigTrait,
+        PriceHelperTrait;
 
     /**
      * @param Page $page
@@ -47,9 +49,6 @@ class Index {
             }
         };
         $walkByMenu($request->mainMenu->elements);
-
-        // заказы
-        $page->content->orders = $request->orders['orders'];
 
         // шаблоны mustache
         // ...
