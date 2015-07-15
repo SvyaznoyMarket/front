@@ -7,7 +7,9 @@
     padding-bottom: 0px;
     .box-sizing(border-box);
 
-    overflow: hidden;
+    //overflow: hidden;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
 
     section{
         width: 100%;
@@ -155,7 +157,7 @@
         }
     }
 }
-@media screen and (min-width: 640px){
+@media screen and (min-width: 641px){
     .private{
         section{
             width: 50%;
@@ -167,7 +169,7 @@
         section{
             &.main-section{
                 display: block;
-                
+
                 .btn-exit{
                     display: block;
                     line-height: normal;
