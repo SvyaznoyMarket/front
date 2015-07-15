@@ -7,6 +7,7 @@ use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\PriceHelperTrait;
+use EnterAggregator\DateHelperTrait;
 use EnterMobile\ConfigTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
@@ -21,7 +22,8 @@ class Orders {
         RouterTrait,
         CurlTrait,
         ConfigTrait,
-        PriceHelperTrait;
+        PriceHelperTrait,
+        DateHelperTrait;
 
     /**
      * @param Page $page
@@ -53,8 +55,10 @@ class Orders {
         // заказы
         $orders = [];
         foreach($request->orders['orders'] as $order) {
-            $order['pay_sum'] = $this->getPriceHelper()->format($order['pay_sum']);
-            $orders[] = $order;
+            $orderObj = new \EnterModel\Order($order);
+            $orderObj->createdAt = $this->getDateHelper()->strftimeRu('%e.%m.%Y', $orderObj->createdAt);
+
+            $orders[] = $orderObj;
         }
 
         $page->content->orders = $orders;
