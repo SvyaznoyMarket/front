@@ -10817,6 +10817,15 @@ body.flex .wrapper.wrapper-smpl .content {
 }
 .address-simple {
   font-size: 14px;
+  *zoom: 1;
+}
+.address-simple:before,
+.address-simple:after {
+  display: table;
+  content: ' ';
+}
+.address-simple:after {
+  clear: both;
 }
 .address-simple__name {
   float: left;
