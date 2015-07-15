@@ -10322,8 +10322,6 @@ body.flex .wrapper.wrapper-smpl .content {
    личный кабинет
    ========================================================================== */
 .private {
-  overflow: hidden;
-  position: relative;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -10332,13 +10330,14 @@ body.flex .wrapper.wrapper-smpl .content {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+  overflow: hidden;
 }
 .private section {
   width: 100%;
   float: left;
   position: relative;
   height: 100%;
-  overflow-y: scroll;
+  overflow: scroll;
   -webkit-overflow-scrolling: touch;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -10348,7 +10347,7 @@ body.flex .wrapper.wrapper-smpl .content {
 .private section.main-section {
   border-right: 1px solid #c7c7c7;
   display: table;
-  height: 100%;
+  min-height: 100%;
 }
 .private section.ep {
   margin-bottom: 0;
@@ -10387,7 +10386,6 @@ body.flex .wrapper.wrapper-smpl .content {
   border-left: 5px solid #80c342;
 }
 .private .btn-exit {
-  display: block;
   width: 100%;
   background-color: #ebebeb;
   font-size: 14px;
@@ -10469,6 +10467,15 @@ body.flex .wrapper.wrapper-smpl .content {
 @media screen and (min-width: 640px) {
   .private section {
     width: 50%;
+  }
+}
+@media (max-height: 320px) {
+  .private section.main-section {
+    display: block;
+  }
+  .private section.main-section .btn-exit {
+    display: block;
+    line-height: normal;
   }
 }
 .p-control {

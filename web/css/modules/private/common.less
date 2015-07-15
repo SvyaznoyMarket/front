@@ -1,6 +1,5 @@
 .private{
-    overflow: hidden;
-    position: relative;
+
     // style for private page - for full-height
     position: absolute;
     width: 100%;
@@ -8,13 +7,15 @@
     padding-bottom: 0px;
     .box-sizing(border-box);
 
+    overflow: hidden;
+
     section{
         width: 100%;
         float: left;
         position: relative;
         height: 100%;
 
-        overflow-y: scroll;
+        overflow: scroll;
         -webkit-overflow-scrolling: touch;
 
 
@@ -24,7 +25,8 @@
             border-right: 1px solid #c7c7c7;
             //table layout
             display: table;
-            height: 100%;
+
+            min-height: 100%;
         }
         &.ep{
             margin-bottom: 0;
@@ -69,7 +71,7 @@
         }
     }
     .btn-exit{
-        display: block;
+
         width: 100%;
         background-color: #ebebeb;
         font-size: 14px;
@@ -157,6 +159,20 @@
     .private{
         section{
             width: 50%;
+        }
+    }
+}
+@media (max-height: 320px){
+    .private{
+        section{
+            &.main-section{
+                display: block;
+                
+                .btn-exit{
+                    display: block;
+                    line-height: normal;
+                }
+            }
         }
     }
 }
