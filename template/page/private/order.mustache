@@ -66,9 +66,9 @@
                     <div class="order-item-info table_cell">
                         <div class="order-item__name">{{name}}</div>
                         <div class="order-item-description">
-                            <div class="order-item-description-price">{{price}}&thinsp;<span class="rubl">p</span></div>
+                            <div class="order-item-description-price">{{price}} <span class="rubl">p</span></div>
                             <div class="order-item-description-quantity">{{quantity}} шт</div>
-                            <div class="order-item-description-total">{{sum}}&thinsp;<span class="rubl">p</span></div>
+                            <div class="order-item-description-total">{{sum}} <span class="rubl">p</span></div>
                         </div>
 
                     </div>
@@ -87,17 +87,17 @@
 
         <div class="order-total">
             <div class="order-total-delivery">
-                <span class="order-total-delivery__name">Доставка:</span><span class="order-total-delivery__price">100&thinsp;<span class="rubl">p</span></span>
+                <span class="order-total-delivery__name">Доставка:</span><span class="order-total-delivery__price">100 <span class="rubl">p</span></span>
             </div>
             {{#delivery}}
                 {{#is_delivery}}
                     <div class="order-total-delivery">
-                        <span class="order-total-delivery__name">Доставка:</span><span class="order-total-delivery__price">{{#delivery}}{{price}}{{/delivery}}&thinsp;<span class="rubl">p</span></span>
+                        <span class="order-total-delivery__name">Доставка:</span><span class="order-total-delivery__price">{{#delivery}}{{price}}{{/delivery}} <span class="rubl">p</span></span>
                     </div>
                 {{/is_delivery}}
             {{/delivery}}
             <div class="order-total-amount">
-                <span class="order-total-amount__name">Итого:</span><span class="order-total-amount__price">{{sum}}&thinsp;<span class="rubl">p</span></span>
+                <span class="order-total-amount__name">Итого:</span><span class="order-total-amount__price">{{sum}} <span class="rubl">p</span></span>
             </div>
         </div>
 
