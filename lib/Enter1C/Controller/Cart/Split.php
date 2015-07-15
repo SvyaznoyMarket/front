@@ -43,7 +43,6 @@ class Split {
             false
         );
 
-        $splitQuery->setTimeout($config->coreService->timeout * 2);
         $curl->prepare($splitQuery);
         $curl->execute();
 
@@ -67,7 +66,6 @@ class Split {
                 false
             );
 
-            $splitQuery->setTimeout($config->coreService->timeout * 2);
             $curl->prepare($splitQuery);
             $curl->execute();
 
