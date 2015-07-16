@@ -162,6 +162,7 @@ namespace EnterAggregator\Controller\Cart {
 
                         foreach ($response->split->pointGroups as $pointGroup) {
                             if (isset($pointGroup->points[0]) && isset($pointsByUi[$pointGroup->points[0]->ui])) {
+                                $pointGroup->id = $pointsByUi[$pointGroup->points[0]->ui]->group->id;
                                 $pointGroup->blockName = $pointsByUi[$pointGroup->points[0]->ui]->group->name;
                             }
                         }
