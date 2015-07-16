@@ -29,7 +29,7 @@ class Logout {
         // редирект
         $redirectUrl = !empty($request->query['redirect_to']) ? $request->query['redirect_to'] : null;
         if (!$redirectUrl) {
-            $redirectUrl = $router->getUrlByRoute(new Routing\User\Login());
+            $redirectUrl = $router->getUrlByRoute(new Routing\Index());
         }
         // http-ответ
         $response = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
