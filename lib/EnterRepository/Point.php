@@ -87,4 +87,34 @@ class Point {
 
         return $mediaList;
     }
+
+    /**
+     * @param \EnterQuery\Point\GetListFromScms $query
+     * @return \EnterModel\Point[]
+     */
+    public function getIndexedByUiObjectListByQuery(\EnterQuery\Point\GetListFromScms $query) {
+        $points = [];
+        $groupsById = [];
+        $result = $query->getResult();
+
+        if (isset($result['partners']) && is_array($result['partners'])) {
+            foreach ($result['partners'] as $partner) {
+                $group = new \EnterModel\Point\Group($partner);
+                $groupsById[$group->id] = $group;
+            }
+        }
+
+        if (isset($result['points']) && is_array($result['points'])) {
+            foreach ($result['points'] as $pointItem) {
+                $point = new \EnterModel\Point($pointItem);
+                if (isset($groupsById[$point->group->id])) {
+                    $point->group = $groupsById[$point->group->id];
+                }
+
+                $points[$point->ui] = $point;
+            }
+        }
+
+        return $points;
+    }
 }

@@ -22,7 +22,7 @@ namespace EnterMobileApplication\Controller {
             $curl = $this->getCurl();
             $config = $this->getConfig();
             $productRepository = new Repository\Product();
-            $pointRepository = new Repository\Point();
+            $pointRepository = new \EnterMobileApplication\Repository\Point();
 
             // токен для получения заказа
             $accessToken = is_string($request->query['accessToken']) ? $request->query['accessToken'] : null;
@@ -45,7 +45,7 @@ namespace EnterMobileApplication\Controller {
 
             $point = null;
             try {
-                if ($order->point->ui) {
+                if ($order->point && $order->point->ui) {
                     $pointItemQuery = new Query\Point\GetItemByUi($order->point->ui);
                     $curl->prepare($pointItemQuery)->execute();
                     $point = $pointItemQuery->getResult();
@@ -108,7 +108,7 @@ namespace EnterMobileApplication\Controller {
             }
 
             $helper = new \Enter\Helper\Template();
-            
+
             $response = ['order' => [
                 'id' => $order->id,
                 'number' => $order->number,
@@ -120,7 +120,7 @@ namespace EnterMobileApplication\Controller {
                 'updatedAt' => $order->updatedAt,
                 'product' => array_map(function(Model\Order\Product $orderProduct) use(&$productsById, &$helper) {
                     $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : new Model\Product();
-                    
+
                     return [
                         'id'                   => $orderProduct->id,
                         'price'                => $orderProduct->price,
@@ -166,7 +166,7 @@ namespace EnterMobileApplication\Controller {
                 'shopId' => $point['partner']['slug'] === 'enter' ? $order->shopId : null, // TODO перенести в point.id
                 'point' => $point ? [
                     'ui' => $point['uid'],
-                    'name' => $point['partner']['name'],
+                    'name' => $pointRepository->getName($point['partner']['slug'], $point['partner']['name']),
                     'media' => $media,
                     'imageUrl' => $imageUrl, // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split и point.imageUrl из ответа метода Order
                     'address' => $point['address'],

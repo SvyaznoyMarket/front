@@ -14,15 +14,20 @@ class GetListFromScms extends Query {
     protected $result;
 
     /**
-     * @param string $regionId
+     * @param string|null $regionId
+     * @param string[] $uis
      */
-    public function __construct($regionId) {
+    public function __construct($regionId = null, $uis = []) {
         $this->url = new Url();
         $this->url->path = 'api/point/get';
 
-        $this->url->query = [
-            'geo_id' => $regionId,
-        ];
+        if ($regionId) {
+            $this->url->query['geo_id'] = $regionId;
+        }
+
+        if ($uis) {
+            $this->url->query['uids'] = $uis;
+        }
 
         $this->init();
     }
