@@ -25,6 +25,7 @@ namespace EnterAggregator\Controller\User {
             $pointRepository = new Repository\Point();
 
             $response = new Order\Response();
+            $orderRepository = new \EnterRepository\Order();
 
             /* регион */
             $regionQuery = new Query\Region\GetItemById($request->regionId);
@@ -74,12 +75,13 @@ namespace EnterAggregator\Controller\User {
             $orderQuery = new Query\Order\GetItemById('site', $token, $orderId);
             $curl->prepare($orderQuery);
             $curl->execute();
-            $orderResult = $orderQuery->getResult();
 
-            // информация по точке
-            if ($orderResult['point_ui']) {
-                $pointUI = $orderResult['point_ui'];
-                $pointItemQuery = new Query\Point\GetItemByUi($pointUI);
+            $orderRepo = $orderRepository->getObjectByQuery($orderQuery);
+            $orderRepository->setDeliveryTypeForObjectList([$orderRepo]);
+
+            // точка самовывоза
+            if ($orderRepo->point) {
+                $pointItemQuery = new Query\Point\GetItemByUi($orderRepo->point->ui);
                 $curl->prepare($pointItemQuery)->execute();
                 $point = $pointItemQuery->getResult();
 
@@ -101,31 +103,35 @@ namespace EnterAggregator\Controller\User {
                     ]],
                 ] : null;
 
-                $orderResult['point'] = $pointResult;
+                $orderRepo->point = $pointResult;
             }
 
-
+            // дополним инфу по товарам
             $productIds = [];
-            $productMap = [];
-            foreach ($orderResult['product'] as $key => $product) {
-                $productIds[] = $product['id'];
-                $productMap[$product['id']] = $key;
+            foreach ($orderRepo->product as $product) {
+                $productIds[] = $product->id;
             }
 
             $productsInfo = new Query\Product\GetDescriptionListByIdList($productIds, ['media' => 1]);
             $curl->prepare($productsInfo);
             $curl->execute();
 
-            $productsInfoResult = $productsInfo->getResult();
-
-            foreach ($productsInfoResult as $key => $productInfo) {
-                $coreId = $productInfo['core_id'];
-
-                $orderResult['product'][$productMap[$coreId]]['image'] = $productInfo['medias'][0]['sources'][0]['url'];
-                $orderResult['product'][$productMap[$coreId]]['name'] = $productInfo['name'];
+            $mappedProducts = [];
+            foreach ($orderRepo->product as $product) {
+                $mappedProducts[$product->id] = $product;
             }
 
-            $response->order = $orderResult;
+            foreach ($productsInfo->getResult() as $productInfo) {
+                $mappedProducts[ $productInfo['core_id'] ]->ui = $productInfo['uid'];
+                $mappedProducts[ $productInfo['core_id'] ]->name = $productInfo['name'];
+            }
+
+            (new \EnterRepository\Product())->setDescriptionForListByListQuery($mappedProducts, [$productsInfo]);
+
+
+            $orderRepo->product = $mappedProducts;
+
+            $response->order = $orderRepo;
 
             return $response;
         }

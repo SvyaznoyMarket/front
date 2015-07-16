@@ -6,6 +6,7 @@ use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
+use EnterAggregator\DateHelperTrait;
 use EnterMobile\ConfigTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
@@ -19,7 +20,8 @@ class Order {
         TemplateHelperTrait,
         RouterTrait,
         CurlTrait,
-        ConfigTrait;
+        ConfigTrait,
+        DateHelperTrait;
 
     /**
      * @param Page $page
@@ -47,11 +49,41 @@ class Order {
         };
         $walkByMenu($request->mainMenu->elements);
 
-        if ($request->order['point']) {
-            $mediaList = $request->order['point']['media'];
-            $request->order['point']['logo'] = (new \EnterRepository\Media())->getSourceObjectByList($mediaList->photos, 'logo', '100x100')->url;
+        if ($request->order->point) {
+            $mediaList = $request->order->point['media'];
+            $request->order->point['logo']= (new \EnterRepository\Media())->getSourceObjectByList($mediaList->photos, 'logo', '100x100')->url;
         }
-        // заказы
+
+        $request->order->createdAt = $this->getDateHelper()->strftimeRu('%e.%m.%Y', $request->order->createdAt);
+
+        if (is_array($request->order->product) && !empty(($request->order->product))) {
+            foreach ($request->order->product as $product) {
+                $mediaList = $product->media;
+                $product->media = (new \EnterRepository\Media())->getSourceObjectByList($mediaList->photos, 'main', 'product_60')->url;
+            }
+        }
+
+
+        $request->order->product = array_values($request->order->product);
+
+
+        // доставка
+        $deliveryInfo = [];
+
+        foreach ($request->order->deliveries as $delivery) {
+            if ($delivery->type->token == 'self') {
+                $request->order->isDelivery = false;
+            } else {
+                $request->order->isDelivery = true;
+            }
+
+            $deliveryInfo['name'] = $delivery->type->shortName;
+            $deliveryInfo['date'] = $this->getDateHelper()->strftimeRu('%e.%m.%Y', $delivery->date);
+            $deliveryInfo['price'] = $delivery->price;
+        }
+
+        $request->order->deliveries = $deliveryInfo;
+
         $page->content->order = $request->order;
 
         // шаблоны mustache
