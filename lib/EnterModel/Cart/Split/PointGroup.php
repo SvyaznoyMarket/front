@@ -6,6 +6,8 @@ use EnterModel\Cart\Split\PointGroup\Point;
 
 class PointGroup {
     /** @var string */
+    public $id;
+    /** @var string */
     public $token;
     /** @var string */
     public $actionName;
