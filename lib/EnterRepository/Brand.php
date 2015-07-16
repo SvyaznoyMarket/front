@@ -147,7 +147,7 @@ class Brand {
                             'type' => '70x35',
                             'width' => '70',
                             'height' => '35',
-                            'url' => 'http://' . $this->getConfig()->hostname . $brand['medias'],
+                            'url' => 'http://' . $this->getConfig()->hostname . ($this->getConfig()->version ? '/' . $this->getConfig()->version : '') . $brand['medias'],
                         ],
                     ],
                 ],
