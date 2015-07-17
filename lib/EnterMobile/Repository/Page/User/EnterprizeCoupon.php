@@ -11,10 +11,10 @@ use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
 use EnterMobile\Model\Partial;
-use EnterMobile\Model\Page\User\EnterprizeList as Page;
+use EnterMobile\Model\Page\User\EnterprizeCoupon as Page;
 
 
-class EnterprizeList {
+class EnterprizeCoupon {
     use LoggerTrait,
         TemplateHelperTrait,
         RouterTrait,
@@ -25,7 +25,7 @@ class EnterprizeList {
      * @param Page $page
      * @param Enterprize\Request $request
      */
-    public function buildObjectByRequest(Page $page, Enterprize\Request $request) {
+    public function buildObjectByRequest(Page $page, EnterprizeCoupon\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
         $templateHelper = $this->getTemplateHelper();
@@ -48,21 +48,8 @@ class EnterprizeList {
         };
         $walkByMenu($request->mainMenu->elements);
 
-        // заказы
-        $coupons = [];
-        foreach ($request->coupons as $couponObject) {
-            $coupons[] = [
-                'id'=> $couponObject->id,
-                'backgroundUrl' => $couponObject->backgroundImageUrl,
-                'imageUrl' => $couponObject->productSegment->imageUrl,
-                'discountAmount' => $couponObject->discount->value,
-                'discountUnit' => $couponObject->discount->unit,
-                'category' => $couponObject->productSegment->name,
-                'description' => $couponObject->productSegment->description
-            ];
-        }
-
-        $page->content->coupons = $coupons;
+        $coupon = [];
+        $page->content->coupon = $request->coupon;
 
         // шаблоны mustache
         // ...

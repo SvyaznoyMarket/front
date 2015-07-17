@@ -10,22 +10,14 @@
     </section>
     <section class="ep">
         <ul class="ep-list">
-            <li class="ep-list-i">
-                <div class="ep-list-i__img">
-                    <img src="/css/modules/private/img/chip-lime.png">
-                    <span class="ep-list-i__lbl"><span class="rubl">p</span></span>
-                </div>
-                <div class="ep-list-i__txt">
-                    <span class="ep-list-i__tl"><span class="accented">100&thinsp;<span class="rubl">p</span></span> на Товары для дома дома дома дома дома дома</span>
-                    <span class="ep-list-i__desc">Минимальная сумма заказа 2000&thinsp;<span class="rubl">p</span></span>
-                </div>
-            </li>
             {{#coupons}}
                 <li class="ep-list-i">
-                    <div class="ep-list-i__img">
-                        <img src="{{backgroundUrl}}">
-                        <span class="ep-list-i__lbl"><img src="{{imageUrl}}"></span>
-                    </div>
+                    <a href="/private/enterprize/coupon/{{id}}">
+                        <div class="ep-list-i__img">
+                            <img src="{{backgroundUrl}}">
+                            <span class="ep-list-i__lbl"><img src="{{imageUrl}}"></span>
+                        </div>
+                    </a>
                     <div class="ep-list-i__txt">
                         <span class="ep-list-i__tl"><span class="accented">{{discountAmount}}&thinsp;<span class="rubl">{{discountUnit}}</span></span> на {{category}}</span>
                         <span class="ep-list-i__desc">{{description}}</span>

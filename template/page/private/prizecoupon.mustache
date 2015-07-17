@@ -9,22 +9,30 @@
         <a class="btn btn-exit" href="/logout">Выход</a>
     </section>
     <section class="ep">
+        {{#coupon}}
         <div class="ep-coupon">
-            <img src="/css/modules/private/img/chip-lime.png">
+            <img src="{{background_image_url}}">
+            <span class="ep-list-i__lbl"><img src="{{segment_image_url}}"></span>
+            <img src="">
             <div class="ep-coupon__lbl">
                 <span class="icon">D</span>
-                <span class="type">Текстиль</span>
-                <span class="discount">15%</span>
+                <span class="type">{{segment}}</span>
+                <span class="discount">
+                    {{value}}
+                    {{#is_currency}}<span class="rubl">Р</span>{{/is_currency}}
+                    {{^is_currency}}%{{/is_currency}}
+                </span>
             </div>
         </div>
         <div class="ep-coupon__info">
-            <span class="ep-coupon__txt">Фишка со скидкой 15%<br>на Текстиль</span>
-            <span class="ep-coupon__term">Действует c 30.04.2015 по 31.05.2015</span>
-            <div class="ep-coupon__disc">Фишка не действует на товары продавцов-партнеров
-                Скидка по акции не суммируется со скидками
-                по другим акциям ООО "Энтер"<br>
-                Минимальная сумма заказа 1500&thinsp;<span class="rubl">p</span>
+            <span class="ep-coupon__txt">Фишка со скидкой {{value}}
+                {{#is_currency}}<span class="rubl">Р</span>{{/is_currency}}
+                {{^is_currency}}%{{/is_currency}}<br>
+                на {{segment}}</span>
+            <span class="ep-coupon__term">Действует c {{start_date}} по {{end_date}}</span>
+            <div class="ep-coupon__disc">{{&segment_description}}
             </div>
         </div>
+        {{/coupon}}
     </section>
 </div>
