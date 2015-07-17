@@ -126,14 +126,14 @@ namespace EnterMobileApplication\Controller {
                 'recommendations' => [
                     [
                         'name' => 'Популярные товары',
-                        'products' => $this->getProductList($popularProducts),
+                        'products' => $this->getProductList($popularProducts, true),
                     ],
                     [
                         'name' => 'Мы рекомендуем',
-                        'products' => $this->getProductList($personalProducts),
+                        'products' => $this->getProductList($personalProducts, true),
                     ],
                 ],
-                'viewedProducts' => $this->getProductList($personalProducts),
+                'viewedProducts' => $this->getProductList($personalProducts, true),
                 'mainMenu' => (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery),
                 'promos' => (new \EnterMobileApplication\Repository\Promo())->getObjectListByQuery($promoListQuery),
                 'popularBrands' => array_map(function(\EnterModel\Brand $brand) {
