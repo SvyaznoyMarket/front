@@ -82,6 +82,7 @@ class Brand {
             ],
             [
                 'name' => 'Hasbro',
+                'sliceId' => 'brands-hasbro',
                 'medias' => '/img/main/logo/hasHasbrobro.jpg',
             ],
             [
