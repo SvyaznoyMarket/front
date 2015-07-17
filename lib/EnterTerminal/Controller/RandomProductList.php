@@ -98,6 +98,38 @@ class RandomProductList {
 
         $productRepository->setDescriptionForListByListQuery($productsById, $descriptionListQueries);
 
+        $shopIds = [];
+        foreach ($productsById as $product) {
+            foreach ($product->stock as $stock) {
+                if (!$stock->shopId) continue;
+
+                $shopIds[] = $stock->shopId;
+            }
+        }
+        if ((bool)$shopIds) {
+            $shopListQuery = new Query\Shop\GetListByIdList($shopIds);
+            $curl->prepare($shopListQuery);
+
+            $curl->execute();
+
+            foreach ($productsById as $product) {
+                $shopStatesByShopId = [];
+                foreach ($product->stock as $stock) {
+                    if ($stock->shopId && (($stock->showroomQuantity + $stock->quantity) > 0)) {
+                        $shopState = new Model\Product\ShopState();
+                        $shopState->quantity = $stock->quantity;
+                        $shopState->showroomQuantity = $stock->showroomQuantity;
+                        $shopState->isInShowroomOnly = !$shopState->quantity && ($shopState->showroomQuantity > 0);
+
+                        $shopStatesByShopId[$stock->shopId] = $shopState;
+                    }
+                }
+                if ((bool)$shopStatesByShopId) {
+                    $productRepository->setShopStateForObjectListByQuery([$product->id => $product], $shopStatesByShopId, $shopListQuery);
+                }
+            }
+        }
+
         // ответ
         $response = [
             'productCount' => count($productsById),
