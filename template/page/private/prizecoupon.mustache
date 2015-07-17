@@ -10,12 +10,10 @@
     </section>
     <section class="ep">
         {{#coupon}}
-        <div class="ep-coupon">
-            <img src="{{background_image_url}}">
-            <span class="ep-list-i__lbl"><img src="{{segment_image_url}}"></span>
-            <img src="">
+        <div class="ep-coupon" style="background-image:url({{background_image_url}})">
+
+            <img class="ep-coupon__img" src="{{segment_image_url}}">
             <div class="ep-coupon__lbl">
-                <span class="icon">D</span>
                 <span class="type">{{segment}}</span>
                 <span class="discount">
                     {{value}}
