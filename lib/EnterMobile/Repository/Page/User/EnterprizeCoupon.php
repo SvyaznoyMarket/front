@@ -6,6 +6,8 @@ use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
+use EnterAggregator\PriceHelperTrait;
+use EnterAggregator\DateHelperTrait;
 use EnterMobile\ConfigTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
@@ -19,7 +21,9 @@ class EnterprizeCoupon {
         TemplateHelperTrait,
         RouterTrait,
         CurlTrait,
-        ConfigTrait;
+        ConfigTrait,
+        PriceHelperTrait,
+        DateHelperTrait;
 
     /**
      * @param Page $page
@@ -48,8 +52,12 @@ class EnterprizeCoupon {
         };
         $walkByMenu($request->mainMenu->elements);
 
-        $coupon = [];
-        $page->content->coupon = $request->coupon;
+        $coupon = $request->coupon;
+        $coupon['value'] = $this->getPriceHelper()->format($coupon['value']);
+        $coupon['start_date'] = date('d-m-Y', strtotime($coupon['start_date']));
+        $coupon['end_date'] = date('d-m-Y', strtotime($coupon['end_date']));
+
+        $page->content->coupon = $coupon;
 
         // шаблоны mustache
         // ...
