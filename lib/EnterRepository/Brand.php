@@ -82,7 +82,7 @@ class Brand {
             ],
             [
                 'name' => 'Hasbro',
-                'url' => '/search?q=hasbro',
+                'url' => '/slices/brands-hasbro',
                 'medias' => 'img/main/logo/hasHasbrobro.jpg',
             ],
             [
