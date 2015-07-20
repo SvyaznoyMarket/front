@@ -26,9 +26,25 @@ define(
 
         $input.keyup(showLabel);
 
-        $('#birthday').click(function(){
-           $(this).nextAll('#date-helper').click();
-        });
 
+        // хаки для даты
+        var $birthdayTextInput = $('#birthday');
+        var $birthdayDateInput = $('#birthday-helper');
+
+        function handleBirthdayTextFocus() {
+            $birthdayDateInput.focus();
+        }
+
+        function handleBirthdayDateChange() {
+            // не уверен насчет формата в разных браузерах, в вебките так
+            setDateForBirthdayTextInput( $(this).val().split('-').reverse().join('.') )
+        }
+
+        function setDateForBirthdayTextInput(val) {
+            $birthdayTextInput.val(val);
+        }
+
+        $birthdayTextInput.focus(handleBirthdayTextFocus);
+        $birthdayDateInput.change(handleBirthdayDateChange);
     }
 );
