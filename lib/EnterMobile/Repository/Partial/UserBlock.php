@@ -28,6 +28,7 @@ class UserBlock {
             $userBlock->isUserAuthorized = true;
             $userBlock->userLink->name = $user->firstName ?: $user->lastName;
             $userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Index());
+            $userBlock->isEnterprizeMember = $user->isEnterprizeMember;
         } else {
             $userBlock->isUserAuthorized = false;
             $userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Login());
