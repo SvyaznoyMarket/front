@@ -10412,14 +10412,17 @@ body.flex .wrapper.wrapper-smpl .content {
   font-size: 14px;
 }
 .private-orders-list-i__num a {
-  width: 90px;
+  width: 100px;
   display: block;
+  white-space: nowrap;
+  text-align: center;
 }
 .private-orders-list-i__date {
   padding: 10px;
   width: 100%;
   min-width: 0;
   font-size: 14px;
+  text-align: center;
 }
 .private-orders-list-i__date a {
   color: #616161;
