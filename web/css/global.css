@@ -10852,6 +10852,18 @@ body.flex .wrapper.wrapper-smpl .content {
   border-bottom: 1px solid #a0a0a0;
   min-height: 60px;
 }
+.ep-list-i__lnk {
+  display: block;
+  *zoom: 1;
+}
+.ep-list-i__lnk:before,
+.ep-list-i__lnk:after {
+  display: table;
+  content: ' ';
+}
+.ep-list-i__lnk:after {
+  clear: both;
+}
 .ep-list-i__fishka {
   width: 100%;
   height: 100%;
@@ -10906,9 +10918,6 @@ body.flex .wrapper.wrapper-smpl .content {
 }
 .ep-list-i__tl .accented {
   font-size: 18px;
-}
-.ep-list-i__tl .accented .rubl {
-  marign: 0;
 }
 .ep-list-i__desc {
   font-size: 14px;
