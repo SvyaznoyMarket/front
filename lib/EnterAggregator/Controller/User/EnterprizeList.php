@@ -6,6 +6,7 @@ namespace EnterAggregator\Controller\User{
     use EnterAggregator\CurlTrait;
     use EnterAggregator\LoggerTrait;
     use EnterAggregator\RouterTrait;
+    use EnterAggregator\DateHelperTrait;
     use EnterMobile\Routing;
     use EnterQuery as Query;
     use EnterModel as Model;
@@ -16,7 +17,8 @@ namespace EnterAggregator\Controller\User{
             CurlTrait,
             LoggerTrait,
             SessionTrait,
-            RouterTrait;
+            RouterTrait,
+            DateHelperTrait;
 
         public function execute(EnterprizeList\Request $request) {
             $config = $this->getConfig();
@@ -93,7 +95,7 @@ namespace EnterAggregator\Controller\User{
                 $usedSeriesIds[] = $coupon->seriesId;
             }
 
-            $response->coupons = array_values(
+            $almostReadyCoupons = array_values(
                 array_filter( // фильрация серий купонов
                     (new \EnterRepository\Coupon\Series())->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery),
                     function(Model\Coupon\Series $series) use (&$usedSeriesIds) {
@@ -101,6 +103,17 @@ namespace EnterAggregator\Controller\User{
                     }
                 )
             );
+
+            $couponsToResponse = [];
+            $now = time();
+
+            foreach ($almostReadyCoupons as $coupon) {
+                if ($now > strtotime($coupon->endAt)) continue;
+
+                $couponsToResponse[] = $coupon;
+            }
+
+            $response->coupons = $couponsToResponse;
 
             return $response;
         }
