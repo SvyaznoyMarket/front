@@ -10389,7 +10389,7 @@ body.flex .wrapper.wrapper-smpl .content {
   width: 100%;
   background-color: #ebebeb;
   font-size: 14px;
-  padding: 17px 0;
+  height: 50px;
   text-align: center;
   border-top: 1px solid #c7c7c7;
   -webkit-box-sizing: border-box;
@@ -10397,6 +10397,10 @@ body.flex .wrapper.wrapper-smpl .content {
   box-sizing: border-box;
   -ms-box-sizing: border-box;
   display: table-row;
+  line-height: 50px;
+}
+.private .btn-exit__lnk {
+  display: block;
   height: 50px;
   line-height: 50px;
 }
