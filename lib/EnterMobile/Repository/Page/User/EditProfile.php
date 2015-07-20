@@ -32,6 +32,7 @@ class EditProfile {
         $templateHelper = $this->getTemplateHelper();
 
         $page->title = 'Редактирование профиля';
+        $page->dataModule = 'user.profile';
 
         // ga
         $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$templateHelper) {

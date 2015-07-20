@@ -26,5 +26,9 @@ define(
 
         $input.keyup(showLabel);
 
+        $('#birthday').click(function(){
+           $(this).nextAll('#date-helper').click();
+        });
+
     }
 );
