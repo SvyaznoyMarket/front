@@ -6,6 +6,7 @@ use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
+use EnterAggregator\PriceHelperTrait;
 use EnterMobile\ConfigTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
@@ -19,7 +20,8 @@ class EnterprizeList {
         TemplateHelperTrait,
         RouterTrait,
         CurlTrait,
-        ConfigTrait;
+        ConfigTrait,
+        PriceHelperTrait;
 
     /**
      * @param Page $page
@@ -58,7 +60,8 @@ class EnterprizeList {
                 'discountAmount' => $couponObject->discount->value,
                 'discountUnit' => $couponObject->discount->unit,
                 'category' => $couponObject->productSegment->name,
-                'description' => $couponObject->productSegment->description
+                'description' => $couponObject->productSegment->description,
+                'minOrderSum' => $this->getPriceHelper()->format($couponObject->minOrderSum)
             ];
         }
 

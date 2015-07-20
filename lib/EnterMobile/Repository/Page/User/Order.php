@@ -71,13 +71,21 @@ class Order {
         $deliveryInfo = [];
 
         foreach ($request->order->deliveries as $delivery) {
-            if ($delivery->type->token == 'self') {
+            if ($delivery->type->token == 'self' || $request->order->deliveryType == 'self') {
                 $request->order->isDelivery = false;
             } else {
                 $request->order->isDelivery = true;
             }
 
-            $deliveryInfo['name'] = $delivery->type->shortName;
+            if ($delivery->type->shortName) {
+                $deliveryInfo['name'] = $delivery->type->shortName;
+            } else {
+                $deliveryInfo['name'] = ($delivery->type->token == 'self' || $request->order->deliveryType == 'self') ?
+                    'Самовывоз' :
+                    'Доставка'
+                ;
+            }
+
             $deliveryInfo['date'] = $this->getDateHelper()->strftimeRu('%e.%m.%Y', $delivery->date);
             $deliveryInfo['price'] = $delivery->price;
         }

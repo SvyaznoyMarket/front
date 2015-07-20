@@ -57,6 +57,7 @@ class Orders {
         foreach($request->orders['orders'] as $order) {
             $orderObj = new \EnterModel\Order($order);
             $orderObj->createdAt = $this->getDateHelper()->strftimeRu('%e.%m.%Y', $orderObj->createdAt);
+            $orderObj->paySum = $this->getPriceHelper()->format($orderObj->paySum);
 
             $orders[] = $orderObj;
         }
