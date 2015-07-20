@@ -10907,6 +10907,9 @@ body.flex .wrapper.wrapper-smpl .content {
 .ep-list-i__tl .accented {
   font-size: 18px;
 }
+.ep-list-i__tl .accented .rubl {
+  marign: 0;
+}
 .ep-list-i__desc {
   font-size: 14px;
   display: block;
