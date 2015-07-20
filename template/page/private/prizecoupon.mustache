@@ -17,14 +17,14 @@
                 <span class="type">{{segment}}</span>
                 <span class="discount">
                     {{value}}
-                    {{#is_currency}}<span class="rubl">Р</span>{{/is_currency}}
+                    {{#is_currency}}<span class="rubl">p</span>{{/is_currency}}
                     {{^is_currency}}%{{/is_currency}}
                 </span>
             </div>
         </div>
         <div class="ep-coupon__info">
             <span class="ep-coupon__txt">Фишка со скидкой {{value}}
-                {{#is_currency}}<span class="rubl">Р</span>{{/is_currency}}
+                {{#is_currency}}<span class="rubl">p</span>{{/is_currency}}
                 {{^is_currency}}%{{/is_currency}}<br>
                 на {{segment}}</span>
             <span class="ep-coupon__term">Действует c {{start_date}} по {{end_date}}</span>
