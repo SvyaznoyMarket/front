@@ -10678,12 +10678,12 @@ body.flex .wrapper.wrapper-smpl .content {
 .private-order__tl {
   font-size: 14px;
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: baseline;
   margin: 0px;
 }
 .private-order__date {
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: baseline;
   font-size: 12px;
   color: #5e5e5e;
   margin-left: 2px;
