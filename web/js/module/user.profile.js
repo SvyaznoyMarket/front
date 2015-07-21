@@ -28,8 +28,8 @@ define(
 
 
         // хаки для даты
-        var $birthdayTextInput = $('#birthday');
-        var $birthdayDateInput = $('#birthday-helper');
+        var $birthdayTextInput = $('.js-birthday-input');
+        var $birthdayDateInput = $('.js-birthday-input-helper');
 
         function handleBirthdayTextFocus() {
             $birthdayDateInput.focus();

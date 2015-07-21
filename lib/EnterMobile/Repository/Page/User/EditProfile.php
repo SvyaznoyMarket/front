@@ -50,7 +50,10 @@ class EditProfile {
         };
         $walkByMenu($request->mainMenu->elements);
 
-        $page->content->editProfileForm = new Model\Form\User\EditProfileForm((array)$request->user);
+        $userInfo = (array)$request->user;
+        $userInfo['birthday'] = date('d.m.Y', strtotime($userInfo['birthday']));
+
+        $page->content->editProfileForm = new Model\Form\User\EditProfileForm($userInfo);
         $page->content->editProfileForm->url = $router->getUrlByRoute(new Routing\User\Edit\Save());
         $page->content->editProfileForm->errors = (bool)$request->formErrors ? $request->formErrors : false;
 

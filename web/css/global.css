@@ -10675,6 +10675,15 @@ body.flex .wrapper.wrapper-smpl .content {
   display: inline-block;
   vertical-align: top;
 }
+#birthday {
+  position: relative;
+  z-index: 10;
+}
+#birthday-helper {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+}
 .private-order__head {
   padding: 10px 0 10px 10px;
   border-bottom: 1px solid #cccccc;
