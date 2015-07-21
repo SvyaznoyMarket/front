@@ -4,6 +4,7 @@ namespace EnterMobile\Repository\Page\User;
 
 use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
+use EnterAggregator\PriceHelperTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\DateHelperTrait;
@@ -21,7 +22,8 @@ class Order {
         RouterTrait,
         CurlTrait,
         ConfigTrait,
-        DateHelperTrait;
+        DateHelperTrait,
+        PriceHelperTrait;
 
     /**
      * @param Page $page
@@ -60,6 +62,9 @@ class Order {
             foreach ($request->order->product as $product) {
                 $mediaList = $product->media;
                 $product->media = (new \EnterRepository\Media())->getSourceObjectByList($mediaList->photos, 'main', 'product_60')->url;
+
+                $product->price = $this->getPriceHelper()->format($product->price);
+                $product->sum = $this->getPriceHelper()->format($product->sum);
             }
         }
 
@@ -91,7 +96,9 @@ class Order {
         }
 
         $request->order->deliveries = $deliveryInfo;
-
+echo '<pre>';
+print_r ($request->order);
+echo '</pre>';
         $page->content->order = $request->order;
 
         // шаблоны mustache
