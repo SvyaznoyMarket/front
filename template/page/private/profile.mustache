@@ -25,12 +25,13 @@
                     <label class="p-control-label">Фамилия</label>
                     <input id="lastname" name="last_name" type="text" placeholder="Фамилия" class="p-control p-control-input" value="{{lastName}}">
                 </div>
-                <div class="p-control-group inline-group">
+                <div class="p-control-group inline-group" style="position:relative;">
                     <label class="p-control-label visible" for="birthday">Дата рождения</label>
                     <div class="p-control p-control-date-group">
-                        <input class="p-control p-control-input" id="birthday" name="birthday" type="text" value="{{birthday}}">
+                        <input class="p-control p-control-input" id="birthday" name="birthday" type="text" value="{{birthday}}" style="position:relative; z-index: 10;">
+                        <input class="p-control p-control-input" id="birthday-helper" type="date" value="{{birthday}}" style="position:absolute; z-index: -1; top: 0;">
                     </div>
-                    <input class="p-control p-control-input" id="birthday-helper" type="date" value="{{birthday}}" style="display:none;">
+                    
                 </div>
                 <div class="p-control-group inline-group">
                     <label class="p-control-label visible" for="sex">Пол</label>

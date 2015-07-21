@@ -33,6 +33,13 @@ define(
 
         function handleBirthdayTextFocus() {
             $birthdayDateInput.focus();
+            $birthdayDateInput.css({
+                zIndex: 10
+            });
+
+            $birthdayTextInput.css({
+                zIndex: -1
+            });
         }
 
         function handleBirthdayDateChange() {
@@ -41,6 +48,14 @@ define(
         }
 
         function setDateForBirthdayTextInput(val) {
+            $birthdayTextInput.css({
+                zIndex: 10
+            });
+
+            $birthdayDateInput.css({
+                zIndex: -1
+            });
+
             $birthdayTextInput.val(val);
         }
 
