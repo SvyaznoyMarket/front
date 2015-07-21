@@ -38,6 +38,9 @@ class Save {
         try {
             $postData = $request->data->all();
 
+            // дату рождения нужно сконвертить
+            $postData['birthday'] = date('Y-m-d', strtotime($postData['birthday']));
+
             // token
             $user = new \EnterMobile\Repository\User();
             $token = $user->getTokenByHttpRequest($request);
@@ -87,7 +90,6 @@ class Save {
                 throw new \Exception('Не удалось сменить данные пользователя.');
             }
 
-//            $response = $updateResult;
             $messageRepository->setObjectListToHttpSesion('messages', [
                 new \EnterModel\Message([
                     'name' => 'Данные успешно изменены',
