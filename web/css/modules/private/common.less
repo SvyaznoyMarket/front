@@ -96,19 +96,17 @@
 
             
             &__num{
-                width: 90px;
-                padding: 10px;
                 font-size: 14px;
 
                 a {
-                    width: 100px;
                     display: block;
+                    width: 90px;
+                    padding: 10px;
                     white-space: nowrap;
                     text-align: center;
                 }
             }
             &__date{
-                padding: 10px;
                 width: 100%;
                 min-width: 0;
                 font-size: 14px;
@@ -116,26 +114,34 @@
                 
                 a {
                     color: #616161;
+                    display: block;
+                    padding: 10px;
                 }
             }
             &__sum{
-                padding: 10px;
-                padding-right: 30px;
+                
                 position: relative;
                 white-space: nowrap;
                 font-size: 14px;
+                
+                a{
+                    display: block;
+                    padding: 10px;
+                    padding-right: 30px;
+                    position: relative;
 
-                &:after{
-                    content: "";
-                    width: 10px;
-                    height: 13px;
-                    background: url('modules/private/img/right-arrow@2x.png') no-repeat;
-                    background-size: cover;
-                    position: absolute;
-                    right: 10px;
-                    top: 50%;
-                    margin-top: -7.5px;
-                    .opacity(0.4);
+                    &:after{
+                        content: "";
+                        width: 10px;
+                        height: 13px;
+                        background: url('modules/private/img/right-arrow@2x.png') no-repeat;
+                        background-size: cover;
+                        position: absolute;
+                        right: 10px;
+                        top: 50%;
+                        margin-top: -7.5px;
+                        .opacity(0.4);
+                    }
                 }
 
             }
