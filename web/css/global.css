@@ -2454,10 +2454,12 @@ html.no-scroll body {
 /* Шапка карточки товара - название товара, артикул и отзывы */
 .prodHd {
   padding: 0 10px 0 41.48936%;
+  position: relative;
   /* Отзывы в карточке товара */
 }
 .prodHd_n {
   margin-bottom: 10px;
+  padding-right: 30px;
 }
 .prodHd_artcl {
   display: inline-block;
@@ -11045,6 +11047,30 @@ body.flex .wrapper.wrapper-smpl .content {
   width: 20px;
   height: 20px;
   background: url("modules/favorit/img/close@2x.png") no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+.icon-favorit {
+  background: url("modules/favorit/img/favorit.png") no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  display: block;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: 30px;
+  height: 26px;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+.icon-favorit.icon-favorit--on {
+  background: url("modules/favorit/img/favorit_on.png") no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;

@@ -48,3 +48,20 @@
         .background-size(cover);
     }
 }
+.icon-favorit{
+    background: url("@{base-url}/favorit/img/favorit.png") no-repeat;
+
+    .background-size(cover);
+    display: block;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 30px;
+    height: 26px;
+    .transition();
+
+    &&--on{
+        background: url("@{base-url}/favorit/img/favorit_on.png") no-repeat;
+        .background-size(cover);
+    }
+}
