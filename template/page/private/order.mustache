@@ -84,11 +84,9 @@
         </div>
 
         <div class="order-total">
-            {{#isDelivery}}
-                <div class="order-total-delivery">
-                    <span class="order-total-delivery__name">Доставка:</span><span class="order-total-delivery__price">{{deliveries.price}} <span class="rubl">p</span></span>
-                </div>
-            {{/isDelivery}}
+            <div class="order-total-delivery">
+                <span class="order-total-delivery__name">Доставка:</span><span class="order-total-delivery__price">{{deliveries.price}} <span class="rubl">p</span></span>
+            </div>
             <div class="order-total-amount">
                 <span class="order-total-amount__name">Итого:</span><span class="order-total-amount__price">{{sum}} <span class="rubl">p</span></span>
             </div>
