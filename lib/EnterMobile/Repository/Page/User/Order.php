@@ -96,9 +96,7 @@ class Order {
         }
 
         $request->order->deliveries = $deliveryInfo;
-echo '<pre>';
-print_r ($request->order);
-echo '</pre>';
+
         $page->content->order = $request->order;
 
         // шаблоны mustache
