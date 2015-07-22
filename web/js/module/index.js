@@ -100,6 +100,18 @@ define(
 								current       = $(this).data('slick-slider'),
 								responsToShow = $(this).data('respons-show');
 
+                            //on init
+                            $('.js-main-items-slider-' + current).on('init', function(){
+
+                                if ($('.js-main-items-slider-btn-prev-' + current).attr('style')){
+                                    $('.js-main-items-slider-btn-prev-' + current).addClass('inline');
+                                }
+                                if ($('.js-main-items-slider-btn-next-' + current).attr('style')){
+                                    $('.js-main-items-slider-btn-next-' + current).addClass('inline');
+                                }
+
+                            });
+
 							$('.js-main-items-slider-' + current)
 								.fadeIn()
 								.slick({
@@ -117,6 +129,7 @@ define(
 										}
 									]
 								}).parent().removeClass('m-loader');
+
 
 							$(this).parents('.items-slider').find('.items-slider-nav__btn').data('gaClick', dataGa);
 						});

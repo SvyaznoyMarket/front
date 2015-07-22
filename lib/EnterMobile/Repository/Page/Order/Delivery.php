@@ -36,7 +36,7 @@ class Delivery {
         // заголовок
         $page->title = 'Оформление заказа - Способ получения - Enter';
 
-        $page->dataModule = 'order';
+        $page->dataModule = 'order-delivery';
 
         $page->content->region = [
             'name' => $request->region->name,
@@ -96,7 +96,8 @@ class Delivery {
                         'name' => $orderModel->seller->name,
                         'url'  => str_replace('www.enter.ru', 'm.enter.ru', $orderModel->seller->offerUrl),
                     ]
-                    : false,
+                    : false
+                ,
                 'sum'            => [
                     'name'  => $priceHelper->format($orderModel->sum),
                     'value' => $orderModel->sum,
@@ -305,6 +306,11 @@ class Delivery {
 
                     return $discounts;
                 }),
+                'hasDiscountLink' => call_user_func(function() use (&$orderModel) {
+                    $sellerModel = $orderModel->seller;
+
+                    return !$sellerModel || ($sellerModel->ui === $sellerModel::UI_ENTER);
+                }),
                 'pointJson'      => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$regionModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex, &$pointRepository) {
                     $points = [];
                     $filtersByToken = [
@@ -332,6 +338,10 @@ class Delivery {
                         ;
                         if (!$point) {
                             $this->getLogger()->push(['type' => 'error', 'message' => 'Точка не найдена', 'pointId' => $possiblePointModel->id, 'group' => $possiblePointModel->groupToken, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
+                            continue;
+                        }
+                        if (!$point->latitude || !$point->longitude) {
+                            $this->getLogger()->push(['type' => 'error', 'message' => 'Не заданы координаты точки', 'pointId' => $possiblePointModel->id, 'group' => $possiblePointModel->groupToken, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
                             continue;
                         }
 
@@ -489,11 +499,15 @@ class Delivery {
                                 'name' => $day->format('d'),
                             ];
                             if (in_array((int)$day->format('U'), $possibleDays)) {
+                                if ($firstAvailableDay == $day) {
+                                    $item['isFirst'] = true;
+                                }
+
                                 $item['dataValue'] = $templateHelper->json([
-                                'change' => [
-                                    'orders' => [
-                                        [
-                                            'blockName' => $orderModel->blockName,
+                                    'change' => [
+                                        'orders' => [
+                                            [
+                                                'blockName' => $orderModel->blockName,
                                                 'delivery'  => [
                                                     'date' => $day->format('U'),
                                                 ],

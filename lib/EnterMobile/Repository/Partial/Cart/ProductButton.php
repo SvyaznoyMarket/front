@@ -29,6 +29,7 @@ class ProductButton {
      * @param \EnterModel\Product $product
      * @param \EnterModel\Cart\Product|null $cartProduct
      * @param bool $allowInShopOnly Позволять отображать кнопку для товаров, которые доступны только в магазине
+     * @param bool $isFull
      * @param array $context контекст кнопки (напр. листинг, карточка товара)
      * @return Partial\Cart\ProductButton
      */

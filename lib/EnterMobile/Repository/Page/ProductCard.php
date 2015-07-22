@@ -47,11 +47,29 @@ class ProductCard {
         $page->dataModule = 'product.card';
 
         // хлебные крошки
+        $categories = call_user_func(function() use (&$product) {
+            if (!$product->category) return [];
+
+            $ancestors = [];
+            $parent = $product->category->parent;
+            while ($parent) {
+                $ancestors[] = $parent;
+
+                $parent = $parent->parent;
+            }
+
+            return array_reverse(array_merge([$product->category], $ancestors));
+        });
         $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
+        foreach ($categories as $categoryModel) {
+            $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
+            $breadcrumb->name = $categoryModel->name;
+            $breadcrumb->url = $categoryModel->link;
+            $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
+        }
         $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
         $breadcrumb->name = $product->name;
         $breadcrumb->url = $product->link;
-
         $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
 
         // содержание
@@ -72,7 +90,7 @@ class ProductCard {
             $page->content->product->brand->id = $product->brand->id;
             $page->content->product->brand->name = $product->brand->name;
             $page->content->product->brand->token = $product->brand->token;
-            $page->content->product->brand->imageUrl = $mediaRepository->getSourceObjectByList($product->brand->media->photos, 'main', 'original')->url;
+            $page->content->product->brand->imageUrl = $mediaRepository->getSourceObjectByList($product->brand->media->photos, 'product', 'original')->url;
         }
 
         // шильдики

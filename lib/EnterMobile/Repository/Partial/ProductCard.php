@@ -74,7 +74,7 @@ class ProductCard {
             $card->brand->id = $product->brand->id;
             $card->brand->name = $product->brand->name;
             $card->brand->token = $product->brand->token;
-            $card->brand->imageUrl = $mediaRepository->getSourceObjectByList($product->brand->media->photos, 'main', 'original')->url;
+            $card->brand->imageUrl = $mediaRepository->getSourceObjectByList($product->brand->media->photos, 'product', 'original')->url;
         }
 
         // состояние товара
@@ -84,7 +84,7 @@ class ProductCard {
         $card->states['isInShopShowroomOnly'] = $product->isInShopShowroomOnly;
         $card->states['isInWarehouse'] = $product->isInWarehouse;
         $card->states['isKitLocked'] = $product->isKitLocked;
-        $card->states['isFurnitureItem'] = $product->category->isFurniture;
+        $card->states['isFurnitureItem'] = $product->category && $product->category->isFurniture;
 
         // шильдики
         $card->labels = [];

@@ -388,10 +388,24 @@ class Product {
                         $product->oldPrice = null;
                     }
 
-                    if (!empty($descriptionItem['brand']['medias'])) {
+                    if (!empty($descriptionItem['brand']['medias']) && isset($descriptionItem['brand']['slug']) && $descriptionItem['brand']['slug'] === 'tchibo-3569') {
                         foreach ($descriptionItem['brand']['medias'] as $mediaItem) {
                             if ('image' === $mediaItem['provider']) {
                                 $product->brand = new Model\Brand($descriptionItem['brand']);
+                                // TODO после решения FCMS-740 удалить данный блок (чтобы media бралось из scms) и удалить условие "isset($descriptionItem['brand']['slug']) && $descriptionItem['brand']['slug'] === 'tchibo-3569'"
+                                $product->brand->media->photos[] = new Model\Media([
+                                    'content_type' => 'image/png',
+                                    'provider' => 'image',
+                                    'tags' => ['product'],
+                                    'sources' => [
+                                        [
+                                            'type' => 'original',
+                                            'url' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png',
+                                            'width' => '40',
+                                            'height' => '40',
+                                        ],
+                                    ],
+                                ]);
                                 break;
                             }
                         }

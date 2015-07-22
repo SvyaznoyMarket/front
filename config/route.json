@@ -98,10 +98,6 @@
         "name": "Корзина",
         "pattern": "/cart"
     },
-    "User\\Get": {
-        "name": "Инфо пользователя",
-        "pattern": "/ajax/user"
-    },
     "User\\Cart\\Product\\Set": {
         "name": "Установить товар в корзине",
         "pattern": "/ajax/user/cart/product",

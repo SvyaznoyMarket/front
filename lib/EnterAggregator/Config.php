@@ -221,6 +221,8 @@ namespace EnterAggregator\Config {
     }
 
     class Credit {
+        /** @var bool */
+        public $enabled;
         /** @var string */
         public $cookieName;
         /** @var Credit\DirecCredit  */
