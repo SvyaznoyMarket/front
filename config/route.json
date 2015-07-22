@@ -198,10 +198,52 @@
         "name": "Личный кабинет",
         "pattern": "/private"
     },
+    "User\\Orders": {
+        "name": "Заказы в личном кабинете",
+        "pattern": "/private/orders"
+    },
+    "User\\Order": {
+        "name": "Заказ в личном кабинете",
+        "pattern": "/private/order/{orderId}",
+        "require": {
+            "orderId": "[\\w\\d-_]+"
+        }
+    },
+    "User\\Edit": {
+        "name": "Изменение данных",
+        "pattern": "/private/edit"
+    },
+    "User\\Edit\\Save": {
+        "name": "Сохранение данных профиля",
+        "pattern": "/ajax/private/edit/save"
+    },
+    "User\\Password": {
+        "name": "Изменение пароля",
+        "pattern": "/private/password"
+    },
+    "User\\ChangePassword": {
+        "name": "Изменение пароля",
+        "pattern": "/ajax/private/password/change"
+    },
     "User\\Cart\\Clear": {
         "name": "Очистить корзину",
         "pattern": "/ajax/user/cart/clear",
         "method": ["DELETE"]
+    },
+    "User\\EnterPrize\\CouponList": {
+        "name": "Список фишек",
+        "pattern": "/private/enterprize"
+    },
+    "User\\EnterPrize\\Coupon": {
+        "name": "Список фишек",
+        "pattern": "/private/enterprize/coupon/{coupon}",
+        "require": {
+            "coupon": "[\\w\\d-_]+"
+        }
+    },
+    "User\\Favorit": {
+      "name": "Избранное",
+      "pattern": "/private/favorit"
     },
 
     "Search\\Index": {

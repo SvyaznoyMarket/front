@@ -16,7 +16,7 @@ require.config({
         //'jquery'            : 'vendor/jquery-1.11.0',
         'jquery'                : ['http://yandex.st/jquery/1.8.3/jquery', 'vendor/jquery-1.8.3'],
         'jquery.cookie'         : 'vendor/jquery/jquery.cookie-1.4.1',
-        'jquery.ui'             : 'vendor/jquery/jquery.ui-1.10.4.custom',
+        'jquery.ui'             : 'vendor/jquery/jquery-ui',
         'jquery.ui.touch-punch' : 'vendor/jquery/jquery.ui.touch-punch-0.2.3',
         'jquery.popup'          : 'plugin/jquery.popup',
         'jquery.modal'          : 'plugin/jquery.modal',

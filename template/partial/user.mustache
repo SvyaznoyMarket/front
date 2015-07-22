@@ -9,7 +9,12 @@
         {{#isUserAuthorized}}
         <li class="header-controls__item header-controls__item--user">
             <a class="js-ga-click header-controls__link" href="{{userLink.url}}" data-ga-click="{&quot;m_top_menu&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_top_menu&quot;,&quot;Profile&quot;]}">
-                <i class="i-header i-header--user-log"></i>
+                {{#isEnterprizeMember}}
+                    <i class="i-header i-header--user-ep"></i>
+                {{/isEnterprizeMember}}
+                {{^isEnterprizeMember}}
+                    <i class="i-header i-header--user-log"></i>
+                {{/isEnterprizeMember}}
             </a>
         </li><!-- пользователь залогинен -->
         {{/isUserAuthorized}}

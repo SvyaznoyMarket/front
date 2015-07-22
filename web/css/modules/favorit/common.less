@@ -1,0 +1,67 @@
+
+.favorit{
+    &-item{
+        padding: 10px 10px 5px;
+        width: 100%;
+        .box-sizing(border-box);
+        position: relative;
+        border-bottom: 1px solid #d3d3d3;
+
+        &__img{
+            width: 74px;
+            height: 74px;
+            float: left;
+            text-align: center;
+            img{
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+        &__name{
+            padding-right: 30px;
+            display: block;
+        }
+        &__type{
+            color: #616161;
+            display: block;
+        }
+        &__descr{
+            margin-left: 80px;
+
+            min-height: 74px;
+        }
+
+        &__change{
+            max-width: 0;
+            width: 100%;
+        }
+
+    }
+    &-delete{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+
+        width: 20px;
+        height: 20px;
+        background: url("@{base-url}/favorit/img/close@2x.png") no-repeat;
+        .background-size(cover);
+    }
+}
+.icon-favorit{
+    background: url("@{base-url}/favorit/img/favorit.png") no-repeat;
+
+    .background-size(cover);
+    display: block;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 30px;
+    height: 26px;
+    .transition();
+
+    &&--on{
+        background: url("@{base-url}/favorit/img/favorit_on.png") no-repeat;
+        .background-size(cover);
+    }
+}
