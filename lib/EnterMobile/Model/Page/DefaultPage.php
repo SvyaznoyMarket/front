@@ -122,6 +122,7 @@ namespace EnterMobile\Model\Page\DefaultPage {
     }
 
     class MainMenu {
+        public $serviceElements;
     }
 
     class Search {

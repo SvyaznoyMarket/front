@@ -20,15 +20,13 @@
                     {{/breadcrumbs}}
                 </ul>
                 {{/breadcrumbBlock}}
-
-                <ul class="nav-links nav-list">
-                    <li class="nav-list-i"><a href="/delivery" class="nav-list-i__lk"><i class="nav-icon nav-icon--shops"></i>Магазины и самовывоз</a></li>
-                    <li class="nav-list-i"><a href="/private" class="nav-list-i__lk"><i class="nav-icon nav-icon--lk"></i>Личный кабинет</a></li>
-                    <li class="nav-list-i"><a href="mailto:feedback@enter.ru" class="nav-list-i__lk"><i class="nav-icon nav-icon--callback"></i>Обратная связь</a></li>
-                    <li class="nav-list-i"><a href="tel:+74957750006" class="nav-list-i__lk"><i class="nav-icon nav-icon--phone"></i>+7 495 775-00-06</a></li>
-                </ul>
             </div>
             {{#mainMenu}}
+                <ul class="nav-links nav-list">
+                    {{#serviceElements}}
+                        <li class="nav-list-i"><a href="{{link}}" class="nav-list-i__lk"><i class="nav-icon {{iconClass}}"></i>{{name}}</a></li>
+                    {{/serviceElements}}
+                </ul>
 
             <div class="nav-catalog">
                 <div class="nav-catalog__h">КАТАЛОГ</div>
