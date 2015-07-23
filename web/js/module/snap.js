@@ -21,14 +21,14 @@
             hyperextensible: true,
             resistance: 0.1,
             flickThreshold: 50,
-            transitionSpeed: 0.2,
+            transitionSpeed: 0.4,
             easing: 'ease',
             maxPosition: 258,
             minPosition: -258,
             tapToClose: true,
             touchToDrag: true,
             slideIntent: 40, // degrees
-            minDragDistance: 5
+            minDragDistance: 4
         },
         cache = {
             simpleStates: {

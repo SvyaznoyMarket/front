@@ -15,9 +15,9 @@
     margin: 0;
 
     background: @white;
-    //-webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;
 
-    .box-shadow(5px 0 25px rgba(0, 0, 0, .6));
+    .box-shadow(5px 1px 25px rgba(0, 0, 0, .6));
 }
 
 .nav-header {
@@ -160,6 +160,7 @@
     height: 100%;
 
     background: @white;
+    pointer-events: visible;
 
     .opacity(.5);
 }
@@ -312,8 +313,8 @@
         //position: absolute;
         top: 0px;
         left: 0px;
-        width: 100%;
-        height: 100%;
+        /*width: 100%;
+        height: 100%;*/
         .box-sizing(border-box);
         padding-top: 51px;
         //overflow: scroll;
@@ -322,6 +323,12 @@
         &__top{
 
         }
+    }
+    &-inn{
+        width: 258px;
+        overflow: hidden;
+        position: relative;
+        height: 100%;
     }
 }
 .snap-content {
@@ -362,13 +369,19 @@
     left: auto;
     width: 258px;
     height: auto;
-    overflow: auto;
+
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     -webkit-transition: width 0.3s ease;
     -moz-transition: width 0.3s ease;
     -ms-transition: width 0.3s ease;
     -o-transition: width 0.3s ease;
     transition: width 0.3s ease;
+
+    overflow-x: hidden;
+    padding-right: 20px;
+
+    &::-webkit-scrollbar {width: 0; visibility: hidden;}
 }
 
 .snap-drawer-left {
@@ -403,5 +416,12 @@
     }
     .snap-drawers{
         display: block;
+    }
+    .wrapper{
+        position: relative;
+        .header{
+            position: absolute;
+            left: 0px;
+        }
     }
 }
