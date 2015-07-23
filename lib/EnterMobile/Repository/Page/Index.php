@@ -90,7 +90,7 @@ class Index {
                 }
 
                 $request->mainMenu->serviceElements[$key]['name'] = $request->user->firstName.' '.$request->user->lastName;
-                $request->mainMenu->serviceElements[$key]['iconClass'] = ($request->user->isEnterprizeMember) ? 'i-header i-header--user-ep' : 'i-header i-header--user-log';
+                $request->mainMenu->serviceElements[$key]['iconClass'] = ($request->user->isEnterprizeMember) ? 'nav-icon--lk-ep' : 'nav-icon--lk-log';
                 $serviceElements[] = $request->mainMenu->serviceElements[$key];
             }
         }
