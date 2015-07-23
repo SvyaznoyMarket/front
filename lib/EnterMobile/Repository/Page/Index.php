@@ -93,6 +93,10 @@ class Index {
                 $request->mainMenu->serviceElements[$key]['iconClass'] = ($request->user->isEnterprizeMember) ? 'nav-icon--lk-ep' : 'nav-icon--lk-log';
                 $serviceElements[] = $request->mainMenu->serviceElements[$key];
             }
+        } else {
+            foreach ($request->mainMenu->serviceElements as $key => $serviceElement) {
+                $serviceElements[] = $request->mainMenu->serviceElements[$key];
+            }
         }
 
         $page->mainMenu->serviceElements = $serviceElements;
