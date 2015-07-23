@@ -41,7 +41,7 @@ namespace EnterAggregator\Controller\User{
                 $response->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
             } else {
                 // редирект
-                $redirectUrl = (new \EnterMobile\Repository\User())->getRedirectUrlByHttpRequest($request->httpRequest, $router->getUrlByRoute(new Routing\Index()));
+                $redirectUrl = (new \EnterMobile\Repository\User())->getRedirectUrlByHttpRequest($request->httpRequest, $router->getUrlByRoute(new Routing\User\Login()));
                 // http-ответ
                 $response->redirect = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
             }
