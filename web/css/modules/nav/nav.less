@@ -15,9 +15,9 @@
     margin: 0;
 
     background: @white;
-    //-webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch;
 
-    .box-shadow(5px 0 25px rgba(0, 0, 0, .6));
+    .box-shadow(5px 1px 25px rgba(0, 0, 0, .6));
 }
 
 .nav-header {
@@ -160,6 +160,7 @@
     height: 100%;
 
     background: @white;
+    pointer-events: visible;
 
     .opacity(.5);
 }
@@ -170,11 +171,12 @@
         &-i{
 
             &__lk{
-                padding: 10px 5px;
+                padding: 10px 5px 10px 5px;
+                border-bottom: 1px solid #5e5e5e;
                 display: block;
                 font-size: 16px;
                 cursor: pointer;
-                border-bottom: 1px solid #5e5e5e;
+
                 color: inherit;
                 white-space: nowrap;
                 overflow: hidden;
@@ -309,19 +311,24 @@
 
     }
     &-menu{
-        //position: absolute;
         top: 0px;
         left: 0px;
-        width: 100%;
-        height: 100%;
         .box-sizing(border-box);
         padding-top: 51px;
-        //overflow: scroll;
         z-index: 1;
 
         &__top{
 
         }
+    }
+    //android default browser fix:
+    &-inn{
+        width: 258px;
+
+        position: relative;
+        height: 100%;
+
+        overflow: hidden;
     }
 }
 .snap-content {
@@ -334,7 +341,7 @@
     height: auto;
     z-index: 2;
     overflow: auto;
-    -webkit-overflow-scrolling: touch;
+
     -webkit-transform: translate3d(0, 0, 0);
     -moz-transform: translate3d(0, 0, 0);
     -ms-transform: translate3d(0, 0, 0);
@@ -362,13 +369,20 @@
     left: auto;
     width: 258px;
     height: auto;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+
     -webkit-transition: width 0.3s ease;
     -moz-transition: width 0.3s ease;
     -ms-transition: width 0.3s ease;
     -o-transition: width 0.3s ease;
     transition: width 0.3s ease;
+
+    -webkit-overflow-scrolling: touch;
+    padding-right: 20px;
+
+    &::-webkit-scrollbar {width: 0; visibility: hidden;}
 }
 
 .snap-drawer-left {
@@ -403,5 +417,12 @@
     }
     .snap-drawers{
         display: block;
+    }
+    .wrapper{
+        position: relative;
+        .header{
+            position: absolute;
+            left: 0px;
+        }
     }
 }

@@ -53,5 +53,7 @@ define(
             .on('blur', 'input, textarea, input + label, select', function(e) {
                 body.removeClass('fixfixed');
             });
+
+
     }
 );
