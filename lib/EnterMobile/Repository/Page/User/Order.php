@@ -75,24 +75,50 @@ class Order {
         // доставка
         $deliveryInfo = [];
 
-        foreach ($request->order->deliveries as $delivery) {
-            if ($delivery->type->token == 'self' || $request->order->deliveryType == 'self') {
-                $request->order->isDelivery = false;
-            } else {
-                $request->order->isDelivery = true;
+        if (!empty($request->order->deliveries)) {
+            foreach ($request->order->deliveries as $delivery) {
+                if ($delivery->type->token == 'self' || $request->order->deliveryType == 'self') {
+                    $request->order->isDelivery = false;
+                } else {
+                    $request->order->isDelivery = true;
+                }
+
+                if ($delivery->type->shortName) {
+                    $deliveryInfo['name'] = $delivery->type->shortName;
+                } else {
+                    $deliveryInfo['name'] = ($delivery->type->token == 'self' || $request->order->deliveryType == 'self') ?
+                        'Самовывоз' :
+                        'Доставка'
+                    ;
+                }
+
+                $deliveryInfo['date'] = $this->getDateHelper()->strftimeRu('%e.%m.%Y', $delivery->date);
+                $deliveryInfo['price'] = $delivery->price;
+            }
+        } else {
+            // если массив с доставками пустой - нужно проверить
+            // 1) стоимость доставки в метаданных
+            // 2) тип доставки
+            foreach ($request->order->meta as $metaData) {
+                if ($metaData->key != 'delivery_price') continue;
+
+                $deliveryInfo['price'] = $metaData->value[0];
             }
 
-            if ($delivery->type->shortName) {
-                $deliveryInfo['name'] = $delivery->type->shortName;
-            } else {
-                $deliveryInfo['name'] = ($delivery->type->token == 'self' || $request->order->deliveryType == 'self') ?
-                    'Самовывоз' :
-                    'Доставка'
-                ;
+            switch ($request->order->deliveryType) {
+                case 'self':
+                case 'now':
+                    $deliveryInfo['name'] = 'Самовывоз';
+                    $request->order->isDelivery = false;
+                    break;
+                case 'standart':
+                case 'express':
+                case 'standart_svyaznoy':
+                default:
+                    $deliveryInfo['name'] = 'Доставка';
+                    $request->order->isDelivery = true;
+                    break;
             }
-
-            $deliveryInfo['date'] = $this->getDateHelper()->strftimeRu('%e.%m.%Y', $delivery->date);
-            $deliveryInfo['price'] = $delivery->price;
         }
 
         $request->order->deliveries = $deliveryInfo;
