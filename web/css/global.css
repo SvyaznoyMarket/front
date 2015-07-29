@@ -1697,14 +1697,14 @@ body {
   content: '';
   display: inline-block;
   vertical-align: top;
-  width: 22px;
+  width: 20px;
   height: 20px;
   background: url('modules/nav/img/nav-sprite@2x.png') no-repeat 0 0;
   -webkit-background-size: 138px 26px;
   -moz-background-size: 138px 26px;
   -o-background-size: 138px 26px;
   background-size: 138px 26px;
-  margin-right: 5px;
+  margin-right: 7px;
 }
 .nav-links .nav-list-i {
   background-color: #000;
@@ -1730,7 +1730,7 @@ body {
   background-position: -111px 0;
 }
 .nav-links .nav-list-i__lk .nav-icon--lk-log {
-  background-position: -145px 0px;
+  background-position: -140px 0px;
 }
 .nav-links .nav-list-i__lk .nav-icon--lk-ep {
   background-position: -165px 0px;
