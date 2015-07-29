@@ -38,8 +38,8 @@
 
                     <div class="p-control p-control-select-group">
                         <select name="sex" id="sex">
-                            <option value="1">Мужской</option>
-                            <option value="2">Женский</option>
+                            <option value="1" {{#selectedSex.male}}selected{{/selectedSex.male}}>Мужской</option>
+                            <option value="2" {{#selectedSex.female}}selected{{/selectedSex.female}}>Женский</option>
                         </select>
                     </div>
                 </div>
