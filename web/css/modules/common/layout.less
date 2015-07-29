@@ -3,6 +3,7 @@
    ========================================================================== */
 html {
     -webkit-overflow-scrolling: touch;
+    height: 100%;
     &.no-scroll {
         overflow: hidden;
         overflow-x: hidden;
@@ -24,7 +25,17 @@ html {
 body {
     -webkit-overflow-scrolling: touch;
 }
+.body-footerless{
+    height: 100%;
 
+    .wrapper{
+        height: 100%;
+        position: relative;
+    }
+    .snap-content{
+        height: 100%;
+    }
+}
 .wrapper {
     -webkit-overflow-scrolling: touch;
     width: 100%;

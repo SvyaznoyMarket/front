@@ -1117,6 +1117,7 @@ html.sb-animation .content {
    ========================================================================== */
 html {
   -webkit-overflow-scrolling: touch;
+  height: 100%;
 }
 html.no-scroll {
   overflow: hidden;
@@ -1134,6 +1135,16 @@ html.no-scroll body {
 }
 body {
   -webkit-overflow-scrolling: touch;
+}
+.body-footerless {
+  height: 100%;
+}
+.body-footerless .wrapper {
+  height: 100%;
+  position: relative;
+}
+.body-footerless .snap-content {
+  height: 100%;
 }
 .wrapper {
   -webkit-overflow-scrolling: touch;
