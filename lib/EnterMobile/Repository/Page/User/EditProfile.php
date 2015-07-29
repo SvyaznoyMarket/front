@@ -53,9 +53,15 @@ class EditProfile {
         $userInfo = (array)$request->user;
         $userInfo['birthday'] = date('d.m.Y', strtotime($userInfo['birthday']));
 
-        $page->content->editProfileForm = new Model\Form\User\EditProfileForm($userInfo);
+        $editProfileForm = new Model\Form\User\EditProfileForm($userInfo);
+
+        $page->content->editProfileForm = $editProfileForm;
         $page->content->editProfileForm->url = $router->getUrlByRoute(new Routing\User\Edit\Save());
         $page->content->editProfileForm->errors = (bool)$request->formErrors ? $request->formErrors : false;
+        $page->content->editProfileForm->selectedSex = [
+            'male' => ($editProfileForm->sex) ? true : false,
+            'female' => ($editProfileForm->sex == 2) ? true : false,
+        ];
 
         $page->content->messages = (new Repository\Partial\Message())->getList($request->messages);
 
