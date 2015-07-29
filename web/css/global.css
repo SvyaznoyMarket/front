@@ -10760,6 +10760,10 @@ body.flex .wrapper.wrapper-smpl .content {
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=40);
   filter: alpha(opacity=40);
 }
+.private .txEvnt {
+  position: static;
+  margin: 10px 10px 0 10px;
+}
 .password-msg {
   font-size: 12px;
   color: #616161;
