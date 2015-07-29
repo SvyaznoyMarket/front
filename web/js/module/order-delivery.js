@@ -341,7 +341,7 @@ define(
                 ;
 
                 $('.pick-point').addClass('m-loader');
-                
+
                 if (pointMap) {
                     ready();
                 } else {
@@ -507,6 +507,7 @@ define(
 
                 $modalWindow.find('.js-modal-title').text(modalTitle);
                 $modalWindow.addClass(modalPosition);
+                $modalWindow.find('.js-modal-content').addClass('m-loader');
 
                 $modalWindow.lightbox_me({
                     onLoad: function() {
@@ -532,7 +533,7 @@ define(
                         } else {
                             initMap().done(function(ymaps) {
                                 initAddressMap($addressMap, options);
-
+                                $modalWindow.find('.js-modal-content').removeClass('m-loader');
                                 //addressMap.setCenter([options.center.lat, options.center.lng], options.zoom);
                                 //addressMap.balloon.close();
                                 //addressMap.geoObjects.removeAll();
