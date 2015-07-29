@@ -10864,6 +10864,9 @@ body.flex .wrapper.wrapper-smpl .content {
 .p-control-group .incorrect-error .err {
   color: #d45745;
 }
+.p-control-group .err {
+  color: #d45745;
+}
 .p-control-input {
   padding: 0 10px;
   width: 100%;
@@ -10908,12 +10911,11 @@ body.flex .wrapper.wrapper-smpl .content {
   display: inline-block;
   vertical-align: top;
   visibility: hidden;
-}
-.p-control-label .err {
-  color: #d45745;
+  width: 0;
 }
 .p-control-label.visible {
   visibility: visible;
+  width: auto;
 }
 .p-control-select-group {
   padding: 0;

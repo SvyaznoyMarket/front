@@ -52,6 +52,9 @@
                 color: #d45745;
             }
         }
+        .err{
+            color: #d45745;
+        }
     }
 
 
@@ -100,12 +103,12 @@
 
         .inline-block();
         visibility: hidden;
+        width: 0;
 
-        .err{
-            color: #d45745;
-        }
+
         &.visible{
             visibility: visible;
+            width: auto;
         }
     }
     &-select-group{
