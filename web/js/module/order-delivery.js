@@ -303,6 +303,7 @@ define(
                         var placemark;
 
                         console.info('update point map ...');
+                        $('.pick-point').removeClass('m-loader');
 
                         if (!$container.find('#' + $pointMap.attr('id')).length) {
                             $container.html('');
@@ -339,6 +340,8 @@ define(
                     }
                 ;
 
+                $('.pick-point').addClass('m-loader');
+                
                 if (pointMap) {
                     ready();
                 } else {
