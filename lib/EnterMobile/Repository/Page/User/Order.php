@@ -123,6 +123,8 @@ class Order {
 
         $request->order->deliveries = $deliveryInfo;
 
+        $request->order->sum = $this->getPriceHelper()->format($request->order->sum);
+
         $page->content->order = $request->order;
 
         // шаблоны mustache
