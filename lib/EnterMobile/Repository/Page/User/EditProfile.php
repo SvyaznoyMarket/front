@@ -51,6 +51,8 @@ class EditProfile {
         $walkByMenu($request->mainMenu->elements);
 
         $userInfo = (array)$request->user;
+        $userInfo['birthdayHelper'] = $userInfo['birthday'];
+
         $userInfo['birthday'] = date('d.m.Y', strtotime($userInfo['birthday']));
 
         $editProfileForm = new Model\Form\User\EditProfileForm($userInfo);

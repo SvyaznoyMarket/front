@@ -16,6 +16,8 @@ class EditProfileForm {
     /** @var string */
     public $birthday;
     /** @var string */
+    public $birthdayHelper;
+    /** @var string */
     public $sex;
     /** @var string */
     public $homePhone;
@@ -43,5 +45,6 @@ class EditProfileForm {
         if (isset($data['occupation'])) $this->occupation = (string)$data['occupation'];
         if (isset($data['email'])) $this->email = (string)$data['email'];
         if (isset($data['phone'])) $this->phone = (string)$data['phone'];
+        if (isset($data['birthdayHelper'])) $this->birthdayHelper = (string)$data['birthdayHelper'];
     }
 }

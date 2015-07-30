@@ -22,7 +22,7 @@ namespace EnterMobile\Model\Page\User\EditProfile {
     class Content extends Page\DefaultPage\Content {
         /** @var \EnterModel\Message[] */
         public $messages = [];
-        /** @var \EnterMobile\Model\Form\User\AuthForm|null */
+        /** @var \EnterMobile\Model\Form\User\EditProfileForm|null */
         public $editProfileForm;
         /** @var string */
         public $redirectUrl;
