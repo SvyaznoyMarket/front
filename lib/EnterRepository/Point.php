@@ -58,6 +58,12 @@ class Point {
                             'width' => '100',
                             'height' => '100',
                         ],
+                        [
+                            'type' => '192x90',
+                            'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/logos/192x90/' . $image,
+                            'width' => '192',
+                            'height' => '90',
+                        ],
                     ],
                 ]);
             }
