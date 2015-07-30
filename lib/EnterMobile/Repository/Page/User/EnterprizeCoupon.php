@@ -56,6 +56,7 @@ class EnterprizeCoupon {
         $coupon['value'] = $this->getPriceHelper()->format($coupon['value']);
         $coupon['start_date'] = date('d.m.Y', strtotime($coupon['start_date']));
         $coupon['end_date'] = date('d.m.Y', strtotime($coupon['end_date']));
+        $coupon['min_order_sum'] = $this->getPriceHelper()->format($coupon['min_order_sum']);
 
         $page->content->coupon = $coupon;
 
