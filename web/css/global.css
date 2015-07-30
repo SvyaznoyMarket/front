@@ -11274,7 +11274,8 @@ body.flex .wrapper.wrapper-smpl .content {
 .ep-coupon__lbl .type {
   font-size: 14px;
   display: block;
-  margin-top: 5px;
+  width: 131px;
+  margin: 5px auto 0;
 }
 .ep-coupon__lbl .discount {
   font-size: 24px;
