@@ -32,7 +32,6 @@ define(
         var $birthdayDateInput = $('.js-birthday-input-helper');
 
         function handleBirthdayTextFocus() {
-            $birthdayDateInput.focus();
             $birthdayDateInput.css({
                 zIndex: 10
             });
@@ -40,6 +39,8 @@ define(
             $birthdayTextInput.css({
                 zIndex: -1
             });
+
+            $birthdayDateInput.focus();
         }
 
         function handleBirthdayDateChange() {
