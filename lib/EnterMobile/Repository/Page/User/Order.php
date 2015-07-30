@@ -102,7 +102,7 @@ class Order {
             foreach ($request->order->meta as $metaData) {
                 if ($metaData->key != 'delivery_price') continue;
 
-                $deliveryInfo['price'] = $metaData->value[0];
+                $deliveryInfo['price'] = ($metaData->value[0]) ? $metaData->value[0] : 0;
             }
 
             switch ($request->order->deliveryType) {
