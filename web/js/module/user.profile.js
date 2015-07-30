@@ -41,6 +41,7 @@ define(
             });
 
             $birthdayDateInput.focus();
+            $birthdayDateInput.click();
         }
 
         function handleBirthdayDateChange() {
