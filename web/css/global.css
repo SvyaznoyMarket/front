@@ -1422,8 +1422,8 @@ body {
   background-image: url("../img/header/i-header.png");
 }
 .i-header--cart {
-  background-position: 0 0;
-  width: 25px;
+  background-position: -2px -2px;
+  width: 27px;
   height: 22px;
   background-repeat: no-repeat;
   display: inline-block;
@@ -1431,8 +1431,8 @@ body {
   vertical-align: middle;
 }
 .i-header--cart-full {
-  background-position: -25px 0;
-  width: 25px;
+  background-position: -32px -2px;
+  width: 27px;
   height: 22px;
   background-repeat: no-repeat;
   display: inline-block;
@@ -1440,16 +1440,16 @@ body {
   vertical-align: middle;
 }
 .i-header--menu {
-  background-position: -50px 0;
-  width: 19px;
-  height: 17px;
+  background-position: -63px -2px;
+  width: 20px;
+  height: 18px;
   background-repeat: no-repeat;
   display: inline-block;
   vertical-align: top;
   vertical-align: middle;
 }
 .i-header--search {
-  background-position: -69px 0;
+  background-position: -87px -2px;
   width: 24px;
   height: 23px;
   background-repeat: no-repeat;
@@ -1458,27 +1458,27 @@ body {
   vertical-align: middle;
 }
 .i-header--user {
-  background-position: -93px 0;
+  background-position: -189px -2px;
   width: 20px;
-  height: 22px;
+  height: 23px;
   background-repeat: no-repeat;
   display: inline-block;
   vertical-align: top;
   vertical-align: middle;
 }
 .i-header--user-ep {
-  background-position: -113px 0;
-  width: 20px;
-  height: 26px;
+  background-position: -164px -2px;
+  width: 21px;
+  height: 27px;
   background-repeat: no-repeat;
   display: inline-block;
   vertical-align: top;
   vertical-align: middle;
 }
 .i-header--user-log {
-  background-position: -133px 0;
+  background-position: -140px -2px;
   width: 20px;
-  height: 22px;
+  height: 23px;
   background-repeat: no-repeat;
   display: inline-block;
   vertical-align: top;
@@ -10474,25 +10474,6 @@ body.flex .wrapper.wrapper-smpl .content {
     background-size: 10px 11px;
   }
   /* Иконка меню */
-  .menuIco__link {
-    background: url("modules/header/img/menuIco1024@2x.png") no-repeat 0 0;
-    background-size: 33px 143px;
-  }
-  /* Панель юзера */
-  .userBox__link {
-    background: url("modules/header/img/menuIco1024@2x.png") no-repeat 0 -36px;
-    background-size: 33px 143px;
-  }
-  .userBox__link-auth {
-    background-position: 50% -76px;
-  }
-  .userBox__link-cart {
-    background-position: 50% -121px;
-  }
-  .navIco_link {
-    background: url("modules/header/img/menuIco1024@2x.png") no-repeat 0 0px;
-    background-size: 33px 143px;
-  }
   .sprite-icon {
     background-image: url("modules/header/img/menu-sprite1024@2x.png");
     background-size: 207px 31px;
@@ -10623,7 +10604,7 @@ body.flex .wrapper.wrapper-smpl .content {
   }
   .i-header {
     background-image: url("../img/header/i-header@2.png");
-    background-size: 152px 26px;
+    background-size: 211px 31px;
   }
   .i-search {
     background-image: url("../img/header/i-search@2.png");
