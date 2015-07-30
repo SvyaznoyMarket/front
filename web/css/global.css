@@ -11248,6 +11248,7 @@ body.flex .wrapper.wrapper-smpl .content {
   margin: 15px auto 5px;
   position: relative;
   background-repeat: no-repeat;
+  background-position: center;
   -webkit-background-size: contain;
   -moz-background-size: contain;
   -o-background-size: contain;
@@ -11272,7 +11273,7 @@ body.flex .wrapper.wrapper-smpl .content {
   display: block;
 }
 .ep-coupon__lbl .type {
-  font-size: 14px;
+  font-size: 12px;
   display: block;
   width: 131px;
   margin: 5px auto 0;
