@@ -69,51 +69,58 @@ namespace EnterAggregator\Controller\User{
 
             // купоны
             $user = new \EnterMobile\Repository\User();
+            try {
 
-            $token = $user->getTokenByHttpRequest($request->httpRequest);
+                $token = $user->getTokenByHttpRequest($request->httpRequest);
 
-            // список купонов
-            $couponListQuery = new Query\Coupon\GetListByUserToken($token);
-            $couponListQuery->setTimeout(10 * $config->coreService->timeout);
-            $curl->prepare($couponListQuery);
+                // список купонов
+                $couponListQuery = new Query\Coupon\GetListByUserToken($token);
+                $couponListQuery->setTimeout(10 * $config->coreService->timeout);
+                $curl->prepare($couponListQuery);
 
-            // список лимитов серий купонов
-            $seriesLimitListQuery = new Query\Coupon\Series\GetLimitList();
-            $seriesLimitListQuery->setTimeout(3 * $config->coreService->timeout);
-            $curl->prepare($seriesLimitListQuery);
+                // список лимитов серий купонов
+                $seriesLimitListQuery = new Query\Coupon\Series\GetLimitList();
+                $seriesLimitListQuery->setTimeout(3 * $config->coreService->timeout);
+                $curl->prepare($seriesLimitListQuery);
 
-            // список серий купонов
-            $seriesListQuery = new Query\Coupon\Series\GetList(/*$user->isEnterprizeMember ? '1' : null*/null);
-            $seriesListQuery->setTimeout(3 * $config->coreService->timeout);
-            $curl->prepare($seriesListQuery);
+                // список серий купонов
+                $seriesListQuery = new Query\Coupon\Series\GetList(/*$user->isEnterprizeMember ? '1' : null*/null);
+                $seriesListQuery->setTimeout(3 * $config->coreService->timeout);
+                $curl->prepare($seriesListQuery);
 
-            $curl->execute();
+                $curl->execute();
 
-            $usedSeriesIds = [];
-            $coupons = (new \EnterRepository\Coupon())->getObjectListByQuery($couponListQuery);
-            foreach ($coupons as $coupon) {
-                $usedSeriesIds[] = $coupon->seriesId;
+                $usedSeriesIds = [];
+                $coupons = (new \EnterRepository\Coupon())->getObjectListByQuery($couponListQuery);
+                foreach ($coupons as $coupon) {
+                    $usedSeriesIds[] = $coupon->seriesId;
+                }
+
+                $almostReadyCoupons = array_values(
+                    array_filter( // фильрация серий купонов
+                        (new \EnterRepository\Coupon\Series())->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery),
+                        function(Model\Coupon\Series $series) use (&$usedSeriesIds) {
+                            return in_array($series->id, $usedSeriesIds); // только те серии купонов, которые есть у ранее полученых купонов
+                        }
+                    )
+                );
+
+                $couponsToResponse = [];
+                $now = time();
+
+                foreach ($almostReadyCoupons as $coupon) {
+                    if ($now > strtotime($coupon->endAt)) continue;
+
+                    $couponsToResponse[] = $coupon;
+                }
+
+                $response->coupons = $couponsToResponse;
+
+            } catch(\Exception $e) {
+
             }
 
-            $almostReadyCoupons = array_values(
-                array_filter( // фильрация серий купонов
-                    (new \EnterRepository\Coupon\Series())->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery),
-                    function(Model\Coupon\Series $series) use (&$usedSeriesIds) {
-                        return in_array($series->id, $usedSeriesIds); // только те серии купонов, которые есть у ранее полученых купонов
-                    }
-                )
-            );
 
-            $couponsToResponse = [];
-            $now = time();
-
-            foreach ($almostReadyCoupons as $coupon) {
-                if ($now > strtotime($coupon->endAt)) continue;
-
-                $couponsToResponse[] = $coupon;
-            }
-
-            $response->coupons = $couponsToResponse;
 
             return $response;
         }
