@@ -84,7 +84,7 @@ class Order {
                 }
 
                 if ($delivery->type->shortName) {
-                    $deliveryInfo['name'] = $delivery->type->shortName;
+                    $deliveryInfo['name'] = ($delivery->type->token == 'express') ? 'Доставка' : $delivery->type->shortName;
                 } else {
                     $deliveryInfo['name'] = ($delivery->type->token == 'self' || $request->order->deliveryType == 'self') ?
                         'Самовывоз' :
