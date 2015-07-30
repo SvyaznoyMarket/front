@@ -11368,12 +11368,13 @@ body.flex .wrapper.wrapper-smpl .content {
   background-size: cover;
 }
 .icon-favorit {
+  /* временно скрываем, пока не прикрутили функционал */
+  display: none;
   background: url("modules/favorit/img/favorit.png") no-repeat;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  display: block;
   position: absolute;
   right: 5px;
   top: 5px;
