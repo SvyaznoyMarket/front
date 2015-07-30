@@ -62,6 +62,7 @@ define(
         }
 
         $birthdayTextInput.focus(handleBirthdayTextFocus);
+        $birthdayTextInput.click(handleBirthdayTextFocus);
         $birthdayDateInput.change(handleBirthdayDateChange);
     }
 );
