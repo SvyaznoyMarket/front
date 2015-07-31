@@ -4882,6 +4882,7 @@ body {
   z-index: 1040;
   display: none;
   margin: 0!important;
+  max-width: 100%!important;
 }
 .popup-region .popup-head {
   height: 48px;
@@ -4920,6 +4921,12 @@ body {
   box-sizing: border-box;
   -ms-box-sizing: border-box;
   padding-top: 48px;
+}
+.popup-region .popup-content__inn {
+  width: 100%;
+  height: 100%;
+  max-width: 640px;
+  margin: 0 auto;
   overflow: auto;
 }
 .popup-region .city-search {
