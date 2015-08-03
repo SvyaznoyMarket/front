@@ -10754,6 +10754,10 @@ body.flex .wrapper.wrapper-smpl .content {
   position: static;
   margin: 10px 10px 0 10px;
 }
+.private #smartbanner.shown.android + section,
+.private #smartbanner.shown.android + section + section {
+  padding-bottom: 75px;
+}
 .password-msg {
   font-size: 12px;
   color: #616161;

@@ -151,6 +151,10 @@
         position: static;
         margin: 10px 10px 0 10px;
     }
+    // fix for smartbanner
+    #smartbanner.shown.android + section, #smartbanner.shown.android + section + section{
+        padding-bottom: 75px;
+    }
 }
 .password-msg{
     font-size: 12px;
