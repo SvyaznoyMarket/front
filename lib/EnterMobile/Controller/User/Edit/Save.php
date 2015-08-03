@@ -80,10 +80,6 @@ class Save {
             $curl->prepare($updateUserQuery);
             $curl->execute();
 
-            if ($updateUserQuery->getError()) {
-                throw new \Exception('Обновление не удалось');
-            }
-
             $updateResult = $updateUserQuery->getResult();
 
             if (!isset($updateResult['confirmed']) || !$updateResult['confirmed']) {
@@ -104,6 +100,8 @@ class Save {
                 case 630:
                     $errors['empty_fields'] = $e->getMessage();
                     break;
+                case 690:
+                    $errors['mobile'] = $e->getMessage();
             }
 
             $messageRepository->setObjectListToHttpSesion('editProfile.error', $errors, $session);
