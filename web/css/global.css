@@ -1758,11 +1758,6 @@ body {
   z-index: 2;
   position: relative;
 }
-.nav-catalog .nav-list {
-  -webkit-box-shadow: inset 0 1px 3px 1px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: inset 0 1px 3px 1px rgba(0, 0, 0, 0.3);
-  box-shadow: inset 0 1px 3px 1px rgba(0, 0, 0, 0.3);
-}
 .nav-catalog .nav-list:after {
   content: '';
   width: 100%;
@@ -1808,10 +1803,15 @@ body {
 .nav-menu {
   top: 0px;
   left: 0px;
+  height: 100%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+  -webkit-box-shadow: inset 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: inset 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+  background-color: #f7f7f7;
   padding-top: 51px;
   z-index: 1;
 }
