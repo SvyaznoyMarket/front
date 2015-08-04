@@ -75,20 +75,17 @@ class SetProductList {
                 $cartProduct->ui = $productsById[$cartProduct->id]->ui;
             }
 
-            $curl->prepare(new Query\Cart\SetProductList($cartProducts, $user->ui));
-            $curl->execute();
-
-            $hasQuantity = false;
             foreach ($cartProducts as $cartProduct) {
-                if ($cartProduct->quantity) {
-                    $hasQuantity = true;
-                    $curl->prepare(new Query\Cart\SetQuantityForProductItem($productsById[$cartProduct->id]->ui, $cartProduct->quantity, $user->ui));
-                }
+                $curl->prepare(
+                    new Query\Cart\SetQuantityForProductItem(
+                        $productsById[$cartProduct->id]->ui,
+                        null === $cartProduct->quantity ? '+1' : $cartProduct->quantity,
+                        $user->ui
+                    )
+                );
             }
 
-            if ($hasQuantity) {
-                $curl->execute();
-            }
+            $curl->execute();
         });
 
         // Получение корзины

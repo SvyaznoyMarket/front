@@ -80,7 +80,7 @@ class Cart {
 
             $cartProduct = new Model\Cart\Product();
             $cartProduct->id = (string)$productItem['id'];
-            $cartProduct->quantity = isset($productItem['quantity']) ? (int)$productItem['quantity'] : 0;
+            $cartProduct->quantity = isset($productItem['quantity']) ? (int)$productItem['quantity'] : null;
             $cartProduct->sender = isset($productItem['sender']['name']) ? (array)$productItem['sender'] : null;
 
             $products[] = $cartProduct;
@@ -246,7 +246,7 @@ class Cart {
      * @param Model\Cart\Product $cartProduct
      */
     public function setProductForObject(Model\Cart $cart, Model\Cart\Product $cartProduct) {
-        if ($cartProduct->quantity <= 0) {
+        if (!$cartProduct->quantity) {
             if (isset($cart->product[$cartProduct->id])) unset($cart->product[$cartProduct->id]);
         } else {
             $cart->product[$cartProduct->id] = $cartProduct;

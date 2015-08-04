@@ -22,7 +22,7 @@ class SetQuantityForProductItem extends Query {
         $this->url = new Url();
         $this->url->path = 'api/cart/set';
         $this->data = [
-            'uid' => $productUi,
+            'uid'      => $productUi,
             'quantity' => $quantity,
             'user_uid' => $userUi,
         ];
