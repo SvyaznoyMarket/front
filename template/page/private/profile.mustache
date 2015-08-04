@@ -52,13 +52,18 @@
                     <label class="p-control-label">Email</label>
                     <input id="email" name="email" type="text" placeholder="Email" class="p-control p-control-input" value="{{email}}">
                 </div>
+                {{#editProfileForm.errors.mobile}}
+                    <div class="p-control-group__error">
+                        {{.}}
+                    </div>
+                {{/editProfileForm.errors.mobile}}
                 <div class="p-control-group{{#editProfileForm.errors.empty_fields}} required{{/editProfileForm.errors.empty_fields}}">
                     <label class="p-control-label">Мобильный телефон</label>
-                    <input id="mobile" name="phone" type="text" placeholder="Мобильный телефон" class="p-control p-control-input" value="{{phone}}">
+                    <input id="mobile" name="mobile" type="text" placeholder="Мобильный телефон" class="p-control p-control-input" value="{{phone}}">
                 </div>
                 <div class="p-control-group">
                     <label class="p-control-label">Домашний телефон</label>
-                    <input id="phone" name="homePhone" type="text" placeholder="Домашний телефон" class="p-control p-control-input" value="{{homePhone}}">
+                    <input id="phone" name="phone" type="text" placeholder="Домашний телефон" class="p-control p-control-input" value="{{homePhone}}">
                 </div>
                 <div class="p-control-group">
                     <label class="p-control-label">Род деятельности</label>

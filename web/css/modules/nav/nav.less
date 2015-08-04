@@ -14,10 +14,11 @@
     width: 258px;
     margin: 0;
 
-    background: @white;
+    //background: @white;
     -webkit-overflow-scrolling: touch;
 
     .box-shadow(5px 1px 25px rgba(0, 0, 0, .6));
+    background-color: #f7f7f7;
 }
 
 .nav-header {
@@ -263,7 +264,7 @@
 
         }
         .nav-list{
-            .box-shadow(inset 0 1px 3px 1px rgba(0, 0, 0, 0.30));
+
             &:after{
                 content: '';
                 width: 100%;
@@ -319,7 +320,10 @@
     &-menu{
         top: 0px;
         left: 0px;
+        height: 100%;
+
         .box-sizing(border-box);
+
         padding-top: 51px;
         z-index: 1;
 
@@ -365,6 +369,20 @@
     height: auto;
     background: @white;
     display: none;
+
+    &:after{
+        content:'';
+        width: 5px;
+        height: 100%;
+        position: absolute;
+        //.box-shadow(inset 0 1px 3px 1px rgba(0, 0, 0, 0.30));
+
+        .box-shadow(02px 11px 2px rgba(0,0,0,0.30));
+        left: 253px;
+        top: 0;
+        z-index: 1;
+
+    }
 }
 
 .snap-drawer {
