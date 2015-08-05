@@ -56,10 +56,20 @@ class Auth {
             // установка cookie
             (new \EnterMobile\Repository\User())->setTokenToHttpResponse($token, $response);
 
-            // FIXME: костыль для project13
+            // FIXME: примочка для project13
             $session->set($config->userToken->authName, $token);
             $session->set('authSource', $isEmailAuth ? 'email' : 'phone');
 
+            try {
+                $controller = new \EnterAggregator\Controller\Cart\Merge();
+
+                $controllerRequest = $controller->createRequest();
+                $controllerRequest->cart = (new Repository\Cart())->getObjectByHttpSession($session, $config->cart->sessionKey);
+                $controllerRequest->regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
+                $controllerRequest->userUi = $tokenQuery->getResult()['ui']; // TODO CORE-3084
+            } catch (\Exception $e) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['cart']]);
+            }
         } catch (\Exception $e) {
             if ($config->debugLevel) $this->getDebugContainer()->error = $e;
 
