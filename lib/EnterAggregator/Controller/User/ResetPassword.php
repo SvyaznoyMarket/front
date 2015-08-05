@@ -64,6 +64,8 @@ namespace EnterAggregator\Controller\User{
                 $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
             }
 
+            $response->userMenu = (new Repository\UserMenu())->getMenuItems();
+
             return $response;
         }
 
@@ -103,6 +105,8 @@ namespace EnterAggregator\Controller\User\ResetPassword {
         /** @var \EnterModel\Cart|null */
         public $cart;
         public $redirect;
+        /** @var array */
+        public $userMenu;
 
     }
 }
