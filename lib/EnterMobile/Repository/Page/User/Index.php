@@ -28,7 +28,7 @@ class Index {
      * @param Index\Request $request
      */
     public function buildObjectByRequest(Page $page, Index\Request $request) {
-        (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
+        (new Repository\Page\User\DefaultPage)->buildObjectByRequest($page, $request);
 
         $templateHelper = $this->getTemplateHelper();
 
