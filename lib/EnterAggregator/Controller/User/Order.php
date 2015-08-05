@@ -133,6 +133,8 @@ namespace EnterAggregator\Controller\User {
 
             $response->order = $orderRepo;
 
+            $response->userMenu = (new Repository\UserMenu())->getMenuItems();
+
             return $response;
         }
 
@@ -175,6 +177,8 @@ namespace EnterAggregator\Controller\User\Order {
         /** @var array */
         public $order;
         public $redirect;
+        /** @var array */
+        public $userMenu;
 
 
 

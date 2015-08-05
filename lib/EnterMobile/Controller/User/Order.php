@@ -44,6 +44,7 @@ class Order {
         $pageRequest->cart = $controllerResponse->cart;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
         $pageRequest->order = $controllerResponse->order;
+        $pageRequest->userMenu = $controllerResponse->userMenu;
 
         $page = new Page();
         (new Repository\Page\User\Order())->buildObjectByRequest($page, $pageRequest);
