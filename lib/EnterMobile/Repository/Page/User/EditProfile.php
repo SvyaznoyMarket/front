@@ -25,7 +25,7 @@ class EditProfile {
      * @param Login\Request $request
      */
     public function buildObjectByRequest(Page $page, EditProfile\Request $request) {
-        (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
+        (new Repository\Page\User\DefaultPage)->buildObjectByRequest($page, $request);
 
         $config = $this->getConfig();
         $router = $this->getRouter();
