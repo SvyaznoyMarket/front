@@ -1333,6 +1333,7 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+  z-index: 2;
 }
 .search-form-inn {
   position: relative;
@@ -1342,6 +1343,8 @@ body {
   position: absolute;
   top: 12px;
   left: 7px;
+  z-index: 0;
+  font-size: 0px;
 }
 .search-form__clear {
   line-height: 30px;
