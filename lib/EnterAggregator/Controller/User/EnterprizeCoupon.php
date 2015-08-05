@@ -75,6 +75,8 @@ namespace EnterAggregator\Controller\User{
 
             $response->coupon = $couponQuery->getResult();
 
+            $response->userMenu = (new Repository\UserMenu())->getMenuItems();
+
             return $response;
         }
 
@@ -115,6 +117,8 @@ namespace EnterAggregator\Controller\User\EnterprizeCoupon {
         public $cart;
         public $redirect;
         public $coupon;
+        /** @var array */
+        public $userMenu;
 
 
     }

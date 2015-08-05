@@ -53,6 +53,7 @@ namespace EnterMobile\Controller\User\EnterPrize {
             $pageRequest->cart = $controllerResponse->cart;
             $pageRequest->mainMenu = $controllerResponse->mainMenu;
             $pageRequest->coupon = $controllerResponse->coupon;
+            $pageRequest->userMenu = $controllerResponse->userMenu;
 
 
             $page = new Page();
