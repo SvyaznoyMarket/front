@@ -31,6 +31,8 @@ class EditProfileForm {
     public $subscribe;
     /** @var string[] */
     public $errors = [];
+    /** @var string[] */
+    public $disabledFields = [];
 
     /**
      * @param array $data
@@ -46,5 +48,6 @@ class EditProfileForm {
         if (isset($data['email'])) $this->email = (string)$data['email'];
         if (isset($data['phone'])) $this->phone = (string)$data['phone'];
         if (isset($data['birthdayHelper'])) $this->birthdayHelper = (string)$data['birthdayHelper'];
+        if (isset($data['disabledFields'])) $this->disabledFields = $data['disabledFields'];
     }
 }
