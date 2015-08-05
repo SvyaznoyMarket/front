@@ -10644,7 +10644,7 @@ body.flex .wrapper.wrapper-smpl .content {
   float: left;
   position: relative;
   height: 100%;
-  overflow: scroll;
+  overflow: auto;
   -webkit-overflow-scrolling: touch;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;

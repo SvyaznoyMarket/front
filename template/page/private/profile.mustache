@@ -7,7 +7,7 @@
         {{#editProfileForm}}
             {{>partial/message}}
             <form class="private-form" method="post" action="{{url}}">
-            <fieldset>
+
                 <div class="p-control-group">
                     <label class="p-control-label">Имя</label>
                     <input id="username" name="first_name" type="text" placeholder="Имя" class="p-control p-control-input" value="{{firstName}}">
@@ -68,7 +68,7 @@
                 <div class="p-control-group btn-container">
                     <input type="submit" value="Сохранить изменения" class="btn btn--submit btn--orange btn--medium"/>
                 </div>
-            </fieldset>
+   
         </form>
         {{/editProfileForm}}
     </section>
