@@ -64,5 +64,7 @@ define(
         $birthdayTextInput.focus(handleBirthdayTextFocus);
         $birthdayTextInput.click(handleBirthdayTextFocus);
         $birthdayDateInput.change(handleBirthdayDateChange);
+        $('#mobile').mask("+7 999 999-99-99");
+        $('#phone').mask("+7 999 999-99-99");
     }
 );
