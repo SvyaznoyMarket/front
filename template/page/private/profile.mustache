@@ -45,7 +45,7 @@
                 {{/editProfileForm.errors.empty_fields}}
                 <div class="p-control-group{{#editProfileForm.errors.empty_fields}} required{{/editProfileForm.errors.empty_fields}}"><!-- класс required - для ошибки -->
                     <label class="p-control-label">Email</label>
-                    <input id="email" name="email" type="text" placeholder="Email" class="p-control p-control-input" value="{{email}}">
+                    <input id="email" name="email" type="text" placeholder="Email" class="p-control p-control-input" value="{{email}}"{{#editProfileForm.disabledFields.email}} readonly{{/editProfileForm.disabledFields.email}}>
                 </div>
                 {{#editProfileForm.errors.mobile}}
                     <div class="p-control-group__error">
@@ -54,7 +54,7 @@
                 {{/editProfileForm.errors.mobile}}
                 <div class="p-control-group{{#editProfileForm.errors.empty_fields}} required{{/editProfileForm.errors.empty_fields}}">
                     <label class="p-control-label">Мобильный телефон</label>
-                    <input id="mobile" name="mobile" type="text" placeholder="Мобильный телефон" class="p-control p-control-input" value="{{phone}}">
+                    <input id="mobile" name="mobile" type="text" placeholder="Мобильный телефон" class="p-control p-control-input" value="{{phone}}"{{#editProfileForm.disabledFields.mobile}} readonly{{/editProfileForm.disabledFields.mobile}}>
                 </div>
                 <div class="p-control-group">
                     <label class="p-control-label">Домашний телефон</label>
