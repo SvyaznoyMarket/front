@@ -42,6 +42,7 @@ class Orders {
         $pageRequest->cart = $controllerResponse->cart;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
         $pageRequest->orders = $controllerResponse->orders;
+        $pageRequest->userMenu = $controllerResponse->userMenu;
 
         $page = new Page();
         (new Repository\Page\User\Orders())->buildObjectByRequest($page, $pageRequest);

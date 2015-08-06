@@ -30,7 +30,7 @@ class EnterprizeCoupon {
      * @param Enterprize\Request $request
      */
     public function buildObjectByRequest(Page $page, EnterprizeCoupon\Request $request) {
-        (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
+        (new Repository\Page\User\DefaultPage)->buildObjectByRequest($page, $request);
 
         $templateHelper = $this->getTemplateHelper();
 

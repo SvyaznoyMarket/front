@@ -30,7 +30,7 @@ class Order {
      * @param Index\Request $request
      */
     public function buildObjectByRequest(Page $page, Order\Request $request) {
-        (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
+        (new Repository\Page\User\DefaultPage)->buildObjectByRequest($page, $request);
 
         $templateHelper = $this->getTemplateHelper();
         $page->title = 'Заказ';

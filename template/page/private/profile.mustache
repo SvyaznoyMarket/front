@@ -1,18 +1,13 @@
 <div class="content private">
     <section class="main-section">
-        <ul class="private-menu-lst">
-            <li class="private-menu-lst-i"><a class="private-menu-lst-i__lk" href="/private/orders">Заказы</a></li>
-            <li class="private-menu-lst-i active"><a class="private-menu-lst-i__lk" href="/private/edit">Личные данные</a></li>
-            <li class="private-menu-lst-i"><a class="private-menu-lst-i__lk" href="/private/password">Изменить пароль</a></li>
-            <li class="private-menu-lst-i"><a class="private-menu-lst-i__lk" href="/private/enterprize">Фишки EnterPrize</a></li>
-        </ul>
+        {{>partial/user/menu}}
         <a class="btn btn-exit" href="/logout">Выход</a>
     </section>
     <section>
         {{#editProfileForm}}
             {{>partial/message}}
             <form class="private-form" method="post" action="{{url}}">
-            <fieldset>
+
                 <div class="p-control-group">
                     <label class="p-control-label">Имя</label>
                     <input id="username" name="first_name" type="text" placeholder="Имя" class="p-control p-control-input" value="{{firstName}}">
@@ -50,7 +45,7 @@
                 {{/editProfileForm.errors.empty_fields}}
                 <div class="p-control-group{{#editProfileForm.errors.empty_fields}} required{{/editProfileForm.errors.empty_fields}}"><!-- класс required - для ошибки -->
                     <label class="p-control-label">Email</label>
-                    <input id="email" name="email" type="text" placeholder="Email" class="p-control p-control-input" value="{{email}}">
+                    <input id="email" name="email" type="text" placeholder="Email" class="p-control p-control-input" value="{{email}}"{{#editProfileForm.disabledFields.email}} readonly{{/editProfileForm.disabledFields.email}}>
                 </div>
                 {{#editProfileForm.errors.mobile}}
                     <div class="p-control-group__error">
@@ -59,7 +54,7 @@
                 {{/editProfileForm.errors.mobile}}
                 <div class="p-control-group{{#editProfileForm.errors.empty_fields}} required{{/editProfileForm.errors.empty_fields}}">
                     <label class="p-control-label">Мобильный телефон</label>
-                    <input id="mobile" name="mobile" type="text" placeholder="Мобильный телефон" class="p-control p-control-input" value="{{phone}}">
+                    <input id="mobile" name="mobile" type="text" placeholder="Мобильный телефон" class="p-control p-control-input" value="{{phone}}"{{#editProfileForm.disabledFields.mobile}} readonly{{/editProfileForm.disabledFields.mobile}}>
                 </div>
                 <div class="p-control-group">
                     <label class="p-control-label">Домашний телефон</label>
@@ -73,7 +68,7 @@
                 <div class="p-control-group btn-container">
                     <input type="submit" value="Сохранить изменения" class="btn btn--submit btn--orange btn--medium"/>
                 </div>
-            </fieldset>
+   
         </form>
         {{/editProfileForm}}
     </section>

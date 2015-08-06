@@ -120,6 +120,8 @@ namespace EnterAggregator\Controller\User{
 
             }
 
+            $response->userMenu = (new Repository\UserMenu())->getMenuItems();
+
 
 
             return $response;
@@ -162,6 +164,8 @@ namespace EnterAggregator\Controller\User\EnterprizeList {
         public $cart;
         public $redirect;
         public $coupons;
+        /** @var array */
+        public $userMenu;
 
 
     }

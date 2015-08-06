@@ -1,11 +1,6 @@
 <div class="content private">
     <section class="main-section">
-        <ul class="private-menu-lst">
-            <li class="private-menu-lst-i"><a class="private-menu-lst-i__lk" href="/private/orders">Заказы</a></li>
-            <li class="private-menu-lst-i"><a class="private-menu-lst-i__lk" href="/private/edit">Личные данные</a></li>
-            <li class="private-menu-lst-i"><a class="private-menu-lst-i__lk" href="/private/password">Изменить пароль</a></li>
-            <li class="private-menu-lst-i active"><a class="private-menu-lst-i__lk" href="/private/enterprize">Фишки EnterPrize</a></li>
-        </ul>
+        {{>partial/user/menu}}
         <a class="btn btn-exit" href="/logout">Выход</a>
     </section>
     <section class="ep">
@@ -23,6 +18,9 @@
                         </div>
                     </a>
                 </li>
+            {{/coupons}}
+            {{^coupons}}
+                <p>Нет доступных купонов</p>
             {{/coupons}}
         </ul>
     </section>

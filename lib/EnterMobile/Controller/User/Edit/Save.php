@@ -38,8 +38,13 @@ class Save {
         try {
             $postData = $request->data->all();
 
-            // дату рождения нужно сконвертить
+            // дату рождения и телефоны нужно привести к стандартному виду
             $postData['birthday'] = date('Y-m-d', strtotime($postData['birthday']));
+            $postData['mobile'] = preg_replace('/^\+7/', '8', $postData['mobile']);
+            $postData['mobile'] = preg_replace('/[^\d]/', '', $postData['mobile']);
+
+            $postData['phone'] = preg_replace('/^\+7/', '8', $postData['phone']);
+            $postData['phone'] = preg_replace('/[^\d]/', '', $postData['phone']);
 
             // token
             $user = new \EnterMobile\Repository\User();

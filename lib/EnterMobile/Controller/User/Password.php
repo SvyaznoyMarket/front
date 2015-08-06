@@ -43,6 +43,7 @@ class Password {
         $pageRequest->user = $controllerResponse->user;
         $pageRequest->cart = $controllerResponse->cart;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
+        $pageRequest->userMenu = $controllerResponse->userMenu;
 
         $pageRequest->formErrors = array_map(
                                         function(\EnterModel\Message $message) { return $message->name; },

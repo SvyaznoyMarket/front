@@ -1284,6 +1284,7 @@ body {
 }
 .header.search .header-center {
   padding-right: 90px;
+  padding-left: 40px;
 }
 .header.search .bread-crumbs {
   display: none;
@@ -1332,6 +1333,7 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+  z-index: 2;
 }
 .search-form-inn {
   position: relative;
@@ -1341,6 +1343,8 @@ body {
   position: absolute;
   top: 12px;
   left: 7px;
+  z-index: 0;
+  font-size: 0px;
 }
 .search-form__clear {
   line-height: 30px;
@@ -1532,7 +1536,11 @@ body {
     display: none;
   }
   .header.search .search-form {
-    padding-left: 45px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .header.search .header-center {
+    padding-right: 48px;
   }
   .header .bread-crumbs {
     display: none;
@@ -10636,7 +10644,7 @@ body.flex .wrapper.wrapper-smpl .content {
   float: left;
   position: relative;
   height: 100%;
-  overflow: scroll;
+  overflow: auto;
   -webkit-overflow-scrolling: touch;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -10999,21 +11007,16 @@ body.flex .wrapper.wrapper-smpl .content {
   top: 0;
 }
 .private-order__head {
-  padding: 10px 0 10px 10px;
   border-bottom: 1px solid #cccccc;
+  padding: 10px;
 }
 .private-order__tl {
   font-size: 14px;
-  display: inline-block;
-  vertical-align: baseline;
   margin: 0px;
 }
 .private-order__date {
-  display: inline-block;
-  vertical-align: baseline;
   font-size: 12px;
   color: #5e5e5e;
-  margin-left: 2px;
 }
 .private-order__brcr {
   padding: 10px 0;

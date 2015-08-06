@@ -3,7 +3,7 @@
 namespace EnterMobile\Model\Page\User {
     use EnterMobile\Model\Page;
 
-    class Order extends Page\DefaultPage {
+    class Order extends Page\User\DefaultPage {
         /** @var Index\Content */
         public $content;
 
@@ -19,7 +19,7 @@ namespace EnterMobile\Model\Page\User\Order {
     use EnterMobile\Model\Page;
     use EnterMobile\Model\Partial;
 
-    class Content extends Page\DefaultPage\Content {
+    class Content extends Page\User\DefaultPage\Content {
         /** @var array */
         public $order;
 

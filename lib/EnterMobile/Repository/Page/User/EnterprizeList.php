@@ -28,7 +28,7 @@ class EnterprizeList {
      * @param Enterprize\Request $request
      */
     public function buildObjectByRequest(Page $page, Enterprize\Request $request) {
-        (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
+        (new Repository\Page\User\DefaultPage)->buildObjectByRequest($page, $request);
 
         $templateHelper = $this->getTemplateHelper();
 
@@ -51,21 +51,25 @@ class EnterprizeList {
         $walkByMenu($request->mainMenu->elements);
 
         // заказы
-        $coupons = [];
-        foreach ($request->coupons as $couponObject) {
-            $coupons[] = [
-                'id'=> $couponObject->id,
-                'backgroundUrl' => $couponObject->backgroundImageUrl,
-                'imageUrl' => $couponObject->productSegment->imageUrl,
-                'discountAmount' => $couponObject->discount->value,
-                'discountUnit' => $couponObject->discount->unit,
-                'category' => $couponObject->productSegment->name,
-                'description' => $couponObject->productSegment->description,
-                'minOrderSum' => $this->getPriceHelper()->format($couponObject->minOrderSum)
-            ];
+        if (!empty($request->coupons)) {
+            $coupons = [];
+            foreach ($request->coupons as $couponObject) {
+                $coupons[] = [
+                    'id'=> $couponObject->id,
+                    'backgroundUrl' => $couponObject->backgroundImageUrl,
+                    'imageUrl' => $couponObject->productSegment->imageUrl,
+                    'discountAmount' => $couponObject->discount->value,
+                    'discountUnit' => ($couponObject->discount->unit == '%') ? '%' : 'p',
+                    'category' => $couponObject->productSegment->name,
+                    'description' => $couponObject->productSegment->description,
+                    'minOrderSum' => $this->getPriceHelper()->format($couponObject->minOrderSum)
+                ];
+            }
+
+            $page->content->coupons = $coupons;
         }
 
-        $page->content->coupons = $coupons;
+
 
         // шаблоны mustache
         // ...
