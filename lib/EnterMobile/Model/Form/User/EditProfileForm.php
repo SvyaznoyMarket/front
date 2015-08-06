@@ -43,10 +43,10 @@ class EditProfileForm {
         if (isset($data['middleName'])) $this->middleName = (string)$data['middleName'];
         if (isset($data['birthday'])) $this->birthday = (string)$data['birthday'];
         if (isset($data['sex'])) $this->sex = (string)$data['sex'];
-        if (isset($data['homePhone'])) $this->homePhone = (string)$data['homePhone'];
+        if (isset($data['homePhone'])) $this->homePhone = preg_replace('/^8/', '+7', (string)$data['homePhone']);
         if (isset($data['occupation'])) $this->occupation = (string)$data['occupation'];
         if (isset($data['email'])) $this->email = (string)$data['email'];
-        if (isset($data['phone'])) $this->phone = (string)$data['phone'];
+        if (isset($data['phone'])) $this->phone = preg_replace('/^8/', '+7', (string)$data['phone']);
         if (isset($data['birthdayHelper'])) $this->birthdayHelper = (string)$data['birthdayHelper'];
         if (isset($data['disabledFields'])) $this->disabledFields = $data['disabledFields'];
     }
