@@ -37,5 +37,17 @@ class GetListFromScms extends Query {
      */
     public function callback($response) {
         $this->result = $this->parse($response);
+
+        // TODO: удалить после реализации FCMS-782
+        // Исключаем партнёров, для которых нет точек
+        $availablePartners = array_unique(array_map(function($point){ return $point['partner']; }, $this->result['points']));
+        $this->result['partners'] = array_filter($this->result['partners'], function($partner) use(&$availablePartners) {
+            return in_array($partner['slug'], $availablePartners, true);
+        });
+
+        // TODO: удалить после реализации FCMS-781
+        // Сортируем партнёров
+        $partnerOrder = ['enter', 'euroset', 'pickpoint', 'hermes', 'svyaznoy'];
+        usort($this->result['partners'], function ($a, $b) use(&$partnerOrder){ return array_search($a['slug'], $partnerOrder) > array_search($b['slug'], $partnerOrder);});
     }
 }

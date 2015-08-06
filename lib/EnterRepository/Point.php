@@ -58,6 +58,18 @@ class Point {
                             'width' => '100',
                             'height' => '100',
                         ],
+                        [
+                            'type' => '160х70',
+                            'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/logos/160х70/' . $image,
+                            'width' => '160',
+                            'height' => '70',
+                        ],
+                        [
+                            'type' => '320x140',
+                            'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/logos/320x140/' . $image,
+                            'width' => '320',
+                            'height' => '140',
+                        ],
                     ],
                 ]);
             }

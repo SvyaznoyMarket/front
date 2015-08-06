@@ -108,7 +108,10 @@ namespace EnterMobileApplication\Controller {
                 }
             }
 
-            // TODO Для получения персональных рекомендаций от retailrocket'а необходимо как-то получать rrpusid
+            // TODO для реализации персональных рекомендаций от retailrocket'а необходим HTTP api от retailrocket'а,
+            // которого на данный момент у них нет (подробности в MAPI-69), поэтому пока заполняем первональные
+            // рекомендации просмотренными товарами и товарами из главных рекомендаций
+            $personalProducts = $viewedProducts;
             foreach (array_values($popularProducts) as $key => $product) {
                 if ($key % 2) {
                     $personalProducts[] = $product;
@@ -126,14 +129,14 @@ namespace EnterMobileApplication\Controller {
                 'recommendations' => [
                     [
                         'name' => 'Популярные товары',
-                        'products' => $this->getProductList($popularProducts),
+                        'products' => $this->getProductList($popularProducts, true),
                     ],
                     [
                         'name' => 'Мы рекомендуем',
-                        'products' => $this->getProductList($personalProducts),
+                        'products' => $this->getProductList($personalProducts, true),
                     ],
                 ],
-                'viewedProducts' => $this->getProductList($personalProducts),
+                'viewedProducts' => $this->getProductList($viewedProducts, true),
                 'mainMenu' => (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery),
                 'promos' => (new \EnterMobileApplication\Repository\Promo())->getObjectListByQuery($promoListQuery),
                 'popularBrands' => array_map(function(\EnterModel\Brand $brand) {

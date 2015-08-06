@@ -100,7 +100,9 @@ class Product {
                 foreach ($query->getResult() as $item) {
                     $parser($item);
 
-                    $products[(string)$item['id']] = new Model\Product($item);
+                    if (!empty($item['id'])) {
+                        $products[(string)$item['id']] = new Model\Product($item);
+                    }
                 }
             } catch (\Exception $e) {
                 trigger_error($e, E_USER_ERROR);
