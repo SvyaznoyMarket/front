@@ -97,8 +97,7 @@ namespace EnterMobileApplication\Controller\Cart {
             // ответ от контроллера
             $controllerResponse = $controller->execute($controllerRequest);
 
-            // MAPI-25
-            $this->setPointImageUrls($controllerResponse->split->pointGroups);
+            $this->correctPoints($controllerResponse->split->pointGroups);
 
             $response->errors = $controllerResponse->errors;
             $response->split = $controllerResponse->split;
@@ -117,10 +116,14 @@ namespace EnterMobileApplication\Controller\Cart {
         /**
          * @param Model\Cart\Split\PointGroup[] $pointGroups
          */
-        private function setPointImageUrls($pointGroups) {
-            $pointRepository = new \EnterRepository\Point();
+        private function correctPoints($pointGroups) {
+            $pointRepository = new \EnterMobileApplication\Repository\Point();
             
             foreach ($pointGroups as $pointGroup) {
+                // MAPI-78
+                $pointGroup->blockName = $pointRepository->getName($pointGroup->id, $pointGroup->blockName);
+
+                // MAPI-25
                 $pointGroup->media = $pointRepository->getMedia($pointGroup->token);
             }
         }

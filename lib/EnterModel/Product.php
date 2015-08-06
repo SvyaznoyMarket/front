@@ -8,42 +8,42 @@ namespace EnterModel {
         use ConfigTrait; // FIXME
 
         /** @var string */
-        public $id;
+        public $id = '';
         /** @var string */
-        public $ui;
+        public $ui = '';
         /** @var string */
-        public $article;
+        public $article = '';
         /** @var string */
-        public $barcode;
+        public $barcode = '';
         /** @var string */
-        public $typeId;
+        public $typeId = '';
         /** @var string */
-        public $webName;
+        public $webName = '';
         /** @var string */
-        public $namePrefix;
+        public $namePrefix = '';
         /** @var string */
-        public $name;
+        public $name = '';
         /** @var string */
-        public $token;
+        public $token = '';
         /** @var string */
-        public $link;
+        public $link = '';
         /** @var string */
-        public $description;
+        public $description = '';
         /** @var string */
-        public $tagline;
-        /** @var bool */
+        public $tagline = '';
+        /** @var bool|null */
         public $isBuyable;
-        /** @var bool */
+        /** @var bool|null */
         public $isInShopOnly;
-        /** @var bool */
+        /** @var bool|null */
         public $isInShopStockOnly;
-        /** @var bool */
+        /** @var bool|null */
         public $isInShopShowroomOnly;
-        /** @var bool */
+        /** @var bool|null */
         public $isInWarehouse;
-        /** @var bool */
+        /** @var bool|null */
         public $isKitLocked;
-        /** @var int */
+        /** @var int|null */
         public $kitCount;
         /** @var Model\Product\Category|null */
         public $category;
@@ -57,13 +57,13 @@ namespace EnterModel {
         public $stock = [];
         /** @var Model\Product\ShopState[] */
         public $shopStates = [];
-        /** @var float */
+        /** @var float|null */
         public $price;
-        /** @var float */
+        /** @var float|null */
         public $oldPrice;
         /** @var Model\Product\Label[] */
         public $labels = [];
-        /** @var Model\MediaList */
+        /** @var Model\MediaList|null */
         public $media;
         /** @var Model\Product\Rating|null */
         public $rating;
@@ -87,7 +87,7 @@ namespace EnterModel {
         public $trustfactors = [];
         /** @var Model\Product\PartnerOffer[] */
         public $partnerOffers = [];
-        /** @var int */
+        /** @var int|null */
         public $availableStoreQuantity;
         /** @var array|null */
         public $favorite;
@@ -95,7 +95,7 @@ namespace EnterModel {
         public $sender;
         /** @var array|null */
         public $ga;
-        /** @var bool */
+        /** @var bool|null */
         public $isStore;
         /** @var \EnterModel\Product\StoreLabel|null Метка "Товар со склада" */
         public $storeLabel;

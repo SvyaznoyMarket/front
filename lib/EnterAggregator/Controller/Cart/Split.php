@@ -122,6 +122,23 @@ namespace EnterAggregator\Controller\Cart {
                 $response->split = new Model\Cart\Split($splitData, (bool)$request->formatSplit);
                 $response->split->region = $response->region;
 
+                // Получаем названия групп точек из scms
+                /** @var Query\Point\GetListFromScms $pointListQuery */
+                $pointListQuery = null;
+                call_user_func(function() use(&$response, &$curl, &$pointListQuery) {
+                    $pointUis = [];
+                    foreach ($response->split->pointGroups as $pointGroup) {
+                        if (isset($pointGroup->points[0])) {
+                            $pointUis[] = $pointGroup->points[0]->ui;
+                        }
+                    }
+
+                    if ($pointUis) {
+                        $pointListQuery = new Query\Point\GetListFromScms(null, $pointUis);
+                        $curl->prepare($pointListQuery);
+                    }
+                });
+
                 // MAPI-4
                 $productIds = [];
                 foreach ($response->split->orders as $order) {
@@ -136,6 +153,21 @@ namespace EnterAggregator\Controller\Cart {
                 $curl->prepare($productListQuery);
 
                 $curl->execute();
+
+                // Получаем названия групп точек из scms
+                call_user_func(function() use(&$response, &$pointListQuery) {
+                    if ($pointListQuery) {
+                        $pointRepository = new \EnterRepository\Point();
+                        $pointsByUi = $pointRepository->getIndexedByUiObjectListByQuery($pointListQuery);
+
+                        foreach ($response->split->pointGroups as $pointGroup) {
+                            if (isset($pointGroup->points[0]) && isset($pointsByUi[$pointGroup->points[0]->ui])) {
+                                $pointGroup->id = $pointsByUi[$pointGroup->points[0]->ui]->group->id;
+                                $pointGroup->blockName = $pointsByUi[$pointGroup->points[0]->ui]->group->name;
+                            }
+                        }
+                    }
+                });
 
                 // список товаров
                 $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];

@@ -22,7 +22,7 @@ namespace EnterMobileApplication\Controller {
             $curl = $this->getCurl();
             $config = $this->getConfig();
             $productRepository = new Repository\Product();
-            $pointRepository = new Repository\Point();
+            $pointRepository = new \EnterMobileApplication\Repository\Point();
 
             // токен для получения заказа
             $accessToken = is_string($request->query['accessToken']) ? $request->query['accessToken'] : null;
@@ -45,7 +45,7 @@ namespace EnterMobileApplication\Controller {
 
             $point = null;
             try {
-                if ($order->point->ui) {
+                if ($order->point && $order->point->ui) {
                     $pointItemQuery = new Query\Point\GetItemByUi($order->point->ui);
                     $curl->prepare($pointItemQuery)->execute();
                     $point = $pointItemQuery->getResult();
@@ -103,18 +103,18 @@ namespace EnterMobileApplication\Controller {
                 'address' => $order->address,
                 'createdAt' => $order->createdAt,
                 'updatedAt' => $order->updatedAt,
-                'product' => array_map(function(Model\Order\Product $orderProduct) use(&$productsById) {
+                'product' => array_map(function(Model\Order\Product $orderProduct) use(&$productsById, &$helper) {
                     $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : new Model\Product();
-                    
+
                     return [
                         'id'                   => $orderProduct->id,
                         'price'                => $orderProduct->price,
                         'quantity'             => $orderProduct->quantity,
                         'sum'                  => $orderProduct->sum,
                         'article'              => $product->article,
-                        'webName'              => $product->webName,
-                        'namePrefix'           => $product->namePrefix,
-                        'name'                 => $product->name,
+                        'webName'              => $helper->unescape($product->webName),
+                        'namePrefix'           => $helper->unescape($product->namePrefix),
+                        'name'                 => $helper->unescape($product->name),
                         'isBuyable'            => $product->isBuyable,
                         'isInShopOnly'         => $product->isInShopOnly,
                         'isInShopStockOnly'    => $product->isInShopStockOnly,
@@ -148,11 +148,11 @@ namespace EnterMobileApplication\Controller {
                 'deliveries' => $order->deliveries,
                 'deliveryType' => $order->deliveryType,
                 'interval' => $order->interval,
-                'shopId' => $point['partner'] === 'enter' ? $order->shopId : null, // TODO перенести в point.id
+                'shopId' => $point['partner']['slug'] === 'enter' ? $order->shopId : null, // TODO перенести в point.id
                 'point' => $point ? [
                     'ui' => $point['uid'],
-                    'name' => $pointRepository->getName($point['partner']),
-                    'media' => $pointRepository->getMedia($point['partner'], ['logo']),
+                    'media' => $pointRepository->getMedia($point['partner']['slug'], ['logo']),
+                    'name' => $pointRepository->getName($point['partner']['slug'], $point['partner']['name']),
                     'address' => $point['address'],
                     'regime' => $point['working_time'],
                     'longitude' => isset($point['location'][0]) ? $point['location'][0] : null,

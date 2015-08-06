@@ -7,20 +7,38 @@ use EnterModel as Model;
 trait ProductListingTrait {
     /**
      * @param Model\Product[] $products
+     * @param bool $excludeProductsWithoutMedia
      * @return array
      */
     private function getProductList(
-        array $products
+        array $products,
+        $excludeProductsWithoutMedia = false
     ) {
         $result = [];
 
+        $helper = new \Enter\Helper\Template();
+
         foreach ($products as $product) {
+            if ($excludeProductsWithoutMedia) {
+                $hasMedia = false;
+                foreach ($product->media as $media) {
+                    if ($media) {
+                        $hasMedia = true;
+                        break;
+                    }
+                }
+
+                if (!$hasMedia) {
+                    continue;
+                }
+            }
+
             $result[] = [
                 'id'                   => $product->id,
                 'article'              => $product->article,
-                'webName'              => $product->webName,
-                'namePrefix'           => $product->namePrefix,
-                'name'                 => $product->name,
+                'webName'              => $helper->unescape($product->webName),
+                'namePrefix'           => $helper->unescape($product->namePrefix),
+                'name'                 => $helper->unescape($product->name),
                 'isBuyable'            => $product->isBuyable,
                 'isInShopOnly'         => $product->isInShopOnly,
                 'isInShopStockOnly'    => $product->isInShopStockOnly,

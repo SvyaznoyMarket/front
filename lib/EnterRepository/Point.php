@@ -58,6 +58,18 @@ class Point {
                             'width' => '100',
                             'height' => '100',
                         ],
+                        [
+                            'type' => '160х70',
+                            'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/logos/160х70/' . $image,
+                            'width' => '160',
+                            'height' => '70',
+                        ],
+                        [
+                            'type' => '320x140',
+                            'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/logos/320x140/' . $image,
+                            'width' => '320',
+                            'height' => '140',
+                        ],
                     ],
                 ]);
             }
@@ -87,25 +99,34 @@ class Point {
 
         return $mediaList;
     }
-    
+
     /**
-     * @param string $pointToken
-     * @return string
+     * @param \EnterQuery\Point\GetListFromScms $query
+     * @return \EnterModel\Point[]
      */
-    public function getName($pointToken) {
-        switch ($pointToken) {
-            case 'svyaznoy':
-                return 'Магазин Связной';
-            case 'euroset':
-                return 'Евросеть';
-            case 'hermes':
-                return 'Hermes DPD';
-            case 'pickpoint':
-                return 'Пункт PickPoint';
-            case 'enter':
-                return 'Магазин Enter';
+    public function getIndexedByUiObjectListByQuery(\EnterQuery\Point\GetListFromScms $query) {
+        $points = [];
+        $groupsById = [];
+        $result = $query->getResult();
+
+        if (isset($result['partners']) && is_array($result['partners'])) {
+            foreach ($result['partners'] as $partner) {
+                $group = new \EnterModel\Point\Group($partner);
+                $groupsById[$group->id] = $group;
+            }
         }
 
-        return null;
+        if (isset($result['points']) && is_array($result['points'])) {
+            foreach ($result['points'] as $pointItem) {
+                $point = new \EnterModel\Point($pointItem);
+                if (isset($groupsById[$point->group->id])) {
+                    $point->group = $groupsById[$point->group->id];
+                }
+
+                $points[$point->ui] = $point;
+            }
+        }
+
+        return $points;
     }
 }
