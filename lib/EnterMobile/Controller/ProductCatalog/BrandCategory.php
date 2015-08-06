@@ -69,7 +69,7 @@ class BrandCategory {
         $controllerRequest->config->parentCategory = false;
         $controllerRequest->config->branchCategory = true;
         $controllerRequest->regionId = $regionId;
-        $controllerRequest->categoryCriteria = ['token' => $categoryToken]; // критерий получения категории товара;
+        $controllerRequest->categoryCriteria = ['token' => $categoryToken, 'brand.token' => $brandToken]; // критерий получения категории товара;
         $controllerRequest->pageNum = $pageNum;
         $controllerRequest->limit = $limit;
         $controllerRequest->sorting = $sorting;
