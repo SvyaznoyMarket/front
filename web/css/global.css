@@ -11005,6 +11005,7 @@ body.flex .wrapper.wrapper-smpl .content {
   position: absolute;
   z-index: -1;
   top: 0;
+  color: transparent;
 }
 .private-order__head {
   border-bottom: 1px solid #cccccc;
