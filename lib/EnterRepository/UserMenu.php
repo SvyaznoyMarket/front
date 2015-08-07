@@ -36,7 +36,7 @@ class UserMenu {
             ],
             [
                 'token' => 'password',
-                'name' => 'Изменить пароль',
+                'name' => 'Изменение пароля',
                 'url' => '/private/password',
                 'isActive' => false
             ],

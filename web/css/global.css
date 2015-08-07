@@ -10988,6 +10988,10 @@ body.flex .wrapper.wrapper-smpl .content {
   color: #616161;
   margin-left: 10px;
 }
+.p-control-info-regular {
+  margin: 10px;
+  color: #363636;
+}
 .datepicker {
   width: 154px;
   display: inline-block;
@@ -11001,7 +11005,6 @@ body.flex .wrapper.wrapper-smpl .content {
   position: absolute;
   z-index: -1;
   top: 0;
-  color: transparent;
 }
 .private-order__head {
   border-bottom: 1px solid #cccccc;
