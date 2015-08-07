@@ -28,12 +28,6 @@ class RootCategory {
 
         $page->content->title = $request->category->name;
 
-        // хлебные крошки
-        $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
-        $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
-        $breadcrumb->name = $request->category->name;
-        $breadcrumb->url = $request->category->link;
-        $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
 
         $page->content->categoryBlock = false;
         if ((bool)$request->category->children) {

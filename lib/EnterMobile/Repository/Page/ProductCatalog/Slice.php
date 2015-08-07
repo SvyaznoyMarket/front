@@ -47,7 +47,7 @@ class Slice {
                 $parent = $parent->parent;
             }
 
-            return array_reverse(array_merge([$request->category], $ancestors));
+            return array_reverse($ancestors);
         });
         $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
         $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();

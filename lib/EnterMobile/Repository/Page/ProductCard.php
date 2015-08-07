@@ -67,10 +67,6 @@ class ProductCard {
             $breadcrumb->url = $categoryModel->link;
             $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
         }
-        $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
-        $breadcrumb->name = $product->name;
-        $breadcrumb->url = $product->link;
-        $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
 
         // содержание
         $page->content->product->name = $product->webName;
