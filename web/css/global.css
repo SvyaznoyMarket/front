@@ -1512,21 +1512,12 @@ body {
    ========================================================================== */
 @media only screen and (min-width: 450px) {
   .header.breadcrumbs .header-center {
-    position: relative;
-    z-index: 1;
     text-align: left;
   }
-  .header.breadcrumbs .header__logotype {
-    float: left;
-  }
   .header.breadcrumbs .header-controls {
-    position: relative;
-    z-index: 2;
     background: #000;
   }
   .header.breadcrumbs .header-nav-link {
-    position: relative;
-    z-index: 2;
     background: #000;
   }
 }
@@ -1906,20 +1897,25 @@ body {
   height: 100%;
   position: fixed;
   overflow: hidden;
+  /*.wrapper{
+        position: relative!important;
+
+        .header{
+            position: absolute;
+            left: 0px;
+        }
+    }*/
 }
 .snapjs-left .fader {
   display: block;
-  z-index: 1008;
+  z-index: 1005;
 }
 .snapjs-left .snap-drawers {
   display: block;
 }
-.snapjs-left .wrapper {
+.snapjs-left .header {
   position: relative;
-}
-.snapjs-left .wrapper .header {
-  position: absolute;
-  left: 0px;
+  margin-bottom: -55px;
 }
 /* ==========================================================================
    Навигации .nav
