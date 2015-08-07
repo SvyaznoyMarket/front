@@ -50,6 +50,7 @@ define(
 
         $(window).on('load resize', footerResize);
         $(navIco).on('click', showHideMenu);
+        $(fader).on('click', showHideMenu);
 
         $(document)
             .on('focus', 'input, textarea, input + label, select', function(e) {
