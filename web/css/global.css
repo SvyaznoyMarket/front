@@ -1293,6 +1293,13 @@ body {
 .header.search .bread-crumbs {
   display: none;
 }
+.header.titled .header-center {
+  text-align: left;
+}
+.header.titled .pagetitle {
+  display: inline-block;
+  vertical-align: top;
+}
 .cart-qnt {
   font-size: 11px;
   font-weight: bold;
@@ -1430,6 +1437,21 @@ body {
   vertical-align: middle;
   color: #6e6e6e;
 }
+.pagetitle {
+  line-height: 50px;
+}
+.pagetitle__link {
+  font-size: 1rem;
+  padding-left: 15px;
+  white-space: nowrap;
+  color: #ffffff;
+  border-left: 1px solid #333;
+  display: inline-block;
+  vertical-align: top;
+}
+.pagetitle__link:hover {
+  color: #ffffff;
+}
 .i-header {
   background-image: url("../img/header/i-header.png");
 }
@@ -1541,6 +1563,9 @@ body {
   }
   .header.search .header-center {
     padding-right: 48px;
+  }
+  .header.titled .pagetitle {
+    display: none;
   }
   .header .bread-crumbs {
     display: none;
