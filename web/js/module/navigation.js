@@ -36,7 +36,6 @@ define(
                     $snapContent.addClass('shifted');
                     body.addClass('snapjs-left');
                 }
-                console.log('click!');
 
             },
 

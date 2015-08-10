@@ -348,9 +348,9 @@
     bottom: 0;
     left: 0;
     width: auto;
-    height: auto;
     z-index: 2;
-    overflow: auto;
+    overflow: hidden;
+    height: 100%;
 
     -webkit-transform: translate3d(0, 0, 0);
     -moz-transform: translate3d(0, 0, 0);
@@ -358,6 +358,7 @@
     -o-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
     .transition();
+
 
     &.shifted{
         -webkit-transform: translate3d(258px, 0px, 0px);

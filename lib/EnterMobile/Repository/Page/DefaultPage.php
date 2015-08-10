@@ -279,5 +279,6 @@ class DefaultPage {
                 'name' => 'partial/modalWindow',
             ],
         ]);
+
     }
 }

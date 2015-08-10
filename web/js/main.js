@@ -30,6 +30,7 @@ require.config({
         'jquery.smartbanner'    : 'plugin/jquery.smartbanner',
         'jquery.slick'          : 'plugin/slick.min',
         'jquery.kladr'          : 'plugin/jquery.kladr',
+        'heightFixIos'          : 'plugin/heightFixIos',
 
         'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
         'mustache'           : 'vendor/mustache-0.8.2',
