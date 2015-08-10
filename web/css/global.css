@@ -1116,7 +1116,6 @@ html.sb-animation .content {
    Layout - default styles
    ========================================================================== */
 html {
-  -webkit-overflow-scrolling: touch;
   height: 100%;
 }
 html.no-scroll {
@@ -1134,7 +1133,7 @@ html.no-scroll body {
   max-height: 100%;
 }
 body {
-  -webkit-overflow-scrolling: touch;
+  height: 100%;
 }
 .body-footerless {
   height: 100%;
@@ -1147,9 +1146,14 @@ body {
   height: 100%;
 }
 .wrapper {
-  -webkit-overflow-scrolling: touch;
   width: 100%;
+  height: 100%;
   margin: 0 auto;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  -webkit-transform: translateZ(0px);
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-perspective: 1000;
 }
 .wrapper-smpl .content {
   padding-bottom: 27px;
@@ -1827,9 +1831,9 @@ body {
   bottom: 0;
   left: 0;
   width: auto;
-  height: auto;
   z-index: 2;
-  overflow: auto;
+  overflow: hidden;
+  height: 100%;
   -webkit-transform: translate3d(0, 0, 0);
   -moz-transform: translate3d(0, 0, 0);
   -ms-transform: translate3d(0, 0, 0);
@@ -10656,8 +10660,11 @@ body.flex .wrapper.wrapper-smpl .content {
   float: left;
   position: relative;
   height: 100%;
-  overflow: auto;
+  overflow: scroll;
   -webkit-overflow-scrolling: touch;
+  -webkit-transform: translateZ(0px);
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-perspective: 1000;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -11504,10 +11511,10 @@ body.flex .wrapper.wrapper-smpl .content {
   content: "";
   float: right;
   position: relative;
-  top: -10px;
+  top: -12px;
   left: 100%;
   width: 3em;
-  height: 1em;
+  height: 1.1em;
   margin-left: -3em;
   padding-right: 5px;
   text-align: right;
