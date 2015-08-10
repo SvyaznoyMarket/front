@@ -1151,12 +1151,13 @@ body {
   margin: 0 auto;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
-  -webkit-transform: translateZ(0px);
-  -webkit-transform: translate3d(0, 0, 0);
-  -webkit-perspective: 1000;
 }
 .wrapper-smpl .content {
   padding-bottom: 27px;
+}
+.wrapper > * {
+  /*-webkit-transform: translateZ(0px);*/
+  -webkit-transform: translate3d(0, 0, 0);
 }
 /* Middle
 -----------------------------------------------------------------------------*/
@@ -1864,10 +1865,6 @@ body {
   -ms-transform: translate3d(0, 0, 0);
   -o-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
-  -webkit-transition: all 0.2s ease-out;
-  -moz-transition: all 0.2s ease-out;
-  -o-transition: all 0.2s ease-out;
-  transition: all 0.2s ease-out;
 }
 .snap-content.shifted {
   -webkit-transform: translate3d(258px, 0px, 0px);
