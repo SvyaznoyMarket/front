@@ -91,6 +91,7 @@
         }
         .header-center {
             padding-right: 90px;
+            padding-left: 40px;
         }
         .bread-crumbs {
             display: none;
@@ -152,6 +153,7 @@
 
         .rounded(5px);
         .box-sizing();
+        z-index: 2;
     }
     &-inn {
         position: relative;
@@ -162,6 +164,8 @@
         position: absolute;
         top: 12px;
         left: 7px;
+        z-index: 0;
+        font-size: 0px;
     }
     &__clear {
         line-height: 30px;
@@ -236,8 +240,10 @@
         font-size: 1rem;
 
         display: table;
+        width: 100%;
 
         padding: 10px 20px;
+        .box-sizing(border-box);
     }
     &__img {
         max-width: 40px;

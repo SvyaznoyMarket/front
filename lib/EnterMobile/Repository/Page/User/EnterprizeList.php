@@ -59,7 +59,7 @@ class EnterprizeList {
                     'backgroundUrl' => $couponObject->backgroundImageUrl,
                     'imageUrl' => $couponObject->productSegment->imageUrl,
                     'discountAmount' => $couponObject->discount->value,
-                    'discountUnit' => $couponObject->discount->unit,
+                    'discountUnit' => ($couponObject->discount->unit == '%') ? '%' : 'p',
                     'category' => $couponObject->productSegment->name,
                     'description' => $couponObject->productSegment->description,
                     'minOrderSum' => $this->getPriceHelper()->format($couponObject->minOrderSum)

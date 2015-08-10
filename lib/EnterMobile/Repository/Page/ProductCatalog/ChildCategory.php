@@ -46,8 +46,9 @@ class ChildCategory {
                 $parent = $parent->parent;
             }
 
-            return array_reverse(array_merge([$request->category], $ancestors));
+            return array_reverse($ancestors);
         });
+
         $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
         foreach ($categories as $categoryModel) {
             $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();

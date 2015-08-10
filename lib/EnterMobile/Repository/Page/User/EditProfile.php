@@ -55,6 +55,11 @@ class EditProfile {
 
         $userInfo['birthday'] = date('d.m.Y', strtotime($userInfo['birthday']));
 
+        if ($userInfo['isEnterprizeMember']) {
+            $userInfo['disabledFields']['mobile'] = true;
+            $userInfo['disabledFields']['email'] = true;
+        }
+
         $editProfileForm = new Model\Form\User\EditProfileForm($userInfo);
 
         $page->content->editProfileForm = $editProfileForm;

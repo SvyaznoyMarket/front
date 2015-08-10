@@ -156,29 +156,6 @@ class MainMenu {
             ]
         ];
 
-        $menu->serviceElements = [
-            'delivery' => [
-                'link' => '/delivery',
-                'name' => 'Магазины и самовывоз',
-                'iconClass' => 'nav-icon--shops'
-            ],
-            'user' => [
-                'link' => '/private',
-                'name' => 'Личный кабинет',
-                'iconClass' => 'nav-icon--lk'
-            ],
-            'feedback' => [
-                'link' => 'mailto:feedback@enter.ru',
-                'name' => 'Обратная связь',
-                'iconClass' => 'nav-icon--callback'
-            ],
-            'phone' => [
-                'link' => 'tel:+74957750006',
-                'name' => '+7 495 775-00-06',
-                'iconClass' => 'nav-icon--phone'
-            ]
-        ];
-
 
 //        die(json_encode($menu, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 

@@ -1284,6 +1284,7 @@ body {
 }
 .header.search .header-center {
   padding-right: 90px;
+  padding-left: 40px;
 }
 .header.search .bread-crumbs {
   display: none;
@@ -1332,6 +1333,7 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+  z-index: 2;
 }
 .search-form-inn {
   position: relative;
@@ -1341,6 +1343,8 @@ body {
   position: absolute;
   top: 12px;
   left: 7px;
+  z-index: 0;
+  font-size: 0px;
 }
 .search-form__clear {
   line-height: 30px;
@@ -1399,7 +1403,12 @@ body {
 .search-suggest-list__link {
   font-size: 1rem;
   display: table;
+  width: 100%;
   padding: 10px 20px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
 }
 .search-suggest-list__img {
   max-width: 40px;
@@ -1508,21 +1517,12 @@ body {
    ========================================================================== */
 @media only screen and (min-width: 450px) {
   .header.breadcrumbs .header-center {
-    position: relative;
-    z-index: 1;
     text-align: left;
   }
-  .header.breadcrumbs .header__logotype {
-    float: left;
-  }
   .header.breadcrumbs .header-controls {
-    position: relative;
-    z-index: 2;
     background: #000;
   }
   .header.breadcrumbs .header-nav-link {
-    position: relative;
-    z-index: 2;
     background: #000;
   }
 }
@@ -1532,7 +1532,11 @@ body {
     display: none;
   }
   .header.search .search-form {
-    padding-left: 45px;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .header.search .header-center {
+    padding-right: 48px;
   }
   .header .bread-crumbs {
     display: none;
@@ -1831,6 +1835,17 @@ body {
   -ms-transform: translate3d(0, 0, 0);
   -o-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+.snap-content.shifted {
+  -webkit-transform: translate3d(258px, 0px, 0px);
+  -moz-transform: translate3d(258px, 0px, 0px);
+  -ms-transform: translate3d(258px, 0px, 0px);
+  -o-transform: translate3d(258px, 0px, 0px);
+  transform: translate3d(258px, 0px, 0px);
 }
 .snap-drawers {
   position: absolute;
@@ -1898,20 +1913,25 @@ body {
   height: 100%;
   position: fixed;
   overflow: hidden;
+  /*.wrapper{
+        position: relative!important;
+
+        .header{
+            position: absolute;
+            left: 0px;
+        }
+    }*/
 }
 .snapjs-left .fader {
   display: block;
-  z-index: 1008;
+  z-index: 1005;
 }
 .snapjs-left .snap-drawers {
   display: block;
 }
-.snapjs-left .wrapper {
+.snapjs-left .header {
   position: relative;
-}
-.snapjs-left .wrapper .header {
-  position: absolute;
-  left: 0px;
+  margin-bottom: -55px;
 }
 /* ==========================================================================
    Навигации .nav
@@ -10636,7 +10656,7 @@ body.flex .wrapper.wrapper-smpl .content {
   float: left;
   position: relative;
   height: 100%;
-  overflow: scroll;
+  overflow: auto;
   -webkit-overflow-scrolling: touch;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -10984,6 +11004,10 @@ body.flex .wrapper.wrapper-smpl .content {
   color: #616161;
   margin-left: 10px;
 }
+.p-control-info-regular {
+  margin: 10px;
+  color: #363636;
+}
 .datepicker {
   width: 154px;
   display: inline-block;
@@ -10999,21 +11023,16 @@ body.flex .wrapper.wrapper-smpl .content {
   top: 0;
 }
 .private-order__head {
-  padding: 10px 0 10px 10px;
   border-bottom: 1px solid #cccccc;
+  padding: 10px;
 }
 .private-order__tl {
   font-size: 14px;
-  display: inline-block;
-  vertical-align: baseline;
   margin: 0px;
 }
 .private-order__date {
-  display: inline-block;
-  vertical-align: baseline;
   font-size: 12px;
   color: #5e5e5e;
-  margin-left: 2px;
 }
 .private-order__brcr {
   padding: 10px 0;

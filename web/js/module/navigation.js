@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'jquery.scrollTo', 'module/snap'],
+    ['jquery', 'jquery.scrollTo'],
     function ($) {
 
         var chooseModelWrap = $('.chooseModel'),
@@ -11,10 +11,7 @@ define(
                 chooseModelMoreBox.slideToggle('800');
                 chooseModelMoreLink.toggleClass('more');
             },
-            snapper = new Snap({
-                element: document.getElementById('wrapper'),
-                disable: 'right'
-            })
+            $snapContent = $('#wrapper');
             ;
         // end of vars
 
@@ -32,7 +29,15 @@ define(
 
                 e.preventDefault();
 
-                body.hasClass('snapjs-left') ? snapper.close() : snapper.open('left');
+                if (body.hasClass('snapjs-left')) {
+                    $snapContent.removeClass('shifted');
+                    body.removeClass('snapjs-left');
+                } else {
+                    $snapContent.addClass('shifted');
+                    body.addClass('snapjs-left');
+                }
+                console.log('click!');
+
             },
 
             footerResize = function footerResize() {
@@ -45,6 +50,7 @@ define(
 
         $(window).on('load resize', footerResize);
         $(navIco).on('click', showHideMenu);
+        $(fader).on('click', showHideMenu);
 
         $(document)
             .on('focus', 'input, textarea, input + label, select', function(e) {
