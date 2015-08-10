@@ -25,8 +25,6 @@ class Get {
         $curl = $this->getCurl();
         $couponSeriesRepository = new \EnterRepository\Coupon\Series();
 
-        $responseData = [];
-
         $userToken = $this->getUserToken($request);
 
         // запрос пользователя
@@ -58,7 +56,7 @@ class Get {
         $usedSeriesIds = [];
         $coupons = (new \EnterRepository\Coupon())->getObjectListByQuery($couponListQuery);
         foreach ($coupons as $coupon) {
-            if ($coupon->isUsed) continue;
+            if (!$coupon->isUsed) continue;
             $usedSeriesIds[] = $coupon->seriesId;
         }
 
