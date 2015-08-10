@@ -41,8 +41,9 @@ class DeleteProduct {
         // добавление товара в корзину
         $cartRepository->setProductForObject($cart, $cartProduct);
 
-        // ид региона
+        // регион
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
+        $region = $regionId ? new \EnterModel\Region(['id' => $regionId]) : null;
 
         $productItemQuery = new Query\Product\GetItemById($cartProduct->id, $regionId);
         $curl->prepare($productItemQuery);
@@ -137,7 +138,7 @@ class DeleteProduct {
         if ($widget = (new Repository\Partial\UserBlock())->getObject($cart, $user)) {
             $page->widgets['.' . $widget->widgetId] = $widget;
         }
-        if ($widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById))) {
+        if ($widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById), $region)) {
             $page->widgets['.' . $widget->widgetId] = $widget;
         }
 

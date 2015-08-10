@@ -385,6 +385,12 @@ namespace EnterAggregator\Config {
         public $prepayment;
         /** @var string */
         public $bonusCardSessionKey;
+        /**
+         * Минимальная сумма для оформления заказа, кроме регионов: Москва, МО, Санкт-Петербург, ...
+         *
+         * @var int|null
+         */
+        public $minSum;
 
         public function __construct() {
             $this->prepayment = new Order\Prepayment();
