@@ -1403,7 +1403,12 @@ body {
 .search-suggest-list__link {
   font-size: 1rem;
   display: table;
+  width: 100%;
   padding: 10px 20px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
 }
 .search-suggest-list__img {
   max-width: 40px;
@@ -1512,21 +1517,12 @@ body {
    ========================================================================== */
 @media only screen and (min-width: 450px) {
   .header.breadcrumbs .header-center {
-    position: relative;
-    z-index: 1;
     text-align: left;
   }
-  .header.breadcrumbs .header__logotype {
-    float: left;
-  }
   .header.breadcrumbs .header-controls {
-    position: relative;
-    z-index: 2;
     background: #000;
   }
   .header.breadcrumbs .header-nav-link {
-    position: relative;
-    z-index: 2;
     background: #000;
   }
 }
@@ -1839,6 +1835,17 @@ body {
   -ms-transform: translate3d(0, 0, 0);
   -o-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+.snap-content.shifted {
+  -webkit-transform: translate3d(258px, 0px, 0px);
+  -moz-transform: translate3d(258px, 0px, 0px);
+  -ms-transform: translate3d(258px, 0px, 0px);
+  -o-transform: translate3d(258px, 0px, 0px);
+  transform: translate3d(258px, 0px, 0px);
 }
 .snap-drawers {
   position: absolute;
@@ -1906,20 +1913,25 @@ body {
   height: 100%;
   position: fixed;
   overflow: hidden;
+  /*.wrapper{
+        position: relative!important;
+
+        .header{
+            position: absolute;
+            left: 0px;
+        }
+    }*/
 }
 .snapjs-left .fader {
   display: block;
-  z-index: 1008;
+  z-index: 1005;
 }
 .snapjs-left .snap-drawers {
   display: block;
 }
-.snapjs-left .wrapper {
+.snapjs-left .header {
   position: relative;
-}
-.snapjs-left .wrapper .header {
-  position: absolute;
-  left: 0px;
+  margin-bottom: -55px;
 }
 /* ==========================================================================
    Навигации .nav
@@ -10991,6 +11003,10 @@ body.flex .wrapper.wrapper-smpl .content {
 .p-control-info {
   color: #616161;
   margin-left: 10px;
+}
+.p-control-info-regular {
+  margin: 10px;
+  color: #363636;
 }
 .datepicker {
   width: 154px;
