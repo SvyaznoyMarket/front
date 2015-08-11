@@ -1151,13 +1151,15 @@ body {
   margin: 0 auto;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
+  /*   & > * {
+       */
+  /*-webkit-transform: translateZ(0px);*/
+  /*
+        -webkit-transform: translate3d(0,0,0);
+    }*/
 }
 .wrapper-smpl .content {
   padding-bottom: 27px;
-}
-.wrapper > * {
-  /*-webkit-transform: translateZ(0px);*/
-  -webkit-transform: translate3d(0, 0, 0);
 }
 /* Middle
 -----------------------------------------------------------------------------*/
