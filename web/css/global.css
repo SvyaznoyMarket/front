@@ -4900,6 +4900,7 @@ body {
 }
 .modal.fixed .modal-content {
   height: 100%;
+  overflow: hidden;
 }
 .modal-title {
   font-size: 18px;
