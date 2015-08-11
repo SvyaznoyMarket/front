@@ -1163,9 +1163,11 @@ body {
 }
 .noIOS {
   height: auto;
+  min-height: 100%;
 }
 .noIOS .wrapper {
   height: auto;
+  min-height: 100%;
   overflow: visible;
 }
 /* Middle
