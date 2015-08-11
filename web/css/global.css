@@ -1161,6 +1161,13 @@ body {
 .wrapper-smpl .content {
   padding-bottom: 27px;
 }
+.noIOS {
+  height: auto;
+}
+.noIOS .wrapper {
+  height: auto;
+  overflow: visible;
+}
 /* Middle
 -----------------------------------------------------------------------------*/
 .content {
@@ -1941,14 +1948,6 @@ body {
   height: 100%;
   position: fixed;
   overflow: hidden;
-  /*.wrapper{
-        position: relative!important;
-
-        .header{
-            position: absolute;
-            left: 0px;
-        }
-    }*/
 }
 .snapjs-left .fader {
   display: block;
@@ -1960,6 +1959,9 @@ body {
 .snapjs-left .header {
   position: relative;
   margin-bottom: -55px;
+}
+.snapjs-left .wrapper {
+  overflow: hidden!important;
 }
 /* ==========================================================================
    Навигации .nav
