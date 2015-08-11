@@ -36,7 +36,6 @@ define(
                     $snapContent.addClass('shifted');
                     body.addClass('snapjs-left');
                 }
-                console.log('click!');
 
             },
 
@@ -45,7 +44,25 @@ define(
                     footer = $('.footer');
 
                 footer.css('position', body.height() + footer.innerHeight() > $(window).height() ? 'inherit' : 'fixed');
-            };
+            },
+            iOS = function iOS() {
+
+            var iDevices = [
+                'iPad Simulator',
+                'iPhone Simulator',
+                'iPod Simulator',
+                'iPad',
+                'iPhone',
+                'iPod'
+            ];
+
+            while (iDevices.length) {
+                if (navigator.platform === iDevices.pop()){ return true; }
+            }
+
+            return false;
+        }
+            ;
         // end of vars
 
         $(window).on('load resize', footerResize);
@@ -59,6 +76,11 @@ define(
             .on('blur', 'input, textarea, input + label, select', function(e) {
                 body.removeClass('fixfixed');
             });
+
+        //check if iOS
+        if ( !iOS() ){
+            $(body).addClass('noIOS') ;
+        }
 
 
     }
