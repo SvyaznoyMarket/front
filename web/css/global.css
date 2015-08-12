@@ -2753,6 +2753,9 @@ body {
   font-size: 15px;
   line-height: 15px;
 }
+.prodHd .icon-favorit {
+  display: inline-block;
+}
 .prodBuy_l {
   float: left;
   overflow: hidden;

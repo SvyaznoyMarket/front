@@ -222,6 +222,30 @@ define(
             }
         })(config, _, $);
 
+        // добавление в избранное
+        (function addToFavorites(config, _, $){
+            var $addToFavorites = $('.js-favorites-add');
+            var ADDED_TO_FAVORITES_CLASS = 'icon-favorit--on';
+
+            $addToFavorites.click(handleAddToFavoritesClick);
+
+
+            function handleAddToFavoritesClick(evt) {
+                evt.preventDefault();
+
+                var productUi = $(this).data('productUi');
+
+                $.post('/ajax/favorite/add', {productUi: productUi}, function(result) {
+
+                    if (result.data.success) {
+                        $addToFavorites.addClass(ADDED_TO_FAVORITES_CLASS);
+                    }
+
+                });
+            }
+
+
+        })(config, _, $);
 
 
     }
