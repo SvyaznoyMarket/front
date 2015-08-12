@@ -44,6 +44,13 @@ class Register {
         $form->subscribe = !empty($request->data['subscribe']);
 
         try {
+            if (!$form->name) {
+                throw new \Exception('Не указано имя', 689);
+            }
+            if (!$form->email) {
+                throw new \Exception('Не указан email', 684);
+            }
+
             $user = new Model\User();
             $user->regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
             $user->firstName = $form->name;
