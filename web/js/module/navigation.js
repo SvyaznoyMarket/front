@@ -57,7 +57,7 @@ define(
                 'iPhone',
                 'iPod'
             ];
-
+                console.info(navigator.platform);
             while (iDevices.length) {
                 if (navigator.platform === iDevices.pop()){ return true; }
             }
