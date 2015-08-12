@@ -70,6 +70,8 @@ namespace EnterAggregator\Controller\Cart {
                 $descriptionListQueries[] = $descriptionListQuery;
             }
 
+            // запрос пользователя
+
             $curl->execute();
 
             // товары

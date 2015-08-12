@@ -67,6 +67,8 @@ class Auth {
                 $controllerRequest->cart = (new Repository\Cart())->getObjectByHttpSession($session, $config->cart->sessionKey);
                 $controllerRequest->regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
                 $controllerRequest->userUi = $tokenQuery->getResult()['ui']; // TODO CORE-3084
+
+                $controller->execute($controllerRequest);
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['cart']]);
             }
