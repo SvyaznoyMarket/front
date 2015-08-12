@@ -45,6 +45,12 @@ class UserMenu {
                 'name' => 'Фишки EnterPrize',
                 'url' => '/private/enterprize',
                 'isActive' => false
+            ],
+            [
+                'token' => 'favorit',
+                'name' => 'Избранное',
+                'url' => '/private/favorit',
+                'isActive' => false
             ]
         ];
 
