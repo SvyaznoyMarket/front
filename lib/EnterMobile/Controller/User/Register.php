@@ -50,6 +50,9 @@ class Register {
             if (!$form->email) {
                 throw new \Exception('Не указан email', 684);
             }
+            if (!$request->data['agreed']) {
+                throw new \Exception('Не указано согласие', 10001);
+            }
 
             $user = new Model\User();
             $user->regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
@@ -91,6 +94,9 @@ class Register {
                     break;
                 case 689: case 690:
                     $errors['name'] = $e->getMessage();
+                    break;
+                case 10001:
+                    $errors['agreed'] = $e->getMessage();
                     break;
                 default:
                     $messageRepository->setObjectListToHttpSesion('messages', [

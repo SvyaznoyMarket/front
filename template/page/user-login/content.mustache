@@ -74,8 +74,9 @@
 				                    <label for="subscribe" class="custom-label">Стать участником Enter Prize,<br> получить скидку 300 рублей </label>
 				                </div>
                                 <div class="oferta-agreement">
-                                    <input type="checkbox" id="oferta" name="oferts" class="custom-input custom-input--defcheck jsCustomRadio">
-                                    <label for="oferta" class="custom-label">Согласен <a href="#">с условиями оферты</a> </label>
+                                    <input type="checkbox" id="oferta" name="agreed" class="custom-input custom-input--defcheck jsCustomRadio{{#errors.agreed}} fieldError{{/errors.agreed}}">
+                                    <label for="oferta" class="custom-label">Согласен <a href="/reklamnaya-akcia-enterprize">с условиями оферты</a> </label>
+                                    {{#errors.agreed}}<span class="errorText">{{errors.agreed}}</span>{{/errors.agreed}}
                                 </div>
 
                                 <input type="hidden" name="redirect_to" value="{{redirectUrl}}" />
