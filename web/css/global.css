@@ -6745,6 +6745,9 @@ body {
   padding: 10px;
   background-color: #fafafa;
 }
+.main-inn + .main-inn {
+  padding-top: 0;
+}
 .grid-4cols {
   margin-right: -10px;
 }
@@ -6983,6 +6986,7 @@ body {
   border-top: 1px dotted #a0a0a0;
   border-bottom: 1px dotted #a0a0a0;
   margin-right: 0px;
+  margin-bottom: 10px;
 }
 .shop-info__item {
   line-height: 44px;
