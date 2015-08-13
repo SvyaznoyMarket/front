@@ -1116,7 +1116,6 @@ html.sb-animation .content {
    Layout - default styles
    ========================================================================== */
 html {
-  -webkit-overflow-scrolling: touch;
   height: 100%;
 }
 html.no-scroll {
@@ -1134,7 +1133,7 @@ html.no-scroll body {
   max-height: 100%;
 }
 body {
-  -webkit-overflow-scrolling: touch;
+  height: 100%;
 }
 .body-footerless {
   height: 100%;
@@ -1147,12 +1146,29 @@ body {
   height: 100%;
 }
 .wrapper {
-  -webkit-overflow-scrolling: touch;
   width: 100%;
+  height: 100%;
   margin: 0 auto;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  /*   & > * {
+       */
+  /*-webkit-transform: translateZ(0px);*/
+  /*
+        -webkit-transform: translate3d(0,0,0);
+    }*/
 }
 .wrapper-smpl .content {
   padding-bottom: 27px;
+}
+.noIOS {
+  height: auto;
+  min-height: 100%;
+}
+.noIOS .wrapper {
+  height: auto;
+  min-height: 100%;
+  overflow: visible;
 }
 /* Middle
 -----------------------------------------------------------------------------*/
@@ -1210,8 +1226,10 @@ body {
 /* ==========================================================================
    Шапка сайта .header
    ========================================================================== */
-.fixfixed .header {
-  position: absolute;
+.fixfixed {
+  /*.header {
+        position: absolute;
+    }*/
 }
 .header {
   position: fixed;
@@ -1288,6 +1306,13 @@ body {
 }
 .header.search .bread-crumbs {
   display: none;
+}
+.header.titled .header-center {
+  text-align: left;
+}
+.header.titled .pagetitle {
+  display: inline-block;
+  vertical-align: top;
 }
 .cart-qnt {
   font-size: 11px;
@@ -1426,6 +1451,21 @@ body {
   vertical-align: middle;
   color: #6e6e6e;
 }
+.pagetitle {
+  line-height: 50px;
+}
+.pagetitle__link {
+  font-size: 1rem;
+  padding-left: 15px;
+  white-space: nowrap;
+  color: #ffffff;
+  border-left: 1px solid #333;
+  display: inline-block;
+  vertical-align: top;
+}
+.pagetitle__link:hover {
+  color: #ffffff;
+}
 .i-header {
   background-image: url("../img/header/i-header.png");
 }
@@ -1537,6 +1577,9 @@ body {
   }
   .header.search .header-center {
     padding-right: 48px;
+  }
+  .header.titled .pagetitle {
+    display: none;
   }
   .header .bread-crumbs {
     display: none;
@@ -1827,18 +1870,14 @@ body {
   bottom: 0;
   left: 0;
   width: auto;
-  height: auto;
   z-index: 2;
-  overflow: auto;
+  overflow: hidden;
+  height: 100%;
   -webkit-transform: translate3d(0, 0, 0);
   -moz-transform: translate3d(0, 0, 0);
   -ms-transform: translate3d(0, 0, 0);
   -o-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
-  -webkit-transition: all 0.2s ease-out;
-  -moz-transition: all 0.2s ease-out;
-  -o-transition: all 0.2s ease-out;
-  transition: all 0.2s ease-out;
 }
 .snap-content.shifted {
   -webkit-transform: translate3d(258px, 0px, 0px);
@@ -1913,14 +1952,6 @@ body {
   height: 100%;
   position: fixed;
   overflow: hidden;
-  /*.wrapper{
-        position: relative!important;
-
-        .header{
-            position: absolute;
-            left: 0px;
-        }
-    }*/
 }
 .snapjs-left .fader {
   display: block;
@@ -1932,6 +1963,9 @@ body {
 .snapjs-left .header {
   position: relative;
   margin-bottom: -55px;
+}
+.snapjs-left .wrapper {
+  overflow: hidden!important;
 }
 /* ==========================================================================
    Навигации .nav
@@ -4870,6 +4904,7 @@ body {
 }
 .modal.fixed .modal-content {
   height: 100%;
+  overflow: hidden;
 }
 .modal-title {
   font-size: 18px;
@@ -10656,7 +10691,7 @@ body.flex .wrapper.wrapper-smpl .content {
   float: left;
   position: relative;
   height: 100%;
-  overflow: auto;
+  overflow: scroll;
   -webkit-overflow-scrolling: touch;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -10817,6 +10852,10 @@ body.flex .wrapper.wrapper-smpl .content {
     line-height: normal;
   }
 }
+body:not(.noIOS) .private section:not(.main-section) > * {
+  -webkit-transform: translateZ(0px);
+  -webkit-transform: translate3d(0, 0, 0);
+}
 .p-control {
   height: 34px;
   -webkit-box-sizing: border-box;
@@ -10975,6 +11014,7 @@ body.flex .wrapper.wrapper-smpl .content {
   position: absolute;
   right: 10px;
   top: 9px;
+  z-index: 11;
 }
 .p-control-date-group .p-control-input {
   border: none;
@@ -11504,10 +11544,10 @@ body.flex .wrapper.wrapper-smpl .content {
   content: "";
   float: right;
   position: relative;
-  top: -10px;
+  top: -12px;
   left: 100%;
   width: 3em;
-  height: 1em;
+  height: 1.1em;
   margin-left: -3em;
   padding-right: 5px;
   text-align: right;

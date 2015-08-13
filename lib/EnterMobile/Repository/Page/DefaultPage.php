@@ -111,9 +111,6 @@ class DefaultPage {
         call_user_func(function() use($page, $request, $templateHelper) {
             $dataWidget = [];
 
-            $userBlock = (new Repository\Partial\UserBlock())->getObject($request->cart, $request->user);
-            $dataWidget['.' . $userBlock->widgetId] = $userBlock;
-
             foreach ($request->cart->product as $cartProduct) {
                 $product = $cartProduct->product ?: new \EnterModel\Product(['id' => $cartProduct->id]);
 
@@ -208,9 +205,7 @@ class DefaultPage {
         $page->mainMenu = $request->mainMenu;
 
         // пользователь
-        $page->userBlock->isUserAuthorized = false;
-        $page->userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Login());
-        $page->userBlock->cart->url = $router->getUrlByRoute(new Routing\Cart\Index());
+        $page->userBlock = (new Repository\Partial\UserBlock())->getObject($request->cart, $request->user);
 
         // ga
         $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$templateHelper) {
@@ -284,5 +279,6 @@ class DefaultPage {
                 'name' => 'partial/modalWindow',
             ],
         ]);
+
     }
 }

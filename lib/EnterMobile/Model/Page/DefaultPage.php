@@ -47,6 +47,8 @@ namespace EnterMobile\Model\Page {
         public $partners = [];
         /** @var string */
         public $bodyClass;
+        /** @var bool */
+        public $headerTitle = true;
 
         public function __construct() {
             parent::__construct();

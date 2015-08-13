@@ -32,7 +32,7 @@ class Index {
 
         $templateHelper = $this->getTemplateHelper();
 
-        $page->title = 'Заказы';
+        $page->title = 'Личный кабинет';
 
         // ga
         $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$templateHelper) {

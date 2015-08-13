@@ -2,9 +2,9 @@
    Шапка сайта .header
    ========================================================================== */
 .fixfixed {
-    .header {
+    /*.header {
         position: absolute;
-    }
+    }*/
 }
 
 .header {
@@ -95,6 +95,14 @@
         }
         .bread-crumbs {
             display: none;
+        }
+    }
+    &.titled{
+        .header-center{
+           text-align: left;
+        }
+        .pagetitle{
+            .inline-block();
         }
     }
 }
@@ -265,5 +273,24 @@
         vertical-align: middle;
 
         color: #6e6e6e;
+    }
+}
+.pagetitle{
+    line-height: 50px;
+
+    &__link {
+        font-size: 1rem;
+
+        padding-left: 15px;
+
+        white-space: nowrap;
+
+        color: @white;
+        border-left: 1px solid #333;
+
+        .inline-block();
+        &:hover {
+            color: @white;
+        }
     }
 }

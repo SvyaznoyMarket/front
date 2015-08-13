@@ -51,18 +51,19 @@
     <body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-widget="{{&dataWidget}}">
     {{>partial/menu}}
     <div class="snap-content" id="wrapper">
-    <div class="wrapper">
-        <div class="fader js-fader"></div>
-	    	{{>partial/header}}
+        {{>partial/header}}
+        <div class="wrapper">
+            <div class="fader js-fader"></div>
 
-			{{#content}}
-				{{>content}}
-			{{/content}}
-			{{>partial/template}}
 
-			{{>partial/footer}}
-		</div>
-    </div>
+                {{#content}}
+                    {{>content}}
+                {{/content}}
+                {{>partial/template}}
+
+                {{>partial/footer}}
+            </div>
+        </div>
 
 		{{#regionBlock}}
 	        {{>partial/region}}
