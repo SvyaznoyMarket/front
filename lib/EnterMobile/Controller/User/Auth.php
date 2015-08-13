@@ -3,20 +3,21 @@
 namespace EnterMobile\Controller\User;
 
 use Enter\Http;
-use EnterQuery as Query;
-use EnterRepository as Repository;
 use EnterMobile\ConfigTrait;
+use EnterAggregator\AbTestTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\SessionTrait;
 use EnterAggregator\RouterTrait;
+use EnterRepository as Repository;
+use EnterQuery as Query;
 use EnterMobile\Controller;
 use EnterMobile\Model\Form;
 use EnterMobile\Routing;
 use EnterAggregator\DebugContainerTrait;
 
 class Auth {
-    use ConfigTrait, LoggerTrait, CurlTrait, RouterTrait, SessionTrait, DebugContainerTrait;
+    use ConfigTrait, AbTestTrait, LoggerTrait, CurlTrait, RouterTrait, SessionTrait, DebugContainerTrait;
 
     /**
      * @param Http\Request $request
@@ -48,7 +49,7 @@ class Auth {
             $tokenQuery->setTimeout(2 * $config->coreService->timeout);
             $curl->query($tokenQuery);
 
-            $token = $tokenQuery->getResult();
+            $token = $tokenQuery->getResult()['token'];
             if (empty($token)) {
                 throw new \Exception('Не получен token пользователя');
             }
@@ -68,7 +69,9 @@ class Auth {
                 $controllerRequest->regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
                 $controllerRequest->userUi = $tokenQuery->getResult()['ui']; // TODO CORE-3084
 
-                $controller->execute($controllerRequest);
+                if (('enabled' === $this->getAbTest()->getObjectByToken('msite_core_cart')->chosenItem->token) && $controllerRequest->regionId && $controllerRequest->userUi) {
+                    $controller->execute($controllerRequest);
+                }
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['cart']]);
             }
