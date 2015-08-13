@@ -51,12 +51,13 @@ class SetProductList {
         }
 
         // агрегирующий контроллер
-        $controllerResponse = (new \EnterAggregator\Controller\Cart\SetProductList())->execute(
-            $regionId,
-            $session,
-            $cart,
-            $cartProducts
-        );
+        $controller = new \EnterAggregator\Controller\Cart\SetProductList();
+        $controllerRequest = $controller->createRequest();
+        $controllerRequest->regionId = $regionId;
+        $controllerRequest->session = $session;
+        $controllerRequest->cart = $cart;
+        $controllerRequest->cartProducts = $cartProducts;
+        $controllerResponse = $controller->execute($controllerRequest);
 
         $cart = $controllerResponse->cart;
         $productsById = $controllerResponse->productsById;

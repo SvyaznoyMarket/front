@@ -69,7 +69,7 @@ class Auth {
                 $controllerRequest->regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
                 $controllerRequest->userUi = $tokenQuery->getResult()['ui']; // TODO CORE-3084
 
-                if (('enabled' === $this->getAbTest()->getObjectByToken('msite_core_cart')->chosenItem->token) && $controllerRequest->regionId && $controllerRequest->userUi) {
+                if ($this->getAbTest()->isCoreCartEnabled() && $controllerRequest->regionId && $controllerRequest->userUi) {
                     $controller->execute($controllerRequest);
                 }
             } catch (\Exception $e) {
