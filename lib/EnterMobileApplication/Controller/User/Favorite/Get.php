@@ -24,6 +24,7 @@ namespace EnterMobileApplication\Controller\User\Favorite {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
+            $helper = new \Enter\Helper\Template();
 
             // ответ
             $response = new Response();
@@ -89,6 +90,11 @@ namespace EnterMobileApplication\Controller\User\Favorite {
                     (new \EnterRepository\Product())->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
 
                     $response->products = array_values($productsById);
+                    array_walk($response->products, function(\EnterModel\Product $product) use(&$helper) {
+                        $product->webName = $helper->unescape($product->webName);
+                        $product->namePrefix = $helper->unescape($product->namePrefix);
+                        $product->name = $helper->unescape($product->name);
+                    });
                 }
             } catch (\Exception $e) {
                 if ($config->debugLevel) $this->getDebugContainer()->error = $e;
