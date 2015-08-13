@@ -1,0 +1,38 @@
+<?php
+
+namespace EnterMobile\Controller\Shop;
+
+use Enter\Http;
+use EnterAggregator\SessionTrait;
+use EnterMobile\ConfigTrait;
+use EnterAggregator\LoggerTrait;
+use EnterAggregator\CurlTrait;
+use EnterAggregator\MustacheRendererTrait;
+use EnterAggregator\DebugContainerTrait;
+use EnterMobile\Repository;
+use EnterQuery as Query;
+use EnterMobile\Model;
+use EnterMobile\Model\Page\DefaultPage as Page;
+
+class Index {
+
+    use ConfigTrait,
+        LoggerTrait,
+        CurlTrait,
+        MustacheRendererTrait,
+        DebugContainerTrait,
+        SessionTrait;
+
+    public function execute(Http\Request $request) {
+        $renderer = $this->getRenderer();
+
+        $page = new Page();
+        $renderer->setPartials([
+            'content' => 'page/shops/index',
+        ]);
+        $content = $renderer->render('layout/default-1511', $page);
+
+
+        return new Http\Response($content);
+    }
+}

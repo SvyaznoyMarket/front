@@ -165,6 +165,10 @@
         "name": "Магазины",
         "pattern": "/shops"
     },
+    "Shop\\Map": {
+        "name": "Карта магазинов",
+        "pattern": "/shops/map"
+    },
     "ShopCard\\Get": {
         "name": "Карточка магазина",
         "pattern": "/shops/{regionToken}/{shopToken}",
