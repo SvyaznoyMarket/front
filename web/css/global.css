@@ -1172,6 +1172,8 @@ body {
 .wrapper-shops {
   height: 100%!important;
   position: absolute!important;
+  top: 0;
+  left: 0;
 }
 .wrapper-shops .content {
   height: 100%;
@@ -11775,8 +11777,13 @@ body.flex .wrapper.wrapper-smpl .content {
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
 }
-.content.shops.shop-detail {
-  height: auto;
+/*.content.shops.shop-detail{
+    height: auto;
+}*/
+section.map {
+  height: 100%;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 section.map .map-container {
   width: 100%;
@@ -11792,6 +11799,9 @@ section.map .map-container {
   width: 100%;
   max-height: 215px;
   margin-bottom: 10px;
+}
+.one-point__photoslider .photos__i img {
+  max-width: 100%;
 }
 .one-point__photoslider + .one-point__info {
   margin-left: 360px;
