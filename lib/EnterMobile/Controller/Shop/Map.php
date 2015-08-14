@@ -30,7 +30,7 @@ class Map {
         $renderer->setPartials([
             'content' => 'page/shops/map',
         ]);
-        $content = $renderer->render('layout/default-1511', $page);
+        $content = $renderer->render('layout/shops', $page);
 
 
         return new Http\Response($content);

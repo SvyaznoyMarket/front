@@ -58,13 +58,21 @@ body {
 }
 .noIOS{
     height: auto;
+    min-height: 100%;
 
     .wrapper{
         height: auto;
         overflow: visible;
     }
 }
-
+.wrapper-shops{
+    height: 100%!important;
+    position: absolute!important;
+    .content{
+        height: 100%;
+        .box-sizing(border-box);
+    }
+}
 /* Middle
 -----------------------------------------------------------------------------*/
 .content {

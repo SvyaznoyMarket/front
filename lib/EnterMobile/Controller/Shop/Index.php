@@ -30,7 +30,7 @@ class Index {
         $renderer->setPartials([
             'content' => 'page/shops/index',
         ]);
-        $content = $renderer->render('layout/default-1511', $page);
+        $content = $renderer->render('layout/shops', $page);
 
 
         return new Http\Response($content);

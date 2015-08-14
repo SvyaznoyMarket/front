@@ -30,7 +30,7 @@ class ShopCard {
         $renderer->setPartials([
             'content' => 'page/shops/card',
         ]);
-        $content = $renderer->render('layout/default-1511', $page);
+        $content = $renderer->render('layout/shops', $page);
 
 
         return new Http\Response($content);
