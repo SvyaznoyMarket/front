@@ -2,16 +2,17 @@
 
 namespace EnterAggregator\Controller\Cart {
 
-    use EnterAggregator\CurlTrait;
-    use EnterAggregator\LoggerTrait;
     use EnterMobile\ConfigTrait;
+    use EnterAggregator\CurlTrait;
+    use EnterAggregator\AbTestTrait;
+    use EnterAggregator\LoggerTrait;
     use EnterModel as Model;
     use EnterQuery as Query;
     use EnterRepository as Repository;
     use EnterAggregator\Controller\Cart\SetProductList\Response;
 
     class SetProductList {
-        use ConfigTrait, LoggerTrait, CurlTrait;
+        use ConfigTrait, CurlTrait, AbTestTrait, LoggerTrait;
 
         /**
          * @param SetProductList\Request $request
@@ -61,9 +62,10 @@ namespace EnterAggregator\Controller\Cart {
                 $descriptionListQueries[] = $descriptionListQuery;
             }
 
-            // запрос пользователя
-
             $curl->execute();
+
+            /** @var Query\Cart\SetQuantityForProductItem[] $setProductQueries */
+            $setProductQueries = [];
 
             // товары
             $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
@@ -90,10 +92,20 @@ namespace EnterAggregator\Controller\Cart {
                 $cartProduct->ui = $product->ui;
 
                 $cartRepository->setProductForObject($request->cart, $cartProduct);
+
+                if ($request->userUi && $this->getAbTest()->isCoreCartEnabled()) {
+                    $setProductQuery = new Query\Cart\SetQuantityForProductItem($cartProduct->ui, $cartProduct->quantity, $request->userUi);
+                    $curl->prepare($setProductQuery);
+                    $setProductQueries[] = $setProductQuery;
+                }
             }
 
             // сохранение корзины в сессию
             $cartRepository->saveObjectToHttpSession($request->session, $request->cart, $config->cart->sessionKey);
+
+            if ($setProductQueries) {
+                $curl->execute(null, 1);
+            }
 
             // запрос корзины
             $cartItemQuery = new Query\Cart\Price\GetItem($request->cart, $request->regionId);

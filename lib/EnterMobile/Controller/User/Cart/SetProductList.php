@@ -38,6 +38,17 @@ class SetProductList {
             throw new \Exception('Товары не получены');
         }
 
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+
+            $curl->execute();
+        }
+
+        // пользователь
+        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+
         // добавление товаров в корзину
         foreach ($cartProducts as $cartProduct) {
             // если у товара есть знак количества (+|-) ...
@@ -57,6 +68,7 @@ class SetProductList {
         $controllerRequest->session = $session;
         $controllerRequest->cart = $cart;
         $controllerRequest->cartProducts = $cartProducts;
+        $controllerRequest->userUi = $user ? $user->ui : null;
         $controllerResponse = $controller->execute($controllerRequest);
 
         $cart = $controllerResponse->cart;
@@ -64,15 +76,6 @@ class SetProductList {
 
         // удалить разбиение заказа
         $session->remove($config->order->splitSessionKey);
-
-        // запрос пользователя
-        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
-        if ($userItemQuery) {
-            $curl->prepare($userItemQuery)->execute();
-        }
-
-        // пользователь
-        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
         // страница
         $page = new Page();

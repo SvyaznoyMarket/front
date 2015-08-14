@@ -5,9 +5,10 @@ namespace EnterMobile\Controller\User\Cart;
 use Enter\Http;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
-use EnterAggregator\LoggerTrait;
 use EnterAggregator\SessionTrait;
 use EnterAggregator\RouterTrait;
+use EnterAggregator\AbTestTrait;
+use EnterAggregator\LoggerTrait;
 use EnterQuery as Query;
 use EnterMobile\Model;
 use EnterMobile\Routing;
@@ -15,7 +16,7 @@ use EnterMobile\Repository;
 use EnterMobile\Model\Page\User\Cart\SetProduct as Page;
 
 class DeleteProduct {
-    use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait, RouterTrait;
+    use ConfigTrait, CurlTrait, SessionTrait, RouterTrait, AbTestTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request
@@ -93,13 +94,6 @@ class DeleteProduct {
         // удалить разбиение заказа
         $session->remove($config->order->splitSessionKey);
 
-        // если корзина пустая
-        if (!count($cart)) {
-            return new Http\JsonResponse([
-                'redirect' => $this->getRouter()->getUrlByRoute(new Routing\Cart\Index()),
-            ]);
-        }
-
         // товар
         $product = (new \EnterRepository\Product())->getObjectByQuery($productItemQuery);
         if (!$product) {
@@ -107,6 +101,17 @@ class DeleteProduct {
             $product->id = $cartProduct->id;
 
             throw new \Exception(sprintf('Товар #%s не найден', $cartProduct->id));
+        }
+
+        // пользователь
+        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+
+        // серверная корзина
+        if ($user && $this->getAbTest()->isCoreCartEnabled()) {
+            $removeQuery = new Query\Cart\DeleteProductItem($product->ui, $user->ui);
+            $curl->prepare($removeQuery);
+
+            $curl->execute(null, 1);
         }
 
         // товары
@@ -121,8 +126,12 @@ class DeleteProduct {
             );
         }
 
-        // пользователь
-        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        // если корзина пустая
+        if (!count($cart)) {
+            return new Http\JsonResponse([
+                'redirect' => $this->getRouter()->getUrlByRoute(new Routing\Cart\Index()),
+            ]);
+        }
 
         $page = new Page();
         // кнопка купить
