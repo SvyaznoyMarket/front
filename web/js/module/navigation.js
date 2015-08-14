@@ -42,8 +42,10 @@ define(
             footerResize = function footerResize() {
                 var
                     footer = $('.footer');
-
-                footer.css('position', body.height() + footer.innerHeight() > $(window).height() ? 'inherit' : 'fixed');
+                if ( $('.content').height() + footer.innerHeight() < $(window).height() ){
+                    body.removeClass('noIOS');
+                    footer.css('position','fixed');
+                }
             },
             iOS = function iOS() {
 
@@ -55,7 +57,7 @@ define(
                 'iPhone',
                 'iPod'
             ];
-
+                console.info(navigator.platform);
             while (iDevices.length) {
                 if (navigator.platform === iDevices.pop()){ return true; }
             }
