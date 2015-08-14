@@ -240,6 +240,16 @@
       -ms-flex-flow: @flow;
           flex-flow: @flow;
 }
+// Flex Line Wrapping
+// - applies to: flex containers
+// nowrap | wrap | wrap-reverse
+.flex-wrap(@wrap: nowrap) {
+    -webkit-flex-wrap: @wrap;
+    -moz-flex-wrap: @wrap;
+    -ms-flex-wrap: @wrap;
+    flex-wrap: @wrap;
+}
+
 .flex_direction_column() {
     -webkit-box-orient: vertical;
     -webkit-flex-direction: column;
