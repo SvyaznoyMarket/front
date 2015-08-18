@@ -116,7 +116,7 @@ define(
 								.fadeIn()
 								.slick({
 									dots: true,
-									infinite: false,
+									infinite: true,
 									prevArrow: '.js-main-items-slider-btn-prev-' + current,
 									nextArrow: '.js-main-items-slider-btn-next-' + current,
 									responsive: [

@@ -549,7 +549,7 @@ class Delivery {
                                 'isActive'    =>
                                     $orderModel->paymentMethodId
                                     ? ($orderModel->paymentMethodId == $paymentMethodModel->id)
-                                    : ('1' == $paymentMethodModel->id)
+                                    : false
                                 ,
                                 'dataValue'   => $templateHelper->json([
                                     'change' => [
@@ -569,8 +569,14 @@ class Delivery {
                         }
                     }
 
-                    if ($paymentMethod = reset($paymentMethods)) {
-                        $paymentMethod['isActive'] = true;
+                    if (
+                        isset($paymentMethods[0])
+                        && (
+                            !$orderModel->paymentMethodId
+                            || (1 === count($paymentMethods))
+                        )
+                    ) {
+                        $paymentMethods[0]['isActive'] = true;
                     }
 
                     return $paymentMethods;
