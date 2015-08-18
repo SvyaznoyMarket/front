@@ -84,6 +84,15 @@ namespace EnterMobileApplication\Controller\User {
                 return in_array($coupon->seriesId, $couponSeriesIds, true) && time() < strtotime($coupon->endAt);
             }));
 
+            // срезы для серий купонов
+            $sliceTokensBySeriesId = [];
+            foreach ($response->couponSeries as $couponSeries) {
+                if ($couponSeries->productSegment->url && preg_match('/\/slices\/([\w\d-_]+)/', $couponSeries->productSegment->url, $matches)) {
+                    if (empty($matches[1])) continue;
+                    $sliceTokensBySeriesId[$couponSeries->id] = $matches[1];
+                }
+            }
+
             if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
 
             return new Http\JsonResponse($response);

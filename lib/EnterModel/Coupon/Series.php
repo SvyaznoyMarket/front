@@ -25,6 +25,8 @@ namespace EnterModel\Coupon {
         public $isForMember;
         /** @var bool */
         public $isForNotMember;
+        /** @var Model\Product\Slice|null */
+        public $slice;
 
         /**
          * @param array $data
