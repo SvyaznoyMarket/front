@@ -1158,8 +1158,16 @@ body {
         -webkit-transform: translate3d(0,0,0);
     }*/
 }
+.wrapper-smpl {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.wrapper-smpl > * {
+  -webkit-transform: translate3d(0, 0, 0);
+}
 .wrapper-smpl .content {
-  padding-bottom: 27px;
+  padding-bottom: 0px;
 }
 .noIOS {
   height: auto;
@@ -1169,6 +1177,9 @@ body {
   height: auto;
   min-height: 100%;
   overflow: visible;
+}
+.noIOS .header {
+  position: fixed;
 }
 /* Middle
 -----------------------------------------------------------------------------*/
@@ -1232,7 +1243,7 @@ body {
     }*/
 }
 .header {
-  position: fixed;
+  position: absolute;
   z-index: 1010;
   top: 0;
   left: 0;

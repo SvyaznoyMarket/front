@@ -42,7 +42,7 @@ define(
             footerResize = function footerResize() {
                 var
                     footer = $('.footer');
-                if ( $('.content').height() + footer.innerHeight() < $(window).height() ){
+                if ( $('.content').height() + footer.innerHeight() + $('.header').height()< $(window).height() ){
                     body.removeClass('noIOS');
                     footer.css('position','fixed');
                 }

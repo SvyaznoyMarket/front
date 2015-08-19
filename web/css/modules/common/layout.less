@@ -45,9 +45,15 @@ body {
     -webkit-overflow-scrolling: touch;
 
     &-smpl {
+        position: absolute;
+        top:0;
+        left:0;
+        & > * {
+            -webkit-transform: translate3d(0,0,0);
+        }
 
         .content {
-            padding-bottom: 27px;
+            padding-bottom: 0px;
         }
     }
 // fix scrolling bug on android
@@ -64,6 +70,9 @@ body {
         height: auto;
         min-height: 100%;
         overflow: visible;
+    }
+    .header{
+        position: fixed;
     }
 }
 
