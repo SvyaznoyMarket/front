@@ -668,7 +668,6 @@ textarea[contenteditable] {
   margin: 0 0 15px;
   padding-left: 10px;
   border: 1px solid #9f9f9f;
-  line-height: 35px;
 }
 .textfield-err {
   border-color: #ec434f;
@@ -7310,6 +7309,7 @@ body {
 .logCnt {
   max-width: 320px;
   margin: 0 auto;
+  -webkit-transform: translate3d(0, 0, 0);
 }
 .formReg_field {
   position: relative;

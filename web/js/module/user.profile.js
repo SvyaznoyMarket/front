@@ -69,10 +69,12 @@ define(
             var selected = $(this).find("input:focus");
             selected.blur();
         });
+        /*
+        //докрутка к выбранному полю - работает ужасно на ios7
         $(".private section").find('input').on('focus',function(){
             var scroll = $(this).offset().top;
             $(this).scrollTop(scroll);
-        });
+        });*/
 
 
     }
