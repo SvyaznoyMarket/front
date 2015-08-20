@@ -23,41 +23,7 @@ namespace EnterMobileApplication\Controller\User {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
-            $config = $this->getConfig();
-            $curl = $this->getCurl();
-            $session = $this->getSession();
-
-            // ответ
-            $response = new Response();
-
-            $username = is_scalar($request->data['username']) ? trim((string)$request->data['username']) : null;
-            if (!$username) {
-                throw new \Exception('Не передан username', Http\Response::STATUS_BAD_REQUEST);
-            }
-
-            $isEmailAuth = strpos($username, '@');
-            try {
-                $resetQuery =
-                    $isEmailAuth
-                        ? new Query\User\ResetPasswordByEmail($username)
-                        : new Query\User\ResetPasswordByPhone($username)
-                ;
-                $resetQuery->setTimeout(2 * $config->coreService->timeout);
-                $curl->query($resetQuery);
-
-                $result = $resetQuery->getResult();
-
-                $response->success = isset($result['confirmed']) && $result['confirmed'];
-            } catch (\Exception $e) {
-                if ($config->debugLevel) $this->getDebugContainer()->error = $e;
-
-                $response->success = false;
-                $response->errors = $this->getErrorsByException($e);
-            }
-
-            if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
-
-            return new Http\JsonResponse($response, (bool)$response->errors ? Http\Response::STATUS_BAD_REQUEST : Http\Response::STATUS_OK);
+            return new Http\JsonResponse([]);
         }
     }
 }

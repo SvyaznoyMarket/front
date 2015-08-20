@@ -18,17 +18,17 @@ namespace EnterMobileApplication\Controller\Region {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
-            $curl = $this->getCurl();
-
-            // ответ
-            $response = new Response();
-
-            $regionListQuery = new Query\Region\GetMainList();
-            $curl->prepare($regionListQuery)->execute();
-
-            $response->regions = (new \EnterRepository\Region())->getObjectListByQuery($regionListQuery);
-
-            return new Http\JsonResponse($response);
+            return new Http\JsonResponse(['regions' => [
+                "id" => "14974",
+                "ui" => null,
+                "parentId" => "82",
+                "name" => "Москва",
+                "token" => "moskva-g",
+                "latitude" => 55.75578355133,
+                "longitude" => 37.617773222432,
+                "transportCompanyAvailable" => null,
+                "parent" => null
+            ]]);
         }
     }
 }
