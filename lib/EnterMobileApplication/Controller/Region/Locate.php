@@ -18,42 +18,19 @@ namespace EnterMobileApplication\Controller\Region {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
-            $config = $this->getConfig();
-            $curl = $this->getCurl();
-
-            // ответ
-            $response = new Response();
-
-            $ip = is_scalar($request->query['ip']) ? trim((string)$request->query['ip']) : null;
-
-            $latitude = is_scalar($request->query['latitude']) ? trim((string)$request->query['latitude']) : null;
-            $longitude = is_scalar($request->query['longitude']) ? trim((string)$request->query['longitude']) : null;
-
-            if (!$ip && (!$latitude || !$longitude)) {
-                throw new \Exception('Не передан ip или параметры latitude и longitude', Http\Response::STATUS_BAD_REQUEST);
-            }
-
-            $limit = (int)$request->query['limit'] ?: 10;
-            if ($limit > 100) {
-                $limit = 100;
-            }
-
-            $regionListQuery = $ip ? new Query\Region\GetListByIp($ip) : new Query\Region\GetListByCoordinates($latitude, $longitude);
-            $regionListQuery->setTimeout($config->coreService->timeout * 1.5);
-            $curl->prepare($regionListQuery)->execute();
-
-            $i = 0;
-            foreach ($regionListQuery->getResult() as $regionItem) {
-                if ($i >= $limit) break;
-
-                $region = new Model\Region($regionItem);
-
-                $response->regions[] = $region;
-
-                $i++;
-            }
-
-            return new Http\JsonResponse($response);
+            return new Http\JsonResponse(['regions' => [
+                [
+                    "id" => "14974",
+                    "ui" => null,
+                    "parentId" => "82",
+                    "name" => "Москва",
+                    "token" => "moskva-g",
+                    "latitude" => 55.75578355133,
+                    "longitude" => 37.617773222432,
+                    "transportCompanyAvailable" => null,
+                    "parent" => null
+                ]
+            ]]);
         }
     }
 }

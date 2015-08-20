@@ -21,77 +21,7 @@ namespace EnterMobileApplication\Controller\User {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
-            $config = $this->getConfig();
-            $curl = $this->getCurl();
-            //$session = $this->getSession();
-
-            // ответ
-            $response = new Response();
-
-            $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
-            if (!$token) {
-                throw new \Exception('Не указан token', Http\Response::STATUS_BAD_REQUEST);
-            }
-            $response->token = $token;
-
-            $subscribeData = (array)$request->data['subscribes'];
-            if (!(bool)$subscribeData) {
-                throw new \Exception('Не указано свойство subscribes', Http\Response::STATUS_BAD_REQUEST);
-            }
-
-            /** @var Model\Subscribe[] $subscribes */
-            $subscribes = [];
-            foreach ($subscribeData as $i => $subscribeItem) {
-                $subscribe = new Model\Subscribe();
-
-                // channelId
-                if (!array_key_exists('channelId', $subscribeItem)) {
-                    throw new \Exception(sprintf('Не указано свойство channelId у %s-й подписки', $i + 1), Http\Response::STATUS_BAD_REQUEST);
-                }
-                $subscribe->channelId = (string)$subscribeItem['channelId'];
-
-                // type
-                if (!array_key_exists('type', $subscribeItem)) {
-                    throw new \Exception(sprintf('Не указано свойство type у %s-й подписки', $i + 1), Http\Response::STATUS_BAD_REQUEST);
-                }
-                $subscribe->type = (string)$subscribeItem['type'];
-
-                // email
-                if (('email' == $subscribe->type) && !array_key_exists('email', $subscribeItem)) {
-                    throw new \Exception(sprintf('Не указано свойство email у %s-й подписки', $i + 1), Http\Response::STATUS_BAD_REQUEST);
-                }
-                $subscribe->email = (string)$subscribeItem['email'];
-
-                // isConfirmed
-                if (!array_key_exists('isConfirmed', $subscribeItem)) {
-                    throw new \Exception(sprintf('Не указано свойство isConfirmed у %s-й подписки', $i + 1), Http\Response::STATUS_BAD_REQUEST);
-                }
-                $subscribe->isConfirmed = (bool)$subscribeItem['isConfirmed'];
-
-                $subscribes[] = $subscribe;
-            }
-
-            // подготовка сохранения подписок
-            $setSubscribeQuery = new Query\Subscribe\SetListByUserToken($token, $subscribes);
-            $setSubscribeQuery->setTimeout(4 * $config->coreService->timeout);
-            $curl->prepare($setSubscribeQuery);
-
-            $curl->execute();
-
-            try {
-                $setSubscribeQuery->getResult();
-            } catch (\Exception $e) {
-                // костыль для ядра
-                if (402 == $e->getCode()) {
-                    $e = new \Exception('Пользователь неавторизован', 401);
-                }
-
-                throw $e;
-            }
-
-            if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
-
-            return new Http\JsonResponse($response);
+            return new Http\JsonResponse([]);
         }
     }
 }

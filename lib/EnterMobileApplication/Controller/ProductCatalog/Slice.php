@@ -20,168 +20,17 @@ class Slice {
      * @return Http\Response
      */
     public function execute(Http\Request $request) {
-        $config = $this->getConfig();
-        $curl = $this->getCurl();
-        $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME!!!
-
-        // ид региона
-        $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
-        if (!$regionId) {
-            throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
-        }
-
-        // токен среза
-        $sliceToken = trim((string)$request->query['sliceId']);
-        if (!$sliceToken) {
-            throw new \Exception('Не указан параметр sliceId', Http\Response::STATUS_BAD_REQUEST);
-        }
-
-        // ид категории
-        $categoryId = trim((string)$request->query['categoryId']);
-
-        // номер страницы
-        $pageNum = (int)$request->query['page'] ?: 1;
-
-        $limit = (int)$request->query['limit'];
-        if ($limit < 1) {
-            throw new \Exception('limit не должен быть меньше 1', Http\Response::STATUS_BAD_REQUEST);
-        }
-        if ($limit > 40) {
-            throw new \Exception('limit не должен быть больше 40', Http\Response::STATUS_BAD_REQUEST);
-        }
-
-        // сортировка
-        $sorting = null;
-        if (!empty($request->query['sort']['token']) && !empty($request->query['sort']['direction'])) {
-            $sorting = new Model\Product\Sorting();
-            $sorting->token = trim((string)$request->query['sort']['token']);
-            $sorting->direction = trim((string)$request->query['sort']['direction']);
-        }
-
-        // запрос среза
-        $sliceItemQuery = new Query\Product\Slice\GetItemByToken($sliceToken);
-        $curl->prepare($sliceItemQuery);
-
-        $curl->execute();
-
-        // срез
-        $slice = (new \EnterRepository\Product\Slice())->getObjectByQuery($sliceItemQuery);
-        if (!$slice) {
-            return (new Controller\Error\NotFound())->execute($request, sprintf('Срез товаров @%s не найден', $sliceToken));
-        }
-
-        // фильтры в http-запросе и настройках среза
-        $baseRequestFilters = (new \EnterMobile\Repository\Product\Filter())->getRequestObjectListByHttpRequest(new Http\Request($slice->filters)); // FIXME !!!
-        // AG-43: если выбрана категория, то удялять замороженные фильтры-категории
-        if ($categoryId) {
-            foreach ($baseRequestFilters as $i => $baseRequestFilter) {
-                if ('category' == $baseRequestFilter->token) {
-                    unset($baseRequestFilters[$i]);
-                }
-            }
-        }
-
-        $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
-
-        $context = new Context\ProductCatalog();
-        $context->mainMenu = false;
-        $context->parentCategory = false;
-        $context->branchCategory = false;
-        $context->productOnlyForLeafCategory = true;
-        $controllerResponse = (new \EnterAggregator\Controller\ProductList())->execute(
-            $regionId,
-            $categoryId ? ['id' => $categoryId] : [], // критерий получения категории товара
-            $pageNum, // номер страницы
-            $limit, // лимит
-            $sorting, // сортировка
-            $filterRepository, // репозиторий фильтров
-            $baseRequestFilters,
-            $requestFilters, // фильтры в http-запросе
-            $context
-        );
-
-        // категория
-        if ($categoryId && !$controllerResponse->category) {
-            if ($config->region->defaultId != $regionId) {
-                $categoryItemQuery = new Query\Product\Category\GetItemById($categoryId, $config->region->defaultId);
-                $curl->prepare($categoryItemQuery)->execute();
-
-                if ($categoryItemQuery->getResult()) {
-                    return (new Controller\Error\NotFoundInRegion())->execute($request, 'Нет товаров в вашем регионе');
-                }
-            }
-
-            return (new Controller\Error\NotFound())->execute($request, sprintf('Категория товара #%s не найдена', $categoryId));
-        }
-
-        // список категорий
-        // FIXME !!!
-        $baseRequestFilters = (new \EnterMobile\Repository\Product\Filter())->getRequestObjectListByHttpRequest(new Http\Request($slice->filters)); // FIXME !!!
-        $categoryListQuery = new Query\Product\Category\GetTreeList(
-            $controllerResponse->region->id,
-            null,
-            $filterRepository->dumpRequestObjectList($baseRequestFilters),
-            $controllerResponse->category ? $controllerResponse->category->id : null
-        );
-        $curl->prepare($categoryListQuery)->execute();
-
-        /** @var Model\Product\Category[] $categories */
-        $categories = [];
-        try {
-            $categoryListResult = $categoryListQuery->getResult();
-
-            $children =
-                $categoryId
-                ? (
-                    isset($categoryListResult[0]['children'][0])
-                    ? $categoryListResult[0]['children']
-                    : []
-                )
-                : (
-                    isset($categoryListResult[0])
-                    ? $categoryListResult
-                    : []
-                )
-            ;
-            foreach ($children as $categoryItem) {
-                if (!isset($categoryItem['uid'])) continue;
-
-                $categories[] = new Model\Product\Category($categoryItem);
-            }
-        } catch(\Exception $e) {
-            // TODO
-        }
-
-        // ответ
-        $response = [
+        return new Http\JsonResponse([
             'slice'        => [
-                'token' => $slice->token,
-                'name'  => $slice->name,
+                'token' => '',
+                'name'  => '',
             ],
-            'category'     => $controllerResponse->category ? [
-                'id'           => $controllerResponse->category->id,
-                'name'         => $controllerResponse->category->name,
-                'image'        => $controllerResponse->category->image,
-                'productCount' => $controllerResponse->category->productCount,
-                'hasChildren'  => $controllerResponse->category->hasChildren,
-            ] : null,
-            'categories'   => array_map(function(Model\Product\Category $category) {
-                return [
-                    'id'           => $category->id,
-                    'name'         => $category->name,
-                    'image'        => $category->image,
-                    'productCount' => $category->productCount,
-                    'hasChildren'  => $category->hasChildren,
-                ];
-            }, $categories),
-        ];
-        if ($controllerResponse->productUiPager) {
-            $response['productCount'] = $controllerResponse->productUiPager->count;
-            $response['products'] = $this->getProductList($controllerResponse->products);
-            $response['filters'] = $this->getFilterList($controllerResponse->filters);
-            $response['sortings'] = $this->getSortingList($controllerResponse->sortings);
-        }
-
-        return new Http\JsonResponse($response);
+            'category'     => null,
+            'categories'   => [],
+            'productCount' => 0,
+            'products' => [],
+            'filters' => [],
+            'sortings' => [],
+        ]);
     }
 }

@@ -18,32 +18,7 @@ namespace EnterMobileApplication\Controller {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
-            $config = $this->getConfig();
-            $curl = $this->getCurl();
-
-            $shopId = trim((string)$request->query['shopId']);
-            if (!$shopId) {
-                throw new \Exception('Не указан параметр shopId', Http\Response::STATUS_BAD_REQUEST);
-            }
-
-            // запрос магазина
-            $shopItemQuery = new Query\Shop\GetItemById($shopId);
-            $curl->prepare($shopItemQuery);
-
-            $curl->execute();
-
-            // магазин
-            $shop = (new \EnterRepository\Shop())->getObjectByQuery($shopItemQuery);
-
-            if ($shop) {
-                $shop->description = strip_tags($shop->description);
-            }
-
-            // ответ
-            $response = new Response();
-            $response->shop = $shop;
-
-            return new Http\JsonResponse($response);
+            return new Http\JsonResponse([]);
         }
     }
 }
