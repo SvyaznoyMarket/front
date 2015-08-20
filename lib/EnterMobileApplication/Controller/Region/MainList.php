@@ -19,15 +19,17 @@ namespace EnterMobileApplication\Controller\Region {
          */
         public function execute(Http\Request $request) {
             return new Http\JsonResponse(['regions' => [
-                "id" => "14974",
-                "ui" => null,
-                "parentId" => "82",
-                "name" => "Москва",
-                "token" => "moskva-g",
-                "latitude" => 55.75578355133,
-                "longitude" => 37.617773222432,
-                "transportCompanyAvailable" => null,
-                "parent" => null
+                [
+                    "id" => "14974",
+                    "ui" => null,
+                    "parentId" => "82",
+                    "name" => "Москва",
+                    "token" => "moskva-g",
+                    "latitude" => 55.75578355133,
+                    "longitude" => 37.617773222432,
+                    "transportCompanyAvailable" => null,
+                    "parent" => null
+                ]
             ]]);
         }
     }

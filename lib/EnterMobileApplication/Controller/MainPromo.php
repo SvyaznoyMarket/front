@@ -20,39 +20,26 @@ namespace EnterMobileApplication\Controller {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
-            $curl = $this->getCurl();
-
-            $promoRepository = new \EnterRepository\Promo();
-
-            // ид региона
-            $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
-            if (!$regionId) {
-                throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
-            }
-
-            // запрос региона
-            $regionQuery = new Query\Region\GetItemById($regionId);
-            $curl->prepare($regionQuery);
-
-            $curl->execute();
-
-            // регион
-            $region = (new Repository\Region())->getObjectByQuery($regionQuery);
-
-            // запрос баннеров
-            $promoListQuery = new Query\Promo\GetList($region->id);
-            $curl->prepare($promoListQuery);
-
-            $curl->execute();
-
-            // баннеры
-            $promos = $promoRepository->getObjectListByQuery($promoListQuery);
-
-            // ответ
-            $response = new Response();
-            $response->promos = $promos;
-
-            return new Http\JsonResponse($response);
+            return new Http\JsonResponse([
+                "promos" => [
+                    [
+                        "id" => "1953",
+                        "type" => "Content",
+                        "name" => "Обнови приложение!",
+                        "url" => "http://www.enter.ru/mobile_apps",
+                        "image" => "d3/431416.jpg",
+                        "items" => [
+                            [
+                                "typeId" => 4,
+                                "productId" => null,
+                                "sliceId" => null,
+                                "productCategoryId" => null,
+                                "contentToken" => "mobile_apps"
+                            ]
+                        ]
+                    ]
+                ]
+            ]);
         }
     }
 }
