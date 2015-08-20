@@ -138,7 +138,7 @@ namespace EnterMobileApplication\Controller {
                 'nearestDeliveries' => is_array($controllerResponse->product->nearestDeliveries) ? array_map(function(\EnterModel\Product\NearestDelivery $nearestDelivery) {
                     return [
                         'id' => $nearestDelivery->id,
-                        'token' => $nearestDelivery->token === 'standart' ? $nearestDelivery->token : 'self',
+                        'token' => $nearestDelivery->token === 'standart' ? $nearestDelivery->token : 'self', // MAPI-101
                         'productId' => $nearestDelivery->productId,
                         'price' => $nearestDelivery->price,
                         'shopsById' => $nearestDelivery->shopsById,
