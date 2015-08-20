@@ -20,43 +20,20 @@ namespace EnterMobileApplication\Controller {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
-            $config = $this->getConfig();
-            $curl = $this->getCurl();
-
-            // ид региона
-            $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
-            if (!$regionId) {
-                throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
-            }
-
-            // запрос региона
-            $regionQuery = new Query\Region\GetItemById($regionId);
-            $curl->prepare($regionQuery);
-
-            $curl->execute();
-
-            // регион
-            $region = (new Repository\Region())->getObjectByQuery($regionQuery);
-
-            // запрос дерева категорий для меню
-            $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(0);
-            $curl->prepare($categoryTreeQuery);
-
-            // запрос меню
-            $mainMenuQuery = new Query\MainMenu\GetItem();
-            $curl->prepare($mainMenuQuery);
-
-            $curl->execute();
-
-            // меню
-            $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
-
-            // ответ
-            $response = new Response();
-            $response->region = $region;
-            $response->mainMenu = $mainMenu;
-
-            return new Http\JsonResponse($response);
+            return new Http\JsonResponse([
+                'region' => [
+                    "id" => "14974",
+                    "ui" => null,
+                    "parentId" => "82",
+                    "name" => "Москва",
+                    "token" => "moskva-g",
+                    "latitude" => 55.7558,
+                    "longitude" => 37.6178,
+                    "transportCompanyAvailable" => false,
+                    "parent" => null
+                ],
+                'mainMenu' => ['elements' => []],
+            ]);
         }
     }
 }
