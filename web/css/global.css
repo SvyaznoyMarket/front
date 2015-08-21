@@ -10828,6 +10828,9 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   -webkit-transform: translateZ(0px);
   -webkit-transform: translate3d(0, 0, 0);
 }
+.snapjs-left .private section {
+  overflow: hidden;
+}
 .p-control {
   height: 34px;
   -webkit-box-sizing: border-box;
