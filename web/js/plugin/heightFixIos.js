@@ -14,6 +14,7 @@ define(
                 var wh = $(window).height(),
                     ww = $(window).width();
                 document.documentElement.style.height = window.innerHeight + "px";
+                $('body').removeAttr('style');
 
                 if (document.body.scrollTop !== 0) {
                     window.scrollTo(0, 0);
