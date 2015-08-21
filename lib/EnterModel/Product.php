@@ -63,7 +63,7 @@ namespace EnterModel {
         public $oldPrice;
         /** @var Model\Product\Label[] */
         public $labels = [];
-        /** @var Model\MediaList|null */
+        /** @var Model\MediaList */
         public $media;
         /** @var Model\Product\Rating|null */
         public $rating;
