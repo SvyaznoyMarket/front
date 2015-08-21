@@ -62,14 +62,16 @@ class Complete {
 
         /** @var Model\Order[] $orders */
         $orders = [];
+        /** @var Model\PaymentMethod[] $onlinePaymentMethodsById */
+        $onlinePaymentMethodsById = [];
+        /** @var array $orderData */
+        $orderData = ($session->get($config->order->sessionName) ?: []) + [
+            'updatedAt'            => null,
+            'expired'              => null,
+            'isCompletePageReaded' => false,
+            'orders'               => [],
+        ];
         try {
-            $orderData = ($session->get($config->order->sessionName) ?: []) + [
-                'updatedAt' => null,
-                'expired'   => null,
-                'isCompletePageReaded' => false,
-                'orders'    => [],
-            ];
-
             $session->set($config->order->sessionName, array_merge($orderData, ['isCompletePageReaded' => true]));
 
             $pointUis = [];
@@ -95,8 +97,6 @@ class Complete {
                 //return (new \EnterAggregator\Controller\Redirect())->execute($router->getUrlByRoute(new Routing\Cart\Index()), 302);
             }
 
-            /** @var Model\PaymentMethod[] $onlinePaymentMethodsById */
-            $onlinePaymentMethodsById = [];
             try {
                 // дополнение точками самовывоза
                 $pointListQuery = null;
