@@ -16,7 +16,7 @@ require.config({
         //'jquery'            : 'vendor/jquery-1.11.0',
         'jquery'                : ['http://yandex.st/jquery/1.8.3/jquery', 'vendor/jquery-1.8.3'],
         'jquery.cookie'         : 'vendor/jquery/jquery.cookie-1.4.1',
-        'jquery.ui'             : 'vendor/jquery/jquery.ui-1.10.4.custom',
+        'jquery.ui'             : 'vendor/jquery/jquery-ui',
         'jquery.ui.touch-punch' : 'vendor/jquery/jquery.ui.touch-punch-0.2.3',
         'jquery.popup'          : 'plugin/jquery.popup',
         'jquery.modal'          : 'plugin/jquery.modal',
@@ -30,14 +30,12 @@ require.config({
         'jquery.smartbanner'    : 'plugin/jquery.smartbanner',
         'jquery.slick'          : 'plugin/slick.min',
         'jquery.kladr'          : 'plugin/jquery.kladr',
+        'heightFixIos'          : 'plugin/heightFixIos',
 
         'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
         'mustache'           : 'vendor/mustache-0.8.2',
         'modernizr'          : 'vendor/modernizr.custom',
         'boilerplate.helper' : 'vendor/boilerplate.helper-4.1.0',
-
-        'browserstate.history'         : 'vendor/browserstate.history-1.8b2',
-        'browserstate.history.adapter' : 'vendor/browserstate.history.adapter.jquery-1.8b2',
 
         'yandexmaps' : (debug) ? 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=debug' : 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=release',
 
@@ -94,11 +92,6 @@ require.config({
         },
         'modernizr': [],
         'boilerplate.helper': [],
-
-        'browserstate.history': [],
-        'browserstate.history.adapter': {
-            deps: ['browserstate.history', 'jquery']
-        },
 
         'yandexmaps': {
             exports: 'ymaps'

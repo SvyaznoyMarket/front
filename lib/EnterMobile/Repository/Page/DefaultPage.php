@@ -47,6 +47,9 @@ class DefaultPage {
 
         $page->dataModule = 'default';
 
+        $castedRequest = (array)$request;
+        $productId = (isset($castedRequest['product'])) ? $castedRequest['product']->id : null;
+
         // body[data-value]
         $page->dataConfig = $templateHelper->json([
             'requestId' => $this->getRequestId(),
@@ -82,6 +85,7 @@ class DefaultPage {
                 ]
                 : null
             ,
+            'productId' => $productId
         ]);
 
         $page->dataUser = $templateHelper->json($request->user ? [
@@ -106,9 +110,6 @@ class DefaultPage {
         // Виджеты, выполняемые при загрузке страницы
         call_user_func(function() use($page, $request, $templateHelper) {
             $dataWidget = [];
-
-            $userBlock = (new Repository\Partial\UserBlock())->getObject($request->cart, $request->user);
-            $dataWidget['.' . $userBlock->widgetId] = $userBlock;
 
             foreach ($request->cart->product as $cartProduct) {
                 $product = $cartProduct->product ?: new \EnterModel\Product(['id' => $cartProduct->id]);
@@ -204,9 +205,7 @@ class DefaultPage {
         $page->mainMenu = $request->mainMenu;
 
         // пользователь
-        $page->userBlock->isUserAuthorized = false;
-        $page->userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Login());
-        $page->userBlock->cart->url = $router->getUrlByRoute(new Routing\Cart\Index());
+        $page->userBlock = (new Repository\Partial\UserBlock())->getObject($request->cart, $request->user);
 
         // ga
         $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$templateHelper) {
@@ -222,6 +221,28 @@ class DefaultPage {
         };
         if ($request->mainMenu) {
             $walkByMenu($request->mainMenu->elements);
+        }
+
+        $serviceElements = [];
+        if ($page->mainMenu) {
+            if ($request->user) {
+                foreach ($request->mainMenu->serviceElements as $key => $serviceElement) {
+                    if ($key != 'user') {
+                        $serviceElements[] = $serviceElement;
+                        continue;
+                    }
+
+                    $request->mainMenu->serviceElements[$key]['name'] = $request->user->firstName.' '.$request->user->lastName;
+                    $request->mainMenu->serviceElements[$key]['iconClass'] = ($request->user->isEnterprizeMember) ? 'nav-icon--lk-ep' : 'nav-icon--lk-log';
+                    $serviceElements[] = $request->mainMenu->serviceElements[$key];
+                }
+            } else {
+                foreach ($request->mainMenu->serviceElements as $key => $serviceElement) {
+                    $serviceElements[] = $request->mainMenu->serviceElements[$key];
+                }
+            }
+
+            $page->mainMenu->serviceElements = $serviceElements;
         }
 
         // partner
@@ -258,5 +279,6 @@ class DefaultPage {
                 'name' => 'partial/modalWindow',
             ],
         ]);
+
     }
 }

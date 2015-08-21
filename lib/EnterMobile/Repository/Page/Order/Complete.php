@@ -89,7 +89,7 @@ class Complete {
                         }
 
                         $delivery = [
-                            'type' =>
+                            'type'     =>
                                 $deliveryModel->type
                                 ? [
                                     'name'  => $deliveryModel->type->shortName,
@@ -97,10 +97,10 @@ class Complete {
                                 ]
                                 : false
                             ,
-                            'date' =>
+                            'date'     =>
                                 $date
                                 ? [
-                                    'name' => $dateHelper->dateToRu($date),
+                                    'name' => $date->format('d.m.Y'),
                                 ]
                                 : false
                             ,
@@ -118,6 +118,7 @@ class Complete {
                     ]
                     : false
                 ,
+                'address'   => !$orderModel->point ? $orderModel->address : false,
                 'point'     => call_user_func(function() use (&$orderModel, &$pointRepository) {
                     if (!$pointModel = $orderModel->point) {
                         return false;
@@ -128,7 +129,7 @@ class Complete {
                             'name'  => $pointRepository->getGroupNameByType($pointModel->type),
                             'value' => $pointModel->type,
                         ],
-                        'icon'      => $pointRepository->getIconByType($pointModel->type),
+                        'icon'    => $pointRepository->getIconByType($pointModel->type),
                         'address' => $pointModel->address,
                         'subway'  =>
                             $pointModel->subway
@@ -158,8 +159,9 @@ class Complete {
                             'id'       => $productModel->id,
                             'quantity' => $productModel->quantity,
                             'sum'      => $productModel->sum,
-                            'name'     => isset($productModel->name) ? $productModel->name : null,
-                            'link'     => isset($productModel->link) ? $productModel->link : null,
+                            'article'  => $productModel->article,
+                            'name'     => $productModel->name,
+                            'link'     => $productModel->link,
                             'isHidden' => $i > 2,
                         ];
                     }
@@ -186,7 +188,7 @@ class Complete {
                     ;
                 }),
                 'onlinePayment' => call_user_func(function() use (&$orderModel, &$onlinePaymentMethodModelsById, $onlinePaymentMethodsById) {
-                    if (!count($onlinePaymentMethodModelsById)) {
+                    if (!count($onlinePaymentMethodModelsById) || !count($orderModel->paymentMethods)) {
                         return false;
                     }
 
@@ -226,6 +228,34 @@ class Complete {
             $page->content->orders[] = $order;
         }
         $page->content->isSingleOrder = 1 === count($request->orders);
+
+        if (!$request->isCompletePageReaded) {
+            $page->content->dataGoogleAnalyticOrders = $templateHelper->json(array_map(function(\EnterModel\Order $orderModel) {
+                return [
+                    'number' => $orderModel->numberErp,
+                    'isPartner' => $orderModel->isPartner,
+                    'paySum' => $orderModel->paySum,
+                    'delivery' => [
+                        'price' => isset($orderModel->deliveries[0]) ? $orderModel->deliveries[0]->price : '',
+                    ],
+                    'region' => [
+                        'name' => $orderModel->region->name,
+                    ],
+                    'products' => array_map(function (\EnterModel\Order\Product $product) {
+                        return [
+                            'id' => $product->id,
+                            'name' => $product->name,
+                            'article' => $product->article,
+                            'categories' => $product->category ? call_user_func($self = function (\EnterModel\Product\Category $category) use (&$self) {
+                                return array_merge($category->parent ? $self($category->parent) : [], [['name' => $category->name]]);
+                            }, $product->category) : [],
+                            'price' => $product->price,
+                            'quantity' => $product->quantity,
+                        ];
+                    }, $orderModel->product),
+                ];
+            }, $request->orders));
+        }
 
         // заголовок
         $page->title = 'Оформление заказа - Завершение - Enter';

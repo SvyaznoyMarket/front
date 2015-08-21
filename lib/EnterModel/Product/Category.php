@@ -67,6 +67,20 @@ namespace EnterModel\Product {
             if (isset($data['meta_keywords'])) $this->meta->keywords = (string)$data['meta_keywords'];
             if (isset($data['meta_description'])) $this->meta->description = (string)$data['meta_description'];
         }
+
+        /**
+         * @param array $data
+         */
+        public function fromArray(array $data) {
+            if (isset($data['id'])) $this->id = (string)$data['id'];
+            if (isset($data['ui'])) $this->ui = (string)$data['ui'];
+            if (isset($data['name'])) $this->name = (string)$data['name'];
+            if (isset($data['link'])) $this->link = (string)$data['link'];
+            if (isset($data['parent'])) {
+                $this->parent = new Model\Product\Category();
+                $this->parent->fromArray($data['parent']);
+            }
+        }
     }
 }
 

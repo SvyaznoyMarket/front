@@ -80,7 +80,7 @@ body {
     margin: 0;
 }
 
-body > * { 
+body > * {
     white-space: 0;
 }
 
@@ -97,7 +97,7 @@ a {
 }
 
 a:focus {
-    outline: thin dotted;
+    outline: 0;
 }
 
 /**
@@ -180,6 +180,11 @@ pre,
 samp {
     font-family: monospace, serif;
     font-size: 1em;
+}
+
+a, p, abbr, sub, sup, small, mark, span, h1, h2, h3, h4, h5, h6, input, button, li, ul {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
 }
 
 /**
@@ -312,9 +317,9 @@ input {
     line-height: normal;
 }
 
-input[type="text"], 
-input[type="email"], 
-input[type="search"], 
+input[type="text"],
+input[type="email"],
+input[type="search"],
 input[type="password"] {
 
   -webkit-appearance: none;

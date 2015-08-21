@@ -22,6 +22,21 @@ namespace EnterMobile\Model\Page\Index {
     class Content extends Page\DefaultPage\Content {
         /** @var string */
         public $promoDataValue;
+        /** @var array */
+        public $promos;
+        /** @var Partial\ProductSlider|null */
+        public $popularSlider;
+        /** @var Partial\ProductSlider|null */
+        public $personalSlider;
+        /** @var Partial\ProductSlider|null */
+        public $viewedSlider;
+        /** @var array */
+        public $popularBrands = [];
+        /**
+         * Главное меню выше рекомендаций MSITE-489
+         * @var bool
+         */
+        public $mainMenuOnBottom;
 
         public function __construct() {
             parent::__construct();

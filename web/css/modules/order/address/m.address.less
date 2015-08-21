@@ -1,0 +1,62 @@
+@media screen and (max-width: 360px){
+    .map-baloon {
+        height: 80px;
+        overflow: hidden;
+
+        .deliv-info-snippet {
+            padding-top: 0;
+            padding-bottom: 0;
+
+            &__price {
+                font-size: 11px;
+                display: inline-block;
+            }
+            &__date{
+
+                padding: 0px 3px;
+            }
+        }
+        .shop-snippet {
+
+            &-metro {
+                &__text {
+                    font-size: 12px;
+                }
+            }
+            &-address {
+                line-height: 14px;
+                height: 30px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            &-name {
+                padding-top: 0px;
+                padding-bottom: 0px;
+                &__text{
+                    line-height: 12px;
+                    margin-bottom: 5px;
+                }
+            }
+            &-info{
+                padding-top: 0px;
+                padding-bottom: 0px;
+                vertical-align: top;
+            }
+
+        }
+        .btn-choose-point {
+
+            margin-top: -3px;
+            height: 24px;
+            font-size: 12px;
+            line-height: 20px;
+        }
+    }
+}
+@media screen and (min-width: 640px){
+    .content-scroll{
+        left: 50%;
+        margin-left: -320px;
+    }
+
+}

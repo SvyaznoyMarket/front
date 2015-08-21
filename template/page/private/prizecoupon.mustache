@@ -1,0 +1,31 @@
+<div class="content private">
+    <section class="main-section">
+        {{>partial/user/menu}}
+        <a class="btn btn-exit" href="/logout">Выход</a>
+    </section>
+    <section class="ep">
+        {{#coupon}}
+        <div class="ep-coupon" style="background-image:url({{background_image_url}})">
+
+            <img class="ep-coupon__img" src="{{segment_image_url}}">
+            <div class="ep-coupon__lbl">
+                <span class="type">{{segment}}</span>
+                <span class="discount">
+                    {{value}}
+                    {{#is_currency}}<span class="rubl">p</span>{{/is_currency}}
+                    {{^is_currency}}%{{/is_currency}}
+                </span>
+            </div>
+        </div>
+        <div class="ep-coupon__info">
+            <span class="ep-coupon__txt">Фишка со скидкой {{value}}
+                {{#is_currency}}<span class="rubl">p</span>{{/is_currency}}
+                {{^is_currency}}%{{/is_currency}}<br>
+                на {{segment}}</span>
+            <span class="ep-coupon__term">Действует c {{start_date}} по {{end_date}}</span>
+            <div class="ep-coupon__disc">{{&segment_description}}</div>
+            <p>Минимальная сумма заказа {{min_order_sum}} <span class="rubl">p</span></p>
+        </div>
+        {{/coupon}}
+    </section>
+</div>

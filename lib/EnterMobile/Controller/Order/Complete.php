@@ -31,7 +31,6 @@ class Complete {
         $config = $this->getConfig();
         $curl = $this->getCurl();
         $session = $this->getSession();
-        $router = $this->getRouter();
         $cartSessionKey = $this->getCartSessionKeyByHttpRequest($request);
 
         $regionRepository = new \EnterRepository\Region();
@@ -63,67 +62,32 @@ class Complete {
 
         /** @var Model\Order[] $orders */
         $orders = [];
+        /** @var Model\PaymentMethod[] $onlinePaymentMethodsById */
+        $onlinePaymentMethodsById = [];
+        /** @var array $orderData */
+        $orderData = ($session->get($config->order->sessionName) ?: []) + [
+            'updatedAt'            => null,
+            'expired'              => null,
+            'isCompletePageReaded' => false,
+            'orders'               => [],
+        ];
         try {
-            $orderData = ($session->get($config->order->sessionName) ?: []) + [
-                'updatedAt' => null,
-                'expired'   => null,
-                'orders'    => [],
-            ];
-            // FIXME fixture
-            //die(json_encode($orderData, JSON_UNESCAPED_UNICODE));
-            //$orderData = json_decode('{"updatedAt":"2015-06-15T15:38:08+03:00","expired":false,"orders":[{"number":"TG071064","sum":3980,"delivery":{"type":{"token":"self","shortName":"Самовывоз"},"price":0,"date":1434402000},"interval":{"from":"16:00","to":"21:00"},"paymentMethodId":"1","point":{"ui":"57ba26a3-ea68-11e0-83b4-005056af265b"}}]}', true);
-            //die(var_dump($orderData));
+            $session->set($config->order->sessionName, array_merge($orderData, ['isCompletePageReaded' => true]));
 
             $pointUis = [];
             $orderNumberErps = [];
             foreach ($orderData['orders'] as $orderItem) {
+                if (empty($orderItem['numberErp'])) {
+                    $this->getLogger()->push(['type' => 'error', 'error' => ['message' => 'Некорректные данные'], 'orderItem' => $orderItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order', 'critical']]);
+                    continue;
+                }
+
                 $order = new Model\Order();
-                $order->sum = $orderItem['sum'];
-                $order->id = $orderItem['id'];
-                $order->number = $orderItem['number'];
-                $order->numberErp = $orderItem['numberErp'];
-                if (!empty($orderItem['delivery'])) {
-                    $delivery = new Model\Order\Delivery();
-                    try {
-                        $delivery->date = !empty($orderItem['delivery']['date']) ? $orderItem['delivery']['date'] : null;
-                    } catch (\Exception $e) {
-                        $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order', 'critical']]);
-                    }
+                $order->fromArray($orderItem);
 
-                    if (!empty($orderItem['delivery']['type']['shortName'])) {
-                        $delivery->type = new Model\DeliveryType();
-                        $delivery->type->token = $orderItem['delivery']['type']['token'];
-                        $delivery->type->shortName = $orderItem['delivery']['type']['shortName'];
-                    }
-                    if (!empty($orderItem['point']['ui'])) {
-                        $order->point = new Model\Point($orderItem['point']);
-                        $pointUis[] = $orderItem['point']['ui'];
-                    }
-                    if (!empty($orderItem['interval'])) {
-                        $interval = new Model\Order\Interval($orderItem['interval']);
-                        $interval->from = $orderItem['interval']['from'];
-                        $interval->to = $orderItem['interval']['to'];
-                        $order->interval = $interval;
-                    }
-                    if (!empty($orderItem['product'][0])) {
-                        foreach ($orderItem['product'] as $productItem) {
-                            if (empty($productItem['id'])) continue;
-
-                            $product = new Model\Order\Product($productItem);
-                            if (isset($productItem['name'])) {
-                                $product->name = $productItem['name'];
-                            }
-                            if (isset($productItem['link'])) {
-                                $product->link = $productItem['link'];
-                            }
-
-                            $order->product[] = $product;
-                        }
-                    }
-
-                    $orderNumberErps[] = $order->numberErp;
-
-                    $order->deliveries[] = $delivery;
+                $orderNumberErps[] = $order->numberErp;
+                if ($order->point) {
+                    $pointUis[] = $order->point->ui;
                 }
 
                 $orders[] = $order;
@@ -133,8 +97,6 @@ class Complete {
                 //return (new \EnterAggregator\Controller\Redirect())->execute($router->getUrlByRoute(new Routing\Cart\Index()), 302);
             }
 
-            /** @var Model\PaymentMethod[] $onlinePaymentMethodsById */
-            $onlinePaymentMethodsById = [];
             try {
                 // дополнение точками самовывоза
                 $pointListQuery = null;
@@ -181,6 +143,7 @@ class Complete {
                                 if (!$paymentMethod->isOnline) continue;
 
                                 $onlinePaymentMethodsById[$paymentMethod->id] = $paymentMethod;
+                                $order->paymentMethods[] = $paymentMethod;
                             }
                         }
                     } catch (\Exception $e) {
@@ -201,6 +164,7 @@ class Complete {
         $pageRequest->httpRequest = $request;
         $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
         $pageRequest->cart = $cart;
+        $pageRequest->isCompletePageReaded = $orderData['isCompletePageReaded'];
         $pageRequest->orders = $orders;
         $pageRequest->onlinePaymentMethodsById = $onlinePaymentMethodsById;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));

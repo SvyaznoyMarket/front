@@ -7,13 +7,13 @@ define(
     ) {
         var
             push = function(data) {
-                if (typeof _gaq === 'object') {
+                if (typeof window._gaq === 'object') {
                     console.info('_gaq.push', ['_trackEvent', 'Воронка_m.enter'].concat(data));
-                    _gaq.push.apply(_gaq, ['_trackEvent', 'Воронка_m.enter'].concat(data));
+                    window._gaq.push(['_trackEvent', 'Воронка_m.enter'].concat(data));
                 }
-                if (typeof ga === 'function') {
+                if (typeof window.ga === 'function') {
                     console.info('ga', ['send', 'event', 'Воронка_m.enter'].concat(data));
-                    ga.apply(ga, ['send', 'event', 'Воронка_m.enter'].concat(data));
+                    window.ga.apply(this, ['send', 'event', 'Воронка_m.enter'].concat(data));
                 }
             }
         ;

@@ -21,9 +21,6 @@
         'modernizr'          : 'vendor/modernizr.custom',
         'boilerplate.helper' : 'vendor/boilerplate.helper-4.1.0',
 
-        'browserstate.history'         : 'vendor/browserstate.history-1.8b2',
-        'browserstate.history.adapter' : 'vendor/browserstate.history.adapter.jquery-1.8b2',
-
         'direct-credit' : 'empty:'
     },
     fileExclusionRegExp: /build.js|main.js/,

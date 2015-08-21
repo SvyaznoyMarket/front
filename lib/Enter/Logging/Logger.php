@@ -49,7 +49,7 @@ class Logger implements LoggerInterface, \IteratorAggregate {
             + $message;
 
         // FIXME: костыль
-        if (isset($message['error']) && $message['error'] instanceof \Exception) {
+        if (isset($message['error']) && ($message['error'] instanceof \Exception) && (!$message['error'] instanceof \JsonSerializable)) {
             /** @var \Exception $error */
             $error = $message['error'];
             $message['error'] = [

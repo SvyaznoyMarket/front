@@ -36,11 +36,30 @@ class Slice {
         $page->dataModule = 'product.catalog';
 
         // хлебные крошки
+        $categories = call_user_func(function() use (&$request) {
+            if (!$request->category) [];
+
+            $ancestors = [];
+            $parent = $request->category->parent;
+            while ($parent) {
+                $ancestors[] = $parent;
+
+                $parent = $parent->parent;
+            }
+
+            return array_reverse($ancestors);
+        });
         $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
         $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
         $breadcrumb->name = $request->slice->name;
         $breadcrumb->url = $router->getUrlByRoute(new Routing\ProductSlice\Get($request->slice->token));
         $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
+        foreach ($categories as $categoryModel) {
+            $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
+            $breadcrumb->name = $categoryModel->name;
+            $breadcrumb->url = $router->getUrlByRoute(new Routing\ProductSlice\GetCategory($request->slice->token, $categoryModel->token));
+            $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
+        }
 
         $currentRoute = new Routing\ProductSlice\Get($request->slice->token);
 

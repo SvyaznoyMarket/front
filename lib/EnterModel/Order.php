@@ -36,6 +36,8 @@ class Order {
     public $statusId;
     /** @var Model\Order\Status|null */
     public $status;
+    /** @var bool */
+    public $isPartner;
     /** @var string */
     public $number;
     /** @var string */
@@ -104,6 +106,7 @@ class Order {
         if (array_key_exists('type_id', $data)) $this->typeId = (int)$data['type_id'];
         if (array_key_exists('status_id', $data)) $this->statusId = (int)$data['status_id'];
         if ($this->statusId) $this->status = new Model\Order\Status(['id' => $this->statusId]);
+        if (array_key_exists('is_partner', $data)) $this->isPartner = (bool)$data['is_partner'];
         if (array_key_exists('number', $data)) $this->number = (string)$data['number'];
         if (array_key_exists('number_erp', $data)) $this->numberErp = (string)$data['number_erp'];
         if (array_key_exists('access_token', $data)) $this->token = $data['access_token'] ? (string)$data['access_token'] : null;
@@ -179,5 +182,66 @@ class Order {
         }
 
         if (isset($data['point_ui'])) $this->point = new Model\Point(['ui' => $data['point_ui']]);
+    }
+
+    /**
+     * @param array $data
+     */
+    public function fromArray(array $data) {
+        if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+        if (array_key_exists('typeId', $data)) $this->typeId = (int)$data['typeId'];
+        if (array_key_exists('statusId', $data)) $this->statusId = (int)$data['statusId'];
+        if ($this->statusId) $this->status = new Model\Order\Status(['id' => $this->statusId]);
+        if (array_key_exists('isPartner', $data)) $this->isPartner = (bool)$data['isPartner'];
+        if (array_key_exists('number', $data)) $this->number = (string)$data['number'];
+        if (array_key_exists('numberErp', $data)) $this->numberErp = (string)$data['numberErp'];
+        if (array_key_exists('token', $data)) $this->token = $data['token'] ? (string)$data['token'] : null;
+        if (array_key_exists('sum', $data)) $this->sum = $this->getPriceHelper()->removeZeroFraction($data['sum']);
+        if (array_key_exists('shopId', $data)) $this->shopId = (string)$data['shopId'];
+        if (array_key_exists('regionId', $data)) $this->regionId = (string)$data['regionId'];
+        if (isset($data['region']['id'])) {
+            $this->region = new Model\Region();
+            $this->region->fromArray($data['region']);;
+        }
+        if (array_key_exists('address', $data)) $this->address = (string)$data['address'];
+        if (array_key_exists('comment', $data)) $this->comment = (string)$data['comment'];
+        if (array_key_exists('ipAddress', $data)) $this->ipAddress = (string)$data['ipAddress'];
+        if (array_key_exists('createdAt', $data) && $data['createdAt']) $data['createdAt'];
+        if (array_key_exists('updatedAt', $data) && $data['updatedAt']) $data['updatedAt'];
+        if (isset($data['product'][0])) {
+            foreach ($data['product'] as $productData) {
+                $product = new Model\Order\Product();
+                $product->fromArray($productData);
+                $this->product[] = $product;
+            }
+        }
+        if (array_key_exists('paySum', $data)) $this->paySum = $this->getPriceHelper()->removeZeroFraction($data['paySum']);
+        if (array_key_exists('discountSum', $data)) $this->discountSum = $this->getPriceHelper()->removeZeroFraction($data['discountSum']);
+        if (array_key_exists('deliveryType', $data)) $this->deliveryType = (string)$data['deliveryType'];
+        if (array_key_exists('subwayId', $data)) $this->subwayId = (string)$data['subwayId'];
+        if (array_key_exists('paymentMethodId', $data)) $this->paymentMethodId = (string)$data['paymentMethodId'];
+        if (array_key_exists('paymentStatusId', $data)) $this->paymentStatusId = $data['paymentStatusId'] ? (string)$data['paymentStatusId'] : null;
+        if ($this->paymentStatusId) $this->paymentStatus = new Model\Order\PaymentStatus(['id' => $this->paymentStatusId]);
+        if (array_key_exists('paymentUrl', $data)) $this->paymentUrl = (string)$data['paymentUrl'];
+        if (isset($data['deliveries'][0])) {
+            foreach ($data['deliveries'] as $deliveryItem) {
+                $delivery = new Model\Order\Delivery();
+                $delivery->fromArray($deliveryItem);
+                $this->deliveries[] = $delivery;
+            }
+        }
+        if (isset($data['interval']['from'])) {
+            $this->interval = new Model\Order\Interval();
+            $this->interval->fromArray($data['interval']);
+        }
+
+        if (isset($data['seller']['ui'])) {
+            $this->seller = new Model\Seller();
+            $this->seller->fromArray($data['seller']);
+        }
+
+        if (isset($data['point']['ui'])) {
+            $this->point = new Model\Point(['ui' => $data['point']['ui']]);
+        }
     }
 }

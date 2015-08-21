@@ -10,7 +10,9 @@ define(
             chooseModelMoreModel = function chooseModelMoreModel() {
                 chooseModelMoreBox.slideToggle('800');
                 chooseModelMoreLink.toggleClass('more');
-            };
+            },
+            $snapContent = $('#wrapper');
+            ;
         // end of vars
 
         chooseModelMoreLink.click(chooseModelMoreModel);
@@ -18,91 +20,70 @@ define(
         /**
          * Навигация сайта, показывается при клике по иконке .navIco
          */
-
-        var navIco = $('.navIco'),
-            navSite = $('.nav'),
-            navSiteLeft = navSite.width(),
-
-            fader = $('.fader'),
-
-            navSiteItemLevel1 = navSite.find('.navList_text'),
-            navSiteListLevel2 = navSite.find('.navListLevel2');
-        // end of vars
-
-        navSite.css({'left' : -navSiteLeft});
-        navSiteListLevel2.hide();
-
         var
-            /**
-             * Показываем/скрываем навигацию
-             */
-            slideNav = function slideNav(e) {
-                if ( navSite.css('display') == 'block' ) {
-                    closeNav();
-                }
+            body = $('body'),
+            fader = $('.js-fader'),
+            navIco = $('.js-nav-open-link'),
 
-                else {
-                    fader.show(0);
-                    navSite.stop(true, true).show(0).animate({'left' : 0},300);
-                    $('html,body').addClass('noScroll');
-                }
+            showHideMenu = function showHideMenu(e) {
 
                 e.preventDefault();
+
+                if (body.hasClass('snapjs-left')) {
+                    $snapContent.removeClass('shifted');
+                    body.removeClass('snapjs-left');
+                } else {
+                    $snapContent.addClass('shifted');
+                    body.addClass('snapjs-left');
+                }
+
             },
 
-            /**
-             * Показываем/скрываем навигацию второго уравня
-             */
-            slideNavLevel2 = function slideNavLevel2() {
-                if ($(this).data('url')) {
-                    window.location.href = $(this).data('url');
-
-                    return false;
+            footerResize = function footerResize() {
+                var
+                    footer = $('.footer');
+                if ( $('.content').height() + footer.innerHeight() < $(window).height() ){
+                    body.removeClass('noIOS');
+                    footer.css('position','fixed');
                 }
-
-                navSiteListLevel2.slideUp();
-
-                if ( ($(this).next(navSiteListLevel2)).is(':visible') ) {
-                    navSiteListLevel2.slideUp();
-                    return;
-                }
-
-                $(this).next(navSiteListLevel2).stop(true, false).slideDown();
-
-                if ($(this).parent().is(":last-child")) {
-                    navSite.animate({ scrollTop: navSite[0].scrollHeight }, 1000);
-                }
-
-                return false;
             },
+            iOS = function iOS() {
 
-            /**
-             * Скрываем навигацию при клике в любом месте кроме .nav
-             */
-            closeNav = function closeNav() {
-                fader.hide(0);
-                $('html,body').removeClass('noScroll');
-                navSite.stop(true, true).animate({'left' : -navSiteLeft},300).hide(0);
-                navSiteListLevel2.slideUp();
-            };
+            var iDevices = [
+                'iPad Simulator',
+                'iPhone Simulator',
+                'iPod Simulator',
+                'iPad',
+                'iPhone',
+                'iPod'
+            ];
+                console.info(navigator.platform);
+            while (iDevices.length) {
+                if (navigator.platform === iDevices.pop()){ return true; }
+            }
+
+            return false;
+        }
+            ;
         // end of vars
 
-        navIco.on('click', slideNav);
+        $(window).on('load resize', footerResize);
+        $(navIco).on('click', showHideMenu);
+        $(fader).on('click', showHideMenu);
 
-        navSiteItemLevel1.on('click', slideNavLevel2);
-
-        fader.live('click touchend', closeNav);
-
-
-            var $body = jQuery('body');
-
-            $(document)
+        $(document)
             .on('focus', 'input, textarea, input + label, select', function(e) {
-                $body.addClass('fixfixed');
+                body.addClass('fixfixed');
             })
             .on('blur', 'input, textarea, input + label, select', function(e) {
-                $body.removeClass('fixfixed');
+                body.removeClass('fixfixed');
             });
+
+        //check if iOS
+        if ( !iOS() ){
+            $(body).addClass('noIOS') ;
+        }
+
 
     }
 );

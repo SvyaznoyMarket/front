@@ -1,12 +1,12 @@
-{{>page/order/header}}
+<!-- {{>page/order/header}} -->
 
-<div class="content{{#isSingleOrder}} content-single-order{{/isSingleOrder}}">
+<div class="content{{#isSingleOrder}} content-single-order{{/isSingleOrder}} js-order-complete" data-google-analytic-orders="{{&dataGoogleAnalyticOrders}}">
     <div class="contentBox640">
 
         <section class="checkout">
-            <h1 class="checkout__tl">{{#isSingleOrder}}Оформлен заказ №<a href="#">{{orders.0.numberErp}}</a>{{/isSingleOrder}}
+            <h1 class="checkout__tl">{{#isSingleOrder}}Оформлен заказ <nobr>№<a href="#">{{orders.0.numberErp}}</a></nobr>{{/isSingleOrder}}
             {{^isSingleOrder}}Ваши заказы{{/isSingleOrder}}</h1>
-            {{#isSingleOrder}}<div class="checkout__tl-sum">На сумму <b>{{#orders}}{{sum.name}}{{/orders}}</b> <span class="rubl">p</span></div>{{/isSingleOrder}}
+            {{#isSingleOrder}}<div class="checkout__tl-sum">на сумму <b>{{#orders}}{{sum.name}}{{/orders}}</b> <span class="rubl">p</span></div>{{/isSingleOrder}}
 
             {{#isSingleOrder}}
                 {{#orders}}
@@ -14,7 +14,7 @@
                     <script id="order-{{id}}-onlinePayment-data" type="application/json">{{&onlinePaymentJson}}</script>
 
                     {{#delivery}}
-                    <div class="single-order__greet">Доставка назначена на {{date.name}}</div>
+                        <div class="single-order__greet">Доставка назначена на {{date.name}} <br />{{address}}</div>
                     {{/delivery}}
 
                     {{#point}}
@@ -51,7 +51,7 @@
                         <div class="single-order__greet">Онлайн-оплата в два клика</div>
                         <div class="single-order__row">
 
-                            <button class="btn btn--submit btn--orange btn--medium js-order-complete-onlinePayment-link" data-modal-position="fixed-untill-640" data-storage-selector="#order-{{id}}-onlinePayment-data">Оплатить</button>
+                            <button class="btn btn--submit btn--orange btn--medium js-order-complete-onlinePayment-link" data-modal-position="fixed-untill-640" data-modal-title="Оплатить онлайн" data-storage-selector="#order-{{id}}-onlinePayment-data">Оплатить</button>
                             <span class="confirm-payment__types">
                                 {{#images}}
                                     <img class="confirm-payment__card" src="/css/modules/order/img/{{.}}" />
@@ -91,17 +91,20 @@
                     <div class="table_cell">
                         <ul class="confirm-items">
                         {{#products}}
-                            <li class="confirm-items__i"{{#isHidden}} style="display: none;"{{/isHidden}}>{{name}} {{quantity}} шт.</li>
+                            <li class="confirm-items__i"{{#isHidden}} style="display: none;"{{/isHidden}}><a href="{{link}}" target="_blank">{{&name}}</a> {{quantity}} шт.</li>
                         {{/products}}
                         {{#productMoreLink}}
-                            <li class="confirm-items__i"><a class="confirm-items__lk" href="">{{name}}</a></li>
+                            <li class="confirm-items__i js-moreLink"><span class="confirm-items__lk">{{name}}</span></li>
                         {{/productMoreLink}}
                         </ul>
                     </div>
 
                     <div class="table_cell">
                     {{#delivery}}
-                        <div>{{type.name}} {{date.name}} {{#interval}}{{from}}…{{to}}{{/interval}}</div>
+                        <div>
+                            {{address}} <br/>
+                            {{type.name}} {{date.name}} {{#interval}}{{from}}…{{to}}{{/interval}}
+                        </div>
                     {{/delivery}}
 
                     {{#point}}

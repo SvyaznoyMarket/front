@@ -221,6 +221,8 @@ namespace EnterAggregator\Config {
     }
 
     class Credit {
+        /** @var bool */
+        public $enabled;
         /** @var string */
         public $cookieName;
         /** @var Credit\DirecCredit  */
@@ -383,8 +385,6 @@ namespace EnterAggregator\Config {
         public $prepayment;
         /** @var string */
         public $bonusCardSessionKey;
-        /** @var bool */
-        public $enabled;
 
         public function __construct() {
             $this->prepayment = new Order\Prepayment();

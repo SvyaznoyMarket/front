@@ -135,7 +135,16 @@ namespace EnterMobileApplication\Controller {
                 ] : null,
                 'model' => $controllerResponse->product->model,
                 'line' => $controllerResponse->product->line,
-                'nearestDeliveries' => $controllerResponse->product->nearestDeliveries,
+                'nearestDeliveries' => is_array($controllerResponse->product->nearestDeliveries) ? array_map(function(\EnterModel\Product\NearestDelivery $nearestDelivery) {
+                    return [
+                        'id' => $nearestDelivery->id,
+                        'token' => $nearestDelivery->token === 'standart' ? $nearestDelivery->token : 'self', // MAPI-101
+                        'productId' => $nearestDelivery->productId,
+                        'price' => $nearestDelivery->price,
+                        'shopsById' => $nearestDelivery->shopsById,
+                        'deliveredAt' => $nearestDelivery->deliveredAt,
+                    ];
+                }, $controllerResponse->product->nearestDeliveries) : [],
                 'accessoryIds' => $controllerResponse->product->accessoryIds,
                 'relatedIds' => $controllerResponse->product->relatedIds,
                 'relation' => [

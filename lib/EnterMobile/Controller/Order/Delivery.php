@@ -116,6 +116,19 @@ class Delivery {
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);
 
+        // если в разбиении нет заказа или произошла ошибка из-за предыдущего разбиения, то удаляем предыдущее разбиение
+        if (!$controllerResponse->split->orders) {
+            $session->remove($config->order->splitSessionKey);
+        }
+        foreach ($controllerResponse->errors as $error) {
+            if (!isset($error['code'])) continue;
+
+            if (in_array($error['code'], [600])) {
+                $session->remove($config->order->splitSessionKey);
+                break;
+            }
+        }
+
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Order\Delivery\Request();
         $pageRequest->httpRequest = $request;

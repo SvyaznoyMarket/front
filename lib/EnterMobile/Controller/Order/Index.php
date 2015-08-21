@@ -55,9 +55,23 @@ class Index {
         $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
         $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
 
+        $bonusCardListQuery = new Query\PaymentMethod\GetBonusCardListByCart($region->id, $cart);
+        $bonusCardListQuery->setTimeout($config->coreService->timeout / 3);
+        $curl->prepare($bonusCardListQuery);
+
         $curl->execute();
         
         (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
+
+        // бонусные карты
+        /** @var Model\BonusCard[] $bonusCardsByType */
+        $bonusCardsByType = [];
+        try {
+            foreach ($bonusCardListQuery->getResult() as $bonusCardItem) {
+                $bonusCard = new Model\BonusCard($bonusCardItem);
+                $bonusCardsByType[$bonusCard->type] = $bonusCard;
+            }
+        } catch (\Exception $e) {}
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Order\Index\Request();

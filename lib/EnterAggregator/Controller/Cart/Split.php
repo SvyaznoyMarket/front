@@ -119,7 +119,7 @@ namespace EnterAggregator\Controller\Cart {
                     }
                 }
 
-                $response->split = new Model\Cart\Split($splitData);
+                $response->split = new Model\Cart\Split($splitData, (bool)$request->formatSplit);
                 $response->split->region = $response->region;
 
                 // Получаем названия групп точек из scms
@@ -138,6 +138,17 @@ namespace EnterAggregator\Controller\Cart {
                         $curl->prepare($pointListQuery);
                     }
                 });
+
+                // FRONT-88
+                foreach ($response->split->orders as $order) {
+                    if ($order->sum > $config->order->prepayment->priceLimit) {
+                        foreach ($order->possiblePaymentMethodIds as $i => $possiblePaymentMethodId) {
+                            if (in_array($possiblePaymentMethodId, ['1', '2']) && (count($order->possiblePaymentMethodIds) > 1)) {
+                                unset($order->possiblePaymentMethodIds[$i]);
+                            }
+                        }
+                    }
+                }
 
                 // MAPI-4
                 $productIds = [];
@@ -271,6 +282,11 @@ namespace EnterAggregator\Controller\Cart\Split {
          * @var array
          */
         public $changeData;
+        /**
+         * Индексация разбиения как на ядре
+         * @var bool
+         */
+        public $formatSplit = true;
         /** @var Model\Cart\Split\User */
         public $userFromSplit;
         /**

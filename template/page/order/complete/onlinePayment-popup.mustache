@@ -6,7 +6,7 @@
                 type="radio"
                 id="order-{{order.id}}-delivery-onlinePayment-method-{{id}}"
                 name="order-{{order.id}}-onlinePayment"
-                class="js-order-complete-onlinePayment-radio custom-input custom-input--defradio"
+                class="js-order-complete-onlinePayment-radio custom-input custom-input--defradio-big"
                 data-container-selector="#order-{{order.id}}-delivery-onlinePayment-container"
                 data-value="{{&dataValue}}"
                 value="{{id}}"
@@ -15,9 +15,9 @@
             <label class="custom-label" for="order-{{order.id}}-delivery-onlinePayment-method-{{id}}">
                 <div class="custom-label-flex parced-items">
                     <span class="custom-label_tx">{{name}}</span>
-                        <span class="checkout-payment__icon-wrap">
-                        {{#images}}<img src="/css/modules/order/img/{{.}}" />{{/images}}
-                        </span>
+                    <span class="checkout-payment__icon-wrap">
+                    {{#images}}<img src="/css/modules/order/img/{{.}}" />{{/images}}
+                    </span>
                 </div>
             </label>
         </li>

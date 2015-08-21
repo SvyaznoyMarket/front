@@ -8,7 +8,9 @@ return function(\EnterMobile\Config $config) {
     // local config
     $config->hostname = 'enter.loc';
     $config->session->cookieDomain = '.enter.loc';
+    $config->abTest->cookieDomain = '.m.enter.loc';
     $config->cacheDir = (sys_get_temp_dir() ?: '/tmp') . '/' . $config->hostname;
+    $config->logger->fileAppender->file = realpath($config->dir . '/log') . '/mobile.log';
 
     $config->googleAnalytics->enabled = false;
     $config->partner->enabled = false;

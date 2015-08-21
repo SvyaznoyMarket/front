@@ -15,7 +15,7 @@
         <div class="common-control">
             <div class="common-control-group required">
                 <label class="common-control-label" for="id-userForm-phone">Телефон</label>
-                <input class="common-control-input js-validator-form-field" id="id-userForm-phone" type="tel" name="user[phone]" value="{{form.phone}}" placeholder="+7(xxx)xxx-xx-xx" data-field="phone">
+                <input class="common-control-input js-validator-form-field" id="id-userForm-phone" type="tel" name="user[phone]" value="{{form.phone}}" placeholder="+7(___)___-__-__" data-field="phone">
             </div>
             <span class="common-control-hint">Для смс о состоянии заказа</span>
         </div>
@@ -35,6 +35,7 @@
         </div>
     </fieldset>
 
+    {{#hasMnogoRu}}
     <fieldset class="form-control__container lr-padding">
         {{! Чтобы показать/скрыть поле с картой, надо добавить/убрать класс active: }}
         <div class="bonus-cnt toggle js-toggle-wrap">
@@ -55,6 +56,7 @@
             </div>
         </div>
     </fieldset>
+    {{/hasMnogoRu}}
     
     <div class="btn-container btn-container--orange">
         <button type="submit" class="btn btn--submit btn--orange btn--big">Далее</button>

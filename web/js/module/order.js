@@ -41,6 +41,8 @@ define(
             ymapsDefer = null,
 
             $body                       = $('body'),
+            $orderContent               = $('.js-order-content'),
+            loaderClass                 = 'm-body-loader',
             $deliveryForm               = $('.js-order-delivery-form'),
             deliveryData                = $deliveryForm.data('value'),
             $pointMap                   = $('#pointYandexMap'),
@@ -224,11 +226,7 @@ define(
             },
 
             changeSplit = function( data ) {
-                var
-                    $content    = $('.js-order-content'),
-                    loaderClass = 'm-loader';
-
-                $content.addClass(loaderClass);
+                $orderContent.addClass(loaderClass);
 
                 $.ajax({
                     url: $deliveryForm.attr('action'),
@@ -239,7 +237,7 @@ define(
                     $($deliveryForm.data('containerSelector')).html(response);
                 }).always(function() {
                     console.info('unblock screen');
-                    $content.removeClass(loaderClass);
+                    $orderContent.removeClass(loaderClass);
                 }).error(function(xhr, textStatus, error) {
                     var
                         response,
@@ -482,6 +480,7 @@ define(
                     beforeClose: function() {
                         $mapContainer.append($pointMap);
                         $body.off('beforeSplit', beforeSplit);
+                        $body.css({'-webkit-overflow-scrolling':'inherit'});
                     }
                 });
 
@@ -542,6 +541,7 @@ define(
                     beforeClose: function() {
                         $mapContainer.append($addressMap);
                         $body.off('beforeSplit', beforeSplit);
+                        $body.css({'-webkit-overflow-scrolling':'inherit'});
                     },
                     modalCSS: {top: '60px'}
                 });
@@ -599,6 +599,7 @@ define(
                     },
                     beforeClose: function() {
                         $body.off('beforeSplit', beforeSplit);
+                        $body.css({'-webkit-overflow-scrolling':'inherit'});
                     }
                 });
 
@@ -654,6 +655,7 @@ define(
                     },
                     beforeClose: function() {
                         $body.off('beforeSplit', beforeSplit);
+                        $body.css({'-webkit-overflow-scrolling':'inherit'});
                     },
                     centered: false
                 });
@@ -823,6 +825,8 @@ define(
             if (formValidator.validateRequired($form).isValid) {
                 changeSplit(data);
             }
+
+            setTimeout(function() { analytics.push(['10_1 Доставки_Доставка_ОБЯЗАТЕЛЬНО']); }, 250);
         });
         $body.on('submit', '.js-discount-form', function(e) {
             var
@@ -832,6 +836,8 @@ define(
             ;
 
             if (checkUrl) {
+                $orderContent.addClass(loaderClass);
+
                 $.ajax({
                     url: checkUrl,
                     data: {
@@ -849,6 +855,7 @@ define(
                         changeSplit(data);
                     }
                 }).always(function() {
+                    $orderContent.removeClass(loaderClass);
                     console.info('unblock screen');
                 }).error(function(xhr, textStatus, error) {
                     changeSplit(data);
@@ -927,6 +934,8 @@ define(
                     analytics.push(['11_1 Срок_Изменил_дату_Доставка']);
                 } else if (('payment' === $el.data('type')) && ('2' === $el.val())) {
                     analytics.push(['13_1 Оплата_банковской_картой_Доставка']);
+                } else if ('point' === $el.data('type')) {
+                    analytics.push(['10_1 Ввод_данных_Самовывоза']);
                 }
             });
         } catch (error) { console.error(error); }

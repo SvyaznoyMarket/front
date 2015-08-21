@@ -25,8 +25,6 @@ class Get {
         $curl = $this->getCurl();
         $couponSeriesRepository = new \EnterRepository\Coupon\Series();
 
-        $responseData = [];
-
         $userToken = $this->getUserToken($request);
 
         // запрос пользователя
@@ -58,13 +56,13 @@ class Get {
         $usedSeriesIds = [];
         $coupons = (new \EnterRepository\Coupon())->getObjectListByQuery($couponListQuery);
         foreach ($coupons as $coupon) {
-            if ($coupon->isUsed) continue;
+            if (!$coupon->isUsed) continue;
             $usedSeriesIds[] = $coupon->seriesId;
         }
 
         /** @var Model\Coupon\Series[] $couponSeries */
         $couponSeries = $couponSeriesRepository->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery);
-        $couponSeriesRepository->filterObjectList($couponSeries, $usedSeriesIds, $user);
+        $couponSeries = $couponSeriesRepository->filterObjectList($couponSeries, $usedSeriesIds, $user);
 
         $couponSeriesById = [];
         foreach ($couponSeries as $iCouponSeries) {

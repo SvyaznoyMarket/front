@@ -126,17 +126,20 @@ class DeleteProduct {
 
         $page = new Page();
         // кнопка купить
-        $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
-        $page->widgets['.' . $widget->widgetId] = $widget;
+        if ($widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct)) {
+            $page->widgets['.' . $widget->widgetId] = $widget;
+        }
         // спиннер
-        $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);
-        $page->widgets['.' . $widget->widgetId] = $widget;
+        if ($widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct)) {
+            $page->widgets['.' . $widget->widgetId] = $widget;
+        }
         // пользователь, корзина
-        $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);
-        $page->widgets['.' . $widget->widgetId] = $widget;
-
-        $widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById));
-        $page->widgets['.' . $widget->widgetId] = $widget;
+        if ($widget = (new Repository\Partial\UserBlock())->getObject($cart, $user)) {
+            $page->widgets['.' . $widget->widgetId] = $widget;
+        }
+        if ($widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById))) {
+            $page->widgets['.' . $widget->widgetId] = $widget;
+        }
 
         // response
         $response = new Http\JsonResponse([

@@ -80,7 +80,7 @@ class Cart {
 
             $cartProduct = new Model\Cart\Product();
             $cartProduct->id = (string)$productItem['id'];
-            $cartProduct->quantity = isset($productItem['quantity']) ? (int)$productItem['quantity'] : 0;
+            $cartProduct->quantity = isset($productItem['quantity']) ? (int)$productItem['quantity'] : null;
             $cartProduct->sender = isset($productItem['sender']['name']) ? (array)$productItem['sender'] : null;
 
             $products[] = $cartProduct;
@@ -246,7 +246,7 @@ class Cart {
      * @param Model\Cart\Product $cartProduct
      */
     public function setProductForObject(Model\Cart $cart, Model\Cart\Product $cartProduct) {
-        if ($cartProduct->quantity <= 0) {
+        if (!$cartProduct->quantity) {
             if (isset($cart->product[$cartProduct->id])) unset($cart->product[$cartProduct->id]);
         } else {
             $cart->product[$cartProduct->id] = $cartProduct;
@@ -286,7 +286,7 @@ class Cart {
                 $blockName = isset($orderItem['blockName']) ? $orderItem['blockName'] : null;
 
                 if (!$blockName || !isset($previousSplitData['orders'][$blockName])) {
-                    $this->getLogger()->push(['type' => 'warn', 'message' => 'Передан несуществующий блок заказа', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                    $this->getLogger()->push(['type' => 'error', 'message' => 'Передан несуществующий блок заказа', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
                     continue;
                 }
 
@@ -307,7 +307,6 @@ class Cart {
                     $dump['orders'][$blockName]['delivery']['point'] = [
                         'id'    => $orderItem['delivery']['point']['id'],
                         'token' => $orderItem['delivery']['point']['groupToken'],
-
                     ];
                 }
 
@@ -370,6 +369,8 @@ class Cart {
                             $isDeleted = false;
                             // поиск существующей скидки
                             foreach ($dump['orders'][$blockName]['discounts'] as $i => $existsDiscountItem) {
+                                if (!isset($existsDiscountItem['number'])) continue;
+
                                 if ($existsDiscountItem['number'] == $discountItem['number']) {
                                     // удаление найденной скидки
                                     unset($dump['orders'][$blockName]['discounts'][$i]);
@@ -409,7 +410,7 @@ class Cart {
             if (array_key_exists('bonusCardNumber', $changeData['user'])) {
                 $dump['user_info']['bonus_card_number'] = $changeData['user']['bonusCardNumber'];
             }
-            if (array_key_exists('address', $changeData['user'])) {
+            if (array_key_exists('address', $changeData['user']) && is_array($changeData['user']['address'])) {
                 if (array_key_exists('street', $changeData['user']['address'])) {
                     $dump['user_info']['address']['street'] = $changeData['user']['address']['street'];
                 }

@@ -1,0 +1,93 @@
+<div class="content private-order private">
+    <section class="main-section">
+        {{>partial/user/menu}}
+        <a class="btn btn-exit" href="/logout">Выход</a>
+    </section>
+    {{#order}}
+    <section>
+        <div class="private-order__head">
+            <h1 class="private-order__tl">Заказ № {{numberErp}} <span class="private-order__date">от {{createdAt}}</span></h1>
+        </div>
+        <div class="delivery-info">
+            {{#deliveries}}
+                <div class="delivery-date">
+                    {{name}} <span class="delivery-date__d">{{date}}</span>
+                </div>
+            {{/deliveries}}
+            {{#isDelivery}}
+                <!--Адрес для доставки-->
+                <div class="address-simple">
+                    <span class="address-simple__name">Адрес:</span>
+                    <span class="address-simple__val">{{address}}</span>
+                </div>
+                <!--Адрес для доставки END-->
+            {{/isDelivery}}
+            {{^isDelivery}}
+                {{#point}}
+                    <!--Адрес для самовывоза-->
+                    <div class="delivery-point-name">{{name}}</div>
+                    <div class="shop-snippet table_row">
+                        <div class="shop-snippet-name table_cell">
+                            <img src="{{logo}}" alt="" class="shop-snippet-name__img">
+                        </div>
+
+                        <div class="shop-snippet-info table_cell">
+                            {{#subway}}
+                                <div class="shop-snippet-metro">
+                                    <span class="shop-snippet-metro__bullet" style="background: {{line.color}};"></span>
+                                    <span class="shop-snippet-metro__text">{{name}}</span>
+                                </div>
+                            {{/subway}}
+
+                            <div class="shop-snippet-address">Адрес: {{address}} <br>{{regime}}</div>
+                        </div>
+                    </div>
+                    <!--Адрес для самовывоза END-->
+                {{/point}}
+            {{/isDelivery}}
+
+        </div>
+        <div class="order-items">
+            {{#product}}
+                <div class="order-item ">
+                    <div class="order-item__tbl table_row">
+                    <div class="order-item-img table_cell">
+                        <img src="{{media}}" alt=""/>
+                    </div>
+                    <div class="order-item-info table_cell">
+                        <div class="order-item__name">{{name}}</div>
+                        <div class="order-item-description">
+                            <div class="order-item-description-price">{{price}} <span class="rubl">p</span></div>
+                            <div class="order-item-description-quantity">{{quantity}} шт</div>
+                            <div class="order-item-description-total">{{sum}} <span class="rubl">p</span></div>
+                        </div>
+
+                    </div>
+                    </div>
+                </div>
+            {{/product}}
+        </div>
+
+        <div class="order-discount">
+            <div class="order-discount-item">
+                <div class="order-discount-item-img">
+                    {{#discount_item_img}}
+                        <img src="{{discount_item_img}}" alt=""/>
+                    {{/discount_item_img}}
+                </div>
+            </div>
+        </div>
+
+        <div class="order-total">
+            <div class="order-total-delivery">
+                <span class="order-total-delivery__name">{{deliveries.name}}:</span><span class="order-total-delivery__price">{{deliveries.price}} <span class="rubl">p</span></span>
+            </div>
+            <div class="order-total-amount">
+                <span class="order-total-amount__name">Итого:</span><span class="order-total-amount__price">{{sum}} <span class="rubl">p</span></span>
+            </div>
+        </div>
+
+    </section>
+    {{/order}}
+</div>
+

@@ -5,7 +5,6 @@ define(
     function(
         require, $, _, mustache, util, config, formValidator, analytics
     ) {
-
         var
             $body = $('body'),
             $onlinePaymentPopupTemplate = $('#tpl-order-complete-onlinePayment-popup'),// TODO: перенести на 3-й шаг
@@ -74,8 +73,20 @@ define(
 
         $body.on('click', '.js-order-complete-onlinePayment-link', showOnlinePaymentPopup);
         $body.on('click', '.js-order-complete-onlinePayment-radio', applyOnlinePayment);
+        $('.js-moreLink').on('click', function(e) {
+            var
+                $el = $(this)
+            ;
+
+            $el.siblings().show();
+            $el.hide();
+
+            e.preventDefault();
+        });
 
         try {
+            util.sendOrdersToGoogleAnalytics($('.js-order-complete').data('google-analytic-orders'));
+
             analytics.push(['16 Вход_Оплата_ОБЯЗАТЕЛЬНО']);
 
             $body.on('click', '.js-order-complete-onlinePayment-link', function(e) {

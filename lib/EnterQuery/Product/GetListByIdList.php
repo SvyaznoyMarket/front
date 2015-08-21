@@ -36,6 +36,12 @@ class GetListByIdList extends Query {
         if ($regionId) {
             $this->url->query['geo_id'] = $regionId;
         }
+        if (false === $view['model']) {
+            $this->url->query['withModels'] = 0;
+        }
+        if (false === $view['related']) {
+            $this->url->query['withRelated'] = 0;
+        }
 
         $this->init();
     }

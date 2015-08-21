@@ -293,6 +293,8 @@ class Split {
             }
         }
 
+        $this->escapeArrayKeysForXml($result);
+
         return $result;
     }
 
@@ -556,6 +558,8 @@ class Split {
             $this->correctXmlArray($split['errors']);
         }
 
+        $this->unescapeArrayKeysFromXml($split);
+
         return $split;
     }
 
@@ -565,6 +569,43 @@ class Split {
             if (!is_numeric($key) && isset($array[$key])) {
                 $array[0] = $array[$key];
                 unset($array[$key]);
+            }
+        }
+    }
+
+    private function escapeArrayKeysForXml(&$array) {
+        if (is_array($array)) {
+            $isNumericKeys = true;
+            $prevKey = -1;
+            foreach ($array as $key => &$value) {
+                if (!preg_match('/^\d+$/', $key) || $key - 1 != $prevKey) {
+                    $isNumericKeys = false;
+                }
+
+                $prevKey = $key;
+                $this->escapeArrayKeysForXml($value);
+            }
+
+            if (!$isNumericKeys) {
+                foreach ($array as $key => &$value) {
+                    if (preg_match('/^\d/', $key)) {
+                        $array['__' . $key] = &$value;
+                        unset($array[$key]);
+                    }
+                }
+            }
+        }
+    }
+
+    private function unescapeArrayKeysFromXml(&$array) {
+        if (is_array($array)) {
+            foreach ($array as $key => &$value) {
+                if (preg_match('/^__\d/', $key)) {
+                    $array[mb_substr($key, 2)] = &$value;
+                    unset($array[$key]);
+                }
+
+                $this->unescapeArrayKeysFromXml($value);
             }
         }
     }

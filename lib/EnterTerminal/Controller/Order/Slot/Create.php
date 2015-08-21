@@ -62,8 +62,8 @@ class Create {
             if (!empty($request->data['email'])) {
                 $split->user->email = (string)$request->data['email'];
             }
-            if (!empty($phone)) {
-                $split->user->phone = $phone;
+            if (!empty($request->data['phone'])) {
+                $split->user->phone = (string)$request->data['phone'];
             }
             if (!empty($request->data['name'])) {
                 $split->user->firstName = (string)$request->data['name'];

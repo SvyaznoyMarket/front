@@ -61,6 +61,16 @@ class Index {
             ['redirect_to' => $router->getUrlByRoute(new Routing\Order\Index())]
         );
 
+        foreach ($request->formErrors as $errorModel) {
+            if (!isset($errorModel['message'])) continue;
+
+            $page->content->errors[] = [
+                'message' => $errorModel['message'],
+            ];
+        }
+
+        $page->content->hasMnogoRu = isset($request->bonusCardsByType[\EnterModel\BonusCard::TYPE_MNOGORU]);
+
         $page->steps = [
             ['name' => 'Получатель', 'isPassive' => true, 'isActive' => true],
             ['name' => 'Самовывоз и доставка', 'isPassive' => false, 'isActive' => false],

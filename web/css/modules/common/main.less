@@ -2,17 +2,21 @@
    Base styles: opinionated defaults
    ========================================================================== */
 
-html ,
-button ,
-input ,
-select ,
+html,
+button,
+input,
+select,
 textarea {
     color: #222;
 }
 
+html {
+    font-size: 100%;
+}
+
 body {
     font-family: Tahoma,Geneva,Kalimati,sans-serif,helvetica,sans-serif;
-    font-size: 12px;
+    font-size: 75%;
     line-height: 1.4;
 }
 
@@ -20,6 +24,7 @@ a {
     text-decoration: none;
 
     color: @black;
+
     &:hover {
         text-decoration: none;
 
@@ -62,16 +67,18 @@ textarea {
 /* Prevent callout */
 
 .nocallout {
+
     -webkit-touch-callout: none;
 }
 
 .pressed {
-    background-color: rgba(0, 0, 0, .7);
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 /* A hack for HTML5 contenteditable attribute on mobile */
 
 textarea[contenteditable] {
+
     -webkit-appearance: none;
 }
 
@@ -137,7 +144,7 @@ textarea[contenteditable] {
  * when navigated to via the keyboard: h5bp.com/p
  */
 
-.visuallyhidden.focusable:active ,
+.visuallyhidden.focusable:active,
 .visuallyhidden.focusable:focus {
     position: static;
 
@@ -162,11 +169,11 @@ textarea[contenteditable] {
  * Used to contain floats: h5bp.com/q
  */
 
-.clearfix:before ,
+.clearfix:before,
 .clearfix:after {
     display: table;
 
-    content: '';
+    content: "";
 }
 
 .clearfix:after {
@@ -182,7 +189,7 @@ textarea[contenteditable] {
  * Include this rule to trigger hasLayout and contain floats.
  */
 .s {
-    font-size: 12px;
+    font-size: 12px
 }
 
 .m {
@@ -194,6 +201,7 @@ textarea[contenteditable] {
 }
 
 .clearfix {
+
     *zoom: 1;
 }
 
@@ -222,8 +230,7 @@ textarea[contenteditable] {
     color: @lightGrey2;
 }
 
-.borderBd ,
-.bb-dotted {
+.borderBd {
     border-bottom: 1px dotted;
 }
 
@@ -251,28 +258,32 @@ textarea[contenteditable] {
     text-decoration: underline;
 }
 
-.btnStyle {
-    font-size: 14px;
-    line-height: 34px;
+.line-through {
+    text-decoration: line-through;
+}
 
+.btnStyle {
+    .gradient(#ffc000, #ffaa01, #ffc000);
+    .rounded(4px);
     display: block;
 
     height: 35px;
 
     text-align: center;
 
-    color: #fff;
+    color: #ffffff;
     border: 1px solid #fb9c00;
 
-    .gradient(#ffc000, #ffaa01, #ffc000);
-    .rounded(4px);
+    font-size: 14px;
+    line-height: 34px;
+
     &:hover {
+        .gradient(#ffa200, #f79200, #ffa200);
         text-decoration: none;
 
         color: @white;
-
-        .gradient(#ffa200, #f79200, #ffa200);
     }
+
     &:active {
         text-decoration: none;
 
@@ -287,171 +298,225 @@ textarea[contenteditable] {
     vertical-align: top;
 }
 
-.clsr1 {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-
-    width: 35px;
-    height: 35px;
-
-    background: url('@{base-url}/common/img/clsr1.png') no-repeat 0 0;
-}
-
 .backLn {
-    font-size: 16px;
-    line-height: 40px;
-
-    padding: 0 0 0 30px;
-
-    border-bottom: 1px solid @lightGrey1;
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAYAAACQN/8FAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAuElEQVQoFYXR3QnCMBSG4XOlRfBGvA/1ZwQXcAjH6BiCFnUQdQq9EeoSjiAiFIX4nsIJsa148dA235c0JOK9lzYi0sUYiea/SgMKS9wxby0S9JHjjStco8hgDxlKXDDT0leRwQRbPHDAyEqhyGAHK2jpDBeX4uKE8IkbFvVSXNQV19AVT3D1cjgeQt3jDlreo7lHm004xAYvHJGGzF7sSRifY8G30yz82orVoMj/m7EJrKR3PUV11x/05fDNuFCCQAAAAABJRU5ErkJggg==) no-repeat 10px 50%;
+    padding: 0 0 0 30px;
+    line-height: 40px;
+    border-bottom: 1px solid @lightGrey1;
+    font-size: 16px;
 }
 // основные стили элементов форм
+.textfield {
+    .rounded(4px);
+    .box-sizing();
+    display: block;
+
+    height: 35px;
+    margin: 0 0 15px;
+    padding-left: 10px;
+
+    border: 1px solid @inputBorder;
+
+    line-height: 35px;
+
+    &-err {
+        border-color: @redErr;
+        border-width: 3px;
+    }
+}
 
 .btnsubmit {
-    font-size: 14px;
-    font-weight: bold;
-
+    .rounded(4px);
+    .inline-block();
     padding: 5px 15px;
+    font-weight: bold;
 
     color: @white;
     border: 1px solid #ff6c00;
     background: @submitBg;
 
-    .rounded(4px);
-    .inline-block();
+    font-size: 14px;
+
     &:hover {
         color: @white;
     }
 }
 
 .labeltext {
-    font-size: 12px;
-    line-height: 1.5;
-
     display: block;
 
     margin: 0 0 5px;
+
+    font-size: 12px;
+    line-height: 1.5;
 }
 
 .legend {
-    font-size: 18px;
-
     margin: 10px 0 15px;
+
+    font-size: 18px;
 }
 
 .fieldError {
-    border-color: #f00;
+    border-color: #ff0000;
 }
 
 .errorText {
+    background: @white;
+    color: #ff0000;
     font-size: 12px;
-    line-height: 1;
-
-    position: absolute;
     left: 10px;
-
+    line-height: 1;
     margin-top: -62px;
     padding: 0 2px;
-
-    color: #f00;
-    background: @white;
+    position: absolute;
 }
 
 
 .txEvnt {
+    display: block;
     font-size: 14px;
+    left: 10px;
     line-height: 1.1;
-
+    margin: 0 0 10px;
     position: absolute;
     top: 3px;
-    left: 10px;
-
-    display: block;
-
     width: 300px;
-    margin: 0 0 10px;
+
     &-err {
         color: #ec434f;
     }
+
     &-complt {
         color: #0bb010;
     }
 }
 
-.errtx {
-    font-size: 12px;
+// кастомный селект
+.customSel {
+    .inline-block();
+    .rounded(4px);
+    position: relative;
 
-    position: absolute;
-    bottom: -7px;
+    height: 33px;
+    padding: 0 20px 0 5px;
 
-    display: block;
+    cursor: pointer;
+    vertical-align: top;
 
-    margin: 0;
+    border: 1px solid @lightGrey1;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAYElEQVQIHWMMDw/fysDw34sBAzBuYwKKFQLxLzQ5EL+QacWKFbeYmBgnIkuC+GBxkCAnJ3czkHoBVfACymcAGcswd+7cz0xMzBUgNogG8UFshv///8MwI9Bxk4B8RpgYAKNoKpNJevrLAAAAAElFTkSuQmCC) no-repeat 95% 50% @white;
 
-    white-space: nowrap;
-    word-wrap: normal;
+    font-size: 14px;
 
-    color: @redErr;
+    &_def {
+        line-height: 33px;
+    }
+
+    &_lst {
+        //display: none;
+        width: 100%;
+    }
+
+    &_i {
+        padding: 4px 5px;
+
+        cursor: pointer;
+
+        border-bottom: 1px solid @lightGrey1;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
 }
 
-.global-error {
+.errtx {
+    bottom: -7px;
     color: @redErr;
-    margin: 0 0 5px;
+    display: block;
+    font-size: 12px;
+    margin: 0;
+    position: absolute;
+    white-space: nowrap;
+    word-wrap: normal;
 }
 
 .table {
     display: table;
-
-    box-sizing: border-box;
     width: 100%;
+    box-sizing: border-box;
+
     &_cell {
         display: table-cell;
-
         vertical-align: middle;
-    }
-    &--2col {
-        .table_cell {
-            width: 50%;
+        padding-right: 10px;
+
+        &:last-child {
+            padding-right: 0;
+        }
+
+        &-w100 {
+            width: 100%;
         }
     }
 }
 
 .lst-tree {
     margin: 0 0 20px;
+
     &__i {
         margin-left: 10px;
+
         &--tl {
             font-size: 14px;
-
             margin: 0 0 2px;
         }
     }
+
     &__bul {
-        width: 6px;
+        .inline-block();
         height: 6px;
-        margin-right: 2px;
-
-
-        background-color: @black;
-
-        .inline-block(middle);
-
+        vertical-align: middle;
+        width: 6px;
         .rounded(50%);
+        background-color: @black;
+        margin-right: 2px;
     }
 }
 
-.toggle {
+.m-body-loader {
+    position: fixed;
+    width: 100%;
+    height: 100%;
 
-    &--active {
-        .toggle-box {
-            display: block;
-        }
+    &:before {
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        content: '';
+
+        background: rgba(255,255,255,.6);
+        z-index: 99;
     }
+    &:after {
+        background: url("@{common-url}/loader/loader.png") no-repeat 50% 50%;
+        position: fixed;
+        .animation(rotated 3.5s infinite linear);
+        top: 50%;
+        margin-top: -30px;
+        left: 50%;
+        margin-left: -30px;
 
-    &-box {
-        display: none;
+        width: 60px;
+        height: 60px;
+        z-index: 99;
+
+        content: '';
     }
 }
 
@@ -472,7 +537,7 @@ textarea[contenteditable] {
     }
     &:after {
         background: url("@{common-url}/loader/loader.png") no-repeat 50% 50%;
-        position: fixed;
+        position: absolute;
         .animation(rotated 3.5s infinite linear);
         top: 50%;
         margin-top: -30px;

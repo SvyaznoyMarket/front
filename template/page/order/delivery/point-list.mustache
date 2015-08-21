@@ -1,5 +1,5 @@
 {{#points}}
-    <div class="pick-point-list-i shop-snippet table_row js-order-delivery-form-control" data-value="{{&dataValue}}">
+    <div class="pick-point-list-i shop-snippet table_row js-order-delivery-form-control" data-value="{{&dataValue}}" data-type="point">
         <div class="shop-snippet-name table_cell">
             <img src="/img/points/logos/100x100/{{icon}}" alt="" class="shop-snippet-name__img">
             <span class="shop-snippet-name__text">{{group.name}}</span>
@@ -13,7 +13,7 @@
                 </div>
             {{/subway}}
 
-            <div class="shop-snippet-address">{{name}} <br/>{{regime}}</div>
+            <div class="shop-snippet-address">{{address}} <br/>{{regime}}</div>
         </div>
 
         <div class="deliv-info-snippet table_cell">

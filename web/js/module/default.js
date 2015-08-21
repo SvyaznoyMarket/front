@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'jquery.smartbanner'],
+    ['jquery', 'jquery.smartbanner', 'heightFixIos'],
     function($) {
         // баннер для android, скачать прилодение из Google Play
         $.smartbanner({

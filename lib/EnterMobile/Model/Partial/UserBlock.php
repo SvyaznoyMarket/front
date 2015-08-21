@@ -9,6 +9,8 @@ namespace EnterMobile\Model\Partial {
         public $isUserAuthorized;
         /** @var bool */
         public $isCartNotEmpty;
+        /** @var bool */
+        public $isEnterprizeMember;
         /** @var Partial\Link */
         public $userLink;
         /** @var UserBlock\Cart */

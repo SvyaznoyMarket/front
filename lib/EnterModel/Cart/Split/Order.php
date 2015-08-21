@@ -38,8 +38,9 @@ class Order {
 
     /**
      * @param array $data
+     * @param $format
      */
-    public function __construct($data = []) {
+    public function __construct($data = [], $format = true) {
         $this->blockName = $data['block_name'] ? (string)$data['block_name'] : null;
         $this->seller = $data['seller'] ? new Order\Seller($data['seller']) : null;
 
@@ -74,12 +75,16 @@ class Order {
                 $this->groupedPossiblePointIds[$token][] = (string)$id;
             }
         }
-        foreach ($data['possible_point_data'] as $groupToken => $items) {
+        foreach ($data['possible_point_data'] as $key => $items) {
             foreach ($items as $item) {
                 $possiblePoint = new Order\Point($item);
-                $possiblePoint->groupToken = $groupToken;
+                $possiblePoint->groupToken = $key;
 
-                $this->possiblePoints[] = $possiblePoint;
+                if ($format) {
+                    $this->possiblePoints[] = $possiblePoint;
+                } else {
+                    $this->possiblePoints[$key][] = $possiblePoint;
+                }
             }
         }
         $this->comment = $data['comment'] ? (string)$data['comment'] : null;
@@ -107,7 +112,7 @@ class Order {
             'payment_method_id'        => $this->paymentMethodId ? (int)$this->paymentMethodId : null,
             'possible_deliveries'      => $this->possibleDeliveryMethodTokens,
             'possible_intervals'       => array_map(function(Model\Cart\Split\Interval $interval) { return $interval->dump(); }, $this->possibleIntervals),
-            'possible_days'            => $this->possibleDays,
+            'possible_days'            => array_map(function($day) { return (string)$day; }, $this->possibleDays),
             'possible_payment_methods' => $this->possiblePaymentMethodIds,
             'possible_points'          => $this->groupedPossiblePointIds,
             'possible_point_data'      => $possiblePointsData,

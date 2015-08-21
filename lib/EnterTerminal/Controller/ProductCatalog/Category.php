@@ -86,7 +86,7 @@ namespace EnterTerminal\Controller\ProductCatalog {
             $response = new Response();
             $response->category = $controllerResponse->category;
             $response->products = $controllerResponse->products;
-            $response->productCount = $controllerResponse->productUiPager->count;
+            $response->productCount = $controllerResponse->productUiPager ? $controllerResponse->productUiPager->count : null;
             $response->filters = $controllerResponse->filters;
             $response->sortings = $controllerResponse->sortings;
 
