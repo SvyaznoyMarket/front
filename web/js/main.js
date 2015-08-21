@@ -139,13 +139,15 @@ require(
         'module/addReview'
     ],
     function(require, config) {
-        $.cookie.defaults.path = '/';
-        $.cookie.defaults.domain = config.cookie.domain;
+        $(document).ready(function(){
+            $.cookie.defaults.path = '/';
+            $.cookie.defaults.domain = config.cookie.domain;
 
-        // модуль страницы
-        require([moduleName], function(module) {
-            // партнерский модуль
-            setTimeout(function() { require(['module/partner']); }, 600);
+            // модуль страницы
+            require([moduleName], function(module) {
+                // партнерский модуль
+                setTimeout(function() { require(['module/partner']); }, 600);
+            });
         });
     }
 );
