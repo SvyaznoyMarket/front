@@ -37,25 +37,7 @@ define(
                     body.addClass('snapjs-left');
                 }
 
-            },
-
-            iOS = function iOS() {
-
-            var iDevices = [
-                'iPad Simulator',
-                'iPhone Simulator',
-                'iPod Simulator',
-                'iPad',
-                'iPhone',
-                'iPod'
-            ];
-                console.info(navigator.platform);
-            while (iDevices.length) {
-                if (navigator.platform === iDevices.pop()){ return true; }
             }
-
-            return false;
-        }
             ;
         // end of vars
         
@@ -69,12 +51,6 @@ define(
             .on('blur', 'input, textarea, input + label, select', function(e) {
                 body.removeClass('fixfixed');
             });
-
-        //check if iOS
-        if ( !iOS() ){
-            $(body).addClass('noIOS') ;
-        }
-
 
     }
 );
