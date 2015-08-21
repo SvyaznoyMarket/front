@@ -5,7 +5,19 @@ define(
     function (
         $, _
     ) {
+        var
+            body =$('body'),
+            footerResize = function footerResize() {
+                var
+                    footer = $('.footer').removeAttr('style');
 
+                if ( $('.content').height() + footer.outerHeight() + $('.header').height() < ($(window).height()) ){
+                    body.removeClass('noIOS');
+                    footer.css('position','fixed');
+                }
+
+
+            };
         if (
             navigator.userAgent.match(/iPad;.*CPU.*OS 7_\d/i) &&
             window.innerHeight != document.documentElement.clientHeight
@@ -14,7 +26,7 @@ define(
                 var wh = $(window).height(),
                     ww = $(window).width();
                 document.documentElement.style.height = window.innerHeight + "px";
-                $('body').removeAttr('style');
+                body.removeAttr('style');
 
                 if (document.body.scrollTop !== 0) {
                     window.scrollTo(0, 0);
@@ -22,8 +34,9 @@ define(
                 if (wh < ww){
                     //landscape position
 
-                    $('body').height(wh - 20);
+                    body.height(wh - 20);
                 }
+                footerResize();
             };
 
             //alert('ios7!!!');

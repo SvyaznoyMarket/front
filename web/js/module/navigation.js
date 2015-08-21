@@ -39,14 +39,6 @@ define(
 
             },
 
-            footerResize = function footerResize() {
-                var
-                    footer = $('.footer');
-                if ( $('.content').height() + footer.innerHeight() + $('.header').height()< $(window).height() ){
-                    body.removeClass('noIOS');
-                    footer.css('position','fixed');
-                }
-            },
             iOS = function iOS() {
 
             var iDevices = [
@@ -66,8 +58,7 @@ define(
         }
             ;
         // end of vars
-
-        $(window).on('load resize', footerResize);
+        
         $(navIco).on('click', showHideMenu);
         $(fader).on('click', showHideMenu);
 
