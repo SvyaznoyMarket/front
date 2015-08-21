@@ -6,7 +6,7 @@ use Enter\Curl\Query;
 use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 
-class GetListByToken extends Query {
+class GetListByTokenList extends Query {
     use ScmsQueryTrait;
 
     /** @var array */
