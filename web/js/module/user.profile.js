@@ -68,9 +68,7 @@ define(
         $(".private section").scroll(function () {
             var selected = $(this).find("input:focus");
             selected.blur();
-            $('body').removeClass('fixfixed');
         });
-
         $(".private section").find('input').on('focus',function(){
             var scroll = $(this).offset().top;
             $(this).scrollTop(scroll);
