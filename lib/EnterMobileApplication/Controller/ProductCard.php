@@ -34,7 +34,8 @@ namespace EnterMobileApplication\Controller {
             }
 
             $returnReviews = (bool)$request->query['returnReviews'];
-            $returnRecommendations = (bool)$request->query['returnRecommendations'];
+            $returnSimilarRelations = (bool)$request->query['returnSimilarRelations'];
+            $returnAlsoBoughtRelations = (bool)$request->query['returnAlsoBoughtRelations'];
             $returnUser = (bool)$request->query['returnUser'];
             $mergeNearestDeliveries = (bool)$request->query['mergeNearestDeliveries'];
 
@@ -94,44 +95,48 @@ namespace EnterMobileApplication\Controller {
             });
 
             $recommendations = [
-                'alsoBought' => [],
                 'similar' => [],
+                'alsoBought' => [],
             ];
 
             // Получение рекомендаций
-            call_user_func(function() use(&$recommendations, $returnRecommendations, $regionId, $controllerResponse) {
-                if (!$returnRecommendations) {
+            call_user_func(function() use(&$recommendations, $returnSimilarRelations, $returnAlsoBoughtRelations, $regionId, $controllerResponse) {
+                if (!$returnSimilarRelations && !$returnAlsoBoughtRelations) {
                     return;
                 }
 
                 $controller = new \EnterAggregator\Controller\Product\RecommendedListByProduct();
                 $controllerRequest = $controller->createRequest();
-                $controllerRequest->config->alsoBought = true;
+                $controllerRequest->config->alsoBought = $returnAlsoBoughtRelations;
                 $controllerRequest->config->alsoViewed = false;
-                $controllerRequest->config->similar = true;
+                $controllerRequest->config->similar = $returnSimilarRelations;
                 $controllerRequest->regionId = $regionId;
                 $controllerRequest->productIds = [$controllerResponse->product->id];
 
                 $controllerResponse = $controller->execute($controllerRequest);
 
-                foreach (array_slice($controllerResponse->alsoBoughtIdList, 0, 24) as $i => $iProductId) {
-                    if (empty($controllerResponse->recommendedProductsById[$iProductId])) {
-                        continue;
-                    }
+                if ($returnSimilarRelations) {
+                    foreach (array_slice($controllerResponse->similarIdList, 0, 24) as $iProductId) {
+                        if (empty($controllerResponse->recommendedProductsById[$iProductId])) {
+                            continue;
+                        }
 
-                    $product = $controllerResponse->recommendedProductsById[$iProductId];
-                    $product->sender = ['name' => 'retailrocket'];
-                    $recommendations['alsoBought'][] = $product;
+                        $product = $controllerResponse->recommendedProductsById[$iProductId];
+                        $product->sender = ['name' => 'retailrocket'];
+                        $recommendations['similar'][] = $product;
+                    }
                 }
 
-                foreach (array_slice($controllerResponse->similarIdList, 0, 24) as $iProductId) {
-                    if (empty($controllerResponse->recommendedProductsById[$iProductId])) {
-                        continue;
-                    }
+                if ($returnAlsoBoughtRelations) {
+                    foreach (array_slice($controllerResponse->alsoBoughtIdList, 0, 24) as $i => $iProductId) {
+                        if (empty($controllerResponse->recommendedProductsById[$iProductId])) {
+                            continue;
+                        }
 
-                    $product = $controllerResponse->recommendedProductsById[$iProductId];
-                    $product->sender = ['name' => 'retailrocket'];
-                    $recommendations['similar'][] = $product;
+                        $product = $controllerResponse->recommendedProductsById[$iProductId];
+                        $product->sender = ['name' => 'retailrocket'];
+                        $recommendations['alsoBought'][] = $product;
+                    }
                 }
             });
 
@@ -167,7 +172,6 @@ namespace EnterMobileApplication\Controller {
                     ] : null,
                     'properties' => $controllerResponse->product->properties,
                     'propertyGroups' => $controllerResponse->product->propertyGroups,
-                    'stock' => $controllerResponse->product->stock,
                     'shopStates' => array_map(function(\EnterModel\Product\ShopState $shopState) {
                         return [
                             'shop' => $shopState->shop ? [
@@ -280,7 +284,8 @@ namespace EnterMobileApplication\Controller {
                     'relatedIds' => $controllerResponse->product->relatedIds,
                     'relation' => [
                         'accessories' => $this->getProductList($controllerResponse->product->relation->accessories),
-                        'similar' => $this->getProductList($controllerResponse->product->relation->similar),
+                        'similar' => $this->getProductList($recommendations['similar']),
+                        'alsoBought' => $this->getProductList($recommendations['alsoBought']),
                     ],
                     'kit' => $controllerResponse->product->kit,
                     'rating' => $controllerResponse->product->rating ? [
@@ -308,34 +313,9 @@ namespace EnterMobileApplication\Controller {
                     'ga' => $controllerResponse->product->ga,
                     'isStore' => $controllerResponse->product->isStore,
                     'storeLabel' => $controllerResponse->product->storeLabel,
-                ]
+                ],
+                'user' => $returnUser ? $controllerResponse->user : [],
             ];
-
-            $response['recommendations'] = array_map(function($recommendations) use($helper) {
-                return array_map(function(\EnterModel\Product $product) use($helper){
-                    return [
-                        'id' => $product->id,
-                        'ui' => $product->ui,
-                        'article' => $product->article,
-                        'webName' => $helper->unescape($product->webName),
-                        'namePrefix' => $helper->unescape($product->namePrefix),
-                        'name' => $helper->unescape($product->name),
-                        'brand' => $product->brand,
-                        'isBuyable' => $product->isBuyable,
-                        'isInShopOnly' => $product->isInShopOnly,
-                        'isInShopStockOnly' => $product->isInShopStockOnly,
-                        'isInShopShowroomOnly' => $product->isInShopShowroomOnly,
-                        'isInWarehouse' => $product->isInWarehouse,
-                        'isKitLocked' => $product->isKitLocked,
-                        'price' => $product->price,
-                        'oldPrice' => $product->oldPrice,
-                        'labels' => $product->labels,
-                        'rating' => $product->rating,
-                        'media' => $product->media,
-                    ];
-                }, $recommendations);
-            }, $recommendations);
-            $response['user'] = $returnUser ? $controllerResponse->user : [];
 
             return new Http\JsonResponse($response);
         }

@@ -35,6 +35,7 @@ trait ProductListingTrait {
 
             $result[] = [
                 'id'                   => $product->id,
+                'ui'                   => $product->ui,
                 'article'              => $product->article,
                 'webName'              => $helper->unescape($product->webName),
                 'namePrefix'           => $helper->unescape($product->namePrefix),
@@ -43,6 +44,8 @@ trait ProductListingTrait {
                 'isInShopOnly'         => $product->isInShopOnly,
                 'isInShopStockOnly'    => $product->isInShopStockOnly,
                 'isInShopShowroomOnly' => $product->isInShopShowroomOnly,
+                'isInWarehouse'        => $product->isInWarehouse,
+                'isKitLocked'          => $product->isKitLocked,
                 'brand'                => $product->brand ? [
                     'id'   => $product->brand->id,
                     'name' => $product->brand->name,
