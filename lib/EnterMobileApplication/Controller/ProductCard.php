@@ -175,6 +175,9 @@ namespace EnterMobileApplication\Controller {
                     'shopStates' => array_map(function(\EnterModel\Product\ShopState $shopState) {
                         return [
                             'shop' => $shopState->shop ? [
+                                'group' => [
+                                    'id' => 'enter',
+                                ],
                                 'id' => $shopState->shop->id,
                                 'ui' => $shopState->shop->ui,
                                 'token' => $shopState->shop->token,
@@ -313,6 +316,13 @@ namespace EnterMobileApplication\Controller {
                     'ga' => $controllerResponse->product->ga,
                     'isStore' => $controllerResponse->product->isStore,
                     'storeLabel' => $controllerResponse->product->storeLabel,
+                ],
+                'pointGroups' => [
+                    [
+                        'id' => 'enter',
+                        'name' => 'Магазин Enter',
+                        'media' => (new \EnterRepository\Point())->getMedia('enter', ['logo', 'marker']),
+                    ]
                 ],
                 'user' => $returnUser ? $controllerResponse->user : [],
             ];
