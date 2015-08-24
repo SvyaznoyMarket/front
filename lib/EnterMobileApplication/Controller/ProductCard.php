@@ -311,7 +311,30 @@ namespace EnterMobileApplication\Controller {
                 ]
             ];
 
-            $response['recommendations'] = $recommendations;
+            $response['recommendations'] = array_map(function($recommendations) use($helper) {
+                return array_map(function(\EnterModel\Product $product) use($helper){
+                    return [
+                        'id' => $product->id,
+                        'ui' => $product->ui,
+                        'article' => $product->article,
+                        'webName' => $helper->unescape($product->webName),
+                        'namePrefix' => $helper->unescape($product->namePrefix),
+                        'name' => $helper->unescape($product->name),
+                        'brand' => $product->brand,
+                        'isBuyable' => $product->isBuyable,
+                        'isInShopOnly' => $product->isInShopOnly,
+                        'isInShopStockOnly' => $product->isInShopStockOnly,
+                        'isInShopShowroomOnly' => $product->isInShopShowroomOnly,
+                        'isInWarehouse' => $product->isInWarehouse,
+                        'isKitLocked' => $product->isKitLocked,
+                        'price' => $product->price,
+                        'oldPrice' => $product->oldPrice,
+                        'labels' => $product->labels,
+                        'rating' => $product->rating,
+                        'media' => $product->media,
+                    ];
+                }, $recommendations);
+            }, $recommendations);
             $response['user'] = $returnUser ? $controllerResponse->user : [];
 
             return new Http\JsonResponse($response);
