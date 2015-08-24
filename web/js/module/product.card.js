@@ -86,7 +86,7 @@ define(
                                 }
                             },
                             {
-                                breakpoint: 300,
+                                breakpoint: 340,
                                 settings: {
                                     slidesToShow: 2,
                                     slidesToScroll: 2

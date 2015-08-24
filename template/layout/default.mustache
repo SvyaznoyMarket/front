@@ -51,18 +51,19 @@
     {{>partial/counters}}
     {{>partial/menu}}
     <div class="snap-content" id="wrapper">
+        {{>partial/header}}
         <div class="wrapper">
             <div class="fader js-fader"></div>
-            {{>partial/header}}
 
             {{#content}}
                 {{>content}}
             {{/content}}
+
+
+            {{>partial/template}}
+
+            {{>partial/footer}}
         </div><!--/ Оболочка -->
-
-        {{>partial/template}}
-
-        {{>partial/footer}}
     </div>
 
     {{>partial/search.suggest}}

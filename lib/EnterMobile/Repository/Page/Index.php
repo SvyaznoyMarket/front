@@ -108,6 +108,8 @@ class Index {
             }
         });
 
+        $page->headerTitle = false;
+
         // шаблоны mustache
         // ...
 
