@@ -3,13 +3,14 @@
 namespace EnterMobileApplication\Controller {
 
     use Enter\Http;
+    use EnterAggregator\CurlTrait;
     use EnterAggregator\SessionTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterMobileApplication\Controller;
 
     class ProductCard {
-        use ProductListingTrait, SessionTrait;
+        use ProductListingTrait, SessionTrait, CurlTrait;
         
         /**
          * @param Http\Request $request
@@ -34,6 +35,7 @@ namespace EnterMobileApplication\Controller {
             }
 
             $returnReviews = (bool)$request->query['returnReviews'];
+            $returnPointStates = (bool)$request->query['returnPointStates'];
             $returnSimilarRelations = (bool)$request->query['returnSimilarRelations'];
             $returnAlsoBoughtRelations = (bool)$request->query['returnAlsoBoughtRelations'];
             $returnUser = (bool)$request->query['returnUser'];
@@ -140,7 +142,34 @@ namespace EnterMobileApplication\Controller {
                 }
             });
 
+            $shopStatePointGroups = [];
+            $shopStatePointsByUi = [];
+            call_user_func(function() use(&$shopStatePointsByUi, &$shopStatePointGroups, $controllerResponse, $returnPointStates) {
+                if (!$controllerResponse->product->shopStates || !$returnPointStates) {
+                    return;
+                }
+
+                $pointUis = [];
+                foreach ($controllerResponse->product->shopStates as $shopState) {
+                    $pointUis[] = $shopState->shop->ui;
+                }
+
+                if ($pointUis) {
+                    $curl = $this->getCurl();
+                    $pointListQuery = new Query\Point\GetListFromScms(null, $pointUis);
+                    $curl->prepare($pointListQuery);
+                    $curl->execute();
+
+                    $result = $pointListQuery->getResult();
+                    $shopStatePointGroups = $result['partners'];
+                    foreach ($result['points'] as $point) {
+                        $shopStatePointsByUi[$point['uid']] = $point;
+                    }
+                }
+            });
+
             $helper = new \Enter\Helper\Template();
+            $pointRepository = new \EnterRepository\Point();
 
             $response = [
                 'product' => [
@@ -172,12 +201,9 @@ namespace EnterMobileApplication\Controller {
                     ] : null,
                     'properties' => $controllerResponse->product->properties,
                     'propertyGroups' => $controllerResponse->product->propertyGroups,
-                    'shopStates' => array_map(function(\EnterModel\Product\ShopState $shopState) {
+                    'shopStates' => !$returnPointStates ? array_map(function(\EnterModel\Product\ShopState $shopState) use($shopStatePointsByUi) {
                         return [
                             'shop' => $shopState->shop ? [
-                                'group' => [
-                                    'id' => 'enter',
-                                ],
                                 'id' => $shopState->shop->id,
                                 'ui' => $shopState->shop->ui,
                                 'token' => $shopState->shop->token,
@@ -201,7 +227,36 @@ namespace EnterMobileApplication\Controller {
                             'showroomQuantity' => $shopState->showroomQuantity,
                             'isInShowroomOnly' => $shopState->isInShowroomOnly,
                         ];
-                    }, $controllerResponse->product->shopStates),
+                    }, $controllerResponse->product->shopStates) : [],
+                    'pointStates' => $returnPointStates ? array_filter(array_map(function(\EnterModel\Product\ShopState $shopState) use($shopStatePointsByUi) {
+                        if (!$shopState->shop || !$shopStatePointsByUi[$shopState->shop->ui]) {
+                            return null;
+                        }
+
+                        return [
+                            'point' => call_user_func(function() use($shopState, $shopStatePointsByUi) {
+                                $point = $shopStatePointsByUi[$shopState->shop->ui];
+                                return [
+                                    'group' => ['id' => $point['partner']],
+                                    'ui' => $point['uid'],
+                                    'address' => $point['address'],
+                                    'regime' => $point['working_time'],
+                                    'longitude' => isset($point['location'][0]) ? $point['location'][0] : null,
+                                    'latitude' => isset($point['location'][1]) ? $point['location'][1] : null,
+                                    'subway' => [[
+                                        'name' => isset($point['subway']['name']) ? $point['subway']['name'] : null,
+                                        'line' => [
+                                            'name' => isset($point['subway']['line_name']) ? $point['subway']['line_name'] : null,
+                                            'color' => isset($point['subway']['line_color']) ? $point['subway']['line_color'] : null,
+                                        ],
+                                    ]],
+                                ];
+                            }),
+                            'quantity' => $shopState->quantity,
+                            'showroomQuantity' => $shopState->showroomQuantity,
+                            'isInShowroomOnly' => $shopState->isInShowroomOnly,
+                        ];
+                    }, $controllerResponse->product->shopStates)) : [],
                     'price' => $controllerResponse->product->price,
                     'oldPrice' => $controllerResponse->product->oldPrice,
                     'labels' => array_map(function(Model\Product\Label $label) {
@@ -317,13 +372,13 @@ namespace EnterMobileApplication\Controller {
                     'isStore' => $controllerResponse->product->isStore,
                     'storeLabel' => $controllerResponse->product->storeLabel,
                 ],
-                'pointGroups' => [
-                    [
-                        'id' => 'enter',
-                        'name' => 'Магазин Enter',
-                        'media' => (new \EnterRepository\Point())->getMedia('enter', ['logo', 'marker']),
-                    ]
-                ],
+                'pointGroups' => array_map(function($group) use(&$pointRepository) {
+                    return [
+                        'id' => $group['slug'],
+                        'name' => $group['name'],
+                        'media' => $pointRepository->getMedia($group['slug'], ['logo', 'marker']),
+                    ];
+                }, $shopStatePointGroups),
                 'user' => $returnUser ? $controllerResponse->user : [],
             ];
 
