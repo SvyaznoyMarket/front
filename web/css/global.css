@@ -1649,18 +1649,26 @@ body {
   background-position: 0 0;
 }
 .nav-header__wrap-text {
-  width: 500px;
-  padding: 13px 0;
+  max-width: 175px;
+  padding: 13px 5px;
   font-size: 1rem;
   cursor: pointer;
   display: inline-block;
   vertical-align: top;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
 }
 .nav-header__wrap-text .text {
   color: #fff;
   border-bottom: 1px dotted #ffffff;
   display: inline-block;
   vertical-align: top;
+  max-width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 .navList {
   overflow: auto;

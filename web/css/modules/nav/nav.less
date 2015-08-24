@@ -56,18 +56,23 @@
             background-position: 0 0;
         }
         &-text {
-            width: 500px;
-            padding: 13px 0;
+            max-width: 175px;
+            padding: 13px 5px;
             font-size: 1rem;
 
             cursor: pointer;
 
             .inline-block();
+            .box-sizing(border-box);
             .text {
                 color: #fff;
                 border-bottom: 1px dotted @white;
 
                 .inline-block();
+                max-width: 100%;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
             }
         }
     }
