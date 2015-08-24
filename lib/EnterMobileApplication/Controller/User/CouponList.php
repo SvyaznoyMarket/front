@@ -93,29 +93,6 @@ namespace EnterMobileApplication\Controller\User {
                 }
             }
 
-            try {
-                if ($sliceTokensBySeriesId) {
-                    $sliceListQuery = new Query\Product\Slice\GetListByTokenList(array_values($sliceTokensBySeriesId));
-                    $curl->prepare($sliceListQuery);
-
-                    $curl->execute();
-
-                    /** @var Model\Product\Slice[] $slicesByToken */
-                    $slicesByToken = [];
-                    foreach ($sliceListQuery->getResult() as $item) {
-                        $slice = new Model\Product\Slice($item);
-                        $slicesByToken[$slice->token] = $slice;
-                    }
-
-                    foreach ($response->couponSeries as $couponSeries) {
-                        $sliceToken = @$sliceTokensBySeriesId[$couponSeries->id] ?: null;
-                        $couponSeries->slice = @$slicesByToken[$sliceToken] ?: null;
-                    }
-                }
-            } catch (\Exception $e) {
-                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical']]);
-            }
-
             if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
 
             return new Http\JsonResponse($response);
