@@ -11,7 +11,7 @@ class GetItemById extends Query {
     use CoreQueryTrait;
 
     /** @var array|null */
-    protected $result;
+    protected $result = [];
 
     /**
      * @param string $id
@@ -37,6 +37,13 @@ class GetItemById extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]['id']) ? $data[0] : null;
+        if (isset($data[0]['id'])) {
+            // MAPI-95
+            foreach ($data as $key => $item) {
+                unset($data[$key]['category']);
+            }
+
+            $this->result = $data[0];
+        }
     }
 }

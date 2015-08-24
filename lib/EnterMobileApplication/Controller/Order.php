@@ -102,6 +102,7 @@ namespace EnterMobileApplication\Controller {
                     array_map(function(Model\Product $product) { return $product->ui; }, $productsById),
                     [
                         'media'       => true,
+                        'category'    => true,
                         'media_types' => ['main'], // только главная картинка
                     ]
                 );

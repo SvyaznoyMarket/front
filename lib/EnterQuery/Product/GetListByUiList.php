@@ -11,7 +11,7 @@ class GetListByUiList extends Query {
     use CoreQueryTrait;
 
     /** @var array */
-    protected $result;
+    protected $result = [];
 
     /**
      * @param array $uis
@@ -37,6 +37,13 @@ class GetListByUiList extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]['ui']) ? $data : [];
+        if (isset($data[0]['ui'])) {
+            // MAPI-95
+            foreach ($data as $key => $item) {
+                unset($data[$key]['category']);
+            }
+
+            $this->result = $data;
+        }
     }
 }

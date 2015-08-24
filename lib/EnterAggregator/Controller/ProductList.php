@@ -214,6 +214,7 @@ namespace EnterAggregator\Controller {
                     $response->productUiPager->uis,
                     [
                         'media'       => true,
+                        'category'    => true,
                         'media_types' => ['main'], // только главная картинка
                     ]
                 );

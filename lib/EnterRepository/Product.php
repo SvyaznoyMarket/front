@@ -326,12 +326,17 @@ class Product {
     }
 
     /**
-     * @param Model\Product[] $productsByUi
+     * @param Model\Product[] $products
      * @param Query $descriptionListQuery
      * @param bool $forceDescriptionMedia
      */
-    public function setDescriptionForListByListQuery(array $productsByUi, Query $descriptionListQuery, $forceDescriptionMedia = false) {
+    public function setDescriptionForListByListQuery(array $products, Query $descriptionListQuery, $forceDescriptionMedia = false) {
         try {
+            $productsByUi = [];
+            foreach ($products as $product) {
+                $productsByUi[$product->ui] = $product;
+            }
+
             foreach ($descriptionListQuery->getResult() as $descriptionItem) {
                 /** @var Model\Product|null $product */
                 $product =
@@ -366,6 +371,26 @@ class Product {
                             $product->media = new Model\Product\Media($descriptionItem);
 
                             break;
+                        }
+                    }
+                }
+
+                // MAPI-95
+                if (!empty($descriptionItem['categories']) && is_array($descriptionItem['categories'])) {
+                    foreach ($descriptionItem['categories'] as $category) {
+                        if ($category['main']) {
+                            $product->category = new Model\Product\Category($category);
+                            $product->category->parent = null;
+
+                            $product->category->ascendants = [new Model\Product\Category($category)];
+                            while (!empty($category['parent'])) {
+                                $category = $category['parent'];
+                                $product->category->ascendants[] = new Model\Product\Category($category);
+                            }
+
+                            $product->category->ascendants = array_reverse($product->category->ascendants);
+                            array_pop($product->category->ascendants);
+                            array_walk($product->category->ascendants, function(Model\Product\Category $category) { $category->parent = null; });
                         }
                     }
                 }

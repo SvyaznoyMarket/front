@@ -130,6 +130,7 @@ namespace EnterAggregator\Controller\Product {
                     $idsInChunk,
                     [
                         'media'       => true,
+                        'category'    => true,
                         'media_types' => ['main'], // только главная картинка
                     ]
                 );

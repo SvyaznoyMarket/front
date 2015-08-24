@@ -109,13 +109,23 @@ namespace EnterAggregator\Controller {
 
             // запрос аксессуаров товара
             $accessoryListQuery = null;
+            $accessoryDescriptionListQuery = null;
             if ((bool)$response->product->accessoryIds) {
                 $accessoryListQuery = new Query\Product\GetListByIdList(array_slice($response->product->accessoryIds, 0, $config->product->itemsInSlider), $response->region->id);
                 $curl->prepare($accessoryListQuery);
+
+                $accessoryDescriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                    $response->product->accessoryIds,
+                    [
+                        'category'    => true,
+                    ]
+                );
+                $curl->prepare($accessoryDescriptionListQuery);
             }
 
             // запрос наборов
             $kitListQuery = null;
+            $kitDescriptionListQuery = null;
             $kits = $response->product->kit;
             if ((bool)$response->product->kit) {
                 $kitIds = array_map(function(Model\Product\Kit $kit) {
@@ -141,6 +151,14 @@ namespace EnterAggregator\Controller {
 
                 $kitListQuery = new Query\Product\GetListByIdList($kitIds, $response->region->id);
                 $curl->prepare($kitListQuery);
+
+                $kitDescriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                    $kitIds,
+                    [
+                        'category'    => true,
+                    ]
+                );
+                $curl->prepare($kitDescriptionListQuery);
             }
 
             // запрос доставки товара
@@ -227,6 +245,11 @@ namespace EnterAggregator\Controller {
                     $item['media'] = [$mediaItem];
                 }
             }) : [];
+
+            if ($kitDescriptionListQuery) {
+                $productRepository->setDescriptionForListByListQuery($kitProductsById, $kitDescriptionListQuery);
+            }
+
             foreach ($kitProductsById as $kitProduct) {
                 $kitProduct->kitCount = 0;
             }
@@ -241,8 +264,9 @@ namespace EnterAggregator\Controller {
             $response->product->relation->kits = array_values($kitProductsById);
 
             // аксессуары
-            if ($accessoryListQuery) {
+            if ($accessoryListQuery && $accessoryDescriptionListQuery) {
                 $productRepository->setAccessoryRelationForObjectListByQuery([$response->product->id => $response->product], $accessoryListQuery);
+                $productRepository->setDescriptionForListByListQuery($response->product->relation->accessories, $accessoryDescriptionListQuery);
             }
 
             // группированные товары

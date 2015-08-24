@@ -11,7 +11,7 @@ class GetListByBarcodeList extends Query {
     use CoreQueryTrait;
 
     /** @var array */
-    protected $result;
+    protected $result = [];
 
     /**
      * @param array $barcodes
@@ -37,6 +37,13 @@ class GetListByBarcodeList extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]['id']) ? $data : [];
+        if (isset($data[0]['id'])) {
+            // MAPI-95
+            foreach ($data as $key => $item) {
+                unset($data[$key]['category']);
+            }
+
+            $this->result = $data;
+        }
     }
 }

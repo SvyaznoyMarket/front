@@ -55,9 +55,11 @@ namespace EnterModel\Product {
             $this->media = new Model\Product\Category\Media();
 
             if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+            if (array_key_exists('core_id', $data)) $this->id = (string)$data['core_id'];
             if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui']; // FIXME: deprecated
             if (array_key_exists('uid', $data)) $this->ui = (string)$data['uid'];
             if (array_key_exists('parent_id', $data)) $this->parentId = $data['parent_id'] ? (string)$data['parent_id'] : null;
+            if (!empty($data['parent']['core_id'])) $this->parentId = (string)$data['parent']['core_id'];
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
             if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
             if (array_key_exists('slug', $data)) $this->token = (string)$data['slug'];
@@ -89,6 +91,16 @@ namespace EnterModel\Product {
 
             if (isset($data['parent']['uid'])) {
                 $this->parent = new Model\Product\Category($data['parent']);
+            }
+
+            // MAPI-95
+            if ($this->level === null) {
+                $this->level = 1;
+                $parent = $data;
+                while (!empty($parent['parent'])) {
+                    $this->level++;
+                    $parent = $parent['parent'];
+                }
             }
 
             $this->meta = new Model\Product\Category\Meta();

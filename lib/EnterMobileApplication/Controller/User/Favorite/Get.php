@@ -70,6 +70,7 @@ namespace EnterMobileApplication\Controller\User\Favorite {
                         $productUis,
                         [
                             'media'       => true,
+                            'category'    => true,
                             'media_types' => ['main'], // только главная картинка
                         ]
                     );
