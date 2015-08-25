@@ -12,13 +12,16 @@
         </div>
 
         <div class="points-search">
-                <form class="points-search__form">
+                <form class="points-search__form js-search-points-form">
                     <button class="points-search__btn" type="submit">Найти</button>
-                    <div class=points-search__inn><input class="points-search__input"></div>
+                    <div class=points-search__inn><input class="points-search__input js-search-points-input"></div>
                 </form>
         </div>
        </div>
-        <div class="points__container js-list-block">
+
+        <div id="map" style="width: 600px; height: 400px"></div>
+
+        <div class="points__container js-list-block" style="display:none;">
             <ul class="points__list">
                 <li class="points__i">
                     <div class="shop-snippet clearfix">

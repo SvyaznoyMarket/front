@@ -178,6 +178,12 @@
         }
     },
 
+    "Shop\\GetCoordinates": {
+        "name": "Получение координат по поисковой фразе",
+        "pattern": "/ajax/get-coordinates-by-adress",
+        "method": ["POST"]
+    },
+
     "User\\Login": {
         "name": "Вход пользователя",
         "pattern": "/login"
