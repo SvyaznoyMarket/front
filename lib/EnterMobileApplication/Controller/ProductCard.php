@@ -257,6 +257,13 @@ namespace EnterMobileApplication\Controller {
                             'isInShowroomOnly' => $shopState->isInShowroomOnly,
                         ];
                     }, $controllerResponse->product->shopStates)) : [],
+                    'pointGroups' => array_map(function($group) use(&$pointRepository) {
+                        return [
+                            'id' => $group['slug'],
+                            'name' => $group['name'],
+                            'media' => $pointRepository->getMedia($group['slug'], ['logo', 'marker']),
+                        ];
+                    }, $shopStatePointGroups),
                     'price' => $controllerResponse->product->price,
                     'oldPrice' => $controllerResponse->product->oldPrice,
                     'labels' => array_map(function(Model\Product\Label $label) {
@@ -372,13 +379,6 @@ namespace EnterMobileApplication\Controller {
                     'isStore' => $controllerResponse->product->isStore,
                     'storeLabel' => $controllerResponse->product->storeLabel,
                 ],
-                'pointGroups' => array_map(function($group) use(&$pointRepository) {
-                    return [
-                        'id' => $group['slug'],
-                        'name' => $group['name'],
-                        'media' => $pointRepository->getMedia($group['slug'], ['logo', 'marker']),
-                    ];
-                }, $shopStatePointGroups),
                 'user' => $returnUser ? $controllerResponse->user : [],
             ];
 
