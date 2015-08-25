@@ -29,24 +29,28 @@ class Promo extends \EnterRepository\Promo {
                 unset($promo->target->categoryToken);
             }
 
-            // MAPI-102 Не возвращать баннеры с тегом отличным от mobile
-            call_user_func(function() use(&$promos, $promoKey, $promo) {
-                foreach ($promo->media->photos as $mediaKey => $media) {
-                    if (!in_array('mobile', $media->tags, true)) {
-                        unset($promo->media->photos[$mediaKey]);
-                    }
-                }
-
-                $promo->media->photos = array_values($promo->media->photos);
-
-                if (!$promo->media->photos) {
-                    unset($promos[$promoKey]);
-                }
-
-                $promos = array_values($promos);
-            });
+            $this->deleteNotMobileSourcesAndPromos($promos, $promoKey, $promo);
         }
         
         return $promos;
+    }
+
+    /**
+     * MAPI-102 Не возвращать баннеры с тегом отличным от mobile
+     */
+    private function deleteNotMobileSourcesAndPromos(&$promos, $promoKey, $promo) {
+        foreach ($promo->media->photos as $mediaKey => $media) {
+            if (!in_array('mobile', $media->tags, true)) {
+                unset($promo->media->photos[$mediaKey]);
+            }
+        }
+
+        $promo->media->photos = array_values($promo->media->photos);
+
+        if (!$promo->media->photos) {
+            unset($promos[$promoKey]);
+        }
+
+        $promos = array_values($promos);
     }
 }
