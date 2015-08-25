@@ -18,7 +18,7 @@ class Promo extends \EnterRepository\Promo {
     public function getObjectListByQuery(Query $query) {
         $promos = parent::getObjectListByQuery($query);
 
-        foreach ($promos as $promo) {
+        foreach ($promos as $promoKey => $promo) {
             if (!$promo->target instanceof \EnterModel\Promo\Target\Content) {
                 unset($promo->target->url);
             } else {
@@ -28,8 +28,21 @@ class Promo extends \EnterRepository\Promo {
             if ($promo->target instanceof \EnterModel\Promo\Target\Slice) {
                 unset($promo->target->categoryToken);
             }
+
+            // MAPI-102
+            foreach ($promo->media->photos as $mediaKey => $media) {
+                if (!in_array('mobile', $media->tags, true)) {
+                    unset($promo->media->photos[$mediaKey]);
+                }
+            }
+
+            $promo->media->photos = array_values($promo->media->photos);
+
+            if (!$promo->media->photos) {
+                unset($promos[$promoKey]);
+            }
         }
         
-        return $promos;
+        return array_values($promos);
     }
 }
