@@ -238,6 +238,7 @@ namespace EnterMobileApplication\Controller {
                                 $point = $shopStatePointsByUi[$shopState->shop->ui];
                                 return [
                                     'group' => ['id' => $point['partner']],
+                                    'id' => $shopState->shop->id,
                                     'ui' => $point['uid'],
                                     'address' => $point['address'],
                                     'regime' => $point['working_time'],
