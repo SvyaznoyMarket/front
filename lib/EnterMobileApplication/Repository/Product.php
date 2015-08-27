@@ -20,4 +20,16 @@ class Product {
         }
         $session->set('viewedProductIds', implode(' ', $viewedProductIds));
     }
+
+    public function getMedia(\EnterModel\Product $product) {
+        return [
+            'photos' => array_filter(array_map(function(\EnterModel\Media $photo) {
+                if (!array_intersect(['main', 'additional'], $photo->tags)) {
+                    return null;
+                }
+
+                return $photo;
+            }, $product->media->photos)),
+        ];
+    }
 }

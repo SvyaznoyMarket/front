@@ -121,7 +121,7 @@ namespace EnterMobileApplication\Controller {
                         'media' => $label->media,
                     ];
                 }, $controllerResponse->product->labels),
-                'media' => $controllerResponse->product->media,
+                'media' => (new \EnterMobileApplication\Repository\Product())->getMedia($controllerResponse->product),
                 'rating' => $controllerResponse->product->rating ? [
                     'score'       => $controllerResponse->product->rating->score,
                     'starScore'   => $controllerResponse->product->rating->starScore,

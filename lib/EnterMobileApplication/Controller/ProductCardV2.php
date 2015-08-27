@@ -236,7 +236,7 @@ namespace EnterMobileApplication\Controller {
                             'media' => $label->media,
                         ];
                     }, $controllerResponse->product->labels),
-                    'media' => $controllerResponse->product->media,
+                    'media' => (new \EnterMobileApplication\Repository\Product())->getMedia($controllerResponse->product),
                     'model' => $controllerResponse->product->model,
                     'line' => $controllerResponse->product->line,
                     'nearestDeliveries' => call_user_func(function() use($controllerResponse) {
