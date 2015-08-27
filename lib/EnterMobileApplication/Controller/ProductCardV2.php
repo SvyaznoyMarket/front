@@ -35,7 +35,6 @@ namespace EnterMobileApplication\Controller {
             }
 
             $returnReviews = (bool)$request->query['returnReviews'];
-            $returnPointStates = (bool)$request->query['returnPointStates'];
             $returnSimilarRelations = (bool)$request->query['returnSimilarRelations'];
             $returnAlsoBoughtRelations = (bool)$request->query['returnAlsoBoughtRelations'];
             $returnUser = (bool)$request->query['returnUser'];
@@ -134,8 +133,8 @@ namespace EnterMobileApplication\Controller {
 
             $shopStatePointGroups = [];
             $shopStatePointsByUi = [];
-            call_user_func(function() use(&$shopStatePointsByUi, &$shopStatePointGroups, $controllerResponse, $returnPointStates) {
-                if (!$controllerResponse->product->shopStates || !$returnPointStates) {
+            call_user_func(function() use(&$shopStatePointsByUi, &$shopStatePointGroups, $controllerResponse) {
+                if (!$controllerResponse->product->shopStates) {
                     return;
                 }
 
@@ -191,34 +190,7 @@ namespace EnterMobileApplication\Controller {
                     ] : null,
                     'properties' => $controllerResponse->product->properties,
                     'propertyGroups' => $controllerResponse->product->propertyGroups,
-                    'shopStates' => !$returnPointStates ? array_map(function(\EnterModel\Product\ShopState $shopState) use($shopStatePointsByUi) {
-                        return [
-                            'shop' => $shopState->shop ? [
-                                'id' => $shopState->shop->id,
-                                'ui' => $shopState->shop->ui,
-                                'token' => $shopState->shop->token,
-                                'name' => $shopState->shop->name,
-                                'regionId' => $shopState->shop->regionId,
-                                'regime' => $shopState->shop->regime,
-                                'phone' => $shopState->shop->phone,
-                                'latitude' => $shopState->shop->latitude,
-                                'longitude' => $shopState->shop->longitude,
-                                'address' => $shopState->shop->address,
-                                'description' => $shopState->shop->description,
-                                'region' => $shopState->shop->region,
-                                'photo' => $shopState->shop->photo,
-                                'walkWay' => $shopState->shop->walkWay,
-                                'carWay' => $shopState->shop->carWay,
-                                'subway' => $shopState->shop->subway,
-                                'hasGreenCorridor' => $shopState->shop->hasGreenCorridor,
-                                'media' => $shopState->shop->media,
-                            ] : null,
-                            'quantity' => $shopState->quantity,
-                            'showroomQuantity' => $shopState->showroomQuantity,
-                            'isInShowroomOnly' => $shopState->isInShowroomOnly,
-                        ];
-                    }, $controllerResponse->product->shopStates) : [],
-                    'pointStates' => $returnPointStates ? array_filter(array_map(function(\EnterModel\Product\ShopState $shopState) use($shopStatePointsByUi) {
+                    'pointStates' => array_filter(array_map(function(\EnterModel\Product\ShopState $shopState) use($shopStatePointsByUi) {
                         if (!$shopState->shop || !$shopStatePointsByUi[$shopState->shop->ui]) {
                             return null;
                         }
@@ -247,7 +219,7 @@ namespace EnterMobileApplication\Controller {
                             'showroomQuantity' => $shopState->showroomQuantity,
                             'isInShowroomOnly' => $shopState->isInShowroomOnly,
                         ];
-                    }, $controllerResponse->product->shopStates)) : [],
+                    }, $controllerResponse->product->shopStates)),
                     'pointGroups' => array_map(function($group) use(&$pointRepository) {
                         return [
                             'id' => $group['slug'],
