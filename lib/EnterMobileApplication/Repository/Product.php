@@ -23,13 +23,13 @@ class Product {
 
     public function getMedia(\EnterModel\Product $product) {
         return [
-            'photos' => array_filter(array_map(function(\EnterModel\Media $photo) {
+            'photos' => array_values(array_filter(array_map(function(\EnterModel\Media $photo) {
                 if (!array_intersect(['main', 'additional'], $photo->tags)) {
                     return null;
                 }
 
                 return $photo;
-            }, $product->media->photos)),
+            }, $product->media->photos))),
         ];
     }
 }
