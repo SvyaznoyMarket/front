@@ -21,7 +21,7 @@ namespace EnterMobileApplication\Controller {
         public function execute(Http\Request $request) {
             $curl = $this->getCurl();
             $config = $this->getConfig();
-            $productRepository = new Repository\Product();
+            $productRepository = new \EnterMobileApplication\Repository\Product();
             $pointRepository = new \EnterMobileApplication\Repository\Point();
 
             // токен для получения заказа
@@ -118,7 +118,7 @@ namespace EnterMobileApplication\Controller {
                 'address' => $order->address,
                 'createdAt' => $order->createdAt,
                 'updatedAt' => $order->updatedAt,
-                'product' => array_map(function(Model\Order\Product $orderProduct) use(&$productsById, &$helper) {
+                'product' => array_map(function(Model\Order\Product $orderProduct) use(&$productsById, $helper, $productRepository) {
                     $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : new Model\Product();
 
                     return [
@@ -153,7 +153,7 @@ namespace EnterMobileApplication\Controller {
                             'reviewCount' => $product->rating->reviewCount,
                         ] : null,
                         'favorite'        => isset($product->favorite) ? $product->favorite : null,
-                        'partnerOffers'   => $product->partnerOffers,
+                        'partnerOffers'   => $productRepository->getPartnerOffers($product),
                         'storeLabel'      => $product->storeLabel,
                     ];
                 }, $order->product),

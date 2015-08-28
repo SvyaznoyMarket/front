@@ -17,7 +17,7 @@ trait ProductListingTrait {
         $result = [];
 
         $helper = new \Enter\Helper\Template();
-        $repository = new \EnterMobileApplication\Repository\Product();
+        $productRepository = new \EnterMobileApplication\Repository\Product();
 
         foreach ($products as $product) {
             if ($excludeProductsWithoutMedia) {
@@ -60,14 +60,14 @@ trait ProductListingTrait {
                         'media' => $label->media,
                     ];
                 }, $product->labels),
-                'media'           => $repository->getMedia($product),
+                'media'           => $productRepository->getMedia($product),
                 'rating'          => $product->rating ? [
                     'score'       => $product->rating->score,
                     'starScore'   => $product->rating->starScore,
                     'reviewCount' => $product->rating->reviewCount,
                 ] : null,
                 'favorite'        => isset($product->favorite) ? $product->favorite : null,
-                'partnerOffers'   => $product->partnerOffers,
+                'partnerOffers'   => $productRepository->getPartnerOffers($product),
                 'storeLabel'      => $product->storeLabel,
             ];
         }

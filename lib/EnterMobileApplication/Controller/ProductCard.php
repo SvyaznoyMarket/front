@@ -18,6 +18,8 @@ namespace EnterMobileApplication\Controller {
          */
         public function execute(Http\Request $request) {
             $session = $this->getSession();
+            $helper = new \Enter\Helper\Template();
+            $productRepository = new \EnterMobileApplication\Repository\Product();
 
             // ид региона
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
@@ -50,7 +52,7 @@ namespace EnterMobileApplication\Controller {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Товар #%s не найден', $productId));
             }
 
-            (new \EnterMobileApplication\Repository\Product())->setViewedProductIdToSession($controllerResponse->product->id, $session);
+            $productRepository->setViewedProductIdToSession($controllerResponse->product->id, $session);
 
             // MAPI-76 Получение данных в едином формате
             call_user_func(function() use(&$controllerResponse) {
@@ -77,9 +79,6 @@ namespace EnterMobileApplication\Controller {
                     }
                 }
             });
-
-
-            $helper = new \Enter\Helper\Template();
 
             return new Http\JsonResponse(['product' => [
                 'id' => $controllerResponse->product->id,
@@ -121,7 +120,7 @@ namespace EnterMobileApplication\Controller {
                         'media' => $label->media,
                     ];
                 }, $controllerResponse->product->labels),
-                'media' => (new \EnterMobileApplication\Repository\Product())->getMedia($controllerResponse->product),
+                'media' => $productRepository->getMedia($controllerResponse->product),
                 'rating' => $controllerResponse->product->rating ? [
                     'score'       => $controllerResponse->product->rating->score,
                     'starScore'   => $controllerResponse->product->rating->starScore,
@@ -139,7 +138,7 @@ namespace EnterMobileApplication\Controller {
                 'kit' => $controllerResponse->product->kit,
                 'reviews' => $controllerResponse->product->reviews,
                 'trustfactors' => $controllerResponse->product->trustfactors,
-                'partnerOffers' => $controllerResponse->product->partnerOffers,
+                'partnerOffers' => $productRepository->getPartnerOffers($controllerResponse->product),
                 'availableStoreQuantity' => $controllerResponse->product->availableStoreQuantity,
                 'favorite' => $controllerResponse->product->favorite,
                 'sender' => $controllerResponse->product->sender,
