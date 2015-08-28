@@ -45,20 +45,20 @@ class Product extends \EnterRepository\Product {
         return array_map(function(\EnterModel\Product\PartnerOffer $partnerOffer) {
             return [
                 'partner' => [
-                    'type' => (int)$partnerOffer->partner->type,
-                    'ui' => (string)$partnerOffer->partner->ui,
-                    'name' => (string)$partnerOffer->partner->name,
-                    'offerUrl' => (string)$partnerOffer->partner->offerUrl,
-                    'contentId' => (string)$partnerOffer->partner->offerContentId,
+                    'type' => $partnerOffer->partner->type,
+                    'ui' => $partnerOffer->partner->ui,
+                    'name' => $partnerOffer->partner->name,
+                    'offerUrl' => $partnerOffer->partner->offerUrl,
+                    'contentId' => $partnerOffer->partner->offerContentId,
                 ],
-                'productId' => (string)$partnerOffer->productId,
-                'deliveryDayCount' => (int)$partnerOffer->deliveryDayCount,
+                'productId' => $partnerOffer->productId,
+                'deliveryDayCount' => $partnerOffer->deliveryDayCount,
                 'stock' => array_map(function(\EnterModel\Product\Stock $stock) {
                     return [
                         'storeId' => $stock->storeId,
                         'shopId' => $stock->shopId,
-                        'quantity' => (int)$stock->quantity,
-                        'showroomQuantity' => (int)$stock->showroomQuantity,
+                        'quantity' => $stock->quantity,
+                        'showroomQuantity' => $stock->showroomQuantity,
                     ];
                 }, $partnerOffer->stock),
             ];
