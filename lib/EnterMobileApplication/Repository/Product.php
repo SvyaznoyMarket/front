@@ -49,7 +49,7 @@ class Product extends \EnterRepository\Product {
                     'ui' => (string)$partnerOffer->partner->ui,
                     'name' => (string)$partnerOffer->partner->name,
                     'offerUrl' => (string)$partnerOffer->partner->offerUrl,
-                    'offerContentId' => (string)$partnerOffer->partner->offerContentId,
+                    'contentId' => (string)$partnerOffer->partner->offerContentId,
                 ],
                 'productId' => (string)$partnerOffer->productId,
                 'deliveryDayCount' => (int)$partnerOffer->deliveryDayCount,
