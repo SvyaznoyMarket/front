@@ -1180,6 +1180,13 @@ body {
 .noIOS .header {
   position: fixed;
 }
+.noIOS .snap-content {
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  -o-transform: none;
+  transform: none;
+}
 /* Middle
 -----------------------------------------------------------------------------*/
 .content {
