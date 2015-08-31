@@ -16,8 +16,9 @@ class GetListFromScms extends Query {
     /**
      * @param string|null $regionId
      * @param string[] $uis
+     * @param array[] $filter
      */
-    public function __construct($regionId = null, $uis = []) {
+    public function __construct($regionId = null, $uis = [], $filter = []) {
         $this->url = new Url();
         $this->url->path = 'api/point/get';
 
@@ -27,6 +28,14 @@ class GetListFromScms extends Query {
 
         if ($uis) {
             $this->url->query['uids'] = $uis;
+        }
+
+        if (isset($filter) && isset($filter['partners'])) {
+            $this->url->query['partner_slugs'] = $filter['partners'];
+        }
+
+        if (isset($filter) && isset($filter['coordinates'])) {
+            $this->url->query['polygon'] = $filter['coordinates'];
         }
 
         $this->init();

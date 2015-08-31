@@ -21,6 +21,7 @@ namespace EnterMobile\Model\Page\Shops\Index {
 
     class Content extends Page\DefaultPage\Content {
 
+        public $points;
 
         public function __construct() {
             parent::__construct();

@@ -28,14 +28,51 @@ class Index {
     public function buildObjectByRequest(Page $page, Index\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
-        $config = $this->getConfig();
-        $router = $this->getRouter();
-        $templateHelper = $this->getTemplateHelper();
 
         $page->dataModule = 'shops.index';
+        $pointRepository = new \EnterRepository\Point();
+
+        $result = [
+            'points' => array_values($request->points['points']),
+            'partners' => $request->points['partners']
+        ];
 
 
+        $partners = [];
 
+        foreach ($result['partners'] as $key => $partner) {
+            $partnerMedia = $pointRepository->getMedia($partner['slug'], ['logo', 'marker']);
+
+            $partners[$partner['slug']] = [
+                'id' => $partner['slug'],
+                'name' => $partner['name'],
+                'logo' => (new \EnterRepository\Media())->getSourceObjectByList($partnerMedia->photos, 'logo', '100x100')->url,
+                'marker' => (new \EnterRepository\Media())->getSourceObjectByList($partnerMedia->photos, 'marker', '31x40')->url
+            ];
+        }
+
+        $result['points'] = array_map(function($point) use(&$pointRepository, &$partners) {
+            return [
+                'group' => ['id' => $point['partner']],
+                'ui' => $point['uid'],
+                'address' => $point['address'],
+                'regime' => $point['working_time'],
+                'longitude' => isset($point['location'][0]) ? $point['location'][0] : null,
+                'latitude' => isset($point['location'][1]) ? $point['location'][1] : null,
+                'subway' => [[
+                    'name' => isset($point['subway']['name']) ? $point['subway']['name'] : null,
+                    'line' => [
+                        'name' => isset($point['subway']['line_name']) ? $point['subway']['line_name'] : null,
+                        'color' => isset($point['subway']['line_color']) ? $point['subway']['line_color'] : null,
+                    ],
+                ]],
+                'logo' => $partners[$point['partner']]['logo'],
+                'marker' => $partners[$point['partner']]['marker'],
+                'name' => $partners[$point['partner']]['name']
+            ];
+        }, $result['points']);
+
+        $page->content->points = $result['points'];
 
         // шаблоны mustache
         // ...
@@ -48,10 +85,10 @@ class Index {
 //                    'partial/cart/flat_button',
 //                ],
 //            ],
-//            [
-//                'id'       => 'tpl-product-slider-viewed',
-//                'name'     => 'partial/product-slider/viewed'
-//            ]
+            [
+                'id'       => 'tpl-points-list',
+                'name'     => 'partial/shops/points'
+            ]
         ]);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));

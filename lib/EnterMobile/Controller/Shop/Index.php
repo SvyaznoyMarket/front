@@ -29,7 +29,6 @@ class Index {
         $config = $this->getConfig();
 
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
-//        phpinfo();
 
         // контроллер
         $controller = new \EnterAggregator\Controller\Shop\Index();
@@ -48,20 +47,11 @@ class Index {
         $pageRequest->user = $controllerResponse->user;
         $pageRequest->cart = $controllerResponse->cart;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
+        $pageRequest->points = $controllerResponse->points;
 
 
         $page = new Page();
         (new Repository\Page\Shops\Index())->buildObjectByRequest($page, $pageRequest);
-
-
-//        try {
-//            $yq = new Query\Yandex\GetCoordinatesByPhrase('метро ленинский проспект');
-//            $curl->prepare($yq);
-//            $curl->execute($yq);
-//
-//        } catch (\Exception $e) {
-//            print_r($e);
-//        }
 
         $renderer->setPartials([
             'content' => 'page/shops/index',

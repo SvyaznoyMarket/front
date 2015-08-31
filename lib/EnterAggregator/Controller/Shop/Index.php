@@ -20,7 +20,6 @@ namespace EnterAggregator\Controller\Shop {
             $curl = $this->getCurl();
 
             $response = new Index\Response();
-            $promoRepository = new \EnterRepository\Promo();
 
             /* регион */
             $regionQuery = new Query\Region\GetItemById($request->regionId);
@@ -56,8 +55,11 @@ namespace EnterAggregator\Controller\Shop {
                 $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
             }
 
+            $pointsQuery = new Query\Point\GetListFromScms($request->regionId);
+            $curl->prepare($pointsQuery);
+            $curl->execute();
 
-
+            $response->points = $pointsQuery->getResult();
 
             return $response;
         }
@@ -93,9 +95,9 @@ namespace EnterAggregator\Controller\Shop\Index {
         public $region;
         /** @var Model\MainMenu|null */
         public $mainMenu;
-
         public $user;
         public $cart;
+        public $points;
 
     }
 }

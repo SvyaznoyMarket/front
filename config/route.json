@@ -184,6 +184,12 @@
         "method": ["POST"]
     },
 
+    "Shop\\GetList": {
+        "name": "Получение точек",
+        "pattern": "/ajax/get-shops",
+        "method": ["POST"]
+    },
+
     "User\\Login": {
         "name": "Вход пользователя",
         "pattern": "/login"

@@ -1,0 +1,27 @@
+<ul class="points__list">
+    {{#points}}
+        <li class="points__i">
+            <div class="shop-snippet clearfix">
+                <div class="shop-snippet-name table_cell">
+                    <img src="{{logo}}" alt="" class="shop-snippet-name__img">
+                    <span class="shop-snippet-name__text">{{name}}</span>
+                </div>
+
+                <div class="shop-snippet-info table_cell">
+                    {{#subway}}
+                        <div class="shop-snippet-metro">
+                            <span class="shop-snippet-metro__bullet" style="background: {{line.color}};"></span>
+                            <span class="shop-snippet-metro__text">Метро {{name}}</span>
+                        </div>
+                    {{/subway}}
+
+                    <div class="shop-snippet-address">
+                        {{address}}<br/>
+                        {{regime}}
+                    </div>
+                </div>
+
+            </div>
+        </li>
+    {{/points}}
+</ul>

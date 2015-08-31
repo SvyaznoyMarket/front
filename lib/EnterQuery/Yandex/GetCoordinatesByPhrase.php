@@ -44,7 +44,5 @@ class GetCoordinatesByPhrase extends Query {
             'latitude' => $coordinates[1],
             'longitude' => $coordinates[0],
         ];
-
-        $this->result = array();
     }
 }
