@@ -16,7 +16,7 @@ class GetItemByToken extends Query {
      * @param string $token
      * @param bool $showSidebar
      */
-    public function __construct($token, $showSidebar = true) {
+    public function __construct($token) {
         $this->url = new Url();
         $this->url->path = 'api/static-page';
         $this->url->query = [

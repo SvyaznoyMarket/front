@@ -169,7 +169,7 @@ class Product {
                 /** @var string $date Ближайшая дата доставки */
                 $date = reset($deliveryItem['date_list']);
                 $date = !empty($date['date']) ? $date['date'] : null;
-                $delivery->deliveredAt = $date ? \DateTime::createFromFormat("Y-m-d", $date) : null;
+                $delivery->deliveredAt = $date ? new \DateTime($date) : null;
 
                 $day = 0;
                 foreach ($deliveryItem['date_list'] as $dateItem) {
@@ -237,7 +237,7 @@ class Product {
                     /** @var string $date Ближайшая дата доставки */
                     $date = reset($deliveryItem['date_list']);
                     $date = !empty($date['date']) ? $date['date'] : null;
-                    $delivery->deliveredAt = $date ? \DateTime::createFromFormat("Y-m-d", $date) : null;
+                    $delivery->deliveredAt = $date ? new \DateTime($date) : null;
 
                     $day = 0;
                     foreach ($deliveryItem['date_list'] as $dateItem) {

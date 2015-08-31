@@ -17,6 +17,7 @@ trait ProductListingTrait {
         $result = [];
 
         $helper = new \Enter\Helper\Template();
+        $productRepository = new \EnterMobileApplication\Repository\Product();
 
         foreach ($products as $product) {
             if ($excludeProductsWithoutMedia) {
@@ -35,6 +36,7 @@ trait ProductListingTrait {
 
             $result[] = [
                 'id'                   => $product->id,
+                'ui'                   => $product->ui,
                 'article'              => $product->article,
                 'webName'              => $helper->unescape($product->webName),
                 'namePrefix'           => $helper->unescape($product->namePrefix),
@@ -43,6 +45,8 @@ trait ProductListingTrait {
                 'isInShopOnly'         => $product->isInShopOnly,
                 'isInShopStockOnly'    => $product->isInShopStockOnly,
                 'isInShopShowroomOnly' => $product->isInShopShowroomOnly,
+                'isInWarehouse'        => $product->isInWarehouse,
+                'isKitLocked'          => $product->isKitLocked,
                 'brand'                => $product->brand ? [
                     'id'   => $product->brand->id,
                     'name' => $product->brand->name,
@@ -56,14 +60,14 @@ trait ProductListingTrait {
                         'media' => $label->media,
                     ];
                 }, $product->labels),
-                'media'                => $product->media,
-                'rating'               => $product->rating ? [
+                'media'           => $productRepository->getMedia($product),
+                'rating'          => $product->rating ? [
                     'score'       => $product->rating->score,
                     'starScore'   => $product->rating->starScore,
                     'reviewCount' => $product->rating->reviewCount,
                 ] : null,
                 'favorite'        => isset($product->favorite) ? $product->favorite : null,
-                'partnerOffers'   => $product->partnerOffers,
+                'partnerOffers'   => $productRepository->getPartnerOffers($product),
                 'storeLabel'      => $product->storeLabel,
             ];
         }
