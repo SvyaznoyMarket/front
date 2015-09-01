@@ -54,7 +54,8 @@ class GetList {
 
         $result = [
             'points' => array_values($pqResult['points']),
-            'partners' => $pqResult['partners']
+            'partners' => $pqResult['partners'],
+            'mapCenter' => (isset($requestFilter['coordinates'])) ? $coordinatesQuery->getResult() : false
         ];
 
 
@@ -91,6 +92,8 @@ class GetList {
                 'name' => $partners[$point['partner']]['name']
             ];
         }, $result['points']);
+
+        $result['points'] = array_slice($result['points'],0,10);
 
 //
 //
