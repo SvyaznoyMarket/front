@@ -55,6 +55,7 @@ class Index {
             return [
                 'group' => ['id' => $point['partner']],
                 'ui' => $point['uid'],
+                'slug' => $point['slug'],
                 'address' => $point['address'],
                 'regime' => $point['working_time'],
                 'longitude' => isset($point['location'][0]) ? $point['location'][0] : null,
