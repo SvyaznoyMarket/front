@@ -171,9 +171,8 @@
     },
     "ShopCard\\Get": {
         "name": "Карточка магазина",
-        "pattern": "/shops/{regionToken}/{shopToken}",
+        "pattern": "/shop/{shopToken}",
         "require": {
-            "regionToken": "[\\w\\d-_]+",
             "shopToken": "[\\w\\d-_]+"
         }
     },

@@ -38,6 +38,11 @@ class GetListFromScms extends Query {
             $this->url->query['polygon'] = $filter['coordinates'];
         }
 
+        if (isset($filter) && isset($filter['slugs'])) {
+            $this->url->query['slugs'] = $filter['slugs'];
+            $this->url->query['full'] = true;
+        }
+
         $this->init();
     }
 

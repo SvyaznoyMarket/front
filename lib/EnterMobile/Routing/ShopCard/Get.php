@@ -7,12 +7,10 @@ use EnterMobile\Routing\Route;
 class Get extends Route {
     /**
      * @param string $shopToken
-     * @param string $regionToken
      */
-    public function __construct($shopToken, $regionToken) {
+    public function __construct($shopToken) {
         $this->action = ['ShopCard', 'execute'];
         $this->parameters = [
-            'regionToken' => $regionToken,
             'shopToken'   => $shopToken,
         ];
     }
