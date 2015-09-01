@@ -113,7 +113,7 @@ define(
                             pointName: currentPoint.name,
                             pointLogo: currentPoint.logo,
                             pointAddress: currentPoint.address,
-                            pointLink: '#',
+                            pointLink: '/shop/'+currentPoint.slug,
                             subway: []
                         };
 
