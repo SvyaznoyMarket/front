@@ -1150,44 +1150,62 @@ body {
   margin: 0 auto;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
-  /*   & > * {
-       */
-  /*-webkit-transform: translateZ(0px);*/
-  /*
-        -webkit-transform: translate3d(0,0,0);
-    }*/
 }
 .wrapper-smpl {
-  /* position: absolute;
+  overflow: visible;
+  height: auto;
+  /*position: absolute;
         top:0;
-        left:0;*/
-  /*& > * {
-            -webkit-transform: translate3d(0,0,0);
+        left:0;
+
+        & > * {
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            -ms-transform: translate3d(0, 0, 0);
+            -o-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
         }*/
 }
 .wrapper-smpl .content {
   padding-bottom: 0px;
 }
-.noIOS {
+.noIOS,
+.criOS {
   height: auto;
   min-height: 100%;
 }
-.noIOS .wrapper {
+.noIOS .wrapper,
+.criOS .wrapper {
   height: auto;
   min-height: 100%;
   overflow: visible;
 }
-.noIOS .header {
-  position: fixed;
+.noIOS .wrapper-smpl,
+.criOS .wrapper-smpl {
+  position: static;
 }
-.noIOS .snap-content {
+.noIOS .wrapper-smpl > *,
+.criOS .wrapper-smpl > * {
   -webkit-transform: none;
   -moz-transform: none;
   -ms-transform: none;
   -o-transform: none;
   transform: none;
 }
-.noIOS .content {
+.noIOS .header,
+.criOS .header {
+  position: fixed;
+}
+.noIOS .snap-content,
+.criOS .snap-content {
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  -o-transform: none;
+  transform: none;
+}
+.noIOS .content,
+.criOS .content {
   -webkit-transform: translate3d(0, 0, 0);
   -moz-transform: translate3d(0, 0, 0);
   -ms-transform: translate3d(0, 0, 0);
