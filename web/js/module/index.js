@@ -106,15 +106,12 @@ define(
                                 if ( ($('.js-main-items-slider-btn-prev-' + current).css('display') !== 'none') ||
                                      (current == 'id-productSlider-personalSlider') ){
                                     $('.js-main-items-slider-btn-prev-' + current).addClass('inline');
-                                    console.log('left-ok');
                                 }
 
                                 if ( ($('.js-main-items-slider-btn-next-' + current).css('display') !== 'none') ||
                                      (current == 'id-productSlider-personalSlider') ){
                                     $('.js-main-items-slider-btn-next-' + current).addClass('inline');
-                                    console.log('right-ok');
                                 }
-
                             });
 
 							$('.js-main-items-slider-' + current)
