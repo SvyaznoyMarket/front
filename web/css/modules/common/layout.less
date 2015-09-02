@@ -45,18 +45,27 @@ body {
     -webkit-overflow-scrolling: touch;
 
     &-smpl {
+        overflow: visible;
+        height: auto;
+
+        /*position: absolute;
+        top:0;
+        left:0;
+
+        & > * {
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            -ms-transform: translate3d(0, 0, 0);
+            -o-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }*/
 
         .content {
-            padding-bottom: 27px;
+            padding-bottom: 0px;
         }
     }
-// fix scrolling bug on android
- /*   & > * {
-       *//*-webkit-transform: translateZ(0px);*//*
-        -webkit-transform: translate3d(0,0,0);
-    }*/
 }
-.noIOS{
+.noIOS, .criOS:not(.body-footerless){
     height: auto;
     min-height: 100%;
 
@@ -64,6 +73,34 @@ body {
         height: auto;
         min-height: 100%;
         overflow: visible;
+        &-smpl{
+            position: static;
+
+            & > * {
+                -webkit-transform: none;
+                -moz-transform: none;
+                -ms-transform: none;
+                -o-transform: none;
+                transform: none;
+            }
+        }
+    }
+    .header{
+        position: fixed;
+    }
+    .snap-content{
+        -webkit-transform: none;
+        -moz-transform: none;
+        -ms-transform: none;
+        -o-transform: none;
+        transform: none;
+    }
+    .content{
+        -webkit-transform: translate3d(0, 0, 0);
+        -moz-transform: translate3d(0, 0, 0);
+        -ms-transform: translate3d(0, 0, 0);
+        -o-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
     }
 }
 

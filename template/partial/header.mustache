@@ -7,9 +7,11 @@
 
     <div class="header-center">
         <div class="header__logotype"><a href="/" class="header__logotype-link"></a></div>
-        <div class="pagetitle">
-            <a class="pagetitle__link" >{{&title}}</a>
-        </div>
+        {{#headerTitle}}
+            <div class="pagetitle">
+                <a class="pagetitle__link" >{{&title}}</a>
+            </div>
+        {{/headerTitle}}
         <form action="/search" class="search-form js-search-form" data-input-selector="#js-search-input">
             <div class="search-form-inn">
                 <i class="i-search i-search--search-selected"></i>

@@ -87,5 +87,11 @@ define(
         formValidator.init();
 
         analytics.push(['1 Вход_Получатель_ОБЯЗАТЕЛЬНО']);
+
+        //hack for inputs cursor on iOS
+        $(".wrapper-smpl").scroll(function () {
+            var selected = $(this).find("input:focus");
+            selected.blur();
+        });
     }
 );

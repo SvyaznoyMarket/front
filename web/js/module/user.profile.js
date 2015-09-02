@@ -30,11 +30,15 @@ define(
 
         function handleBirthdayTextFocus() {
             $birthdayDateInput.css({
-                zIndex: 10
+                zIndex: 10,
+                float: 'none',
+                position: 'absolute'
             });
 
             $birthdayTextInput.css({
-                zIndex: -1
+                zIndex: -1,
+                float: 'left',
+                position: 'relative'
             });
 
             $birthdayDateInput.focus();
@@ -48,11 +52,15 @@ define(
 
         function setDateForBirthdayTextInput(val) {
             $birthdayTextInput.css({
-                zIndex: 10
+                zIndex: 10,
+                float: 'none',
+                position: 'absolute'
             });
 
             $birthdayDateInput.css({
-                zIndex: -1
+                zIndex: -1,
+                float: 'left',
+                position: 'relative'
             });
 
             $birthdayTextInput.val(val);
@@ -69,10 +77,12 @@ define(
             var selected = $(this).find("input:focus");
             selected.blur();
         });
+        /*
+        //докрутка к выбранному полю - работает ужасно на ios7
         $(".private section").find('input').on('focus',function(){
             var scroll = $(this).offset().top;
             $(this).scrollTop(scroll);
-        });
+        });*/
 
 
     }
