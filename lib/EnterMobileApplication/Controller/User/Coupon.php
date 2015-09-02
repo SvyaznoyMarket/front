@@ -36,9 +36,19 @@ namespace EnterMobileApplication\Controller\User {
                 throw new \Exception('Не указан couponId', Http\Response::STATUS_BAD_REQUEST);
             }
 
+            // ид региона
+            $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
+            if (!$regionId) {
+                throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
+            }
+
             // запрос пользователя
             $userItemQuery = new Query\User\GetItemByToken($token);
             $curl->prepare($userItemQuery);
+
+            // запрос региона
+            $regionQuery = new Query\Region\GetItemById($regionId);
+            $curl->prepare($regionQuery);
 
             $curl->execute();
 
@@ -47,6 +57,9 @@ namespace EnterMobileApplication\Controller\User {
             if ($user) {
                 $response->token = $token;
             }
+
+            // регион
+            $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
 
             // список купонов
             $couponListQuery = new Query\Coupon\GetListByUserToken($token);
@@ -99,7 +112,6 @@ namespace EnterMobileApplication\Controller\User {
                     $sliceTokensBySeriesId[$response->couponSeries->id] = $matches[1];
                 }
             }
-
             try {
                 if ($sliceTokensBySeriesId) {
                     $sliceListQuery = new Query\Product\Slice\GetListByTokenList(array_values($sliceTokensBySeriesId));
@@ -119,6 +131,35 @@ namespace EnterMobileApplication\Controller\User {
                 }
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical']]);
+            }
+
+            // товары из среза
+            if ($response->couponSeries->slice) {
+                try {
+                    $filterRepository = new \EnterMobile\Repository\Product\Filter(); // FIXME!!!
+                    // фильтры в настройках среза
+                    $baseRequestFilters = $filterRepository->getRequestObjectListByHttpRequest(new Http\Request($response->couponSeries->slice->filters));
+
+                    // контроллер
+                    $controller = new \EnterAggregator\Controller\ProductList();
+                    // запрос для контроллера
+                    $controllerRequest = $controller->createRequest();
+                    $controllerRequest->config->mainMenu = false;
+                    $controllerRequest->config->parentCategory = false;
+                    $controllerRequest->config->branchCategory = false;
+                    $controllerRequest->regionId = $regionId;
+                    $controllerRequest->categoryCriteria = []; // критерий получения категории товара
+                    $controllerRequest->pageNum = 0;
+                    $controllerRequest->limit = 20;
+                    $controllerRequest->filterRepository = $filterRepository;
+                    $controllerRequest->baseRequestFilters = $baseRequestFilters;
+                    $controllerRequest->requestFilters = $baseRequestFilters;
+                    $controllerRequest->userToken = $token;
+                    // ответ от контроллера
+                    $controllerResponse = $controller->execute($controllerRequest);
+                } catch (\Exception $e) {
+                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+                }
             }
 
             if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
