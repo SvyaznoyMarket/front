@@ -27,6 +27,7 @@ class Map {
      */
     public function buildObjectByRequest(Page $page, Index\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
+        $router = $this->getRouter();
 
 
         $page->dataModule = 'shops.map';
@@ -73,6 +74,11 @@ class Map {
         }, $result['points']);
 
         $page->content->points = $result['points'];
+
+        $page->headerSwitchLink = [
+            'name' => 'Список',
+            'link' => $router->getUrlByRoute(new Routing\Shop\Index())
+        ];
 
         // шаблоны mustache
         // ...

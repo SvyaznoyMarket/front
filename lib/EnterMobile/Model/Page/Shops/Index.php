@@ -6,6 +6,7 @@ namespace EnterMobile\Model\Page\Shops {
     class Index extends Page\DefaultPage {
         /** @var Index\Content */
         public $content;
+        public $headerSwitchLink;
 
         public function __construct() {
             parent::__construct();

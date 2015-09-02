@@ -28,6 +28,8 @@ class Index {
     public function buildObjectByRequest(Page $page, Index\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
+        $router = $this->getRouter();
+
 
         $page->dataModule = 'shops.index';
         $pointRepository = new \EnterRepository\Point();
@@ -74,6 +76,10 @@ class Index {
         }, $result['points']);
 
         $page->content->points = $result['points'];
+        $page->headerSwitchLink = [
+            'name' => 'Карта',
+            'link' => $router->getUrlByRoute(new Routing\Shop\Map())
+        ];
 
         // шаблоны mustache
         // ...
