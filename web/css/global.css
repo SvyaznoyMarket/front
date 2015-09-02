@@ -1170,22 +1170,22 @@ body {
   padding-bottom: 0px;
 }
 .noIOS,
-.criOS {
+.criOS:not(.body-footerless) {
   height: auto;
   min-height: 100%;
 }
 .noIOS .wrapper,
-.criOS .wrapper {
+.criOS:not(.body-footerless) .wrapper {
   height: auto;
   min-height: 100%;
   overflow: visible;
 }
 .noIOS .wrapper-smpl,
-.criOS .wrapper-smpl {
+.criOS:not(.body-footerless) .wrapper-smpl {
   position: static;
 }
 .noIOS .wrapper-smpl > *,
-.criOS .wrapper-smpl > * {
+.criOS:not(.body-footerless) .wrapper-smpl > * {
   -webkit-transform: none;
   -moz-transform: none;
   -ms-transform: none;
@@ -1193,11 +1193,11 @@ body {
   transform: none;
 }
 .noIOS .header,
-.criOS .header {
+.criOS:not(.body-footerless) .header {
   position: fixed;
 }
 .noIOS .snap-content,
-.criOS .snap-content {
+.criOS:not(.body-footerless) .snap-content {
   -webkit-transform: none;
   -moz-transform: none;
   -ms-transform: none;
@@ -1205,7 +1205,7 @@ body {
   transform: none;
 }
 .noIOS .content,
-.criOS .content {
+.criOS:not(.body-footerless) .content {
   -webkit-transform: translate3d(0, 0, 0);
   -moz-transform: translate3d(0, 0, 0);
   -ms-transform: translate3d(0, 0, 0);
