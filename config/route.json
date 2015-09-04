@@ -252,9 +252,9 @@
             "coupon": "[\\w\\d-_]+"
         }
     },
-    "User\\Favorit": {
+    "User\\Favorites": {
       "name": "Избранное",
-      "pattern": "/private/favorit"
+      "pattern": "/private/favorites"
     },
 
     "Search\\Index": {

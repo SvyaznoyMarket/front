@@ -11,7 +11,7 @@ use EnterMobile\Repository;
 use EnterQuery as Query;
 use EnterMobile\Model\Page\User\Favorites as Page;
 
-class Favorit {
+class Favorites {
 
     use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
 
@@ -50,7 +50,7 @@ class Favorit {
         // рендер
         $renderer = $this->getRenderer();
         $renderer->setPartials([
-            'content' => 'page/private/favorit'
+            'content' => 'page/private/favorites'
         ]);
 
         $content = $renderer->render('layout/footerless', $page);
