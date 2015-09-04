@@ -1,6 +1,13 @@
 <div class="content shops">
     <section class="index">
         <div class="points-top">
+            <div class="points-search">
+                <form class="points-search__form js-search-points-form">
+                    <button class="points-search__btn" type="submit">Найти</button>
+                    <div class=points-search__inn><input class="points-search__input js-search-points-input"></div>
+                </form>
+            </div>
+
             <div class="points-filter">
                 <ul class="points-filter__lst">
                     <li class="points-filter__i js-partner-icon" data-partner-slug="enter"><img src="css/modules/shops/img/logo1.png"><i class="closer"></i></li>
@@ -11,12 +18,6 @@
                 </ul>
             </div>
 
-            <div class="points-search">
-                <form class="points-search__form js-search-points-form">
-                    <button class="points-search__btn" type="submit">Найти</button>
-                    <div class=points-search__inn><input class="points-search__input js-search-points-input"></div>
-                </form>
-            </div>
         </div>
 
         <div id="map" style="display:none; width: 100%; height: 700px"></div>

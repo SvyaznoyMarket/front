@@ -25,7 +25,6 @@
 .points-filter{
     padding: 10px 0 0px;
     background-color: @white;
-    .box-shadow(0 2px 3px 0 rgba(0, 0, 0, 0.50));
     position: relative;
     z-index: 2;
     text-align: center;
@@ -156,6 +155,10 @@
     &-top{
 
         width: 100%;
+        .box-shadow(0 2px 3px 0 rgba(0, 0, 0, 0.50));
+        position: relative;
+        z-index: 2;
+
 
     }
     &__list{
@@ -182,4 +185,22 @@
         overflow: scroll;
         -webkit-overflow-scrolling: touch;
     }
+}
+@media screen and (min-width: 768px){
+    .points-filter__lst{
+        text-align: center;
+    }
+
+   .points-top{
+       position: relative;
+       padding-bottom: 44px;
+       .points-filter{
+
+       }
+       .points-search{
+           position: absolute;
+           bottom: 0;
+           width: 100%;
+       }
+   }
 }
