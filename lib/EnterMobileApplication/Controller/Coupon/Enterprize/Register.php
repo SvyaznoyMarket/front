@@ -41,7 +41,8 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
 
             $phone = $request->data['phone'];
             if (!$phone) {
-                throw new \Exception('Не указан phone', Http\Response::STATUS_BAD_REQUEST);
+                // MAPI-113
+                //throw new \Exception('Не указан phone', Http\Response::STATUS_BAD_REQUEST);
             }
             $email = $request->data['email'];
             if (!$email) {
