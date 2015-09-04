@@ -64,7 +64,8 @@ namespace EnterMobileApplication\Controller\Coupon\Enterprize {
                 throw new \Exception('Нужно подтвердить email');
             }
             if (!$user->phone) {
-                throw new \Exception('Нужно подтвердить телефон');
+                // MAPI-113
+                //throw new \Exception('Нужно подтвердить телефон');
             }
 
             // создание купона
