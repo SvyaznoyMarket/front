@@ -5,11 +5,13 @@ namespace EnterMobile\Controller\Shop;
 use Enter\Http;
 use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
+use EnterAggregator\RouterTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterAggregator\DebugContainerTrait;
 use EnterMobile\Repository;
+use EnterMobile\Routing;
 use EnterQuery as Query;
 use EnterMobile\Model;
 use EnterMobile\Model\Page\Shops\Index as Page;
@@ -21,10 +23,12 @@ class GetList {
         CurlTrait,
         MustacheRendererTrait,
         DebugContainerTrait,
-        SessionTrait;
+        SessionTrait,
+        RouterTrait;
 
     public function execute(Http\Request $request) {
         $curl = $this->getCurl();
+        $router = $this->getRouter();
 
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
@@ -61,6 +65,16 @@ class GetList {
 
         $partners = [];
 
+
+        $backLink = trim((string)($request->query['redirect_to'] ?: $request->data['redirect_to']));
+        if (!$backLink) {
+            $backLink = $router->getUrlByRoute(new Routing\Index());
+        }
+
+
+
+        $backLink = (isset($request->server['HTTP_REFERER'])) ? parse_url($request->server['HTTP_REFERER']) : false;
+
         foreach ($result['partners'] as $key => $partner) {
             $partnerMedia = $pointRepository->getMedia($partner['slug'], ['logo', 'marker']);
 
@@ -72,10 +86,15 @@ class GetList {
             ];
         }
 
-        $result['points'] = array_map(function($point) use(&$pointRepository, &$partners) {
+        $result['points'] = array_map(function($point) use(&$pointRepository, &$partners, &$router, &$backLink) {
             return [
                 'group' => ['id' => $point['partner']],
                 'ui' => $point['uid'],
+                'link' => $router->getUrlByRoute(
+                    new Routing\ShopCard\Get($point['slug']),
+//                    ['redirect_to' => $router->getUrlByRoute(new Routing\Shop\Index())]
+                    ['redirect_to' => $backLink['path'].'?'.$backLink['query']]
+                ),
                 'slug' => $point['slug'],
                 'address' => $point['address'],
                 'regime' => $point['working_time'],

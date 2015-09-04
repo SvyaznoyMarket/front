@@ -27,6 +27,8 @@ class ShopCard {
      */
     public function buildObjectByRequest(Page $page, ShopCard\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
+
+        $router = $this->getRouter();
         $templateHelper = $this->getTemplateHelper();
         $helper = new \Enter\Helper\Template();
         $page->dataModule = 'shopcard';
@@ -75,6 +77,21 @@ class ShopCard {
         ];
 
         $page->content->pointDescription = $result;
+
+
+
+        $redirect = [
+            'redirect_to' => trim((string)($request->httpRequest->query['redirect_to'] ?: $request->httpRequest->data['redirect_to'])),
+            'initial_redirect_to' => trim((string)($request->httpRequest->query['initial_redirect_to'] ?: $request->httpRequest->data['initial_redirect_to']))
+        ];
+
+        $page->headerSwitchLink = [
+            'backLink' => $router->getUrlByRoute(
+                $router->getRouteByPath($redirect['redirect_to']),
+                [
+                    'redirect_to' => $redirect['initial_redirect_to']
+                ])
+        ];
 
         // шаблоны mustache
         // ...
