@@ -31,5 +31,5 @@ return function(EnterMobileApplication\Config $config) {
     $config->product->itemPerPage = 19;
     $config->product->itemsInSlider = 60;
 
-    $config->productReview->itemsInCard = 7;
+    $config->productReview->itemsInCard = 24; // MAPI-92
 };

@@ -47,9 +47,10 @@
     {{>partial/javascript}}
 </head>
 
-<body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="{{&dataUser}}" data-cart="{{&dataCart}}" data-widget="{{&dataWidget}}">
+<body class="body-smpl" data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="{{&dataUser}}" data-cart="{{&dataCart}}" data-widget="{{&dataWidget}}">
 
         {{>partial/counters}}
+        {{>page/order/header}}
 
         <div class="wrapper wrapper-smpl">
             {{#content}}

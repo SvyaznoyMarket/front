@@ -124,6 +124,10 @@ namespace EnterMobileApplication\Controller {
                 $config = [];
             }
 
+            $popularProducts = array_filter($popularProducts);
+            $personalProducts = array_filter($personalProducts);
+            $viewedProducts = array_filter($viewedProducts);
+
             return new Http\JsonResponse([
                 'region' => $region,
                 'recommendations' => [

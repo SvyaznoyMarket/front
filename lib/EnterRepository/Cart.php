@@ -369,6 +369,8 @@ class Cart {
                             $isDeleted = false;
                             // поиск существующей скидки
                             foreach ($dump['orders'][$blockName]['discounts'] as $i => $existsDiscountItem) {
+                                if (!isset($existsDiscountItem['number'])) continue;
+
                                 if ($existsDiscountItem['number'] == $discountItem['number']) {
                                     // удаление найденной скидки
                                     unset($dump['orders'][$blockName]['discounts'][$i]);

@@ -1,0 +1,34 @@
+<?php
+
+namespace EnterQuery\Product\Slice;
+
+use Enter\Curl\Query;
+use EnterQuery\ScmsQueryTrait;
+use EnterQuery\Url;
+
+class GetListByTokenList extends Query {
+    use ScmsQueryTrait;
+
+    /** @var array */
+    protected $result;
+
+    /**
+     * @param string[] $tokens
+     */
+    public function __construct(array $tokens) {
+        $this->url = new Url();
+        $this->url->path = 'seo/get-slices';
+        $this->url->query['urls'] = $tokens;
+
+        $this->init();
+    }
+
+    /**
+     * @param $response
+     */
+    public function callback($response) {
+        $data = $this->parse($response);
+
+        $this->result = isset($data['slices'][0]) ? $data['slices'] : null;
+    }
+}

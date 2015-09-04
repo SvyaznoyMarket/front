@@ -10,7 +10,7 @@ namespace EnterMobileApplication\Controller {
 
     class ProductCard {
         use ProductListingTrait, SessionTrait;
-        
+
         /**
          * @param Http\Request $request
          * @throws \Exception
@@ -18,7 +18,9 @@ namespace EnterMobileApplication\Controller {
          */
         public function execute(Http\Request $request) {
             $session = $this->getSession();
-            
+            $helper = new \Enter\Helper\Template();
+            $productRepository = new \EnterMobileApplication\Repository\Product();
+
             // ид региона
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
             if (!$regionId) {
@@ -49,14 +51,8 @@ namespace EnterMobileApplication\Controller {
             if (!$controllerResponse->product) {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Товар #%s не найден', $productId));
             }
-            
-            $viewedProductIds = array_unique(explode(' ', trim($session->get('viewedProductIds'))));
-            $viewedProductIds = array_slice($viewedProductIds, -20);
-            if (!in_array($controllerResponse->product->id, $viewedProductIds)) {
-                $viewedProductIds = array_slice($viewedProductIds, -19);
-                $viewedProductIds[] = $controllerResponse->product->id;
-            }
-            $session->set('viewedProductIds', implode(' ', $viewedProductIds));
+
+            $productRepository->setViewedProductIdToSession($controllerResponse->product->id, $session);
 
             // MAPI-76 Получение данных в едином формате
             call_user_func(function() use(&$controllerResponse) {
@@ -83,9 +79,6 @@ namespace EnterMobileApplication\Controller {
                     }
                 }
             });
-
-
-            $helper = new \Enter\Helper\Template();
 
             return new Http\JsonResponse(['product' => [
                 'id' => $controllerResponse->product->id,
@@ -127,7 +120,7 @@ namespace EnterMobileApplication\Controller {
                         'media' => $label->media,
                     ];
                 }, $controllerResponse->product->labels),
-                'media' => $controllerResponse->product->media,
+                'media' => $productRepository->getMedia($controllerResponse->product),
                 'rating' => $controllerResponse->product->rating ? [
                     'score'       => $controllerResponse->product->rating->score,
                     'starScore'   => $controllerResponse->product->rating->starScore,
@@ -145,7 +138,7 @@ namespace EnterMobileApplication\Controller {
                 'kit' => $controllerResponse->product->kit,
                 'reviews' => $controllerResponse->product->reviews,
                 'trustfactors' => $controllerResponse->product->trustfactors,
-                'partnerOffers' => $controllerResponse->product->partnerOffers,
+                'partnerOffers' => $productRepository->getPartnerOffers($controllerResponse->product),
                 'availableStoreQuantity' => $controllerResponse->product->availableStoreQuantity,
                 'favorite' => $controllerResponse->product->favorite,
                 'sender' => $controllerResponse->product->sender,

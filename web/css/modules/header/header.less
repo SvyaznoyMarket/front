@@ -2,13 +2,13 @@
    Шапка сайта .header
    ========================================================================== */
 .fixfixed {
-    .header {
+    /*.header {
         position: absolute;
-    }
+    }*/
 }
 
 .header {
-    position: fixed;
+    position: absolute;
     z-index: 1010;
     top: 0;
     left: 0;
@@ -21,6 +21,7 @@
     color: @white;
     border-bottom: 1px solid #858585;
     background: @black;
+
     &-center {
         width: 100%;
         padding-right: 130px;
@@ -95,6 +96,14 @@
         }
         .bread-crumbs {
             display: none;
+        }
+    }
+    &.titled{
+        .header-center{
+           text-align: left;
+        }
+        .pagetitle{
+            .inline-block();
         }
     }
 }
@@ -240,8 +249,10 @@
         font-size: 1rem;
 
         display: table;
+        width: 100%;
 
         padding: 10px 20px;
+        .box-sizing(border-box);
     }
     &__img {
         max-width: 40px;
@@ -263,5 +274,24 @@
         vertical-align: middle;
 
         color: #6e6e6e;
+    }
+}
+.pagetitle{
+    line-height: 50px;
+
+    &__link {
+        font-size: 1rem;
+
+        padding-left: 15px;
+
+        white-space: nowrap;
+
+        color: @white;
+        border-left: 1px solid #333;
+
+        .inline-block();
+        &:hover {
+            color: @white;
+        }
     }
 }

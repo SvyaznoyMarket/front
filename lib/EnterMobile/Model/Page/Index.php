@@ -32,6 +32,11 @@ namespace EnterMobile\Model\Page\Index {
         public $viewedSlider;
         /** @var array */
         public $popularBrands = [];
+        /**
+         * Главное меню выше рекомендаций MSITE-489
+         * @var bool
+         */
+        public $mainMenuOnBottom;
 
         public function __construct() {
             parent::__construct();

@@ -6,13 +6,10 @@ define(
         $, _
     ) {
         var
-            $controlGroup = $('.p-control-group'),
             $input = $('.p-control-input'),
-            $label = $('.p-control-label'),
 
             showLabel = function showLabel(){
                 var $this = $(this);
-                console.log('checked');
 
                 if ( $this.val() == ''){
                     $this.parent('.p-control-group:not(.p-control-select-group)').find('.p-control-label').removeClass('visible');
@@ -33,11 +30,15 @@ define(
 
         function handleBirthdayTextFocus() {
             $birthdayDateInput.css({
-                zIndex: 10
+                zIndex: 10,
+                float: 'none',
+                position: 'absolute'
             });
 
             $birthdayTextInput.css({
-                zIndex: -1
+                zIndex: -1,
+                float: 'left',
+                position: 'relative'
             });
 
             $birthdayDateInput.focus();
@@ -51,11 +52,15 @@ define(
 
         function setDateForBirthdayTextInput(val) {
             $birthdayTextInput.css({
-                zIndex: 10
+                zIndex: 10,
+                float: 'none',
+                position: 'absolute'
             });
 
             $birthdayDateInput.css({
-                zIndex: -1
+                zIndex: -1,
+                float: 'left',
+                position: 'relative'
             });
 
             $birthdayTextInput.val(val);
@@ -66,5 +71,19 @@ define(
         $birthdayDateInput.change(handleBirthdayDateChange);
         $('#mobile').mask("+7 (999) 999-99-99");
         $('#phone').mask("+7 (999) 999-99-99");
+
+        //hack for inputs cursor on iOS
+        $(".private section").scroll(function () {
+            var selected = $(this).find("input:focus");
+            selected.blur();
+        });
+        /*
+        //докрутка к выбранному полю - работает ужасно на ios7
+        $(".private section").find('input').on('focus',function(){
+            var scroll = $(this).offset().top;
+            $(this).scrollTop(scroll);
+        });*/
+
+
     }
 );

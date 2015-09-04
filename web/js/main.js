@@ -30,6 +30,7 @@ require.config({
         'jquery.smartbanner'    : 'plugin/jquery.smartbanner',
         'jquery.slick'          : 'plugin/slick.min',
         'jquery.kladr'          : 'plugin/jquery.kladr',
+        'heightFixIos'          : 'plugin/heightFixIos',
 
         'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
         'mustache'           : 'vendor/mustache-0.8.2',
@@ -124,7 +125,6 @@ require(
         'module/analytics.google',
         'module/util',
         'module/jira',
-        'module/snap',
         'module/navigation',
         'module/region',
         'module/search',
@@ -139,13 +139,15 @@ require(
         'module/addReview'
     ],
     function(require, config) {
-        $.cookie.defaults.path = '/';
-        $.cookie.defaults.domain = config.cookie.domain;
+        $(document).ready(function(){
+            $.cookie.defaults.path = '/';
+            $.cookie.defaults.domain = config.cookie.domain;
 
-        // модуль страницы
-        require([moduleName], function(module) {
-            // партнерский модуль
-            setTimeout(function() { require(['module/partner']); }, 600);
+            // модуль страницы
+            require([moduleName], function(module) {
+                // партнерский модуль
+                setTimeout(function() { require(['module/partner']); }, 600);
+            });
         });
     }
 );

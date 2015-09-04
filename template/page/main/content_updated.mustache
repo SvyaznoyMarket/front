@@ -39,63 +39,15 @@
         </li>
     </ul>
 
-    <div class="main-inn">
-        <div class="{{#popularSlider}}{{#personalSlider}}grid-2cols{{/personalSlider}}{{/popularSlider}}
-                    {{#popularSlider}}{{^personalSlider}}grid-1cols{{/personalSlider}}{{/popularSlider}}
-                    {{#personalSlider}}{{^popularSlider}}grid-1cols{{/popularSlider}}{{/personalSlider}} clearfix">
-            {{#popularSlider}}
-                <div class="grid-2cols__item js-container popularSliderContainer">
-                    <div class="items-slider items-slider--left">
-                        <div class="items-slider-nav">
-                            <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-id-productSlider-popularSlider js-ga-click"></div>
+    {{#mainMenuOnBottom}}
+        {{>page/main/recommendation}}
+        {{>page/main/menu}}
+    {{/mainMenuOnBottom}}
 
-                            <div class="items-slider-nav__desc">
-                                <div class="items-slider-nav__title">Популярные товары</div>
-                            </div>
-
-                            <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-id-productSlider-popularSlider js-ga-click"></div>
-                        </div>
-
-                        {{>partial/product-slider/mainPage}}
-                    </div>
-            </div>
-            {{/popularSlider}}
-
-            {{#personalSlider}}
-                <div class="grid-2cols__item js-container personalSliderContainer">
-                <div class="items-slider items-slider--right">
-                    <div class="items-slider-nav">
-                        <div class="items-slider-nav__btn items-slider-nav__btn--prev js-main-items-slider-btn-prev-id-productSlider-personalSlider js-ga-click"></div>
-
-                        <div class="items-slider-nav__desc">
-                            <div class="items-slider-nav__title">Мы рекомендуем</div>
-                        </div>
-
-                        <div class="items-slider-nav__btn items-slider-nav__btn--next js-main-items-slider-btn-next-id-productSlider-personalSlider js-ga-click"></div>
-                    </div>
-
-                    {{>partial/product-slider/mainPage}}
-                </div>
-            </div>
-            {{/personalSlider}}
-        </div>
-    </div>
-
-    {{#mainMenu}}
-        <ul class="categories-grid clearfix">
-            {{#elements}}
-                <li class="categories-grid__item">
-                    <a class="categories-grid__link js-ga-click" href="{{url}}" data-ga-click="{{&dataGa}}">
-							<span class="categories-grid__icon">
-								<span class="categories-grid__char"{{#style}} style="{{style}}"{{/style}}>{{char}}</span>
-                                {{#image}}<img class="categories-grid__img" src="{{image}}" />{{/image}}
-							</span>
-                        <span class="categories-grid__text">{{&name}}</span>
-                    </a>
-                </li>
-            {{/elements}}
-        </ul>
-    {{/mainMenu}}
+    {{^mainMenuOnBottom}}
+        {{>page/main/menu}}
+        {{>page/main/recommendation}}
+    {{/mainMenuOnBottom}}
 
     <div class="main-inn">
         <div class="{{#viewedSlider}}grid-2cols{{/viewedSlider}}{{^viewedSlider}}grid-1cols{{/viewedSlider}} grid-parent-row clearfix">

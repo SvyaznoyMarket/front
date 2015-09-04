@@ -2,25 +2,27 @@
 
 namespace EnterMobile\Repository\Page;
 
+use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
+use EnterAggregator\CurlTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
+use EnterAggregator\AbTestTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\Index as Page;
 
-use EnterAggregator\CurlTrait;
-use EnterMobile\ConfigTrait;
-
 
 class Index {
-    use LoggerTrait,
+    use ConfigTrait,
+        LoggerTrait,
         TemplateHelperTrait,
         RouterTrait,
         CurlTrait,
-        ConfigTrait;
+        AbTestTrait
+    ;
 
     /**
      * @param Page $page
@@ -107,6 +109,11 @@ class Index {
                 ];
             }
         });
+
+        $page->headerTitle = false;
+
+        // расположение главного меню
+        $page->content->mainMenuOnBottom = ('bottom' === $this->getAbTest()->getObjectByToken('msite_main_categories')->chosenItem->token) ? true : false;
 
         // шаблоны mustache
         // ...
