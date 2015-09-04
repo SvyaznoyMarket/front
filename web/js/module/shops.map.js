@@ -68,7 +68,8 @@ define(
 
             yaMap = new ymaps.Map("map", {
                 center: [lat, long],
-                zoom: 10
+                zoom: 10,
+                controls: []
             });
 
             yaMap.container.fitToViewport();
@@ -114,7 +115,7 @@ define(
                             pointName: currentPoint.name,
                             pointLogo: currentPoint.logo,
                             pointAddress: currentPoint.address,
-                            pointLink: '/shop/'+currentPoint.slug,
+                            pointLink: currentPoint.link,
                             subway: []
                         };
 
@@ -176,13 +177,16 @@ define(
             makeRequest(filter);
         }
 
-        function getQueryVariable(variable){
+        function getQueryVariable(variable) {
             var query = window.location.search.substring(1);
             var vars = query.split('&');
-            for (var i=0;i<vars.length;i++) {
+
+            for (var i = 0, l = vars.length; i < l; i++) {
                 var pair = vars[i].split('=');
-                if(pair[0] == variable){return pair[1];}
+
+                if (pair[0] == variable) return pair[1];
             }
+
             return false;
         }
 

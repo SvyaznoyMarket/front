@@ -30,9 +30,9 @@ class Index {
 
         $router = $this->getRouter();
 
-        $backLink = trim((string)($request->httpRequest->query['redirect_to'] ?: $request->httpRequest->data['redirect_to']));
-        if (!$backLink) {
-            $backLink = $router->getUrlByRoute(new Routing\Index());
+        $redirectTo = trim((string)($request->httpRequest->query['redirect_to'] ?: $request->httpRequest->data['redirect_to']));
+        if (!$redirectTo) {
+            $redirectTo = $router->getUrlByRoute(new Routing\Index());
         }
 
         $page->dataModule = 'shops.index';
@@ -57,15 +57,14 @@ class Index {
             ];
         }
 
-        $result['points'] = array_map(function($point) use(&$pointRepository, &$partners, &$router, &$backLink) {
+        $result['points'] = array_map(function($point) use(&$pointRepository, &$partners, &$router, &$redirectTo) {
             return [
                 'group' => ['id' => $point['partner']],
                 'ui' => $point['uid'],
                 'link' => $router->getUrlByRoute(
                     new Routing\ShopCard\Get($point['slug']),
                     [
-                        'redirect_to' => $router->getUrlByRoute(new Routing\Shop\Index()),
-                        'initial_redirect_to' => $backLink
+                        'redirect_to' => $redirectTo
                     ]
                 ),
                 'address' => $point['address'],
@@ -90,9 +89,9 @@ class Index {
             'name' => 'Карта',
             'link' => $router->getUrlByRoute(
                 new Routing\Shop\Map(),
-                ['redirect_to' => $backLink, 'initial_redirect' => $backLink]
+                ['redirect_to' => $redirectTo]
             ),
-            'backLink' => $backLink
+            'backLink' => $redirectTo
         ];
 
         // шаблоны mustache

@@ -37,9 +37,8 @@ class GetList {
 
         $pointRepository = new \EnterRepository\Point();
 
-
-        if (isset($postData['partners'])) {
-            $requestFilter['partners'] = $postData['partners'];
+        if (isset($request->data['partners'])) {
+            $requestFilter['partners'] = $request->data['partners'];
         }
 
         if (isset($postData['phrase'])) {
@@ -65,15 +64,10 @@ class GetList {
 
         $partners = [];
 
+        $parsedReferer = (isset($request->server['HTTP_REFERER'])) ? parse_url($request->server['HTTP_REFERER']) : false;
+        parse_str($parsedReferer['query'], $backLink);
 
-        $backLink = trim((string)($request->query['redirect_to'] ?: $request->data['redirect_to']));
-        if (!$backLink) {
-            $backLink = $router->getUrlByRoute(new Routing\Index());
-        }
-
-
-
-        $backLink = (isset($request->server['HTTP_REFERER'])) ? parse_url($request->server['HTTP_REFERER']) : false;
+        $redirectTo = $backLink['redirect_to'];
 
         foreach ($result['partners'] as $key => $partner) {
             $partnerMedia = $pointRepository->getMedia($partner['slug'], ['logo', 'marker']);
@@ -86,14 +80,13 @@ class GetList {
             ];
         }
 
-        $result['points'] = array_map(function($point) use(&$pointRepository, &$partners, &$router, &$backLink) {
+        $result['points'] = array_map(function($point) use(&$pointRepository, &$partners, &$router, &$redirectTo) {
             return [
                 'group' => ['id' => $point['partner']],
                 'ui' => $point['uid'],
                 'link' => $router->getUrlByRoute(
                     new Routing\ShopCard\Get($point['slug']),
-//                    ['redirect_to' => $router->getUrlByRoute(new Routing\Shop\Index())]
-                    ['redirect_to' => $backLink['path'].'?'.$backLink['query']]
+                    ['redirect_to' => $redirectTo]
                 ),
                 'slug' => $point['slug'],
                 'address' => $point['address'],

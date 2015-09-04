@@ -82,11 +82,9 @@ class Map {
 
         $page->headerSwitchLink = [
             'name' => 'Список',
-            'link' => $router->getUrlByRoute(
-                new Routing\Shop\Index(),
+            'link' => $router->getUrlByRoute(new Routing\Shop\Index(),
                 ['redirect_to' => $backLink]
-            ),
-            'backLink' => $backLink
+            )
         ];
 
         // шаблоны mustache

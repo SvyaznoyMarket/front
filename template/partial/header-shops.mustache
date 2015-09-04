@@ -1,6 +1,9 @@
 <header class="header clearfix js-header header-shops">
     <div class="header-center">
-        <a href="{{headerSwitchLink.backLink}}" class="header-back">Закрыть</a>
+        {{#headerSwitchLink.backLink}}
+            <a href="{{.}}" class="header-back">Закрыть</a>
+        {{/headerSwitchLink.backLink}}
+
         {{#headerSwitchLink}}<a href="{{link}}" class="header-link">{{name}}</a>{{/headerSwitchLink}}
         <div class="pagetitle">
             <a class="pagetitle__link" >Магазины и самовывоз</a>

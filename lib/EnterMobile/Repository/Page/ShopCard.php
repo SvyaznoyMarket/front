@@ -78,19 +78,16 @@ class ShopCard {
 
         $page->content->pointDescription = $result;
 
-
-
-        $redirect = [
-            'redirect_to' => trim((string)($request->httpRequest->query['redirect_to'] ?: $request->httpRequest->data['redirect_to'])),
-            'initial_redirect_to' => trim((string)($request->httpRequest->query['initial_redirect_to'] ?: $request->httpRequest->data['initial_redirect_to']))
-        ];
+        if ($request->httpRequest->server['HTTP_REFERER']) {
+            $backLink = $request->httpRequest->server['HTTP_REFERER'];
+        } else {
+            $backLink = $router->getUrlByRoute(
+                new Routing\Shop\Index()
+            );
+        }
 
         $page->headerSwitchLink = [
-            'backLink' => $router->getUrlByRoute(
-                $router->getRouteByPath($redirect['redirect_to']),
-                [
-                    'redirect_to' => $redirect['initial_redirect_to']
-                ])
+            'backLink' => $backLink
         ];
 
         // шаблоны mustache
