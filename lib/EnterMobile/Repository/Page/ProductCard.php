@@ -438,7 +438,7 @@ class ProductCard {
         (new Repository\Template())->setListForPage($page, [
             [
                 'id'       => 'tpl-product-slider',
-                'name'     => 'partial/product-slider/default',
+                'name'     => 'partial/product-slider/new-default',
                 'partials' => [
                     'partial/cart/button',
                 ],

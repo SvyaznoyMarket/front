@@ -1,0 +1,33 @@
+<div class="js-widget {{widgetId}}" data-template-selector="#tpl-product-slider">
+    <div class="js-productSlider {{#hasCategories}}sliderCat{{/hasCategories}} clearfix" data-url="{{&dataUrl}}" data-name="{{&dataName}}" data-ga="{{&dataGa}}" style="margin:0 30px;">
+
+        {{#hasCategories}}
+        <div class="sliderCatWrap">
+            <ul class="sliderCatList">
+            {{#categories}}
+                <li class="sliderCatList_item" data-id="{{id}}">{{name}}</li>
+            {{/categories}}
+            </ul>
+        </div>
+        {{/hasCategories}}
+
+        <div class="slider-box-product js-productSliderList">
+            {{#productCards}}
+                <div class="slider-box-product__i" data-category="{{categoryId}}">
+                    <a class="js-ga-click slider-box-product__lk" href="{{url}}" data-ga-click="{{&dataGa}}">
+                        <span class="slider-box-product__img-wrap">
+                            <img class="slider-box-product__img" src="{{image}}" />
+                        </span>
+                        <div class="slider-box-product__name ellipsis"><div>{{&name}}</div></div>
+                    </a>
+                    <div class="slider-box-product__price">{{shownPrice}} <span class="rubl">p</span></div>
+
+                    {{!#cartButton}}
+                        {{!>partial/cart/button}}
+                    {{!/cartButton}}
+                    <a class="btn-buy btn-buy--slide">Купить</a>
+                </div>
+            {{/productCards}}
+        </div>
+    </div>
+</div>

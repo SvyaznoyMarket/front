@@ -35,15 +35,14 @@ define(
                     hasNoIosClass = body.hasClass('noIOS');
 
                 return {
-                    init: function(){
+                    init: function() {
+						footer.removeAttr('style');
+						hasNoIosClass && body.addClass('noIOS');
 
-                        footer.removeAttr('style');
-                        hasNoIosClass && body.addClass('noIOS');
-
-                        if ( ($('.content').height() + footer.outerHeight() + $('.header').height() < ($(window).height()) && (body.data('module')) !== 'index') ){
-                            body.removeClass('noIOS');
-                            footer.css('position','fixed');
-                        }
+						if (($('.content').height() + footer.outerHeight() + $('.header').height() < ($(window).height()) && (body.data('module')) !== 'index')) {
+							body.removeClass('noIOS');
+							footer.css('position', 'fixed');
+						}
                     }
                 }
             })(),

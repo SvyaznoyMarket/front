@@ -76,7 +76,7 @@ class ProductCard {
         // рендер
         $renderer = $this->getRenderer();
         $renderer->setPartials([
-            'content' => $pageRequest->product->getSlotPartnerOffer() ? 'page/product-card-slot/content' : 'page/product-card/content',
+            'content' => $pageRequest->product->getSlotPartnerOffer() ? 'page/product-card-slot/content' : 'page/product-card-new/content',
         ]);
         $content = $renderer->render('layout/default', $page);
 
