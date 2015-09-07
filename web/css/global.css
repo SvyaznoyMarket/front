@@ -11785,6 +11785,9 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   width: 100%;
   display: none;
 }
+.index .map-container .map-baloon .shop-snippet-name {
+  padding-right: 17px;
+}
 .points-top {
   width: 100%;
   -webkit-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
