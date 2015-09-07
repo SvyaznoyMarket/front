@@ -13,8 +13,6 @@ define(
         var selectedPartners = {};
         var filter = {};
         var myCollection;
-        var boundsDrawed = false;
-        var previousSearchPhrase;
 
         var defaultRegion = $('body').data('config').region.name;
 
@@ -28,10 +26,6 @@ define(
             });
         })();
 
-        (function initialLoadPoints(){
-            //makeRequest();
-            prepareRequest();
-        })();
 
         function handleSearchFormEvent(evt) {
             evt.preventDefault();
@@ -73,6 +67,10 @@ define(
             });
 
             yaMap.container.fitToViewport();
+
+            myCollection = new ymaps.GeoObjectCollection();
+
+            prepareRequest();
         }
 
         function findSelectedPartners() {
@@ -107,55 +105,7 @@ define(
                         yaMap.setCenter([center.latitude, center.longitude]);
                     }
 
-                    myCollection = new ymaps.GeoObjectCollection();
-                    for (var i = 0; i < result.data.points.length; i++) {
-                        var currentPoint = result.data.points[i];
-
-                        var props = {
-                            pointName: currentPoint.name,
-                            pointLogo: currentPoint.logo,
-                            pointAddress: currentPoint.address,
-                            pointLink: currentPoint.link,
-                            subway: []
-                        };
-
-                        if (currentPoint.subway) {
-                            for (var key in currentPoint.subway) {
-                                props.subway.push({
-                                    color: (currentPoint.subway[key].line) ? currentPoint.subway[key].line.color : false,
-                                    station: currentPoint.subway[key].name
-                                });
-                            }
-                        }
-
-
-
-                        var BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
-                            '<div style="margin: 10px;">' +
-                                '<div style="inline-block">' +
-                                    '<img src="{{properties.pointLogo}}"/>' +
-                                    '<p>{{properties.pointName}}</p>' +
-                                '</div>' +
-                                '<div style="inline-block">' +
-                                    '{% for subway in properties.subway %}' +
-                                    '<p><span class="metro-bullet" style="background:{{subway.color}}; width:5px; height:5px; display:inline-block;border-radius:50%;"></span>м. {{subway.station}}</p>' +
-                                    '{% endfor %}' +
-                                    '<p>{{properties.pointAddress}}</p>' +
-                                    '<p><a href="{{properties.pointLink}}">Подробнее</a></p>' +
-                                '</div>' +
-                            '</div>'
-                        );
-
-                        myCollection.add(new ymaps.Placemark([currentPoint.latitude, currentPoint.longitude],props, {
-                            iconLayout: 'default#image',
-                            iconImageHref: currentPoint.marker,
-                            balloonContentLayout: BalloonContentLayout,
-                            balloonPanelMaxMapArea: 0
-                        }));
-
-                    }
-
-                    yaMap.geoObjects.add(myCollection);
+                    placePoints(result.data.points);
 
                 }
             });
@@ -172,22 +122,60 @@ define(
             }
 
             filter.redirectTo = window.location.pathname || false;
-            filter.initialRedirectTo = getQueryVariable('redirect_to') || false;
 
             makeRequest(filter);
         }
 
-        function getQueryVariable(variable) {
-            var query = window.location.search.substring(1);
-            var vars = query.split('&');
+        function placePoints(points) {
 
-            for (var i = 0, l = vars.length; i < l; i++) {
-                var pair = vars[i].split('=');
+            for (var i = 0; i < points.length; i++) {
+                var currentPoint = points[i];
 
-                if (pair[0] == variable) return pair[1];
+                var props = {
+                    pointName: currentPoint.name,
+                    pointLogo: currentPoint.logo,
+                    pointAddress: currentPoint.address,
+                    pointLink: currentPoint.link,
+                    subway: []
+                };
+
+                if (currentPoint.subway) {
+                    for (var key in currentPoint.subway) {
+                        props.subway.push({
+                            color: (currentPoint.subway[key].line) ? currentPoint.subway[key].line.color : false,
+                            station: currentPoint.subway[key].name
+                        });
+                    }
+                }
+
+
+
+                var BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
+                    '<div style="margin: 10px;">' +
+                    '<div style="inline-block">' +
+                    '<img src="{{properties.pointLogo}}"/>' +
+                    '<p>{{properties.pointName}}</p>' +
+                    '</div>' +
+                    '<div style="inline-block">' +
+                    '{% for subway in properties.subway %}' +
+                    '<p><span class="metro-bullet" style="background:{{subway.color}}; width:5px; height:5px; display:inline-block;border-radius:50%;"></span>м. {{subway.station}}</p>' +
+                    '{% endfor %}' +
+                    '<p>{{properties.pointAddress}}</p>' +
+                    '<p><a href="{{properties.pointLink}}">Подробнее</a></p>' +
+                    '</div>' +
+                    '</div>'
+                );
+
+                myCollection.add(new ymaps.Placemark([currentPoint.latitude, currentPoint.longitude],props, {
+                    iconLayout: 'default#image',
+                    iconImageHref: currentPoint.marker,
+                    balloonContentLayout: BalloonContentLayout,
+                    balloonPanelMaxMapArea: 0
+                }));
+
             }
 
-            return false;
+            yaMap.geoObjects.add(myCollection);
         }
 
     }
