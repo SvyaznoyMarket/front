@@ -9487,8 +9487,9 @@ body.flex .wrapper.wrapper-smpl .content {
 .shop-snippet__more {
   font-size: 12px;
   color: #616161;
-  border-bottom: 1px dashed;
+  border-bottom: 1px dotted;
   float: right;
+  line-height: 1.1em;
 }
 .address-pick-snippet {
   position: relative;
@@ -9679,6 +9680,7 @@ body.flex .wrapper.wrapper-smpl .content {
 .map-baloon .shop-snippet-metro__text {
   font-size: 12px;
   line-height: 14px;
+  margin-left: 5px;
 }
 .map-baloon .shop-snippet-address {
   line-height: 14px;
