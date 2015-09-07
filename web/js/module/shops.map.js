@@ -149,21 +149,27 @@ define(
                 }
 
 
-
                 var BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
-                    '<div style="margin: 10px;">' +
-                    '<div style="inline-block">' +
-                    '<img src="{{properties.pointLogo}}"/>' +
-                    '<p>{{properties.pointName}}</p>' +
-                    '</div>' +
-                    '<div style="inline-block">' +
-                    '{% for subway in properties.subway %}' +
-                    '<p><span class="metro-bullet" style="background:{{subway.color}}; width:5px; height:5px; display:inline-block;border-radius:50%;"></span>м. {{subway.station}}</p>' +
-                    '{% endfor %}' +
-                    '<p>{{properties.pointAddress}}</p>' +
-                    '<p><a href="{{properties.pointLink}}">Подробнее</a></p>' +
-                    '</div>' +
-                    '</div>'
+                    '<div class="map-baloon clearfix">'+
+                        '<div class="shop-snippet">'+
+                            '<div class="shop-snippet-name">'+
+                            '<img src="{{properties.pointLogo}}" alt="" class="shop-snippet-name__img">'+
+                            '<span class="shop-snippet-name__text">{{properties.pointName}}</span>'+
+                        '</div>'+
+
+                        '<div class="shop-snippet-info">'+
+                            '{% for subway in properties.subway %}'+
+                             '{{#subway}}'+
+                            '<div class="shop-snippet-metro">'+
+                                '<span class="shop-snippet-metro__bullet" style="background:{{subway.color}}"></span>'+
+                                '<span class="shop-snippet-metro__text">м. {{subway.station}}</span>'+
+                            '</div>'+
+                            '{{/subway}}'+
+                            '{% endfor %}'+
+                            '<div class="shop-snippet-address">{{properties.pointAddress}}</div>'+
+                        '</div>'+
+                    '</div>'+
+                    '<a class="shop-snippet__more" href="{{properties.pointLink}}">Подробнее</a>'
                 );
 
                 myCollection.add(new ymaps.Placemark([currentPoint.latitude, currentPoint.longitude],props, {

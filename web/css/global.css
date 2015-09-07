@@ -9459,6 +9459,7 @@ body.flex .wrapper.wrapper-smpl .content {
   display: block;
   margin: 2px 0 0;
   color: #616161;
+  line-height: 1.1em;
 }
 .shop-snippet-metro__bullet {
   width: 8px;
@@ -9482,6 +9483,12 @@ body.flex .wrapper.wrapper-smpl .content {
 .shop-snippet-info {
   display: table-cell;
   vertical-align: middle;
+}
+.shop-snippet__more {
+  font-size: 12px;
+  color: #616161;
+  border-bottom: 1px dashed;
+  float: right;
 }
 .address-pick-snippet {
   position: relative;
@@ -11864,6 +11871,16 @@ section.map .map-container {
 .one-point__text h3 {
   font-size: 12px;
   font-weight: normal;
+}
+.photos {
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+.photos:not(.slick-initialized) {
+  height: 0;
+  overflow: hidden;
 }
 .photos .slick-dots {
   text-align: center;
