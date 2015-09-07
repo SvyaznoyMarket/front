@@ -141,10 +141,13 @@ define(
 
                 if (currentPoint.subway) {
                     for (var key in currentPoint.subway) {
+                        if (currentPoint.subway[key].line === null || currentPoint.subway[key].name === null) continue;
+
                         props.subway.push({
                             color: (currentPoint.subway[key].line) ? currentPoint.subway[key].line.color : false,
                             station: currentPoint.subway[key].name
                         });
+
                     }
                 }
 
