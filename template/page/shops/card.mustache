@@ -36,10 +36,14 @@
             </div>
             <div class="one-point__text">
                 <p>{{description}}</p>
+                {{#carWay}}
                 <h2>Как добраться</h2>
-                <p>{{carWay}}</p>
+                <p>{{.}}</p>
+                {{/carWay}}
+                {{#walkWay}}
                 <h3>Проезд общественным транспортом</h3>
-                <p>{{walkWay}}</p>
+                <p>{{.}}</p>
+                {{/walkWay}}
             </div>
 
         </div>
