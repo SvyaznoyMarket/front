@@ -11608,21 +11608,20 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .product-select__ctrl {
   background-color: #f7f7f7;
   border: none;
-}
-.product-select:after {
-  content: '';
-  width: 15px;
-  height: 25px;
-  background-color: #f7f7f7;
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAyCAYAAABLXmvvAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAACuUlEQVRYCe2US4iSURTH5/MxOikOlqboLETEFIkiqFUMtGo1uwiix6aIVkGCmzZDRG0GCoI2UZtoWbQIIoZoYiqCgqDCx8JVhCAJmuIMjubX73w++HQYbKKoxT1wvnvu/7zu+V+vU1NKFAOKAcWAYkAxoBhQDPwrBrR4PJ742837PTTpY5FPIpG4ZrVa88lkchU7ItifFKlJ7VfSQ3pJbQ1gXtf1FU3TjENg18Ez9Xr9QalUWsfWJfA3RAuFQjMej+cUuUvU90gN6nexj1h9Pl8aYz+YTRzYDnTB6XQmSXpbrVabwF3xbUNs0Wh0zuVy3aFWRmoOcrFb2GvWSqWy7Pf7N9gcRKdR4w5Yk1BznIMV3G73l1qt1gGbKJFIxBkMBo+S+5gmh0wJcvjv6NV8Pr9oxdBp/oYGzwmU5rtQwWV6oeeEzWabdTgc7xqNhpx2K+ot4XB4J1PKHd7s52IaIoN9Qo/R9CGrPpjO8AYCAZfX671O0lmAHejQz9187nQ65znAh2w2K4WGkkqlplut1gEOKNTuHTp6h1wj9x5XdrlcLsu1GWJMNtg0m8020z+D+vcE7wOfpZBd/KwB6Dvd7XY1qC9AvfzwLFAr+CX0LjEhiRUhf519FvNcoVC4LbUNR/8znMgMih2Lxfx2u30Jc4EiXoqYY1fB0hIHfINlXmwRcB2sivmk3W5nisXiN8Mx9jEXG3P1tjy3M9RapNgciPz4BiLFRby9xfhuEPuV2Cvc5X0TvskcoXqTFwDqP3L3Tym4Bw1QdPA0ZnCLGoKvju8llJ/M5XIrA3yrdeLEpkQ706dpcBFMDmAcmv0P9mX2t5hSaB+5S1P+iDlxYlN0V54d07+g2W5wHyq/0mWmvMCUj7B/+Y9mOxNTtyfyfLAO97evx59XH1eLYkAxoBhQDCgGFAOKgf+MgZ+kQ+oIoOqH3AAAAABJRU5ErkJggg==');
-  -webkit-background-size: 100% 100%;
-  -moz-background-size: 100% 100%;
-  -o-background-size: 100% 100%;
-  background-size: 100% 100%;
-  display: block;
-  position: absolute;
-  top: 11px;
-  right: 9px;
+  -webkit-background-size: 15px 25px;
+  -moz-background-size: 15px 25px;
+  -o-background-size: 15px 25px;
+  background-size: 15px 25px;
+  background-position: 90% 50%;
+  background-repeat: no-repeat;
+  outline: solid transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+  padding-right: 15px;
 }
 .product__rating .rating {
   float: none;
@@ -11681,7 +11680,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   width: 100%;
   /*height: 90%;*/
   position: relative;
-  padding-bottom: 20px;
 }
 .product-img__slider .slick-arrow {
   display: none !important;
@@ -11696,6 +11694,12 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .product-img .slider_pag {
   margin: 10px 0;
   position: static;
+}
+.product-img__shield {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 100;
 }
 .slider-box-product {
   margin-bottom: 20px;
@@ -11882,6 +11886,17 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   clear: both;
   color: #616161;
 }
+.product-card-lst {
+  *zoom: 1;
+}
+.product-card-lst:before,
+.product-card-lst:after {
+  display: table;
+  content: ' ';
+}
+.product-card-lst:after {
+  clear: both;
+}
 .product-card-lst__i {
   float: left;
   -webkit-box-sizing: border-box;
@@ -11970,6 +11985,12 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product-card-lst__buy {
   margin: 10px 0;
+}
+@media screen and (min-width: 1025px) {
+  .product-card-lst {
+    border-left: 1px solid #c7c7c7;
+    border-right: 1px solid #c7c7c7;
+  }
 }
 /* =======
    Helpers

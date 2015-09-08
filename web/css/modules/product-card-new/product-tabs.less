@@ -123,6 +123,8 @@
 }
 
 .product-card-lst{
+    .clearfix();
+
     &__i{
         float: left;
         .box-sizing(border-box);
@@ -212,5 +214,12 @@
     }
     &__buy{
         margin: 10px 0;
+    }
+}
+//MEDIA_QUERIES
+@media screen and (min-width: 1025px){
+    .product-card-lst{
+        border-left: 1px solid #c7c7c7;
+        border-right: 1px solid #c7c7c7;
     }
 }
