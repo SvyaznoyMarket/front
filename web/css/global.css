@@ -2673,16 +2673,20 @@ body {
 }
 .btn-buy--listing {
   width: 113px;
-  padding: 3px 0;
+  padding: 2px 0;
   text-align: center;
   font-size: 14px;
   display: inline-block;
   vertical-align: top;
+  border: 1px solid #f99b1c;
 }
 .btn-buy--listing.watch-only {
   background: #fff;
   color: #616161;
   border-color: #c7c7c7;
+}
+.btn-buy--listing.watch-only:hover {
+  color: #616161;
 }
 .btn-buy:hover {
   color: #fff;
@@ -11668,15 +11672,16 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .product-img {
   float: left;
   width: 514px;
-  height: 450px;
+  /*height: 450px;*/
   margin-right: 10px;
   text-align: center;
   position: relative;
 }
 .product-img__slider {
-  display: inline-block;
-  vertical-align: middle;
-  max-width: 95%;
+  width: 100%;
+  /*height: 90%;*/
+  position: relative;
+  padding-bottom: 20px;
 }
 .product-img__slider .slick-arrow {
   display: none !important;
@@ -11690,6 +11695,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product-img .slider_pag {
   margin: 10px 0;
+  position: static;
 }
 .slider-box-product {
   margin-bottom: 20px;
@@ -11883,7 +11889,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   box-sizing: border-box;
   -ms-box-sizing: border-box;
   width: 33.3%;
-  padding: 10px;
+  padding: 10px 20px;
   border-right: 1px solid #c7c7c7;
   text-align: center;
 }
@@ -11908,10 +11914,18 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product-card-lst__categ {
   font-size: 14px;
+  color: #616161;
+  text-align: left;
 }
 .product-card-lst__name {
   font-size: 14px;
-  height: 16px;
+  height: 19px;
+  text-align: left;
+  margin-bottom: 5px;
+}
+.product-card-lst__name.ellipsis:after {
+  top: -16px;
+  height: 1.5em;
 }
 .product-card-lst__img {
   max-width: 98%;
@@ -11926,11 +11940,36 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product-card-lst__old-price {
   font-size: 22px;
+  color: #666666;
   display: inline-block;
   vertical-align: middle;
 }
 .product-card-lst__old-price + .product-card-lst__price {
   margin-left: 20px;
+}
+.product-card-lst__rating {
+  float: none;
+  text-align: center;
+}
+.product-card-lst__rating .rating__star {
+  margin-right: 0;
+}
+.product-card-lst__status {
+  font-size: 14px;
+  color: #666666;
+  height: 22px;
+  margin: 5px 0;
+}
+.product-card-lst__status-inn {
+  background-color: #f7f7f7;
+  padding: 2px 5px 3px;
+  display: block;
+}
+.product-card-lst__status.self .product-card-lst__status-inn {
+  background-color: rgba(193, 216, 53, 0.2);
+}
+.product-card-lst__buy {
+  margin: 10px 0;
 }
 /* =======
    Helpers

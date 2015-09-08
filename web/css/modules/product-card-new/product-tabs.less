@@ -127,7 +127,7 @@
         float: left;
         .box-sizing(border-box);
         width: 33.3%;
-        padding: 10px;
+        padding: 10px 20px;
         border-right: 1px solid #c7c7c7;
         text-align: center;
         &:nth-child(3n){
@@ -158,8 +158,13 @@
     }
     &__name{
         font-size: 14px;
-        height: 16px;
+        height: 19px;
         text-align: left;
+        margin-bottom: 5px;
+        &.ellipsis:after{
+            top: -16px;
+            height: 1.5em;
+        }
     }
     &__img{
         max-width: 98%;
@@ -172,9 +177,40 @@
     }
     &__old-price{
         font-size: 22px;
+        color: #666666;
         .inline-block(middle);
         & + .product-card-lst__price{
             margin-left: 20px;
         }
+    }
+    &__rating{
+        float: none;
+        text-align: center;
+        .rating__star{
+            margin-right: 0;
+        }
+    }
+    &__status{
+        font-size: 14px;
+
+        color: #666666;
+        height: 22px;
+
+        margin: 5px 0;
+
+        &-inn{
+            background-color: #f7f7f7;
+            padding: 2px 5px 3px;
+            display: block;
+        }
+
+        &.self{
+            .product-card-lst__status-inn{
+                background-color: rgba( 193, 216, 53, 0.2);
+            }
+        }
+    }
+    &__buy{
+        margin: 10px 0;
     }
 }
