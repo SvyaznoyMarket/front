@@ -40,6 +40,7 @@
             <div class="product-name__art">Артикул: 466-8336</div>
         </div>
         {{! END Наименование }}
+
         {{! слайдер фото}}
         <div class="product-img">
             <div class="product-img__shield"><img src="/css/modules/product-card-new/img/shield.png"></div>
@@ -55,6 +56,7 @@
             </div>
         </div>
         {{! END слайдер фото}}
+
         <div class="product__info">
             <div class="product__buy-block">
 
@@ -84,16 +86,18 @@
                     <span class="product-delivery__plan">290 <span class="rubl">p</span></span>
                 </div>
             </div>
+
             <div class="product-variations">
-                <label class="product-variations__lbl">Цвет</label>
-                <div class="product-variations__sel product-select">
-                    <select class="product-select__ctrl">
-                        <option>Синий</option>
-                        <option>Красный</option>
-                        <option>Голубой</option>
-                    </select>
-                </div>
+                <span class="product-variations__title">Цвет</span>
+                <span class="product-variations__value">Синий</span>
+
+                <ul class="product-variations-list">
+                    <li class="product-variations-list__item"><a href="" class="product-variations-list__link">Красный</a></li>
+                    <li class="product-variations-list__item"><a href="" class="product-variations-list__link">Светло-оранжевый</a></li>
+                    <li class="product-variations-list__item"><a href="" class="product-variations-list__link">Фуксия - любимый цвет Котькиной</a></li>
+                </ul>
             </div>
+
             <div class="product__rating">
                 {{#product.rating}}
                     <div class="rating rating--product">
@@ -110,7 +114,7 @@
                     <div class="product-props__tl"><span class="product-props__tl-inn">Диагональ экрана:</span></div>
                 </div>
                 <div class="product-props__i">
-                    <div class="product-props__val">21'</div>
+                    <div class="product-props__val">Огромный текст оло-ло</div>
                     <div class="product-props__tl"><span class="product-props__tl-inn">Диагональ экрана:</span></div>
                 </div>
                 <div class="product-props__i">
