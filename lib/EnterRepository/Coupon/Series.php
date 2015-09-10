@@ -76,4 +76,15 @@ class Series {
             )
         );
     }
+
+    /**
+     * @param Model\Coupon\Series[] $couponSeries
+     * @param string[] $seriesIds
+     * @return array
+     */
+    public function filterObjectListByIdList(array &$couponSeries, array $seriesIds) {
+        $couponSeries = array_values(array_filter($couponSeries, function(Model\Coupon\Series $series) use($seriesIds) {
+                return in_array($series->id, $seriesIds, true);
+        }));
+    }
 }
