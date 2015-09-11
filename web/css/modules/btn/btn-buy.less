@@ -1,52 +1,56 @@
 //новые кнопки карточки товара
-.btn{
-    &-buy{
-       // кнопка купить по умолчанию
-        padding: 8px 30px;
-        background-color: #f99b1c;
-        color: #fff;
-        .rounded(3px);
+.btn {
+    &-buy {
         font-size: 16px;
+        // кнопка купить по умолчанию
 
-        &--slide{
-            //маленькая кнопка купить в сладере "с этим товаром покупают"
-            padding: 4px 12px;
+        padding: 8px 30px;
+
+        color: #fff;
+        background-color: #f99b1c;
+
+        .rounded(3px);
+        &--slide {
             font-size: 12px;
+            //маленькая кнопка купить в сладере "с этим товаром покупают"
+
+            padding: 4px 12px;
+
             .inline-block();
         }
-        &--listing{
+        &--listing {
+            font-size: 14px;
             //кнопка в табах аксессуаров, доп товаров
+
             width: 113px;
             padding: 2px 0;
+
             text-align: center;
-            font-size: 14px;
-            .inline-block();
+
             border: 1px solid #f99b1c;
 
-            &.watch-only{
-                background: #fff;
+            .inline-block();
+            &.watch-only {
                 color: #616161;
                 border-color: #c7c7c7;
-                &:hover{
+                background: #fff;
+                &:hover {
                     color: #616161;
                 }
             }
         }
-        &--slot{
-
-        }
-        &:hover{
+        &:hover {
             color: #fff;
         }
     }
 }
 
-@media screen and (max-width: 767px){
-    .btn{
-        &-buy{
-            &--listing{
-                width: 62px;
-                padding: 5px 0;
+@media screen and (max-width: 767px) {
+    .btn {
+        &-buy {
+            &--listing {
+                width: auto;
+                padding: 5px 10px;
             }
         }
     }
