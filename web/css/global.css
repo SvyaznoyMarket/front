@@ -12183,9 +12183,9 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   }
   .product-img {
     float: none;
-    padding: 0;
     width: 100%;
     max-height: 240px;
+    padding: 0;
   }
   .product-img__slider {
     max-height: 200px;
@@ -12224,16 +12224,25 @@ body:not(.noIOS) .private section:not(.main-section) > * {
     font-size: 14px;
   }
   .product .slider_lst_img__container {
-    height: 200px;
     line-height: 200px;
+    height: 200px;
   }
 }
-@media screen and (max-width: 479px) {
+@media screen and (max-width: 480px) {
   .product-price {
     line-height: .8em;
   }
   .product-price__old {
     font-size: 20px;
+  }
+  .product-tabs__menu {
+    border-bottom: 1px solid #c7c7c7;
+  }
+  .product-tabs__head {
+    font-size: 14px;
+    display: block;
+    width: 100%;
+    border-bottom: none;
   }
 }
 /* =======
