@@ -42,7 +42,7 @@ class Index {
                 $cartProductsById[$cartProduct->id] = $cartProduct->product;
             }
 
-            $page->content->cart = (new Repository\Partial\Cart())->getObject($request->cart, $cartProductsById);
+            $page->content->cart = (new Repository\Partial\Cart())->getObject($request->cart, $cartProductsById, $request->region);
         } else {
             $page->content->cart = false;
         }

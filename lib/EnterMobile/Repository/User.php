@@ -75,7 +75,7 @@ class User {
     }
 
     /**
-     * @throws \Exception
+     * @param Query|null $query
      * @return Model\User|null
      */
     public function getObjectByQuery(Query $query = null) {

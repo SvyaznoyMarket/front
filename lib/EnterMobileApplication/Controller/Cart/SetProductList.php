@@ -3,15 +3,16 @@
 namespace EnterMobileApplication\Controller\Cart;
 
 use Enter\Http;
-use EnterAggregator\CurlTrait;
-use EnterAggregator\LoggerTrait;
 use EnterMobileApplication\ConfigTrait;
+use EnterAggregator\CurlTrait;
 use EnterAggregator\SessionTrait;
+use EnterAggregator\AbTestTrait;
+use EnterAggregator\LoggerTrait;
 use EnterMobileApplication\Controller;
 use EnterQuery as Query;
 
 class SetProductList {
-    use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
+    use ConfigTrait, CurlTrait, SessionTrait, AbTestTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request
