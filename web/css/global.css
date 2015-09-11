@@ -11720,22 +11720,8 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .product-img__slider .slick-arrow {
   display: none !important;
 }
-.product-img:after {
-  width: 0;
-  height: 100%;
-  content: '';
-  display: inline-block;
-  vertical-align: middle;
-}
 .product-img .slider_pag {
-  position: static;
-  margin: 10px 0;
-}
-.product-img__shield {
-  position: absolute;
-  z-index: 100;
-  top: 0;
-  left: 0;
+  position: relative;
 }
 .slider-box-product {
   margin-bottom: 20px;
@@ -11886,18 +11872,18 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   vertical-align: middle;
 }
 .product-card-lst__price {
+  text-align: center;
   font-size: 22px;
+}
+.product-card-lst__price .price {
   display: inline-block;
   vertical-align: middle;
 }
-.product-card-lst__old-price {
-  font-size: 22px;
+.product-card-lst__price .old-price {
+  margin-right: 10px;
   color: #666;
   display: inline-block;
   vertical-align: middle;
-}
-.product-card-lst__old-price + .product-card-lst__price {
-  margin-left: 20px;
 }
 .product-card-lst__rating {
   float: none;
@@ -11909,6 +11895,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   font-size: 14px;
   height: 22px;
   margin: 5px 0;
+  text-align: center;
   color: #666;
 }
 .product-card-lst__status-inn {
@@ -12111,6 +12098,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   .product-card-lst__i {
     width: 100%;
     padding: 10px 5px;
+    text-align: left;
     border: 0 none;
     border-bottom: 1px solid #bababa;
   }
@@ -12121,33 +12109,40 @@ body:not(.noIOS) .private section:not(.main-section) > * {
     height: 120px;
     margin: 0 10px 10px 0;
   }
-  .product-card-lst__status {
-    margin-left: 130px;
-  }
   .product-card-lst__info {
-    padding-top: 0;
+    padding: 0 0 0 130px;
   }
   .product-card-lst__rating {
-    position: static;
-    text-align: left;
+    margin: 0 0 10px;
   }
   .product-card-lst__rating .rating__star {
     font-size: 11px;
   }
-  .product-card-lst__old-price {
-    font-size: 20px;
-    display: block;
-    text-align: left;
-  }
   .product-card-lst__price {
     font-size: 20px;
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+  }
+  .product-card-lst__price .old-price {
     display: block;
     margin: 0;
-    text-align: left;
+  }
+  .product-card-lst__price .price {
+    display: block;
   }
   .product-card-lst__buy {
-    float: right;
-    margin-top: -40px;
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .product-card-lst__buying {
+    display: table;
+    width: 100%;
+  }
+  .product-card-lst__status-inn {
+    font-size: 12px;
+    padding: 1px 5px 2px;
   }
   .product-details__lst {
     width: 100%;
@@ -12174,26 +12169,21 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   }
   .product-img {
     float: none;
+    padding: 0;
     width: 100%;
     max-height: 240px;
   }
-  .product-img .product-img__slider {
+  .product-img__slider {
     max-height: 200px;
   }
-  .product-img .product-img__slider-inn {
+  .product-img__slider-inn {
     height: 200px;
   }
-  .product-img .slider_lst_img {
+  .product-img_lst_img {
     max-height: 200px;
   }
-  .product-img .slider_pag {
+  .product-img_pag {
     margin: 15px 0;
-  }
-  .product-img__shield {
-    width: 66px;
-  }
-  .product-img__shield img {
-    width: 100%;
   }
   .product__info {
     float: none;
@@ -12205,7 +12195,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   }
   .product__rating .rating__star {
     font-size: 11px;
-    margin-right: 0px;
+    margin-right: 0;
   }
   .product__rating .rating__reviews-lk {
     display: none;
@@ -12213,10 +12203,14 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   .product-name__tl {
     font-size: 14px;
   }
+  .product .slider_lst_img__container {
+    height: 200px;
+    line-height: 200px;
+  }
 }
 @media screen and (max-width: 479px) {
   .product-price {
-    line-height: 0.8em;
+    line-height: .8em;
   }
   .product-price__old {
     font-size: 20px;
