@@ -18,6 +18,8 @@ define(
 
                         footerFix.init();
 
+                        chromeiOSDetect.init();
+
                     }
                 }
             })(),
@@ -38,7 +40,7 @@ define(
                         footer.removeAttr('style');
                         hasNoIosClass && body.addClass('noIOS');
 
-                        if ( $('.content').height() + footer.outerHeight() + $('.header').height() < ($(window).height()) ){
+                        if ( ($('.content').height() + footer.outerHeight() + $('.header').height() < ($(window).height()) && (body.data('module')) !== 'index') ){
                             body.removeClass('noIOS');
                             footer.css('position','fixed');
                         }
@@ -75,10 +77,24 @@ define(
                         if ( !checkIOS() ){
                             $('body').addClass('noIOS') ;
                         }
+
                     }
                 }
             })(),
 
+            chromeiOSDetect = (function() {
+                var
+                checkChrome = function(){
+                    if(navigator.userAgent.match('CriOS')) {
+                        $('body').addClass('criOS');
+                    }
+                };
+                return {
+                    init: function(){
+                        checkChrome();
+                    }
+                }
+            })(),
             /**
              * фиксация бага iOS7(неверный расчет высоты окна) + события на ресайз
              * (полезно в случаях, когда есть страницы, которые должны  быть вписаны в окно браузера по высоте - например ЛК)
@@ -95,15 +111,15 @@ define(
                         body.removeAttr('style');
 
                         if (document.body.scrollTop !== 0) {
-                            $(window).scrollTo(0, 0);
+                           // $(window).scrollTo(0, 0);
                         }
-                        console.log(body.height(),$(window).height());
+
 
                         if (wh < ww){
                             //landscape position
                             body.height(wh - 20);
                         }
-                        console.log(body.height(),$(window).height());
+
                     };
 
                 return {
