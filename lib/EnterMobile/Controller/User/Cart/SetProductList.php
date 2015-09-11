@@ -26,8 +26,9 @@ class SetProductList {
         $session = $this->getSession();
         $cartRepository = new \EnterRepository\Cart();
 
-        // ид региона
+        // регион
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
+        $region = $regionId ? new \EnterModel\Region(['id' => $regionId]) : null;
 
         // корзина из сессии
         $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
@@ -115,7 +116,7 @@ class SetProductList {
                 $page->widgets['.' . $widget->widgetId] = $widget;
             }
 
-            if ($widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById))) {
+            if ($widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById), $region)) {
                 $page->widgets['.' . $widget->widgetId] = $widget;
             }
 

@@ -135,6 +135,7 @@ return function(\EnterAggregator\Config $config) {
     $config->order->prepayment->enabled = true;
     $config->order->prepayment->priceLimit = 100000;
     $config->order->bonusCardSessionKey = 'order_bonusCards';
+    $config->order->minSum = 990;
 
     $config->product->itemPerPage = 19;
     $config->product->itemsInSlider = 60;
