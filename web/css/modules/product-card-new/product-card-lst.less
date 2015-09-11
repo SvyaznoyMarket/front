@@ -1,0 +1,103 @@
+.product-card-lst{
+    .clearfix();
+
+    &__i{
+        float: left;
+        .box-sizing(border-box);
+        width: 33.3%;
+        padding: 10px 20px;
+        border-right: 1px solid #c7c7c7;
+        text-align: center;
+        &:nth-child(3n){
+            border-right: 0;
+        }
+    }
+
+    &__img-wrap {
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+        text-align: center;
+
+        &:after{
+            content: '';
+            width: 0;
+            height: 100%;
+            .inline-block(middle);
+        }
+    }
+    &__lk{
+        font-size: 14px;
+    }
+    &__categ{
+        font-size: 14px;
+        color: #616161;
+        text-align: left;
+    }
+    &__name{
+        font-size: 14px;
+        height: 19px;
+        text-align: left;
+        margin-bottom: 5px;
+        &.ellipsis:after{
+            top: -16px;
+            height: 1.5em;
+        }
+    }
+    &__img{
+        max-width: 98%;
+        max-height: 100%;
+        .inline-block(middle);
+    }
+    &__price{
+        font-size: 22px;
+        .inline-block(middle);
+    }
+    &__old-price{
+        font-size: 22px;
+        color: #666666;
+        .inline-block(middle);
+        & + .product-card-lst__price{
+            margin-left: 20px;
+        }
+    }
+    &__rating{
+        float: none;
+        text-align: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+
+        .rating__star{
+            margin-right: 0;
+        }
+    }
+    &__status{
+        font-size: 14px;
+
+        color: #666666;
+        height: 22px;
+
+        margin: 5px 0;
+
+        &-inn{
+            background-color: #f7f7f7;
+            padding: 2px 5px 3px;
+            display: block;
+        }
+
+        &.self{
+            .product-card-lst__status-inn{
+                background-color: rgba( 193, 216, 53, 0.2);
+            }
+        }
+    }
+    &__buy{
+        margin: 10px 0;
+    }
+    &__info{
+        position: relative;
+        padding-top: 29px;
+    }
+}
