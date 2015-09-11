@@ -1,83 +1,99 @@
 .product-img {
-    float: left;
-    width: 514px;
-    /*height: 450px;*/
-    margin-right: 10px;
-    text-align: center;
     position: relative;
 
+    float: left;
+
+    width: 50%;
+    padding: 0 20px 0 0;
+
+    text-align: center;
+
+    .box-sizing(border-box);
     &__slider {
-        width: 100%;
         /*height: 90%;*/
         position: relative;
-        
+
+        width: 100%;
         .slick-arrow {
             display: none !important;
         }
     }
-    &:after{
-        content: '';
-        height: 100%;
+    &:after {
         width: 0;
+        height: 100%;
+
+        content: '';
+
         .inline-block(middle);
     }
-    .slider_pag{
-        margin: 10px 0;
+    .slider_pag {
         position: static;
+
+        margin: 10px 0;
     }
-    &__shield{
+    &__shield {
         position: absolute;
-        top: 0px;
-        left: 0px;
         z-index: 100;
+        top: 0;
+        left: 0;
     }
 }
 
-.slider-box-product{
+.slider-box-product {
     margin-bottom: 20px;
-
-    &__i{
+    &__i {
         padding: 0 10px;
+
+        text-align: center;
         vertical-align: top;
-        text-align: center;
     }
-    &__lk{
+    &__lk {
         display: block;
+
         text-align: center;
     }
-    &__name{
-        height: 46px;
-        width: 100%;
-        overflow: hidden;
-        margin: 0 0 5px;
+    &__name {
         position: relative;
+
         display: block;
+        overflow: hidden;
+
+        width: 100%;
+        height: 46px;
+        margin: 0 0 5px;
     }
-    &__img-wrap{
+    &__img-wrap {
         width: 73px;
         height: 80px;
-        .inline-block();
 
-        &:after{
-            content: '';
+        .inline-block();
+        &:after {
             width: 0;
             height: 100%;
+
+            content: '';
+
             .inline-block(middle);
         }
     }
-    &__img{
-        .inline-block(middle);
+    &__img {
         max-width: 90%;
         max-height: 100%;
+
+        .inline-block(middle);
     }
-    &__price{
+    &__price {
         font-size: 14px;
-        text-align: center;
+
         display: block;
+
         margin-bottom: 5px;
+
+        text-align: center;
     }
-    &__oldprice{
+    &__oldprice {
         font-size: 14px;
-        color: #666666;
+
+        color: #666;
     }
 }
