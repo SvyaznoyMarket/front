@@ -149,7 +149,7 @@ namespace EnterMobileApplication\Controller\User {
                     $controllerRequest->config->branchCategory = false;
                     $controllerRequest->regionId = $regionId;
                     $controllerRequest->categoryCriteria = []; // критерий получения категории товара
-                    $controllerRequest->pageNum = 0;
+                    $controllerRequest->pageNum = 1;
                     $controllerRequest->limit = 20;
                     $controllerRequest->filterRepository = $filterRepository;
                     $controllerRequest->baseRequestFilters = $baseRequestFilters;
@@ -157,6 +157,8 @@ namespace EnterMobileApplication\Controller\User {
                     $controllerRequest->userToken = $token;
                     // ответ от контроллера
                     $controllerResponse = $controller->execute($controllerRequest);
+
+                    $response->couponSeries->products = $controllerResponse->products;
                 } catch (\Exception $e) {
                     $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
                 }

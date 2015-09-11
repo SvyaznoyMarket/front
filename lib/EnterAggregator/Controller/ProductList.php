@@ -24,6 +24,11 @@ namespace EnterAggregator\Controller {
             $productRepository = new Repository\Product();
             $productCategoryRepository = new Repository\Product\Category();
 
+            // request validation
+            if ($request->pageNum < 1) {
+                throw new \InvalidArgumentException('Параметр request.pageNum должен быть больше нуля');
+            }
+
             // response
             $response = new ProductList\Response();
 
