@@ -1,7 +1,7 @@
 <div class="content product">
     <div class="product__wrap">
         {{! окно большого изображения }}
-        <div class="contentBox960 fullImgCnt js-fullimg-wrap">
+        <div class="fullImgCnt js-fullimg-wrap">
             <div class="clsr1 js-fullimg-close"></div>
 
             <div class="fullImgCnt_img_load js-fullimg-img-loader">
@@ -135,38 +135,49 @@
         {{/product.alsoBoughtSlider}}
 
     </div>
-    <div class="product-tabs">
+    <div class="product-tabs js-product-tabs">
         <nav class="product-tabs__menu">
-            <div class="product-tabs__head js-product-tab-show active" data-src="details">Подробности</div>
-            <div class="product-tabs__head js-product-tab-show" data-src="reviews">Отзывы</div>
-            <div class="product-tabs__head js-product-tab-show" data-src="accessories">Аксессуары</div>
-            <div class="product-tabs__head js-product-tab-show" data-src="related-items">Похожие товары</div>
+            <div class="product-tabs__head js-change-tab active" data-block="js-description-block">Подробности</div>
+            <div class="product-tabs__head js-change-tab" data-block="js-reviews-block">Отзывы</div>
+            <div class="product-tabs__head js-change-tab" data-block="js-accessories-block">Аксессуары</div>
+            <div class="product-tabs__head js-change-tab" data-block="js-simillar-block">Похожие товары</div>
         </nav>
+
         <div class="product-tabs__content">
-            <div class="product-tabs__body" id="details">
+            <div class="product-tabs__body js-tabs-block js-description-block active">
                 <div class="product-details">
                     <p class="product-details__txt">{{product.description}}</p>
                     <div class="product-details__table">
                         {{#product.propertyChunks}}
-                            <ul class="product-details__lst">
+                            <div class="product-details__lst">
                                 {{#properties}}
                                     {{#isTitle}}
-                                        <li class="product-details__i title">{{name}}</li>
+                                        <div class="product-details__i title">{{name}}</div>
                                     {{/isTitle}}
 
-                                    {{^isTitle}}
-                                        <li class="product-details__i">
-                                            <div class="product-details__val">{{value}}</div>
-                                            <div class="product-details__name"><span class="product-details__name-inn">{{name}}:</span></div>
-                                        </li>
-                                    {{/isTitle}}
+                                    <div class="table">
+                                        {{^isTitle}}
+                                            <div class="product-details__i table_row">
+                                                <div class="product-details__left table_cell">
+                                                    <div class="product-details__name">
+                                                        <span class="product-details__name-inn">{{name}}:</span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="product-details__right table_cell">
+                                                    <div class="product-details__value">{{value}}</div>
+                                                </div>
+                                            </div>
+                                        {{/isTitle}}
+                                    </div>
                                 {{/properties}}
-                            </ul>
+                            </div>
                         {{/product.propertyChunks}}
                     </div>
                 </div>
             </div>
-            <div class="product-tabs__body" id="reviews">
+
+            <div class="product-tabs__body js-tabs-block js-reviews-block">
                 <div class="product-reviews">
                     <div class="reviews-add js-reviews-add"
                          data-product-name="{{#product.namePrefix}}{{product.namePrefix}}{{/product.namePrefix}}
@@ -185,12 +196,14 @@
                     {{/moreLink}}
                 </div>
             </div>
-            <div class="product-tabs__body active" id="accessories">
+
+            <div class="product-tabs__body js-tabs-block js-accessories-block">
                 <div class="product-accessories">
                     {{>page/product-card-new/card-listing}}
                 </div>
             </div>
-            <div class="product-tabs__body" id="related-items">
+
+            <div class="product-tabs__body js-tabs-block js-simillar-block">
                 <div class="product-related-items">
                     {{>page/product-card-new/card-listing}}
                 </div>
