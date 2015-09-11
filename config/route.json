@@ -61,6 +61,17 @@
         "pattern": "/ajax/product-quantity",
         "method": ["POST"]
     },
+    "Product\\AddToFavorite": {
+        "name": "Добавить в избранное",
+        "pattern": "/ajax/favorite/add",
+        "method": ["POST"]
+    },
+
+    "Product\\DeleteFavorite": {
+        "name": "Удалить из избранного",
+        "pattern": "/ajax/favorite/delete",
+        "method": ["POST"]
+    },
 
     "ProductSlice\\GetCategory": {
         "name": "Срез товаров по категории",
@@ -241,9 +252,9 @@
             "coupon": "[\\w\\d-_]+"
         }
     },
-    "User\\Favorit": {
+    "User\\Favorites": {
       "name": "Избранное",
-      "pattern": "/private/favorit"
+      "pattern": "/private/favorites"
     },
 
     "Search\\Index": {

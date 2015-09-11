@@ -1,0 +1,31 @@
+<div class="private content">
+    <section class="main-section">
+        {{>partial/user/menu}}
+        <div class="btn btn-exit">
+            <a class="btn-exit__lnk" href="/logout">Выход</a>
+        </div>
+    </section>
+    <section class="favorit-section">
+        {{#content}}
+        {{#favoriteItems}}
+            <!-- товар -->
+            <div class="favorit-item clearfix">
+
+                <a class="favorit-delete js-favorites-delete" href="" data-product-ui="{{ui}}"></a>
+                <a class="favorit-item__img" href="{{link}}">
+                    <img src="{{media}}" alt="{{webName}}">
+                </a>
+                <div class="favorit-item__descr">
+                    <a class="favorit-item__name" href="{{link}}">
+                        <span class="favorit-item__type">{{namePrefix}}</span>
+                        {{&webName}}
+                    </a>
+                </div>
+            </div>
+
+
+            <!--/ товар -->
+        {{/favoriteItems}}
+            {{/content}}
+    </section>
+</div>

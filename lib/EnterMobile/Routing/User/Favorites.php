@@ -4,9 +4,9 @@ namespace EnterMobile\Routing\User;
 
 use EnterMobile\Routing\Route;
 
-class Favorit extends Route {
+class Favorites extends Route {
     public function __construct() {
-        $this->action = ['User\\Favorit', 'execute'];
+        $this->action = ['User\\Favorites', 'execute'];
         $this->parameters = [];
     }
 }
