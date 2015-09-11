@@ -5,6 +5,7 @@
 
     width: 50%;
     padding: 0 20px 0 0;
+    margin: 0 0 20px;
 
     text-align: center;
 
@@ -14,12 +15,25 @@
         position: relative;
 
         width: 100%;
-        .slick-arrow {
-            display: none !important;
-        }
+        margin: 0 0 10px;
+        height: 360px;
     }
     .slider_pag {
         position: relative;
+    }
+    &__shield {
+        position: absolute;
+        z-index: 100;
+        top: 0;
+        left: 0;
+    }
+    .slide-item {
+        line-height: 360px;
+    }
+    .slider_lst_img {
+        max-height: 360px;
+        height: auto;
+        max-width: 100%;
     }
 }
 
