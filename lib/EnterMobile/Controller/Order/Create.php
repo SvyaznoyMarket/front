@@ -190,8 +190,10 @@ class Create {
             ];
 
             $session->set($config->order->sessionName, $orderData);
+
+            $this->getLogger()->push(['message' => 'Order created successfully', 'tag' => ['critical', 'order.create']]);
         } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical', 'order']]);
+            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical', 'order.create']]);
 
             // TODO: flash message
         }
