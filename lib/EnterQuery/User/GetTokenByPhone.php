@@ -33,6 +33,6 @@ class GetTokenByPhone extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data['token']) ? $data['token'] : null;
+        $this->result = isset($data['token']) ? $data : null;
     }
 }

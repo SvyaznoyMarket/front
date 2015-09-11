@@ -7,6 +7,7 @@ use EnterQuery\CrmQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
+// TODO переименовать в MergeProductList
 class SetProductList extends Query {
     use CrmQueryTrait;
 
@@ -23,7 +24,7 @@ class SetProductList extends Query {
         $this->data = [
             'user_uid' => $userUi,
             'products' => array_map(function(\EnterModel\Cart\Product $cartProduct) { return [
-                'uid' => $cartProduct->ui,
+                'uid'      => $cartProduct->ui,
                 'quantity' => $cartProduct->quantity ?: 1,
             ]; }, $cartProducts),
         ];
