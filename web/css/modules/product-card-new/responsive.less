@@ -1,0 +1,49 @@
+//MEDIA_QUERIES
+@media screen and (min-width: 1025px){
+    .product-card-lst{
+        border-left: 1px solid #c7c7c7;
+        border-right: 1px solid #c7c7c7;
+    }
+}
+@media screen and (max-width: 767px){
+    .product-card-lst{
+        &__i{
+            width: 100%;
+        }
+        &__img-wrap{
+            width: 120px;
+            height: 120px;
+            float: left;
+            margin: 0 10px 10px 0;
+        }
+        &__status{
+            margin-left: 130px;
+        }
+        &__info{
+            padding-top: 0;
+        }
+        &__rating{
+            position: static;
+            text-align: left;
+            .rating__star{
+                font-size: 11px;
+            }
+        }
+        &__old-price{
+            display: block;
+            text-align: left;
+            font-size: 20px;
+        }
+        &__price{
+            display: block;
+            text-align: left;
+            margin: 0;
+            font-size: 20px;
+        }
+        &__buy{
+            float: right;
+            margin-top: -40px;
+        }
+
+    }
+}
