@@ -15,6 +15,13 @@
         display: table;
 
         width: 100%;
+
+        &:first-child {
+
+           .product-delivery__type, .product-delivery__txt{
+               padding-top: 0;
+           }
+        }
     }
     &__type {
         display: table-cell;
@@ -22,6 +29,7 @@
         width: 94px;
         padding-top: 10px;
         padding-right: 10px;
+        vertical-align: middle;
     }
     &__price {
         display: table-cell;
@@ -29,10 +37,18 @@
         width: 80px;
         padding-top: 10px;
         padding-right: 10px;
+        vertical-align: middle;
     }
     &__plan {
         display: table-cell;
 
         padding-top: 10px;
+        vertical-align: middle;
+    }
+    &__txt{
+        display: table-cell;
+        padding-top: 10px;
+        vertical-align: middle;
+        color: #616161;
     }
 }
