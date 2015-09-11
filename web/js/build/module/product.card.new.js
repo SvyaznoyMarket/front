@@ -1,8 +1,8 @@
 define(
     [
         'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config',
-        'jquery.photoswipe', 'module/product.card.tab', 'module/product.view',
-        'module/product.card.fullimg', 'module/product.card.kit', 'jquery.slick'
+        'jquery.photoswipe', 'module/product.card.tab',
+        'module/product.card.fullimg', 'module/product.card.kit', 'module/product.view' 'jquery.slick'
     ],
     function (
         require, $, _, mustache, util, config
@@ -221,8 +221,5 @@ define(
                 $.cookie('product_viewed', viewedProducts.join(','), { expires: 7 });
             }
         })(config, _, $);
-
-
-
     }
 );

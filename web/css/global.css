@@ -11776,20 +11776,20 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   clear: both;
 }
 .product-tabs__head {
+  font-size: 16px;
   display: inline-block;
   width: 25%;
   min-width: 100px;
-  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
   text-align: center;
+  border: 1px solid #c7c7c7;
+  border-right: 0;
+  background-color: #f7f7f7;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
-  padding: 10px;
-  border: 1px solid #c7c7c7;
-  border-right: 0;
-  background-color: #f7f7f7;
-  cursor: pointer;
 }
 .product-tabs__head:last-child {
   border-right: 1px solid #c7c7c7;
@@ -11797,9 +11797,11 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .product-tabs__head.active {
   border-bottom: 0;
   background-color: #fff;
+  font-weight: bold;
 }
 .product-tabs__body {
   display: none;
+  padding: 0 10px;
 }
 .product-tabs__body.active {
   display: block;
@@ -11931,42 +11933,54 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product-details__lst {
   width: 50%;
+  margin-bottom: 10px;
+  padding-right: 20px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
-  padding-right: 10px;
 }
 .product-details__lst:nth-child(2n-1) {
   float: left;
+  clear: left;
 }
 .product-details__lst:nth-child(2n) {
   float: right;
 }
 .product-details__i {
-  margin-bottom: 10px;
   font-size: 14px;
+  margin-bottom: 10px;
 }
 .product-details__i.title {
   font-weight: bold;
+}
+.product-details .table_cell {
+  padding-bottom: 5px;
+  padding-right: 0;
+  vertical-align: top;
+}
+.product-details__left {
+  width: 70%;
+}
+.product-details__right {
+  width: 30%;
+  min-width: 160px;
+  padding-left: 5px;
+}
+.product-details__value {
+  position: relative;
+  top: 1px;
 }
 .product-details__name {
   color: #616161;
   border-bottom: 1px dotted;
 }
 .product-details__name-inn {
+  position: relative;
+  top: 1px;
+  background-color: #fff;
   display: inline-block;
   vertical-align: top;
-  position: relative;
-  top: 1px;
-  background-color: #fff;
-}
-.product-details__val {
-  float: right;
-  width: 110px;
-  position: relative;
-  top: 1px;
-  background-color: #fff;
 }
 .product-reviews {
   padding: 0 30px;
@@ -12129,11 +12143,9 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .table_cell {
   display: table-cell;
-  vertical-align: middle;
 }
 .table_row {
   display: table-row;
-  vertical-align: middle;
 }
 .table--2col .table_cell {
   width: 50%;

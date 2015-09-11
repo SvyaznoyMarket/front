@@ -1,32 +1,38 @@
 .product-tabs {
     font-size: 0;
-    clear: both;
 
+    clear: both;
     &__head {
+        font-size: 16px;
+
         display: inline-block;
+
         width: 25%;
         min-width: 100px;
-        font-size: 16px;
-        text-align: center;
-        .box-sizing(border-box);
         padding: 10px;
+
+        cursor: pointer;
+        text-align: center;
+
         border: 1px solid #c7c7c7;
         border-right: 0;
         background-color: #f7f7f7;
-        cursor: pointer;
 
+        .box-sizing(border-box);
         &:last-child {
             border-right: 1px solid #c7c7c7;
         }
         &.active {
             border-bottom: 0;
             background-color: #fff;
+            font-weight: bold;
         }
     }
-    &__body{
+    &__body {
         display: none;
 
-        &.active{
+        padding: 0 10px;
+        &.active {
             display: block;
         }
     }
