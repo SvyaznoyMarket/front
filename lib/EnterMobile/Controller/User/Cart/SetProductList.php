@@ -38,6 +38,17 @@ class SetProductList {
             throw new \Exception('Товары не получены');
         }
 
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+
+            $curl->execute();
+        }
+
+        // пользователь
+        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+
         // добавление товаров в корзину
         foreach ($cartProducts as $cartProduct) {
             // если у товара есть знак количества (+|-) ...
@@ -51,27 +62,20 @@ class SetProductList {
         }
 
         // агрегирующий контроллер
-        $controllerResponse = (new \EnterAggregator\Controller\Cart\SetProductList())->execute(
-            $regionId,
-            $session,
-            $cart,
-            $cartProducts
-        );
+        $controller = new \EnterAggregator\Controller\Cart\SetProductList();
+        $controllerRequest = $controller->createRequest();
+        $controllerRequest->regionId = $regionId;
+        $controllerRequest->session = $session;
+        $controllerRequest->cart = $cart;
+        $controllerRequest->cartProducts = $cartProducts;
+        $controllerRequest->userUi = $user ? $user->ui : null;
+        $controllerResponse = $controller->execute($controllerRequest);
 
         $cart = $controllerResponse->cart;
         $productsById = $controllerResponse->productsById;
 
         // удалить разбиение заказа
         $session->remove($config->order->splitSessionKey);
-
-        // запрос пользователя
-        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
-        if ($userItemQuery) {
-            $curl->prepare($userItemQuery)->execute();
-        }
-
-        // пользователь
-        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
         // страница
         $page = new Page();

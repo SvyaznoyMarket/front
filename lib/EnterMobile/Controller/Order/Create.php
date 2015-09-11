@@ -5,9 +5,10 @@ namespace EnterMobile\Controller\Order;
 use Enter\Http;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
-use EnterAggregator\LoggerTrait;
 use EnterAggregator\SessionTrait;
+use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
+use EnterAggregator\AbTestTrait;
 use EnterAggregator\DebugContainerTrait;
 use EnterModel as Model;
 use EnterQuery as Query;
@@ -16,7 +17,7 @@ use EnterMobile\Controller;
 use EnterMobile\Repository;
 
 class Create {
-    use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, RouterTrait, DebugContainerTrait;
+    use ConfigTrait, CurlTrait, SessionTrait, LoggerTrait, AbTestTrait, RouterTrait, DebugContainerTrait;
     use ControllerTrait {
         ConfigTrait::getConfig insteadof ControllerTrait;
     }
@@ -167,6 +168,21 @@ class Create {
             $session->remove($config->order->bonusCardSessionKey);
             $session->remove($cartSessionKey);
 
+            // серверная корзина
+            if ($user && $this->getAbTest()->isCoreCartEnabled()) {
+                /** @var Query\Cart\DeleteProductItem[] $removeQueries */
+                $removeQueries = [];
+                foreach ($controllerResponse->orders as $order) {
+                    foreach ($order->product as $orderProduct) {
+                        $removeQuery = new Query\Cart\DeleteProductItem($orderProduct->ui, $user->ui);
+                        $curl->prepare($removeQuery);
+                        $removeQueries[] = $removeQuery;
+                    }
+                }
+
+                $curl->execute(null, 1);
+            }
+
             $orderData = [
                 'updatedAt' => (new \DateTime())->format('c'),
                 'expired'   => false,
@@ -178,8 +194,6 @@ class Create {
             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical', 'order']]);
 
             // TODO: flash message
-
-
         }
 
         return $response;
