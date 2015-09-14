@@ -23,7 +23,8 @@ namespace EnterMobileApplication\Controller\Cart {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $cartRepository = new \EnterRepository\Cart();
-            
+            $helper = new \Enter\Helper\Template();
+
             $session = $this->getSession();
 
             // ответ
@@ -106,6 +107,13 @@ namespace EnterMobileApplication\Controller\Cart {
             foreach ($response->split->orders as $order) {
                 if (!(bool)$order->groupedPossiblePointIds) {
                     $order->groupedPossiblePointIds = null;
+                }
+
+                // MAPI-116
+                foreach ($order->products as $product) {
+                    $product->webName = $helper->unescape($product->webName);
+                    $product->namePrefix = $helper->unescape($product->namePrefix);
+                    $product->name = $helper->unescape($product->name);
                 }
             }
 

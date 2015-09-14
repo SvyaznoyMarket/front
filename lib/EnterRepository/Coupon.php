@@ -33,4 +33,17 @@ class Coupon {
 
         return $coupons;
     }
+
+    /**
+     * @param Model\Coupon[] $coupons
+     * @return string[]
+     */
+    public function getSeriesIdListByObjectList($coupons) {
+        $seriesIds = [];
+        foreach ($coupons as $coupon) {
+            $seriesIds[] = $coupon->seriesId;
+        }
+
+        return $seriesIds;
+    }
 }

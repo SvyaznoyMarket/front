@@ -22,6 +22,8 @@ namespace EnterMobileApplication\Controller\User {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
+            $couponSeriesRepository = new \EnterRepository\Coupon\Series();
+            $couponRepository = new \EnterRepository\Coupon();
 
             // ответ
             $response = new Response();
@@ -60,20 +62,10 @@ namespace EnterMobileApplication\Controller\User {
 
             $curl->execute();
 
-            // Серии ранее полученных купонов
-            $usedSeriesIds = [];
-            $response->coupons = (new \EnterRepository\Coupon())->getObjectListByQuery($couponListQuery);
-            foreach ($response->coupons as $coupon) {
-                $usedSeriesIds[] = $coupon->seriesId;
-            }
+            $response->coupons = $couponRepository->getObjectListByQuery($couponListQuery);
 
-            // TODO: вынести в репозиторий
-            $response->couponSeries = array_values(array_filter(
-                (new \EnterRepository\Coupon\Series())->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery),
-                function(Model\Coupon\Series $series) use (&$usedSeriesIds) {
-                    return in_array($series->id, $usedSeriesIds, true) && time() < strtotime($series->endAt);
-                }
-            ));
+            $response->couponSeries = $couponSeriesRepository->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery);
+            $couponSeriesRepository->filterObjectListByIdList($response->couponSeries, $couponRepository->getSeriesIdListByObjectList($response->coupons));
 
             $couponSeriesIds = [];
             foreach ($response->couponSeries as $couponSeries) {
@@ -81,8 +73,11 @@ namespace EnterMobileApplication\Controller\User {
             }
 
             $response->coupons = array_values(array_filter($response->coupons, function(Model\Coupon $coupon) use(&$couponSeriesIds) {
-                return in_array($coupon->seriesId, $couponSeriesIds, true) && time() < strtotime($coupon->endAt);
+                return in_array($coupon->seriesId, $couponSeriesIds, true) && time() <= strtotime($coupon->endAt);
             }));
+
+            // Фильтруем повторно уже с использованием отфильтрованных купонов
+            $couponSeriesRepository->filterObjectListByIdList($response->couponSeries, $couponRepository->getSeriesIdListByObjectList($response->coupons));
 
             // срезы для серий купонов
             $sliceTokensBySeriesId = [];
