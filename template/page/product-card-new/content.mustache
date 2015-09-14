@@ -1,5 +1,5 @@
 {{! окно большого изображения }}
-<div class="fullImgCnt js-fullimg-wrap">
+<div class="fullImgCnt js-full-images-popup">
     <div class="clsr1 js-fullimg-close"></div>
 
     <div class="fullImgCnt_img_load js-fullimg-img-loader">
@@ -7,6 +7,7 @@
             <img class="fullImgCnt_img js-fullimg-img" src="{{product.mainPhoto.originalUrl}}" alt="{{&product.name}}" />
         {{/product.mainPhoto}}
     </div>
+    
     <div class="fullImgCnt_thmb js-fullimg-thmb-wrap">
         <ul class="fullImgCnt_thmb_w js-fullimg-thmb">
             {{#product.photos}}
@@ -47,7 +48,7 @@
             <div class="product-img__slider js-detailSlider">
                 {{#product.photos}}
                    <div class="slide-item">
-                        <img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}"/>
+                        <img class="slider_lst_img js-full-images-open" src="{{url}}" alt="{{&name}}"/>
                    </div>
                 {{/product.photos}}
 

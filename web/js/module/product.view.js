@@ -10,6 +10,8 @@ define(
 	     * @method      changetabHandler
 	     */
 	    var
+	    	windows = $(window),
+
 	    	changetabHandler = function( event ) {
 		        var
 		        	productTabs = $('.js-product-tabs'),
@@ -35,13 +37,15 @@ define(
 		    fullImages = function( event ) {
 		    	var 
 		    		content        = $('.js-content'),
-		    		fullImagesWrap = $('.js-fullimg-wrap');
+		    		fullImagesWrap = $('.js-full-images-popup');
 
 		    	console.log('full images');
 		    	content.hide(0);
-		    	fullImagesWrap.show(0);
+		    	fullImagesWrap.css({'height' : windows.height()}).show(0);
+
+		    	console.log(windows.height());
 		    };
 
 		$('.js-change-tab').on('click', changetabHandler);
-		$('.js-fullimg-open').on('click', fullImages);
+		$('.js-full-images-open').on('click', fullImages);
 });
