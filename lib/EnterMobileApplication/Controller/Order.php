@@ -23,6 +23,7 @@ namespace EnterMobileApplication\Controller {
             $config = $this->getConfig();
             $productRepository = new \EnterMobileApplication\Repository\Product();
             $pointRepository = new \EnterMobileApplication\Repository\Point();
+            $helper = new \Enter\Helper\Template();
 
             // токен для получения заказа
             $accessToken = is_string($request->query['accessToken']) ? $request->query['accessToken'] : null;
