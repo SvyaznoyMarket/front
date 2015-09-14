@@ -345,14 +345,18 @@ class Delivery {
                             continue;
                         }
 
-                        // дата
+                        // дата и интервал дат
                         $date = null;
+                        $dateFrom = null;
+                        $dateTo = null;
                         try {
-                            $date = new \DateTime($possiblePointModel->nearestDay);
+                            $date = $possiblePointModel->nearestDay ? new \DateTime($possiblePointModel->nearestDay) : null;
+                            $dateFrom = ($possiblePointModel->dateInterval && $possiblePointModel->dateInterval->from) ? new \DateTime($possiblePointModel->dateInterval->from) : null;
+                            $dateTo = ($possiblePointModel->dateInterval && $possiblePointModel->dateInterval->to) ? new \DateTime($possiblePointModel->dateInterval->to) : null;
                         } catch (\Exception $e) {
                         }
 
-                        $points[] = [
+                        $point = [
                             'id'        => $possiblePointModel->id,
                             'name'      => $point->name,
                             'group'     => [
@@ -360,10 +364,21 @@ class Delivery {
                                 'value' => $pointGroup->token,
                             ],
                             'icon'      => $pointRepository->getIconByType($pointGroup->token),
-                            'date'      => [
-                                'name'  => $date ? $dateHelper->humanizeDate($date) : null,
-                                'value' => $date ? $date->getTimestamp() : null,
-                            ],
+                            'date'      => call_user_func(function() use (&$date, &$dateFrom, &$dateTo, &$dateHelper) {
+                                if ($dateFrom) {
+                                    $data = [
+                                        'name'  => sprintf('%s %s', 'с ' . $dateFrom->format('d.m'), $dateTo ? (' по ' . $dateTo->format('d.m')) : ''),
+                                        'value' => $dateFrom->getTimestamp(),
+                                    ];
+                                } else {
+                                    $data = [
+                                        'name'  => $date ? $dateHelper->humanizeDate($date) : null,
+                                        'value' => $date ? $date->getTimestamp() : null,
+                                    ];
+                                }
+
+                                return $data;
+                            }),
                             'address'   => $point->address,
                             'cost'      => [
                                 'name'  => $possiblePointModel->cost ?: false,
@@ -397,6 +412,7 @@ class Delivery {
                                 ],
                             ]),
                         ];
+                        $points[] = $point;
 
                         // фильтр по типу точки
                         if (!isset($filtersByToken['type'][$pointGroup->blockName])) {
@@ -421,13 +437,13 @@ class Delivery {
                             ];
                         }
                         // фильтр по дате
-                        if (!isset($filtersByToken['date'][$date->getTimestamp()])) {
-                            $filtersByToken['date'][$date->getTimestamp()] = [
-                                'id'        => $date->getTimestamp(),
-                                'name'      => $dateHelper->humanizeDate($date),
+                        if (!isset($filtersByToken['date'][$point['date']['value']])) {
+                            $filtersByToken['date'][$point['date']['value']] = [
+                                'id'        => $point['date']['value'],
+                                'name'      => $point['date']['name'],
                                 'dataValue' => $templateHelper->json([
                                     'name'  => 'date',
-                                    'value' => $date->getTimestamp(),
+                                    'value' => $point['date']['value'],
                                 ]),
                             ];
                         }
