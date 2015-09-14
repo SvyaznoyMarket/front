@@ -100,6 +100,14 @@ namespace EnterMobileApplication\Controller {
                 'number' => $order->number,
                 'numberErp' => $order->numberErp,
                 'token' => $order->token,
+                'status' => $order->status ? [
+                    'id' => $order->status->id,
+                    'name' => $order->status->name,
+                ] : null,
+                'paymentStatus' => $order->paymentStatus ? [
+                    'id' => $order->paymentStatus->id,
+                    'name' => $order->paymentStatus->name,
+                ] : null,
                 'sum' => $order->sum,
                 'address' => $order->address,
                 'createdAt' => $order->createdAt,
