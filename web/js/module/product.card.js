@@ -1,8 +1,7 @@
 define(
     [
         'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config',
-        'jquery.photoswipe', 'module/product.card.tab', 'module/product.view',
-        'module/product.card.fullimg', 'module/product.card.kit', 'jquery.slick'
+        'jquery.photoswipe', 'module/product.view', 'module/product.card.kit', 'jquery.slick'
     ],
     function (
         require, $, _, mustache, util, config

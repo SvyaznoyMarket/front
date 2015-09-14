@@ -1,5 +1,7 @@
 define(
-    ['jquery'],
+    [
+    	'jquery', 'jquery.slick'
+    ],
     function($) {
     	console.log('product card new');
     	 /**
@@ -28,7 +30,18 @@ define(
 		        blocks.stop(true, true).fadeOut(300).promise().done(function() {
 		            blocks.filter('.' + targetBlock).stop(true, true).fadeIn(300);
 		        });
+		    },
+
+		    fullImages = function( event ) {
+		    	var 
+		    		content        = $('.js-content'),
+		    		fullImagesWrap = $('.js-fullimg-wrap');
+
+		    	console.log('full images');
+		    	content.hide(0);
+		    	fullImagesWrap.show(0);
 		    };
 
 		$('.js-change-tab').on('click', changetabHandler);
+		$('.js-fullimg-open').on('click', fullImages);
 });
