@@ -6,8 +6,9 @@ define(
     	console.log('product card new');
     	
 	    var
-	    	windows = $(window),
-	    	header = $('.js-header'),
+	    	windows        = $(window),
+	    	body           = $('body'),
+	    	header         = $('.js-header'),
 	    	fullImagesView = fullImages();
 
 	    /**
@@ -44,6 +45,7 @@ define(
 	    		thumbs         = $('.js-full-images-thumbs'),
 	    		image          = $('.js-full-images-thumbs-item'),
 	    		activeClass    = 'active',
+	    		fullClass      = 'product-full-images'
 		    	bigImage       = $('.js-full-images');
 
 		    image.eq(0).addClass(activeClass);
@@ -51,15 +53,13 @@ define(
 	    	return {
 	    		open: function() {
 	    			windows.scrollTop(0);
-			    	content.hide(0);
-			    	fullImagesWrap.show(0);
+			    	body.addClass(fullClass);
 
 			    	fullImagesView.resize();
 	    		},
 
 	    		close: function() {
-	    			content.show(0);
-			    	fullImagesWrap.hide(0);
+	    			body.removeClass(fullClass);
 	    		},
 
 		    	resize: function() {
@@ -70,6 +70,7 @@ define(
 		    			'height' : height - 20, 
 		    			'line-height' : height - 20 + 'px' 
 		    		});
+
 		    	},
 
 		    	changeImage: function( event ) {
