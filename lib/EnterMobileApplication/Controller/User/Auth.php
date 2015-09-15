@@ -49,7 +49,7 @@ namespace EnterMobileApplication\Controller\User {
                 $tokenQuery->setTimeout($config->coreService->timeout * 2);
                 $curl->query($tokenQuery);
 
-                $token = $tokenQuery->getResult();
+                $token = $tokenQuery->getResult()['token'];
                 if (empty($token)) {
                     throw new \Exception('Не получен token пользователя');
                 }

@@ -36,19 +36,11 @@ define(
                     $snapContent.addClass('shifted');
                     body.addClass('snapjs-left');
                 }
-                console.log('click!');
 
-            },
-
-            footerResize = function footerResize() {
-                var
-                    footer = $('.footer');
-
-                footer.css('position', body.height() + footer.innerHeight() > $(window).height() ? 'inherit' : 'fixed');
-            };
+            }
+            ;
         // end of vars
-
-        $(window).on('load resize', footerResize);
+        
         $(navIco).on('click', showHideMenu);
         $(fader).on('click', showHideMenu);
 
@@ -59,7 +51,6 @@ define(
             .on('blur', 'input, textarea, input + label, select', function(e) {
                 body.removeClass('fixfixed');
             });
-
 
     }
 );

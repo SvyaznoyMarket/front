@@ -145,22 +145,16 @@
         width: 154px;
         overflow: hidden;
         position: relative;
-
-        &:after{
-            content: '';
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAgCAYAAAAffCjxAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAABYlAAAWJQFJUiTwAAABSklEQVRIDe2VMY6DMBBFMQVFSrgFfY6yddIhJS0NJ6ChzUp02TpHSc8toExBQ+YjGY0HTwzaNkiWPZ4/H/MAO4oCV13XZ7SALDKfBE3T5OM4PqFJkuRYlmWn6WMt0bbtgUwelD+gYYw5Ta8aDcPwS0U5K8xp7sZiZ+g1ApNpmk6OkgKaU3mtGDEu2mO8fLycFQkuckE29vJyjDxcbLHsV7wWI42LdLCx5DUz2sDF1st+4WXApe97fHT8VcuCT3GXZdkx3sFFMwMvfHPf60vg3wQM/WN3396zx9kY8xenaXqhInUv3mDYwSMuigI/3g8VvDYUSclcC495G8HpQMu7SlUoRo09WZytdg8vcKmq6mxvtmxsmNjBa+ZiTdA7Rht5LVxUIyRCvDgXbuQw4gkfL8mF651H4wkPrxUXrleNBC8vF24UHOOYQgsJ3zo9p9ggx9JvAAAAAElFTkSuQmCC');
-            background-repeat: no-repeat;
-            .background-size(9px 16px);
-            width: 9px;
-            height: 16px;
-            position: absolute;
-            right: 10px;
-            top: 9px;
-        }
+        
         .p-control-input{
             border: none;
             width: 175px;
             -webkit-appearance: none;
+
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAgCAYAAAAffCjxAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAABYlAAAWJQFJUiTwAAABSklEQVRIDe2VMY6DMBBFMQVFSrgFfY6yddIhJS0NJ6ChzUp02TpHSc8toExBQ+YjGY0HTwzaNkiWPZ4/H/MAO4oCV13XZ7SALDKfBE3T5OM4PqFJkuRYlmWn6WMt0bbtgUwelD+gYYw5Ta8aDcPwS0U5K8xp7sZiZ+g1ApNpmk6OkgKaU3mtGDEu2mO8fLycFQkuckE29vJyjDxcbLHsV7wWI42LdLCx5DUz2sDF1st+4WXApe97fHT8VcuCT3GXZdkx3sFFMwMvfHPf60vg3wQM/WN3396zx9kY8xenaXqhInUv3mDYwSMuigI/3g8VvDYUSclcC495G8HpQMu7SlUoRo09WZytdg8vcKmq6mxvtmxsmNjBa+ZiTdA7Rht5LVxUIyRCvDgXbuQw4gkfL8mF651H4wkPrxUXrleNBC8vF24UHOOYQgsJ3zo9p9ggx9JvAAAAAElFTkSuQmCC');
+            background-repeat: no-repeat;
+            .background-size(9px 16px);
+            background-position: 80% 8px;
 
             &::-webkit-inner-spin-button {
                 -webkit-appearance: none;
@@ -201,11 +195,15 @@
 
 #birthday {
     position:relative;
-    z-index: 10
+    z-index: 10;
+    float: left;
+    top:2px;
+    left:0;
 }
 
 #birthday-helper {
-    position:absolute;
+    position: relative;
     z-index: -1;
-    top: 0;
+    top: 0px;
+    left: 0;
 }
