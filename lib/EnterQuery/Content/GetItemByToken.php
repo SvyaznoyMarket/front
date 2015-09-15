@@ -14,14 +14,18 @@ class GetItemByToken extends Query {
 
     /**
      * @param string $token
-     * @param bool $showSidebar
+     * @param array $tags
      */
-    public function __construct($token) {
+    public function __construct($token, array $tags = []) {
         $this->url = new Url();
         $this->url->path = 'api/static-page';
         $this->url->query = [
             'token' => [$token],
         ];
+
+        if ($tags) {
+            $this->url->query['tags'] = $tags;
+        }
 
         $this->init();
     }
