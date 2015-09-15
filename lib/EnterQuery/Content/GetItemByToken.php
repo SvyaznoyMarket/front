@@ -15,7 +15,6 @@ class GetItemByToken extends Query {
     /**
      * @param string $token
      * @param array $tags
-     * @param bool $showSidebar
      */
     public function __construct($token, array $tags = []) {
         $this->url = new Url();
