@@ -484,7 +484,7 @@ class Product {
                 if ($b->isBuyable != $a->isBuyable) {
                     return ($b->isBuyable ? 1 : -1) - ($a->isBuyable ? 1 : -1); // сначала те, которые можно купить
                 } else if ($b->isInShopOnly != $a->isInShopOnly) {
-                    return ($b->isInShopOnly ? -1 : 1) - ($a->isInShopOnly ? -1 : 1); // потом те, которые можно зарезервировать
+                    //return ($b->isInShopOnly ? -1 : 1) - ($a->isInShopOnly ? -1 : 1); // потом те, которые можно зарезервировать
                 } else if ($b->isInShopShowroomOnly != $a->isInShopShowroomOnly) {// потом те, которые есть на витрине
                     return ($b->isInShopShowroomOnly ? -1 : 1) - ($a->isInShopShowroomOnly ? -1 : 1);
                 } else {
