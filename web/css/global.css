@@ -2653,6 +2653,18 @@ body {
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
+.closer {
+  position: fixed;
+  top: 60px;
+  right: 10px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background: #ffffff url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCI+PHBvbHlnb24gZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIHBvaW50cz0iMTQsMC43IDEzLjMsMCA3LDYuMjk5IDAuNywwIDAsMC43IDYuMyw3IDAsMTMuMjk5IDAuNywxNCA3LDcuNyAxMy4zLDE0IDE0LDEzLjI5OSA3LjcsNyIvPjwvc3ZnPg==) no-repeat center;
+}
 /* ==========================================================================
    Кнопки - новая карточка товара
    ========================================================================== */
@@ -3512,37 +3524,22 @@ body {
   position: relative;
   display: none;
   overflow: hidden;
-  padding: 30px 0 5px;
+  padding: 50px 0 20px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
   text-align: center;
 }
 .fullImgCnt_img {
   max-width: 100%;
   max-height: 100%;
-  display: inline-block;
-  vertical-align: top;
 }
 .fullImgCnt_img_load {
   width: 100%;
   height: 100%;
   margin: 0 auto 10px;
   background: #ffffff url('modules/common/img/ajaxnoti.gif') 50% 50% no-repeat;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-align: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-  -webkit-justify-content: center;
-  -webkit-box-pack: center;
-  -moz-justify-content: center;
-  justify-content: center;
-}
-.fullImgCnt_img_load.nobg {
-  background: none;
 }
 .fullImgCnt_thmb {
   position: relative;
@@ -3565,7 +3562,7 @@ body {
   display: inline-block;
   vertical-align: top;
 }
-.fullImgCnt_thmb_i-act .fullImgCnt_thmb_i_w {
+.fullImgCnt_thmb_i-active .fullImgCnt_thmb_i_w {
   border: 2px solid #f99b1c;
   margin: 0;
 }
@@ -11552,8 +11549,8 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   vertical-align: middle;
 }
 .product__info {
-  width: 50%;
   float: left;
+  width: 50%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -11566,6 +11563,56 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   font-size: 16px;
   margin: 10px 0 6px;
   color: #616161;
+}
+.full-images {
+  position: relative;
+  display: none;
+  overflow: hidden;
+  padding: 50px 0 20px;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+.full-images-content__image {
+  max-width: 100%;
+  max-height: 100%;
+}
+.full-images-thumbs {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3px 0;
+  text-align: center;
+}
+.full-images-thumbs__item {
+  line-height: 46px;
+  cursor: pointer;
+  overflow: hidden;
+  width: 52px;
+  height: 52px;
+  margin: 0 4px;
+  padding: 0 2px;
+  text-align: center;
+  border: 1px solid #e3e3e3;
+  display: inline-block;
+  vertical-align: top;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+.full-images-thumbs__item.active {
+  border-color: #f99b1c;
+}
+.full-images-thumbs__image {
+  max-width: 100%;
+  max-height: 90%;
 }
 .product-delivery__info {
   font-size: 14px;

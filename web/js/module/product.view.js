@@ -4,48 +4,89 @@ define(
     ],
     function($) {
     	console.log('product card new');
-    	 /**
+    	
+	    var
+	    	windows = $(window),
+	    	header = $('.js-header'),
+	    	fullImagesView = fullImages();
+
+	    /**
 	     * Переключение табов (описание товара, аксессуары, отзывы и т.д.)
 	     *
 	     * @method      changetabHandler
-	     */
-	    var
-	    	windows = $(window),
+	    */
+	    function changetabHandler( event ) {
+	        var
+	        	productTabs = $('.js-product-tabs'),
+	            activeClass = 'active',
+	            target      = $(event.currentTarget),
+	            targetBlock = target.attr('data-block'),
 
-	    	changetabHandler = function( event ) {
-		        var
-		        	productTabs = $('.js-product-tabs'),
-		            activeClass = 'active',
-		            target      = $(event.currentTarget),
-		            targetBlock = target.attr('data-block'),
+	            tabs        = productTabs.find('.js-change-tab'),
+	            blocks      = productTabs.find('.js-tabs-block');
+	        // end of vars
 
-		            tabs        = productTabs.find('.js-change-tab'),
-		            blocks      = productTabs.find('.js-tabs-block');
-		        // end of vars
+	        if ( target.hasClass(activeClass) ) {
+	            return;
+	        }
 
-		        if ( target.hasClass(activeClass) ) {
-		            return;
-		        }
+	        tabs.removeClass(activeClass);
+	        target.addClass(activeClass);
+	        blocks.stop(true, true).fadeOut(300).promise().done(function() {
+	            blocks.filter('.' + targetBlock).stop(true, true).fadeIn(300);
+	        });
+	    };
 
-		        tabs.removeClass(activeClass);
-		        target.addClass(activeClass);
-		        blocks.stop(true, true).fadeOut(300).promise().done(function() {
-		            blocks.filter('.' + targetBlock).stop(true, true).fadeIn(300);
-		        });
-		    },
+	    function fullImages( event ) {
+	    	var 
+	    		content        = $('.js-content'),
+	    		fullImagesWrap = $('.js-full-images-popup'),
+	    		thumbs         = $('.js-full-images-thumbs'),
+	    		image          = $('.js-full-images-thumbs-item'),
+	    		activeClass    = 'active',
+		    	bigImage       = $('.js-full-images');
 
-		    fullImages = function( event ) {
-		    	var 
-		    		content        = $('.js-content'),
-		    		fullImagesWrap = $('.js-full-images-popup');
+		    image.eq(0).addClass(activeClass);
 
-		    	console.log('full images');
-		    	content.hide(0);
-		    	fullImagesWrap.css({'height' : windows.height()}).show(0);
+	    	return {
+	    		open: function() {
+	    			windows.scrollTop(0);
+			    	content.hide(0);
+			    	fullImagesWrap.show(0);
 
-		    	console.log(windows.height());
-		    };
+			    	fullImagesView.resize();
+	    		},
+
+	    		close: function() {
+	    			content.show(0);
+			    	fullImagesWrap.hide(0);
+	    		},
+
+		    	resize: function() {
+		    		var
+		    			height = windows.height() - thumbs.height() - header.height();
+
+		    		$('.js-full-images-content').css({
+		    			'height' : height - 20, 
+		    			'line-height' : height - 20 + 'px' 
+		    		});
+		    	},
+
+		    	changeImage: function( event ) {
+		    		var 
+		    			target       = $(event.currentTarget),
+		            	targetThumbs = target.attr('data-fullimg');
+
+		           	image.removeClass(activeClass);
+		            target.addClass(activeClass);
+	            	bigImage.attr('src', targetThumbs);
+		    	}
+		    }
+	    };
 
 		$('.js-change-tab').on('click', changetabHandler);
-		$('.js-full-images-open').on('click', fullImages);
+		$('.js-full-images-open').on('click', fullImagesView.open);
+		$('.js-full-images-popup-close').on('click', fullImagesView.close);
+		$('.js-full-images-thumbs-item').on('click', fullImagesView.changeImage);
+		$(window).on('resize', fullImagesView.resize);
 });

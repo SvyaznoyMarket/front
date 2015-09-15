@@ -1,26 +1,19 @@
 {{! окно большого изображения }}
-<div class="fullImgCnt js-full-images-popup">
-    <div class="clsr1 js-fullimg-close"></div>
+<div class="full-images js-full-images-popup">
+    <div class="closer js-full-images-popup-close"></div>
 
-    <div class="fullImgCnt_img_load js-fullimg-img-loader">
+    <div class="full-images-content js-full-images-content">
         {{#product.mainPhoto}}
-            <img class="fullImgCnt_img js-fullimg-img" src="{{product.mainPhoto.originalUrl}}" alt="{{&product.name}}" />
+            <img class="full-images-content__image js-full-images" src="{{product.mainPhoto.originalUrl}}" alt="{{&product.name}}" />
         {{/product.mainPhoto}}
     </div>
     
-    <div class="fullImgCnt_thmb js-fullimg-thmb-wrap">
-        <ul class="fullImgCnt_thmb_w js-fullimg-thmb">
-            {{#product.photos}}
-                <li class="fullImgCnt_thmb_i js-fullimg-thmb-i">
-                <span class="fullImgCnt_thmb_i_w">
-                    <img class="fullImgCnt_thmb_img js-fullimg-thmb-img" src="{{previewUrl}}" data-fullimg="{{originalUrl}}" data-middleimg="{{url}}" />
-                </span>
-                </li>
-            {{/product.photos}}
-        </ul>
-
-        <div class="fullImgCnt_thmb_btn fullImgCnt_thmb_btn-l js-fullimg-thmb-btn-l fullImgCnt_thmb_btn-disbl"></div>
-        <div class="fullImgCnt_thmb_btn fullImgCnt_thmb_btn-r js-fullimg-thmb-btn-r"></div>
+    <div class="full-images-thumbs js-full-images-thumbs">
+        {{#product.photos}}
+            <span class="full-images-thumbs__item js-full-images-thumbs-item" data-fullimg="{{originalUrl}}" data-middleimg="{{url}}">
+                <img class="full-images-thumbs__image" src="{{previewUrl}}" />
+            </span>
+        {{/product.photos}}
     </div>
 </div>
 {{! END окно большого изображения }}
@@ -51,7 +44,6 @@
                         <img class="slider_lst_img js-full-images-open" src="{{url}}" alt="{{&name}}"/>
                    </div>
                 {{/product.photos}}
-
             </div>
             <ul class="slider_pag"></ul>
         </div>
