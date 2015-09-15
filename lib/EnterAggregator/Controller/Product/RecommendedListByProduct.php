@@ -211,11 +211,11 @@ namespace EnterAggregator\Controller\Product {
             }
 
             // сортировка по наличию
-            /*
-            $productRepository->sortByStockStatus($alsoBoughtIdList, $recommendedProductsById);
-            $productRepository->sortByStockStatus($similarIdList, $recommendedProductsById);
-            $productRepository->sortByStockStatus($alsoViewedIdList, $recommendedProductsById);
-            */
+            if ($request->config->sortByStockState) {
+                $productRepository->sortByStockStatus($alsoBoughtIdList, $recommendedProductsById);
+                $productRepository->sortByStockStatus($similarIdList, $recommendedProductsById);
+                $productRepository->sortByStockStatus($alsoViewedIdList, $recommendedProductsById);
+            }
 
             // ответ
             $response->productsById = $productsById;
@@ -288,5 +288,11 @@ namespace EnterAggregator\Controller\Product\RecommendedListByProduct\Request {
          * @var bool
          */
         public $alsoViewed = false;
+        /**
+         * Сортировать по наличию на складе
+         *
+         * @var bool
+         */
+        public $sortByStockState;
     }
 }
