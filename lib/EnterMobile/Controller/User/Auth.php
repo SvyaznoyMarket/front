@@ -65,9 +65,8 @@ class Auth {
                 $controller = new \EnterAggregator\Controller\Cart\Merge();
 
                 $controllerRequest = $controller->createRequest();
-                $controllerRequest->cart = (new Repository\Cart())->getObjectByHttpSession($session, $config->cart->sessionKey);
                 $controllerRequest->regionId = (new Repository\Region())->getIdByHttpRequestCookie($request);
-                $controllerRequest->userUi = $tokenQuery->getResult()['ui']; // TODO CORE-3084
+                $controllerRequest->userUi = $tokenQuery->getResult()['ui']; // CORE-3084
 
                 if ($this->getAbTest()->isCoreCartEnabled() && $controllerRequest->regionId && $controllerRequest->userUi) {
                     $controller->execute($controllerRequest);

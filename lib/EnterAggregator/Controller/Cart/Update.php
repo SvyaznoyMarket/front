@@ -10,10 +10,10 @@ namespace EnterAggregator\Controller\Cart {
     use EnterModel as Model;
     use EnterQuery as Query;
     use EnterRepository as Repository;
-    use EnterAggregator\Controller\Cart\Merge\Request;
-    use EnterAggregator\Controller\Cart\Merge\Response;
+    use EnterAggregator\Controller\Cart\Update\Request;
+    use EnterAggregator\Controller\Cart\Update\Response;
 
-    class Merge {
+    class Update {
         use ConfigTrait, SessionTrait, LoggerTrait, CurlTrait;
 
         public function execute(Request $request) {
@@ -23,14 +23,6 @@ namespace EnterAggregator\Controller\Cart {
             $cartRepository = new Repository\Cart();
 
             $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
-
-            // объединение корзины
-            if ($cart->product) {
-                $cartMergeQuery = new Query\Cart\SetProductList($cart->product, $request->userUi);
-                $curl->prepare($cartMergeQuery);
-
-                $curl->execute();
-            }
 
             // запрос корзины
             $cartQuery = (new Query\Cart\GetItem($request->userUi));
@@ -71,15 +63,15 @@ namespace EnterAggregator\Controller\Cart {
         }
 
         /**
-         * @return Merge\Request
+         * @return Update\Request
          */
         public function createRequest() {
-            return new Merge\Request();
+            return new Update\Request();
         }
     }
 }
 
-namespace EnterAggregator\Controller\Cart\Merge {
+namespace EnterAggregator\Controller\Cart\Update {
     use EnterModel as Model;
 
     class Request {

@@ -46,7 +46,17 @@ class Index {
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
-        
+
+        // пользователь
+        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        if ($user) {
+            $controller = new \EnterAggregator\Controller\Cart\Update();
+            $controllerRequest = $controller->createRequest();
+            $controllerRequest->regionId = $region->id;
+            $controllerRequest->userUi = $user->ui;
+            $controller->execute($controllerRequest);
+        }
+
         $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
         $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
         $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
@@ -103,7 +113,7 @@ class Index {
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $region;
         $pageRequest->mainMenu = $mainMenu;
-        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->user = $user;
         $pageRequest->cart = $cart;
 
         // страница
