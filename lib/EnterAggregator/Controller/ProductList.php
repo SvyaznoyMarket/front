@@ -115,26 +115,38 @@ namespace EnterAggregator\Controller {
                 // FIXME: удалить
                 $response->catalogConfig = $categoryItemQuery ? (new Repository\Product\Category())->getConfigObjectByQuery($categoryItemQuery) : null;
             } else {
-                // список корневых категорий
-                $categoryAvailableListQuery = new Query\Product\Category\GetAvailableList(
-                    null,
-                    $response->region->id,
-                    0,
-                    $request->filterRepository->dumpRequestObjectList($request->baseRequestFilters)
-                );
-                $curl->prepare($categoryAvailableListQuery)->execute();
-
-                $categoryUis = [];
-                foreach ($categoryAvailableListQuery->getResult() as $item) {
-                    $item += ['id' => null, 'uid' => null, 'product_count' => null];
-
-                    if (!$item['uid'] || !$item['product_count']) continue;
-                    $categoryUis[] = (string)$item['uid'];
+                // проверяет, есть ли в базовых фильтрах фильтры-категории
+                $categoryIds = [];
+                foreach ($request->baseRequestFilters as $i => $baseRequestFilter) {
+                    if ('category' == $baseRequestFilter->token) {
+                        $categoryIds[] = $baseRequestFilter->value;
+                    }
                 }
-
-                $categoryRootListQuery = (bool)$categoryUis ? new Query\Product\Category\GetListByUiList($categoryUis, $response->region->id) : [];
-                if ($categoryRootListQuery) {
+                if ($categoryIds) {
+                    $categoryRootListQuery = new Query\Product\Category\GetListByIdList($categoryIds, $response->region->id);
                     $curl->prepare($categoryRootListQuery);
+                } else {
+                    // список корневых категорий
+                    $categoryAvailableListQuery = new Query\Product\Category\GetAvailableList(
+                        null,
+                        $response->region->id,
+                        0,
+                        $request->filterRepository->dumpRequestObjectList($request->baseRequestFilters)
+                    );
+                    $curl->prepare($categoryAvailableListQuery)->execute();
+
+                    $categoryUis = [];
+                    foreach ($categoryAvailableListQuery->getResult() as $item) {
+                        $item += ['id' => null, 'uid' => null, 'product_count' => null];
+
+                        if (!$item['uid'] || !$item['product_count']) continue;
+                        $categoryUis[] = (string)$item['uid'];
+                    }
+
+                    $categoryRootListQuery = (bool)$categoryUis ? new Query\Product\Category\GetListByUiList($categoryUis, $response->region->id) : [];
+                    if ($categoryRootListQuery) {
+                        $curl->prepare($categoryRootListQuery);
+                    }
                 }
             }
 
