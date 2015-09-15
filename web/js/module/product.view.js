@@ -40,37 +40,37 @@ define(
 
 	    function fullImages( event ) {
 	    	var 
-	    		content        = $('.js-content'),
-	    		fullImagesWrap = $('.js-full-images-popup'),
-	    		thumbs         = $('.js-full-images-thumbs'),
-	    		image          = $('.js-full-images-thumbs-item'),
-	    		activeClass    = 'active',
-	    		fullClass      = 'product-full-images'
-		    	bigImage       = $('.js-full-images');
+	    		popup       = $('.js-full-images-popup'),
+	    		content     = popup.find('.js-full-images-content'),
+	    		bigImage    = content.find('.js-full-images'),
+	    		thumbs      = popup.find('.js-full-images-thumbs'),
+	    		miniImage   = thumbs.find('.js-full-images-thumbs-item'),
+	    		activeClass = 'active',
+	    		openClass   = 'product-full-images';
 
-		    image.eq(0).addClass(activeClass);
+		    miniImage.eq(0).addClass(activeClass);
 
 	    	return {
 	    		open: function() {
 	    			windows.scrollTop(0);
-			    	body.addClass(fullClass);
+			    	body.addClass(openClass);
 
 			    	fullImagesView.resize();
 	    		},
 
 	    		close: function() {
-	    			body.removeClass(fullClass);
+	    			windows.scrollTop(0);
+	    			body.removeClass(openClass);
 	    		},
 
 		    	resize: function() {
 		    		var
 		    			height = windows.height() - thumbs.height() - header.height();
 
-		    		$('.js-full-images-content').css({
+		    		content.css({
 		    			'height' : height - 20, 
 		    			'line-height' : height - 20 + 'px' 
 		    		});
-
 		    	},
 
 		    	changeImage: function( event ) {
@@ -78,7 +78,7 @@ define(
 		    			target       = $(event.currentTarget),
 		            	targetThumbs = target.attr('data-fullimg');
 
-		           	image.removeClass(activeClass);
+		           	miniImage.removeClass(activeClass);
 		            target.addClass(activeClass);
 	            	bigImage.attr('src', targetThumbs);
 		    	}
