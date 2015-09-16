@@ -73,12 +73,18 @@
 
     .box-sizing(border-box);
     &-content {
-        padding: 20px;
-
         .box-sizing(border-box);
         &__image {
-            max-width: 100%;
-            max-height: 100%;
+            float: none;
+
+            max-width: 92%;
+            height: auto;
+            max-height: 92%;
+
+            .inline-block(middle);
+        }
+        & div {
+            height: 100%;
         }
     }
     &-thumbs {
@@ -110,7 +116,7 @@
             .inline-block();
             .rounded(4px);
             .box-sizing(border-box);
-            &.active {
+            &.slick-current {
                 border-color: #f99b1c;
             }
         }
@@ -118,6 +124,12 @@
             max-width: 100%;
             max-height: 90%;
         }
+    }
+    .slick-initialized .slick-slide {
+        .inline-block(middle);
+    }
+    .slick-track {
+        margin: auto;
     }
 }
 
@@ -140,10 +152,10 @@
     .footer {
         position: absolute;
         z-index: 0;
+        z-index: 2;
         top: 0;
         left: 0;
 
         overflow: hidden;
-        z-index: 2;
     }
 }

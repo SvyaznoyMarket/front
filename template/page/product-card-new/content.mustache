@@ -3,9 +3,9 @@
     <div class="closer js-full-images-popup-close"></div>
 
     <div class="full-images-content js-full-images-content">
-        {{#product.mainPhoto}}
-            <img class="full-images-content__image js-full-images" src="{{product.mainPhoto.originalUrl}}" alt="{{&product.name}}" />
-        {{/product.mainPhoto}}
+        {{#product.photos}}
+            <div><img class="full-images-content__image js-full-images" src="{{originalUrl}}" alt="{{&product.name}}" /></div>
+        {{/product.photos}}
     </div>
 
     <div class="full-images-thumbs js-full-images-thumbs">
