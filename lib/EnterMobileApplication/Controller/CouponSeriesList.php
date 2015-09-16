@@ -47,7 +47,7 @@ namespace EnterMobileApplication\Controller {
 
             // список купонов
             $couponListQuery = null;
-            if ($token) {
+            if ($user && $token) {
                 $couponListQuery = new Query\Coupon\GetListByUserToken($token);
                 $couponListQuery->setTimeout(5 * $config->coreService->timeout);
                 $curl->prepare($couponListQuery);

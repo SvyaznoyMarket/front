@@ -50,14 +50,14 @@ namespace EnterMobileApplication\Controller {
             }
 
             // получение пользователя
-            $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
+            $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery, false) : null;
             if ($user) {
                 $response->token = $token;
             }
 
             // список купонов
             $couponListQuery = null;
-            if ($token) {
+            if ($user && $token) {
                 $couponListQuery = new Query\Coupon\GetListByUserToken($token);
                 $couponListQuery->setTimeout(5 * $config->coreService->timeout);
                 $curl->prepare($couponListQuery);
