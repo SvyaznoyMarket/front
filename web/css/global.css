@@ -11633,19 +11633,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .product-full-images .full-images {
   display: block;
 }
-.product-full-images .product {
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-}
-.product-full-images .footer {
-  position: relative;
-  z-index: 2;
-}
 .product-delivery__info {
   font-size: 14px;
   margin: 12px 0;
