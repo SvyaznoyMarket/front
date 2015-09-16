@@ -7,7 +7,7 @@
             <img class="full-images-content__image js-full-images" src="{{product.mainPhoto.originalUrl}}" alt="{{&product.name}}" />
         {{/product.mainPhoto}}
     </div>
-    
+
     <div class="full-images-thumbs js-full-images-thumbs">
         {{#product.photos}}
             <span class="full-images-thumbs__item js-full-images-thumbs-item" data-fullimg="{{originalUrl}}" data-middleimg="{{url}}">
@@ -23,21 +23,27 @@
         {{! виджет поделиться и в избранное }}
         <div class="product-widget">
             <div class="product-widget__item favorit"></div>
-            <div class="product-widget__item share"></div>
+            <div class="product-widget__item share" style="display: none"></div>
         </div>
         {{! END виджет поделиться и в избранное }}
 
         {{! Наименование }}
         <div class="product-name">
-            <div class="product-name__categ">Планшеты</div>
-            <div class="product-name__tl">Планшетный компьютер ASUS TF103CG-1A056A 10,1" 3G 8 ГБ черный</div>
-            <div class="product-name__art">Артикул: 466-8336</div>
+            <div class="product-name__categ">{{#product.namePrefix}}{{&product.namePrefix}}{{/product.namePrefix}}</div>
+            <div class="product-name__tl">{{&product.name}}</div>
+            {{#product.article}}
+                <div class="product-name__art">Артикул: {{product.article}}</div>
+            {{/product.article}}
         </div>
         {{! END Наименование }}
 
         {{! слайдер фото}}
         <div class="product-img">
-            <div class="product-img__shield"><img src="/css/modules/product-card-new/img/shield.png"></div>
+            {{#product.labels.0}}
+                <div class="product-img__shield">
+                    <img src="{{imageUrl}}" alt="{{name}}">
+                </div>
+            {{/product.labels.0}}
             <div class="product-img__slider js-detailSlider">
                 {{#product.photos}}
                    <div class="slide-item">
@@ -53,42 +59,62 @@
             <div class="product__buy-block">
 
                 <div class="product-price">
-                    <div class="product-price__old">
-                        <span class="line-through">422 000</span>
-                        <span class="rubl">p</span>
-                    </div>
+                    {{#product.shownOldPrice}}
+                        <div class="product-price__old">
+                            <span class="line-through">{{product.shownOldPrice}}</span>
+                            <span class="rubl">p</span>
+                        </div>
+                    {{/product.shownOldPrice}}
+
                     <div class="product-price__curr">
-                        419 000 <span class="rubl">p</span>
+                        {{product.shownPrice}} <span class="rubl">p</span>
                     </div>
                 </div>
-                <div class="product__buy">
-                    <div class="btn btn-buy ">Купить</div>
-                </div>
+                {{#product.cartButtonBlock}}
+                    {{>page/product-card-new/buttonBlock}}
+                {{/product.cartButtonBlock}}
+                <!--<div class="product__buy">-->
+                    <!--<div class="btn btn-buy ">Купить</div>-->
+                <!--</div>-->
             </div>
             <div class="product-delivery__info">
-                <span class="product-delivery__info-self">Забрать сегодня в 12 магазинах</span>
-                <div class="product-delvery__row">
-                    <span class="product-delivery__type">Самовывоз</span>
-                    <span class="product-delivery__price">7.08.2015</span>
-                    <span class="product-delivery__plan">Бесплатно</span>
-                </div>
-                <div class="product-delvery__row">
-                    <span class="product-delivery__type">Доставка</span>
-                    <span class="product-delivery__price">10.08.2015</span>
-                    <span class="product-delivery__plan">290 <span class="rubl">p</span></span>
-                </div>
+                {{#product.shopStateBlock}}
+                    <span class="product-delivery__info-self">{{shownCount}}</span>
+                {{/product.shopStateBlock}}
+                {{#product.deliveryBlock}}
+                    {{#deliveries}}
+                        <div class="product-delvery__row">
+                            {{#name}}
+                                <span class="product-delivery__type">{{name}}</span>
+                            {{/name}}
+                            <span class="product-delivery__price">{{deliveredAtText}}</span>
+                            {{#name}}
+                                {{#priceText}}
+                                    <span class="product-delivery__plan">{{priceText}}</span>
+                                {{/priceText}}
+                            {{/name}}
+                        </div>
+                    {{/deliveries}}
+                {{/product.deliveryBlock}}
             </div>
 
-            <div class="product-variations">
-                <span class="product-variations__title">Цвет</span>
-                <span class="product-variations__value">Синий</span>
+            {{#product.modelBlock}}
+                <div class="product-variations">
+                    <span class="product-variations__title">{{properties.0.name}}</span>
+                    <span class="product-variations__value">{{shownValue}}</span>
 
-                <ul class="product-variations-list">
-                    <li class="product-variations-list__item"><a href="" class="product-variations-list__link">Красный</a></li>
-                    <li class="product-variations-list__item"><a href="" class="product-variations-list__link">Светло-оранжевый</a></li>
-                    <li class="product-variations-list__item"><a href="" class="product-variations-list__link">Фуксия - любимый цвет Котькиной</a></li>
-                </ul>
-            </div>
+                    <ul class="product-variations-list">
+                        {{#properties}}
+                            {{#options}}
+                                <li class="product-variations-list__item">
+                                    <a href="{{url}}" class="product-variations-list__link">{{shownValue}}</a>
+                                </li>
+                            {{/options}}
+                        {{/properties}}
+                    </ul>
+                </div>
+            {{/product.modelBlock}}
+
 
             <div class="product__rating">
                 {{#product.rating}}
@@ -102,24 +128,18 @@
             </div>
 
             <div class="product-props">
-                <div class="product-props__i">
-                    <div class="product-props__val">21'</div>
-                    <div class="product-props__tl"><span class="product-props__tl-inn">Диагональ экрана:</span></div>
-                </div>
-                <div class="product-props__i">
-                    <div class="product-props__val">Огромный текст оло-ло</div>
-                    <div class="product-props__tl"><span class="product-props__tl-inn">Диагональ экрана:</span></div>
-                </div>
-                <div class="product-props__i">
-                    <div class="product-props__val">21'</div>
-                    <div class="product-props__tl"><span class="product-props__tl-inn">Диагональ экрана:</span></div>
-                </div>
+                {{#product.propertiesSummary}}
+                    <div class="product-props__i">
+                        <div class="product-props__val">{{value}}</div>
+                        <div class="product-props__tl"><span class="product-props__tl-inn">{{name}}:</span></div>
+                    </div>
+                {{/product.propertiesSummary}}
                 <a href="#" class="product-props__more-link">Все характеристики</a>
             </div>
         </div>
 
         {{#product.alsoBoughtSlider}}
-            <div class="product-recommend">
+            <div class="product-recommend alsoBoughtContainer js-container">
                 <div class="product-recommend__tl">С этим товаром покупают</div>
                     {{>partial/product-slider/new-default}}
             </div>
@@ -190,13 +210,17 @@
 
             <div class="product-tabs__body product-tabs__body_width js-tabs-block js-accessories-block">
                 <div class="product-accessories">
-                    {{>page/product-card-new/card-listing}}
+                    {{#product.accessorySlider}}
+                        {{>partial/product-slider/large-images}}
+                    {{/product.accessorySlider}}
                 </div>
             </div>
 
             <div class="product-tabs__body product-tabs__body_width js-tabs-block js-simillar-block">
                 <div class="product-related-items">
-                    {{>page/product-card-new/card-listing}}
+                    {{#product.similarSlider}}
+                        {{>partial/product-slider/large-images}}
+                    {{/product.similarSlider}}
                 </div>
             </div>
         </div>

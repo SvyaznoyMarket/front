@@ -123,7 +123,8 @@ class ProductCard {
                         : ($this->getPriceHelper()->format($deliveryModel->price) . ' p')
                     ;
                     if ($deliveryModel->deliveredAt) {
-                        $delivery->deliveredAtText = $translateHelper->humanizeDate($deliveryModel->deliveredAt);
+//                        $delivery->deliveredAtText = $translateHelper->humanizeDate($deliveryModel->deliveredAt);
+                        $delivery->deliveredAtText = $deliveryModel->deliveredAt->format('d.m.Y');
                     }
                 }
 
@@ -164,7 +165,7 @@ class ProductCard {
             if (!$stateCount) {
                 $page->content->product->shopStateBlock = false;
             } else {
-                $page->content->product->shopStateBlock->shownCount = 'Есть в ' . $stateCount . ' ' . $translateHelper->numberChoice($stateCount, ['магазине', 'магазинах', 'магазинах']);
+                $page->content->product->shopStateBlock->shownCount = 'Забрать сегодня в ' . $stateCount . ' ' . $translateHelper->numberChoice($stateCount, ['магазине', 'магазинах', 'магазинах']);
                 //$page->content->product->shopStateBlock->hasOnlyOne = 1 === $stateCount;
             }
         }
@@ -191,6 +192,14 @@ class ProductCard {
                 $groupedPropertyModels[$propertyModel->groupId] = [];
             }
 
+            if ($propertyModel->isInList) {
+                $page->content->product->propertiesSummary[$propertyModel->position] = [
+                    'name' => $propertyModel->name,
+                    'value' => $propertyModel->shownValue,
+                    'position' => $propertyModel->position
+                ];
+            }
+
             $groupedPropertyModels[$propertyModel->groupId][] = $propertyModel;
         }
 
@@ -215,6 +224,10 @@ class ProductCard {
 
             $page->content->product->propertyChunks[] = $propertyChunk;
         }
+
+        // сортировка основных свойств и ограничение на вывод до 5
+        ksort($page->content->product->propertiesSummary);
+        $page->content->product->propertiesSummary = array_values(array_slice($page->content->product->propertiesSummary, 0, 5));
 
         // рейтинг товара
         if ($product->rating) {
@@ -376,7 +389,12 @@ class ProductCard {
             // значения свойств, индексированные по ид
             $propertyValuesById = [];
             foreach ($product->properties as $propertyModel) {
-                if ($propertyModel->isMultiple) {
+                /*
+                 * не знаю почему была привязка на $propertyModel->isMultiple, т.к. оно всегда false
+                 * поэтому смотрю на массив options
+                 */
+                //if ($propertyModel->isMultiple) {
+                if (is_array($propertyModel->options)) {
                     $propertyValuesById[$propertyModel->id] = [];
                     foreach ($propertyModel->options as $option) {
                         $propertyValuesById[$propertyModel->id][] = $option->value;
@@ -386,6 +404,7 @@ class ProductCard {
                 }
             }
 
+            $shownValueOptions = '';
             foreach ([
                  0 => [0, 1], // первое свойство модели
                  1 => [1, count($product->properties) - 1] // остальные свойства модели (будут скрыты по умолчанию)
@@ -399,7 +418,29 @@ class ProductCard {
                     $property->isImage = $propertyModel->isImage;
                     foreach ($propertyModel->options as $optionModel) {
                         $option = new Page\Content\Product\ModelBlock\Property\Option();
-                        $option->isActive = isset($propertyValuesById[$propertyModel->id]) && in_array($optionModel->value, $propertyValuesById[$propertyModel->id], true);
+                        /*
+                         * для размеров колец ядро возвращает в свойство модели значение с ".", а scms возвращает с ","
+                         * пример: /product/jewel/zolotoe-koltso-s-fianitom-2030000236534
+                         * $product->properties[4]['options'][0]['value'] == 16,5
+                         * $product->model->properties[1]['value'] == 16.5
+                         * поэтому костыль
+                         */
+                        if (isset($propertyValuesById[$propertyModel->id])) {
+                            if (in_array($optionModel->value, $propertyValuesById[$propertyModel->id], true)) {
+                                $option->isActive = true;
+                                $shownValueOptions = $optionModel->value;
+                            } elseif (str_replace([',', '.'], ['', ''], $propertyValuesById[$propertyModel->id][0]) == str_replace([',', '.'], ['', ''], $optionModel->value)) {
+                                $option->isActive = true;
+                                $shownValueOptions = $optionModel->value;
+                            } else {
+                                $option->isActive = false;
+                            }
+                        }
+                        /*
+                         * если когда-нибудь исправят поведение выше - раскомментировать и проверить
+                         */
+                        //$option->isActive = isset($propertyValuesById[$propertyModel->id]) && in_array($optionModel->value, $propertyValuesById[$propertyModel->id], true);
+
                         $option->url = $optionModel->product ? $optionModel->product->link : null;
                         $option->shownValue = $optionModel->value;
                         $option->unit = $propertyModel->unit;
@@ -421,6 +462,7 @@ class ProductCard {
 
                 if (0 === $i) {
                     $page->content->product->modelBlock = $modelBlock;
+                    $page->content->product->modelBlock->shownValue = $shownValueOptions;
                 } else if (1 === $i) {
                     $page->content->product->moreModelBlock = $modelBlock;
                 }
@@ -460,6 +502,13 @@ class ProductCard {
                     //'partial/cart/spinner',
                     //'partial/cart/quickButton',
                 ],
+            ],
+            [
+                'id'       => 'tpl-product-slider-large',
+                'name'     => 'partial/product-slider/large-images',
+                'partials' => [
+                    'partial/cart/button',
+                ],
             ]
         ]);
 
@@ -476,6 +525,6 @@ class ProductCard {
             $page->mailRu->price = $request->product->price;
         }
 
-        //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        //die(json_encode($page->content->product, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }
