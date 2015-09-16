@@ -487,9 +487,9 @@ class ProductCard {
             ],
             [
                 'id'       => 'tpl-product-buyButtonBlock',
-                'name'     => 'page/product-card/buttonBlock',
+                'name'     => 'page/product-card-new/buttonBlock',
                 'partials' => [
-                    //'partial/cart/button',
+                    'partial/cart/button',
                     //'partial/cart/spinner',
                     //'partial/cart/quickButton',
                 ],
@@ -508,6 +508,7 @@ class ProductCard {
                 'name'     => 'partial/product-slider/large-images',
                 'partials' => [
                     'partial/cart/button',
+                    'partial/rating/star-list'
                 ],
             ]
         ]);
