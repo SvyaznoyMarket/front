@@ -55,13 +55,16 @@
 }
 
 .full-images {
-    position: relative;
-    position: relative;
-    z-index: 2;
+    position: fixed;
+    z-index: 199;
+    top: 0;
+    right: 0;
+    left: 0;
 
     display: none;
     overflow: hidden;
 
+    width: 100%;
     padding: 50px 0 20px;
 
     text-align: center;
@@ -70,21 +73,25 @@
 
     .box-sizing(border-box);
     &-content {
+        padding: 20px;
+
+        .box-sizing(border-box);
         &__image {
             max-width: 100%;
             max-height: 100%;
         }
     }
     &-thumbs {
+        font-size: 0;
+
         position: relative;
 
         overflow: hidden;
 
-        width: 100%;
-        margin: 0 auto;
-        padding: 3px 0;
+        margin: 3px 10px;
 
         text-align: center;
+        white-space: nowrap;
         &__item {
             line-height: 46px;
 
@@ -115,6 +122,7 @@
 }
 
 .product-full-images {
+    overflow: hidden;
     .full-images {
         display: block;
     }
