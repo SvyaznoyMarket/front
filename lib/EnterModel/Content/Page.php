@@ -17,7 +17,7 @@ class Page {
         if (isset($data['uid'])) $this->ui = (string)$data['uid'];
         if (isset($data['token'])) $this->token = (string)$data['token'];
         if (isset($data['available_by_direct_link'])) $this->isAvailableByDirectLink = (bool)$data['available_by_direct_link'];
-        if (isset($data['title'])) $this->title = (string)$data['title'];
-        if (isset($data['content'])) $this->contentHtml = (string)$data['content'];
+        if (isset($data['title'])) $this->title = trim($data['title']);
+        if (isset($data['content'])) $this->contentHtml = trim($data['content']);
     }
 }
