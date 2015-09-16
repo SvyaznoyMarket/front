@@ -11,18 +11,6 @@
         color: #80c342;
         border-bottom: 1px dotted;
     }
-    &__row {
-        display: table;
-
-        width: 100%;
-
-        &:first-child {
-
-           .product-delivery__type, .product-delivery__txt{
-               padding-top: 0;
-           }
-        }
-    }
     &__type {
         display: table-cell;
 
@@ -50,5 +38,17 @@
         padding-top: 10px;
         vertical-align: middle;
         color: #616161;
+    }
+    &__row {
+        display: table;
+
+        width: 100%;
+
+        &:first-child {
+
+            & > * {
+                padding-top: 0;
+            }
+        }
     }
 }

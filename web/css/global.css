@@ -11674,14 +11674,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   color: #80c342;
   border-bottom: 1px dotted;
 }
-.product-delivery__row {
-  display: table;
-  width: 100%;
-}
-.product-delivery__row:first-child .product-delivery__type,
-.product-delivery__row:first-child .product-delivery__txt {
-  padding-top: 0;
-}
 .product-delivery__type {
   display: table-cell;
   width: 94px;
@@ -11706,6 +11698,13 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   padding-top: 10px;
   vertical-align: middle;
   color: #616161;
+}
+.product-delivery__row {
+  display: table;
+  width: 100%;
+}
+.product-delivery__row:first-child > * {
+  padding-top: 0;
 }
 .product-props {
   margin-top: 15px;
