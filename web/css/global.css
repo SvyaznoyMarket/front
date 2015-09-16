@@ -12120,32 +12120,29 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product-widget {
   position: absolute;
-  top: 0px;
+  top: 0;
   right: 15px;
 }
-.product-widget__i {
+.product-widget__item {
+  display: block;
   width: 28px;
   height: 29px;
-  display: block;
   margin-bottom: 10px;
+  cursor: pointer;
   background: url('modules/product-card-new/img/widget-sprite@2x.png') no-repeat;
   -webkit-background-size: 56px 29px;
   -moz-background-size: 56px 29px;
   -o-background-size: 56px 29px;
   background-size: 56px 29px;
-  cursor: pointer;
   -webkit-transition: all 0.2s ease-out;
   -moz-transition: all 0.2s ease-out;
   -o-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
-.product-widget__i:last-child {
-  margin-bottom: 0px;
-}
-.product-widget__i.favorit {
+.product-widget__item.favorit {
   background-position: 0 0;
 }
-.product-widget__i.share {
+.product-widget__item.share {
   background-position: -28px 0;
 }
 .slot__partner {

@@ -1,24 +1,24 @@
-.product-widget{
+.product-widget {
     position: absolute;
-    top: 0px;
+    top: 0;
     right: 15px;
-    &__i{
+    &__item {
+        display: block;
+
         width: 28px;
         height: 29px;
-        display: block;
         margin-bottom: 10px;
-        background: url('modules/product-card-new/img/widget-sprite@2x.png') no-repeat;
-        .background-size(56px 29px);
-        cursor: pointer;
-        .transition();
 
-        &:last-child{
-            margin-bottom: 0px;
-        }
-        &.favorit{
+        cursor: pointer;
+
+        background: url('@{base-url}/product-card-new/img/widget-sprite@2x.png') no-repeat;
+
+        .background-size(56px 29px);
+        .transition();
+        &.favorit {
             background-position: 0 0;
         }
-        &.share{
+        &.share {
             background-position: -28px 0;
         }
     }
