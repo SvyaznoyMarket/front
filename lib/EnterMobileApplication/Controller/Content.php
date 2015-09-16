@@ -54,7 +54,7 @@ namespace EnterMobileApplication\Controller {
             if (!$contentPage->contentHtml || !$contentPage->isAvailableByDirectLink)
                 return (new \EnterMobileApplication\Controller\Error\NotFound())->execute($request, sprintf('Контент @%s не найден', $contentToken));
 
-            $contentPage->contentHtml = '<script src="http://yandex.st/jquery/1.8.3/jquery.js" type="text/javascript"></script>' . "\n" . $contentPage->contentHtml;
+            $contentPage->contentHtml = '<script src="//yandex.st/jquery/1.8.3/jquery.js" type="text/javascript"></script>' . "\n" . $contentPage->contentHtml;
 
             // ответ
             $response = new Response();
