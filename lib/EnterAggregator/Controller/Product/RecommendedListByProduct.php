@@ -37,7 +37,7 @@ namespace EnterAggregator\Controller\Product {
             $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
             // запрос товара
-            $productListQuery = new Query\Product\GetListByIdList($request->productIds, $region->id, ['model' => false, 'related' => false]);
+            $productListQuery = new Query\Product\GetListByIdList($request->productIds, $region->id, ['model' => true, 'related' => false]);
             $curl->prepare($productListQuery);
 
             $curl->execute();
@@ -120,7 +120,7 @@ namespace EnterAggregator\Controller\Product {
             $descriptionListQueries = [];
             $productListQueries = [];
             foreach (array_chunk($recommendedIds, $config->curl->queryChunkSize) as $idsInChunk) {
-                $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id, ['model' => false, 'related' => false]);
+                $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id, ['model' => true, 'related' => false]);
                 $productListQuery->setTimeout(1.5 * $config->coreService->timeout);
                 $curl->prepare($productListQuery);
                 $productListQueries[] = $productListQuery;
@@ -140,6 +140,10 @@ namespace EnterAggregator\Controller\Product {
                 $descriptionListQueries[] = $descriptionListQuery;
             }
 
+            // запрос рейтинга для товаров
+            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($recommendedIds);
+            $curl->prepare($ratingListQuery);
+
             $curl->execute();
 
             // товары
@@ -154,6 +158,10 @@ namespace EnterAggregator\Controller\Product {
             });
 
             $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQueries);
+
+            if (isset($ratingListQuery)) {
+                $productRepository->setRatingForObjectListByQuery($recommendedProductsById, $ratingListQuery);
+            }
 
             foreach ($alsoBoughtIdList as $i => $alsoBoughtId) {
                 // SITE-2818 из списка товаров "с этим товаром также покупают" убираем товары, которые есть только в магазинах
