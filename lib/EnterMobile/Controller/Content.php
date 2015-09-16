@@ -69,6 +69,7 @@ class Content {
             return (new \EnterMobile\Controller\Error\NotFound())->execute($request);
 
         $contentPage->contentHtml = preg_replace('/http:\/\/www.enter.ru/i', '', $contentPage->contentHtml);
+        $contentPage->contentHtml = '<script src="http://yandex.st/jquery/1.8.3/jquery.js" type="text/javascript"></script>' . "\n" . $contentPage->contentHtml;
 
         $pageRequest = new \EnterMobile\Repository\Page\Content\Request();
         $pageRequest->title = $contentPage->title;
