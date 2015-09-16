@@ -49,19 +49,19 @@ namespace EnterMobileApplication\Controller {
 
             $curl->execute();
 
-            if ($contentItemQuery->getError() && $contentItemQuery->getError()->getCode() === 404)
-                return (new \EnterMobileApplication\Controller\Error\NotFound())->execute($request, sprintf('Контент @%s не найден', $contentToken));
+            $contentPage = new \EnterModel\Content\Page($contentItemQuery->getResult());
 
-            $item = $contentItemQuery->getResult();
+            if (!$contentPage->contentHtml || !$contentPage->isAvailableByDirectLink)
+                return (new \EnterMobileApplication\Controller\Error\NotFound())->execute($request, sprintf('Контент @%s не найден', $contentToken));
 
             // ответ
             $response = new Response();
-            $response->content = $item['content'];
+            $response->content = $contentPage->contentHtml;
             // TODO: вынести в EnterRepository\Content
             $response->content = $this->processContentLinks($response->content, $curl, $region->id);
             $response->content = $this->removeExternalScripts($response->content);
             $response->content = preg_replace('/<iframe(?:\s[^>]*)?>.*?<\/iframe>/is', '', $response->content); // https://jira.enter.ru/browse/TERMINALS-862
-            $response->title = isset($item['title']) ? $item['title'] : null;
+            $response->title = $contentPage->title ? $contentPage->title : null;
 
             return new Http\JsonResponse($response);
         }
