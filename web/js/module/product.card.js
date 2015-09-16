@@ -51,9 +51,10 @@ define(
 
                     $(this).slick({
                         infinite: false,
-                        slidesToShow: 9,
-                        slidesToScroll: 9,
-                        arrows: false,
+                        slidesToShow: 6,
+                        slidesToScroll: 6,
+                        nextArrow: '<span class="sliderControls_btn sliderControls_btn__right js-ga-click"></span>',
+                        prevArrow: '<span class="sliderControls_btn sliderControls_btn__left js-ga-click"></span>',
                         responsive: [
                             {
                                 breakpoint: 800,

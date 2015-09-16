@@ -1,10 +1,10 @@
 define(
     [
-    	'jquery', 'jquery.slick'
+    	'jquery', 'jquery.slick', 'hammer'
     ],
     function($) {
     	console.log('product card new');
-    	
+
 	    var
 	    	windows        = $(window),
 	    	body           = $('body'),
@@ -39,7 +39,7 @@ define(
 	    };
 
 	    function fullImages( event ) {
-	    	var 
+	    	var
 	    		popup       = $('.js-full-images-popup'),
 	    		content     = popup.find('.js-full-images-content'),
 	    		bigImage    = content.find('.js-full-images'),
@@ -68,13 +68,13 @@ define(
 		    			height = windows.height() - thumbs.height() - header.height();
 
 		    		content.css({
-		    			'height' : height - 20, 
-		    			'line-height' : height - 20 + 'px' 
+		    			'height' : height - 20,
+		    			'line-height' : height - 20 + 'px'
 		    		});
 		    	},
 
 		    	changeImage: function( event ) {
-		    		var 
+		    		var
 		    			target       = $(event.currentTarget),
 		            	targetThumbs = target.attr('data-fullimg');
 
@@ -84,6 +84,44 @@ define(
 		    	}
 		    }
 	    };
+
+
+	    var red = document.getElementById("red"),
+        blue = document.getElementById("blue");
+
+	    //jquery.hammer.js
+	    // $(red).hammer().on("swipe", function(event) {
+	    //     if(event.gesture.direction === "right") {
+	    //         $(this).find(".color").animate({left: "+=100"}, 500);
+	    //     } else if(event.gesture.direction === "left") {
+	    //         $(this).find(".color").animate({left: "-=100"}, 500);
+	    //     }
+	    //     $("#event").text(event.gesture.direction);
+	    // });
+
+	    //hammer.js
+
+	    //Swipe
+	    Hammer(red).on("swipeleft", function() {
+	        $(this).find(".color").animate({left: "-=100"}, 500);
+	        $("#event").text("swipe left");
+	    });
+
+	    Hammer(red).on("swiperight", function() {
+	        $(this).find(".color").animate({left: "+=100"}, 500);
+	        $("#event").text("swipe right");
+	    });
+
+	    // Drag
+	    Hammer(blue).on("dragleft", function() {
+	        $(this).find(".color").animate({left: "-=100"}, 500);
+	        $("#event").text("drag left");
+	    });
+
+	    Hammer(blue).on("dragright", function() {
+	        $(this).find(".color").animate({left: "+=100"}, 500);
+	        $("#event").text("drag right");
+	    });
 
 		$('.js-change-tab').on('click', changetabHandler);
 		$('.js-full-images-open').on('click', fullImagesView.open);
