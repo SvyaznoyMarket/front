@@ -11748,7 +11748,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .product-variations {
   font-size: 14px;
   position: relative;
-  padding: 13px 40px 13px 10px;
   cursor: pointer;
   background: #f7f7f7 no-repeat url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAOCAQAAACS72SyAAABPUlEQVQoz5VSu2pCURBcn4iWIoqCXOQiM5xGYmNlIdiZX7D0E7S1ss71C/wAk84PMKklwd5OCwsVQXyA15PCc03AGHS2O7Oz7JxZERFfHvIg8hCfiIigQ813WPcKYfGDGh0RYRkuNTXWaKSjZt4t+NJRNLCmpobLssDhjtrUay4rwZvSYC7Lt0vvji8ifja5ont+whQ1K/KX0orgGVMjdLliU/xnF0WOeDDyE7qZuCE8+DNxdHEy0gNHfPrFJmNwuKGhMbZLKuxxKmyXMDbCEzdwkrGrxVjFF7amaY+2lZKABKwU2tyboVt+snrjR+wEe1xc1huiiCKHnh0u2LMT/6bBOiaefy659HxiwvodR6BsDs5ZeoU1B8q+94hCbGGGIzU1jpixJaGHrlcV0Mccc/RVQR6HCquKqvxEdo1vunaY/kC62BAAAAAASUVORK5CYII=');
   background-position: right 10px top 20px;
@@ -11756,6 +11755,9 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product-variations__value {
   float: right;
+}
+.product-variations__link {
+  padding: 13px 40px 13px 10px;
 }
 .product-variations-list {
   position: absolute;
@@ -11765,6 +11767,8 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   right: 0;
   left: 0;
   display: none;
+  overflow: auto;
+  max-height: 150px;
   background: #f7f7f7;
 }
 .product-variations-list__link {
@@ -11773,9 +11777,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product-variations-list__link:hover {
   background: #f6f6f6;
-}
-.product-variations:hover .product-variations-list {
-  display: block;
 }
 .product-name {
   margin: 0 0 30px;

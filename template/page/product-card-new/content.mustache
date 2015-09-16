@@ -96,11 +96,13 @@
             </div>
 
             {{#product.modelBlock}}
-                <div class="product-variations">
-                    <span class="product-variations__title">{{properties.0.name}}</span>
-                    <span class="product-variations__value">{{shownValue}}</span>
+                <div class="product-variations toggle js-toggle-wrap">
+                    <div class="product-variations__link toggle-link js-toggle-link">
+                        <span class="product-variations__title">{{properties.0.name}}</span>
+                        <span class="product-variations__value">{{shownValue}}</span>
+                    </div>
 
-                    <ul class="product-variations-list">
+                    <ul class="product-variations-list toggle-box">
                         {{#properties}}
                             {{#options}}
                                 <li class="product-variations-list__item">

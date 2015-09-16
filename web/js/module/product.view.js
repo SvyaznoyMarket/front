@@ -1,6 +1,6 @@
 define(
     [
-        'jquery', 'hammer', 'jquery.slick'
+        'jquery', 'hammer', 'jquery.slick', 'module/toggleLink'
     ],
     function($, Hammer) {
         console.log('product card new');
