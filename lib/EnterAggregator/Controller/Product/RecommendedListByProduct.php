@@ -210,6 +210,14 @@ namespace EnterAggregator\Controller\Product {
                 }
             }
 
+            if ($request->config->removeUnavailable) {
+                foreach ($recommendedProductsById as $id => $recommendedProduct) {
+                    if (!$recommendedProduct->isBuyable) {
+                        unset($recommendedProductsById[$id]);
+                    }
+                }
+            }
+
             // сортировка по наличию
             if ($request->config->sortByStockState) {
                 $productRepository->sortByStockStatus($alsoBoughtIdList, $recommendedProductsById);
@@ -294,5 +302,11 @@ namespace EnterAggregator\Controller\Product\RecommendedListByProduct\Request {
          * @var bool
          */
         public $sortByStockState;
+        /**
+         * Удалять недоступные
+         *
+         * @var bool
+         */
+        public $removeUnavailable;
     }
 }
