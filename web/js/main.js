@@ -92,7 +92,10 @@ require.config({
             exports: '_'
         },
         'modernizr': [],
-        'hammer': [],
+        'hammer': {
+            exports: 'Hammer',
+            deps: ['jquery']
+        },
         'boilerplate.helper': [],
 
         'yandexmaps': {

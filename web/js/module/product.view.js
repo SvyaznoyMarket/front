@@ -1,8 +1,8 @@
 define(
     [
-    	'jquery', 'jquery.slick', 'hammer'
+    	'jquery', 'hammer', 'jquery.slick'
     ],
-    function($) {
+    function($, Hammer) {
     	console.log('product card new');
 
 	    var
