@@ -76,8 +76,6 @@ namespace EnterAggregator {
         public $mustacheRenderer;
         /** @var Config\Kladr */
         public $kladr;
-        /** @var array */
-        public $mediaHosts = [];
         /** @var Config\Order */
         public $order;
         /** @var Config\Cart */
@@ -86,8 +84,6 @@ namespace EnterAggregator {
         public $product;
         /** @var Config\ProductReview */
         public $productReview;
-        /** @var Config\ProductPhoto */
-        public $productPhoto;
         /** @var Config\Search */
         public $search;
 
@@ -131,7 +127,6 @@ namespace EnterAggregator {
             $this->order = new Config\Order();
             $this->product = new Config\Product();
             $this->productReview = new Config\ProductReview();
-            $this->productPhoto = new Config\ProductPhoto();
             $this->search = new Config\Search();
         }
     }
@@ -408,13 +403,6 @@ namespace EnterAggregator\Config {
          * @var int
          */
         public $itemsInSlider;
-    }
-
-    class ProductPhoto {
-        /**
-         * @var array
-         */
-        public $urlPaths = [];
     }
 
     class ProductReview {
