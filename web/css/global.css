@@ -11946,7 +11946,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   padding: 10px 20px;
   text-align: center;
   border-right: 1px solid #c7c7c7;
-  border-top: 1px solid #c7c7c7;
   font-size: 12px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -11956,7 +11955,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .product-card-lst__i:nth-child(3n) {
   border-right: 0;
 }
-.product-card-lst__i:nth-last-child(3) ~ .product-card-lst__i {
+.product-card-lst__i:nth-child(3) ~ .product-card-lst__i {
   border-top: 1px solid #c7c7c7;
 }
 .product-card-lst__img {
