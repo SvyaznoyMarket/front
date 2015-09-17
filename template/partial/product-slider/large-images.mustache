@@ -11,20 +11,21 @@
                     <div class="product-card-lst__name ellipsis"><div>{{&name}}</div></div>
                 </a>
 
-                {{#rating}}
-                    <div class="product-card-lst__rating rating rating--product">
-                        {{>partial/rating/star-list}}
-                    </div>
-                {{/rating}}
+                <div class="product-card-lst__rating rating rating--product">
+                    {{#rating}}
+                            {{>partial/rating/star-list}}
+                    {{/rating}}
+                </div>
+
 
                 {{#stateLabel}}
-                    <div class="availability {{cssClassName}}">
+                    <div class="product-card-lst__status {{cssClassName}}">
                         <span class="product-card-lst__status-inn">{{name}}</span>
                     </div>
                 {{/stateLabel}}
 
                 {{^stateLabel}}
-                    <div class="availability availability--nobg">&nbsp;</div>
+                    <div class="product-card-lst__status">&nbsp;</div>
                 {{/stateLabel}}
 
                 <!--<div class="product-card-lst__status self">-->
@@ -40,10 +41,11 @@
                         {{/shownOldPrice}}
                         <div class="price">{{shownPrice}} <span class="rubl">p</span></div>
                     </div>
-
-                    {{#cartButton}}
-                        {{>partial/cart/button-new}}
-                    {{/cartButton}}
+                    <div class="product-card-lst__buy">
+                        {{#cartButton}}
+                            {{>partial/cart/button-new}}
+                        {{/cartButton}}
+                    </div>
                     <!--<div class="product-card-lst__buy">-->
                         <!--<a class="btn-buy btn-buy--listing watch-only">Посмотреть</a>-->
                     <!--</div>-->
@@ -51,99 +53,4 @@
             </div>
         </div>
     {{/productCards}}
-    <!--<div class="product-card-lst__i">-->
-        <!--<a href="" class="product-card-lst__img">-->
-            <!--<img class="image" src="http://a.imgenter.ru/uploads/media/e3/c2/6c/thumb_a63a_product_500.jpeg" />-->
-        <!--</a>-->
-
-        <!--<div class="product-card-lst__info">-->
-            <!--<a href="" class="">-->
-                <!--<div class="product-card-lst__categ">Планшеты</div>-->
-                <!--<div class="product-card-lst__name ellipsis"><div>Планшетный компьютер ASUS TF103CG-1A056A 10,1" 3G 8 ГБ черный</div></div>-->
-            <!--</a>-->
-
-            <!--<div class="product-card-lst__rating rating rating--product">-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-            <!--</div>-->
-
-            <!--<div class="product-card-lst__status self"><span class="product-card-lst__status-inn">Самовывоз сегодня</span></div>-->
-
-            <!--<div class="product-card-lst__buying">-->
-                <!--<div class="product-card-lst__price">-->
-                    <!--<span class="old-price"><span class="line-through">45 000</span> <span class="rubl">p</span></span>-->
-                    <!--<div class="price">44 999 <span class="rubl">p</span></div>-->
-                <!--</div>-->
-
-                <!--<div class="product-card-lst__buy"><a class="btn-buy btn-buy--listing watch-only">Посмотреть</a></div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-
-    <!--<div class="product-card-lst__i">-->
-        <!--<a href="" class="product-card-lst__img">-->
-            <!--<img class="image" src="http://a.imgenter.ru/uploads/media/e3/c2/6c/thumb_a63a_product_500.jpeg" />-->
-        <!--</a>-->
-
-        <!--<div class="product-card-lst__info">-->
-            <!--<a href="" class="">-->
-                <!--<div class="product-card-lst__categ">Планшеты</div>-->
-                <!--<div class="product-card-lst__name ellipsis"><div>Планшетный компьютер ASUS TF103CG-1A056A 10,1" 3G 8 ГБ черный</div></div>-->
-            <!--</a>-->
-
-            <!--<div class="product-card-lst__rating rating rating--product">-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-            <!--</div>-->
-
-            <!--<div class="product-card-lst__status">&lt;!&ndash; Даже если нечего выводить, наличие блока -обязательно &ndash;&gt;</div>-->
-
-            <!--<div class="product-card-lst__buying">-->
-                <!--<div class="product-card-lst__price">-->
-                    <!--<span class="old-price"><span class="line-through">45 000</span> <span class="rubl">p</span></span>-->
-                    <!--<div class="price">44 999 <span class="rubl">p</span></div>-->
-                <!--</div>-->
-
-                <!--<div class="product-card-lst__buy"><a class="btn-buy btn-buy--listing">Купить</a></div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-
-    <!--<div class="product-card-lst__i">-->
-        <!--<a href="" class="product-card-lst__img">-->
-            <!--<img class="image" src="http://a.imgenter.ru/uploads/media/e3/c2/6c/thumb_a63a_product_500.jpeg" />-->
-        <!--</a>-->
-
-        <!--<div class="product-card-lst__info">-->
-            <!--<a href="" class="">-->
-                <!--<div class="product-card-lst__categ">Планшеты</div>-->
-                <!--<div class="product-card-lst__name ellipsis"><div>Планшетный компьютер ASUS TF103CG-1A056A 10,1" 3G 8 ГБ черный</div></div>-->
-            <!--</a>-->
-
-            <!--<div class="product-card-lst__rating rating rating--product">-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-                <!--<i class="rating__star icon-star icon-star-full"></i>-->
-            <!--</div>-->
-
-            <!--<div class="product-card-lst__status"><span class="product-card-lst__status-inn">Только на витрине</span></div>-->
-            <!--&lt;!&ndash;  <span class="product-card-lst__old-price"><span class="line-through">45 000</span> <span class="rubl">p</span></span>&ndash;&gt;-->
-
-            <!--<div class="product-card-lst__buying">-->
-                <!--<div class="product-card-lst__price">-->
-                    <!--<div class="price">44 999 <span class="rubl">p</span></div>-->
-                <!--</div>-->
-
-                <!--<div class="product-card-lst__buy"><a class="btn-buy btn-buy--listing">Купить</a></div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
 </div>

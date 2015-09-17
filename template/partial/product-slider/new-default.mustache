@@ -21,10 +21,11 @@
                         <div class="slider-box-product__name ellipsis"><div>{{&name}}</div></div>
                     </a>
                     <div class="slider-box-product__price">{{shownPrice}} <span class="rubl">p</span></div>
-
-                    {{#cartButton}}
-                        {{>partial/cart/button-new}}
-                    {{/cartButton}}
+                    <div class="slider-box-product__buy">
+                        {{#cartButton}}
+                            {{>partial/cart/button-new}}
+                        {{/cartButton}}
+                    </div>
                     <!--<a class="btn-buy btn-buy--slide">Купить</a>-->
                 </div>
             {{/productCards}}

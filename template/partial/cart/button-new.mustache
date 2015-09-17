@@ -1,5 +1,6 @@
 <div class="js-widget {{widgetId}} noselect" data-template-selector="#tpl-product-buyButton">
     {{^isDisabled}}
+
         <a href="{{url}}"
             class="{{id}} btn btn-buy
                 {{#isSlot}}btn-buy--slot js-slotButton noselect{{/isSlot}}
@@ -8,7 +9,7 @@
                     {{^isQuick}} js-buyButton{{/isQuick}}
                     {{#isQuick}} js-quickBuyButton{{/isQuick}}
                     {{^isInShopOnly}} {{/isInShopOnly}}
-                    {{#isInShopOnly}} btn-buy--slide{{/isInShopOnly}}
+                    {{#isInShopOnly}} watch-only{{/isInShopOnly}}
                 {{/isSlot}}
                 {{/seeProductBtn}}
                 {{#seeProductBtn}}

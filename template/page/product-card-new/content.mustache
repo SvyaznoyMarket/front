@@ -70,9 +70,11 @@
                         {{product.shownPrice}} <span class="rubl">p</span>
                     </div>
                 </div>
-                {{#product.cartButtonBlock.cartButton}}
-                    {{>partial/cart/button}}
-                {{/product.cartButtonBlock.cartButton}}
+                <div class="product__buy">
+                    {{#product.cartButtonBlock.cartButton}}
+                        {{>partial/cart/button-new}}
+                    {{/product.cartButtonBlock.cartButton}}
+                </div>
             </div>
             <div class="product-delivery__info">
                 {{#product.shopStateBlock}}
