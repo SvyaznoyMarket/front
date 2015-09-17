@@ -112,19 +112,6 @@ return function(\EnterAggregator\Config $config) {
     $config->kladr->key = 'c20b52a7dc6f6b28023e3d8ef81b9dbdb51ff74b';
     $config->kladr->limit = 20;
 
-    $config->mediaHosts = [
-        0 => 'http://fs01.enter.ru',
-        1 => 'http://fs02.enter.ru',
-        2 => 'http://fs03.enter.ru',
-        3 => 'http://fs04.enter.ru',
-        4 => 'http://fs05.enter.ru',
-        5 => 'http://fs06.enter.ru',
-        6 => 'http://fs07.enter.ru',
-        7 => 'http://fs08.enter.ru',
-        8 => 'http://fs09.enter.ru',
-        9 => 'http://fs10.enter.ru',
-    ];
-
     $config->cart->sessionKey = 'cart';
     $config->cart->quickSessionKey = 'quickCart';
 
@@ -141,15 +128,6 @@ return function(\EnterAggregator\Config $config) {
 
     $config->productReview->enabled = true;
     $config->productReview->itemsInCard = 7;
-
-    $config->productPhoto->urlPaths = [
-        0 => '/1/1/60/',
-        1 => '/1/1/120/',
-        2 => '/1/1/163/',
-        3 => '/1/1/500/',
-        4 => '/1/1/2500/',
-        5 => '/1/1/1500/',
-    ];
 
     $config->search->minPhraseLength = 2;
 

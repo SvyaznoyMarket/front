@@ -106,20 +106,6 @@ namespace EnterModel {
          * @param array $data
          */
         public function __construct(array $data = []) {
-            static $photoUrlSizes;
-
-            if (!$photoUrlSizes) {
-                $photoUrlSizes = [
-                    'product_60'   => '/1/1/60/',
-                    'product_120'  => '/1/1/120/',
-                    'product_160'  => '/1/1/160/',
-                    'product_200'  => '/1/1/200/',
-                    'product_500'  => '/1/1/500/',
-                    'product_1500' => '/1/1/1500/',
-                    'product_2500' => '/1/1/2500/',
-                ];
-            }
-
             $this->media = new Model\MediaList();
             $this->relation = new Model\Product\Relation();
 
