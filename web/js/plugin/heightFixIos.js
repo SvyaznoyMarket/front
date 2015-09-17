@@ -36,12 +36,12 @@ define(
 
                 return {
                     init: function() {
-						footer.removeAttr('style');
+						footer.removeClass('fixed');
 						hasNoIosClass && body.addClass('noIOS');
 
 						if (($('.content').height() + footer.outerHeight() + $('.header').height() < ($(window).height()) && (body.data('module')) !== 'index')) {
 							body.removeClass('noIOS');
-							footer.css('position', 'fixed');
+							footer.addClass('fixed');
 						}
                     }
                 }

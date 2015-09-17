@@ -1114,98 +1114,25 @@ html.sb-animation .content {
 /* ==========================================================================
    Layout - default styles
    ========================================================================== */
-html {
-  height: 100%;
-}
-html.no-scroll {
-  overflow: hidden;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  height: 100%;
-  max-height: 100%;
-}
-html.no-scroll body {
-  overflow: hidden;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  height: 100%;
-  max-height: 100%;
-}
+html,
 body {
   height: 100%;
-}
-.body-footerless {
-  height: 100%;
-}
-.body-footerless .wrapper {
-  height: 100%;
-  position: relative;
-}
-.body-footerless .snap-content {
-  height: 100%;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .wrapper {
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  overflow: scroll;
   -webkit-overflow-scrolling: touch;
 }
 .wrapper-smpl {
   overflow: visible;
   height: auto;
-  /*position: absolute;
-        top:0;
-        left:0;
-
-        & > * {
-            -webkit-transform: translate3d(0, 0, 0);
-            -moz-transform: translate3d(0, 0, 0);
-            -ms-transform: translate3d(0, 0, 0);
-            -o-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
-        }*/
 }
 .wrapper-smpl .content {
   padding-bottom: 0px;
 }
-.noIOS .wrapper,
-.criOS:not(.body-footerless) .wrapper {
-  height: auto;
-  min-height: 100%;
-  overflow: visible;
-}
-.noIOS .wrapper-smpl,
-.criOS:not(.body-footerless) .wrapper-smpl {
-  position: static;
-}
-.noIOS .wrapper-smpl > *,
-.criOS:not(.body-footerless) .wrapper-smpl > * {
-  -webkit-transform: none;
-  -moz-transform: none;
-  -ms-transform: none;
-  -o-transform: none;
-  transform: none;
-}
-.noIOS .header,
-.criOS:not(.body-footerless) .header {
-  position: fixed;
-}
-.noIOS .snap-content,
-.criOS:not(.body-footerless) .snap-content {
-  -webkit-transform: none;
-  -moz-transform: none;
-  -ms-transform: none;
-  -o-transform: none;
-  transform: none;
-}
-.noIOS .content,
-.criOS:not(.body-footerless) .content {
-  -webkit-transform: translate3d(0, 0, 0);
-  -moz-transform: translate3d(0, 0, 0);
-  -ms-transform: translate3d(0, 0, 0);
-  -o-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
+* {
+  -webkit-overflow-scrolling: touch;
 }
 /* Middle
 -----------------------------------------------------------------------------*/
@@ -1235,10 +1162,6 @@ body {
 .contentBox640 {
   max-width: 620px;
   margin: 0 auto;
-}
-.viewportSizeWrapper {
-  overflow: hidden;
-  width: 100%;
 }
 /* AB-test main page  */
 .body-main {
@@ -1392,12 +1315,12 @@ body {
     }*/
 }
 .header {
-  position: absolute;
-  z-index: 1010;
+  position: fixed;
   top: 0;
+  right: 0;
   left: 0;
+  z-index: 20;
   overflow: hidden;
-  width: 100%;
   height: 50px;
   color: #ffffff;
   border-bottom: 1px solid #404040;
@@ -1906,10 +1829,16 @@ body {
 .nav-menu {
   position: relative;
   overflow: auto;
-  width: 280px;
+  width: 260px;
   padding-right: 20px;
   height: 100%;
   -webkit-overflow-scrolling: touch;
+}
+.nav__top {
+  width: 260px;
+}
+.nav-list {
+  width: 260px;
 }
 .nav-list-i {
   -webkit-user-select: none;
@@ -1985,6 +1914,9 @@ body {
 }
 .nav-links .nav-list-i__lk .nav-icon--phone {
   background-position: -83px 0;
+}
+.nav-catalog {
+  width: 260px;
 }
 .nav-catalog__h {
   font-size: 14px;
@@ -4501,16 +4433,20 @@ body {
    Подвал сайта .footer .socLink .publicInfoList .publicInfoText .footerCopy
    ========================================================================== */
 .footer {
-  right: 0;
-  bottom: 0;
-  left: 0;
   padding: 15px 0 0;
+  width: 100%;
   color: #363636;
   border-top: 2px solid #a0a0a0;
   background: #e6e6e6;
 }
 .footer-inn {
   padding: 0 10px;
+}
+.footer.fixed {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
 }
 .i-footer {
   background-image: url('../img/footer/i-footer.png');
@@ -6882,7 +6818,6 @@ body {
   right: 0;
 }
 .content {
-  overflow: hidden;
   padding: 50px 0 10px;
 }
 .main-inn {
@@ -7224,9 +7159,13 @@ body {
   .main-inn {
     padding: 0;
   }
+  .grid-2cols {
+    margin: 0;
+  }
   .grid-2cols__item {
     width: 100%;
     margin-bottom: 10px;
+    padding: 0;
   }
   .grid-2cols__item:nth-child(2n) {
     margin-bottom: 0;
@@ -11481,10 +11420,11 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .full-images {
   position: fixed;
-  z-index: 199;
+  z-index: 19;
   top: 0;
   right: 0;
   left: 0;
+  bottom: 0;
   display: none;
   overflow: hidden;
   width: 100%;
