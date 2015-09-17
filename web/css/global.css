@@ -11556,6 +11556,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+  margin-bottom: 10px;
 }
 .product-recommend {
   clear: both;
