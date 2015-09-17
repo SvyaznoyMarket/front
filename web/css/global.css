@@ -11956,9 +11956,8 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .product-card-lst__i:nth-child(3n) {
   border-right: 0;
 }
-.product-card-lst__i:nth-child(3),
 .product-card-lst__i:nth-last-child(3) ~ .product-card-lst__i {
-  border-top: 0;
+  border-top: 1px solid #c7c7c7;
 }
 .product-card-lst__img {
   line-height: 200px;
