@@ -3,12 +3,12 @@
 namespace EnterQuery\Search;
 
 use Enter\Curl\Query;
-use EnterQuery\CoreQueryTrait;
 use EnterModel as Model;
+use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 
 class GetAutocompleteResultByPhrase extends Query {
-    use CoreQueryTrait;
+    use ScmsQueryTrait;
 
     /** @var array|null */
     protected $result;
@@ -19,10 +19,10 @@ class GetAutocompleteResultByPhrase extends Query {
      */
     public function __construct($phrase, $regionId) {
         $this->url = new Url();
-        $this->url->path = 'v2/search/autocomplete';
+        $this->url->path = 'api/search/autocomplete';
         $this->url->query = [
-            'letters'  => $phrase,
-            'region_id'   => $regionId,
+            'request'  => $phrase,
+            'geo_town_id'   => $regionId,
         ];
 
         $this->init();
@@ -32,7 +32,6 @@ class GetAutocompleteResultByPhrase extends Query {
      * @param $response
      */
     public function callback($response) {
-        $data = $this->parse($response);
-        $this->result = $data;
+        $this->result = $this->parse($response);
     }
 }
