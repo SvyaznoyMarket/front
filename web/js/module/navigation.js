@@ -10,9 +10,7 @@ define(
             chooseModelMoreModel = function chooseModelMoreModel() {
                 chooseModelMoreBox.slideToggle('800');
                 chooseModelMoreLink.toggleClass('more');
-            },
-            $snapContent = $('#wrapper');
-            ;
+            };
         // end of vars
 
         chooseModelMoreLink.click(chooseModelMoreModel);
@@ -29,16 +27,12 @@ define(
 
                 e.preventDefault();
 
-                if (body.hasClass('snapjs-left')) {
-                    $snapContent.removeClass('shifted');
-                    body.removeClass('snapjs-left');
+                if (body.hasClass('menu-open')) {
+                    body.removeClass('menu-open');
                 } else {
-                    $snapContent.addClass('shifted');
-                    body.addClass('snapjs-left');
+                    body.addClass('menu-open');
                 }
-
-            }
-            ;
+            };
         // end of vars
         
         $(navIco).on('click', showHideMenu);
