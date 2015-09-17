@@ -7,35 +7,34 @@ namespace EnterModel\Search {
         /** @var string */
         public $id;
         /** @var string */
+        public $ui;
+        /** @var string */
         public $token;
         /** @var string */
         public $name;
         /** @var string */
         public $link;
+        /** @var int */
+        public $productCount = 0;
         /** @var Model\MediaList */
         public $media;
 
         /**
-         * @param array $data
+         * @param mixed $data
          */
-        public function __construct(array $data = []) {
-            if (array_key_exists('id', $data)) $this->id = $data['id'] ? (string)$data['id'] : null;
-            if (array_key_exists('token', $data)) $this->token = $data['token'] ? (string)$data['token'] : null;
-            if (array_key_exists('name', $data)) $this->name = $data['name'] ? (string)$data['name'] : null;
-            if (array_key_exists('link', $data)) $this->link = $data['link'] ? rtrim((string)$data['link'], '/') : null;
+        public function __construct($data = []) {
+            if (isset($data['id'])) $this->id = (string)$data['id'];
+            if (isset($data['uid'])) $this->ui = (string)$data['uid'];
+            if (isset($data['slug'])) $this->token = (string)$data['slug'];
+            if (isset($data['name'])) $this->name = (string)$data['name'];
+            if (isset($data['url'])) $this->link = rtrim((string)$data['url'], '/');
+            if (isset($data['product_count'])) $this->productCount = (int)$data['product_count'];
 
-            $this->media = new Model\MediaList([[
-                'provider' => 'image',
-                'tags' => ['main'],
-                'sources' => [
-                    [
-                        'type' => 'category_163x163',
-                        'url' => $data['image'],
-                        'width' => 163,
-                        'height' => 163,
-                    ],
-                ],
-            ]]);
+            if (isset($data['medias'])) {
+                $this->media = new Model\MediaList($data['medias']);
+            } else {
+                $this->media = new Model\MediaList();
+            }
         }
     }
 }
