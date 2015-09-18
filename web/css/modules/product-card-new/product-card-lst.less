@@ -13,12 +13,13 @@
         font-size: 12px;
 
         .box-sizing(border-box);
+        border-bottom: 1px solid #c7c7c7;
         &:nth-child(3n) {
             border-right: 0;
         }
-
-        &:nth-child(3) ~ & {
-            border-top: 1px solid #c7c7c7;
+        &:nth-child(3n+1):nth-last-child(-n+3) ,
+        &:nth-child(3n+1):nth-last-child(-n+3) ~ li {
+            border-bottom: none;
         }
     }
     &__img {
