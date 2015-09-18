@@ -1,0 +1,1 @@
+define(["jquery","underscore"],function(e){var d=e(".footer"),o=e("body"),a=o.hasClass("noIOS");d.removeClass("fixed"),a&&o.addClass("noIOS"),e(".content").height()+d.outerHeight()+e(".header").height()<e(window).height()&&"index"!==o.data("module")&&(o.removeClass("noIOS"),d.addClass("fixed"))});
