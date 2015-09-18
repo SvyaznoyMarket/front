@@ -50,25 +50,25 @@
 
     <body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-widget="{{&dataWidget}}">
         {{>partial/menu}}
-        <div class="fader js-fader"></div>
+        <div class="menu-overlay js-fader"></div>
 
         <div class="page" id="wrapper">
             {{>partial/header}}
-            <div class="wrapper">
-                {{#content}}
-                    {{>content}}
-                {{/content}}
-                {{>partial/template}}
 
-                {{>partial/footer}}
-            </div>
+            {{#content}}
+                {{>content}}
+            {{/content}}
+
+            {{>partial/template}}
+
+            {{>partial/footer}}
         </div>
 
 		{{#regionBlock}}
 	        {{>partial/region}}
 	    {{/regionBlock}}
 
-        
+
 	    {{>partial/search.suggest}}
 	</body>
 </html>
