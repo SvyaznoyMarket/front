@@ -5256,9 +5256,6 @@ body {
 .cartEmpty_now a {
   text-decoration: underline;
 }
-.cart__inn {
-  padding-bottom: 52px;
-}
 .cart-item {
   padding: 10px 10px 5px;
   width: 100%;
@@ -5411,14 +5408,11 @@ body {
   -webkit-box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
-  position: fixed;
-  z-index: 1009;
-  bottom: 0;
-  left: 0;
   width: 100%;
   padding: 10px 0;
   background: #ffffff;
   background: rgba(255, 255, 255, 0.9);
+  margin-top: 20px;
 }
 .cartBar_text {
   padding-right: 170px;
