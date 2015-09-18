@@ -56,7 +56,7 @@ class Content {
         $mainMenuQuery = new Query\MainMenu\GetItem();
         $curl->prepare($mainMenuQuery);
 
-        $contentItemQuery = new Query\Content\GetItemByToken($contentToken, ['site-mobile']);
+        $contentItemQuery = new Query\Content\GetItemByToken($contentToken, $region->id, ['site-mobile']);
         $curl->prepare($contentItemQuery);
         
         $curl->execute();

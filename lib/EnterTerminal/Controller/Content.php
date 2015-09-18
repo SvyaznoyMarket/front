@@ -35,7 +35,7 @@ namespace EnterTerminal\Controller {
                 throw new \Exception('Не передан contentToken', Http\Response::STATUS_BAD_REQUEST);
             }
 
-            $contentItemQuery = new Query\Content\GetItemByToken($contentToken);
+            $contentItemQuery = new Query\Content\GetItemByToken($contentToken, $regionId);
             $curl->prepare($contentItemQuery);
 
             $curl->execute();
