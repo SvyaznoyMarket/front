@@ -2883,6 +2883,9 @@ body {
   font-size: 15px;
   line-height: 15px;
 }
+.prodHd .icon-favorit {
+  display: inline-block;
+}
 .prodBuy_l {
   float: left;
   overflow: hidden;
@@ -5323,6 +5326,12 @@ body {
 }
 .cartEmpty_now a {
   text-decoration: underline;
+}
+.cart__min-sum {
+  color: #009712;
+  font-size: 18px;
+  text-align: center;
+  margin: 30px 0 20px;
 }
 /* ==========================================================================
    Корзина .cartItem .cartLine .cartBuy

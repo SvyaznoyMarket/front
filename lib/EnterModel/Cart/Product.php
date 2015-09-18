@@ -29,7 +29,11 @@ class Product {
      */
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
-        if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
+        if (array_key_exists('ui', $data)) {
+            $this->ui = (string)$data['ui'];
+        } else if (array_key_exists('uid', $data)) {
+            $this->ui = (string)$data['uid'];
+        }
         if (array_key_exists('quantity', $data)) $this->quantity = (int)$data['quantity'];
         if (array_key_exists('price', $data)) $this->price = (float)$data['price'];
         if (array_key_exists('sum', $data)) $this->sum = (float)$data['sum'];

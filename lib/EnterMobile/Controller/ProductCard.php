@@ -38,6 +38,7 @@ class ProductCard {
         $controllerRequest = $controller->createRequest();
         $controllerRequest->config->mainMenu = true;
         $controllerRequest->config->review = true;
+        $controllerRequest->config->favourite = true;
         $controllerRequest->regionId = $regionId;
         $controllerRequest->productCriteria = ['token' => $productToken];
         $controllerRequest->userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request);

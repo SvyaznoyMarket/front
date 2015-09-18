@@ -18,6 +18,8 @@ class Cart extends Partial\Widget {
     public $credit;
     /** @var string */
     public $orderUrl;
+    /** @var int */
+    public $orderRemainSum;
     /** @var string */
     public $orderDataGa;
 }

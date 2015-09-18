@@ -2,31 +2,24 @@
 
 namespace EnterAggregator\Controller\Cart {
 
-    use Enter\Http;
-    use EnterAggregator\CurlTrait;
-    use EnterAggregator\LoggerTrait;
     use EnterMobile\ConfigTrait;
+    use EnterAggregator\CurlTrait;
+    use EnterAggregator\AbTestTrait;
+    use EnterAggregator\LoggerTrait;
     use EnterModel as Model;
     use EnterQuery as Query;
     use EnterRepository as Repository;
     use EnterAggregator\Controller\Cart\SetProductList\Response;
 
     class SetProductList {
-        use ConfigTrait, LoggerTrait, CurlTrait;
+        use ConfigTrait, CurlTrait, AbTestTrait, LoggerTrait;
 
         /**
-         * @param $regionId
-         * @param Http\Session $session
-         * @param Model\Cart $cart
-         * @param Model\Cart\Product[] $cartProducts
+         * @param SetProductList\Request $request
          * @return Response
+         * @throws \Exception
          */
-        public function execute(
-            $regionId,
-            Http\Session $session,
-            Model\Cart $cart,
-            array $cartProducts
-        ) {
+        public function execute(SetProductList\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
             $cartRepository = new Repository\Cart();
@@ -36,17 +29,16 @@ namespace EnterAggregator\Controller\Cart {
 
             /** @var Model\Cart\Product[] $cartProductsById */
             $cartProductsById = [];
-            foreach ($cartProducts as $cartProduct) {
+            foreach ($request->cartProducts as $cartProduct) {
                 $cartProductsById[$cartProduct->id] = $cartProduct;
             }
-            unset($cartProducts);
 
             /** @var Model\Product[] $productsById */
             $productsById = [];
             foreach ($cartProductsById as $cartProduct) {
                 $productsById[$cartProduct->id] = null;
             }
-            foreach ($cart->product as $cartProduct) {
+            foreach ($request->cart->product as $cartProduct) {
                 $productsById[$cartProduct->id] = null;
             }
 
@@ -54,7 +46,7 @@ namespace EnterAggregator\Controller\Cart {
             $productListQueries = [];
             $descriptionListQueries = [];
             foreach (array_chunk(array_keys($productsById), $config->curl->queryChunkSize) as $idsInChunk) {
-                $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $regionId);
+                $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $request->regionId);
                 $curl->prepare($productListQuery);
                 $productListQueries[] = $productListQuery;
 
@@ -72,13 +64,16 @@ namespace EnterAggregator\Controller\Cart {
 
             $curl->execute();
 
+            /** @var Query\Cart\SetQuantityForProductItem[] $setProductQueries */
+            $setProductQueries = [];
+
             // товары
             $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
             $productRepository->setDescriptionForListByListQuery($productsById, $descriptionListQueries);
 
             foreach ($cartProductsById as $cartProduct) {
                 /** @var Model\Cart\Product|null $cartProduct */
-                $existsCartProduct = $cartRepository->getProductById($cartProduct->id, $cart);
+                $existsCartProduct = $cartRepository->getProductById($cartProduct->id, $request->cart);
                 if ($existsCartProduct) {
                     foreach (get_object_vars($cartProduct) as $key => $value) {
                         $existsCartProduct->{$key} = $value;
@@ -96,36 +91,66 @@ namespace EnterAggregator\Controller\Cart {
 
                 $cartProduct->ui = $product->ui;
 
-                $cartRepository->setProductForObject($cart, $cartProduct);
+                $cartRepository->setProductForObject($request->cart, $cartProduct);
+
+                if ($request->userUi && $this->getAbTest()->isCoreCartEnabled()) {
+                    $setProductQuery = new Query\Cart\SetQuantityForProductItem($cartProduct->ui, $cartProduct->quantity, $request->userUi);
+                    $curl->prepare($setProductQuery);
+                    $setProductQueries[] = $setProductQuery;
+                }
             }
 
             // сохранение корзины в сессию
-            $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
+            $cartRepository->saveObjectToHttpSession($request->session, $request->cart, $config->cart->sessionKey);
+
+            if ($setProductQueries) {
+                $curl->execute(null, 1);
+            }
 
             // запрос корзины
-            $cartItemQuery = new Query\Cart\Price\GetItem($cart, $regionId);
+            $cartItemQuery = new Query\Cart\Price\GetItem($request->cart, $request->regionId);
             $curl->prepare($cartItemQuery);
 
             $curl->execute();
 
             try {
                 // корзина из ядра
-                $cartRepository->updateObjectByQuery($cart, $cartItemQuery);
+                $cartRepository->updateObjectByQuery($request->cart, $cartItemQuery);
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
             }
 
-            $response->cart = $cart;
+            $response->cart = $request->cart;
             $response->productsById = $productsById;
 
             return $response;
         }
-    }
 
+        /**
+         * @return SetProductList\Request
+         */
+        public function createRequest() {
+            return new SetProductList\Request();
+        }
+    }
 }
 
 namespace EnterAggregator\Controller\Cart\SetProductList {
+    use Enter\Http;
     use EnterModel as Model;
+
+    class Request {
+        /** @var string */
+        public $regionId;
+        /** @var Http\Session */
+        public  $session;
+        /** @var Model\Cart */
+        public $cart;
+        /** @var Model\Cart\Product[] */
+        public $cartProducts;
+        /** @var string|null */
+        public $userUi;
+    }
 
     class Response {
         /** @var Model\Cart */

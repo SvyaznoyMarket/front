@@ -221,7 +221,13 @@
                 {{#product.namePrefix}}{{&product.namePrefix}}<br />{{/product.namePrefix}}
                 {{&product.name}}
             </h1>
-            <i class="icon-favorit js-favorit-click-action"></i>
+            {{#product.isFavorite}}
+                <i class="icon-favorit icon-favorit--on" data-product-ui="{{product.ui}}"></i>
+            {{/product.isFavorite}}
+            {{^product.isFavorite}}
+                <i class="icon-favorit js-favorites-add" data-product-ui="{{product.ui}}"></i>
+            {{/product.isFavorite}}
+
 
             {{#product.article}}
                 <div class="prodHd_artcl">Артикул: {{product.article}}</div>

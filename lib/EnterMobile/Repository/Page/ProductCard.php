@@ -71,6 +71,7 @@ class ProductCard {
         // содержание
         $page->content->product->name = $product->webName;
         $page->content->product->id = $product->id;
+        $page->content->product->ui = $product->ui;
         $page->content->product->namePrefix = $product->namePrefix;
         $page->content->product->article = $product->article;
         $page->content->product->description = $product->description;
@@ -337,6 +338,13 @@ class ProductCard {
                 $category->name = 'Популярные аксессуары';
 
                 array_unshift($page->content->product->accessorySlider->categories, $category);
+            }
+        }
+
+        // избранное
+        if (isset($product->favorite) && !empty($product->favorite)) {
+            foreach ($product->favorite as $key => $favoriteProductUi) {
+                if ($product->ui == $favoriteProductUi) $page->content->product->isFavorite = true;
             }
         }
 
