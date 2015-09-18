@@ -135,7 +135,7 @@ return function(\EnterAggregator\Config $config) {
     $config->order->prepayment->enabled = true;
     $config->order->prepayment->priceLimit = 100000;
     $config->order->bonusCardSessionKey = 'order_bonusCards';
-    $config->order->enabled = true;
+    $config->order->minSum = 990;
 
     $config->product->itemPerPage = 19;
     $config->product->itemsInSlider = 60;
@@ -154,11 +154,13 @@ return function(\EnterAggregator\Config $config) {
 
     $config->search->minPhraseLength = 2;
 
+    $config->credit->enabled = false;
+
     $config->credit->directCredit->enabled = false;
     $config->credit->directCredit->minPrice = 3000;
     $config->credit->directCredit->partnerId = '4427';
 
-    $config->credit->kupivkredit->enabled = true;
+    $config->credit->kupivkredit->enabled = false;
     $config->credit->kupivkredit->partnerId = '1-178YO4Z';
     $config->credit->kupivkredit->secretPhrase = '321ewq';
     $config->credit->kupivkredit->url = 'https://kupivkredit-test-fe.tcsbank.ru/';

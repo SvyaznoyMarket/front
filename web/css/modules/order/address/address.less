@@ -242,15 +242,28 @@
 .content-scroll {
     z-index: 1;
 
-    overflow: auto;
-
+    overflow: hidden;
+    position: absolute;
     width: 100%;
     max-width: 640px;
     height: 100%;
-    margin: auto;
-    padding: 0 10px 140px;
+    padding: 0 10px 10px;
+    top:0;
+    left:0;
 
     .box-sizing(border-box);
+
+
+    &__inn{
+        height: 100%;
+        width: 100%;
+
+        .box-sizing(border-box);
+        padding-bottom: 130px;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        overflow-x: hidden;
+    }
     &:after {
         position: absolute;
         bottom: 0;

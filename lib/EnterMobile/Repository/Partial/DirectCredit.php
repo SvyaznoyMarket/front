@@ -24,6 +24,10 @@ class DirectCredit {
         $directCredit = new Partial\DirectCredit();
         $categoryRepository = new \EnterRepository\Product\Category();
 
+        if (!$this->getConfig()->credit->enabled) {
+            return $directCredit;
+        }
+
         $cartProductsById = [];
         if ($cartModel) {
             foreach ($cartModel->product as $cartProduct) {

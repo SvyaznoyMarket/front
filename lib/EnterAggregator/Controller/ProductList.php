@@ -87,8 +87,10 @@ namespace EnterAggregator\Controller {
                 // подробный запрос категории (seo, настройки сортировки, ...)
                 $categoryItemQuery = null;
                 if (!empty($request->categoryCriteria['token'])) {
-                    $categoryItemQuery = new Query\Product\Category\GetItemByToken($request->categoryCriteria['token'],
-                        $response->region->id
+                    $categoryItemQuery = new Query\Product\Category\GetItemByToken(
+                        $request->categoryCriteria['token'],
+                        $response->region->id,
+                        isset($request->categoryCriteria['brand.token']) ? $request->categoryCriteria['brand.token'] : null
                     );
                 } else if (!empty($request->categoryCriteria['id'])) {
                     $categoryItemQuery = new Query\Product\Category\GetItemById($request->categoryCriteria['id'], $response->region->id);
@@ -198,7 +200,7 @@ namespace EnterAggregator\Controller {
             $rootCategoryTreeQuery = null;
             if ($request->config->mainMenu) {
                 // запрос дерева категорий для меню
-                $rootCategoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
+                $rootCategoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(0);
                 $curl->prepare($rootCategoryTreeQuery);
             }
 
@@ -229,7 +231,7 @@ namespace EnterAggregator\Controller {
             $productListQueries = [];
             if ($response->productUiPager && $response->productUiPager->uis) {
                 foreach (array_chunk($response->productUiPager->uis, $config->curl->queryChunkSize) as $uisInChunk) {
-                    $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $response->region->id, ['model' => false, 'related' => false, 'availability' => false]);
+                    $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $response->region->id, ['model' => false, 'related' => false]);
                     $curl->prepare($productListQuery);
                     $productListQueries[] = $productListQuery;
                 }

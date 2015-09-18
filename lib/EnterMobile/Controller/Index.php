@@ -3,6 +3,7 @@
 namespace EnterMobile\Controller;
 
 use Enter\Http;
+use EnterAggregator\AbTestTrait;
 use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
@@ -20,7 +21,9 @@ class Index {
         CurlTrait,
         MustacheRendererTrait,
         DebugContainerTrait,
-        SessionTrait;
+        SessionTrait,
+        AbTestTrait
+    ;
 
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
@@ -46,6 +49,7 @@ class Index {
         $pageRequest->cart = $controllerResponse->cart;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
         $pageRequest->promos = $controllerResponse->promos;
+        $pageRequest->popularBrands = (new \EnterRepository\Brand())->getPopularObjects();
 
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
@@ -59,10 +63,18 @@ class Index {
 
         // рендер
         $renderer = $this->getRenderer();
-        $renderer->setPartials([
-            'content' => 'page/main/content_updated',
-        ]);
-        $content = $renderer->render('layout/default-1511', $page);
+
+        if ('disabled' === $this->getAbTest()->getObjectByToken('main')->chosenItem->token) {
+            $renderer->setPartials([
+                'content' => 'page/main/content',
+            ]);
+            $content = $renderer->render('layout/default', $page);
+        } else {
+            $renderer->setPartials([
+                'content' => 'page/main/content_updated',
+            ]);
+            $content = $renderer->render('layout/default-1511', $page);
+        }
 
         // http-ответ
         $response = new Http\Response($content);

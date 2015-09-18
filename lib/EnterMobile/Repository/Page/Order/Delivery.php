@@ -36,7 +36,7 @@ class Delivery {
         // заголовок
         $page->title = 'Оформление заказа - Способ получения - Enter';
 
-        $page->dataModule = 'order';
+        $page->dataModule = 'order-delivery';
 
         $page->content->region = [
             'name' => $request->region->name,
@@ -96,7 +96,8 @@ class Delivery {
                         'name' => $orderModel->seller->name,
                         'url'  => str_replace('www.enter.ru', 'm.enter.ru', $orderModel->seller->offerUrl),
                     ]
-                    : false,
+                    : false
+                ,
                 'sum'            => [
                     'name'  => $priceHelper->format($orderModel->sum),
                     'value' => $orderModel->sum,
@@ -305,6 +306,11 @@ class Delivery {
 
                     return $discounts;
                 }),
+                'hasDiscountLink' => call_user_func(function() use (&$orderModel) {
+                    $sellerModel = $orderModel->seller;
+
+                    return !$sellerModel || ($sellerModel->ui === $sellerModel::UI_ENTER);
+                }),
                 'pointJson'      => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$regionModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex, &$pointRepository) {
                     $points = [];
                     $filtersByToken = [
@@ -332,6 +338,10 @@ class Delivery {
                         ;
                         if (!$point) {
                             $this->getLogger()->push(['type' => 'error', 'message' => 'Точка не найдена', 'pointId' => $possiblePointModel->id, 'group' => $possiblePointModel->groupToken, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
+                            continue;
+                        }
+                        if (!$point->latitude || !$point->longitude) {
+                            $this->getLogger()->push(['type' => 'error', 'message' => 'Не заданы координаты точки', 'pointId' => $possiblePointModel->id, 'group' => $possiblePointModel->groupToken, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
                             continue;
                         }
 
@@ -489,11 +499,15 @@ class Delivery {
                                 'name' => $day->format('d'),
                             ];
                             if (in_array((int)$day->format('U'), $possibleDays)) {
+                                if ($firstAvailableDay == $day) {
+                                    $item['isFirst'] = true;
+                                }
+
                                 $item['dataValue'] = $templateHelper->json([
-                                'change' => [
-                                    'orders' => [
-                                        [
-                                            'blockName' => $orderModel->blockName,
+                                    'change' => [
+                                        'orders' => [
+                                            [
+                                                'blockName' => $orderModel->blockName,
                                                 'delivery'  => [
                                                     'date' => $day->format('U'),
                                                 ],
@@ -535,7 +549,7 @@ class Delivery {
                                 'isActive'    =>
                                     $orderModel->paymentMethodId
                                     ? ($orderModel->paymentMethodId == $paymentMethodModel->id)
-                                    : ('1' == $paymentMethodModel->id)
+                                    : false
                                 ,
                                 'dataValue'   => $templateHelper->json([
                                     'change' => [
@@ -555,8 +569,14 @@ class Delivery {
                         }
                     }
 
-                    if ($paymentMethod = reset($paymentMethods)) {
-                        $paymentMethod['isActive'] = true;
+                    if (
+                        isset($paymentMethods[0])
+                        && (
+                            !$orderModel->paymentMethodId
+                            || (1 === count($paymentMethods))
+                        )
+                    ) {
+                        $paymentMethods[0]['isActive'] = true;
                     }
 
                     return $paymentMethods;
@@ -747,36 +767,5 @@ class Delivery {
                 'partials' => [],
             ],
         ]);
-    }
-
-    /**
-     * @param string $groupToken
-     * @return string
-     */
-    public function getPointIcon($groupToken) {
-        $icon = null;
-
-        switch ($groupToken) {
-            case 'self_partner_pickpoint_pred_supplier':
-            case 'self_partner_pickpoint':
-            case 'pickpoint':
-                $icon = 'pickpoint';
-                break;
-            case 'self_partner_svyaznoy_pred_supplier':
-            case 'self_partner_svyaznoy':
-            case 'shops_svyaznoy':
-            case 'svyaznoy':
-                $icon = 'svyaznoy';
-                break;
-            case 'self_partner_hermes_pred_supplier':
-            case 'self_partner_hermes':
-            case 'hermes':
-                $icon = 'hermes';
-                break;
-            default:
-                $icon = 'enter';
-        }
-
-        return $icon . '.png';
     }
 }

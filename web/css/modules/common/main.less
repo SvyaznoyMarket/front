@@ -317,7 +317,6 @@ textarea[contenteditable] {
 
     border: 1px solid @inputBorder;
 
-    line-height: 35px;
 
     &-err {
         border-color: @redErr;
@@ -486,7 +485,10 @@ textarea[contenteditable] {
 }
 
 .m-body-loader {
-    position: relative;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+
     &:before {
         position: fixed;
         top: 0;

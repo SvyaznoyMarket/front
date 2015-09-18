@@ -62,7 +62,7 @@ class DecreaseQuantityForProductList {
         // Увеличение кол-ва
         call_user_func(function() use(&$ids, &$uis, &$quantity, &$user, &$region, &$curl) {
             if ($ids) {
-                $productListQuery = new \EnterQuery\Product\GetListByIdList($ids, $region->id);
+                $productListQuery = new \EnterQuery\Product\GetListByIdList($ids, $region->id, ['model' => false, 'related' => false]);
                 $curl->prepare($productListQuery);
                 $curl->execute();
 
@@ -88,7 +88,7 @@ class DecreaseQuantityForProductList {
 
             $cartProductListQuery = null;
             if ($cart->product) {
-                $cartProductListQuery = new \EnterQuery\Product\GetListByUiList(array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), $region->id);
+                $cartProductListQuery = new \EnterQuery\Product\GetListByUiList(array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), $region->id, ['model' => false, 'related' => false]);
                 $curl->prepare($cartProductListQuery);
             }
 

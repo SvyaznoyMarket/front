@@ -5,9 +5,10 @@ namespace EnterMobile\Controller\User\Cart;
 use Enter\Http;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
-use EnterAggregator\LoggerTrait;
 use EnterAggregator\SessionTrait;
 use EnterAggregator\RouterTrait;
+use EnterAggregator\AbTestTrait;
+use EnterAggregator\LoggerTrait;
 use EnterQuery as Query;
 use EnterMobile\Model;
 use EnterMobile\Routing;
@@ -15,7 +16,7 @@ use EnterMobile\Repository;
 use EnterMobile\Model\Page\User\Cart\SetProduct as Page;
 
 class DeleteProduct {
-    use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait, RouterTrait;
+    use ConfigTrait, CurlTrait, SessionTrait, RouterTrait, AbTestTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request
@@ -41,8 +42,9 @@ class DeleteProduct {
         // добавление товара в корзину
         $cartRepository->setProductForObject($cart, $cartProduct);
 
-        // ид региона
+        // регион
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
+        $region = $regionId ? new \EnterModel\Region(['id' => $regionId]) : null;
 
         $productItemQuery = new Query\Product\GetItemById($cartProduct->id, $regionId);
         $curl->prepare($productItemQuery);
@@ -93,13 +95,6 @@ class DeleteProduct {
         // удалить разбиение заказа
         $session->remove($config->order->splitSessionKey);
 
-        // если корзина пустая
-        if (!count($cart)) {
-            return new Http\JsonResponse([
-                'redirect' => $this->getRouter()->getUrlByRoute(new Routing\Cart\Index()),
-            ]);
-        }
-
         // товар
         $product = (new \EnterRepository\Product())->getObjectByQuery($productItemQuery);
         if (!$product) {
@@ -107,6 +102,17 @@ class DeleteProduct {
             $product->id = $cartProduct->id;
 
             throw new \Exception(sprintf('Товар #%s не найден', $cartProduct->id));
+        }
+
+        // пользователь
+        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+
+        // серверная корзина
+        if ($user && $this->getAbTest()->isCoreCartEnabled()) {
+            $removeQuery = new Query\Cart\DeleteProductItem($product->ui, $user->ui);
+            $curl->prepare($removeQuery);
+
+            $curl->execute(null, 1);
         }
 
         // товары
@@ -121,22 +127,29 @@ class DeleteProduct {
             );
         }
 
-        // пользователь
-        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        // если корзина пустая
+        if (!count($cart)) {
+            return new Http\JsonResponse([
+                'redirect' => $this->getRouter()->getUrlByRoute(new Routing\Cart\Index()),
+            ]);
+        }
 
         $page = new Page();
         // кнопка купить
-        $widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct);
-        $page->widgets['.' . $widget->widgetId] = $widget;
+        if ($widget = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct)) {
+            $page->widgets['.' . $widget->widgetId] = $widget;
+        }
         // спиннер
-        $widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct);
-        $page->widgets['.' . $widget->widgetId] = $widget;
+        if ($widget = (new Repository\Partial\Cart\ProductSpinner())->getObject($product, $cartProduct)) {
+            $page->widgets['.' . $widget->widgetId] = $widget;
+        }
         // пользователь, корзина
-        $widget = (new Repository\Partial\UserBlock())->getObject($cart, $user);
-        $page->widgets['.' . $widget->widgetId] = $widget;
-
-        $widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById));
-        $page->widgets['.' . $widget->widgetId] = $widget;
+        if ($widget = (new Repository\Partial\UserBlock())->getObject($cart, $user)) {
+            $page->widgets['.' . $widget->widgetId] = $widget;
+        }
+        if ($widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById), $region)) {
+            $page->widgets['.' . $widget->widgetId] = $widget;
+        }
 
         // response
         $response = new Http\JsonResponse([

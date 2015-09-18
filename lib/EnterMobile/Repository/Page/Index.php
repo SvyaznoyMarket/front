@@ -2,25 +2,27 @@
 
 namespace EnterMobile\Repository\Page;
 
+use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
+use EnterAggregator\CurlTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
+use EnterAggregator\AbTestTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\Index as Page;
 
-use EnterAggregator\CurlTrait;
-use EnterMobile\ConfigTrait;
-
 
 class Index {
-    use LoggerTrait,
+    use ConfigTrait,
+        LoggerTrait,
         TemplateHelperTrait,
         RouterTrait,
         CurlTrait,
-        ConfigTrait;
+        AbTestTrait
+    ;
 
     /**
      * @param Page $page
@@ -34,8 +36,10 @@ class Index {
         $templateHelper = $this->getTemplateHelper();
 
         $productSliderRepository = new Repository\Partial\ProductSlider();
+        $mediaRepository = new \EnterRepository\Media();
 
         $page->dataModule = 'index';
+        $page->bodyClass = 'body-main';
 
         $promoData = [];
         foreach ($request->promos as $promoModel) {
@@ -89,7 +93,27 @@ class Index {
         $page->content->popularSlider = $productSliderRepository->getObject('popularSlider', $recommendListUrl);
         $page->content->personalSlider = $productSliderRepository->getObject('personalSlider', $recommendListUrl);
         $page->content->viewedSlider = $productSliderRepository->getObject('viewedSlider', $recommendListUrl);
+        
+        call_user_func(function() use(&$page, &$request, &$mediaRepository) {
+            foreach ($request->popularBrands as $brand) {
+                if (!isset($lastGroup) || count($lastGroup) == 2) {
+                    unset($lastGroup);
+                    $lastGroup = [];
+                    $page->content->popularBrands[] = &$lastGroup;
+                }
+                
+                $lastGroup[] = [
+                    'name' => $brand->name,
+                    'url' => $brand->url,
+                    'imageUrl' => $mediaRepository->getSourceObjectByList($brand->media->photos, 'main', '70x35')->url,
+                ];
+            }
+        });
 
+        $page->headerTitle = false;
+
+        // расположение главного меню
+        $page->content->mainMenuOnBottom = ('bottom' === $this->getAbTest()->getObjectByToken('msite_main_categories')->chosenItem->token) ? true : false;
 
         // шаблоны mustache
         // ...

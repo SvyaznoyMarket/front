@@ -2,6 +2,8 @@
 namespace EnterModel\Cart\Split\Order;
 
 class Seller {
+    const UI_ENTER = '24594081-6c68-11e2-a300-e83935c0a4d4';
+
     /** @var string|null */
     public $id;
     /** @var string|null */

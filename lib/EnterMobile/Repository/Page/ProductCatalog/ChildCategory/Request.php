@@ -7,10 +7,8 @@ use EnterMobile\Model;
 use EnterMobile\Repository;
 
 class Request extends Repository\Page\ProductCatalog\RootCategory\Request {
-    /** @var \EnterModel\Product\Category */
-    //public $category;
-    /** @var \EnterModel\Product\Category\Config */
-    //public $catalogConfig;
+    /** @var \EnterModel\Brand|null */
+    public $brand;
     /** @var \EnterModel\Product\RequestFilter[] */
     public $baseRequestFilters = [];
     /** @var \EnterModel\Product\RequestFilter[] */

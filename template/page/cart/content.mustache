@@ -6,7 +6,6 @@
             {{#products}}
             <!-- товар в корзине -->
                 <div class="js-cartProduct-container cart-item clearfix">
-
                     {{#cartDeleteButton}}
                         {{>partial/cart/deleteButton}}
                     {{/cartDeleteButton}}
@@ -41,11 +40,7 @@
             <div class="cartEmpty_title">В вашей корзине еще нет товаров.</div>
 
             <div class="cartEmpty_now"><a href="/">Перейти к покупкам &rsaquo;</a></div>
-        </div>     
+        </div>
         {{/cart}}
     </div>
 </div>
-
-{{#cart}}
-    {{>partial/cart/bar}}
-{{/cart}}

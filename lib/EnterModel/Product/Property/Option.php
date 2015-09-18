@@ -3,12 +3,12 @@
 namespace EnterModel\Product\Property;
 
 class Option {
-    /** @var string|null */
-    public $id;
-    /** @var string|null */
-    public $value;
-    /** @var string|null */
-    public $hint;
+    /** @var string */
+    public $id = '';
+    /** @var string */
+    public $value = '';
+    /** @var string */
+    public $hint = '';
 
     /**
      * @param array $data

@@ -41,7 +41,7 @@ namespace EnterMobileApplication\Controller {
 
             $contentToken = $request->query['contentId'];
             if (!$contentToken) {
-                throw new \Exception('Не передан contentToken', Http\Response::STATUS_BAD_REQUEST);
+                throw new \Exception('Не передан contentId', Http\Response::STATUS_BAD_REQUEST);
             }
 
             $contentItemQuery = new Query\Content\GetItemByToken($contentToken);
@@ -53,6 +53,14 @@ namespace EnterMobileApplication\Controller {
                 return (new \EnterMobileApplication\Controller\Error\NotFound())->execute($request, sprintf('Контент @%s не найден', $contentToken));
 
             $item = $contentItemQuery->getResult();
+
+            // После реализации FCMS-800:
+            // 1. Удалить данный код.
+            // 2. Добавить в статическую страницу template-with-left-menu условие, убирающее меню для MAPI.
+            // 3. Передавать в scms.enter.ru/api/static-page идентификатор клиента
+            call_user_func(function() use(&$item) {
+                $item['content'] = preg_replace('/\<\!\-\- STATIC_PAGE_MENU \-\-\>.+?\<\!\-\- \/STATIC_PAGE_MENU \-\-\>/s', '', $item['content']);
+            });
 
             // ответ
             $response = new Response();
@@ -78,7 +86,7 @@ namespace EnterMobileApplication\Controller {
                         $curl->prepare($matches[$key]['query']);
                     }
                     else if (0 === strpos($path, '/product/')) {
-                        $matches[$key]['query'] = new Query\Product\GetItemByToken($contentRepository->getTokenByPath($path), $regionId);
+                        $matches[$key]['query'] = new Query\Product\GetItemByToken($contentRepository->getTokenByPath($path), $regionId, ['model' => false, 'related' => false]);
                         $curl->prepare($matches[$key]['query']);
                     }
                 }

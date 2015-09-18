@@ -16,14 +16,15 @@ class DeleteProductItem extends Query {
     /**
      * @param string $productUi
      * @param string $userUi
+     * @param int $quantity
      */
-    public function __construct($productUi, $userUi) {
+    public function __construct($productUi, $userUi, $quantity = 999999) {
         $this->url = new Url();
         $this->url->path = 'api/cart/remove';
         $this->data = [
-            'uid' => $productUi,
+            'uid'      => $productUi,
             'user_uid' => $userUi,
-            'quantity' => 9999999, // Если не передать большое quantity, то вместо удаления товара будет уменьшено его кол-во
+            'quantity' => $quantity,
         ];
 
         $this->init();

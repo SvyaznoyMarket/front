@@ -60,20 +60,29 @@ namespace EnterMobileApplication\Controller\User {
 
             $curl->execute();
 
+            // Серии ранее полученных купонов
             $usedSeriesIds = [];
             $response->coupons = (new \EnterRepository\Coupon())->getObjectListByQuery($couponListQuery);
             foreach ($response->coupons as $coupon) {
                 $usedSeriesIds[] = $coupon->seriesId;
             }
 
-            $response->couponSeries = array_values( // TODO: вынести в репозиторий
-                array_filter( // фильрация серий купонов
-                    (new \EnterRepository\Coupon\Series())->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery),
-                    function(Model\Coupon\Series $series) use (&$usedSeriesIds) {
-                        return in_array($series->id, $usedSeriesIds); // только те серии купонов, которые есть у ранее полученых купонов
-                    }
-                )
-            );
+            // TODO: вынести в репозиторий
+            $response->couponSeries = array_values(array_filter(
+                (new \EnterRepository\Coupon\Series())->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery),
+                function(Model\Coupon\Series $series) use (&$usedSeriesIds) {
+                    return in_array($series->id, $usedSeriesIds, true) && time() < strtotime($series->endAt);
+                }
+            ));
+
+            $couponSeriesIds = [];
+            foreach ($response->couponSeries as $couponSeries) {
+                $couponSeriesIds[] = $couponSeries->id;
+            }
+
+            $response->coupons = array_values(array_filter($response->coupons, function(Model\Coupon $coupon) use(&$couponSeriesIds) {
+                return in_array($coupon->seriesId, $couponSeriesIds, true) && time() < strtotime($coupon->endAt);
+            }));
 
             if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
 

@@ -35,7 +35,7 @@ define(
 
                     window.location.href = response.redirect;
                     $orderContent.addClass(loaderClass);
-                    setTimeout(function() { $orderContent.removeClass(loaderClass); }, 10000);
+                    setTimeout(function() { $orderContent.removeClass(loaderClass); }, 30000);
                 }
 
                 try {
@@ -87,5 +87,11 @@ define(
         formValidator.init();
 
         analytics.push(['1 Вход_Получатель_ОБЯЗАТЕЛЬНО']);
+
+        //hack for inputs cursor on iOS
+        $(".wrapper-smpl").scroll(function () {
+            var selected = $(this).find("input:focus");
+            selected.blur();
+        });
     }
 );

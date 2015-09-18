@@ -65,7 +65,7 @@ class Clear {
 
             $cartProductListQuery = null;
             if ($cart->product) {
-                $cartProductListQuery = new \EnterQuery\Product\GetListByUiList(array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), $region->id);
+                $cartProductListQuery = new \EnterQuery\Product\GetListByUiList(array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), $region->id, ['model' => false, 'related' => false]);
                 $curl->prepare($cartProductListQuery);
             }
 

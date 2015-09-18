@@ -47,22 +47,25 @@
     {{>partial/javascript}}
 </head>
 
-<body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="{{&dataUser}}" data-cart="{{&dataCart}}" data-widget="{{&dataWidget}}">
+<body{{#bodyClass}} class="{{bodyClass}}"{{/bodyClass}} data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="{{&dataUser}}" data-cart="{{&dataCart}}" data-widget="{{&dataWidget}}">
     {{>partial/counters}}
-
-    <div class="wrapper">
-        {{>partial/header}}
-
-        {{#content}}
-            {{>content}}
-        {{/content}}
-    </div><!--/ Оболочка -->
-
-    {{>partial/template}}
-
-    {{>partial/footer}}
-
     {{>partial/menu}}
+    <div class="snap-content" id="wrapper">
+        {{>partial/header}}
+        <div class="wrapper">
+            <div class="fader js-fader"></div>
+
+            {{#content}}
+                {{>content}}
+            {{/content}}
+
+
+            {{>partial/template}}
+
+            {{>partial/footer}}
+        </div><!--/ Оболочка -->
+    </div>
+
     {{>partial/search.suggest}}
 
     {{#regionBlock}}

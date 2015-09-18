@@ -6,6 +6,8 @@ namespace EnterModel {
     class MainMenu {
         /** @var Model\MainMenu\Element[] */
         public $elements = [];
+        /** @var array */
+        public $serviceElements = [];
 
         /**
          * @param array $data

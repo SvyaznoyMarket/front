@@ -188,7 +188,7 @@ class Complete {
                     ;
                 }),
                 'onlinePayment' => call_user_func(function() use (&$orderModel, &$onlinePaymentMethodModelsById, $onlinePaymentMethodsById) {
-                    if (!count($onlinePaymentMethodModelsById)) {
+                    if (!count($onlinePaymentMethodModelsById) || !count($orderModel->paymentMethods)) {
                         return false;
                     }
 

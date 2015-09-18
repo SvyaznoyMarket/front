@@ -11,6 +11,9 @@ namespace EnterMobileApplication\Controller {
     use EnterModel as Model;
     use EnterMobileApplication\Controller\MainPromo\Response;
 
+    /**
+     * @deprecated Удалить в версии MAPI 1.5. Вместо данного метода следует использовать MainPage
+     */
     class MainPromo {
         use ConfigTrait, CurlTrait;
 
@@ -20,10 +23,7 @@ namespace EnterMobileApplication\Controller {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
-            $config = $this->getConfig();
             $curl = $this->getCurl();
-
-            $promoRepository = new \EnterRepository\Promo();
 
             // В будущей планируется ввести таргетирование по регионам, поэтому заранее закладываем получение региона от мобильных приложений
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
@@ -31,41 +31,12 @@ namespace EnterMobileApplication\Controller {
                 throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
             }
 
-            /*
-            // запрос региона
-            $regionQuery = new Query\Region\GetItemById($regionId);
-            $curl->prepare($regionQuery);
-
-            $curl->execute();
-
-            // регион
-            $region = (new Repository\Region())->getObjectByQuery($regionQuery);
-            */
-
-            // запрос баннеров
             $promoListQuery = new Query\Promo\GetList(['app-mobile']);
             $curl->prepare($promoListQuery);
-
             $curl->execute();
 
-            // баннеры
-            $promos = $promoRepository->getObjectListByQuery($promoListQuery);
-
-            foreach ($promos as $promo) {
-                if (!$promo->target instanceof \EnterModel\Promo\Target\Content) {
-                    unset($promo->target->url);
-                } else {
-                    $promo->target->url = 'http://m.enter.ru/' . $promo->target->contentId;
-                }
-
-                if ($promo->target instanceof \EnterModel\Promo\Target\Slice) {
-                    unset($promo->target->categoryToken);
-                }
-            }
-
-            // ответ
             $response = new Response();
-            $response->promos = $promos;
+            $response->promos = (new \EnterMobileApplication\Repository\Promo())->getObjectListByQuery($promoListQuery);
 
             return new Http\JsonResponse($response);
         }

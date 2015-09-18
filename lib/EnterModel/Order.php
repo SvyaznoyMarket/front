@@ -155,9 +155,10 @@ class Order {
         if (array_key_exists('payment_url', $data)) $this->paymentUrl = (string)$data['payment_url'];
         if (isset($data['delivery'][0])) {
             foreach ($data['delivery'] as $deliveryItem) {
-                if (empty($deliveryItem['delivery_type_id'])) continue;
-
-                $this->deliveries[] = new Model\Order\Delivery($deliveryItem);
+                $delivery = new Model\Order\Delivery($deliveryItem);
+                if (!empty($delivery->typeId)) {
+                    $this->deliveries[] = $delivery;
+                }
             }
         }
         if (array_key_exists('interval', $data) && (bool)is_array($data['interval'])) $this->interval = new Model\Order\Interval($data['interval']);

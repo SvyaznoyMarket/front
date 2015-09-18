@@ -3,15 +3,16 @@
 namespace EnterMobileApplication\Controller\Cart;
 
 use Enter\Http;
-use EnterAggregator\CurlTrait;
-use EnterAggregator\LoggerTrait;
 use EnterMobileApplication\ConfigTrait;
+use EnterAggregator\CurlTrait;
 use EnterAggregator\SessionTrait;
+use EnterAggregator\AbTestTrait;
+use EnterAggregator\LoggerTrait;
 use EnterMobileApplication\Controller;
 use EnterQuery as Query;
 
 class SetProductList {
-    use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
+    use ConfigTrait, CurlTrait, SessionTrait, AbTestTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request
@@ -64,7 +65,7 @@ class SetProductList {
             }
 
             if ($productsById) {
-                $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id);
+                $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id, ['model' => false, 'related' => false]);
                 $curl->prepare($productListQuery);
                 $curl->execute();
 
@@ -75,20 +76,17 @@ class SetProductList {
                 $cartProduct->ui = $productsById[$cartProduct->id]->ui;
             }
 
-            $curl->prepare(new Query\Cart\SetProductList($cartProducts, $user->ui));
-            $curl->execute();
-
-            $hasQuantity = false;
             foreach ($cartProducts as $cartProduct) {
-                if ($cartProduct->quantity) {
-                    $hasQuantity = true;
-                    $curl->prepare(new Query\Cart\SetQuantityForProductItem($productsById[$cartProduct->id]->ui, $cartProduct->quantity, $user->ui));
-                }
+                $curl->prepare(
+                    new Query\Cart\SetQuantityForProductItem(
+                        $productsById[$cartProduct->id]->ui,
+                        null === $cartProduct->quantity ? '+1' : $cartProduct->quantity,
+                        $user->ui
+                    )
+                );
             }
 
-            if ($hasQuantity) {
-                $curl->execute();
-            }
+            $curl->execute();
         });
 
         // Получение корзины
@@ -101,7 +99,7 @@ class SetProductList {
 
             $cartProductListQuery = null;
             if ($cart->product) {
-                $cartProductListQuery = new \EnterQuery\Product\GetListByUiList(array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), $region->id);
+                $cartProductListQuery = new \EnterQuery\Product\GetListByUiList(array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), $region->id, ['model' => false, 'related' => false]);
                 $curl->prepare($cartProductListQuery);
             }
 

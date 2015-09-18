@@ -7,6 +7,9 @@ use EnterQuery\CoreQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
+/**
+ * @deprecated
+ */
 class GetItemByToken extends Query {
     use CoreQueryTrait;
 

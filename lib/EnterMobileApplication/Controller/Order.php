@@ -21,8 +21,8 @@ namespace EnterMobileApplication\Controller {
         public function execute(Http\Request $request) {
             $curl = $this->getCurl();
             $config = $this->getConfig();
-            $productRepository = new Repository\Product();
-            $pointRepository = new Repository\Point();
+            $productRepository = new \EnterMobileApplication\Repository\Product();
+            $pointRepository = new \EnterMobileApplication\Repository\Point();
 
             // токен для получения заказа
             $accessToken = is_string($request->query['accessToken']) ? $request->query['accessToken'] : null;
@@ -45,7 +45,7 @@ namespace EnterMobileApplication\Controller {
 
             $point = null;
             try {
-                if ($order->point->ui) {
+                if ($order->point && $order->point->ui) {
                     $pointItemQuery = new Query\Point\GetItemByUi($order->point->ui);
                     $curl->prepare($pointItemQuery)->execute();
                     $point = $pointItemQuery->getResult();
@@ -61,7 +61,7 @@ namespace EnterMobileApplication\Controller {
 
             $productListQuery = null;
             if ((bool)$orderProductsById) {
-                $productListQuery = new Query\Product\GetListByIdList(array_keys($orderProductsById), $order->regionId);
+                $productListQuery = new Query\Product\GetListByIdList(array_keys($orderProductsById), $order->regionId, ['model' => false, 'related' => false]);
                 $curl->prepare($productListQuery);
             }
 
@@ -94,19 +94,6 @@ namespace EnterMobileApplication\Controller {
                 $productRepository->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
             }
 
-            $media = $pointRepository->getMedia($point['partner'], ['logo']);
-            $imageUrl = null;
-            foreach ($media->photos as $media) {
-                if (in_array('logo', $media->tags, true)) {
-                    foreach ($media->sources as $source) {
-                        if ($source->type === '100x100') {
-                            $imageUrl = $source->url;
-                            break(2);
-                        }
-                    }
-                }
-            }
-            
             $response = ['order' => [
                 'id' => $order->id,
                 'number' => $order->number,
@@ -116,18 +103,18 @@ namespace EnterMobileApplication\Controller {
                 'address' => $order->address,
                 'createdAt' => $order->createdAt,
                 'updatedAt' => $order->updatedAt,
-                'product' => array_map(function(Model\Order\Product $orderProduct) use(&$productsById) {
+                'product' => array_map(function(Model\Order\Product $orderProduct) use(&$productsById, $helper, $productRepository) {
                     $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : new Model\Product();
-                    
+
                     return [
                         'id'                   => $orderProduct->id,
                         'price'                => $orderProduct->price,
                         'quantity'             => $orderProduct->quantity,
                         'sum'                  => $orderProduct->sum,
                         'article'              => $product->article,
-                        'webName'              => $product->webName,
-                        'namePrefix'           => $product->namePrefix,
-                        'name'                 => $product->name,
+                        'webName'              => $helper->unescape($product->webName),
+                        'namePrefix'           => $helper->unescape($product->namePrefix),
+                        'name'                 => $helper->unescape($product->name),
                         'isBuyable'            => $product->isBuyable,
                         'isInShopOnly'         => $product->isInShopOnly,
                         'isInShopStockOnly'    => $product->isInShopStockOnly,
@@ -144,14 +131,14 @@ namespace EnterMobileApplication\Controller {
                                 'media' => $label->media,
                             ];
                         }, $product->labels),
-                        'media'                => $product->media,
-                        'rating'               => $product->rating ? [
+                        'media'           => $product->media,
+                        'rating'          => $product->rating ? [
                             'score'       => $product->rating->score,
                             'starScore'   => $product->rating->starScore,
                             'reviewCount' => $product->rating->reviewCount,
                         ] : null,
                         'favorite'        => isset($product->favorite) ? $product->favorite : null,
-                        'partnerOffers'   => $product->partnerOffers,
+                        'partnerOffers'   => $productRepository->getPartnerOffers($product),
                         'storeLabel'      => $product->storeLabel,
                     ];
                 }, $order->product),
@@ -161,12 +148,11 @@ namespace EnterMobileApplication\Controller {
                 'deliveries' => $order->deliveries,
                 'deliveryType' => $order->deliveryType,
                 'interval' => $order->interval,
-                'shopId' => $point['partner'] === 'enter' ? $order->shopId : null, // TODO перенести в point.id
+                'shopId' => $point['partner']['slug'] === 'enter' ? $order->shopId : null, // TODO перенести в point.id
                 'point' => $point ? [
                     'ui' => $point['uid'],
-                    'name' => $pointRepository->getName($point['partner']),
-                    'media' => $media,
-                    'imageUrl' => $imageUrl, // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split и point.imageUrl из ответа метода Order
+                    'media' => $pointRepository->getMedia($point['partner']['slug'], ['logo']),
+                    'name' => $pointRepository->getName($point['partner']['slug'], $point['partner']['name']),
                     'address' => $point['address'],
                     'regime' => $point['working_time'],
                     'longitude' => isset($point['location'][0]) ? $point['location'][0] : null,

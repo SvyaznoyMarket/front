@@ -1,0 +1,27 @@
+<div class="content private">
+    <section class="main-section">
+        {{>partial/user/menu}}
+        <a class="btn btn-exit" href="/logout">Выход</a>
+    </section>
+    <section class="ep">
+        <ul class="ep-list">
+            {{#coupons}}
+                <li class="ep-list-i">
+                    <a class="ep-list-i__lnk" href="/private/enterprize/coupon/{{id}}">
+                        <div class="ep-list-i__inn">
+                            <img class="ep-list-i__fishka" src="{{backgroundUrl}}">
+                            <span class="ep-list-i__lbl"><img src="{{imageUrl}}"></span>
+                        </div>
+                        <div class="ep-list-i__txt">
+                            <span class="ep-list-i__tl"><span class="accented">{{discountAmount}} <span class="rubl">{{discountUnit}}</span></span> на {{category}}</span>
+                            <span class="ep-list-i__desc">Минимальная сумма заказа <nobr>{{minOrderSum}} <span class="rubl">p</span></nobr></span>
+                        </div>
+                    </a>
+                </li>
+            {{/coupons}}
+            {{^coupons}}
+                <p>Нет доступных купонов</p>
+            {{/coupons}}
+        </ul>
+    </section>
+</div>

@@ -7,7 +7,7 @@ return function(\EnterMobile\Config $config) {
 
     $config->applicationTags = ['site-mobile', 'mobile-site'];
 
-    $config->hostname = 'enter.ru';
+    $config->hostname = 'm.enter.ru';
     $config->fullHost = 'www.enter.ru';
 
     $config->logger->fileAppender->enabled = true;

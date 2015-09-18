@@ -29,6 +29,7 @@ class ProductButton {
      * @param \EnterModel\Product $product
      * @param \EnterModel\Cart\Product|null $cartProduct
      * @param bool $allowInShopOnly Позволять отображать кнопку для товаров, которые доступны только в магазине
+     * @param bool $isFull
      * @param array $context контекст кнопки (напр. листинг, карточка товара)
      * @return Partial\Cart\ProductButton
      */
@@ -61,7 +62,7 @@ class ProductButton {
                     'token'    => $product->token,
                     'price'    => $product->price,
                     'url'      => $product->link,
-                    'quantity' => $cartProduct ? $cartProduct->quantity : 1,
+                    'quantity' => $cartProduct ? $cartProduct->quantity + 1  : 1,
                 ],
             ],
         ];
@@ -108,10 +109,10 @@ class ProductButton {
             $dataValue['product'][$product->id]['partnerOfferUrl'] = $slotPartnerOffer->partner->offerUrl;
             $dataValue['isFull'] = $isFull;
         } else if ($cartProduct) {
-            $button->text = 'В корзине';
-            $button->url = '/cart'; // TODO: route
-            $button->dataUrl = '';
-            $button->isInCart = true;
+//            $button->text = 'В корзине';
+//            $button->url = '/cart'; // TODO: route
+//            $button->dataUrl = '';
+//            $button->isInCart = true;
         } else if ($product->isInShopOnly && $context['position'] !== 'listing') {
             $button->isInShopOnly = true;
             $button->text = 'Резерв';

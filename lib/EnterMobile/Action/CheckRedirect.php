@@ -6,11 +6,12 @@ use Enter\Http;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
+use EnterAggregator\AbTestTrait;
 use EnterMobile\Routing;
 use EnterMobile\Controller;
 
 class CheckRedirect {
-    use ConfigTrait, LoggerTrait, RouterTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, AbTestTrait;
 
     /**
      * Временное решение для редиректа на основной домен
@@ -20,6 +21,7 @@ class CheckRedirect {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $router = $this->getRouter();
+        $abTest = $this->getAbTest();
 
         $route = null;
         try {
@@ -32,11 +34,11 @@ class CheckRedirect {
             //|| ($route instanceof Routing\User\Login)
             //|| ($route instanceof Routing\ProductCatalog\GetBrandCategory)
             //|| ($route instanceof Routing\Content)
-            || ($route instanceof Routing\User\Index)
+            //|| ($route instanceof Routing\User\Index)
             || ($route instanceof Routing\ShopCard\Get)
             || ($route instanceof Routing\Shop\Index)
         ;
-        if (!$config->order->enabled) {
+        if ('disabled' === $abTest->getObjectByToken('order')->chosenItem->token) {
             $hasRedirect =
                 $hasRedirect
                 || ($route instanceof Routing\Order\Index)

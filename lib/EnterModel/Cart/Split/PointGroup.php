@@ -6,6 +6,8 @@ use EnterModel\Cart\Split\PointGroup\Point;
 
 class PointGroup {
     /** @var string */
+    public $id;
+    /** @var string */
     public $token;
     /** @var string */
     public $actionName;
@@ -17,14 +19,19 @@ class PointGroup {
     public $points = [];
 
     /**
+     * @param bool $format
      * @param array $data
      */
-    public function __construct($data = []) {
+    public function __construct($data = [], $format = true) {
         $this->token = $data['token'] ? (string)$data['token'] : null;
         $this->actionName = $data['action_name'] ? (string)$data['action_name'] : null;
         $this->blockName = $data['block_name'] ? (string)$data['block_name'] : null;
-        foreach ($data['list'] as $item) {
-            $this->points[] = new Point($item);
+        foreach ($data['list'] as $key => $item) {
+            if ($format) {
+                $this->points[] = new Point($item);
+            } else {
+                $this->points[$key] = new Point($item);
+            }
         }
     }
 

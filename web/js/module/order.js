@@ -42,7 +42,7 @@ define(
 
             $body                       = $('body'),
             $orderContent               = $('.js-order-content'),
-            loaderClass                 = 'm-loader',
+            loaderClass                 = 'm-body-loader',
             $deliveryForm               = $('.js-order-delivery-form'),
             deliveryData                = $deliveryForm.data('value'),
             $pointMap                   = $('#pointYandexMap'),
@@ -480,6 +480,7 @@ define(
                     beforeClose: function() {
                         $mapContainer.append($pointMap);
                         $body.off('beforeSplit', beforeSplit);
+                        $body.css({'-webkit-overflow-scrolling':'inherit'});
                     }
                 });
 
@@ -540,6 +541,7 @@ define(
                     beforeClose: function() {
                         $mapContainer.append($addressMap);
                         $body.off('beforeSplit', beforeSplit);
+                        $body.css({'-webkit-overflow-scrolling':'inherit'});
                     },
                     modalCSS: {top: '60px'}
                 });
@@ -597,6 +599,7 @@ define(
                     },
                     beforeClose: function() {
                         $body.off('beforeSplit', beforeSplit);
+                        $body.css({'-webkit-overflow-scrolling':'inherit'});
                     }
                 });
 
@@ -652,6 +655,7 @@ define(
                     },
                     beforeClose: function() {
                         $body.off('beforeSplit', beforeSplit);
+                        $body.css({'-webkit-overflow-scrolling':'inherit'});
                     },
                     centered: false
                 });

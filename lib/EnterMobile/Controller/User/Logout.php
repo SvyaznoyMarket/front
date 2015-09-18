@@ -25,18 +25,28 @@ class Logout {
         $config = $this->getConfig();
         $router = $this->getRouter();
         $session = $this->getSession();
+        $cartRepository = new \EnterRepository\Cart();
 
         // редирект
         $redirectUrl = !empty($request->query['redirect_to']) ? $request->query['redirect_to'] : null;
         if (!$redirectUrl) {
-            $redirectUrl = $router->getUrlByRoute(new Routing\User\Login());
+            $redirectUrl = $router->getUrlByRoute(new Routing\Index());
         }
         // http-ответ
         $response = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
         // сброс cookie
         (new \EnterMobile\Repository\User())->setTokenToHttpResponse(null, $response);
 
+        // удаление данных пользователя для ОЗ
         $session->remove($config->order->userSessionKey);
+
+        // удаление товаров из корзину
+        $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
+        $cart->product = [];
+        $cartRepository->saveObjectToHttpSession($session, $cart, $config->cart->sessionKey);
+
+        // удалить разбиение заказа
+        $session->remove($config->order->splitSessionKey);
 
         return $response;
     }

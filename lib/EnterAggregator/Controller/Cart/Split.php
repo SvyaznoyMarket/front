@@ -119,8 +119,36 @@ namespace EnterAggregator\Controller\Cart {
                     }
                 }
 
-                $response->split = new Model\Cart\Split($splitData);
+                $response->split = new Model\Cart\Split($splitData, (bool)$request->formatSplit);
                 $response->split->region = $response->region;
+
+                // Получаем названия групп точек из scms
+                /** @var Query\Point\GetListFromScms $pointListQuery */
+                $pointListQuery = null;
+                call_user_func(function() use(&$response, &$curl, &$pointListQuery) {
+                    $pointUis = [];
+                    foreach ($response->split->pointGroups as $pointGroup) {
+                        if (isset($pointGroup->points[0])) {
+                            $pointUis[] = $pointGroup->points[0]->ui;
+                        }
+                    }
+
+                    if ($pointUis) {
+                        $pointListQuery = new Query\Point\GetListFromScms(null, $pointUis);
+                        $curl->prepare($pointListQuery);
+                    }
+                });
+
+                // FRONT-88
+                foreach ($response->split->orders as $order) {
+                    if ($order->sum > $config->order->prepayment->priceLimit) {
+                        foreach ($order->possiblePaymentMethodIds as $i => $possiblePaymentMethodId) {
+                            if (in_array($possiblePaymentMethodId, ['1', '2']) && (count($order->possiblePaymentMethodIds) > 1)) {
+                                unset($order->possiblePaymentMethodIds[$i]);
+                            }
+                        }
+                    }
+                }
 
                 // MAPI-4
                 $productIds = [];
@@ -132,10 +160,25 @@ namespace EnterAggregator\Controller\Cart {
                     }
                 }
 
-                $productListQuery = new Query\Product\GetListByIdList($productIds, $response->region->id);
+                $productListQuery = new Query\Product\GetListByIdList($productIds, $response->region->id, ['model' => false, 'related' => false]);
                 $curl->prepare($productListQuery);
 
                 $curl->execute();
+
+                // Получаем названия групп точек из scms
+                call_user_func(function() use(&$response, &$pointListQuery) {
+                    if ($pointListQuery) {
+                        $pointRepository = new \EnterRepository\Point();
+                        $pointsByUi = $pointRepository->getIndexedByUiObjectListByQuery($pointListQuery);
+
+                        foreach ($response->split->pointGroups as $pointGroup) {
+                            if (isset($pointGroup->points[0]) && isset($pointsByUi[$pointGroup->points[0]->ui])) {
+                                $pointGroup->id = $pointsByUi[$pointGroup->points[0]->ui]->group->id;
+                                $pointGroup->blockName = $pointsByUi[$pointGroup->points[0]->ui]->group->name;
+                            }
+                        }
+                    }
+                });
 
                 // список товаров
                 $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
@@ -239,6 +282,11 @@ namespace EnterAggregator\Controller\Cart\Split {
          * @var array
          */
         public $changeData;
+        /**
+         * Индексация разбиения как на ядре
+         * @var bool
+         */
+        public $formatSplit = true;
         /** @var Model\Cart\Split\User */
         public $userFromSplit;
         /**

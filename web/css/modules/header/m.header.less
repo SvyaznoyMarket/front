@@ -6,23 +6,23 @@
     .header {
         &.breadcrumbs {
             .header-center {
-                position: relative;
-                z-index: 1;
+                //position: relative;
+                //z-index: 1;
 
                 text-align: left;
             }
             .header__logotype {
-                float: left;
+                //float: left;
             }
             .header-controls {
-                position: relative;
-                z-index: 2;
+                //position: relative;
+                //z-index: 2;
 
                 background: #000;
             }
             .header-nav-link {
-                position: relative;
-                z-index: 2;
+                //position: relative;
+                //z-index: 2;
 
                 background: #000;
             }
@@ -33,20 +33,30 @@
 @media only screen and (max-width: 450px) {
     .header {
         &.search {
-            .header-center {
-                padding-right: 50px;
-                padding-left: 0;
-            }
+
+
             .header__logotype ,
             .header-controls__item--user {
                 display: none;
             }
             .search-form {
-                padding-left: 45px;
+                padding-left: 0px;
+                padding-right: 0px;
+            }
+            .header-center{
+                padding-right: 48px;
+            }
+        }
+        &.titled{
+            .pagetitle{
+                display: none;
             }
         }
         .bread-crumbs {
             display: none;
+        }
+        .header-center {
+            padding-left: 120px;
         }
     }
 }

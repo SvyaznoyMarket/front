@@ -16,14 +16,19 @@ class GetItemByToken extends Query {
     /**
      * @param $token
      * @param string $regionId
+     * @param null $brandToken
      */
-    public function __construct($token, $regionId) {
+    public function __construct($token, $regionId, $brandToken = null) {
         $this->url = new Url();
         $this->url->path = 'category/get/v1';
         $this->url->query = [
             'slug'   => $token,
             'geo_id' => $regionId,
         ];
+
+        if ($brandToken) {
+            $this->url->query['brand_slug'] = $brandToken;
+        }
 
         $this->init();
     }

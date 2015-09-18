@@ -47,16 +47,31 @@ class ProductCard {
         $page->dataModule = 'product.card';
 
         // хлебные крошки
-        $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
-        $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
-        $breadcrumb->name = $product->name;
-        $breadcrumb->url = $product->link;
+        $categories = call_user_func(function() use (&$product) {
+            if (!$product->category) return [];
 
-        $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
+            $ancestors = [];
+            $parent = $product->category->parent;
+            while ($parent) {
+                $ancestors[] = $parent;
+
+                $parent = $parent->parent;
+            }
+
+            return array_reverse(array_merge([$product->category], $ancestors));
+        });
+        $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
+        foreach ($categories as $categoryModel) {
+            $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
+            $breadcrumb->name = $categoryModel->name;
+            $breadcrumb->url = $categoryModel->link;
+            $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
+        }
 
         // содержание
         $page->content->product->name = $product->webName;
         $page->content->product->id = $product->id;
+        $page->content->product->ui = $product->ui;
         $page->content->product->namePrefix = $product->namePrefix;
         $page->content->product->article = $product->article;
         $page->content->product->description = $product->description;
@@ -72,7 +87,7 @@ class ProductCard {
             $page->content->product->brand->id = $product->brand->id;
             $page->content->product->brand->name = $product->brand->name;
             $page->content->product->brand->token = $product->brand->token;
-            $page->content->product->brand->imageUrl = $mediaRepository->getSourceObjectByList($product->brand->media->photos, 'main', 'original')->url;
+            $page->content->product->brand->imageUrl = $mediaRepository->getSourceObjectByList($product->brand->media->photos, 'product', 'original')->url;
         }
 
         // шильдики
@@ -310,6 +325,13 @@ class ProductCard {
                 $category->name = 'Популярные аксессуары';
 
                 array_unshift($page->content->product->accessorySlider->categories, $category);
+            }
+        }
+
+        // избранное
+        if (isset($product->favorite) && !empty($product->favorite)) {
+            foreach ($product->favorite as $key => $favoriteProductUi) {
+                if ($product->ui == $favoriteProductUi) $page->content->product->isFavorite = true;
             }
         }
 

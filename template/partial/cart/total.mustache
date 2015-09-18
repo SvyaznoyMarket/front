@@ -24,11 +24,16 @@
     </div>
     <!--/ итоговая стоимость заказа/купить в кредит -->
 
+    {{#orderRemainSum}}
+        <div class="cart__min-sum">До оформления заказа осталось {{orderRemainSum}} <span class="rubl">p</span></div>
+    {{/orderRemainSum}}
+    {{^orderRemainSum}}
     <!-- оформить заказ -->
     <div class="cartBuy">
         <a class="js-ga-click btn--orange btn--big btn--tall" href="{{orderUrl}}" data-ga-click="{{&orderDataGa}}">Оформление заказа</a>
     </div>
     <!--/ оформить заказ -->
+    {{/orderRemainSum}}
 </div>
 
 <script id="tpl-creditPayment" type="text/html">

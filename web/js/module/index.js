@@ -77,12 +77,18 @@ define(
 
 
 							if (templateData.count <= 0 && $widget) {
+								$widget.parents('.grid-parent-row').addClass('grid-1cols').removeClass('grid-2cols');
 								$widget.remove();
 								return;
 							}
 
 							console.info('slider', templateData, $widget);
 
+
+							var $parent = $widget.parents('.js-container');
+							if ($parent.length) {
+								$parent.show();
+							}
 
 							$widget.trigger('render', templateData);
 							$body.trigger('render');
@@ -94,11 +100,25 @@ define(
 								current       = $(this).data('slick-slider'),
 								responsToShow = $(this).data('respons-show');
 
+                            //on init
+                            $('.js-main-items-slider-' + current).on('init', function(){
+
+                                if ( ($('.js-main-items-slider-btn-prev-' + current).css('display') !== 'none') ||
+                                     (current == 'id-productSlider-personalSlider') ){
+                                    $('.js-main-items-slider-btn-prev-' + current).addClass('inline');
+                                }
+
+                                if ( ($('.js-main-items-slider-btn-next-' + current).css('display') !== 'none') ||
+                                     (current == 'id-productSlider-personalSlider') ){
+                                    $('.js-main-items-slider-btn-next-' + current).addClass('inline');
+                                }
+                            });
+
 							$('.js-main-items-slider-' + current)
 								.fadeIn()
 								.slick({
 									dots: true,
-									infinite: false,
+									infinite: true,
 									prevArrow: '.js-main-items-slider-btn-prev-' + current,
 									nextArrow: '.js-main-items-slider-btn-next-' + current,
 									responsive: [
@@ -111,6 +131,7 @@ define(
 										}
 									]
 								}).parent().removeClass('m-loader');
+
 
 							$(this).parents('.items-slider').find('.items-slider-nav__btn').data('gaClick', dataGa);
 						});

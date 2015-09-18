@@ -21,13 +21,13 @@ class Address {
      * @param array $data
      */
     public function __construct($data = []) {
-        $this->street = $data['street'] ? (string)$data['street'] : null;
-        $this->building = $data['building'] ? (string)$data['building'] : null;
-        $this->number = $data['number'] ? (string)$data['number'] : null;
-        $this->apartment = $data['apartment'] ? (string)$data['apartment'] : null;
-        $this->floor = (string)$data['floor'];
-        $this->subwayName = (string)$data['metro_station'];
-        $this->kladrId = (string)$data['kladr_id'];
+        $this->street = isset($data['street']) ? (string)$data['street'] : null;
+        $this->building = isset($data['building']) ? (string)$data['building'] : null;
+        $this->number = isset($data['number']) ? (string)$data['number'] : null;
+        $this->apartment = isset($data['apartment']) ? (string)$data['apartment'] : null;
+        $this->floor = isset($data['floor']) ? (string)$data['floor'] : null;
+        $this->subwayName = isset($data['metro_station']) ? (string)$data['metro_station'] : null;
+        $this->kladrId = isset($data['kladr_id']) ? (string)$data['kladr_id'] : null;
     }
 
     /**

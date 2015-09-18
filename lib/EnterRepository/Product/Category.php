@@ -79,8 +79,9 @@ class Category {
     public function setBranchForObjectByQuery(Model\Product\Category $category, Query $query, Query $availableQuery = null) {
         $availableDataByUi = null;
         try {
-            if ($availableQuery) {
-                foreach ($availableQuery->getResult() as $item) {
+            $availableQueryResult = $availableQuery ? $availableQuery->getResult() : [];
+            if ($availableQueryResult) {
+                foreach ($availableQueryResult as $item) {
                     $item += ['id' => null, 'uid' => null, 'product_count' => null];
 
                     if (!$item['uid'] || !$item['product_count']) continue;

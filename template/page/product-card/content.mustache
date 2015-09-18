@@ -218,9 +218,16 @@
         <div class="prodHd">
 
             <h1 class="prodHd_n">
-                {{#product.namePrefix}}{{product.namePrefix}}<br />{{/product.namePrefix}}
-                {{product.name}}
+                {{#product.namePrefix}}{{&product.namePrefix}}<br />{{/product.namePrefix}}
+                {{&product.name}}
             </h1>
+            {{#product.isFavorite}}
+                <i class="icon-favorit icon-favorit--on" data-product-ui="{{product.ui}}"></i>
+            {{/product.isFavorite}}
+            {{^product.isFavorite}}
+                <i class="icon-favorit js-favorites-add" data-product-ui="{{product.ui}}"></i>
+            {{/product.isFavorite}}
+
 
             {{#product.article}}
                 <div class="prodHd_artcl">Артикул: {{product.article}}</div>

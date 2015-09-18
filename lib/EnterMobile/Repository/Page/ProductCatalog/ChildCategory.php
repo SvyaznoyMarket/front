@@ -37,11 +37,31 @@ class ChildCategory {
         $page->content->title = $request->category->name;
 
         // хлебные крошки
+        $categories = call_user_func(function() use (&$request) {
+            $ancestors = [];
+            $parent = $request->category->parent;
+            while ($parent) {
+                $ancestors[] = $parent;
+
+                $parent = $parent->parent;
+            }
+
+            return array_reverse($ancestors);
+        });
+
         $page->breadcrumbBlock = new Model\Page\DefaultPage\BreadcrumbBlock();
-        $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
-        $breadcrumb->name = $request->category->name;
-        $breadcrumb->url = $request->category->link;
-        $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
+        foreach ($categories as $categoryModel) {
+            $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
+            $breadcrumb->name = $categoryModel->name;
+            $breadcrumb->url = $categoryModel->link;
+            $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
+        }
+        if ($brandModel = $request->brand) {
+            $breadcrumb = new Model\Page\DefaultPage\BreadcrumbBlock\Breadcrumb();
+            $breadcrumb->name = $brandModel->name;
+            $breadcrumb->url = $router->getUrlByRoute(new Routing\ProductCatalog\GetBrandCategory($request->category->path, $brandModel->token));
+            $page->breadcrumbBlock->breadcrumbs[] = $breadcrumb;
+        }
 
         $currentRoute = new Routing\ProductCatalog\GetChildCategory($request->category->path);
 

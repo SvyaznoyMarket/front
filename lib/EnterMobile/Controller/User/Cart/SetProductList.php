@@ -26,8 +26,9 @@ class SetProductList {
         $session = $this->getSession();
         $cartRepository = new \EnterRepository\Cart();
 
-        // ид региона
+        // регион
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
+        $region = $regionId ? new \EnterModel\Region(['id' => $regionId]) : null;
 
         // корзина из сессии
         $cart = $cartRepository->getObjectByHttpSession($session, $config->cart->sessionKey);
@@ -37,6 +38,17 @@ class SetProductList {
         if (!(bool)$cartProducts) {
             throw new \Exception('Товары не получены');
         }
+
+        // запрос пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if ($userItemQuery) {
+            $curl->prepare($userItemQuery);
+
+            $curl->execute();
+        }
+
+        // пользователь
+        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
         // добавление товаров в корзину
         foreach ($cartProducts as $cartProduct) {
@@ -51,27 +63,20 @@ class SetProductList {
         }
 
         // агрегирующий контроллер
-        $controllerResponse = (new \EnterAggregator\Controller\Cart\SetProductList())->execute(
-            $regionId,
-            $session,
-            $cart,
-            $cartProducts
-        );
+        $controller = new \EnterAggregator\Controller\Cart\SetProductList();
+        $controllerRequest = $controller->createRequest();
+        $controllerRequest->regionId = $regionId;
+        $controllerRequest->session = $session;
+        $controllerRequest->cart = $cart;
+        $controllerRequest->cartProducts = $cartProducts;
+        $controllerRequest->userUi = $user ? $user->ui : null;
+        $controllerResponse = $controller->execute($controllerRequest);
 
         $cart = $controllerResponse->cart;
         $productsById = $controllerResponse->productsById;
 
         // удалить разбиение заказа
         $session->remove($config->order->splitSessionKey);
-
-        // запрос пользователя
-        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
-        if ($userItemQuery) {
-            $curl->prepare($userItemQuery)->execute();
-        }
-
-        // пользователь
-        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
         // страница
         $page = new Page();
@@ -89,7 +94,7 @@ class SetProductList {
             if ($cartProduct->parentId && $widget = (new Repository\Partial\Cart\ProductButton())->getObject(
                     new \EnterModel\Product(['id' => $cartProduct->parentId]),
                     new \EnterModel\Cart\Product(['id' => $cartProduct->parentId, 'quantity' => 1])
-            )) {
+                )) {
                 $page->widgets['.' . $widget->widgetId] = $widget;
             }
 
@@ -111,7 +116,7 @@ class SetProductList {
                 $page->widgets['.' . $widget->widgetId] = $widget;
             }
 
-            if ($widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById))) {
+            if ($widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById), $region)) {
                 $page->widgets['.' . $widget->widgetId] = $widget;
             }
 

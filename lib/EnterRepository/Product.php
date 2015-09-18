@@ -100,7 +100,9 @@ class Product {
                 foreach ($query->getResult() as $item) {
                     $parser($item);
 
-                    $products[(string)$item['id']] = new Model\Product($item);
+                    if (!empty($item['id'])) {
+                        $products[(string)$item['id']] = new Model\Product($item);
+                    }
                 }
             } catch (\Exception $e) {
                 trigger_error($e, E_USER_ERROR);
@@ -167,7 +169,7 @@ class Product {
                 /** @var string $date Ближайшая дата доставки */
                 $date = reset($deliveryItem['date_list']);
                 $date = !empty($date['date']) ? $date['date'] : null;
-                $delivery->deliveredAt = $date ? \DateTime::createFromFormat("Y-m-d", $date) : null;
+                $delivery->deliveredAt = $date ? new \DateTime($date) : null;
 
                 $day = 0;
                 foreach ($deliveryItem['date_list'] as $dateItem) {
@@ -235,7 +237,7 @@ class Product {
                     /** @var string $date Ближайшая дата доставки */
                     $date = reset($deliveryItem['date_list']);
                     $date = !empty($date['date']) ? $date['date'] : null;
-                    $delivery->deliveredAt = $date ? \DateTime::createFromFormat("Y-m-d", $date) : null;
+                    $delivery->deliveredAt = $date ? new \DateTime($date) : null;
 
                     $day = 0;
                     foreach ($deliveryItem['date_list'] as $dateItem) {
@@ -388,10 +390,24 @@ class Product {
                         $product->oldPrice = null;
                     }
 
-                    if (!empty($descriptionItem['brand']['medias'])) {
+                    if (!empty($descriptionItem['brand']['medias']) && isset($descriptionItem['brand']['slug']) && $descriptionItem['brand']['slug'] === 'tchibo-3569') {
                         foreach ($descriptionItem['brand']['medias'] as $mediaItem) {
                             if ('image' === $mediaItem['provider']) {
                                 $product->brand = new Model\Brand($descriptionItem['brand']);
+                                // TODO после решения FCMS-740 удалить данный блок (чтобы media бралось из scms) и удалить условие "isset($descriptionItem['brand']['slug']) && $descriptionItem['brand']['slug'] === 'tchibo-3569'"
+                                $product->brand->media->photos[] = new Model\Media([
+                                    'content_type' => 'image/png',
+                                    'provider' => 'image',
+                                    'tags' => ['product'],
+                                    'sources' => [
+                                        [
+                                            'type' => 'original',
+                                            'url' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png',
+                                            'width' => '40',
+                                            'height' => '40',
+                                        ],
+                                    ],
+                                ]);
                                 break;
                             }
                         }

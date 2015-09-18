@@ -48,23 +48,28 @@
         {{>partial/javascript}}
     </head>
 
-    <body data-module="{{&dataModule}}" data-config="{{&dataConfig}}">
-    	<div class="wrapper">
-	    	{{>partial/header}}
+    <body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-widget="{{&dataWidget}}">
+    {{>partial/menu}}
+    <div class="snap-content" id="wrapper">
+        {{>partial/header}}
+        <div class="wrapper">
+            <div class="fader js-fader"></div>
 
-			{{#content}}
-				{{>content}}
-			{{/content}}
-			{{>partial/template}}
 
-			{{>partial/footer}}
-		</div>
+                {{#content}}
+                    {{>content}}
+                {{/content}}
+                {{>partial/template}}
+
+                {{>partial/footer}}
+            </div>
+        </div>
 
 		{{#regionBlock}}
 	        {{>partial/region}}
 	    {{/regionBlock}}
 
-	    {{>partial/menu}}
+
 	    {{>partial/search.suggest}}
 	</body>
 </html>

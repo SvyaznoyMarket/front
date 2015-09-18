@@ -28,6 +28,7 @@ class UserBlock {
             $userBlock->isUserAuthorized = true;
             $userBlock->userLink->name = $user->firstName ?: $user->lastName;
             $userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Index());
+            $userBlock->isEnterprizeMember = $user->isEnterprizeMember;
         } else {
             $userBlock->isUserAuthorized = false;
             $userBlock->userLink->url = $router->getUrlByRoute(new Routing\User\Login());
@@ -36,7 +37,7 @@ class UserBlock {
         $userBlock->isCartNotEmpty = (bool)$cart->product;
         $userBlock->cart->url = $router->getUrlByRoute(new Routing\Cart\Index());
         if ($userBlock->isCartNotEmpty) {
-            $userBlock->cart->quantity = count($cart->product);
+            $userBlock->cart->quantity = count($cart);
             $userBlock->cart->shownSum = $cart->sum ? $this->getPriceHelper()->format($cart->sum) : null;
             $userBlock->cart->sum = $cart->sum;
         }

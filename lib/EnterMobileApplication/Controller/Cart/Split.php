@@ -97,8 +97,7 @@ namespace EnterMobileApplication\Controller\Cart {
             // ответ от контроллера
             $controllerResponse = $controller->execute($controllerRequest);
 
-            // MAPI-25
-            $this->setPointImageUrls($controllerResponse->split->pointGroups);
+            $this->correctPoints($controllerResponse->split->pointGroups);
 
             $response->errors = $controllerResponse->errors;
             $response->split = $controllerResponse->split;
@@ -117,28 +116,15 @@ namespace EnterMobileApplication\Controller\Cart {
         /**
          * @param Model\Cart\Split\PointGroup[] $pointGroups
          */
-        private function setPointImageUrls($pointGroups) {
-            $pointRepository = new \EnterRepository\Point();
+        private function correctPoints($pointGroups) {
+            $pointRepository = new \EnterMobileApplication\Repository\Point();
             
             foreach ($pointGroups as $pointGroup) {
-                $pointGroup->media = $pointRepository->getMedia($pointGroup->token);
-                foreach ($pointGroup->media->photos as $media) {
-                    if (in_array('logo', $media->tags, true)) {
-                        foreach ($media->sources as $source) {
-                            if ($source->type === '100x100') {
-                                $pointGroup->imageUrl = $source->url; // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split
-                            }
-                        }
-                    }
+                // MAPI-78
+                $pointGroup->blockName = $pointRepository->getName($pointGroup->id, $pointGroup->blockName);
 
-                    if (in_array('marker', $media->tags, true)) {
-                        foreach ($media->sources as $source) {
-                            if ($source->type === '61x80') {
-                                $pointGroup->markerUrl = $source->url; // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split
-                            }
-                        }
-                    }
-                }
+                // MAPI-25
+                $pointGroup->media = $pointRepository->getMedia($pointGroup->token);
             }
         }
     }

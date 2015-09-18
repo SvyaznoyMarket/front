@@ -3,19 +3,24 @@
 namespace EnterMobileApplication\Controller {
 
     use Enter\Http;
+    use EnterAggregator\SessionTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterMobileApplication\Controller;
 
     class ProductCard {
-        use ProductListingTrait;
-        
+        use ProductListingTrait, SessionTrait;
+
         /**
          * @param Http\Request $request
          * @throws \Exception
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
+            $session = $this->getSession();
+            $helper = new \Enter\Helper\Template();
+            $productRepository = new \EnterMobileApplication\Repository\Product();
+
             // ид региона
             $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
             if (!$regionId) {
@@ -47,15 +52,43 @@ namespace EnterMobileApplication\Controller {
                 return (new Controller\Error\NotFound())->execute($request, sprintf('Товар #%s не найден', $productId));
             }
 
+            $productRepository->setViewedProductIdToSession($controllerResponse->product->id, $session);
+
+            // MAPI-76 Получение данных в едином формате
+            call_user_func(function() use(&$controllerResponse) {
+                if ($controllerResponse->product->model) {
+                    /** @var Model\Product\Property[] $propertiesById */
+                    $propertiesById = [];
+                    foreach ($controllerResponse->product->properties as $property) {
+                        $propertiesById[$property->id] = $property;
+                    }
+
+                    foreach ($controllerResponse->product->model->properties as $modelProperty) {
+                        if (isset($propertiesById[$modelProperty->id])) {
+                            $property = $propertiesById[$modelProperty->id];
+                            foreach ($modelProperty->options as $modelOption) {
+                                foreach ($property->options as $option) {
+                                    if (preg_replace('/^(\d+)\.(\d+)$/', '$1,$2', $modelOption->value) === $option->value) {
+                                        $modelOption->value = $option->value;
+                                        $modelOption->shownValue = $option->value;
+                                        break (3);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
             return new Http\JsonResponse(['product' => [
                 'id' => $controllerResponse->product->id,
                 'ui' => $controllerResponse->product->ui,
                 'article' => $controllerResponse->product->article,
                 'barcode' => $controllerResponse->product->barcode,
                 'typeId' => $controllerResponse->product->typeId,
-                'webName' => $controllerResponse->product->webName,
-                'namePrefix' => $controllerResponse->product->namePrefix,
-                'name' => $controllerResponse->product->name,
+                'webName' => $helper->unescape($controllerResponse->product->webName),
+                'namePrefix' => $helper->unescape($controllerResponse->product->namePrefix),
+                'name' => $helper->unescape($controllerResponse->product->name),
                 'token' => $controllerResponse->product->token,
                 'link' => $controllerResponse->product->link,
                 'description' => $controllerResponse->product->description,
@@ -87,7 +120,7 @@ namespace EnterMobileApplication\Controller {
                         'media' => $label->media,
                     ];
                 }, $controllerResponse->product->labels),
-                'media' => $controllerResponse->product->media,
+                'media' => $productRepository->getMedia($controllerResponse->product),
                 'rating' => $controllerResponse->product->rating ? [
                     'score'       => $controllerResponse->product->rating->score,
                     'starScore'   => $controllerResponse->product->rating->starScore,
@@ -105,7 +138,7 @@ namespace EnterMobileApplication\Controller {
                 'kit' => $controllerResponse->product->kit,
                 'reviews' => $controllerResponse->product->reviews,
                 'trustfactors' => $controllerResponse->product->trustfactors,
-                'partnerOffers' => $controllerResponse->product->partnerOffers,
+                'partnerOffers' => $productRepository->getPartnerOffers($controllerResponse->product),
                 'availableStoreQuantity' => $controllerResponse->product->availableStoreQuantity,
                 'favorite' => $controllerResponse->product->favorite,
                 'sender' => $controllerResponse->product->sender,

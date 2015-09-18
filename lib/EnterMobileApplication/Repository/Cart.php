@@ -25,6 +25,8 @@ class Cart {
             $response['products'] = [];
         }
 
+        $helper = new \Enter\Helper\Template();
+
         foreach (array_reverse($cart->product) as $cartProduct) {
             /** @var Model\Cart\Product $cartProduct */
 
@@ -39,9 +41,9 @@ class Cart {
                 ];
 
                 if ($cartProduct->product) {
-                    $product['webName'] = $cartProduct->product->webName;
-                    $product['namePrefix'] = $cartProduct->product->namePrefix;
-                    $product['name'] = $cartProduct->product->name;
+                    $product['webName'] = $helper->unescape($cartProduct->product->webName);
+                    $product['namePrefix'] = $helper->unescape($cartProduct->product->namePrefix);
+                    $product['name'] = $helper->unescape($cartProduct->product->name);
                     $product['price'] = $cartProduct->product->price;
                     $product['media'] = $cartProduct->product->media;
                 }

@@ -45,6 +45,10 @@ namespace EnterMobile\Model\Page {
         public $content;
         /** @var Partial\Partner[] */
         public $partners = [];
+        /** @var string */
+        public $bodyClass;
+        /** @var bool */
+        public $headerTitle = true;
 
         public function __construct() {
             parent::__construct();
@@ -120,6 +124,7 @@ namespace EnterMobile\Model\Page\DefaultPage {
     }
 
     class MainMenu {
+        public $serviceElements;
     }
 
     class Search {

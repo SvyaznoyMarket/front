@@ -10,6 +10,8 @@ class Point {
     const TYPE_SVYAZNOY = 'svyaznoy';
     const TYPE_HERMES = 'hermes';
 
+    /** @var Point\Group */
+    public $group;
     /** @var int */
     public $id;
     /** @var string */
@@ -26,11 +28,13 @@ class Point {
     public $type;
 
     /**
-     * @param array $data
+     * @param mixed $data
      */
-    function __construct(array $data = []) {
+    function __construct($data = []) {
+        if (isset($data['partner'])) $this->group = new Point\Group(['slug' => (string)$data['partner']]); // Приходит из https://scms.enter.ru/api/point/get
         if (isset($data['id'])) $this->id = (string)$data['id'];
         if (isset($data['ui'])) $this->ui = (string)$data['ui'];
+        if (isset($data['uid'])) $this->ui = (string)$data['uid']; // Приходит из https://scms.enter.ru/api/point/get
         if (isset($data['name'])) $this->name = (string)$data['name'];
         if (isset($data['address'])) $this->address = (string)$data['address'];
         if (isset($data['geo'])) $this->region = new Model\Region($data['geo']);

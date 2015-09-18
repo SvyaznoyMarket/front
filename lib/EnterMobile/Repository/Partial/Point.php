@@ -27,6 +27,10 @@ class Point {
             case 'hermes':
                 $icon = 'hermes';
                 break;
+            case 'self_partner_euroset_pred_supplier':
+            case 'self_partner_euroset':
+                $icon = 'euroset';
+                break;
             default:
                 $icon = 'enter';
         }
@@ -40,13 +44,18 @@ class Point {
      */
     public function translateGroupName($groupName) {
         return strtr($groupName, [
-            'Магазин'           => 'Магазин Enter',
-            'Магазин "Связной"' => 'Связной',
-            'Постамат'          => 'Постамат PickPoint',
-            'Hermes DPD'        => 'Постамат Hermes-DPD',
+            'Постамат'           => 'Постамат PickPoint',
+            'Hermes DPD'         => 'Постамат Hermes-DPD',
+            'Магазин "Евросеть"' => 'Евросеть',
+            'Магазин "Связной"'  => 'Связной',
+            'Магазин'            => 'Магазин Enter',
         ]);
     }
 
+    /**
+     * @param $type
+     * @return string|null
+     */
     public function getGroupNameByType($type) {
         $return = null;
 

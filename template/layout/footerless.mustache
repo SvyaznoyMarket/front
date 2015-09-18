@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--><html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="cleartype" content="on">
+
+    <meta name="apple-itunes-app" content="app-id=486318342">
+    <meta name="google-play-app" content="app-id=ru.enter">
+
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="canonical" href="http://www.enter.ru{{&path}}" >
+
+    <script type="text/javascript">
+        window.htmlStartTime = new Date().getTime();
+        document.documentElement.className = document.documentElement.className.replace("no-js","js");
+    </script>
+
+    <!--
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/touch/apple-touch-icon-144x144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/img/touch/apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/img/touch/apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/img/touch/apple-touch-icon-57x57-precomposed.png">
+    <link rel="shortcut icon" href="/img/touch/apple-touch-icon.png">
+    -->
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <!--<meta name="msapplication-TileImage" content="/img/touch/apple-touch-icon-144x144-precomposed.png">-->
+    <meta name="msapplication-TileColor" content="#222222">
+
+    <meta name="apple-mobile-web-app-capable" content="no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="yes">
+
+    <meta id="js-enter-debug" name="enter-debug" content="{{&dataDebug}}">
+    <meta id="js-enter-version" name="enter-version" content="{{&dataVersion}}">
+    <meta id="js-enter-module" name="enter-module" content="{{&dataModule}}">
+    <link rel="stylesheet" href="/css/global.min.css">
+
+    {{>partial/javascript}}
+</head>
+
+<body class="body-footerless {{#bodyClass}} {{bodyClass}}  {{/bodyClass}}" data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="{{&dataUser}}" data-cart="{{&dataCart}}" data-widget="{{&dataWidget}}">
+    {{>partial/counters}}
+    {{>partial/menu}}
+
+    <div class="snap-content" id="wrapper">
+        {{>partial/header}}
+        <div class="wrapper">
+            <div class="fader js-fader"></div>
+
+
+            {{#content}}
+                {{>content}}
+            {{/content}}
+        </div><!--/ Оболочка -->
+
+        {{>partial/template}}
+
+    </div>
+
+    {{>partial/search.suggest}}
+
+    {{#regionBlock}}
+        {{>partial/region}}
+    {{/regionBlock}}
+
+    {{>partial/partner}}
+</body>
+</html>

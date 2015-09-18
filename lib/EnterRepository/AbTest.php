@@ -32,6 +32,13 @@ class AbTest {
     public function setValueForObjectListByHttpRequest(Http\Request $request) {
         $value = $this->getValueByHttpRequest($request);
 
+        $this->setValueForObjectList($value);
+    }
+
+    /**
+     * @param array $value
+     */
+    public function setValueForObjectList(array $value) {
         foreach ($this->modelsByToken as $model) {
             if (!empty($value[$model->token])) {
                     foreach ($model->items as $item) {
@@ -150,5 +157,13 @@ class AbTest {
 
             $total += $diff;
         }
+    }
+
+    /**
+     * Включена ли серверная корзина
+     * @return bool
+     */
+    public function isCoreCartEnabled() {
+        return 'enabled' === $this->getObjectByToken('msite_core_cart')->chosenItem->token;
     }
 }

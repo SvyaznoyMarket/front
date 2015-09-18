@@ -1,0 +1,15 @@
+{{#mainMenu}}
+    <ul class="categories-grid clearfix">
+        {{#elements}}
+            <li class="categories-grid__item">
+                <a class="categories-grid__link js-ga-click" href="{{url}}" data-ga-click="{{&dataGa}}">
+							<span class="categories-grid__icon">
+								<span class="categories-grid__char"{{#style}} style="{{style}}"{{/style}}>{{char}}</span>
+                                {{#image}}<img class="categories-grid__img" src="{{image}}" />{{/image}}
+							</span>
+                    <span class="categories-grid__text">{{&name}}</span>
+                </a>
+            </li>
+        {{/elements}}
+    </ul>
+{{/mainMenu}}

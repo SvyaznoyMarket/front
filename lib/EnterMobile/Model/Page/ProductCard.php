@@ -37,6 +37,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
         /** @var int */
         public $id;
         /** @var string */
+        public $ui;
+        /** @var string */
         public $name;
         /** @var string */
         public $namePrefix;
@@ -100,6 +102,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
         public $labels = [];
         /** @var \EnterModel\Product\PartnerOffer|null */
         public $slotPartnerOffer;
+        /** @var bool */
+        public $isFavorite;
 
         public function __construct() {}
     }

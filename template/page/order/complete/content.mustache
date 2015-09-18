@@ -1,5 +1,3 @@
-{{>page/order/header}}
-
 <div class="content{{#isSingleOrder}} content-single-order{{/isSingleOrder}} js-order-complete" data-google-analytic-orders="{{&dataGoogleAnalyticOrders}}">
     <div class="contentBox640">
 
@@ -91,7 +89,7 @@
                     <div class="table_cell">
                         <ul class="confirm-items">
                         {{#products}}
-                            <li class="confirm-items__i"{{#isHidden}} style="display: none;"{{/isHidden}}><a href="{{link}}" target="_blank">{{name}}</a> {{quantity}} шт.</li>
+                            <li class="confirm-items__i"{{#isHidden}} style="display: none;"{{/isHidden}}><a href="{{link}}" target="_blank">{{&name}}</a> {{quantity}} шт.</li>
                         {{/products}}
                         {{#productMoreLink}}
                             <li class="confirm-items__i js-moreLink"><span class="confirm-items__lk">{{name}}</span></li>
@@ -101,7 +99,10 @@
 
                     <div class="table_cell">
                     {{#delivery}}
-                        <div>{{type.name}} {{date.name}} {{#interval}}{{from}}…{{to}}{{/interval}}</div>
+                        <div>
+                            {{address}} <br/>
+                            {{type.name}} {{date.name}} {{#interval}}{{from}}…{{to}}{{/interval}}
+                        </div>
                     {{/delivery}}
 
                     {{#point}}
