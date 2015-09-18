@@ -10,15 +10,19 @@ namespace EnterModel\Search {
         public $products = [];
 
         /**
-         * @param array $data
+         * @param mixed $data
          */
-        public function __construct(array $data = []) {
-            foreach (isset($data['1']) && is_array($data['1']) ? $data['1'] : [] as $product) {
-                $this->products[] = new Product($product);
+        public function __construct($data = []) {
+            if (isset($data['products'][0])) {
+                foreach ($data['products'] as $product) {
+                    $this->products[] = new Product($product);
+                }
             }
 
-            foreach (isset($data['3']) && is_array($data['3']) ? $data['3'] : [] as $category) {
-                $this->categories[] = new Category($category);
+            if (isset($data['categories'][0])) {
+                foreach ($data['categories'] as $category) {
+                    $this->categories[] = new Category($category);
+                }
             }
         }
     }
