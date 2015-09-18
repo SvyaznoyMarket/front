@@ -78,7 +78,7 @@
             </div>
             <div class="product-delivery__info">
                 {{#product.shopStateBlock}}
-                    <span class="product-delivery__info-self">{{shownCount}}</span>
+                    <span class="product-delivery__info-self js-popup-middle-link">{{shownCount}}</span>
                 {{/product.shopStateBlock}}
                 {{#product.deliveryBlock}}
                     {{#deliveries}}
@@ -227,3 +227,47 @@
         </div>
     </div>
 </div>{{!контент}}
+
+{{#product.shopStateBlock}}
+    <div class="popupBox popupHint js-popup-middle">
+        <div class="popupBox_close"></div>
+
+        <div class="popupBox_inn">
+            <div class="popupHint_hd">{{product.namePrefix}} {{product.name}}<br/>{{product.shownPrice}} <span class="rubl">p</span></div>
+
+            <div class="popupHint_cnt">
+                <ul class="table3Col">
+                    <li class="table3Col_row table3Col_row-hd">
+                        <span class="table3Col_col">Магазин</span>
+                        <span class="table3Col_col table3Col_col-hdn">Режим работы</span>
+                        <span class="table3Col_col"></span>
+                    </li>
+
+                    {{#states}}
+                        <li class="table3Col_row">
+                    <span class="table3Col_col">
+                        {{#subway}}
+                            <div class="shopLst_mtr">
+                                <span {{#subway.color}} style="background: {{subway.color}};"{{/subway.color}} class="shopLst_bul"></span>
+                                м.{{name}},
+                            </div>
+                        {{/subway}}
+
+                        <a class="shopLst_addr" href="{{url}}" target="_blank">{{address}}&nbsp;</a>
+                    </span>
+
+                            <span class="table3Col_col table3Col_col-hdn">{{regime}}</span>
+
+                    <span class="table3Col_col table3Col_col-r">
+                        {{#cartButton}}
+                            {{>partial/cart/button}}
+                        {{/cartButton}}
+                    </span>
+                        </li>
+                    {{/states}}
+
+                </ul>
+            </div>
+        </div>
+    </div>
+{{/product.shopStateBlock}}

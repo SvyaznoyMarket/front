@@ -319,7 +319,7 @@ class ProductCard {
             $page->content->product->accessorySlider = $productSliderRepository->getObject('accessorySlider');
             $page->content->product->accessorySlider->count = count($product->relation->accessories);
             foreach ($product->relation->accessories as $accessoryModel) {
-                $page->content->product->accessorySlider->productCards[] = $productCardRepository->getObject($accessoryModel, $cartProductButtonRepository->getObject($accessoryModel, null, false));
+                $page->content->product->accessorySlider->productCards[] = $productCardRepository->getObject($accessoryModel, $cartProductButtonRepository->getObject($accessoryModel, null, true, true, ['position' => 'listing']));
             }
 
             foreach ($request->accessoryCategories as $categoryModel) {
