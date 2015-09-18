@@ -2,13 +2,12 @@
 
 namespace EnterModel\Search {
     use EnterModel as Model;
-    use EnterAggregator\ConfigTrait;
 
     class Product {
-        use ConfigTrait; // FIXME
-
         /** @var string */
         public $id;
+        /** @var string */
+        public $ui;
         /** @var string */
         public $token;
         /** @var string */
@@ -19,38 +18,20 @@ namespace EnterModel\Search {
         public $media;
 
         /**
-         * @param array $data
+         * @param mixed $data
          */
-        public function __construct(array $data = []) {
-            $this->media = new Model\MediaList();
+        public function __construct($data = []) {
+            if (isset($data['id'])) $this->id = (string)$data['id'];
+            if (isset($data['uid'])) $this->ui = (string)$data['uid'];
+            if (isset($data['slug'])) $this->token = (string)$data['slug'];
+            if (isset($data['name'])) $this->name = (string)$data['name'];
+            if (isset($data['url'])) $this->link = (string)$data['url'];
 
-            if (array_key_exists('id', $data)) $this->id = $data['id'] ? (string)$data['id'] : null;
-            if (array_key_exists('token', $data)) $this->token = $data['token'] ? (string)$data['token'] : null;
-            if (array_key_exists('name', $data)) $this->name = $data['name'] ? (string)$data['name'] : null;
-            if (array_key_exists('link', $data)) $this->link = $data['link'] ? (string)$data['link'] : null;
-
-            // ядерные фотографии
-            call_user_func(function() use (&$data) {
-                // host
-                $hosts = $this->getConfig()->mediaHosts;
-                $index = !empty($photoId) ? ($photoId % count($hosts)) : rand(0, count($hosts) - 1);
-                $host = isset($hosts[$index]) ? $hosts[$index] : '';
-
-                // преобразование в формат scms
-                $item = [
-                    'content_type' => 'image/jpeg',
-                    'provider'     => 'image',
-                    'tags'         => ['main'],
-                    'sources'      => [
-                        [
-                            'type' => 'product_160',
-                            'url'  => preg_match('/^https?\:\/\//s', $data['image']) ? $data['image'] : $host . '/1/1/160/' . $data['image'],
-                        ]
-                    ],
-                ];
-
-                $this->media->photos[] = new Model\Media($item);
-            });
+            if (isset($data['medias'])) {
+                $this->media = new Model\MediaList($data['medias']);
+            } else {
+                $this->media = new Model\MediaList();
+            }
         }
     }
 }

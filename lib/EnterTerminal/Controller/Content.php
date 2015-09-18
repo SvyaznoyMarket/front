@@ -35,23 +35,25 @@ namespace EnterTerminal\Controller {
                 throw new \Exception('Не передан contentToken', Http\Response::STATUS_BAD_REQUEST);
             }
 
-            $contentItemQuery = new Query\Content\GetItemByToken($contentToken);
+            $contentItemQuery = new Query\Content\GetItemByToken($contentToken, ['app-terminal']);
             $curl->prepare($contentItemQuery);
 
             $curl->execute();
 
-            if ($contentItemQuery->getError() && $contentItemQuery->getError()->getCode() === 404)
+            $contentPage = new \EnterModel\Content\Page($contentItemQuery->getResult());
+
+            if (!$contentPage->contentHtml || !$contentPage->isAvailableByDirectLink)
                 return (new \EnterTerminal\Controller\Error\NotFound())->execute($request, sprintf('Контент @%s не найден', $contentToken));
 
-            $item = $contentItemQuery->getResult();
+            $contentPage->contentHtml = '<script src="//yandex.st/jquery/1.8.3/jquery.js" type="text/javascript"></script>' . "\n" . $contentPage->contentHtml;
 
             // ответ
             $response = new Response();
-            $response->content = $item['content'];
+            $response->content = $contentPage->contentHtml;
             $response->content = $this->processContentLinks($response->content, $curl, $regionId);
             $response->content = $this->removeExternalScripts($response->content);
             $response->content = preg_replace('/<iframe(?:\s[^>]*)?>.*?<\/iframe>/is', '', $response->content); // https://jira.enter.ru/browse/TERMINALS-862
-            $response->title = isset($item['title']) ? $item['title'] : null;
+            $response->title = isset($contentPage->title) ? $contentPage->title : null;
 
             return new Http\JsonResponse($response);
         }
