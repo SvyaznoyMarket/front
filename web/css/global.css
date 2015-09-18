@@ -5242,6 +5242,9 @@ body {
 .cartEmpty_now a {
   text-decoration: underline;
 }
+.cart__inn {
+  padding-bottom: 52px;
+}
 .cart-item {
   padding: 10px 10px 5px;
   width: 100%;
@@ -5251,6 +5254,9 @@ body {
   -ms-box-sizing: border-box;
   position: relative;
   border-bottom: 1px solid #d3d3d3;
+}
+.cart-item:last-child {
+  border-bottom: 0;
 }
 .cart-item__img {
   width: 74px;

@@ -3,6 +3,7 @@
         <div class="pageTitle">Корзина</div>
 
         {{#productBlock}}
+           <div class="cart__inn">
             {{#products}}
             <!-- товар в корзине -->
                 <div class="js-cartProduct-container cart-item clearfix">
@@ -32,8 +33,10 @@
                 </div>
                 <!--/ товар в корзине -->
             {{/products}}
+           </div>
         {{/productBlock}}
 
+        {{>partial/cart/bar}}
 
         {{^cart}}
         <div class="cartEmpty">
