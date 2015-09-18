@@ -105,7 +105,7 @@ define(
 
                 resize: function() {
                     var
-                        height = windows.height() - thumbs.height() - header.height();
+                        height = windows.height() - thumbs.height() - header.height() - $('.top-banner').height();
 
                     content.css({
                         'height': height - 20,
