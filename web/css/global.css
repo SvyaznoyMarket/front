@@ -12136,6 +12136,92 @@ body:not(.noIOS) .private section:not(.main-section) > * {
     padding: 5px 0;
   }
 }
+/* ==========================================================================
+   баннер о самовывозе
+   ========================================================================== */
+.top-banner {
+  background-color: #009812;
+  text-align: center;
+  padding: 0 20px;
+  height: 36px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 20;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+.top-banner__inn {
+  display: table;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.top-banner__l {
+  display: table-cell;
+  padding: 0 10px;
+  vertical-align: middle;
+}
+.top-banner__txt {
+  font-size: 23px;
+  color: #fff;
+  font-family: 'Enter Type';
+  line-height: 1em;
+}
+.top-banner__r {
+  display: table-cell;
+  font-size: 15px;
+  padding: 0 30px;
+  color: #fff;
+  background-color: #007a15;
+  text-align: center;
+  vertical-align: middle;
+  height: 36px;
+}
+@media only screen and (max-width: 767px) {
+  .top-banner {
+    padding: 0 10px;
+  }
+  .top-banner__txt {
+    font-size: 18px;
+  }
+  .top-banner__r {
+    padding: 0 10px;
+    font-size: 12px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .top-banner__txt {
+    font-size: 14px;
+  }
+  .top-banner__r {
+    padding: 0 10px;
+    font-size: 12px;
+  }
+}
+/*
+   Смещаем контент сверху на высоту баннера(если баннер есть)
+*/
+.top-banner + .nav {
+  top: 36px;
+}
+.top-banner + .nav .nav-header {
+  top: 36px;
+}
+.top-banner + .nav + .menu-overlay {
+  top: 86px;
+}
+.top-banner + .nav + .menu-overlay + .page .header {
+  top: 36px;
+}
+.top-banner + .nav + .menu-overlay + .page .content {
+  padding-top: 86px;
+}
+.top-banner + .nav + .menu-overlay + .page .full-images {
+  padding-top: 86px;
+}
 /* =======
    Helpers
    ========================================================================== */
