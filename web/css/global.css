@@ -1116,10 +1116,11 @@ html.sb-animation .content {
    ========================================================================== */
 html,
 body {
-  height: 100%;
   width: 100%;
+  height: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch;
 }
 .wrapper {
   -webkit-overflow-scrolling: touch;
@@ -1129,43 +1130,24 @@ body {
   height: auto;
 }
 .wrapper-smpl .content {
-  padding-bottom: 0px;
+  padding-bottom: 0;
 }
-* {
-  -webkit-overflow-scrolling: touch;
+.page {
+  position: relative;
+  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+  -moz-transition: -moz-transform 0.2s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+  -o-transition: -o-transform 0.2s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+  transition: transform 0.2s cubic-bezier(0.2, 0.3, 0.25, 0.9);
+  background: #ffffff;
 }
 /* Middle
 -----------------------------------------------------------------------------*/
-.content {
-  margin: 0;
-  padding: 55px 0 215px;
-}
-.content-main {
-  background: #000000;
-}
 .pageTitle {
   font-size: 19px;
   line-height: 40px;
   display: none;
   padding: 0 10px;
   border-bottom: 1px solid #b1b1b1;
-}
-.contentBox940 {
-  max-width: 940px;
-  margin: 0 auto;
-  padding: 0 10px;
-}
-.contentBox960 {
-  max-width: 960px;
-  margin: 0 auto;
-}
-.contentBox640 {
-  max-width: 620px;
-  margin: 0 auto;
-}
-/* AB-test main page  */
-.body-main {
-  background-color: #000000;
 }
 /* ==========================================================================
    Layout - default styles
@@ -1320,7 +1302,6 @@ body {
   right: 0;
   left: 0;
   z-index: 20;
-  overflow: hidden;
   height: 50px;
   color: #ffffff;
   border-bottom: 1px solid #404040;
@@ -1801,10 +1782,8 @@ body {
   left: 260px;
   display: none;
   overflow: hidden;
-  width: 100%;
   height: 100%;
   cursor: pointer;
-  pointer-events: visible;
   background: #ffffff;
   opacity: 0.5;
   -moz-opacity: 0.5;
@@ -1825,6 +1804,7 @@ body {
   text-align: left;
   outline: 0;
   background-color: #f7f7f7;
+  display: none;
 }
 .nav-menu {
   position: relative;
@@ -1967,21 +1947,12 @@ body {
   display: inline-block;
   vertical-align: top;
 }
-.page {
-  position: relative;
-  -webkit-transition: -webkit-transform 0.2s cubic-bezier(0.2, 0.3, 0.25, 0.9);
-  -moz-transition: -moz-transform 0.2s cubic-bezier(0.2, 0.3, 0.25, 0.9);
-  -o-transition: -o-transform 0.2s cubic-bezier(0.2, 0.3, 0.25, 0.9);
-  transition: transform 0.2s cubic-bezier(0.2, 0.3, 0.25, 0.9);
-  background: #ffffff;
-}
 .menu-open {
   position: fixed;
   overflow: hidden;
   width: 100%;
 }
 .menu-open .page {
-  position: relative;
   -webkit-transform: translate3d(260px, 0, 0);
   -moz-transform: translate3d(260px, 0, 0);
   -ms-transform: translate3d(260px, 0, 0);
@@ -1993,6 +1964,8 @@ body {
 }
 .menu-open .nav {
   visibility: visible;
+  z-index: 3;
+  display: block;
 }
 /* ==========================================================================
    Навигации .nav
