@@ -21,6 +21,8 @@ class Content {
     public function buildObjectByRequest(Model\Page\Content $page, Content\Request $request) {
         (new Repository\Page\DefaultPage)->buildObjectByRequest($page, $request);
 
+        $page->dataModule = 'content';
+
         $page->title = $request->title;
         $page->content = $request->content;
 

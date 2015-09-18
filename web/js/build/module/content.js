@@ -1,0 +1,1 @@
+define(["jquery"],function(c){c(".js-scms-changeRegion").on("click",function(){c(".jsSelectCity").click()})});
