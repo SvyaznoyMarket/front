@@ -14,13 +14,15 @@ class GetItemByToken extends Query {
 
     /**
      * @param string $token
+     * @param int|string $regionId
      * @param array $tags
      */
-    public function __construct($token, array $tags = []) {
+    public function __construct($token, $regionId, array $tags = []) {
         $this->url = new Url();
         $this->url->path = 'api/static-page';
         $this->url->query = [
             'token' => [$token],
+            'geo_town_id' => $regionId,
         ];
 
         if ($tags) {
