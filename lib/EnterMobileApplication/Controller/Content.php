@@ -44,7 +44,7 @@ namespace EnterMobileApplication\Controller {
                 throw new \Exception('Не передан contentId', Http\Response::STATUS_BAD_REQUEST);
             }
 
-            $contentItemQuery = new Query\Content\GetItemByToken($contentToken, ['app-mobile']);
+            $contentItemQuery = new Query\Content\GetItemByToken($contentToken, $region->id, ['app-mobile']);
             $curl->prepare($contentItemQuery);
 
             $curl->execute();
