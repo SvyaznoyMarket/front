@@ -78,25 +78,20 @@ namespace EnterAggregator\Controller\User {
             }
 
             $productsQuery = new Query\Product\GetListByUiList($uis, $request->regionId);
+            $productDescriptionListQuery = new Query\Product\GetDescriptionListByUiList($uis, [
+                'media'       => true,
+                'media_types' => ['main']
+            ]);
             $curl->prepare($productsQuery);
+            $curl->prepare($productDescriptionListQuery);
 
             $curl->execute();
 
             $productRepo = new \EnterRepository\Product();
-            $products = $productRepo->getIndexedObjectListByQuery($productsQuery);
-
-            $descriptionQuery = new Query\Product\GetDescriptionListByUiList($uis, [
-                'media'       => true,
-                'media_types' => ['main']
-            ]);
-            $curl->prepare($descriptionQuery);
-            $curl->execute();
-
-            $productRepo->setDescriptionForListByListQuery($products, [$descriptionQuery]);
+            $products = $productRepo->getIndexedObjectListByQueryList([$productsQuery], [$productDescriptionListQuery]);
 
             foreach ($products as $product) {
-                $mediaList = $product->media;
-                $product->media = (new \EnterRepository\Media())->getSourceObjectByList($mediaList->photos, 'main', 'product_60')->url;
+                $product->media = (new \EnterRepository\Media())->getSourceObjectByList($product->media->photos, 'main', 'product_60')->url;
             }
 
             $pr = [];

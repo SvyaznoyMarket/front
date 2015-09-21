@@ -38,12 +38,14 @@ namespace EnterAggregator\Controller\Product {
 
             // запрос товара
             $productListQuery = new Query\Product\GetListByIdList($request->productIds, $region->id, ['model' => false, 'related' => false]);
+            $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList($request->productIds);
             $curl->prepare($productListQuery);
+            $curl->prepare($productDescriptionListQuery);
 
             $curl->execute();
 
             // товары
-            $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
+            $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$productDescriptionListQuery]);
 
             // товар
             /** @var Model\Product|null $product */
@@ -143,18 +145,8 @@ namespace EnterAggregator\Controller\Product {
             $curl->execute();
 
             // товары
-            $recommendedProductsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
-
-            // товары по ui
-            $productsByUi = [];
-            call_user_func(function() use (&$recommendedProductsById, &$productsByUi) {
-                foreach ($recommendedProductsById as $product) {
-                    $productsByUi[$product->ui] = $product;
-                }
-            });
-
-            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQueries);
-
+            $recommendedProductsById = $productRepository->getIndexedObjectListByQueryList($productListQueries, $descriptionListQueries);
+            
             foreach ($alsoBoughtIdList as $i => $alsoBoughtId) {
                 // SITE-2818 из списка товаров "с этим товаром также покупают" убираем товары, которые есть только в магазинах
                 /** @var \EnterModel\Product|null $productsById */

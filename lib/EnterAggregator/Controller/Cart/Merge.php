@@ -48,16 +48,18 @@ namespace EnterAggregator\Controller\Cart {
 
             if ($productUis = array_keys($externalCartProductsByUi)) {
                 $productListQuery = new Query\Product\GetListByUiList($productUis, $request->regionId);
+                $productDescriptionListQuery = new Query\Product\GetDescriptionListByUiList($productUis);
                 $curl->prepare($productListQuery);
+                $curl->prepare($productDescriptionListQuery);
 
                 $curl->execute();
 
-                foreach ($productListQuery->getResult() as $item) {
+                foreach ((new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery], [$productDescriptionListQuery]) as $product) {
                     /** @var Model\Cart\Product|null $cartProduct */
-                    $cartProduct = (isset($item['ui']) && isset($externalCartProductsByUi[$item['ui']])) ? $externalCartProductsByUi[$item['ui']] : null;
+                    $cartProduct = isset($externalCartProductsByUi[$product->ui]) ? $externalCartProductsByUi[$product->ui] : null;
                     if (!$cartProduct) continue;
 
-                    $cartProduct->id = (string)$item['id'];
+                    $cartProduct->id = (string)$product->id;
 
                     $cartRepository->setProductForObject($cart, $cartProduct);
                 }

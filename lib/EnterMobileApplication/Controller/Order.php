@@ -61,9 +61,19 @@ namespace EnterMobileApplication\Controller {
             }
 
             $productListQuery = null;
+            $descriptionListQuery = null;
             if ((bool)$orderProductsById) {
                 $productListQuery = new Query\Product\GetListByIdList(array_keys($orderProductsById), $order->regionId, ['model' => false, 'related' => false]);
                 $curl->prepare($productListQuery);
+                
+                $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(array_keys($orderProductsById), [
+                    'media'       => true,
+                    'media_types' => ['main'], // только главная картинка
+                    'category'    => true,
+                    'label'       => true,
+                    'brand'       => true,
+                ]);
+                $curl->prepare($descriptionListQuery);
             }
 
             $curl->execute();
@@ -71,28 +81,9 @@ namespace EnterMobileApplication\Controller {
             // товары сгруппированные по id
             $productsById = [];
             try {
-                $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
+                $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$descriptionListQuery]) : [];
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
-            }
-
-            $descriptionListQuery = null;
-            if ($productsById) {
-                $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
-                    array_map(function(Model\Product $product) { return $product->ui; }, $productsById),
-                    [
-                        'media'       => true,
-                        'media_types' => ['main'], // только главная картинка
-                        'category'    => true,
-                        'label'       => true,
-                        'brand'       => true,
-                    ]
-                );
-                $curl->prepare($descriptionListQuery);
-
-                $curl->execute();
-
-                $productRepository->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
             }
 
             $media = $pointRepository->getMedia($point['partner']['slug'], ['logo']);

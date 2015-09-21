@@ -63,31 +63,25 @@ namespace EnterMobileApplication\Controller\User\Favorite {
                 );
                 if ($productUis) {
                     $productListQueries = [];
+                    $productDescriptionListQueries = [];
                     foreach (array_chunk($productUis, $config->curl->queryChunkSize) as $uisInChunk) {
                         $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $config->region->defaultId);
-                        $curl->prepare($productListQuery);
-                        $productListQueries[] = $productListQuery;
-                    }
-
-                    // запрос списка медиа для товаров
-                    $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
-                        $productUis,
-                        [
+                        $productDescriptionListQuery = new Query\Product\GetDescriptionListByUiList($uisInChunk, [
                             'media'       => true,
                             'media_types' => ['main'], // только главная картинка
                             'category'    => true,
                             'label'       => true,
                             'brand'       => true,
-                        ]
-                    );
-                    $curl->prepare($descriptionListQuery);
+                        ]);
+                        $curl->prepare($productListQuery);
+                        $curl->prepare($productDescriptionListQuery);
+                        $productListQueries[] = $productListQuery;
+                        $productDescriptionListQueries[] = $productDescriptionListQuery;
+                    }
 
                     $curl->execute();
 
-                    $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList($productListQueries);
-
-                    // медиа для товаров
-                    (new \EnterRepository\Product())->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
+                    $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList($productListQueries, $productDescriptionListQueries);
 
                     $response->products = array_values($productsById);
                     array_walk($response->products, function(\EnterModel\Product $product) use(&$helper) {

@@ -80,8 +80,11 @@ namespace EnterMobileApplication\Controller {
                         $curl->prepare($matches[$key]['query']);
                     }
                     else if (0 === strpos($path, '/product/')) {
-                        $matches[$key]['query'] = new Query\Product\GetItemByToken($contentRepository->getTokenByPath($path), $regionId, ['model' => false, 'related' => false]);
+                        $token = $contentRepository->getTokenByPath($path);
+                        $matches[$key]['query'] = new Query\Product\GetItemByToken($token, $regionId, ['model' => false, 'related' => false]);
+                        $matches[$key]['productDescriptionListQuery'] = new Query\Product\GetDescriptionListByTokenList([$token]);
                         $curl->prepare($matches[$key]['query']);
+                        $curl->prepare($matches[$key]['productDescriptionListQuery']);
                     }
                 }
 
@@ -102,7 +105,7 @@ namespace EnterMobileApplication\Controller {
                                 $newAttributes = ' data-type="ProductCatalog/Category" data-category-id="' . $this->getTemplateHelper()->escape($category->id) . '"';
                         }
                         else if (0 === strpos($path, '/product/')) {
-                            $product = $productRepository->getObjectByQuery($match['query']);
+                            $product = $productRepository->getObjectByQuery($match['query'], [$match['productDescriptionListQuery']]);
                             if (null !== $product)
                                 $newAttributes = ' data-type="ProductCard" data-product-id="' . $this->getTemplateHelper()->escape($product->id) . '"';
                         }

@@ -79,14 +79,12 @@ class ViewedList {
             $curl->execute();
 
             // список товаров
-            $productsById = (bool)$productListQueries ? $productRepository->getIndexedObjectListByQueryList($productListQueries) : [];
+            $productsById = (bool)$productListQueries ? $productRepository->getIndexedObjectListByQueryList($productListQueries, $descriptionListQueries) : [];
 
             // список рейтингов товаров
             if ($ratingListQuery) {
                 $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
             }
-
-            $productRepository->setDescriptionForListByListQuery($productsById, $descriptionListQueries);
 
             // ответ
             $response = [

@@ -68,8 +68,7 @@ namespace EnterAggregator\Controller\Cart {
             $setProductQueries = [];
 
             // товары
-            $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
-            $productRepository->setDescriptionForListByListQuery($productsById, $descriptionListQueries);
+            $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries, $descriptionListQueries);
 
             foreach ($cartProductsById as $cartProduct) {
                 /** @var Model\Cart\Product|null $cartProduct */

@@ -123,9 +123,19 @@ namespace EnterAggregator\Controller\Order {
 
             // запрос товаров
             $productListQuery = null;
+            $descriptionListQuery = null;
             if ($orderProductsById) {
                 $productListQuery = new Query\Product\GetListByIdList(array_keys($orderProductsById), $regionId);
                 $curl->prepare($productListQuery);
+                
+                $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(array_keys($orderProductsById), [
+                    'media'       => true,
+                    'media_types' => ['main'], // только главная картинка
+                    'category'    => true,
+                    'label'       => true,
+                    'brand'       => true,
+                ]);
+                $curl->prepare($descriptionListQuery);
             }
 
             $curl->execute();
@@ -133,36 +143,9 @@ namespace EnterAggregator\Controller\Order {
             // товары индексированные по id
             $productsById = [];
             try {
-                $productsById = $productListQuery ? (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery]) : [];
+                $productsById = $productListQuery ? (new Repository\Product())->getIndexedObjectListByQueryList([$productListQuery], [$descriptionListQuery]) : [];
             } catch (\Exception $e) {
                 $logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
-            }
-
-            if ($productsById) {
-                $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
-                    array_map(function(Model\Product $product) { return $product->ui; }, $productsById),
-                    [
-                        'media'       => true,
-                        'media_types' => ['main'], // только главная картинка
-                        'category'    => true,
-                        'label'       => true,
-                        'brand'       => true,
-                    ]
-                );
-                $curl->prepare($descriptionListQuery);
-
-                $curl->execute();
-
-                // товары по ui
-                $productsByUi = [];
-                call_user_func(function() use (&$productsById, &$productsByUi) {
-                    foreach ($productsById as $product) {
-                        $productsByUi[$product->ui] = $product;
-                    }
-                });
-
-                // медиа для товаров
-                $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
             }
 
             // запрос на проверку товаров в избранном

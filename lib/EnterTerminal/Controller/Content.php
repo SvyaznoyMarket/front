@@ -78,11 +78,17 @@ namespace EnterTerminal\Controller {
                         $matches[$key]['query'] = new Query\Product\Category\GetItemByToken($contentRepository->getTokenByPath($path), $regionId);
                         $curl->prepare($matches[$key]['query']);
                     } else if (0 === strpos($path, '/product/')) {
-                        $matches[$key]['query'] = new Query\Product\GetItemByToken($contentRepository->getTokenByPath($path), $regionId, ['model' => false, 'related' => false]);
+                        $token = $contentRepository->getTokenByPath($path);
+                        $matches[$key]['query'] = new Query\Product\GetItemByToken($token, $regionId, ['model' => false, 'related' => false]);
+                        $matches[$key]['productDescriptionListQuery'] = new Query\Product\GetDescriptionListByTokenList([$token]);
                         $curl->prepare($matches[$key]['query']);
+                        $curl->prepare($matches[$key]['productDescriptionListQuery']);
                     } else if (0 === strpos($path, '/products/set/')) {
-                        $matches[$key]['query'] = new Query\Product\GetListByBarcodeList($contentRepository->getProductBarcodesByPath($path), $regionId, ['model' => false, 'related' => false]);
+                        $barcodes = $contentRepository->getProductBarcodesByPath($path);
+                        $matches[$key]['query'] = new Query\Product\GetListByBarcodeList($barcodes, $regionId, ['model' => false, 'related' => false]);
+                        $matches[$key]['productDescriptionListQuery'] = new Query\Product\GetDescriptionListByBarcodeList($barcodes);
                         $curl->prepare($matches[$key]['query']);
+                        $curl->prepare($matches[$key]['productDescriptionListQuery']);
                     }
                 }
 
@@ -125,7 +131,7 @@ namespace EnterTerminal\Controller {
                     } else if (0 === strpos($path, '/product/')) {
                         $product = null;
                         try {
-                            $product = $productRepository->getObjectByQuery($match['query']);
+                            $product = $productRepository->getObjectByQuery($match['query'], [$match['productDescriptionListQuery']]);
                         } catch (\Exception $e) {
                             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['content']]);
                         }
@@ -137,7 +143,7 @@ namespace EnterTerminal\Controller {
                         try {
                             $productIds = array_map(
                                 function(\EnterModel\Product $product) { return $product->id; },
-                                $productRepository->getIndexedObjectListByQueryList([$match['query']])
+                                $productRepository->getIndexedObjectListByQueryList([$match['query']], [$match['productDescriptionListQuery']])
                             );
                         } catch (\Exception $e) {
                             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['content']]);

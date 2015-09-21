@@ -137,35 +137,15 @@ namespace EnterTerminal\Controller {
                 $curl->prepare($ratingListQuery);
             }
 
-            // запрос списка видео для товаров
-            //$descriptionListQuery = new Query\Product\GetDescriptionListByUiList($searchResult->productIds);
-            //$curl->prepare($descriptionListQuery);
-
             $curl->execute();
 
             // список товаров
-            $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
-
-            // товары по ui
-            $productsByUi = [];
-            call_user_func(function() use (&$productsById, &$productsByUi) {
-                foreach ($productsById as $product) {
-                    $productsByUi[$product->ui] = $product;
-                }
-            });
-
-            // медиа для товаров
-            if ($productsByUi && $descriptionListQuery) {
-                $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
-            }
+            $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$descriptionListQuery]) : [];
 
             // список рейтингов товаров
             if ($ratingListQuery) {
                 $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
             }
-
-            // список медиа для товаров
-            //$productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
             // список магазинов, в которых есть товар
             try {

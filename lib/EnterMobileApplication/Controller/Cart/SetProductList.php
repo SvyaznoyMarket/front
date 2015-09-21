@@ -66,10 +66,11 @@ class SetProductList {
 
             if ($productsById) {
                 $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id, ['model' => false, 'related' => false]);
-                $curl->prepare($productListQuery);
+                $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList(array_keys($productsById));
+                $curl->prepare($productDescriptionListQuery);
                 $curl->execute();
 
-                $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+                $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery], [$productDescriptionListQuery]);
             }
 
             foreach ($cartProducts as $cartProduct) {
@@ -98,14 +99,18 @@ class SetProductList {
             $cart = $cartRepository->getObjectByQuery($cartItemQuery);
 
             $cartProductListQuery = null;
+            $cartProductDescriptionListQuery = null;
             if ($cart->product) {
-                $cartProductListQuery = new \EnterQuery\Product\GetListByUiList(array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), $region->id, ['model' => false, 'related' => false]);
+                $productUis = array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product);
+                $cartProductListQuery = new \EnterQuery\Product\GetListByUiList($productUis, $region->id, ['model' => false, 'related' => false]);
+                $cartProductDescriptionListQuery = new Query\Product\GetDescriptionListByUiList($productUis);
                 $curl->prepare($cartProductListQuery);
+                $curl->prepare($cartProductDescriptionListQuery);
             }
 
             $curl->execute();
 
-            $cartRepository->updateObjectByQuery($cart, null, $cartProductListQuery);
+            $cartRepository->updateObjectByQuery($cart, null, $cartProductListQuery, $cartProductDescriptionListQuery);
 
             $cartPriceItemQuery = new \EnterQuery\Cart\Price\GetItem($cart, $region->id);
             $curl->prepare($cartPriceItemQuery);

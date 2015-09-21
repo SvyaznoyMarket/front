@@ -88,8 +88,8 @@ namespace EnterAggregator\Controller\User {
                 $pointResult =
                 $point ? [
                     'ui' => $point['uid'],
-                    'name' => $pointRepository->getName($point['partner']),
-                    'media' => $pointRepository->getMedia($point['partner'], ['logo']),
+                    'name' => $point['partner']['name'],
+                    'media' => $pointRepository->getMedia($point['partner']['slug'], ['logo']),
                     'address' => $point['address'],
                     'regime' => $point['working_time'],
                     'longitude' => isset($point['location'][0]) ? $point['location'][0] : null,
@@ -112,22 +112,23 @@ namespace EnterAggregator\Controller\User {
                 $productIds[] = $product->id;
             }
 
-            $productsInfo = new Query\Product\GetDescriptionListByIdList($productIds, ['media' => 1]);
-            $curl->prepare($productsInfo);
+            $productListQuery = new Query\Product\GetListByIdList($productIds, $response->region->id);
+            $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList($productIds, ['media' => 1]);
+            $curl->prepare($productListQuery);
+            $curl->prepare($productDescriptionListQuery);
             $curl->execute();
-
+            
+            /** @var \EnterModel\Order\Product[] $mappedProducts */
             $mappedProducts = [];
             foreach ($orderRepo->product as $product) {
                 $mappedProducts[$product->id] = $product;
             }
 
-            foreach ($productsInfo->getResult() as $productInfo) {
-                $mappedProducts[ $productInfo['core_id'] ]->ui = $productInfo['uid'];
-                $mappedProducts[ $productInfo['core_id'] ]->name = $productInfo['name'];
+            foreach ((new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery], [$productDescriptionListQuery]) as $productInfo) {
+                $mappedProducts[$productInfo->id]->ui = $productInfo->ui;
+                $mappedProducts[$productInfo->id]->name = $productInfo->name;
+                $mappedProducts[$productInfo->id]->media = $productInfo->media;
             }
-
-            (new \EnterRepository\Product())->setDescriptionForListByListQuery($mappedProducts, [$productsInfo]);
-
 
             $orderRepo->product = $mappedProducts;
 

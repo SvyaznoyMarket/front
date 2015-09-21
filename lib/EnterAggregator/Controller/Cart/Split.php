@@ -163,6 +163,18 @@ namespace EnterAggregator\Controller\Cart {
                 $productListQuery = new Query\Product\GetListByIdList($productIds, $response->region->id, ['model' => false, 'related' => false]);
                 $curl->prepare($productListQuery);
 
+                $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
+                    $productIds,
+                    [
+                        'media'       => true,
+                        'media_types' => ['main'], // только главная картинка
+                        'category'    => true,
+                        'label'       => true,
+                        'brand'       => true,
+                    ]
+                );
+                $curl->prepare($descriptionListQuery);
+            
                 $curl->execute();
 
                 // Получаем названия групп точек из scms
@@ -181,36 +193,9 @@ namespace EnterAggregator\Controller\Cart {
                 });
 
                 // список товаров
-                $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
+                $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$descriptionListQuery]) : [];
 
                 if ($productsById) {
-                    // MAPI-9
-                    // запрос списка медиа для товаров
-                    $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
-                        array_map(function(Model\Product $product) { return $product->ui; }, $productsById),
-                        [
-                            'media'       => true,
-                            'media_types' => ['main'], // только главная картинка
-                            'category'    => true,
-                            'label'       => true,
-                            'brand'       => true,
-                        ]
-                    );
-                    $curl->prepare($descriptionListQuery);
-
-                    $curl->execute();
-
-                    // товары по ui
-                    $productsByUi = [];
-                    call_user_func(function() use (&$productsById, &$productsByUi) {
-                        foreach ($productsById as $product) {
-                            $productsByUi[$product->ui] = $product;
-                        }
-                    });
-
-                    // медиа для товаров
-                    $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
-
                     foreach ($response->split->orders as $order) {
                         foreach ($order->products as $product) {
                             $product->media = isset($productsById[$product->id]) ? $productsById[$product->id]->media : [];

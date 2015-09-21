@@ -87,23 +87,7 @@ class Index {
 
         $curl->execute();
         
-        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
-
-        // товары по ui
-        $cartProductsByUi = [];
-        call_user_func(function() use ($cart, &$cartProductsByUi) {
-            foreach ($cart->product as $product) {
-                if ($product->product) {
-                    $cartProductsByUi[$product->ui] = $product->product;
-                }
-            }
-        });
-        if ($descriptionListQuery) {
-            (new \EnterRepository\Product())->setDescriptionForListByListQuery(
-                $cartProductsByUi,
-                [$descriptionListQuery]
-            );
-        }
+        (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery, $descriptionListQuery);
 
         // меню
         $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);

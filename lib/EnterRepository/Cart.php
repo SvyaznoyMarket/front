@@ -217,7 +217,7 @@ class Cart {
         }
 
         if ($cartProductListQuery) {
-            $coreCartProducts = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$cartProductListQuery]);
+            $coreCartProducts = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$cartProductListQuery], [$cartProductDescriptionListQuery]);
             $coreCartProductUis = [];
             foreach ($coreCartProducts as $coreCartProduct) {
                 $coreCartProductUis[] = $coreCartProduct->ui;
@@ -233,10 +233,6 @@ class Cart {
                 if (!in_array($cartProduct->ui, $coreCartProductUis, true)) {
                     unset($cart->product[$key]);
                 }
-            }
-
-            if ($cartProductDescriptionListQuery) {
-                (new \EnterRepository\Product())->setDescriptionForListByListQuery($coreCartProducts, [$cartProductDescriptionListQuery]);
             }
         }
     }

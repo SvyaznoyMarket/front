@@ -84,8 +84,7 @@ namespace EnterMobileApplication\Controller {
             $curl->execute();
 
             try {
-                $products = $productRepository->getIndexedObjectListByQueryList($productListQueries);
-                $productRepository->setDescriptionForListByListQuery($products, $descriptionListQueries);
+                $products = $productRepository->getIndexedObjectListByQueryList($productListQueries, $descriptionListQueries);
             } catch (\Exception $e) {
                 $products = [];
             }
