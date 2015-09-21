@@ -151,8 +151,12 @@
         <nav class="product-tabs__menu">
             <div class="product-tabs__head js-change-tab active" data-block="js-description-block">Подробности</div>
             <div class="product-tabs__head js-change-tab" data-block="js-reviews-block">Отзывы</div>
-            <div class="product-tabs__head js-change-tab" data-block="js-accessories-block">Аксессуары</div>
-            <div class="product-tabs__head js-change-tab" data-block="js-simillar-block">Похожие товары</div>
+            {{#product.accessorySlider}}
+                <div class="product-tabs__head js-change-tab" data-block="js-accessories-block">Аксессуары</div>
+            {{/product.accessorySlider}}
+            {{#product.similarSlider}}
+                <div class="product-tabs__head js-change-tab" data-block="js-simillar-block">Похожие товары</div>
+            {{/product.similarSlider}}
         </nav>
 
         <div class="product-tabs__content">
