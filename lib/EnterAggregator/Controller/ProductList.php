@@ -246,29 +246,23 @@ namespace EnterAggregator\Controller {
 
             // запрос списка товаров
             $productListQueries = [];
+            $productDescriptionListQueries = [];
             if ($response->productUiPager && $response->productUiPager->uis) {
                 foreach (array_chunk($response->productUiPager->uis, $config->curl->queryChunkSize) as $uisInChunk) {
                     $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $response->region->id, ['model' => false, 'related' => false]);
-                    $curl->prepare($productListQuery);
-                    $productListQueries[] = $productListQuery;
-                }
-            }
-
-            // запрос списка медиа для товаров
-            $descriptionListQuery = null;
-            if ($response->productUiPager && (bool)$response->productUiPager->uis) {
-                $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
-                    $response->productUiPager->uis,
-                    [
+                    $productDescriptionListQuery = new Query\Product\GetDescriptionListByUiList($uisInChunk, [
                         'media'       => true,
                         'media_types' => ['main'], // только главная картинка
                         'category'    => true,
                         'label'       => true,
                         'brand'       => true,
                         'tag'         => true,
-                    ]
-                );
-                $curl->prepare($descriptionListQuery);
+                    ]);
+                    $curl->prepare($productListQuery);
+                    $curl->prepare($productDescriptionListQuery);
+                    $productListQueries[] = $productListQuery;
+                    $productDescriptionListQueries[] = $productDescriptionListQuery;
+                }
             }
 
             // запрос доставки товаров
@@ -310,12 +304,7 @@ namespace EnterAggregator\Controller {
             $curl->execute();
 
             // список товаров
-            $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
-
-            // медиа для товаров
-            if ($descriptionListQuery) {
-                $productRepository->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
-            }
+            $productsById = $productRepository->getIndexedObjectListByQueryList($productListQueries, $productDescriptionListQueries);
 
             // доставка товаров
             if ($deliveryListQuery) {

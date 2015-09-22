@@ -38,12 +38,14 @@ namespace EnterAggregator\Controller\Product {
 
             // запрос товара
             $productListQuery = new Query\Product\GetListByIdList($request->productIds, $region->id, ['model' => false, 'related' => false]);
+            $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList($request->productIds);
             $curl->prepare($productListQuery);
+            $curl->prepare($productDescriptionListQuery);
 
             $curl->execute();
 
             // товары
-            $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
+            $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$productDescriptionListQuery]);
 
             // товар
             /** @var Model\Product|null $product */
@@ -143,18 +145,8 @@ namespace EnterAggregator\Controller\Product {
             $curl->execute();
 
             // товары
-            $recommendedProductsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
-
-            // товары по ui
-            $productsByUi = [];
-            call_user_func(function() use (&$recommendedProductsById, &$productsByUi) {
-                foreach ($recommendedProductsById as $product) {
-                    $productsByUi[$product->ui] = $product;
-                }
-            });
-
-            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQueries);
-
+            $recommendedProductsById = $productRepository->getIndexedObjectListByQueryList($productListQueries, $descriptionListQueries);
+            
             foreach ($alsoBoughtIdList as $i => $alsoBoughtId) {
                 // SITE-2818 из списка товаров "с этим товаром также покупают" убираем товары, которые есть только в магазинах
                 /** @var \EnterModel\Product|null $productsById */
@@ -210,12 +202,20 @@ namespace EnterAggregator\Controller\Product {
                 }
             }
 
+            if ($request->config->removeUnavailable) {
+                foreach ($recommendedProductsById as $id => $recommendedProduct) {
+                    if (!$recommendedProduct->isBuyable) {
+                        unset($recommendedProductsById[$id]);
+                    }
+                }
+            }
+
             // сортировка по наличию
-            /*
-            $productRepository->sortByStockStatus($alsoBoughtIdList, $recommendedProductsById);
-            $productRepository->sortByStockStatus($similarIdList, $recommendedProductsById);
-            $productRepository->sortByStockStatus($alsoViewedIdList, $recommendedProductsById);
-            */
+            if ($request->config->sortByStockState) {
+                $productRepository->sortByStockStatus($alsoBoughtIdList, $recommendedProductsById);
+                $productRepository->sortByStockStatus($similarIdList, $recommendedProductsById);
+                $productRepository->sortByStockStatus($alsoViewedIdList, $recommendedProductsById);
+            }
 
             // ответ
             $response->productsById = $productsById;
@@ -288,5 +288,17 @@ namespace EnterAggregator\Controller\Product\RecommendedListByProduct\Request {
          * @var bool
          */
         public $alsoViewed = false;
+        /**
+         * Сортировать по наличию на складе
+         *
+         * @var bool
+         */
+        public $sortByStockState;
+        /**
+         * Удалять недоступные
+         *
+         * @var bool
+         */
+        public $removeUnavailable;
     }
 }

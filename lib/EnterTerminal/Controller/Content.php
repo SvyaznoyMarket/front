@@ -35,23 +35,25 @@ namespace EnterTerminal\Controller {
                 throw new \Exception('Не передан contentToken', Http\Response::STATUS_BAD_REQUEST);
             }
 
-            $contentItemQuery = new Query\Content\GetItemByToken($contentToken);
+            $contentItemQuery = new Query\Content\GetItemByToken($contentToken, $regionId, ['app-terminal']);
             $curl->prepare($contentItemQuery);
 
             $curl->execute();
 
-            if ($contentItemQuery->getError() && $contentItemQuery->getError()->getCode() === 404)
+            $contentPage = new \EnterModel\Content\Page($contentItemQuery->getResult());
+
+            if (!$contentPage->contentHtml || !$contentPage->isAvailableByDirectLink)
                 return (new \EnterTerminal\Controller\Error\NotFound())->execute($request, sprintf('Контент @%s не найден', $contentToken));
 
-            $item = $contentItemQuery->getResult();
+            $contentPage->contentHtml = '<script src="//yandex.st/jquery/1.8.3/jquery.js" type="text/javascript"></script>' . "\n" . $contentPage->contentHtml;
 
             // ответ
             $response = new Response();
-            $response->content = $item['content'];
+            $response->content = $contentPage->contentHtml;
             $response->content = $this->processContentLinks($response->content, $curl, $regionId);
             $response->content = $this->removeExternalScripts($response->content);
             $response->content = preg_replace('/<iframe(?:\s[^>]*)?>.*?<\/iframe>/is', '', $response->content); // https://jira.enter.ru/browse/TERMINALS-862
-            $response->title = isset($item['title']) ? $item['title'] : null;
+            $response->title = isset($contentPage->title) ? $contentPage->title : null;
 
             return new Http\JsonResponse($response);
         }
@@ -76,11 +78,17 @@ namespace EnterTerminal\Controller {
                         $matches[$key]['query'] = new Query\Product\Category\GetItemByToken($contentRepository->getTokenByPath($path), $regionId);
                         $curl->prepare($matches[$key]['query']);
                     } else if (0 === strpos($path, '/product/')) {
-                        $matches[$key]['query'] = new Query\Product\GetItemByToken($contentRepository->getTokenByPath($path), $regionId, ['model' => false, 'related' => false]);
+                        $token = $contentRepository->getTokenByPath($path);
+                        $matches[$key]['query'] = new Query\Product\GetItemByToken($token, $regionId, ['model' => false, 'related' => false]);
+                        $matches[$key]['productDescriptionListQuery'] = new Query\Product\GetDescriptionListByTokenList([$token]);
                         $curl->prepare($matches[$key]['query']);
+                        $curl->prepare($matches[$key]['productDescriptionListQuery']);
                     } else if (0 === strpos($path, '/products/set/')) {
-                        $matches[$key]['query'] = new Query\Product\GetListByBarcodeList($contentRepository->getProductBarcodesByPath($path), $regionId, ['model' => false, 'related' => false]);
+                        $barcodes = $contentRepository->getProductBarcodesByPath($path);
+                        $matches[$key]['query'] = new Query\Product\GetListByBarcodeList($barcodes, $regionId, ['model' => false, 'related' => false]);
+                        $matches[$key]['productDescriptionListQuery'] = new Query\Product\GetDescriptionListByBarcodeList($barcodes);
                         $curl->prepare($matches[$key]['query']);
+                        $curl->prepare($matches[$key]['productDescriptionListQuery']);
                     }
                 }
 
@@ -123,7 +131,7 @@ namespace EnterTerminal\Controller {
                     } else if (0 === strpos($path, '/product/')) {
                         $product = null;
                         try {
-                            $product = $productRepository->getObjectByQuery($match['query']);
+                            $product = $productRepository->getObjectByQuery($match['query'], [$match['productDescriptionListQuery']]);
                         } catch (\Exception $e) {
                             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['content']]);
                         }
@@ -135,7 +143,7 @@ namespace EnterTerminal\Controller {
                         try {
                             $productIds = array_map(
                                 function(\EnterModel\Product $product) { return $product->id; },
-                                $productRepository->getIndexedObjectListByQueryList([$match['query']])
+                                $productRepository->getIndexedObjectListByQueryList([$match['query']], [$match['productDescriptionListQuery']])
                             );
                         } catch (\Exception $e) {
                             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['content']]);

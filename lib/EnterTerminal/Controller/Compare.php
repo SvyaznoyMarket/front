@@ -63,25 +63,7 @@ namespace EnterTerminal\Controller {
             $curl->execute();
 
             if ($productListQuery) {
-                $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery], function(&$item) {
-                    // оптимизация
-                    if ($mediaItem = reset($item['media'])) {
-                        $item['media'] = [$mediaItem];
-                    }
-                });
-
-                // товары по ui
-                $productsByUi = [];
-                call_user_func(function() use (&$productsById, &$productsByUi) {
-                    foreach ($productsById as $product) {
-                        $productsByUi[$product->ui] = $product;
-                    }
-                });
-
-                // медиа для товаров
-                if ($productsByUi && $descriptionListQuery) {
-                    $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
-                }
+                $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$descriptionListQuery]);
             }
 
             // список магазинов, в которых есть товар

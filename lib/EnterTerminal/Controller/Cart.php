@@ -40,8 +40,8 @@ namespace EnterTerminal\Controller {
                 $productsById[$cartProduct->id] = null;
             }
 
-            $descriptionListQuery = null;
             $productListQuery = null;
+            $descriptionListQuery = null;
             if ((bool)$productsById) {
                 $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $regionId, ['model' => false, 'related' => false]);
                 $curl->prepare($productListQuery);
@@ -65,20 +65,7 @@ namespace EnterTerminal\Controller {
             $curl->execute();
 
             if ($productListQuery) {
-                $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
-
-                // товары по ui
-                $productsByUi = [];
-                call_user_func(function() use (&$productsById, &$productsByUi) {
-                    foreach ($productsById as $product) {
-                        $productsByUi[$product->ui] = $product;
-                    }
-                });
-
-                // медиа для товаров
-                if ($descriptionListQuery) {
-                    $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
-                }
+                $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$descriptionListQuery]);
             }
 
             // корзина из ядра

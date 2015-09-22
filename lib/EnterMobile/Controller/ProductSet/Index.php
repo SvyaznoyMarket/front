@@ -83,7 +83,15 @@ class Index {
 
         // запрос товаров по баркодам
         $productListQuery = new Query\Product\GetListByBarcodeList($barcodes, $region->id);
+        $productDescriptionListQuery = new Query\Product\GetDescriptionListByBarcodeList($barcodes, [
+            'media'       => true,
+            'media_types' => ['main'], // только главная картинка
+            'category'    => true,
+            'label'       => true,
+            'brand'       => true,
+        ]);
         $curl->prepare($productListQuery);
+        $curl->prepare($productDescriptionListQuery);
 
         $curl->execute();
         
@@ -93,29 +101,7 @@ class Index {
         $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
 
         // товары
-        $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
-
-        // запрос списка медиа для товаров
-        $descriptionListQuery = null;
-        if ($productsById) {
-            $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
-                array_map(function(\EnterModel\Product $product) { return $product->ui; }, $productsById),
-                [
-                    'media'       => true,
-                    'media_types' => ['main'], // только главная картинка
-                    'category'    => true,
-                    'label'       => true,
-                    'brand'       => true,
-                ]
-            );
-            $curl->prepare($descriptionListQuery);
-        }
-
-        $curl->execute();
-
-        if ($descriptionListQuery) {
-            $productRepository->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
-        }
+        $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$productDescriptionListQuery]);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductSet\Index\Request();

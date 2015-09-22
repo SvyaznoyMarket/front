@@ -43,7 +43,7 @@ namespace EnterModel\Product {
             if (array_key_exists('uid', $data)) $this->ui = (string)$data['uid'];
             if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
             if (array_key_exists('slug', $data)) $this->token = (string)$data['slug'];
-            if (array_key_exists('link', $data)) $this->link = (string)$data['link']; // Возвращается методом https://scms.enter.ru/api/category/tree
+            if (array_key_exists('link', $data)) $this->link = rtrim((string)$data['link'], '/'); // Возвращается методом https://scms.enter.ru/api/category/tree
             if (array_key_exists('url', $data)) $this->link = (string)$data['url']; // Возвращается методами https://scms.enter.ru/category/get/v1 и https://scms.enter.ru/product/get-description/v1
             if (array_key_exists('is_furniture', $data)) $this->isFurniture = (bool)$data['is_furniture'];
             $this->path = trim(preg_replace('/^\/catalog\//', '', $this->link), '/');

@@ -47,7 +47,9 @@ class DeleteProduct {
         $region = $regionId ? new \EnterModel\Region(['id' => $regionId]) : null;
 
         $productItemQuery = new Query\Product\GetItemById($cartProduct->id, $regionId);
+        $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList([$cartProduct->id]);
         $curl->prepare($productItemQuery);
+        $curl->prepare($productDescriptionListQuery);
 
         // запрос пользователя
         $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
@@ -96,7 +98,7 @@ class DeleteProduct {
         $session->remove($config->order->splitSessionKey);
 
         // товар
-        $product = (new \EnterRepository\Product())->getObjectByQuery($productItemQuery);
+        $product = (new \EnterRepository\Product())->getObjectByQuery($productItemQuery, [$productDescriptionListQuery]);
         if (!$product) {
             $product = new \EnterModel\Product();
             $product->id = $cartProduct->id;
@@ -117,14 +119,7 @@ class DeleteProduct {
 
         // товары
         if ($productListQuery) {
-            $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
-        }
-
-        if ($descriptionListQuery) {
-            (new \EnterRepository\Product())->setDescriptionForListByListQuery(
-                $productsById,
-                [$descriptionListQuery]
-            );
+            $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery], [$descriptionListQuery]);
         }
 
         // если корзина пустая

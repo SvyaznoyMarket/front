@@ -44,11 +44,13 @@ namespace EnterMobileApplication\Controller\Product\Review {
             $response = new Response();
 
             $productItemQuery = new Query\Product\GetItemById($productId, $config->region->defaultId, ['model' => false, 'related' => false]);
+            $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList([$productId]);
             $curl->prepare($productItemQuery);
+            $curl->prepare($productDescriptionListQuery);
 
             $curl->execute();
 
-            $product = (new \EnterRepository\Product())->getObjectByQuery($productItemQuery);
+            $product = (new \EnterRepository\Product())->getObjectByQuery($productItemQuery, [$productDescriptionListQuery]);
             if (!$product) {
                 return (new Controller\Error\NotFound())->execute($request, 'Товар не найден');
             }

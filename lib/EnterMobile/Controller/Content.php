@@ -56,23 +56,24 @@ class Content {
         $mainMenuQuery = new Query\MainMenu\GetItem();
         $curl->prepare($mainMenuQuery);
 
-        $contentItemQuery = new Query\Content\GetItemByToken($contentToken, false);
+        $contentItemQuery = new Query\Content\GetItemByToken($contentToken, $region->id, ['site-mobile']);
         $curl->prepare($contentItemQuery);
         
         $curl->execute();
         
         (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
-        // wordpress (content.enter.ru) при отсутствии запрашиваемой страницы вместо 404 отдаёт 301 редирект на запрашиваемую страницу со слешем в конце
-        if ($contentItemQuery->getError() && in_array($contentItemQuery->getError()->getCode(), [404, 301]))
+        $contentPage = new \EnterModel\Content\Page($contentItemQuery->getResult());
+
+        if (!$contentPage->contentHtml || !$contentPage->isAvailableByDirectLink)
             return (new \EnterMobile\Controller\Error\NotFound())->execute($request);
 
-        $contentItem = $contentItemQuery->getResult();
-        $contentItem['content'] = preg_replace('/http:\/\/www.enter.ru/i', '', $contentItem['content']);
+        $contentPage->contentHtml = preg_replace('/http:\/\/www.enter.ru/i', '', $contentPage->contentHtml);
+        $contentPage->contentHtml = '<script src="//yandex.st/jquery/1.8.3/jquery.js" type="text/javascript"></script>' . "\n" . $contentPage->contentHtml;
 
         $pageRequest = new \EnterMobile\Repository\Page\Content\Request();
-        $pageRequest->title = $contentItem['title'];
-        $pageRequest->content = $contentItem['content'];
+        $pageRequest->title = $contentPage->title;
+        $pageRequest->content = $contentPage->contentHtml;
         $pageRequest->region = $region;
         $pageRequest->mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
         $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);

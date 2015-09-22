@@ -82,16 +82,10 @@ class ProductList {
             $curl->prepare($ratingListQuery);
         }
 
-        // запрос списка видео для товаров
-        //$descriptionListQuery = new Query\Product\GetDescriptionListByUiList($productIds);
-        //$curl->prepare($descriptionListQuery);
-
         $curl->execute();
 
         // список товаров
-        $productsById = (bool)$productListQueries ? $productRepository->getIndexedObjectListByQueryList($productListQueries) : [];
-
-        $productRepository->setDescriptionForListByListQuery($productsById, $descriptionListQueries);
+        $productsById = (bool)$productListQueries ? $productRepository->getIndexedObjectListByQueryList($productListQueries, $descriptionListQueries) : [];
 
         // список рейтингов товаров
         if ($ratingListQuery) {

@@ -53,62 +53,66 @@ class Product {
 
     /**
      * @param Query $query
-     * @return Model\Product
+     * @param Query[] $descriptionListQueryList
+     * @return Model\Product|null
      */
-    public function getObjectByQuery(Query $query) {
-        $product = null;
-
-        if ($item = $query->getResult()) {
-            $product = new Model\Product($item);
+    public function getObjectByQuery(Query $query, array $descriptionListQueryList = []) {
+        $products = $this->getIndexedObjectListByQueryList([$query], $descriptionListQueryList);
+        if ($products) {
+            return reset($products);
         }
-
-        return $product;
+        
+        return null;
     }
 
     /**
-     * @param Query $query
+     * Если задан $descriptionQueryList, то будут возвращены только те товары, которые есть и в $queries и в
+     * $descriptionQueryList (согласно требованию от бэкэнда, если товар не вернулся ядром или scms, то такой товар не
+     * следует отображать на сайте). Также товары будут наполнены данными из $descriptionQueryList.
+     * @param mixed[] $queryList Допустимые значения массива: объекты Query, null
+     * @param mixed[] $descriptionListQueryList Допустимые значения массива: объекты Query, null
      * @return Model\Product[]
      */
-    public function getIndexedObjectListByQuery(Query $query) {
-        $products = [];
-
-        $items = $query->getResult();
-        if (is_array($items)) {
-            foreach ($items as $item) {
-                $model = new Model\Product($item);
-                $products[$model->ui] = $model;
-            }
-        }
-
-        return $products;
-    }
-
-    /**
-     * @param Query[] $queries
-     * @param callable|null $parser
-     * @return Model\Product[]
-     */
-    public function getIndexedObjectListByQueryList(array $queries, $parser = null) {
-        $parser = is_callable($parser) ? $parser : function(&$item) {
-            // оптимизация по умолчанию для листинга
-        };
-
-        $products = [];
-
-        foreach ($queries as $query) {
+    public function getIndexedObjectListByQueryList(array $queryList, array $descriptionListQueryList = []) {
+        /** @var Query[] $queryList */
+        $queryList = array_filter($queryList);
+        /** @var Query[] $descriptionListQueryList */
+        $descriptionListQueryList = array_filter($descriptionListQueryList);
+        
+        $descriptionItemsById = [];
+        foreach ($descriptionListQueryList as $query) {
             try {
                 foreach ($query->getResult() as $item) {
-                    $parser($item);
-
-                    if (!empty($item['id'])) {
-                        $products[(string)$item['id']] = new Model\Product($item);
+                    if (!empty($item['core_id'])) {
+                        $descriptionItemsById[(string)$item['core_id']] = $item;
                     }
                 }
             } catch (\Exception $e) {
                 trigger_error($e, E_USER_ERROR);
             }
         }
-
+        
+        $products = [];
+        foreach ($queryList as $query) {
+            try {
+                foreach ($query->getResult() as $item) {
+                    if (empty($item['id'])) {
+                        continue;
+                    }
+                    
+                    if (!$descriptionListQueryList) {
+                        $products[(string)$item['id']] = new Model\Product($item);
+                    } else if (!empty($descriptionItemsById[$item['id']])) {
+                        $product = new Model\Product($item);
+                        $this->setDescription($product, $descriptionItemsById[$item['id']]);
+                        $products[(string)$item['id']] = $product;
+                    }
+                }
+            } catch (\Exception $e) {
+                trigger_error($e, E_USER_ERROR);
+            }
+        }
+        
         return $products;
     }
 
@@ -305,14 +309,13 @@ class Product {
     /**
      * @param Model\Product[] $productsById
      * @param Query $accessoryListQuery
+     * @param Query $accessoryDescriptionListQuery
      */
-    public function setAccessoryRelationForObjectListByQuery(array $productsById, Query $accessoryListQuery) {
+    public function setAccessoryRelationForObjectListByQuery(array $productsById, Query $accessoryListQuery, $accessoryDescriptionListQuery) {
         try {
+            $accessoryList = $this->getIndexedObjectListByQueryList([$accessoryListQuery], [$accessoryDescriptionListQuery]);
             foreach ($productsById as $product) {
-                foreach ($accessoryListQuery->getResult() as $accessoryItem) {
-                    // оптимизация
-                    $product->relation->accessories[] = new Model\Product($accessoryItem);
-                }
+                $product->relation->accessories = array_values(array_merge($product->relation->accessories, $accessoryList));
             }
         } catch (\Exception $e) {
             $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
@@ -320,129 +323,112 @@ class Product {
     }
 
     /**
-     * @param Model\Product[] $products
-     * @param Query[] $descriptionQueryList
+     * @param Model\Product $product
+     * @param mixed $descriptionItem
      */
-    public function setDescriptionForListByListQuery(array $products, array $descriptionQueryList) {
-        $productsByUi = [];
-        foreach ($products as $product) {
-            $productsByUi[$product->ui] = $product;
-        }
-
+    private function setDescription(Model\Product $product, $descriptionItem) {
         try {
-            foreach ($descriptionQueryList as $descriptionQuery) {
-                foreach ($descriptionQuery->getResult() as $descriptionItem) {
-                    /** @var Model\Product|null $product */
-                    $product =
-                        (isset($descriptionItem['uid']) && isset($productsByUi[$descriptionItem['uid']]))
-                        ? $productsByUi[$descriptionItem['uid']]
-                        : null
-                    ;
-                    if (!$product) continue;
+            // trustfactors
+            if (isset($descriptionItem['trustfactors']) && is_array($descriptionItem['trustfactors'])) {
+                foreach ($descriptionItem['trustfactors'] as $trustfactorItem) {
+                    if (!isset($trustfactorItem['uid'])) continue;
 
-                    // trustfactors
-                    if (isset($descriptionItem['trustfactors']) && is_array($descriptionItem['trustfactors'])) {
-                        foreach ($descriptionItem['trustfactors'] as $trustfactorItem) {
-                            if (!isset($trustfactorItem['uid'])) continue;
+                    $product->trustfactors[] = new Model\Product\Trustfactor($trustfactorItem);
+                }
+            }
 
-                            $product->trustfactors[] = new Model\Product\Trustfactor($trustfactorItem);
+            // property groups
+            if (isset($descriptionItem['property_groups'][0])) {
+                foreach ($descriptionItem['property_groups'] as $propertyGroupItem) {
+                    if (!isset($propertyGroupItem['uid'])) continue;
+
+                    $product->propertyGroups[] = new Model\Product\Property\Group($propertyGroupItem);
+                }
+            }
+
+            // property
+            if (isset($descriptionItem['properties'][0])) {
+                foreach ($descriptionItem['properties'] as $propertyItem) {
+                    if (!isset($propertyItem['uid'])) continue;
+
+                    $product->properties[] = new Model\Product\Property($propertyItem);
+                }
+            }
+
+            $product->media = new Model\MediaList(isset($descriptionItem['medias']) ? $descriptionItem['medias'] : []);
+
+            $hasAffectOldPriceLabel = false;
+            if (!empty($descriptionItem['label']['medias'])) {
+                foreach ($descriptionItem['label']['medias'] as $mediaItem) {
+                    if ('image' === $mediaItem['provider']) {
+                        $product->labels[] = new Model\Product\Label($descriptionItem['label']);
+
+                        if ($descriptionItem['label']['affects_price']) {
+                            $hasAffectOldPriceLabel = true;
                         }
+
+                        break;
                     }
+                }
+            }
 
-                    // property groups
-                    if (isset($descriptionItem['property_groups'][0])) {
-                        foreach ($descriptionItem['property_groups'] as $propertyGroupItem) {
-                            if (!isset($propertyGroupItem['uid'])) continue;
+            // Т.к. из метода api.enter.ru/v2/product/get-v3 была убрана связь между выводом старой цены и наличием
+            // шильдика, реализуем эту связь пока здесь (подробности в CORE-2936)
+            if (!$hasAffectOldPriceLabel) {
+                $product->oldPrice = null;
+            }
 
-                            $product->propertyGroups[] = new Model\Product\Property\Group($propertyGroupItem);
-                        }
+            if (!empty($descriptionItem['brand']['medias']) && isset($descriptionItem['brand']['slug']) && $descriptionItem['brand']['slug'] === 'tchibo-3569') {
+                foreach ($descriptionItem['brand']['medias'] as $mediaItem) {
+                    if ('image' === $mediaItem['provider']) {
+                        $product->brand = new Model\Brand($descriptionItem['brand']);
+                        // TODO после решения FCMS-740 удалить данный блок (чтобы media бралось из scms) и удалить условие "isset($descriptionItem['brand']['slug']) && $descriptionItem['brand']['slug'] === 'tchibo-3569'"
+                        $product->brand->media->photos[] = new Model\Media([
+                            'content_type' => 'image/png',
+                            'provider' => 'image',
+                            'tags' => ['product'],
+                            'sources' => [
+                                [
+                                    'type' => 'original',
+                                    'url' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png',
+                                    'width' => '40',
+                                    'height' => '40',
+                                ],
+                            ],
+                        ]);
+                        break;
                     }
+                }
+            }
 
-                    // property
-                    if (isset($descriptionItem['properties'][0])) {
-                        foreach ($descriptionItem['properties'] as $propertyItem) {
-                            if (!isset($propertyItem['uid'])) continue;
-
-                            $product->properties[] = new Model\Product\Property($propertyItem);
-                        }
+            if (!empty($descriptionItem['categories'])) {
+                foreach ($descriptionItem['categories'] as $category) {
+                    if ($category['main']) {
+                        $product->category = new Model\Product\Category($category);
                     }
+                }
+            }
 
-                    $product->media = new Model\MediaList(isset($descriptionItem['medias']) ? $descriptionItem['medias'] : []);
+            $isSlotPartnerOffer = false;
+            foreach ($product->partnerOffers as $partnerOffer) {
+                if (2 == $partnerOffer->partner->type) {
+                    $isSlotPartnerOffer = true;
+                    break;
+                }
+            }
 
-                    $hasAffectOldPriceLabel = false;
-                    if (!empty($descriptionItem['label']['medias'])) {
-                        foreach ($descriptionItem['label']['medias'] as $mediaItem) {
-                            if ('image' === $mediaItem['provider']) {
-                                $product->labels[] = new Model\Product\Label($descriptionItem['label']);
+            if (!$product->isInShopStockOnly && !$product->isInShopShowroomOnly && $product->category && (new \EnterRepository\Product\Category())->getRootObject($product->category)->isFurniture && $product->isStore && !$isSlotPartnerOffer) {
+                $product->storeLabel = new \EnterModel\Product\StoreLabel();
+                $product->storeLabel->name = 'Товар со склада';
+            }
 
-                                if ($descriptionItem['label']['affects_price']) {
-                                    $hasAffectOldPriceLabel = true;
-                                }
+            if (isset($descriptionItem['tags'][0])) {
+                foreach ($descriptionItem['tags'] as $tag) {
+                    if (!isset($tag['slug'])) continue;
 
-                                break;
-                            }
-                        }
-                    }
-
-                    // Т.к. из метода api.enter.ru/v2/product/get-v3 была убрана связь между выводом старой цены и наличием
-                    // шильдика, реализуем эту связь пока здесь (подробности в CORE-2936)
-                    if (!$hasAffectOldPriceLabel) {
-                        $product->oldPrice = null;
-                    }
-
-                    if (!empty($descriptionItem['brand']['medias']) && isset($descriptionItem['brand']['slug']) && $descriptionItem['brand']['slug'] === 'tchibo-3569') {
-                        foreach ($descriptionItem['brand']['medias'] as $mediaItem) {
-                            if ('image' === $mediaItem['provider']) {
-                                $product->brand = new Model\Brand($descriptionItem['brand']);
-                                // TODO после решения FCMS-740 удалить данный блок (чтобы media бралось из scms) и удалить условие "isset($descriptionItem['brand']['slug']) && $descriptionItem['brand']['slug'] === 'tchibo-3569'"
-                                $product->brand->media->photos[] = new Model\Media([
-                                    'content_type' => 'image/png',
-                                    'provider' => 'image',
-                                    'tags' => ['product'],
-                                    'sources' => [
-                                        [
-                                            'type' => 'original',
-                                            'url' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png',
-                                            'width' => '40',
-                                            'height' => '40',
-                                        ],
-                                    ],
-                                ]);
-                                break;
-                            }
-                        }
-                    }
-
-                    if (!empty($descriptionItem['categories'])) {
-                        foreach ($descriptionItem['categories'] as $category) {
-                            if ($category['main']) {
-                                $product->category = new Model\Product\Category($category);
-                            }
-                        }
-                    }
-
-                    $isSlotPartnerOffer = false;
-                    foreach ($product->partnerOffers as $partnerOffer) {
-                        if (2 == $partnerOffer->partner->type) {
-                            $isSlotPartnerOffer = true;
-                            break;
-                        }
-                    }
-
-                    if (!$product->isInShopStockOnly && !$product->isInShopShowroomOnly && $product->category && (new \EnterRepository\Product\Category())->getRootObject($product->category)->isFurniture && $product->isStore && !$isSlotPartnerOffer) {
-                        $product->storeLabel = new \EnterModel\Product\StoreLabel();
-                        $product->storeLabel->name = 'Товар со склада';
-                    }
-
-                    if (isset($descriptionItem['tags'][0])) {
-                        foreach ($descriptionItem['tags'] as $tag) {
-                            if (!isset($tag['slug'])) continue;
-
-                            if ($tag['slug'] === 'soberi-sam') {
-                                $product->assemblingLabel = new \EnterModel\Product\AssemblingLabel();
-                                $product->assemblingLabel->name = $tag['name'];
-                            }
-                        }
+                    if ($tag['slug'] === 'soberi-sam') {
+                        $product->assemblingLabel = new \EnterModel\Product\AssemblingLabel();
+                        $product->assemblingLabel->name = $tag['name'];
                     }
                 }
             }
@@ -486,7 +472,7 @@ class Product {
                 if ($b->isBuyable != $a->isBuyable) {
                     return ($b->isBuyable ? 1 : -1) - ($a->isBuyable ? 1 : -1); // сначала те, которые можно купить
                 } else if ($b->isInShopOnly != $a->isInShopOnly) {
-                    return ($b->isInShopOnly ? -1 : 1) - ($a->isInShopOnly ? -1 : 1); // потом те, которые можно зарезервировать
+                    //return ($b->isInShopOnly ? -1 : 1) - ($a->isInShopOnly ? -1 : 1); // потом те, которые можно зарезервировать
                 } else if ($b->isInShopShowroomOnly != $a->isInShopShowroomOnly) {// потом те, которые есть на витрине
                     return ($b->isInShopShowroomOnly ? -1 : 1) - ($a->isInShopShowroomOnly ? -1 : 1);
                 } else {

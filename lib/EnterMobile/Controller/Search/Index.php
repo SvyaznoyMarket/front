@@ -151,20 +151,7 @@ class Index {
         $curl->execute();
 
         // список товаров
-        $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
-
-        // товары по ui
-        $productsByUi = [];
-        call_user_func(function() use (&$productsById, &$productsByUi) {
-            foreach ($productsById as $product) {
-                $productsByUi[$product->ui] = $product;
-            }
-        });
-
-        // медиа для товаров
-        if ($productsByUi && $descriptionListQuery) {
-            $productRepository->setDescriptionForListByListQuery($productsByUi, [$descriptionListQuery]);
-        }
+        $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$descriptionListQuery]) : [];
 
         // меню
         $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
@@ -173,9 +160,6 @@ class Index {
         if ($ratingListQuery) {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
-
-        // список медиа для товаров
-        //$productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\Search\Request();

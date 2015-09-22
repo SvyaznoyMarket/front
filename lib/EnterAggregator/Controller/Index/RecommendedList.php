@@ -76,7 +76,7 @@ namespace EnterAggregator\Controller\Index {
             $curl->prepare($descriptionListQuery);
             $curl->execute();
 
-            $viewedItems = $productRepository->getIndexedObjectListByQuery($productListQuery);
+            $viewedItems = $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$descriptionListQuery]);
 
             $viewedProductsByUI = [];
             call_user_func(function() use (&$viewedItems, &$viewedProductsByUI) {
@@ -86,8 +86,6 @@ namespace EnterAggregator\Controller\Index {
                     $viewedProductsByUI[$product->ui] = $product;
                 }
             });
-
-            $productRepository->setDescriptionForListByListQuery($viewedProductsByUI, [$descriptionListQuery]);
 
             return $viewedProductsByUI;
         }
