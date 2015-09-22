@@ -1,4 +1,12 @@
 <section class="checkout">
+    {{#orderRemainSum}}
+        <div>
+            <p>До оформления заказа осталось</p>
+            <p>{{orderRemainSum}} <span class="rubl">p</span></p>
+            <p><a href="/">Продолжить покупки</a></p>
+        </div>
+    {{/orderRemainSum}}
+
     <form class="js-order-delivery-form" action="{{deliveryForm.url}}" data-container-selector=".id-order-form-container" data-value="{{&dataValue}}" data-error="{{&form.errorDataValue}}"></form>
 
     <h1 class="checkout__tl">Самовывоз и доставка</h1>
@@ -101,16 +109,16 @@
     {{/orders}}
 
     {{#orders.0}}
-    <div class="js-order-form btn-container btn-container--orange">
-        <form action="{{form.url}}" method="post" novalidate>
-            <div class="custom-control">
-                <div class="common-control-checkbox-wrap">
-                    <input type="checkbox" class="custom-input custom-input--check js-order-form-accept-field js-validator-form-field" id="id-orderForm-accept" name="accept" data-field="accept" value="1" required data-field="accept"/>
-                    <label class="order-accept custom-label custom-label--top" for="id-orderForm-accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
+        <div class="js-order-form btn-container btn-container--orange">
+            <form action="{{form.url}}" method="post" novalidate>
+                <div class="custom-control">
+                    <div class="common-control-checkbox-wrap">
+                        <input type="checkbox" class="custom-input custom-input--check js-order-form-accept-field js-validator-form-field" id="id-orderForm-accept" name="accept" data-field="accept" value="1" required data-field="accept"/>
+                        <label class="order-accept custom-label custom-label--top" for="id-orderForm-accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
+                    </div>
                 </div>
-            </div>
-            <button type="submit" class="btn btn--submit btn--orange btn--big">Оформить</button>
-        </form>
-    </div>
+                <button type="submit" class="btn btn--submit btn--orange btn--big">Оформить</button>
+            </form>
+        </div>
     {{/orders.0}}
 </section>

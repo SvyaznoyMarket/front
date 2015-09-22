@@ -686,6 +686,8 @@ class Delivery {
             : false
         ;
 
+        $page->content->orderRemainSum = $regionModel ? (new \EnterRepository\Order())->getRemainSum($splitModel->sum, $regionModel) : null;
+
         $page->content->dataValue = $templateHelper->json([
             'order' => [
                 'count' => count($splitModel->orders),

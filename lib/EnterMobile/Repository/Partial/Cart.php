@@ -31,9 +31,7 @@ class Cart {
         $cart->shownSum = $this->getPriceHelper()->format($cartModel->sum);
         $cart->quantity = count($cartModel);
         $cart->shownQuantity = $cart->quantity . ' ' . $this->getTranslateHelper()->numberChoice($cart->quantity, ['товар', 'товара', 'товаров']);
-
-        $remainOrderSum = $regionModel ? (new \EnterRepository\Order())->getRemainSum($cartModel, $regionModel) : 0;
-        $cart->orderRemainSum = ($remainOrderSum > 1) ? $remainOrderSum : false;
+        $cart->orderRemainSum = $regionModel ? (new \EnterRepository\Order())->getRemainSum($cart->sum, $regionModel) : null;
 
         $cart->orderUrl = $this->getRouter()->getUrlByRoute(new Routing\Order\Index());
         $cart->orderDataGa = $this->getTemplateHelper()->json(['m_checkout' => ['send', 'event', 'm_checkout', 'cart']]);
