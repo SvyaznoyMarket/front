@@ -8002,6 +8002,53 @@ body {
   display: block;
   color: #5e5e5e;
 }
+.min-order-popup {
+  width: 200px;
+  height: 185px;
+  border: 1px solid #80c342;
+  border-top-width: 3px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  background-color: #fff;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  -webkit-transition: all all 0.5s ease ease-out;
+  -moz-transition: all all 0.5s ease ease-out;
+  -o-transition: all all 0.5s ease ease-out;
+  transition: all all 0.5s ease ease-out;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -150px;
+  margin-left: -100px;
+  z-index: 1031;
+}
+.min-order-popup .popup_inn {
+  color: #363636;
+  font-size: 14px;
+  text-align: center;
+  padding: 25px 10px 15px;
+  overflow: hidden;
+}
+.min-order-popup .info {
+  color: #363636;
+}
+.min-order-popup .remain-sum {
+  color: #363636;
+  font-size: 38px;
+  display: block;
+  margin: 5px 0 25px;
+}
+.min-order-popup .to-cart-lnk {
+  color: #363636;
+  border-bottom: 1px solid;
+  margin-bottom: 5px;
+}
+.min-order-popup .to-cart-lnk:hover {
+  text-decoration: none;
+}
 @media only screen and (max-width: 560px) {
   .checkout-head {
     font-size: 14px;
