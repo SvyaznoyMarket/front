@@ -32,6 +32,7 @@ class Delivery {
         $translateHelper = $this->getTranslateHelper();
         $dateHelper = $this->getDateHelper();
         $pointRepository = new Repository\Partial\Point();
+        $cartRepository = new \EnterRepository\Cart();
 
         // заголовок
         $page->title = 'Оформление заказа - Способ получения - Enter';
@@ -686,7 +687,7 @@ class Delivery {
             : false
         ;
 
-        $page->content->orderRemainSum = $regionModel ? (new \EnterRepository\Order())->getRemainSum($request->cart->sum, $regionModel) : null;
+        $page->content->orderRemainSum = $regionModel ? (new \EnterRepository\Order())->getRemainSum($cartRepository->getSplitProductsSum($splitModel), $regionModel) : null;
 
         $page->content->dataValue = $templateHelper->json([
             'order' => [

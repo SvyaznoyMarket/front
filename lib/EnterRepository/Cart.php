@@ -440,4 +440,20 @@ class Cart {
 
         return $dump;
     }
+
+    /**
+     * Возвращает сумму всех товаров в заказах
+     * @param Model\Cart\Split $split
+     * @return int
+     */
+    public function getSplitProductsSum(\EnterModel\Cart\Split $split) {
+        $sum = 0;
+        foreach ($split->orders as $order) {
+            foreach ($order->products as $product) {
+                $sum += $product->sum;
+            }
+        }
+
+        return $sum;
+    }
 }
