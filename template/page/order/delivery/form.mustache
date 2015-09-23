@@ -1,12 +1,14 @@
 <section class="checkout">
     {{#orderRemainSum}}
-        <div class="popupOverlay" style="display: block"></div>
-        <div class="min-order-popup">
-            <a href="/" class="popup_inn">
-                <span class="info">До оформления заказа осталось</span>
-                <span class="remain-sum">{{orderRemainSum}} <span class="rubl">p</span></span>
-                <span class="to-cart-lnk">Продолжить покупки</span>
-            </a>
+        <div class="js-order-delivery-remainSumNotice">
+            <div class="popupOverlay" style="display: block"></div>
+            <div class="min-order-popup">
+                <a href="/" class="popup_inn">
+                    <span class="info">До оформления заказа осталось</span>
+                    <span class="remain-sum">{{orderRemainSum}} <span class="rubl">p</span></span>
+                    <span class="to-cart-lnk">Продолжить покупки</span>
+                </a>
+            </div>
         </div>
     {{/orderRemainSum}}
 
