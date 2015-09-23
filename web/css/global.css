@@ -8022,9 +8022,8 @@ body {
   -o-transition: all all 0.5s ease ease-out;
   transition: all all 0.5s ease ease-out;
   position: fixed;
-  top: 50%;
+  top: 200px;
   left: 50%;
-  margin-top: -150px;
   margin-left: -100px;
   z-index: 1031;
 }
@@ -8089,6 +8088,11 @@ body {
 @media only screen and (max-width: 480px) {
   .checkout-head .block {
     display: block;
+  }
+}
+@media only screen and (max-width: 480px) and (max-height: 480px) {
+  .min-order-popup {
+    top: 100px;
   }
 }
 .checkout {
