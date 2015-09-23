@@ -5462,6 +5462,9 @@ body {
   .cartEmpty_now a {
     text-decoration: underline;
   }
+  .cart__min-sum {
+    font-size: 14px;
+  }
 }
 /** попап корзины .cartBar **/
 /* ==========================================================================
