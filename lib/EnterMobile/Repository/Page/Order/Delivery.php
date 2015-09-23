@@ -686,7 +686,7 @@ class Delivery {
             : false
         ;
 
-        $page->content->orderRemainSum = $regionModel ? (new \EnterRepository\Order())->getRemainSum($splitModel->sum, $regionModel) : null;
+        $page->content->orderRemainSum = $regionModel ? (new \EnterRepository\Order())->getRemainSum($request->cart->sum, $regionModel) : null;
 
         $page->content->dataValue = $templateHelper->json([
             'order' => [
