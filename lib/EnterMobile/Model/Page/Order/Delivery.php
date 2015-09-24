@@ -37,6 +37,8 @@ namespace EnterMobile\Model\Page\Order\Delivery {
         public $errors = [];
         /** @var string|bool */
         public $orderCountMessage;
+        /** @var int|null */
+        public $orderRemainSum;
         /** @var bool */
         public $isUserAuthenticated; // TODO: перенести на уровень выше
         /** @var string */

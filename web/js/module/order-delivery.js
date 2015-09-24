@@ -900,6 +900,13 @@ define(
 
         formValidator.init();
 
+        if ($('.js-order-delivery-remainSumNotice').length) {
+            $body.css({
+                'overflow':'hidden',
+                'position':'fixed'
+            });
+        }
+
         console.info('config', config);
 
         try {

@@ -79,11 +79,11 @@ class Order {
     }
 
     /**
-     * @param Model\Cart $cart
+     * @param int|string|null $sum
      * @param Model\Region $region
      * @return int|null
      */
-    public function getRemainSum(Model\Cart $cart, Model\Region $region)
+    public function getRemainSum($sum, Model\Region $region)
     {
         $ids = ['82', '83', '14974', '108136'];
         $minSum = $this->getConfig()->order->minSum;
@@ -91,14 +91,20 @@ class Order {
         if (
             in_array($region->id, $ids)
             || ($region->parent && in_array($region->parent, $ids))
-            || (null === $cart->sum)
+            || (null === $sum)
             || !$minSum
         ) {
             return null;
         }
 
-        $diff = $minSum - $cart->sum;
+        $diff = $minSum - $sum;
 
-        return ($diff < 0) ? 0 : $diff;
+        $remainSum = ($diff < 0) ? 0 : $diff;
+
+        if ($remainSum <= 1) {
+            return null;
+        }
+
+        return $remainSum;
     }
 }

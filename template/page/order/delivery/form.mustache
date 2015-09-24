@@ -1,4 +1,17 @@
 <section class="checkout">
+    {{#orderRemainSum}}
+        <div class="js-order-delivery-remainSumNotice">
+            <div class="popupOverlay" style="display: block"></div>
+            <div class="min-order-popup">
+                <a href="/" class="popup_inn">
+                    <span class="info">До оформления заказа осталось</span>
+                    <span class="remain-sum">{{orderRemainSum}} <span class="rubl">p</span></span>
+                    <span class="to-cart-lnk">Продолжить покупки</span>
+                </a>
+            </div>
+        </div>
+    {{/orderRemainSum}}
+
     <form class="js-order-delivery-form" action="{{deliveryForm.url}}" data-container-selector=".id-order-form-container" data-value="{{&dataValue}}" data-error="{{&form.errorDataValue}}"></form>
 
     <h1 class="checkout__tl">Самовывоз и доставка</h1>
@@ -101,16 +114,16 @@
     {{/orders}}
 
     {{#orders.0}}
-    <div class="js-order-form btn-container btn-container--orange">
-        <form action="{{form.url}}" method="post" novalidate>
-            <div class="custom-control">
-                <div class="common-control-checkbox-wrap">
-                    <input type="checkbox" class="custom-input custom-input--check js-order-form-accept-field js-validator-form-field" id="id-orderForm-accept" name="accept" data-field="accept" value="1" required data-field="accept"/>
-                    <label class="order-accept custom-label custom-label--top" for="id-orderForm-accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
+        <div class="js-order-form btn-container btn-container--orange">
+            <form action="{{form.url}}" method="post" novalidate>
+                <div class="custom-control">
+                    <div class="common-control-checkbox-wrap">
+                        <input type="checkbox" class="custom-input custom-input--check js-order-form-accept-field js-validator-form-field" id="id-orderForm-accept" name="accept" data-field="accept" value="1" required data-field="accept"/>
+                        <label class="order-accept custom-label custom-label--top" for="id-orderForm-accept">Я ознакомлен и согласен с информацией о продавце и его офертой</label>
+                    </div>
                 </div>
-            </div>
-            <button type="submit" class="btn btn--submit btn--orange btn--big">Оформить</button>
-        </form>
-    </div>
+                <button type="submit" class="btn btn--submit btn--orange btn--big">Оформить</button>
+            </form>
+        </div>
     {{/orders.0}}
 </section>
