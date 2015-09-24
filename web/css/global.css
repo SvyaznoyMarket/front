@@ -1131,6 +1131,7 @@ body {
 }
 .wrapper-smpl .content {
   padding-bottom: 0;
+  max-width: 640px;
 }
 .page {
   position: relative;
@@ -1141,6 +1142,9 @@ body {
   transition: transform 0.2s cubic-bezier(0.2, 0.3, 0.25, 0.9);
   background: #ffffff;
 }
+.page--index .content {
+  max-width: 100%;
+}
 /* Middle
 -----------------------------------------------------------------------------*/
 .pageTitle {
@@ -1149,6 +1153,14 @@ body {
   display: none;
   padding: 0 10px;
   border-bottom: 1px solid #b1b1b1;
+}
+.content {
+  max-width: 960px;
+  margin: 0 auto;
+}
+.content.content--root,
+.content.private {
+  max-width: 100%;
 }
 /* ==========================================================================
    Layout - default styles
@@ -5383,10 +5395,14 @@ body {
   -moz-box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
   width: 100%;
-  padding: 10px 0;
+  padding: 10px;
   background: #ffffff;
   background: rgba(255, 255, 255, 0.9);
   margin-top: 20px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
 }
 .cartBar_text {
   padding-right: 170px;
@@ -8127,6 +8143,10 @@ body {
   width: 100%;
   height: 54px;
   background: #000000;
+}
+.checkout-head__inn {
+  max-width: 640px;
+  margin: 0 auto;
 }
 .checkout-head__logo {
   float: left;
