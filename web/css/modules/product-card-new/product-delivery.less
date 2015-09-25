@@ -1,0 +1,54 @@
+.product-delivery {
+    &__info {
+        font-size: 14px;
+
+        margin: 12px 0;
+        padding: 10px;
+
+        border: 1px solid #80c342;
+    }
+    &__info-self {
+        color: #80c342;
+        border-bottom: 1px dotted;
+    }
+    &__type {
+        display: table-cell;
+
+        width: 94px;
+        padding-top: 10px;
+        padding-right: 10px;
+        vertical-align: middle;
+    }
+    &__price {
+        display: table-cell;
+
+        width: 80px;
+        padding-top: 10px;
+        padding-right: 10px;
+        vertical-align: middle;
+    }
+    &__plan {
+        display: table-cell;
+
+        padding-top: 10px;
+        vertical-align: middle;
+    }
+    &__txt{
+        display: table-cell;
+        padding-top: 10px;
+        vertical-align: middle;
+        color: #616161;
+    }
+    &__row {
+        display: table;
+
+        width: 100%;
+
+        &:first-child {
+
+            & > * {
+                padding-top: 0;
+            }
+        }
+    }
+}

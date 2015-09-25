@@ -49,20 +49,20 @@
     </head>
 
     <body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-widget="{{&dataWidget}}">
-    {{>partial/menu}}
-    <div class="snap-content" id="wrapper">
-        {{>partial/header}}
-        <div class="wrapper">
-            <div class="fader js-fader"></div>
+        {{>partial/delivery-banner}}
+        {{>partial/menu}}
+        <div class="menu-overlay js-fader"></div>
 
+        <div class="page page--index" id="wrapper">
+            {{>partial/header}}
 
-                {{#content}}
-                    {{>content}}
-                {{/content}}
-                {{>partial/template}}
+            {{#content}}
+                {{>content}}
+            {{/content}}
 
-                {{>partial/footer}}
-            </div>
+            {{>partial/template}}
+
+            {{>partial/footer}}
         </div>
 
 		{{#regionBlock}}

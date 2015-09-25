@@ -1,0 +1,23 @@
+{{#reviews}}
+    <div class="reviews clearfix">
+        <div class="reviews__rating">
+            {{>partial/rating/star-list}}
+        </div>
+
+        <div class="reviews__name">{{author}}</div>
+
+        <div class="reviews__date">{{createdAt}}</div>
+
+        <div class="reviews__txt">
+            <div class="reviews__sbtl">Достоинства</div>
+            {{pros}}
+
+            <div class="reviews__sbtl">Недостатки</div>
+            {{cons}}
+
+            <div class="reviews__sbtl">Комментарий</div>
+            {{extract}}
+        </div>
+
+    </div>
+{{/reviews}}

@@ -6,6 +6,8 @@ namespace EnterMobile\Model\Partial {
         /** @var string */
         public $name;
         /** @var string */
+        public $namePrefix;
+        /** @var string */
         public $url;
         /** @var float */
         public $price;

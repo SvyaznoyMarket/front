@@ -5,6 +5,7 @@ namespace EnterMobile\Controller;
 use Enter\Http;
 use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
+use EnterAggregator\AbTestTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterAggregator\DebugContainerTrait;
 use EnterMobile\Controller;
@@ -14,7 +15,12 @@ use EnterMobile\Model;
 use EnterMobile\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use ConfigTrait, MustacheRendererTrait, DebugContainerTrait, SessionTrait;
+    use ConfigTrait,
+        MustacheRendererTrait,
+        DebugContainerTrait,
+        SessionTrait,
+        AbTestTrait
+    ;
 
     /**
      * @param Http\Request $request
@@ -76,9 +82,21 @@ class ProductCard {
 
         // рендер
         $renderer = $this->getRenderer();
-        $renderer->setPartials([
-            'content' => $pageRequest->product->getSlotPartnerOffer() ? 'page/product-card-slot/content' : 'page/product-card/content',
-        ]);
+
+        //TODO: поменять после приведения старой версии страницы в нормальный вид
+        $mockAB = 'disabled';
+//        if ('disabled' === $this->getAbTest()->getObjectByToken('productcard')->chosenItem->token) {
+        if ('disabled' === $mockAB) {
+            $renderer->setPartials([
+                'content' => $pageRequest->product->getSlotPartnerOffer() ? 'page/product-card-slot/content' : 'page/product-card/content',
+            ]);
+
+        } else {
+            $renderer->setPartials([
+                'content' => $pageRequest->product->getSlotPartnerOffer() ? 'page/product-card-new/slot-content' : 'page/product-card-new/content',
+            ]);
+        }
+
         $content = $renderer->render('layout/default', $page);
 
         // http-ответ

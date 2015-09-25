@@ -193,6 +193,7 @@
         , close: function(e) {
             e.preventDefault()
             this.hide()
+            $('#smartbanner').hide()
             this.setCookie('sb-closed','true',this.options.daysHidden);
             this.options.onClose(e);
         }

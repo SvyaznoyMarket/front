@@ -4,27 +4,22 @@
 
 .cartBar {
 	.box-shadow(0 0 12px rgba(0,0,0,0.2));
-	position: fixed;
-	z-index: 1009;
-	bottom: 0;
-	left: 0;
-
 	width: 100%;
-	padding: 15px 0;
+	padding: 10px;
 
 	background: rgb(255,255,255);
 	background: rgba(255,255,255,0.9);
+    margin-top: 20px;
+    .box-sizing(border-box);
 
-	&_text {
+    &_text {
 		padding-right: 170px;
-
-		text-align: right;
 
 		font-size: 14px;
 		line-height: 30px;
 
 		.price {
-			font-size: 18px;
+			font-size: 16px;
 			white-space: nowrap;
 		}
 	}

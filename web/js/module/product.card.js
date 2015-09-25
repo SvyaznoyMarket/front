@@ -1,8 +1,7 @@
 define(
     [
         'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config',
-        'jquery.photoswipe', 'module/product.card.tab',
-        'module/product.card.fullimg', 'module/product.card.kit', 'jquery.slick'
+        'jquery.photoswipe', 'module/product.view', 'module/product.card.kit', 'jquery.slick'
     ],
     function (
         require, $, _, mustache, util, config
@@ -104,6 +103,7 @@ define(
         $('.js-detailSlider').slick({
             infinite: false,
             dots: true,
+            arrows: false,
             nextArrow: '<span class="sliderControls_btn sliderControls_btn__right js-ga-click"></span>',
             prevArrow: '<span class="sliderControls_btn sliderControls_btn__left js-ga-click"></span>',
             customPaging: function(slider, i) {

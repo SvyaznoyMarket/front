@@ -39,6 +39,7 @@ namespace EnterAggregator\Controller\Product {
             // запрос товара
             $productListQuery = new Query\Product\GetListByIdList($request->productIds, $region->id, ['model' => false, 'related' => false]);
             $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList($request->productIds);
+
             $curl->prepare($productListQuery);
             $curl->prepare($productDescriptionListQuery);
 
@@ -122,7 +123,7 @@ namespace EnterAggregator\Controller\Product {
             $descriptionListQueries = [];
             $productListQueries = [];
             foreach (array_chunk($recommendedIds, $config->curl->queryChunkSize) as $idsInChunk) {
-                $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id, ['model' => false, 'related' => false]);
+                $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id, ['model' => true, 'related' => false]);
                 $productListQuery->setTimeout(1.5 * $config->coreService->timeout);
                 $curl->prepare($productListQuery);
                 $productListQueries[] = $productListQuery;
@@ -142,11 +143,29 @@ namespace EnterAggregator\Controller\Product {
                 $descriptionListQueries[] = $descriptionListQuery;
             }
 
+            // запрос рейтинга для товаров
+            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($recommendedIds);
+            $curl->prepare($ratingListQuery);
+
             $curl->execute();
 
             // товары
             $recommendedProductsById = $productRepository->getIndexedObjectListByQueryList($productListQueries, $descriptionListQueries);
-            
+
+            // товары по ui
+            $productsByUi = [];
+            call_user_func(function() use (&$recommendedProductsById, &$productsByUi) {
+                foreach ($recommendedProductsById as $product) {
+                    $productsByUi[$product->ui] = $product;
+                }
+            });
+
+            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQueries);
+
+            if (isset($ratingListQuery)) {
+                $productRepository->setRatingForObjectListByQuery($recommendedProductsById, $ratingListQuery);
+            }
+
             foreach ($alsoBoughtIdList as $i => $alsoBoughtId) {
                 // SITE-2818 из списка товаров "с этим товаром также покупают" убираем товары, которые есть только в магазинах
                 /** @var \EnterModel\Product|null $productsById */

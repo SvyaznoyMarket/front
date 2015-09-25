@@ -102,6 +102,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
         public $labels = [];
         /** @var \EnterModel\Product\PartnerOffer|null */
         public $slotPartnerOffer;
+        /** @var [] */
+        public $propertiesSummary = [];
         /** @var bool */
         public $isFavorite;
 
@@ -207,6 +209,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product {
         public $properties = [];
         /** @var bool */
         public $isImage;
+        /** @var string */
+        public $shownValue;
     }
 }
 

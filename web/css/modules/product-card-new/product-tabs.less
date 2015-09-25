@@ -1,0 +1,42 @@
+.product-tabs {
+    font-size: 0;
+
+    clear: both;
+    &__head {
+        font-size: 16px;
+
+        display: inline-block;
+
+        width: 25%;
+        min-width: 100px;
+        padding: 10px;
+
+        cursor: pointer;
+        text-align: center;
+
+        border: 1px solid #c7c7c7;
+        border-right: 0;
+        background-color: #f7f7f7;
+
+        .box-sizing(border-box);
+        &:last-child {
+            border-right: 1px solid #c7c7c7;
+        }
+        &.active {
+            border-bottom: 0;
+            background-color: #fff;
+            font-weight: bold;
+        }
+    }
+    &__body {
+        display: none;
+
+        padding: 0 10px;
+        &_width {
+            padding: 0;
+        }
+        &.active {
+            display: block;
+        }
+    }
+}

@@ -1,53 +1,41 @@
-<div class="content">
-    <div class="contentBox960">
+<div class="content cart">
         <div class="pageTitle">Корзина</div>
 
         {{#productBlock}}
+           <div class="cart__inn">
             {{#products}}
             <!-- товар в корзине -->
-            <div class="js-cartProduct-container cartItem clearfix">
-                <a href="{{url}}" class="cartItem_col cartItem_col-img">
-                    <img class="img" src="{{image}}" alt="{{&name}}" />
-                </a>
+                <div class="js-cartProduct-container cart-item clearfix">
+                    {{#cartDeleteButton}}
+                        {{>partial/cart/deleteButton}}
+                    {{/cartDeleteButton}}
 
-                <div class="cartItem_col cartItem_col-desc">
-                    <a class="name" href="{{url}}">
-                        {{#namePrefix}}<span class="name_cat">{{namePrefix}}</span>{{/namePrefix}}
-                        {{&name}}
+                    <a class="cart-item__img" href="{{url}}">
+                        <img src="{{image}}" alt="{{&name}}" />
                     </a>
-
-                    {{#sum}}
-                        {{>partial/cart/productSum}}
-                    {{/sum}}
-                </div>
-
-                <div class="cartItem_col cartItem_col-price">
-                    <div class="priceNum">
-                    {{#sum}}
-                        {{>partial/cart/productSum}}
-                    {{/sum}}
-                    </div><!--/ дубль для мобилки -->
-
-                    <div class="price">{{shownPrice}} <span class="rubl">p</span></div>
-
-                    <div class="change">
-                        {{#cartSpinner}}
-                            {{>partial/cart/spinner}}
-                        {{/cartSpinner}}
-
-                        {{#cartDeleteButton}}
-                            {{>partial/cart/deleteButton}}
-                        {{/cartDeleteButton}}
+                    <div class="cart-item__descr">
+                        <a class="cart-item__name" href="{{url}}">{{#namePrefix}}<span class="name_cat">{{namePrefix}}</span>{{/namePrefix}}{{name}}</a>
+                    </div>
+                    <div class="cart-item__price-info table_row">
+                        <div class="cart-item__item-price table_cell"><span class="price-inn">{{shownPrice}}&ensp;<span class="rubl">p</span></div>
+                        <div class="cart-item__change table_cell">
+                            {{#cartSpinner}}
+                                {{>partial/cart/spinner}}
+                            {{/cartSpinner}}
+                        </div>
+                        <div class="cart-item__item-sum table_cell">
+                            <span class="price-inn">{{#sum}}
+                                {{>partial/cart/productSum}}
+                            {{/sum}}</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!--/ товар в корзине -->
+                <!--/ товар в корзине -->
             {{/products}}
+           </div>
         {{/productBlock}}
 
-        {{#cart}}
-            {{>partial/cart/total}}
-        {{/cart}}
+        {{>partial/cart/bar}}
 
         {{^cart}}
         <div class="cartEmpty">
@@ -56,5 +44,4 @@
             <div class="cartEmpty_now"><a href="/">Перейти к покупкам &rsaquo;</a></div>
         </div>
         {{/cart}}
-    </div>
 </div>

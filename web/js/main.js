@@ -34,6 +34,7 @@ require.config({
 
         'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
         'mustache'           : 'vendor/mustache-0.8.2',
+        'hammer'             : 'vendor/hammer-2.0.4',
         'modernizr'          : 'vendor/modernizr.custom',
         'boilerplate.helper' : 'vendor/boilerplate.helper-4.1.0',
 
@@ -91,6 +92,10 @@ require.config({
             exports: '_'
         },
         'modernizr': [],
+        'hammer': {
+            exports: 'Hammer',
+            deps: ['jquery']
+        },
         'boilerplate.helper': [],
 
         'yandexmaps': {
@@ -116,6 +121,7 @@ require(
         'require',
         'module/config',
         'modernizr',
+        'hammer',
         'boilerplate.helper',
         'jquery',
         'jquery.cookie',

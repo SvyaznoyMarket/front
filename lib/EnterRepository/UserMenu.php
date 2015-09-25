@@ -49,7 +49,7 @@ class UserMenu {
             [
                 'token' => 'favorit',
                 'name' => 'Избранное',
-                'url' => '/private/favorit',
+                'url' => '/private/favorites',
                 'isActive' => false
             ]
         ];
