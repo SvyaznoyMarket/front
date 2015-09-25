@@ -79,7 +79,7 @@ namespace EnterTerminal\Controller {
                         $curl->prepare($matches[$key]['query']);
                     } else if (0 === strpos($path, '/product/')) {
                         $token = $contentRepository->getTokenByPath($path);
-                        $matches[$key]['query'] = new Query\Product\GetItemByToken($token, $regionId, ['model' => false, 'related' => false]);
+                        $matches[$key]['query'] = new Query\Product\GetListByTokenList([$token], $regionId, ['model' => false, 'related' => false]);
                         $matches[$key]['productDescriptionListQuery'] = new Query\Product\GetDescriptionListByTokenList([$token]);
                         $curl->prepare($matches[$key]['query']);
                         $curl->prepare($matches[$key]['productDescriptionListQuery']);
@@ -131,7 +131,7 @@ namespace EnterTerminal\Controller {
                     } else if (0 === strpos($path, '/product/')) {
                         $product = null;
                         try {
-                            $product = $productRepository->getObjectByQuery($match['query'], [$match['productDescriptionListQuery']]);
+                            $product = $productRepository->getObjectByQueryList([$match['query']], [$match['productDescriptionListQuery']]);
                         } catch (\Exception $e) {
                             $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['content']]);
                         }

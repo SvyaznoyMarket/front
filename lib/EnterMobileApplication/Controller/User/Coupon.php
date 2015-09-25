@@ -10,9 +10,10 @@ namespace EnterMobileApplication\Controller\User {
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterMobileApplication\Controller\User\Coupon\Response;
+    use EnterMobileApplication\Controller\ProductListingTrait;
 
     class Coupon {
-        use ConfigTrait, LoggerTrait, CurlTrait, DebugContainerTrait;
+        use ConfigTrait, LoggerTrait, CurlTrait, DebugContainerTrait, ProductListingTrait;
 
         /**
          * @param Http\Request $request
@@ -158,7 +159,7 @@ namespace EnterMobileApplication\Controller\User {
                     // ответ от контроллера
                     $controllerResponse = $controller->execute($controllerRequest);
 
-                    $response->couponSeries->products = $controllerResponse->products;
+                    $response->couponSeries->products = $this->getProductList($controllerResponse->products);
                 } catch (\Exception $e) {
                     $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
                 }

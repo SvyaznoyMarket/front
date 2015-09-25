@@ -52,12 +52,12 @@ class Product {
     }
 
     /**
-     * @param Query $query
+     * @param Query[] $listQueryList
      * @param Query[] $descriptionListQueryList
      * @return Model\Product|null
      */
-    public function getObjectByQuery(Query $query, array $descriptionListQueryList = []) {
-        $products = $this->getIndexedObjectListByQueryList([$query], $descriptionListQueryList);
+    public function getObjectByQueryList(array $listQueryList, array $descriptionListQueryList = []) {
+        $products = $this->getIndexedObjectListByQueryList($listQueryList, $descriptionListQueryList);
         if ($products) {
             return reset($products);
         }
@@ -69,13 +69,13 @@ class Product {
      * Если задан $descriptionQueryList, то будут возвращены только те товары, которые есть и в $queries и в
      * $descriptionQueryList (согласно требованию от бэкэнда, если товар не вернулся ядром или scms, то такой товар не
      * следует отображать на сайте). Также товары будут наполнены данными из $descriptionQueryList.
-     * @param mixed[] $queryList Допустимые значения массива: объекты Query, null
+     * @param mixed[] $listQueryList Допустимые значения массива: объекты Query, null
      * @param mixed[] $descriptionListQueryList Допустимые значения массива: объекты Query, null
      * @return Model\Product[]
      */
-    public function getIndexedObjectListByQueryList(array $queryList, array $descriptionListQueryList = []) {
-        /** @var Query[] $queryList */
-        $queryList = array_filter($queryList);
+    public function getIndexedObjectListByQueryList(array $listQueryList, array $descriptionListQueryList = []) {
+        /** @var Query[] $listQueryList */
+        $listQueryList = array_filter($listQueryList);
         /** @var Query[] $descriptionListQueryList */
         $descriptionListQueryList = array_filter($descriptionListQueryList);
         
@@ -93,7 +93,7 @@ class Product {
         }
         
         $products = [];
-        foreach ($queryList as $query) {
+        foreach ($listQueryList as $query) {
             try {
                 foreach ($query->getResult() as $item) {
                     if (empty($item['id'])) {

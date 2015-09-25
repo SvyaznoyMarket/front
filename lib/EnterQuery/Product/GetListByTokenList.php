@@ -7,25 +7,25 @@ use EnterQuery\CoreQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
-class GetItemById extends Query {
+class GetListByTokenList extends Query {
     use CoreQueryTrait;
 
-    /** @var array|null */
+    /** @var array */
     protected $result;
 
     /**
-     * @param string $id
+     * @param array $tokens
      * @param string $regionId
      * @param array $view
      */
-    public function __construct($id, $regionId = null, $view = []) {
+    public function __construct(array $tokens, $regionId, $view = []) {
         $view = array_merge(['model' => true, 'related' => true], $view);
 
         $this->url = new Url();
         $this->url->path = 'v2/product/get-v3';
         $this->url->query = [
-            'select_type' => 'id',
-            'id'          => $id,
+            'select_type' => 'slug',
+            'slug'        => $tokens,
         ];
         if (false === $view['model']) {
             $this->url->query['withModels'] = 0;
@@ -46,6 +46,6 @@ class GetItemById extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]['id']) ? $data[0] : null;
+        $this->result = isset($data[0]['id']) ? $data : [];
     }
 }

@@ -37,9 +37,9 @@ class Delete {
             $userItemQuery = new Query\User\GetItemByToken($token);
             $curl->prepare($userItemQuery);
 
-            $productItemQuery = new Query\Product\GetItemById($productId, $config->region->defaultId, ['model' => false, 'related' => false]);
+            $productListQuery = new Query\Product\GetListByIdList([$productId], $config->region->defaultId, ['model' => false, 'related' => false]);
             $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList([$productId]);
-            $curl->prepare($productItemQuery);
+            $curl->prepare($productListQuery);
             $curl->prepare($productDescriptionListQuery);
 
             $curl->execute();
@@ -51,7 +51,7 @@ class Delete {
             }
             */
 
-            $product = (new \EnterRepository\Product())->getObjectByQuery($productItemQuery, [$productDescriptionListQuery]);
+            $product = (new \EnterRepository\Product())->getObjectByQueryList([$productListQuery], [$productDescriptionListQuery]);
             if (!$product) {
                 return new Controller\Error\NotFound($request, 'Товар не найден');
             }
