@@ -49,7 +49,11 @@
 
 <body{{#bodyClass}} class="{{bodyClass}}"{{/bodyClass}} data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="{{&dataUser}}" data-cart="{{&dataCart}}" data-widget="{{&dataWidget}}">
     {{>partial/counters}}
-    {{>partial/delivery-banner}}
+
+    {{#deliveryBanner}}
+        {{>partial/delivery-banner}}
+    {{/deliveryBanner}}
+
     {{>partial/menu}}
     <div class="menu-overlay js-fader"></div>
 

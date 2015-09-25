@@ -49,7 +49,10 @@
     </head>
 
     <body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-widget="{{&dataWidget}}">
-        {{>partial/delivery-banner}}
+        {{#deliveryBanner}}
+            {{>partial/delivery-banner}}
+        {{/deliveryBanner}}
+
         {{>partial/menu}}
         <div class="menu-overlay js-fader"></div>
 

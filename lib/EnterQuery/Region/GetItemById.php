@@ -3,11 +3,11 @@
 namespace EnterQuery\Region;
 
 use Enter\Curl\Query;
-use EnterQuery\CoreQueryTrait;
+use EnterQuery\ScmsQueryTrait;
 use EnterQuery\Url;
 
 class GetItemById extends Query {
-    use CoreQueryTrait;
+    use ScmsQueryTrait;
 
     /** @var array|null */
     protected $result;
@@ -17,9 +17,9 @@ class GetItemById extends Query {
      */
     public function __construct($id) {
         $this->url = new Url();
-        $this->url->path = 'v2/geo/get';
+        $this->url->path = 'api/geo/get-town';
         $this->url->query = [
-            'id' => $id,
+            'id' => [$id],
         ];
 
         $this->init();
@@ -31,6 +31,6 @@ class GetItemById extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = isset($data[0]['id']) ? $data[0] : null;
+        $this->result = isset($data['result'][0]['id']) ? $data['result'][0] : null;
     }
 }

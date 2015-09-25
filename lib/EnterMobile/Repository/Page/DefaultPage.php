@@ -8,13 +8,14 @@ use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
+use EnterAggregator\TranslateHelperTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
 use EnterMobile\Model\Page\DefaultPage as Page;
 
 class DefaultPage {
-    use RequestIdTrait, ConfigTrait, RouterTrait, LoggerTrait, TemplateHelperTrait, AbTestTrait;
+    use RequestIdTrait, ConfigTrait, RouterTrait, LoggerTrait, TemplateHelperTrait, TranslateHelperTrait, AbTestTrait;
 
     /**
      * @param Page $page
@@ -23,6 +24,7 @@ class DefaultPage {
     public function buildObjectByRequest(Page $page, DefaultPage\Request $request) {
         $config = $this->getConfig();
         $templateHelper = $this->getTemplateHelper();
+        $translateHelper = $this->getTranslateHelper();
         $router = $this->getRouter();
 
         // стили
@@ -181,6 +183,16 @@ class DefaultPage {
             $page->mailRu->productIds = '[]';
             $page->mailRu->pageType = 'other';
             $page->mailRu->price = '';
+        }
+
+        // баннер доставки
+        if ($request->region && $request->region->pointCount) {
+            $page->deliveryBanner = new Page\DeliveryBanner();
+            $page->deliveryBanner->regionName =
+                $request->region->inflectedName
+                ? $request->region->inflectedName->locativus
+                : $request->region->name;
+            $page->deliveryBanner->pointCountMessage = sprintf('&nbsp;%s&nbsp;%s&nbsp;', $request->region->pointCount, $translateHelper->numberChoice($request->region->pointCount, ['точки', 'точек', 'точек']));
         }
 
         // регион
