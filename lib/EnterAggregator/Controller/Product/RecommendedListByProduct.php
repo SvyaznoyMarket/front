@@ -160,8 +160,6 @@ namespace EnterAggregator\Controller\Product {
                 }
             });
 
-            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQueries);
-
             if (isset($ratingListQuery)) {
                 $productRepository->setRatingForObjectListByQuery($recommendedProductsById, $ratingListQuery);
             }
