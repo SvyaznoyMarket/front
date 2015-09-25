@@ -46,10 +46,10 @@ class DeleteProduct {
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
         $region = $regionId ? new \EnterModel\Region(['id' => $regionId]) : null;
 
-        $productItemQuery = new Query\Product\GetItemById($cartProduct->id, $regionId);
-        $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList([$cartProduct->id]);
-        $curl->prepare($productItemQuery);
-        $curl->prepare($productDescriptionListQuery);
+        $cartProductListQuery = new Query\Product\GetListByIdList([$cartProduct->id], $regionId);
+        $cartProductDescriptionListQuery = new Query\Product\GetDescriptionListByIdList([$cartProduct->id]);
+        $curl->prepare($cartProductListQuery);
+        $curl->prepare($cartProductDescriptionListQuery);
 
         // запрос пользователя
         $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
@@ -98,7 +98,7 @@ class DeleteProduct {
         $session->remove($config->order->splitSessionKey);
 
         // товар
-        $product = (new \EnterRepository\Product())->getObjectByQuery($productItemQuery, [$productDescriptionListQuery]);
+        $product = (new \EnterRepository\Product())->getObjectByQueryList([$cartProductListQuery], [$cartProductDescriptionListQuery]);
         if (!$product) {
             $product = new \EnterModel\Product();
             $product->id = $cartProduct->id;
