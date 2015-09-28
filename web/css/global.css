@@ -11726,7 +11726,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .product-tabs__head {
   font-size: 16px;
   display: inline-block;
-  width: 25%;
   min-width: 100px;
   padding: 10px;
   cursor: pointer;
@@ -11746,6 +11745,21 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   border-bottom: 0;
   background-color: #fff;
   font-weight: bold;
+}
+.product-tabs__head:first-child:nth-last-child(4),
+.product-tabs__head:first-child:nth-last-child(4) ~ .product-tabs__head {
+  width: 25%;
+}
+.product-tabs__head:first-child:nth-last-child(3),
+.product-tabs__head:first-child:nth-last-child(3) ~ .product-tabs__head {
+  width: 33.3333%;
+}
+.product-tabs__head:first-child:nth-last-child(2),
+.product-tabs__head:first-child:nth-last-child(2) ~ .product-tabs__head {
+  width: 50%;
+}
+.product-tabs__head:first-child:nth-last-child(1) {
+  width: 100%;
 }
 .product-tabs__body {
   display: none;
@@ -12214,8 +12228,9 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   .product-tabs__head {
     font-size: 14px;
     display: block;
-    width: 100%;
-    border-bottom: none;
+    width: 100%!important;
+    border-bottom: 0;
+    border-right: 0;
   }
   .product-card-lst__buy .btn-buy {
     width: 62px;
