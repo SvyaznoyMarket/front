@@ -134,7 +134,7 @@ namespace EnterMobileApplication\Controller {
                         $controllerRequest->regionId = $regionId;
                         $controllerRequest->categoryCriteria = []; // критерий получения категории товара
                         $controllerRequest->pageNum = 1;
-                        $controllerRequest->limit = 20;
+                        $controllerRequest->limit = 24;
                         $controllerRequest->filterRepository = $filterRepository;
                         $controllerRequest->baseRequestFilters = $baseRequestFilters;
                         $controllerRequest->requestFilters = $baseRequestFilters;
