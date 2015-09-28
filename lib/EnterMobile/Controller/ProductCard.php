@@ -84,7 +84,7 @@ class ProductCard {
         $renderer = $this->getRenderer();
 
         //TODO: поменять после приведения старой версии страницы в нормальный вид
-        $mockAB = 'disabled';
+        $mockAB = 'enabled';
 //        if ('disabled' === $this->getAbTest()->getObjectByToken('productcard')->chosenItem->token) {
         if ('disabled' === $mockAB) {
             $renderer->setPartials([
@@ -93,7 +93,7 @@ class ProductCard {
 
         } else {
             $renderer->setPartials([
-                'content' => $pageRequest->product->getSlotPartnerOffer() ? 'page/product-card-new/slot-content' : 'page/product-card-new/content',
+                'content' => 'page/product-card-new/content'
             ]);
         }
 
