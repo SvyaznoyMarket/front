@@ -12068,6 +12068,16 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   display: table-row;
   line-height: 1em;
 }
+.product__buy .btn-buy--slot {
+  background-color: #c1d837;
+  color: #000000;
+  font-size: 14px;
+  line-height: 16px;
+  padding: 4px 23px;
+  text-align: center;
+  display: inline-block;
+  vertical-align: top;
+}
 @media screen and (max-width: 767px) {
   .product-card-lst__i {
     width: 100%;
