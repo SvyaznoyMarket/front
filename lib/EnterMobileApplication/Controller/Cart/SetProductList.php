@@ -67,6 +67,7 @@ class SetProductList {
             if ($productsById) {
                 $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id, ['model' => false, 'related' => false]);
                 $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList(array_keys($productsById));
+                $curl->prepare($productListQuery);
                 $curl->prepare($productDescriptionListQuery);
                 $curl->execute();
 
@@ -74,10 +75,10 @@ class SetProductList {
             }
 
             foreach ($cartProducts as $cartProduct) {
-                $cartProduct->ui = $productsById[$cartProduct->id]->ui;
-            }
+                if (!isset($productsById[$cartProduct->id])) {
+                    continue;
+                }
 
-            foreach ($cartProducts as $cartProduct) {
                 $curl->prepare(
                     new Query\Cart\SetQuantityForProductItem(
                         $productsById[$cartProduct->id]->ui,
