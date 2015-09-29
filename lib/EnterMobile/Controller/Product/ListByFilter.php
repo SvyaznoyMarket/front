@@ -135,10 +135,12 @@ class ListByFilter {
                     'category'    => true,
                     'label'       => true,
                     'brand'       => true,
+                    'tag'         => true,
                 ]);
                 $curl->prepare($productListQuery);
                 $curl->prepare($productDescriptionListQuery);
                 $productListQueries[] = $productListQuery;
+                $productDescriptionListQueries[] = $productDescriptionListQuery;
             }
         }
 
