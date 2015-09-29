@@ -1,7 +1,8 @@
 define(
     [
         'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config',
-        'jquery.photoswipe', 'module/product.view', 'module/product.card.kit', 'jquery.slick'
+        'jquery.photoswipe', 'module/product.view', 'module/product.card.kit', 'jquery.slick',
+        'module/product.card.tab' // todo: выпилить после завершения аб теста
     ],
     function (
         require, $, _, mustache, util, config
