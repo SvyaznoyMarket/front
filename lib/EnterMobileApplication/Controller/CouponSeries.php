@@ -12,7 +12,7 @@ namespace EnterMobileApplication\Controller {
     use EnterMobileApplication\Controller\CouponSeries\Response;
 
     class CouponSeries {
-        use ConfigTrait, LoggerTrait, CurlTrait, DebugContainerTrait;
+        use ConfigTrait, LoggerTrait, CurlTrait, DebugContainerTrait, ProductListingTrait;
 
         /**
          * @param Http\Request $request
@@ -134,7 +134,7 @@ namespace EnterMobileApplication\Controller {
                         $controllerRequest->regionId = $regionId;
                         $controllerRequest->categoryCriteria = []; // критерий получения категории товара
                         $controllerRequest->pageNum = 1;
-                        $controllerRequest->limit = 20;
+                        $controllerRequest->limit = 24;
                         $controllerRequest->filterRepository = $filterRepository;
                         $controllerRequest->baseRequestFilters = $baseRequestFilters;
                         $controllerRequest->requestFilters = $baseRequestFilters;
@@ -142,7 +142,7 @@ namespace EnterMobileApplication\Controller {
                         // ответ от контроллера
                         $controllerResponse = $controller->execute($controllerRequest);
 
-                        $response->couponSeries->products = $controllerResponse->products;
+                        $response->couponSeries->products = $this->getProductList($controllerResponse->products);
                     } catch (\Exception $e) {
                         $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
                     }
