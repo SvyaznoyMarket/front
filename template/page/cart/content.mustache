@@ -35,7 +35,9 @@
            </div>
         {{/productBlock}}
 
-        {{>partial/cart/bar}}
+        {{#cart}}
+            {{>partial/cart/bar}}
+        {{/cart}}
 
         {{^cart}}
         <div class="cartEmpty">
