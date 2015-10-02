@@ -1159,7 +1159,8 @@ body {
   margin: 0 auto;
 }
 .content.content--root,
-.content.private {
+.content.private,
+.content.product {
   max-width: 100%;
 }
 /* ==========================================================================
@@ -1316,9 +1317,11 @@ body {
   left: 0;
   z-index: 20;
   height: 50px;
+  padding: 0 10px;
   color: #ffffff;
   border-bottom: 1px solid #404040;
   background: #000000;
+  overflow: hidden;
 }
 .header-center {
   width: 100%;
@@ -1663,6 +1666,11 @@ body {
   }
   .header .header-center {
     padding-left: 120px;
+  }
+}
+@media only screen and (max-width: 639px) {
+  .header {
+    padding: 0 5px;
   }
 }
 /* ==========================================================================
@@ -11350,7 +11358,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product__wrap {
   position: relative;
-  padding: 0 20px;
+  padding: 10px 20px 0;
 }
 .product__buy-block {
   display: table;
@@ -12032,8 +12040,8 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product-widget {
   position: absolute;
-  top: 0;
-  right: 15px;
+  top: 15px;
+  right: 20px;
 }
 .product-widget__item {
   display: block;
@@ -12166,7 +12174,11 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 @media screen and (max-width: 639px) {
   .product__wrap {
-    padding: 0 10px;
+    padding: 10px 15px 0;
+  }
+  .product-widget {
+    top: 10px;
+    right: 15px;
   }
   .product-img {
     float: none;
@@ -12198,7 +12210,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   }
   .product__rating {
     position: absolute;
-    top: 50px;
+    top: 60px;
   }
   .product__rating .rating__star {
     font-size: 11px;
