@@ -6005,6 +6005,12 @@ body {
     float: none;
     width: auto;
   }
+  .catalogList .sticker.right {
+    display: none;
+  }
+  .catalogList .sticker.left {
+    left: 0;
+  }
   .catalogList .item {
     background: none;
   }
@@ -11660,7 +11666,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product-img__shield {
   position: absolute;
-  z-index: 100;
+  z-index: 5;
   top: 0;
   left: 0;
 }
