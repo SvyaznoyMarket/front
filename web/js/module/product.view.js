@@ -1,6 +1,6 @@
 define(
     [
-        'jquery', 'hammer', 'jquery.slick', 'module/toggleLink'
+        'jquery', 'jquery.ui', 'jquery.slick', 'module/toggleLink'
     ],
     function($, Hammer) {
         console.log('product card new');
@@ -24,9 +24,29 @@ define(
                 target = $(event.currentTarget),
                 targetBlock = target.attr('data-block'),
 
+                list = productTabs.find('.js-product-tabs-menu'),
                 tabs = productTabs.find('.js-change-tab'),
-                blocks = productTabs.find('.js-tabs-block');
+                blocks = productTabs.find('.js-tabs-block'),
+                inner = productTabs.find('.js-product-tabs-inner')
+                widthW = windows.width(),
+                widthEl = 0;
             // end of vars
+                
+            tabs.each(function( index ) {
+                widthEl = widthEl + tabs.eq(index).outerWidth();
+
+                if ( index == target.index() ) {
+                    return false;
+                }
+            })
+
+            console.log(tabs.last().width());
+
+            if ( widthEl > widthW ) {
+                inner.animate({scrollLeft: (widthW - widthEl) * -1}, 300);
+            } else {
+                list.css({ 'left' : 0 });
+            }
 
             if (target.hasClass(activeClass)) {
                 return;
@@ -119,6 +139,8 @@ define(
                 },
             }
         };
+
+        
 
         $('.js-change-tab').on('click', changetabHandler);
         $('.js-full-images-open').on('click', fullImagesView.open);

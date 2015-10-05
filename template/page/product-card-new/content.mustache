@@ -364,16 +364,20 @@
 
         </div>
         <div class="product-tabs js-product-tabs">
-            <nav class="product-tabs__menu">
-                <div class="product-tabs__head js-change-tab active" data-block="js-description-block">Подробности</div>
-                <div class="product-tabs__head js-change-tab" data-block="js-reviews-block">Отзывы</div>
-                {{#product.accessorySlider}}
-                    <div class="product-tabs__head js-change-tab" data-block="js-accessories-block">Аксессуары</div>
-                {{/product.accessorySlider}}
-                {{#product.similarSlider}}
-                    <div class="product-tabs__head js-change-tab" data-block="js-simillar-block">Похожие товары</div>
-                {{/product.similarSlider}}
-            </nav>
+            <div class="product-tabs-wrapper js-product-tabs-scroll">
+                <nav class="product-tabs__menu js-product-tabs-inner">
+                    <div class="product-tabs-inner js-product-tabs-menu">
+                        <div class="product-tabs__head js-change-tab active" data-block="js-description-block">Подробности</div>
+                        <div class="product-tabs__head js-change-tab" data-block="js-reviews-block">Отзывы</div>
+                        {{#product.accessorySlider}}
+                            <div class="product-tabs__head js-change-tab" data-block="js-accessories-block">Аксессуары</div>
+                        {{/product.accessorySlider}}
+                        {{#product.similarSlider}}
+                            <div class="product-tabs__head js-change-tab" data-block="js-simillar-block">Похожие товары</div>
+                        {{/product.similarSlider}}
+                    </div>
+                </nav>
+            </div>
 
             <div class="product-tabs__content">
                 <div class="product-tabs__body js-tabs-block js-description-block active">
