@@ -164,7 +164,7 @@ namespace EnterAggregator\Controller\Product {
                 $productRepository->setRatingForObjectListByQuery($recommendedProductsById, $ratingListQuery);
             }
 
-            // SITE-2818, TAPI-35
+            // FRONT-110
             $productRepository->filterByStockStatus($alsoBoughtIdList, $recommendedProductsById);
             $productRepository->filterByStockStatus($similarIdList, $recommendedProductsById);
             $productRepository->filterByStockStatus($alsoViewedIdList, $recommendedProductsById);

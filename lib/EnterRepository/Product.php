@@ -462,9 +462,7 @@ class Product {
                 return null;
             }
 
-            /** @var Model\Product $product */
-            $product = $productsById[$productId];
-            return $product->isBuyable && !$product->isInShopOnly;
+            return $productsById[$productId]->isBuyable;
         }));
     }
 
