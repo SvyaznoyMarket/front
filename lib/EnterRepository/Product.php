@@ -455,6 +455,22 @@ class Product {
     /**
      * @param string[] $productIds
      * @param Model\Product[] $productsById
+     */
+    public function filterByStockStatus(array &$productIds, array $productsById) {
+        $productIds = array_values(array_filter($productIds, function($productId) use($productsById) {
+            if (!isset($productsById[$productId])) {
+                return null;
+            }
+
+            /** @var Model\Product $product */
+            $product = $productsById[$productId];
+            return $product->isBuyable && !$product->isInShopOnly;
+        }));
+    }
+
+    /**
+     * @param string[] $productIds
+     * @param Model\Product[] $productsById
      * @param bool $randomize
      */
     public function sortByStockStatus(array &$productIds, array $productsById, $randomize = true) {
