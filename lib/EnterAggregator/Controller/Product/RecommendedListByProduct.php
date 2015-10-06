@@ -146,17 +146,11 @@ namespace EnterAggregator\Controller\Product {
 
             // товары
             $recommendedProductsById = $productRepository->getIndexedObjectListByQueryList($productListQueries, $descriptionListQueries);
-            
-            foreach ($alsoBoughtIdList as $i => $alsoBoughtId) {
-                // SITE-2818 из списка товаров "с этим товаром также покупают" убираем товары, которые есть только в магазинах
-                /** @var \EnterModel\Product|null $productsById */
-                $iProduct = isset($recommendedProductsById[$alsoBoughtId]) ? $recommendedProductsById[$alsoBoughtId] : null;
-                if (!$iProduct) continue;
 
-                if ($iProduct->isInShopOnly || !$iProduct->isBuyable) {
-                    unset($alsoBoughtIdList[$i]);
-                }
-            }
+            // FRONT-110
+            $productRepository->filterByStockStatus($alsoBoughtIdList, $recommendedProductsById);
+            $productRepository->filterByStockStatus($similarIdList, $recommendedProductsById);
+            $productRepository->filterByStockStatus($alsoViewedIdList, $recommendedProductsById);
 
             $chunkedIds = [$alsoBoughtIdList, $similarIdList, $alsoViewedIdList];
             $ids = [];
