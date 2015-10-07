@@ -22,7 +22,7 @@ class Filter extends BaseRepository {
             if (
                 (0 === strpos($key, 'f-'))
                 || (0 === strpos($key, 'tag-'))
-                || (in_array($key, ['shop', 'category', 'slice']))
+                || (in_array($key, ['shop', 'category', 'slice', 'barcode']))
             ) {
                 if (null === $value) continue;
 
