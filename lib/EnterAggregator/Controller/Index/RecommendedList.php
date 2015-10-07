@@ -81,11 +81,11 @@ namespace EnterAggregator\Controller\Index {
             $viewedProductsByUI = [];
             call_user_func(function() use (&$viewedItems, &$viewedProductsByUI) {
                 foreach ($viewedItems as $product) {
-                    if (!$product->isBuyable || $product->isInShopOnly) continue;
-
                     $viewedProductsByUI[$product->ui] = $product;
                 }
             });
+
+            $productRepository->filterObjectListByStockStatus($viewedProductsByUI);
 
             return $viewedProductsByUI;
         }

@@ -164,16 +164,11 @@ namespace EnterAggregator\Controller\Product {
                 $productRepository->setRatingForObjectListByQuery($recommendedProductsById, $ratingListQuery);
             }
 
-            foreach ($alsoBoughtIdList as $i => $alsoBoughtId) {
-                // SITE-2818 из списка товаров "с этим товаром также покупают" убираем товары, которые есть только в магазинах
-                /** @var \EnterModel\Product|null $productsById */
-                $iProduct = isset($recommendedProductsById[$alsoBoughtId]) ? $recommendedProductsById[$alsoBoughtId] : null;
-                if (!$iProduct) continue;
-
-                if ($iProduct->isInShopOnly || !$iProduct->isBuyable) {
-                    unset($alsoBoughtIdList[$i]);
-                }
-            }
+            // FRONT-110
+            $productRepository->filterObjectListByStockStatus($recommendedProductsById);
+            $productRepository->filterByStockStatus($alsoBoughtIdList, $recommendedProductsById);
+            $productRepository->filterByStockStatus($similarIdList, $recommendedProductsById);
+            $productRepository->filterByStockStatus($alsoViewedIdList, $recommendedProductsById);
 
             $chunkedIds = [$alsoBoughtIdList, $similarIdList, $alsoViewedIdList];
             $ids = [];
@@ -215,14 +210,6 @@ namespace EnterAggregator\Controller\Product {
                     }
                     if ((bool)$shopStatesByShopId) {
                         $productRepository->setShopStateForObjectListByQuery([$product->id => $product], $shopStatesByShopId, $shopListQuery);
-                    }
-                }
-            }
-
-            if ($request->config->removeUnavailable) {
-                foreach ($recommendedProductsById as $id => $recommendedProduct) {
-                    if (!$recommendedProduct->isBuyable) {
-                        unset($recommendedProductsById[$id]);
                     }
                 }
             }
@@ -311,11 +298,5 @@ namespace EnterAggregator\Controller\Product\RecommendedListByProduct\Request {
          * @var bool
          */
         public $sortByStockState;
-        /**
-         * Удалять недоступные
-         *
-         * @var bool
-         */
-        public $removeUnavailable;
     }
 }
