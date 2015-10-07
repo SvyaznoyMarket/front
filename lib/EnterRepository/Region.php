@@ -76,4 +76,21 @@ class Region {
 
         return array_merge($firstRegions, $regions);
     }
+
+    /**
+     * @param Query $query
+     * @return Model\Region[]
+     */
+    public function getIndexedByIdObjectListByQuery(Query $query) {
+        $regions = [];
+
+        foreach ($query->getResult() as $item) {
+            if (empty($item['id'])) continue;
+
+            $region = new Model\Region($item);
+            $regions[$region->id] = $region;
+        }
+
+        return $regions;
+    }
 }
