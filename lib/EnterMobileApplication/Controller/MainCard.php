@@ -89,15 +89,15 @@ namespace EnterMobileApplication\Controller {
                 $products = [];
             }
 
+            // FRONT-110
+            $productRepository->filterByStockStatus($popularProductIds, $products);
+            $productRepository->filterByStockStatus($viewedProductIds, $products);
+
             $popularProducts = array_fill_keys($popularProductIds, null);
             $viewedProducts = array_fill_keys($viewedProductIds, null);
             $personalProducts = [];
 
             foreach ($products as $key => $product) {
-                if (!$product->isBuyable || $product->isInShopOnly) {
-                    continue;
-                }
-
                 if (array_key_exists($product->id, $popularProducts)) {
                     $popularProducts[$product->id] = $product;
                 }

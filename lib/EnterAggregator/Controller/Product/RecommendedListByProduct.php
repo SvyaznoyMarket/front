@@ -152,14 +152,6 @@ namespace EnterAggregator\Controller\Product {
             // товары
             $recommendedProductsById = $productRepository->getIndexedObjectListByQueryList($productListQueries, $descriptionListQueries);
 
-            // товары по ui
-            $productsByUi = [];
-            call_user_func(function() use (&$recommendedProductsById, &$productsByUi) {
-                foreach ($recommendedProductsById as $product) {
-                    $productsByUi[$product->ui] = $product;
-                }
-            });
-
             if (isset($ratingListQuery)) {
                 $productRepository->setRatingForObjectListByQuery($recommendedProductsById, $ratingListQuery);
             }
