@@ -4236,7 +4236,7 @@ body {
 }
 .sliderControls_btn {
   position: absolute;
-  z-index: 103;
+  z-index: auto;
   top: 50%;
   display: block;
   width: 20px;
@@ -11622,7 +11622,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   background: #f6f6f6;
 }
 .product-name {
-  margin: 0 0 30px;
+  margin: 0 30px 30px 0;
 }
 .product-name__categ {
   font-size: 14px;
@@ -11631,11 +11631,10 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product-name__tl {
   font-size: 16px;
-  height: 22px;
+  max-height: 22px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  margin-right: 40px;
   color: #000;
 }
 .product-name__art {
