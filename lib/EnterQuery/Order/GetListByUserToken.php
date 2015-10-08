@@ -11,7 +11,7 @@ class GetListByUserToken extends Query {
     use CoreQueryTrait;
 
     /** @var array */
-    protected $result;
+    protected $result = [];
 
     /**
      * @param string $token

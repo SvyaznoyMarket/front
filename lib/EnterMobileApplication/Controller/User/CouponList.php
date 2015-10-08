@@ -22,7 +22,6 @@ namespace EnterMobileApplication\Controller\User {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            $couponSeriesRepository = new \EnterRepository\Coupon\Series();
             $couponRepository = new \EnterRepository\Coupon();
 
             // ответ
@@ -62,22 +61,9 @@ namespace EnterMobileApplication\Controller\User {
 
             $curl->execute();
 
-            $response->coupons = $couponRepository->getObjectListByQuery($couponListQuery);
-
-            $response->couponSeries = $couponSeriesRepository->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery);
-            $couponSeriesRepository->filterObjectListByIdList($response->couponSeries, $couponRepository->getSeriesIdListByObjectList($response->coupons));
-
-            $couponSeriesIds = [];
-            foreach ($response->couponSeries as $couponSeries) {
-                $couponSeriesIds[] = $couponSeries->id;
-            }
-
-            $response->coupons = array_values(array_filter($response->coupons, function(Model\Coupon $coupon) use(&$couponSeriesIds) {
-                return in_array($coupon->seriesId, $couponSeriesIds, true) && time() <= strtotime($coupon->endAt);
-            }));
-
-            // Фильтруем повторно уже с использованием отфильтрованных купонов
-            $couponSeriesRepository->filterObjectListByIdList($response->couponSeries, $couponRepository->getSeriesIdListByObjectList($response->coupons));
+            $filteredCouponsAndCouponSeries = $couponRepository->getFilteredCouponsAndCouponSeriesByQuery($couponListQuery, $seriesLimitListQuery, $seriesListQuery);
+            $response->coupons = $filteredCouponsAndCouponSeries['coupons'];
+            $response->couponSeries = $filteredCouponsAndCouponSeries['couponSeries'];
 
             // срезы для серий купонов
             /*
