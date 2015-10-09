@@ -248,6 +248,44 @@ define(
 
         })(config, _, $);
 
+        // скролл к отзывам
+        (function scrollToReviews(config, _, $){
+            var $scrollTrigger = $('.js-review-scroll-trigger');
+            var $reviewTabNav = $('.js-change-tab[data-block="js-reviews-block"]');
+
+            $scrollTrigger.click(scrollToReviews);
+
+            function scrollToReviews(evt) {
+                evt.preventDefault();
+
+                showTab($reviewTabNav);
+            }
+
+        })(config, _, $);
+
+        // скролл к характеристика
+        (function scrollToSpecs(config, _, $){
+            var $scrollTrigger = $('.js-specs-scroll-trigger');
+            var $specsTabNav = $('.js-change-tab[data-block="js-description-block"]');
+
+            $scrollTrigger.click(scrollToReviews);
+
+            function scrollToReviews(evt) {
+                evt.preventDefault();
+
+                showTab($specsTabNav);
+            }
+
+        })(config, _, $);
+
+        function showTab($el) {
+            $('html, body').animate({
+                scrollTop: $el.offset().top - 100
+            }, 500);
+
+            $el.click();
+        }
+
 
     }
 );
