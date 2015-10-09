@@ -2118,6 +2118,11 @@ body {
 .btn {
   cursor: pointer;
 }
+.btn_disable {
+  font-size: 16px;
+  padding: 8px 0;
+  color: #a6a6a6;
+}
 .btn-container {
   width: 100%;
   text-align: center;
@@ -2630,16 +2635,16 @@ body {
 }
 .closer {
   position: fixed;
+  z-index: 10;
   top: 60px;
   right: 10px;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  border-radius: 50%;
   width: 30px;
   height: 30px;
   cursor: pointer;
-  z-index: 10;
   background: #ffffff url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCI+PHBvbHlnb24gZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIHBvaW50cz0iMTQsMC43IDEzLjMsMCA3LDYuMjk5IDAuNywwIDAsMC43IDYuMyw3IDAsMTMuMjk5IDAuNywxNCA3LDcuNyAxMy4zLDE0IDE0LDEzLjI5OSA3LjcsNyIvPjwvc3ZnPg==) no-repeat center;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
 }
 /* ==========================================================================
    Кнопки - новая карточка товара
