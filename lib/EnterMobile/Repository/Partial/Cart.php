@@ -17,11 +17,13 @@ class Cart {
     /**
      * @param \EnterModel\Cart $cartModel
      * @param \EnterModel\Product[] $productModels
+     * @param \EnterModel\Region|null $regionModel
      * @return Partial\Cart
      */
     public function getObject(
         \EnterModel\Cart $cartModel,
-        $productModels = []
+        $productModels = [],
+        $regionModel = null
     ) {
         $cart = new Partial\Cart();
         $cart->widgetId = self::getWidgetId();
@@ -29,6 +31,7 @@ class Cart {
         $cart->shownSum = $this->getPriceHelper()->format($cartModel->sum);
         $cart->quantity = count($cartModel);
         $cart->shownQuantity = $cart->quantity . ' ' . $this->getTranslateHelper()->numberChoice($cart->quantity, ['товар', 'товара', 'товаров']);
+        $cart->orderRemainSum = $regionModel ? (new \EnterRepository\Order())->getRemainSum($cart->sum, $regionModel) : null;
 
         $cart->orderUrl = $this->getRouter()->getUrlByRoute(new Routing\Order\Index());
         $cart->orderDataGa = $this->getTemplateHelper()->json(['m_checkout' => ['send', 'event', 'm_checkout', 'cart']]);

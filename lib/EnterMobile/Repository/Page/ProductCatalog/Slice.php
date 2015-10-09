@@ -37,7 +37,7 @@ class Slice {
 
         // хлебные крошки
         $categories = call_user_func(function() use (&$request) {
-            if (!$request->category) [];
+            if (!$request->category) return [];
 
             $ancestors = [];
             $parent = $request->category->parent;

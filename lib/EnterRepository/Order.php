@@ -77,4 +77,34 @@ class Order {
             }
         }
     }
+
+    /**
+     * @param int|string|null $sum
+     * @param Model\Region $region
+     * @return int|null
+     */
+    public function getRemainSum($sum, Model\Region $region)
+    {
+        $ids = ['82', '83', '14974', '108136'];
+        $minSum = $this->getConfig()->order->minSum;
+
+        if (
+            in_array($region->id, $ids)
+            || ($region->parent && in_array($region->parent, $ids))
+            || (null === $sum)
+            || !$minSum
+        ) {
+            return null;
+        }
+
+        $diff = $minSum - $sum;
+
+        $remainSum = ($diff < 0) ? 0 : $diff;
+
+        if ($remainSum <= 1) {
+            return null;
+        }
+
+        return $remainSum;
+    }
 }

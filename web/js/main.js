@@ -34,6 +34,7 @@ require.config({
 
         'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
         'mustache'           : 'vendor/mustache-0.8.2',
+        'hammer'             : 'vendor/hammer-2.0.4',
         'modernizr'          : 'vendor/modernizr.custom',
         'boilerplate.helper' : 'vendor/boilerplate.helper-4.1.0',
 
@@ -91,6 +92,10 @@ require.config({
             exports: '_'
         },
         'modernizr': [],
+        'hammer': {
+            exports: 'Hammer',
+            deps: ['jquery']
+        },
         'boilerplate.helper': [],
 
         'yandexmaps': {
@@ -116,6 +121,7 @@ require(
         'require',
         'module/config',
         'modernizr',
+        'hammer',
         'boilerplate.helper',
         'jquery',
         'jquery.cookie',
@@ -139,13 +145,15 @@ require(
         'module/addReview'
     ],
     function(require, config) {
-        $.cookie.defaults.path = '/';
-        $.cookie.defaults.domain = config.cookie.domain;
+        $(document).ready(function(){
+            $.cookie.defaults.path = '/';
+            $.cookie.defaults.domain = config.cookie.domain;
 
-        // модуль страницы
-        require([moduleName], function(module) {
-            // партнерский модуль
-            setTimeout(function() { require(['module/partner']); }, 600);
+            // модуль страницы
+            require([moduleName], function(module) {
+                // партнерский модуль
+                setTimeout(function() { require(['module/partner']); }, 600);
+            });
         });
     }
 );

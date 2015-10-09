@@ -50,20 +50,16 @@
 <body class="body-footerless {{#bodyClass}} {{bodyClass}}  {{/bodyClass}}" data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="{{&dataUser}}" data-cart="{{&dataCart}}" data-widget="{{&dataWidget}}">
     {{>partial/counters}}
     {{>partial/menu}}
+    <div class="menu-overlay js-fader"></div>
 
-    <div class="snap-content" id="wrapper">
+    <div class="page" id="wrapper">
         {{>partial/header}}
-        <div class="wrapper">
-            <div class="fader js-fader"></div>
 
-
-            {{#content}}
-                {{>content}}
-            {{/content}}
-        </div><!--/ Оболочка -->
+        {{#content}}
+            {{>content}}
+        {{/content}}
 
         {{>partial/template}}
-
     </div>
 
     {{>partial/search.suggest}}

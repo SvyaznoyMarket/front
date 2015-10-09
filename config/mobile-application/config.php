@@ -9,7 +9,7 @@ return function(EnterMobileApplication\Config $config) {
     ini_set('session.use_only_cookies', false);
     ini_set('session.use_trans_sid', true);
 
-    $config->version = '1.4';
+    $config->version = '1.5';
 
     $config->applicationTags = ['app-mobile', 'mobile-app'];
 
@@ -31,5 +31,5 @@ return function(EnterMobileApplication\Config $config) {
     $config->product->itemPerPage = 19;
     $config->product->itemsInSlider = 60;
 
-    $config->productReview->itemsInCard = 7;
+    $config->productReview->itemsInCard = 24; // MAPI-92
 };

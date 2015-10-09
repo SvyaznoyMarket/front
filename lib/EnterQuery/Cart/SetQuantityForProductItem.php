@@ -7,6 +7,7 @@ use EnterQuery\CrmQueryTrait;
 use EnterQuery\Url;
 use EnterModel as Model;
 
+// TODO переименовать в MergeProduct
 class SetQuantityForProductItem extends Query {
     use CrmQueryTrait;
 

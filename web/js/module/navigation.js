@@ -10,9 +10,7 @@ define(
             chooseModelMoreModel = function chooseModelMoreModel() {
                 chooseModelMoreBox.slideToggle('800');
                 chooseModelMoreLink.toggleClass('more');
-            },
-            $snapContent = $('#wrapper');
-            ;
+            };
         // end of vars
 
         chooseModelMoreLink.click(chooseModelMoreModel);
@@ -29,45 +27,14 @@ define(
 
                 e.preventDefault();
 
-                if (body.hasClass('snapjs-left')) {
-                    $snapContent.removeClass('shifted');
-                    body.removeClass('snapjs-left');
+                if (body.hasClass('menu-open')) {
+                    body.removeClass('menu-open');
                 } else {
-                    $snapContent.addClass('shifted');
-                    body.addClass('snapjs-left');
+                    body.addClass('menu-open');
                 }
-
-            },
-
-            footerResize = function footerResize() {
-                var
-                    footer = $('.footer');
-                if ( $('.content').height() + footer.innerHeight() < $(window).height() ){
-                    body.removeClass('noIOS');
-                    footer.css('position','fixed');
-                }
-            },
-            iOS = function iOS() {
-
-            var iDevices = [
-                'iPad Simulator',
-                'iPhone Simulator',
-                'iPod Simulator',
-                'iPad',
-                'iPhone',
-                'iPod'
-            ];
-                console.info(navigator.platform);
-            while (iDevices.length) {
-                if (navigator.platform === iDevices.pop()){ return true; }
-            }
-
-            return false;
-        }
-            ;
+            };
         // end of vars
-
-        $(window).on('load resize', footerResize);
+        
         $(navIco).on('click', showHideMenu);
         $(fader).on('click', showHideMenu);
 
@@ -78,12 +45,6 @@ define(
             .on('blur', 'input, textarea, input + label, select', function(e) {
                 body.removeClass('fixfixed');
             });
-
-        //check if iOS
-        if ( !iOS() ){
-            $(body).addClass('noIOS') ;
-        }
-
 
     }
 );

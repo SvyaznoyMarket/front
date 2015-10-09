@@ -33,6 +33,8 @@ namespace EnterMobile\Model\Page {
         public $mailRu;
         /** @var DefaultPage\RegionBlock */
         public $regionBlock;
+        /** @var DefaultPage\DeliveryBanner */
+        public $deliveryBanner;
         /** @var DefaultPage\MainMenu */
         public $mainMenu;
         /** @var Partial\UserBlock */
@@ -121,6 +123,13 @@ namespace EnterMobile\Model\Page\DefaultPage {
         public $autocompleteUrl;
         /** @var RegionBlock\Region[] */
         public $regions = [];
+    }
+
+    class DeliveryBanner {
+        /** @var string */
+        public $regionName;
+        /** @var string */
+        public $pointCountMessage;
     }
 
     class MainMenu {

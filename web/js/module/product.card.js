@@ -1,8 +1,8 @@
 define(
     [
         'require', 'jquery', 'underscore', 'mustache', 'module/util', 'module/config',
-        'jquery.photoswipe', 'module/product.card.tab',
-        'module/product.card.fullimg', 'module/product.card.kit', 'jquery.slick'
+        'jquery.photoswipe', 'module/product.view', 'module/product.card.kit', 'jquery.slick',
+        'module/product.card.tab' // todo: выпилить после завершения аб теста
     ],
     function (
         require, $, _, mustache, util, config
@@ -104,6 +104,7 @@ define(
         $('.js-detailSlider').slick({
             infinite: false,
             dots: true,
+            arrows: false,
             nextArrow: '<span class="sliderControls_btn sliderControls_btn__right js-ga-click"></span>',
             prevArrow: '<span class="sliderControls_btn sliderControls_btn__left js-ga-click"></span>',
             customPaging: function(slider, i) {
@@ -222,6 +223,30 @@ define(
             }
         })(config, _, $);
 
+        // добавление в избранное
+        (function addToFavorites(config, _, $){
+            var $addToFavorites = $('.js-favorites-add');
+            var ADDED_TO_FAVORITES_CLASS = 'icon-favorit--on';
+
+            $addToFavorites.click(handleAddToFavoritesClick);
+
+
+            function handleAddToFavoritesClick(evt) {
+                evt.preventDefault();
+
+                var productUi = $(this).data('productUi');
+
+                $.post('/ajax/favorite/add', {productUi: productUi}, function(result) {
+
+                    if (result.data.success) {
+                        $addToFavorites.addClass(ADDED_TO_FAVORITES_CLASS);
+                    }
+
+                });
+            }
+
+
+        })(config, _, $);
 
 
     }

@@ -6,6 +6,8 @@ namespace EnterModel {
 
     class Coupon {
         /** @var string */
+        public $id;
+        /** @var string */
         public $number;
         /** @var string */
         public $seriesId;
@@ -27,6 +29,9 @@ namespace EnterModel {
          */
         public function __construct(array $data = []) {
             if (array_key_exists('number', $data)) $this->number = (string)$data['number'];
+            if ($this->number) {
+                $this->id = md5($this->number);
+            }
             if (array_key_exists('series', $data)) $this->seriesId = (string)$data['series'];
             if (array_key_exists('promo', $data)) $this->promoToken = (string)$data['promo'];
             if (array_key_exists('title', $data)) $this->name = (string)$data['title'];

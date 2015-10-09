@@ -1,0 +1,68 @@
+@bannerHeight: 36px;
+
+.top-banner {
+    background-color: #009812;
+    text-align: center;
+    padding: 0 20px;
+    height: @bannerHeight;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 20;
+    .box-sizing(border-box);
+
+    &__inn{
+        display: table;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    &__l{
+        display: table-cell;
+        padding: 0 10px;
+        vertical-align: middle;
+    }
+    &__txt{
+        font-size: 23px;
+        color: #fff;
+        font-family: 'Enter Type';
+        line-height: 1em;
+    }
+    &__r{
+        display: table-cell;
+        font-size: 15px;
+        padding: 0 30px;
+        color: #fff;
+        background-color: #007a15;
+        text-align: center;
+        vertical-align: middle;
+        height: @bannerHeight;
+    }
+}
+
+
+@media only screen and (max-width: 767px) {
+    .top-banner{
+        padding: 0 10px;
+
+        &__txt{
+            font-size: 18px;
+        }
+        &__r{
+            padding: 0 10px;
+            font-size: 12px;
+        }
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .top-banner{
+        &__txt{
+            font-size: 14px;
+        }
+        &__r{
+            padding: 0 10px;
+            font-size: 12px;
+        }
+    }
+}

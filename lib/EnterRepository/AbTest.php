@@ -158,4 +158,12 @@ class AbTest {
             $total += $diff;
         }
     }
+
+    /**
+     * Включена ли серверная корзина
+     * @return bool
+     */
+    public function isCoreCartEnabled() {
+        return 'enabled' === $this->getObjectByToken('msite_core_cart')->chosenItem->token;
+    }
 }

@@ -1,54 +1,47 @@
+<div class="nav">
+    <div class="nav-header">
+        <a class="header__logotype-link" href="/"></a>
+        <a class="nav-header__col nav-header__wrap jsSelectCity">
+            <span class="nav-header__wrap-text"><span class="text">{{regionBlock.regionName}}</span></span>
+            <div class="transBg"></div>
+        </a>
+    </div>
 
-<div class="snap-drawers">
-    <div class="nav-inn">
-    <nav class="nav snap-drawer snap-drawer-left" id="nav">
-
-        <div class="nav-header">
-            <a class="header__logotype-link" href="/"></a>
-            <div class="nav-header__col nav-header__wrap">
-                <span class="nav-header__wrap-text jsSelectCity"><span class="text">{{regionBlock.regionName}}</span></span>
-                <div class="transBg"></div>
-            </div>
+    <div class="nav-menu">
+        <div class="nav-menu__top">
+            {{#breadcrumbBlock}}
+            <ul class="nav-breadcrumbs nav-list">
+                {{#breadcrumbs}}
+                    <li class="nav-list-i"><a href="{{url}}" class="nav-list-i__lk">{{name}}</a></li>
+                {{/breadcrumbs}}
+            </ul>
+            {{/breadcrumbBlock}}
         </div>
+        {{#mainMenu}}
+            <ul class="nav-links nav-list">
+                {{#serviceElements}}
+                    <li class="nav-list-i"><a href="{{link}}" class="nav-list-i__lk"><i class="nav-icon {{iconClass}}"></i>{{name}}</a></li>
+                {{/serviceElements}}
+            </ul>
 
-        <div class="nav-menu">
-            <div class="nav-menu__top">
-                {{#breadcrumbBlock}}
-                <ul class="nav-breadcrumbs nav-list">
-                    {{#breadcrumbs}}
-                        <li class="nav-list-i"><a href="{{url}}" class="nav-list-i__lk">{{name}}</a></li>
-                    {{/breadcrumbs}}
-                </ul>
-                {{/breadcrumbBlock}}
-            </div>
-            {{#mainMenu}}
-                <ul class="nav-links nav-list">
-                    {{#serviceElements}}
-                        <li class="nav-list-i"><a href="{{link}}" class="nav-list-i__lk"><i class="nav-icon {{iconClass}}"></i>{{name}}</a></li>
-                    {{/serviceElements}}
-                </ul>
-
-            <div class="nav-catalog">
-                <div class="nav-catalog__h">КАТАЛОГ</div>
-                <ul class="nav-catalog-items nav-list">
-                {{#elements}}
-                    <li class="nav-list-i">
-                        <a href="{{url}}" class="nav-list-i__lk">
-                             <span class="nav-icon">
-                                {{char}}
-                                {{^char}}
-                                    {{#image}}<img src="{{image}}" />{{/image}}
-                                {{/char}}
-                             </span>
-                            <span class="nav-name">{{&name}}</span>
-                        </a>
-                    </li>
-                {{/elements}}
-                </ul>
-            </div>
-            {{/mainMenu}}
+        <div class="nav-catalog">
+            <div class="nav-catalog__h">КАТАЛОГ</div>
+            <ul class="nav-catalog-items nav-list">
+            {{#elements}}
+                <li class="nav-list-i">
+                    <a href="{{url}}" class="nav-list-i__lk">
+                         <span class="nav-icon">
+                            {{char}}
+                            {{^char}}
+                                {{#image}}<img src="{{image}}" />{{/image}}
+                            {{/char}}
+                         </span>
+                        <span class="nav-name">{{&name}}</span>
+                    </a>
+                </li>
+            {{/elements}}
+            </ul>
         </div>
-
-    </nav>
-</div>
+        {{/mainMenu}}
+    </div>
 </div>

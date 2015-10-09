@@ -59,14 +59,12 @@ namespace EnterMobileApplication\Controller {
                 $cart = $cartRepository->getObjectByQuery($cartItemQuery);
 
                 $cartProductListQuery = null;
-                if ($cart->product) {
-                    $cartProductListQuery = new \EnterQuery\Product\GetListByUiList(array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), $region->id, ['model' => false, 'related' => false]);
-                    $curl->prepare($cartProductListQuery);
-                }
-
                 $cartProductDescriptionListQuery = null;
                 if ($cart->product) {
-                    $cartProductDescriptionListQuery = new \EnterQuery\Product\GetDescriptionListByUiList(array_map(function(\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), ['media' => true, 'label' => true]);
+                    $productUis = array_map(function(\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product);
+                    $cartProductListQuery = new \EnterQuery\Product\GetListByUiList($productUis, $region->id, ['model' => false, 'related' => false]);
+                    $cartProductDescriptionListQuery = new Query\Product\GetDescriptionListByUiList($productUis, ['media' => true, 'label' => true]);
+                    $curl->prepare($cartProductListQuery);
                     $curl->prepare($cartProductDescriptionListQuery);
                 }
 

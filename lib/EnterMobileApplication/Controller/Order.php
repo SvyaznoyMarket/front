@@ -21,8 +21,9 @@ namespace EnterMobileApplication\Controller {
         public function execute(Http\Request $request) {
             $curl = $this->getCurl();
             $config = $this->getConfig();
-            $productRepository = new Repository\Product();
+            $productRepository = new \EnterMobileApplication\Repository\Product();
             $pointRepository = new \EnterMobileApplication\Repository\Point();
+            $helper = new \Enter\Helper\Template();
 
             // токен для получения заказа
             $accessToken = is_string($request->query['accessToken']) ? $request->query['accessToken'] : null;
@@ -60,9 +61,19 @@ namespace EnterMobileApplication\Controller {
             }
 
             $productListQuery = null;
+            $descriptionListQuery = null;
             if ((bool)$orderProductsById) {
                 $productListQuery = new Query\Product\GetListByIdList(array_keys($orderProductsById), $order->regionId, ['model' => false, 'related' => false]);
                 $curl->prepare($productListQuery);
+                
+                $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(array_keys($orderProductsById), [
+                    'media'       => true,
+                    'media_types' => ['main'], // только главная картинка
+                    'category'    => true,
+                    'label'       => true,
+                    'brand'       => true,
+                ]);
+                $curl->prepare($descriptionListQuery);
             }
 
             $curl->execute();
@@ -70,40 +81,42 @@ namespace EnterMobileApplication\Controller {
             // товары сгруппированные по id
             $productsById = [];
             try {
-                $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
+                $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$descriptionListQuery]) : [];
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order']]);
             }
 
-            $descriptionListQuery = null;
-            if ($productsById) {
-                $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
-                    array_map(function(Model\Product $product) { return $product->ui; }, $productsById),
-                    [
-                        'media'       => true,
-                        'media_types' => ['main'], // только главная картинка
-                        'category'    => true,
-                        'label'       => true,
-                        'brand'       => true,
-                    ]
-                );
-                $curl->prepare($descriptionListQuery);
-
-                $curl->execute();
-
-                $productRepository->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
+            $media = $pointRepository->getMedia($point['partner']['slug'], ['logo']);
+            $imageUrl = null;
+            foreach ($media->photos as $media) {
+                if (in_array('logo', $media->tags, true)) {
+                    foreach ($media->sources as $source) {
+                        if ($source->type === '100x100') {
+                            $imageUrl = $source->url;
+                            break(2);
+                        }
+                    }
+                }
             }
-
+            
             $response = ['order' => [
                 'id' => $order->id,
                 'number' => $order->number,
                 'numberErp' => $order->numberErp,
                 'token' => $order->token,
+                'status' => $order->status ? [
+                    'id' => $order->status->id,
+                    'name' => $order->status->name,
+                ] : null,
+                'paymentStatus' => $order->paymentStatus ? [
+                    'id' => $order->paymentStatus->id,
+                    'name' => $order->paymentStatus->name,
+                ] : null,
                 'sum' => $order->sum,
                 'address' => $order->address,
                 'createdAt' => $order->createdAt,
                 'updatedAt' => $order->updatedAt,
-                'product' => array_map(function(Model\Order\Product $orderProduct) use(&$productsById, &$helper) {
+                'product' => array_map(function(Model\Order\Product $orderProduct) use(&$productsById, $helper, $productRepository) {
                     $product = isset($productsById[$orderProduct->id]) ? $productsById[$orderProduct->id] : new Model\Product();
 
                     return [
@@ -138,7 +151,7 @@ namespace EnterMobileApplication\Controller {
                             'reviewCount' => $product->rating->reviewCount,
                         ] : null,
                         'favorite'        => isset($product->favorite) ? $product->favorite : null,
-                        'partnerOffers'   => $product->partnerOffers,
+                        'partnerOffers'   => $productRepository->getPartnerOffers($product),
                         'storeLabel'      => $product->storeLabel,
                     ];
                 }, $order->product),
@@ -151,8 +164,9 @@ namespace EnterMobileApplication\Controller {
                 'shopId' => $point['partner']['slug'] === 'enter' ? $order->shopId : null, // TODO перенести в point.id
                 'point' => $point ? [
                     'ui' => $point['uid'],
-                    'media' => $pointRepository->getMedia($point['partner']['slug'], ['logo']),
                     'name' => $pointRepository->getName($point['partner']['slug'], $point['partner']['name']),
+                    'media' => $media,
+                    'imageUrl' => $imageUrl, // TODO MAPI-61 Удалить элементы pointGroups.<int>.imageUrl и pointGroups.<int>.markerUrl из ответа метода Cart/Split и point.imageUrl из ответа метода Order
                     'address' => $point['address'],
                     'regime' => $point['working_time'],
                     'longitude' => isset($point['location'][0]) ? $point['location'][0] : null,

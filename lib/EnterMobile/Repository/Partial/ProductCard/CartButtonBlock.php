@@ -29,6 +29,8 @@ class CartButtonBlock {
             if ($product->isBuyable && !$product->isInShopOnly) {
                 $block->cartSpinner = (new Repository\Partial\Cart\ProductSpinner())->getObject($product);
             }
+        } elseif ($cartProduct) {
+            $block->cartButton = (new Repository\Partial\Cart\ProductButton())->getObject($product, $cartProduct, false, false, $context);
         }
 
         return $block;

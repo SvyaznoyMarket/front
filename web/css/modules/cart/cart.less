@@ -2,106 +2,6 @@
    Корзина .cartItem .cartLine .cartBuy
    ========================================================================== */
 
- // товары в корзине
-.cartItem {
-	display: table;
-
-	width: 100%;
-	padding: 20px 0;
-
-	border-bottom: 1px solid @tabGreyBorder;
-
-	&_col {
-		display: table-cell;
-		overflow: hidden;
-
-		vertical-align: top;
-
-		&-img {
-			width: 120px;
-			height: 100px;
-			text-align: center;
-
-			.img {
-				max-width: 90%;
-				max-height: 100%;
-			}
-		}
-
-		&-desc {
-			vertical-align: top;
-			overflow: visible;
-
-			font-size: 20px;
-
-			.name {
-				display: inline-block;
-				zoom: 1;
-
-				min-height: 72px;
-
-				font-size: 20px;
-				padding-right: 25px;
-
-				*display: inline;
-
-				&_cat {
-					display: block;
-				}
-			}
-
-			.price {
-				color: #777777;
-				white-space: nowrap;
-			}
-		}
-
-		&-price {
-			width: 290px;
-			padding: 15px 0 0;
-
-			.priceNum {
-				display: none;
-				white-space: nowrap;
-			}
-
-			.price {
-				display: inline-block;
-				zoom: 1;
-
-				width: 100px;
-
-				text-align: right;
-				vertical-align: middle;
-
-				font-size: 20px;
-				line-height: 41px;
-
-				*display: inline;
-				white-space: nowrap;
-			}
-
-			.delete {
-				display: inline-block;
-				zoom: 1;
-
-	    		margin: 15px 0 0 25px;
-	    		padding: 1px 0 2px 25px;
-
-				color: #5e5d5d;
-				background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAACXBIWXMAAAsTAAALEwEAmpwYAAACS0lEQVQ4EZVUPW8aQRCdO8SHEAiCkBA6yUhYKeAPpLBCJJwqLkwq/wI3cRE37uI+dhzJken8C9Ig0VA5BY6pnAaJjyKioEA0CDcnPgXkPaQ7wx52kpGWZWfnvZudnbfaYrGQDeZuNBo57OWwt4MRx5hg3dE07Rbjezqd/qHiNJWs2Wy+n8/nX0Kh0HYwGBS32y0AL3GMnUwm0u/3ZTAYlF0u12Eqlfptka6S6cjms9frPYnFYoJAK2bjPB6PpdPpPOBD+8jyJ4NsMhCdBwKBk2g0ameykWXFOZvNpN1uP+i6/ooZ6tzj0ZjR/xARx+wNw3gB0muumZm7Xq83E4nE9t+ORsAm63a7MhqN3rJOORZbJeIRptOpAwuQwxeJRARJHej4yfHWVKtUKpLP54WFtuzX/b2cn50JP7RqHo+HZBnWbIfXr1omk5HE1pZ8u7yU4XAoJC8Wi/Lh6Mhx02wdDEOr1WrjZDLpUcmsdalUksrdnfDrH4+PJRwOW1trc6vVEmY2WfMqC7YrjqB4nUtkZrJmnaeCC4WCVKtV+XR6KtlsVr5eXEiv13MwEU8eHYy3lIhq5XJZmDqP5vf75TVq+G5vT/JXV44LIJ48Gnps1+fz3cTj1PKjsS2gUUEzPzrxzzRNgVLWfHafUf0U7WoLMJI3rBLRrxIRRzx5lnJCwx5StGr/EPycMZ444hm3JKNIceZ9ilbN8CkyxjGeOOsZsl8NgiD4l/jaNQr+hhJhbyHY5uOt/et7ZoOg110ADzAyIDMwBzCbmJ99af8ArqY5ldB+T2sAAAAASUVORK5CYII=) no-repeat 0 0;
-
-
-				*display: inline;
-			}
-
-			.change {
-				float: right;
-
-			}
-		}
-	}
-}
 
 //итогая стоимость/купить в кредит
 .cartLine {
@@ -184,4 +84,87 @@
 			text-decoration: underline;
 		}
 	}
+}
+
+.cart {
+    &__inn{
+
+    }
+    &-item {
+        padding: 10px 10px 5px;
+        width: 100%;
+        .box-sizing(border-box);
+        position: relative;
+        border-bottom: 1px solid #d3d3d3;
+
+        &:last-child{
+            border-bottom: 0;
+        }
+        &__img {
+            width: 74px;
+            height: 74px;
+            float: left;
+            text-align: center;
+            img {
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+        &__name {
+            padding-right: 30px;
+        }
+        &__descr {
+            margin-left: 80px;
+
+            min-height: 74px;
+        }
+        &__price-info {
+            clear: both;
+            width: 100%;
+        }
+        &__item-price {
+            color: #5d5d5d;
+            font-size: 16px;
+            width: 76px;
+            padding-right: 5px;
+            vertical-align: middle;
+            white-space: nowrap;
+            text-align: center;
+            .price-inn {
+                .inline-block();
+                min-width: 76px;
+            }
+        }
+        &__change {
+            max-width: 0;
+            width: 100%;
+        }
+        &__item-sum {
+            font-size: 16px;
+            width: 80px;
+            vertical-align: middle;
+            white-space: nowrap;
+            .price-inn {
+                .inline-block();
+                width: 80px;
+            }
+        }
+    }
+    &-delete {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+
+        width: 20px;
+        height: 20px;
+        background: url("@{base-url}/cart/img/close@2x.png") no-repeat;
+        .background-size(cover);
+    }
+    &__min-sum{
+        color: #009712;
+        font-size: 18px;
+        text-align: center;
+        margin: 30px 0 20px;
+
+    }
 }

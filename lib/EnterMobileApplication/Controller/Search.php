@@ -153,27 +153,15 @@ class Search {
             $curl->prepare($ratingListQuery);
         }
 
-        // запрос списка видео для товаров
-        //$descriptionListQuery = new Query\Product\GetDescriptionListByUiList($searchResult->productIds);
-        //$curl->prepare($descriptionListQuery);
-
         $curl->execute();
 
         // список товаров
-        $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery]) : [];
-
-        // медиа для товаров
-        if ($descriptionListQuery) {
-            $productRepository->setDescriptionForListByListQuery($productsById, [$descriptionListQuery]);
-        }
+        $productsById = $productListQuery ? $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$descriptionListQuery]) : [];
 
         // список рейтингов товаров
         if ($ratingListQuery) {
             $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
         }
-
-        // список медиа для товаров
-        //$productRepository->setMediaForObjectListByQuery($productsById, $descriptionListQuery);
 
         // ответ
         $response = [

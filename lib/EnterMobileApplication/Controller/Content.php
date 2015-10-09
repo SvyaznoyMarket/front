@@ -41,27 +41,29 @@ namespace EnterMobileApplication\Controller {
 
             $contentToken = $request->query['contentId'];
             if (!$contentToken) {
-                throw new \Exception('Не передан contentToken', Http\Response::STATUS_BAD_REQUEST);
+                throw new \Exception('Не передан contentId', Http\Response::STATUS_BAD_REQUEST);
             }
 
-            $contentItemQuery = new Query\Content\GetItemByToken($contentToken);
+            $contentItemQuery = new Query\Content\GetItemByToken($contentToken, $region->id, ['app-mobile']);
             $curl->prepare($contentItemQuery);
 
             $curl->execute();
 
-            if ($contentItemQuery->getError() && $contentItemQuery->getError()->getCode() === 404)
+            $contentPage = new \EnterModel\Content\Page($contentItemQuery->getResult());
+
+            if (!$contentPage->contentHtml || !$contentPage->isAvailableByDirectLink)
                 return (new \EnterMobileApplication\Controller\Error\NotFound())->execute($request, sprintf('Контент @%s не найден', $contentToken));
 
-            $item = $contentItemQuery->getResult();
+            $contentPage->contentHtml = '<script src="//yandex.st/jquery/1.8.3/jquery.js" type="text/javascript"></script>' . "\n" . $contentPage->contentHtml;
 
             // ответ
             $response = new Response();
-            $response->content = $item['content'];
+            $response->content = $contentPage->contentHtml;
             // TODO: вынести в EnterRepository\Content
             $response->content = $this->processContentLinks($response->content, $curl, $region->id);
             $response->content = $this->removeExternalScripts($response->content);
             $response->content = preg_replace('/<iframe(?:\s[^>]*)?>.*?<\/iframe>/is', '', $response->content); // https://jira.enter.ru/browse/TERMINALS-862
-            $response->title = isset($item['title']) ? $item['title'] : null;
+            $response->title = $contentPage->title ? $contentPage->title : null;
 
             return new Http\JsonResponse($response);
         }
@@ -78,8 +80,11 @@ namespace EnterMobileApplication\Controller {
                         $curl->prepare($matches[$key]['query']);
                     }
                     else if (0 === strpos($path, '/product/')) {
-                        $matches[$key]['query'] = new Query\Product\GetItemByToken($contentRepository->getTokenByPath($path), $regionId, ['model' => false, 'related' => false]);
+                        $token = $contentRepository->getTokenByPath($path);
+                        $matches[$key]['query'] = new Query\Product\GetListByTokenList([$token], $regionId, ['model' => false, 'related' => false]);
+                        $matches[$key]['productDescriptionListQuery'] = new Query\Product\GetDescriptionListByTokenList([$token]);
                         $curl->prepare($matches[$key]['query']);
+                        $curl->prepare($matches[$key]['productDescriptionListQuery']);
                     }
                 }
 
@@ -100,7 +105,7 @@ namespace EnterMobileApplication\Controller {
                                 $newAttributes = ' data-type="ProductCatalog/Category" data-category-id="' . $this->getTemplateHelper()->escape($category->id) . '"';
                         }
                         else if (0 === strpos($path, '/product/')) {
-                            $product = $productRepository->getObjectByQuery($match['query']);
+                            $product = $productRepository->getObjectByQueryList([$match['query']], [$match['productDescriptionListQuery']]);
                             if (null !== $product)
                                 $newAttributes = ' data-type="ProductCard" data-product-id="' . $this->getTemplateHelper()->escape($product->id) . '"';
                         }

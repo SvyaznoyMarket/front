@@ -3,15 +3,16 @@
 namespace EnterMobileApplication\Controller\Cart;
 
 use Enter\Http;
-use EnterAggregator\CurlTrait;
-use EnterAggregator\LoggerTrait;
 use EnterMobileApplication\ConfigTrait;
+use EnterAggregator\CurlTrait;
 use EnterAggregator\SessionTrait;
+use EnterAggregator\AbTestTrait;
+use EnterAggregator\LoggerTrait;
 use EnterMobileApplication\Controller;
 use EnterQuery as Query;
 
 class SetProductList {
-    use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait;
+    use ConfigTrait, CurlTrait, SessionTrait, AbTestTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request
@@ -65,17 +66,19 @@ class SetProductList {
 
             if ($productsById) {
                 $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id, ['model' => false, 'related' => false]);
+                $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList(array_keys($productsById));
                 $curl->prepare($productListQuery);
+                $curl->prepare($productDescriptionListQuery);
                 $curl->execute();
 
-                $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
+                $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery], [$productDescriptionListQuery]);
             }
 
             foreach ($cartProducts as $cartProduct) {
-                $cartProduct->ui = $productsById[$cartProduct->id]->ui;
-            }
+                if (!isset($productsById[$cartProduct->id])) {
+                    continue;
+                }
 
-            foreach ($cartProducts as $cartProduct) {
                 $curl->prepare(
                     new Query\Cart\SetQuantityForProductItem(
                         $productsById[$cartProduct->id]->ui,
@@ -97,14 +100,18 @@ class SetProductList {
             $cart = $cartRepository->getObjectByQuery($cartItemQuery);
 
             $cartProductListQuery = null;
+            $cartProductDescriptionListQuery = null;
             if ($cart->product) {
-                $cartProductListQuery = new \EnterQuery\Product\GetListByUiList(array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), $region->id, ['model' => false, 'related' => false]);
+                $productUis = array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product);
+                $cartProductListQuery = new \EnterQuery\Product\GetListByUiList($productUis, $region->id, ['model' => false, 'related' => false]);
+                $cartProductDescriptionListQuery = new Query\Product\GetDescriptionListByUiList($productUis);
                 $curl->prepare($cartProductListQuery);
+                $curl->prepare($cartProductDescriptionListQuery);
             }
 
             $curl->execute();
 
-            $cartRepository->updateObjectByQuery($cart, null, $cartProductListQuery);
+            $cartRepository->updateObjectByQuery($cart, null, $cartProductListQuery, $cartProductDescriptionListQuery);
 
             $cartPriceItemQuery = new \EnterQuery\Cart\Price\GetItem($cart, $region->id);
             $curl->prepare($cartPriceItemQuery);

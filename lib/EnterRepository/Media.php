@@ -39,4 +39,50 @@ class Media {
 
         return new Model\Media\Source();
     }
+
+    /**
+     * @param Model\MediaList $mediaList
+     * @param array $mediaTypes Доступные значения: 'photos'
+     * @param array $mediaTags
+     * @param array $sourceTypes
+     * @return array
+     */
+    public function getMediaListResponse(Model\MediaList $mediaList, array $mediaTypes = ['photos'], array $mediaTags = [], array $sourceTypes = []) {
+        $result = [];
+
+        if (in_array('photos', $mediaTypes)) {
+            $result['photos'] = array_values(array_filter(array_map(function(Model\Media $media) use($mediaTags, $sourceTypes) {
+                if (!array_intersect($media->tags, $mediaTags)) {
+                    return null;
+                }
+
+                $result = [
+                    'uid' => $media->uid,
+                    'contentType' => $media->contentType,
+                    'type' => $media->type,
+                    'tags' => $media->tags,
+                    'sources' => array_values(array_filter(array_map(function(Model\Media\ImageSource $source) use($sourceTypes) {
+                        if (!in_array($source->type, $sourceTypes, true)) {
+                            return null;
+                        }
+
+                        return [
+                            'width' => $source->width,
+                            'height' => $source->height,
+                            'type' => $source->type,
+                            'url' => $source->url,
+                        ];
+                    }, $media->sources))),
+                ];
+
+                if ($result['sources']) {
+                    return $result;
+                } else {
+                    return null;
+                }
+            }, $mediaList->photos)));
+        }
+
+        return $result;
+    }
 }

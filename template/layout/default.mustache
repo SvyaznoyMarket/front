@@ -49,21 +49,24 @@
 
 <body{{#bodyClass}} class="{{bodyClass}}"{{/bodyClass}} data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="{{&dataUser}}" data-cart="{{&dataCart}}" data-widget="{{&dataWidget}}">
     {{>partial/counters}}
+
+    {{#deliveryBanner}}
+        {{>partial/delivery-banner}}
+    {{/deliveryBanner}}
+
     {{>partial/menu}}
-    <div class="snap-content" id="wrapper">
+    <div class="menu-overlay js-fader"></div>
+
+    <div class="page" id="wrapper">
         {{>partial/header}}
-        <div class="wrapper">
-            <div class="fader js-fader"></div>
 
-            {{#content}}
-                {{>content}}
-            {{/content}}
+        {{#content}}
+            {{>content}}
+        {{/content}}
 
+        {{>partial/template}}
 
-            {{>partial/template}}
-
-            {{>partial/footer}}
-        </div><!--/ Оболочка -->
+        {{>partial/footer}}
     </div>
 
     {{>partial/search.suggest}}

@@ -18,6 +18,7 @@
 
         'underscore'         : 'empty:',
         'mustache'           : 'vendor/mustache-0.8.2',
+        'hammer'             : 'vendor/hammer-2.0.4',
         'modernizr'          : 'vendor/modernizr.custom',
         'boilerplate.helper' : 'vendor/boilerplate.helper-4.1.0',
 

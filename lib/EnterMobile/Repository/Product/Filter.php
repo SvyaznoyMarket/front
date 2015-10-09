@@ -22,7 +22,7 @@ class Filter extends BaseRepository {
             if (
                 (0 === strpos($key, 'f-'))
                 || (0 === strpos($key, 'tag-'))
-                || (in_array($key, ['shop', 'category', 'slice']))
+                || (in_array($key, ['shop', 'category', 'slice', 'barcode']))
             ) {
                 if (null === $value) continue;
 
@@ -159,7 +159,7 @@ class Filter extends BaseRepository {
                 }
 
                 $filterData['tag']['value'][] = $value;
-            } else if (in_array($key, ['category', 'shop', 'q'])) {
+            } else if (in_array($key, ['category', 'shop', 'q', 'barcode'])) {
                 if (!isset($filterData[$key])) {
                     $filterData[$key] = [
                         'value' => [],

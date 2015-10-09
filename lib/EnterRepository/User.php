@@ -13,10 +13,11 @@ class User {
 
     /**
      * @param Query $query
-     * @throws \Exception
+     * @param bool $required
      * @return Model\User|null
+     * @throws \Exception
      */
-    public function getObjectByQuery(Query $query) {
+    public function getObjectByQuery(Query $query, $required = true) {
         $user = null;
 
         try {
@@ -24,10 +25,12 @@ class User {
                 $user = new Model\User($item);
             }
         } catch (\Exception $e) {
-            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
+            if ($required) {
+                $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
 
-            if (402 == $e->getCode()) {
-                throw new \Exception('Пользователь не авторизован', 401);
+                if (402 == $e->getCode()) {
+                    throw new \Exception('Пользователь не авторизован', 401);
+                }
             }
         }
 

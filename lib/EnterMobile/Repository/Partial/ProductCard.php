@@ -35,6 +35,7 @@ class ProductCard {
         $card = new Partial\ProductCard();
 
         $card->name = $product->name;
+        $card->namePrefix = $product->namePrefix;
 
         if ($product->sender) {
             $card->url = $product->link . '?' . http_build_query($product->sender);

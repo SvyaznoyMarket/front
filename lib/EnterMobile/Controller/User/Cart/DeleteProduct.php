@@ -5,9 +5,10 @@ namespace EnterMobile\Controller\User\Cart;
 use Enter\Http;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
-use EnterAggregator\LoggerTrait;
 use EnterAggregator\SessionTrait;
 use EnterAggregator\RouterTrait;
+use EnterAggregator\AbTestTrait;
+use EnterAggregator\LoggerTrait;
 use EnterQuery as Query;
 use EnterMobile\Model;
 use EnterMobile\Routing;
@@ -15,7 +16,7 @@ use EnterMobile\Repository;
 use EnterMobile\Model\Page\User\Cart\SetProduct as Page;
 
 class DeleteProduct {
-    use ConfigTrait, LoggerTrait, CurlTrait, SessionTrait, RouterTrait;
+    use ConfigTrait, CurlTrait, SessionTrait, RouterTrait, AbTestTrait, LoggerTrait;
 
     /**
      * @param Http\Request $request
@@ -41,11 +42,14 @@ class DeleteProduct {
         // добавление товара в корзину
         $cartRepository->setProductForObject($cart, $cartProduct);
 
-        // ид региона
+        // регион
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
+        $region = $regionId ? new \EnterModel\Region(['id' => $regionId]) : null;
 
-        $productItemQuery = new Query\Product\GetItemById($cartProduct->id, $regionId);
-        $curl->prepare($productItemQuery);
+        $cartProductListQuery = new Query\Product\GetListByIdList([$cartProduct->id], $regionId);
+        $cartProductDescriptionListQuery = new Query\Product\GetDescriptionListByIdList([$cartProduct->id]);
+        $curl->prepare($cartProductListQuery);
+        $curl->prepare($cartProductDescriptionListQuery);
 
         // запрос пользователя
         $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
@@ -93,15 +97,8 @@ class DeleteProduct {
         // удалить разбиение заказа
         $session->remove($config->order->splitSessionKey);
 
-        // если корзина пустая
-        if (!count($cart)) {
-            return new Http\JsonResponse([
-                'redirect' => $this->getRouter()->getUrlByRoute(new Routing\Cart\Index()),
-            ]);
-        }
-
         // товар
-        $product = (new \EnterRepository\Product())->getObjectByQuery($productItemQuery);
+        $product = (new \EnterRepository\Product())->getObjectByQueryList([$cartProductListQuery], [$cartProductDescriptionListQuery]);
         if (!$product) {
             $product = new \EnterModel\Product();
             $product->id = $cartProduct->id;
@@ -109,20 +106,28 @@ class DeleteProduct {
             throw new \Exception(sprintf('Товар #%s не найден', $cartProduct->id));
         }
 
-        // товары
-        if ($productListQuery) {
-            $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
-        }
-
-        if ($descriptionListQuery) {
-            (new \EnterRepository\Product())->setDescriptionForListByListQuery(
-                $productsById,
-                [$descriptionListQuery]
-            );
-        }
-
         // пользователь
         $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+
+        // серверная корзина
+        if ($user && $this->getAbTest()->isCoreCartEnabled()) {
+            $removeQuery = new Query\Cart\DeleteProductItem($product->ui, $user->ui);
+            $curl->prepare($removeQuery);
+
+            $curl->execute(null, 1);
+        }
+
+        // товары
+        if ($productListQuery) {
+            $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery], [$descriptionListQuery]);
+        }
+
+        // если корзина пустая
+        if (!count($cart)) {
+            return new Http\JsonResponse([
+                'redirect' => $this->getRouter()->getUrlByRoute(new Routing\Cart\Index()),
+            ]);
+        }
 
         $page = new Page();
         // кнопка купить
@@ -137,7 +142,7 @@ class DeleteProduct {
         if ($widget = (new Repository\Partial\UserBlock())->getObject($cart, $user)) {
             $page->widgets['.' . $widget->widgetId] = $widget;
         }
-        if ($widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById))) {
+        if ($widget = (new Repository\Partial\Cart())->getObject($cart, array_values($productsById), $region)) {
             $page->widgets['.' . $widget->widgetId] = $widget;
         }
 

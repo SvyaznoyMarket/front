@@ -32,7 +32,9 @@ class HandleError {
                 case E_USER_DEPRECATED:
                 case E_USER_WARNING:
                 case E_USER_NOTICE:
-                    $error = new \ErrorException($message, 0, $level, $file, $line);
+                    if (0 !== error_reporting()) {
+                        $error = new \ErrorException($message, 0, $level, $file, $line);
+                    }
 
                     return true;
             }

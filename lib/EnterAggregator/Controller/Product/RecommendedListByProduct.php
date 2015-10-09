@@ -38,12 +38,15 @@ namespace EnterAggregator\Controller\Product {
 
             // запрос товара
             $productListQuery = new Query\Product\GetListByIdList($request->productIds, $region->id, ['model' => false, 'related' => false]);
+            $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList($request->productIds);
+
             $curl->prepare($productListQuery);
+            $curl->prepare($productDescriptionListQuery);
 
             $curl->execute();
 
             // товары
-            $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery]);
+            $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$productDescriptionListQuery]);
 
             // товар
             /** @var Model\Product|null $product */
@@ -120,7 +123,7 @@ namespace EnterAggregator\Controller\Product {
             $descriptionListQueries = [];
             $productListQueries = [];
             foreach (array_chunk($recommendedIds, $config->curl->queryChunkSize) as $idsInChunk) {
-                $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id, ['model' => false, 'related' => false]);
+                $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id, ['model' => true, 'related' => false]);
                 $productListQuery->setTimeout(1.5 * $config->coreService->timeout);
                 $curl->prepare($productListQuery);
                 $productListQueries[] = $productListQuery;
@@ -140,10 +143,14 @@ namespace EnterAggregator\Controller\Product {
                 $descriptionListQueries[] = $descriptionListQuery;
             }
 
+            // запрос рейтинга для товаров
+            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList($recommendedIds);
+            $curl->prepare($ratingListQuery);
+
             $curl->execute();
 
             // товары
-            $recommendedProductsById = $productRepository->getIndexedObjectListByQueryList($productListQueries);
+            $recommendedProductsById = $productRepository->getIndexedObjectListByQueryList($productListQueries, $descriptionListQueries);
 
             // товары по ui
             $productsByUi = [];
@@ -153,7 +160,9 @@ namespace EnterAggregator\Controller\Product {
                 }
             });
 
-            $productRepository->setDescriptionForListByListQuery($productsByUi, $descriptionListQueries);
+            if (isset($ratingListQuery)) {
+                $productRepository->setRatingForObjectListByQuery($recommendedProductsById, $ratingListQuery);
+            }
 
             foreach ($alsoBoughtIdList as $i => $alsoBoughtId) {
                 // SITE-2818 из списка товаров "с этим товаром также покупают" убираем товары, которые есть только в магазинах
@@ -210,12 +219,20 @@ namespace EnterAggregator\Controller\Product {
                 }
             }
 
+            if ($request->config->removeUnavailable) {
+                foreach ($recommendedProductsById as $id => $recommendedProduct) {
+                    if (!$recommendedProduct->isBuyable) {
+                        unset($recommendedProductsById[$id]);
+                    }
+                }
+            }
+
             // сортировка по наличию
-            /*
-            $productRepository->sortByStockStatus($alsoBoughtIdList, $recommendedProductsById);
-            $productRepository->sortByStockStatus($similarIdList, $recommendedProductsById);
-            $productRepository->sortByStockStatus($alsoViewedIdList, $recommendedProductsById);
-            */
+            if ($request->config->sortByStockState) {
+                $productRepository->sortByStockStatus($alsoBoughtIdList, $recommendedProductsById);
+                $productRepository->sortByStockStatus($similarIdList, $recommendedProductsById);
+                $productRepository->sortByStockStatus($alsoViewedIdList, $recommendedProductsById);
+            }
 
             // ответ
             $response->productsById = $productsById;
@@ -288,5 +305,17 @@ namespace EnterAggregator\Controller\Product\RecommendedListByProduct\Request {
          * @var bool
          */
         public $alsoViewed = false;
+        /**
+         * Сортировать по наличию на складе
+         *
+         * @var bool
+         */
+        public $sortByStockState;
+        /**
+         * Удалять недоступные
+         *
+         * @var bool
+         */
+        public $removeUnavailable;
     }
 }

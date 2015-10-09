@@ -72,7 +72,7 @@ class RecommendedList {
 
             $productCard = $productCardRepository->getObject(
                 $productModel,
-                $cartProductButtonRepository->getObject($productModel),
+                $cartProductButtonRepository->getObject($productModel, null, true, true, ['position' => 'listing']),
                 null,
                 'product_60'
             );
@@ -144,7 +144,7 @@ class RecommendedList {
                 ]
             ];
 
-            $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel));
+            $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel, null, true, true, ['position' => 'listing']));
             $productCard->dataGa = $templateHelper->json([
                 [
                     'send',

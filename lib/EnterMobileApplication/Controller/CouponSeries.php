@@ -9,10 +9,10 @@ namespace EnterMobileApplication\Controller {
     use EnterAggregator\DebugContainerTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
-    use EnterMobileApplication\Controller\CouponList\Response;
+    use EnterMobileApplication\Controller\CouponSeries\Response;
 
     class CouponSeries {
-        use ConfigTrait, LoggerTrait, CurlTrait, DebugContainerTrait;
+        use ConfigTrait, LoggerTrait, CurlTrait, DebugContainerTrait, ProductListingTrait;
 
         /**
          * @param Http\Request $request
@@ -28,7 +28,16 @@ namespace EnterMobileApplication\Controller {
             $response = new Response();
 
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
-            $couponSeriesId = is_scalar($request->query['id']) ? (string)$request->query['id'] : null;
+            $seriesId = is_scalar($request->query['id']) ? (string)$request->query['id'] : null;
+            if (!$seriesId) {
+                throw new \Exception('Не указан параметр id', Http\Response::STATUS_BAD_REQUEST);
+            }
+
+            // ид региона
+            $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
+            if (!$regionId) {
+                throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
+            }
 
             // запрос пользователя
             $userItemQuery = null;
@@ -41,14 +50,14 @@ namespace EnterMobileApplication\Controller {
             }
 
             // получение пользователя
-            $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery) : null;
+            $user = $userItemQuery ? (new \EnterRepository\User())->getObjectByQuery($userItemQuery, false) : null;
             if ($user) {
                 $response->token = $token;
             }
 
             // список купонов
             $couponListQuery = null;
-            if ($token) {
+            if ($user && $token) {
                 $couponListQuery = new Query\Coupon\GetListByUserToken($token);
                 $couponListQuery->setTimeout(5 * $config->coreService->timeout);
                 $curl->prepare($couponListQuery);
@@ -60,15 +69,9 @@ namespace EnterMobileApplication\Controller {
             $curl->prepare($seriesLimitListQuery);
 
             // список серий купонов
-            if ($couponSeriesId) {
-                $seriesListQuery = new Query\Coupon\Series\GetListByUi($couponSeriesId);
-                $seriesListQuery->setTimeout(5 * $config->coreService->timeout);
-                $curl->prepare($seriesListQuery);
-            } else {
-                $seriesListQuery = new Query\Coupon\Series\GetList(null);
-                $seriesListQuery->setTimeout(5 * $config->coreService->timeout);
-                $curl->prepare($seriesListQuery);
-            }
+            $seriesListQuery = new Query\Coupon\Series\GetListByUi($seriesId);
+            $seriesListQuery->setTimeout(5 * $config->coreService->timeout);
+            $curl->prepare($seriesListQuery);
 
             $curl->execute();
 
@@ -82,7 +85,69 @@ namespace EnterMobileApplication\Controller {
             }
 
             $response->couponSeries = $couponSeriesRepository->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery);
-            $response->couponSeries = $couponSeriesRepository->filterObjectList($response->couponSeries, $usedSeriesIds, $user, $couponSeriesId);
+            $response->couponSeries = $couponSeriesRepository->filterObjectList($response->couponSeries, $usedSeriesIds, $user, $seriesId);
+            $response->couponSeries = reset($response->couponSeries) ?: null;
+
+            if ($response->couponSeries) {
+                // срезы для серий купонов
+                $sliceTokensBySeriesId = [];
+                if ($response->couponSeries->productSegment->url && preg_match('/\/slices\/([\w\d-_]+)/', $response->couponSeries->productSegment->url, $matches)) {
+                    if (!empty($matches[1])) {
+                        $sliceTokensBySeriesId[$response->couponSeries->id] = $matches[1];
+                    }
+                }
+                try {
+                    if ($sliceTokensBySeriesId) {
+                        $sliceListQuery = new Query\Product\Slice\GetListByTokenList(array_values($sliceTokensBySeriesId));
+                        $curl->prepare($sliceListQuery);
+
+                        $curl->execute();
+
+                        /** @var Model\Product\Slice[] $slicesByToken */
+                        $slicesByToken = [];
+                        foreach ($sliceListQuery->getResult() as $item) {
+                            $slice = new Model\Product\Slice($item);
+                            $slicesByToken[$slice->token] = $slice;
+                        }
+
+                        $sliceToken = @$sliceTokensBySeriesId[$response->couponSeries->id] ?: null;
+                        $response->couponSeries->slice = @$slicesByToken[$sliceToken] ?: null;
+                    }
+                } catch (\Exception $e) {
+                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'tag' => ['critical']]);
+                }
+
+                // товары из среза
+                if ($response->couponSeries->slice) {
+                    try {
+                        $filterRepository = new \EnterMobile\Repository\Product\Filter(); // FIXME!!!
+                        // фильтры в настройках среза
+                        $baseRequestFilters = $filterRepository->getRequestObjectListByHttpRequest(new Http\Request($response->couponSeries->slice->filters));
+
+                        // контроллер
+                        $controller = new \EnterAggregator\Controller\ProductList();
+                        // запрос для контроллера
+                        $controllerRequest = $controller->createRequest();
+                        $controllerRequest->config->mainMenu = false;
+                        $controllerRequest->config->parentCategory = false;
+                        $controllerRequest->config->branchCategory = false;
+                        $controllerRequest->regionId = $regionId;
+                        $controllerRequest->categoryCriteria = []; // критерий получения категории товара
+                        $controllerRequest->pageNum = 1;
+                        $controllerRequest->limit = 24;
+                        $controllerRequest->filterRepository = $filterRepository;
+                        $controllerRequest->baseRequestFilters = $baseRequestFilters;
+                        $controllerRequest->requestFilters = $baseRequestFilters;
+                        $controllerRequest->userToken = $token;
+                        // ответ от контроллера
+                        $controllerResponse = $controller->execute($controllerRequest);
+
+                        $response->couponSeries->products = $this->getProductList($controllerResponse->products);
+                    } catch (\Exception $e) {
+                        $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
+                    }
+                }
+            }
 
             if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
 
@@ -91,13 +156,13 @@ namespace EnterMobileApplication\Controller {
     }
 }
 
-namespace EnterMobileApplication\Controller\CouponList {
+namespace EnterMobileApplication\Controller\CouponSeries {
     use EnterModel as Model;
 
     class Response {
         /** @var string|null */
         public $token;
-        /** @var Model\Coupon\Series[] */
-        public $couponSeries = [];
+        /** @var Model\Coupon\Series|null */
+        public $couponSeries;
     }
 }

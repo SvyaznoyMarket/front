@@ -15,6 +15,8 @@ class Partner {
     public $name;
     /** @var string */
     public $offerUrl;
+    /** @var string */
+    public $offerContentId;
 
     /**
      * @param array $data
@@ -23,6 +25,9 @@ class Partner {
         if (array_key_exists('type', $data)) $this->type = (int)$data['type'];
         if (array_key_exists('id', $data)) $this->ui = (string)$data['id'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
-        if (array_key_exists('offer', $data)) $this->offerUrl = (string)$data['offer'];
+        if (!empty($data['offer'])) {
+            $this->offerUrl = (string)$data['offer'];
+            $this->offerContentId = preg_match('/([^\/]+)\/?$/s', $data['offer'], $matches) ? (string)$matches[1] : ''; // TODO после решения CORE-3134 использовать соответствующее поле
+        }
     }
 }

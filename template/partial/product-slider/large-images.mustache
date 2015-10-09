@@ -1,0 +1,56 @@
+<div class="product-card-lst js-widget {{widgetId}}" data-template-selector="#tpl-product-slider-large">
+    {{#productCards}}
+        <div class="product-card-lst__i">
+            <a href="{{url}}" class="product-card-lst__img">
+                <img class="image" src="{{image}}" />
+            </a>
+
+            <div class="product-card-lst__info">
+                <a href="{{url}}" class="">
+                    <div class="product-card-lst__categ">{{namePrefix}}</div>
+                    <div class="product-card-lst__name ellipsis"><div>{{&name}}</div></div>
+                </a>
+
+                <div class="product-card-lst__rating rating rating--product">
+                    {{#rating}}
+                            {{>partial/rating/star-list}}
+                    {{/rating}}
+                </div>
+
+
+                {{#stateLabel}}
+                    <div class="product-card-lst__status {{cssClassName}}">
+                        <span class="product-card-lst__status-inn">{{name}}</span>
+                    </div>
+                {{/stateLabel}}
+
+                {{^stateLabel}}
+                    <div class="product-card-lst__status">&nbsp;</div>
+                {{/stateLabel}}
+
+                <!--<div class="product-card-lst__status self">-->
+                    <!--<span class="product-card-lst__status-inn">Самовывоз сегодня</span>-->
+                <!--</div>-->
+
+                <div class="product-card-lst__buying">
+                    <div class="product-card-lst__price">
+                        {{#shownOldPrice}}
+                            <span class="old-price">
+                                <span class="line-through">{{shownOldPrice}}</span> <span class="rubl">p</span>
+                            </span>
+                        {{/shownOldPrice}}
+                        <div class="price">{{shownPrice}} <span class="rubl">p</span></div>
+                    </div>
+                    <div class="product-card-lst__buy">
+                        {{#cartButton}}
+                            {{>partial/cart/button-new}}
+                        {{/cartButton}}
+                    </div>
+                    <!--<div class="product-card-lst__buy">-->
+                        <!--<a class="btn-buy btn-buy--listing watch-only">Посмотреть</a>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    {{/productCards}}
+</div>

@@ -217,7 +217,7 @@ class Cart {
         }
 
         if ($cartProductListQuery) {
-            $coreCartProducts = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$cartProductListQuery]);
+            $coreCartProducts = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$cartProductListQuery], [$cartProductDescriptionListQuery]);
             $coreCartProductUis = [];
             foreach ($coreCartProducts as $coreCartProduct) {
                 $coreCartProductUis[] = $coreCartProduct->ui;
@@ -233,10 +233,6 @@ class Cart {
                 if (!in_array($cartProduct->ui, $coreCartProductUis, true)) {
                     unset($cart->product[$key]);
                 }
-            }
-
-            if ($cartProductDescriptionListQuery) {
-                (new \EnterRepository\Product())->setDescriptionForListByListQuery($coreCartProducts, [$cartProductDescriptionListQuery]);
             }
         }
     }
@@ -439,5 +435,21 @@ class Cart {
         }
 
         return $dump;
+    }
+
+    /**
+     * Возвращает сумму всех товаров в заказах
+     * @param Model\Cart\Split $split
+     * @return int
+     */
+    public function getSplitProductsSum(\EnterModel\Cart\Split $split) {
+        $sum = 0;
+        foreach ($split->orders as $order) {
+            foreach ($order->products as $product) {
+                $sum += $product->sum;
+            }
+        }
+
+        return $sum;
     }
 }

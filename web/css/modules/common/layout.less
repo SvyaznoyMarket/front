@@ -1,69 +1,43 @@
 /* ==========================================================================
    Layout - default styles
    ========================================================================== */
-html {
-    height: 100%;
-    &.no-scroll {
-        overflow: hidden;
-        overflow-x: hidden;
-        overflow-y: hidden;
-
-        height: 100%;
-        max-height: 100%;
-        body {
-            overflow: hidden;
-            overflow-x: hidden;
-            overflow-y: hidden;
-
-            height: 100%;
-            max-height: 100%;
-        }
-    }
-}
-
+html ,
 body {
-    height: 100%;
-}
-.body-footerless{
-    height: 100%;
-
-    .wrapper{
-        height: 100%;
-        position: relative;
-    }
-    .snap-content{
-        height: 100%;
-    }
-}
-.wrapper {
-
     width: 100%;
     height: 100%;
 
-    margin: 0 auto;
-    overflow: scroll;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     -webkit-overflow-scrolling: touch;
+}
 
+.wrapper {
+    -webkit-overflow-scrolling: touch;
     &-smpl {
+        overflow: visible;
 
+        height: auto;
         .content {
-            padding-bottom: 27px;
+            padding-bottom: 0;
+            max-width: 640px;
         }
     }
-// fix scrolling bug on android
- /*   & > * {
-       *//*-webkit-transform: translateZ(0px);*//*
-        -webkit-transform: translate3d(0,0,0);
-    }*/
 }
-.noIOS{
-    height: auto;
-    min-height: 100%;
 
-    .wrapper{
-        height: auto;
-        min-height: 100%;
-        overflow: visible;
+.page {
+    position: relative;
+    height: 100%;
+
+    -webkit-transition: -webkit-transform .2s cubic-bezier(.2,.3,.25,.9);
+       -moz-transition:    -moz-transform .2s cubic-bezier(.2,.3,.25,.9);
+         -o-transition:      -o-transform .2s cubic-bezier(.2,.3,.25,.9);
+            transition:         transform .2s cubic-bezier(.2,.3,.25,.9);
+
+    background: @white;
+    &--index{
+        .content{
+            max-width: 100%;
+        }
     }
 }
 .wrapper-shops{
@@ -78,14 +52,6 @@ body {
 }
 /* Middle
 -----------------------------------------------------------------------------*/
-.content {
-	margin: 0;
-	padding: 55px 0 215px;
-
-	&-main {
-		background: @black;
-	}
-}
 
 .pageTitle {
     font-size: 19px;
@@ -97,29 +63,10 @@ body {
 
     border-bottom: 1px solid #b1b1b1;
 }
-
-.contentBox940 {
-    max-width: 940px;
-    margin: 0 auto;
-    padding: 0 10px;
-}
-
-.contentBox960 {
+.content{
     max-width: 960px;
     margin: 0 auto;
-}
-
-.contentBox640 {
-    max-width: 620px;
-    margin: 0 auto;
-}
-
-.viewportSizeWrapper {
-    overflow: hidden;
-
-    width: 100%;
-}
-/* AB-test main page  */
-.body-main{
-    background-color: @black;
+    &&--root, &.private, &.product{
+        max-width: 100%;
+    }
 }

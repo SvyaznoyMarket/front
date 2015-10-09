@@ -47,11 +47,6 @@ class Search {
      * @return Model\Search\AutocompleteResult
      */
     public function getAutocompleteObjectByQuery(Query $query) {
-        $item = $query->getResult();
-        if ($item) {
-            return new Model\Search\AutocompleteResult($item);
-        }
-
-        return null;
+        return new Model\Search\AutocompleteResult($query->getResult());
     }
 }

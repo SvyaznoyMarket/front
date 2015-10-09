@@ -1,4 +1,5 @@
 <?php
+
 namespace EnterModel\Cart\Split\Order;
 
 class Point {
@@ -8,6 +9,8 @@ class Point {
     public $groupToken;
     /** @var string|null */
     public $nearestDay;
+    /** @var Point\DateInterval|null */
+    public $dateInterval;
     /** @var int */
     public $cost;
 
@@ -18,6 +21,9 @@ class Point {
         $this->id = $data['id'] ? (string)$data['id'] : null;
         $this->nearestDay = $data['nearest_day'] ? (string)$data['nearest_day'] : null;
         $this->cost = $data['cost'] ? (int)$data['cost'] : 0;
+        if (isset($data['date_interval']['from']) || isset($data['date_interval']['to'])) {
+            $this->dateInterval = new Point\DateInterval($data['date_interval']);
+        }
     }
 
     /**

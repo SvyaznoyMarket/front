@@ -1,0 +1,198 @@
+<div class="content product">
+    <div class="product__wrap">
+        {{! окно большого изображения }}
+        <div class="contentBox960 fullImgCnt js-fullimg-wrap">
+            <div class="clsr1 js-fullimg-close"></div>
+
+            <div class="fullImgCnt_img_load js-fullimg-img-loader">
+                {{#product.mainPhoto}}
+                    <img class="fullImgCnt_img js-fullimg-img" src="{{product.mainPhoto.originalUrl}}" alt="{{&product.name}}" />
+                {{/product.mainPhoto}}
+            </div>
+            <div class="fullImgCnt_thmb js-fullimg-thmb-wrap">
+                <ul class="fullImgCnt_thmb_w js-fullimg-thmb">
+                    {{#product.photos}}
+                        <li class="fullImgCnt_thmb_i js-fullimg-thmb-i">
+                        <span class="fullImgCnt_thmb_i_w">
+                            <img class="fullImgCnt_thmb_img js-fullimg-thmb-img" src="{{previewUrl}}" data-fullimg="{{originalUrl}}" data-middleimg="{{url}}" />
+                        </span>
+                        </li>
+                    {{/product.photos}}
+                </ul>
+
+                <div class="fullImgCnt_thmb_btn fullImgCnt_thmb_btn-l js-fullimg-thmb-btn-l fullImgCnt_thmb_btn-disbl"></div>
+                <div class="fullImgCnt_thmb_btn fullImgCnt_thmb_btn-r js-fullimg-thmb-btn-r"></div>
+            </div>
+        </div>
+        {{! END окно большого изображения }}
+
+        {{! виджет поделиться и в избранное }}
+        <div class="product-widget">
+            <div class="product-widget__i favorit"></div>
+            <div class="product-widget__i share"></div>
+        </div>
+        {{! END виджет поделиться и в избранное }}
+
+        {{! Наименование }}
+        <div class="product-name">
+            <div class="product-name__categ">Планшеты</div>
+            <div class="product-name__tl">Планшетный компьютер ASUS TF103CG-1A056A 10,1" 3G 8 ГБ черный</div>
+            <div class="product-name__art">Артикул: 466-8336</div>
+        </div>
+        {{! END Наименование }}
+
+        {{! слайдер фото}}
+        <div class="product-img">
+            <div class="product-img__shield"><img src="/css/modules/product-card-new/img/shield.png"></div>
+            <div class="product-img__slider">
+                <div class="product-img__slider-inn js-detailSlider">
+                    {{#product.photos}}
+                       <div class="slide-item">
+                            <div class="slider_lst_img__container"><img class="slider_lst_img js-slider-list-img js-fullimg-open" src="{{url}}" alt="{{&name}}"/></div>
+                       </div>
+                    {{/product.photos}}
+                </div>
+                <ul class="slider_pag"></ul>
+            </div>
+        </div>
+        {{! END слайдер фото}}
+
+        <div class="product__info">
+            <div class="product__buy-block">
+                <div class="slot__info">Цена базового комплекта</div>
+                <div class="product-price">
+                    <div class="product-price__old">
+                        <span class="line-through">422 000</span>
+                        <span class="rubl">p</span>
+                    </div>
+                    <div class="product-price__curr">
+                        419 000 <span class="rubl">p</span>
+                    </div>
+                </div>
+                <div class="product__buy">
+                    <div class="btn btn-buy btn-buy--slot">Отправить<br>заявку</div>
+                </div>
+            </div>
+            <div class="product-delivery__info">
+
+                <div class="product-delivery__row">
+                    <span class="product-delivery__type">Доставка</span>
+                    <span class="product-delivery__txt">Срок доставки базового<br>
+комплекта 3 дня</span>
+                </div>
+            </div>
+
+           <div class="slot__partner">
+               Продавец - партнер: ООО МЕГАЭЛАТОН
+           </div>
+            <div class="slot-info">
+                Закажите обратный звонок и уточните:
+                <ul class="slot-info__lst">
+                    <li>— Состав мебели и техники;</li>
+                    <li>— Условия доставки, сборки и оплаты.</li>
+                </ul>
+                <p class="slot-info__pay">Доступные способы оплаты:<br>
+                    Наличные, банковский перевод</p>
+            </div>
+
+
+            <div class="product__rating">
+                {{#product.rating}}
+                    <div class="rating rating--product">
+                        {{#product.rating}}
+                            {{>partial/rating/star-list}}
+                        {{/product.rating}}
+                        <!-- TODO: склонение отзыва/отзывов/отзыв в зависимости от кол-ва -->
+                        <a class="rating__reviews-lk" href="#">{{product.rating.reviewCount}} отзыва</a>
+
+                    </div>
+                {{/product.rating}}
+            </div>
+            <div class="product-props">
+                <div class="product-props__i">
+                    <div class="product-props__val">21'</div>
+                    <div class="product-props__tl"><span class="product-props__tl-inn">Диагональ экрана:</span></div>
+                </div>
+                <div class="product-props__i">
+                    <div class="product-props__val">Огромный текст оло-ло</div>
+                    <div class="product-props__tl"><span class="product-props__tl-inn">Диагональ экрана:</span></div>
+                </div>
+                <div class="product-props__i">
+                    <div class="product-props__val">21'</div>
+                    <div class="product-props__tl"><span class="product-props__tl-inn">Диагональ экрана:</span></div>
+                </div>
+                <a href="#" class="product-props__more-link">Все характеристики</a>
+            </div>
+        </div>
+
+        {{#product.alsoBoughtSlider}}
+            <div class="product-recommend">
+                <div class="product-recommend__tl">С этим товаром покупают</div>
+                    {{>partial/product-slider/new-default}}
+            </div>
+        {{/product.alsoBoughtSlider}}
+
+    </div>
+    <div class="product-tabs">
+        <nav class="product-tabs__menu">
+            <div class="product-tabs__head js-product-tab-show active" data-src="details">Подробности</div>
+            <div class="product-tabs__head js-product-tab-show" data-src="reviews">Отзывы</div>
+            <div class="product-tabs__head js-product-tab-show" data-src="accessories">Аксессуары</div>
+            <div class="product-tabs__head js-product-tab-show" data-src="related-items">Похожие товары</div>
+        </nav>
+        <div class="product-tabs__content">
+            <div class="product-tabs__body" id="details">
+                <div class="product-details">
+                    <p class="product-details__txt">{{product.description}}</p>
+                    <div class="product-details__table">
+                        {{#product.propertyChunks}}
+                            <ul class="product-details__lst">
+                                {{#properties}}
+                                    {{#isTitle}}
+                                        <li class="product-details__i title">{{name}}</li>
+                                    {{/isTitle}}
+
+                                    {{^isTitle}}
+                                        <li class="product-details__i">
+                                            <div class="product-details__val">{{value}}</div>
+                                            <div class="product-details__name"><span class="product-details__name-inn">{{name}}:</span></div>
+                                        </li>
+                                    {{/isTitle}}
+                                {{/properties}}
+                            </ul>
+                        {{/product.propertyChunks}}
+                    </div>
+                </div>
+            </div>
+            <div class="product-tabs__body" id="reviews">
+                <div class="product-reviews">
+                    <div class="reviews-add js-reviews-add"
+                         data-product-name="{{#product.namePrefix}}{{product.namePrefix}}{{/product.namePrefix}}
+                             {{product.name}}" data-product-id="{{product.id}}">
+                        <span class="reviews-add-icon">+</span>
+                        <span class="reviews-add-title">Добавить отзыв</span>
+                    </div>
+                    {{#product.reviewBlock}}
+                        <div class="js-productReviewList-container" data-url="{{url}}" data-value="{{&dataValue}}">
+                            {{>page/product-card-new/review-list}}
+                        </div>
+                    {{/product.reviewBlock}}
+
+                    {{#moreLink}}
+                        <a href="#" data-container-selector=".js-productReviewList-container" class="js-productReviewList-more catalogMore btnStyleGrey">{{name}}</a>
+                    {{/moreLink}}
+                </div>
+            </div>
+            <div class="product-tabs__body active" id="accessories">
+                <div class="product-accessories">
+                    {{>page/product-card-new/card-listing}}
+                </div>
+            </div>
+            <div class="product-tabs__body" id="related-items">
+                <div class="product-related-items">
+                    {{>page/product-card-new/card-listing}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>{{!контент}}
