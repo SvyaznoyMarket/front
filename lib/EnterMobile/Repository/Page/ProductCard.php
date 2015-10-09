@@ -236,7 +236,7 @@ class ProductCard {
             $rating = new Partial\Rating();
             $rating->reviewCount = $product->rating->reviewCount;
             $rating->stars = $ratingRepository->getStarList($product->rating->starScore);
-
+            $rating->ratingWord = $this->numberChoiceWithCount($rating->reviewCount, ['отзыв', 'отзыва', 'отзывов']);
             $page->content->product->rating = $rating;
         }
 
@@ -536,5 +536,21 @@ class ProductCard {
         }
 
         //die(json_encode($page->content->product, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+    }
+
+    private function numberChoice($number, array $choices) {
+        $cases = [2, 0, 1, 1, 1, 2];
+
+        return $choices[ ($number % 100 > 4 && $number % 100 < 20) ? 2 : $cases[min($number % 10, 5)]];
+    }
+
+    /**
+     * @param int   $number  Например: 1, 43, 112
+     * @param array $choices Например: ['отзыв', 'отзыва', 'отзывов']
+     * @param string $wordsBetween Например 'прекрасных'
+     * @return string '3 прекрасных отзыва'
+     */
+    private function numberChoiceWithCount($number, array $choices, $wordsBetween = '') {
+        return preg_replace('/\s+/', ' ', $number.' '.$wordsBetween.' '.$this->numberChoice($number, $choices));
     }
 }

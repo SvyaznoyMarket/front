@@ -9,4 +9,6 @@ class Rating {
     public $reviewCount;
     /** @var Partial\Rating\Star[] */
     public $stars = [];
+    /** @var string */
+    public $ratingWord;
 }
