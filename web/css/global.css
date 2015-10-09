@@ -11573,37 +11573,59 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   padding-top: 0;
 }
 .product-props {
+  font-size: 14px;
+  display: table;
+  width: 100%;
   margin-top: 15px;
 }
 .product-props__i {
   position: relative;
-  margin-top: 5px;
+  display: table-row;
+  width: 100%;
 }
 .product-props__tl {
+  position: relative;
+  display: table-cell;
+  overflow: hidden;
+  width: 100%;
+  max-width: 150px;
+  padding: 4px 5px 0 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+.product-props__tl:after {
+  position: absolute;
+  right: 3px;
+  bottom: 1px;
+  left: 0;
+  height: 1px;
+  content: '';
   border-bottom: 1px dotted #c7c7c7;
 }
 .product-props__tl-inn {
-  font-size: 14px;
   position: relative;
-  top: 1px;
+  z-index: 2;
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
   color: #616161;
   background-color: #fff;
   display: inline-block;
   vertical-align: top;
 }
 .product-props__val {
-  font-size: 14px;
-  position: relative;
-  top: 1px;
-  float: right;
-  max-width: 100px;
+  display: table-cell;
   overflow: hidden;
+  max-width: 150px;
+  padding: 4px 0 0;
   white-space: nowrap;
   text-overflow: ellipsis;
-  background-color: #fff;
 }
 .product-props__more-link {
-  font-size: 14px;
   margin-top: 10px;
   color: #616161;
   border-bottom: 1px dotted;
@@ -12265,6 +12287,9 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   }
   .product-price__old {
     font-size: 20px;
+  }
+  .product-props {
+    display: none;
   }
   .product-tabs-wrapper {
     overflow: hidden;
