@@ -11754,13 +11754,16 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   display: inline-block;
   vertical-align: top;
 }
-.product-tabs {
-  font-size: 0;
-  clear: both;
+.product-tabs-inner {
+  display: table;
+  width: 100%;
+}
+.product-tabs__menu {
+  white-space: nowrap;
 }
 .product-tabs__head {
   font-size: 16px;
-  display: inline-block;
+  display: table-cell;
   min-width: 100px;
   padding: 10px;
   cursor: pointer;
@@ -11790,21 +11793,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   left: 0;
   background-color: #ffffff;
   right: 0;
-}
-.product-tabs__head:first-child:nth-last-child(4),
-.product-tabs__head:first-child:nth-last-child(4) ~ .product-tabs__head {
-  width: 25%;
-}
-.product-tabs__head:first-child:nth-last-child(3),
-.product-tabs__head:first-child:nth-last-child(3) ~ .product-tabs__head {
-  width: 33.3333%;
-}
-.product-tabs__head:first-child:nth-last-child(2),
-.product-tabs__head:first-child:nth-last-child(2) ~ .product-tabs__head {
-  width: 50%;
-}
-.product-tabs__head:first-child:nth-last-child(1) {
-  width: 100%;
 }
 .product-tabs__body {
   display: none;
@@ -12271,7 +12259,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
     height: 200px;
   }
 }
-@media screen and (max-width: 480px) {
+@media screen and (min-width: 320px) and (max-width: 767px) {
   .product-price {
     line-height: .8em;
   }
@@ -12284,7 +12272,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
     height: 40px;
   }
   .product-tabs__menu {
-    white-space: nowrap;
     overflow: auto;
     padding-bottom: 20px;
   }
@@ -12293,7 +12280,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
     white-space: nowrap;
     border-bottom: 0;
     border-right: 0;
-    width: auto !important;
   }
   .product-card-lst__buy .btn-buy {
     padding: 5px;

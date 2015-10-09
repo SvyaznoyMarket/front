@@ -151,7 +151,9 @@
     }
 }
 
-@media screen and (max-width: 480px) {
+//@media screen and (min-width : 320px) and (max-width : 767px) {}
+
+@media screen and (min-width : 320px) and (max-width : 767px) {
     .product {
         &-price {
             line-height: .8em;
@@ -168,7 +170,6 @@
     }
 
     .product-tabs__menu {
-        white-space: nowrap;
         overflow: auto;
         padding-bottom: 20px;
     }
@@ -179,7 +180,6 @@
 
         border-bottom: 0;
         border-right: 0;
-        width: auto !important;
     }
     .product-card-lst{
         &__buy{
@@ -189,5 +189,4 @@
             }
         }
     }
-
 }

@@ -31,7 +31,7 @@ define(
                 widthW = windows.width(),
                 widthEl = 0;
             // end of vars
-                
+
             tabs.each(function( index ) {
                 widthEl = widthEl + tabs.eq(index).outerWidth();
 
@@ -40,12 +40,12 @@ define(
                 }
             })
 
-            console.log(tabs.last().width());
-
             if ( widthEl > widthW ) {
-                inner.animate({scrollLeft: (widthW - widthEl) * -1}, 300);
-            } else {
-                list.css({ 'left' : 0 });
+                inner.animate({
+                    scrollLeft: Math.abs(widthW - widthEl)
+                }, 300);
+            } else if ( widthEl == ( tabs.slice(0).outerWidth() + tabs.slice(1).outerWidth() ) ) {
+                inner.animate({scrollLeft: 0}, 300);
             }
 
             if (target.hasClass(activeClass)) {
@@ -140,7 +140,7 @@ define(
             }
         };
 
-        
+
 
         $('.js-change-tab').on('click', changetabHandler);
         $('.js-full-images-open').on('click', fullImagesView.open);
