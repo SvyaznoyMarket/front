@@ -5,7 +5,7 @@ define(
             $body = $('body'),
             $header = $('.js-header'),
             oldHeaderPosition = $header.css('position'),
-            errorCssClass = 'textfield-err',
+            errorCssClass = 'error',
 
             testEmail = function(email) {
                 var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -13,15 +13,15 @@ define(
             },
 
             showError = function($input) {
-                var $element = $input.closest('.js-slotButton-popup-element');
+                var $element = $('.js-slotButton-popup-element');
                 ($input.attr('type') == 'checkbox' ? $element : $input).addClass(errorCssClass);
-                $element.find('.js-slotButton-popup-element-error').show();
+                $element.closest().find('.js-slotButton-popup-element-error').show();
             },
 
             hideError = function($input) {
-                var $element = $input.closest('.js-slotButton-popup-element');
+                var $element = $('.js-slotButton-popup-element');
                 ($input.attr('type') == 'checkbox' ? $element : $input).removeClass(errorCssClass);
-                $element.find('.js-slotButton-popup-element-error').hide();
+                $element.closest().find('.js-slotButton-popup-element-error').hide();
             },
 
             validatePhone = function($form, disableFail) {
@@ -146,6 +146,7 @@ define(
                     $popup.remove(); // Удаляем, т.к. каждый раз создаётся попап с новыми данными (для нового товара)
                 });
                 $contentHidden.css({'opacity' : 1, 'height' : 'auto', 'overflow' : 'visible'});
+                $('.top-banner').css('position', oldHeaderPosition);
                 $header.css('position', oldHeaderPosition);
                 scrollTo(0);
             }
@@ -154,6 +155,7 @@ define(
             $content.append($popup);
             $popup.show();
             $contentHidden.css({'overflow': 'hidden', 'opacity': 0, 'height': 0});
+            $('.top-banner').css('position', 'absolute');
             $header.css('position', 'absolute');
 
             $close.click(function(e) {
