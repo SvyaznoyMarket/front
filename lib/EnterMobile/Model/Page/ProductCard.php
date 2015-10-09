@@ -102,6 +102,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
         public $labels = [];
         /** @var \EnterModel\Product\PartnerOffer|null */
         public $slotPartnerOffer;
+        /** @var \EnterModel\Product\PartnerOffer|null */
+        public $partnerOffer;
         /** @var [] */
         public $propertiesSummary = [];
         /** @var bool */

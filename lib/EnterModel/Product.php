@@ -389,6 +389,18 @@ namespace EnterModel {
 
             return null;
         }
+
+        /**
+         * @return Model\Product\PartnerOffer|null
+         */
+        public function getPartnerOffer()
+        {
+            foreach ($this->partnerOffers as $offer) {
+                return $offer;
+            }
+
+            return null;
+        }
     }
 }
 
