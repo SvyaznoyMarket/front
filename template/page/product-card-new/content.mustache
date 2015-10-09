@@ -211,7 +211,7 @@
         <div class="product__wrap">
             {{! виджет поделиться и в избранное }}
             <div class="product-widget">
-                <div class="product-widget__item favorit"></div>
+                <div class="product-widget__item icon-favorit{{#product.isFavorite}} icon-favorit--on{{/product.isFavorite}} js-favorites-add" data-product-ui="{{product.ui}}"></div>
                 <div class="product-widget__item share" style="display: none"></div>
             </div>
             {{! END виджет поделиться и в избранное }}
@@ -223,7 +223,19 @@
                 {{#product.article}}
                     <div class="product-name__art">Артикул: {{product.article}}</div>
                 {{/product.article}}
-                <div class="product-name__vendor"><a class="product-name__vendor-link" target="_blank" href="">Продавец: ЗАО «Связной-Логистика»</a></div>
+                {{#product.slotPartnerOffer}}
+                    {{#partner}}
+                        <div class="product-name__vendor"><a class="product-name__vendor-link" target="_blank" href="{{&offerUrl}}">Продавец: {{name}}</a></div>
+                    {{/partner}}
+                {{/product.slotPartnerOffer}}
+                {{^product.slotPartnerOffer}}
+                    {{#product.partnerOffer}}
+                        {{#partner}}
+                            <div class="product-name__vendor"><a class="product-name__vendor-link" target="_blank" href="{{&offerUrl}}">Продавец: {{name}}</a></div>
+                        {{/partner}}
+                    {{/product.partnerOffer}}
+                {{/product.slotPartnerOffer}}
+
 
                 <div class="product__rating mobile">
                     {{#product.rating}}
@@ -235,6 +247,7 @@
                         </div>
                     {{/product.rating}}
                 </div>
+
             </div>
             {{! END Наименование }}
 
@@ -354,7 +367,7 @@
                             {{#product.rating}}
                                 {{>partial/rating/star-list}}
                             {{/product.rating}}
-                            <span class="rating__reviews-count">{{product.rating.reviewCount}}</span>
+                            <span class="rating__reviews-count js-review-scroll-trigger">{{reviewCount}} отзывов</span>
                         </div>
                     {{/product.rating}}
                 </div>
@@ -362,11 +375,11 @@
                 <div class="product-props">
                     {{#product.propertiesSummary}}
                         <div class="product-props__i">
-                            <div class="product-props__tl"><span class="product-props__tl-inn">{{name}}:</span></div>
                             <div class="product-props__val">{{value}}</div>
+                            <div class="product-props__tl"><span class="product-props__tl-inn">{{name}}:</span></div>
                         </div>
                     {{/product.propertiesSummary}}
-                    <a href="#" class="product-props__more-link">Все характеристики</a>
+                    <a href="#" class="product-props__more-link js-specs-scroll-trigger">Все характеристики</a>
                 </div>
             </div>
 

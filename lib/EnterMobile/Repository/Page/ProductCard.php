@@ -81,6 +81,7 @@ class ProductCard {
         $page->content->product->shownOldPrice = $product->oldPrice ? $this->getPriceHelper()->format($product->oldPrice) : null;
         $page->content->product->cartButtonBlock = (new Repository\Partial\ProductCard\CartButtonBlock())->getObject($product, null, ['position' => 'product']);
         $page->content->product->slotPartnerOffer = $product->getSlotPartnerOffer();
+        $page->content->product->partnerOffer = $product->getPartnerOffer();
 
         if ($product->brand) {
             $page->content->product->brand = new \EnterMobile\Model\Page\ProductCard\Content\Product\Brand();
