@@ -15,13 +15,13 @@ define(
             showError = function($input) {
                 var $element = $('.js-slotButton-popup-element');
                 ($input.attr('type') == 'checkbox' ? $element : $input).addClass(errorCssClass);
-                $element.closest().find('.js-slotButton-popup-element-error').show();
+                $element.parent().find('.js-slotButton-popup-element-error').show();
             },
 
             hideError = function($input) {
                 var $element = $('.js-slotButton-popup-element');
                 ($input.attr('type') == 'checkbox' ? $element : $input).removeClass(errorCssClass);
-                $element.closest().find('.js-slotButton-popup-element-error').hide();
+                $element.parent().find('.js-slotButton-popup-element-error').hide();
             },
 
             validatePhone = function($form, disableFail) {
