@@ -269,6 +269,7 @@
                         {{/product.kitBlock}}
                     </div>
                 </div>
+                {{#product.deliveryBlock}}
                 <div class="product-delivery__info">
                     {{#product.shopStateBlock}}
                         <span class="product-delivery__info-self js-popup-middle-link">{{shownCount}}</span>
@@ -297,6 +298,7 @@
                         </div>
                     {{/product.slotPartnerOffer}}
                 </div>
+                {{/product.deliveryBlock}}
 
                 {{#product.modelBlock}}
                     <div class="product-variations toggle js-toggle-wrap">
