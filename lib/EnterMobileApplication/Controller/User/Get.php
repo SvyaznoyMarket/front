@@ -24,6 +24,7 @@ namespace EnterMobileApplication\Controller\User {
         public function execute(Http\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
+            $couponRepository = new \EnterRepository\Coupon();
 
             // ответ
             $response = new Response();
@@ -36,12 +37,58 @@ namespace EnterMobileApplication\Controller\User {
             try {
                 $userItemQuery = new Query\User\GetItemByToken($token);
                 $curl->prepare($userItemQuery);
-
                 $curl->execute();
 
-                $response->user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
-                if ($response->user) {
+                $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
+                if ($user) {
+                    $favoriteListQuery = new Query\User\Favorite\GetListByUserUi($user->ui);
+                    $curl->prepare($favoriteListQuery);
+
+                    $orderListQuery = new Query\Order\GetListByUserToken($token, 0, 0);
+                    $curl->prepare($orderListQuery);
+
+                    // список купонов
+                    $couponListQuery = new Query\Coupon\GetListByUserToken($token);
+                    $couponListQuery->setTimeout(10 * $config->coreService->timeout);
+                    $curl->prepare($couponListQuery);
+
+                    // список лимитов серий купонов
+                    $seriesLimitListQuery = new Query\Coupon\Series\GetLimitList();
+                    $seriesLimitListQuery->setTimeout(3 * $config->coreService->timeout);
+                    $curl->prepare($seriesLimitListQuery);
+
+                    // список серий купонов
+                    $seriesListQuery = new Query\Coupon\Series\GetList(/*$user->isEnterprizeMember ? '1' : null*/null);
+                    $seriesListQuery->setTimeout(3 * $config->coreService->timeout);
+                    $curl->prepare($seriesListQuery);
+
+                    $curl->execute();
+
+                    $favoriteListResult = $favoriteListQuery->getResult() + ['products' => []];
+                    $orderListResult = $orderListQuery->getResult() + ['total' => 0];
+                    $filteredCouponsAndCouponSeries = $couponRepository->getFilteredCouponsAndCouponSeriesByQuery($couponListQuery, $seriesLimitListQuery, $seriesListQuery);
+
                     $response->token = $token;
+                    $response->user = [
+                        'id' => $user->id,
+                        'ui' => $user->ui,
+                        'firstName' => $user->firstName,
+                        'lastName' => $user->lastName,
+                        'middleName' => $user->middleName,
+                        'sex' => $user->sex,
+                        'phone' => $user->phone,
+                        'homePhone' => $user->homePhone,
+                        'email' => $user->email,
+                        'occupation' => $user->occupation,
+                        'birthday' => $user->birthday,
+                        'svyaznoyClubCardNumber' => $user->svyaznoyClubCardNumber,
+                        'isEnterprizeMember' => $user->isEnterprizeMember,
+                        'regionId' => $user->regionId,
+                        'region' => $user->region,
+                        'orderCount' => $orderListResult['total'],
+                        'favoriteCount' => count($favoriteListResult['products']),
+                        'couponCount' => count($filteredCouponsAndCouponSeries['coupons']),
+                    ];
                 }
 
             } catch (\Exception $e) {
@@ -61,7 +108,7 @@ namespace EnterMobileApplication\Controller\User\Get {
     class Response {
         /** @var string */
         public $token;
-        /** @var Model\User|null */
+        /** @var array|null */
         public $user;
     }
 }
