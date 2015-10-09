@@ -127,8 +127,7 @@
             width: 100%;
         }
         &__rating {
-            position: absolute;
-            top: 60px;
+            display: none;
             .rating__star {
                 font-size: 11px;
 
@@ -136,6 +135,9 @@
             }
             .rating__reviews-lk {
                 display: none;
+            }
+            &.mobile {
+                display: block;
             }
         }
         &-name {

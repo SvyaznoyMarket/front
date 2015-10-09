@@ -11688,15 +11688,41 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product-name__tl {
   font-size: 16px;
-  max-height: 22px;
   overflow: hidden;
+  max-height: 22px;
   white-space: nowrap;
   text-overflow: ellipsis;
   color: #000;
 }
 .product-name__art {
   font-size: 12px;
+  margin: 0 0 5px;
   color: #797979;
+}
+.product-name__vendor {
+  margin: 0 0 5px;
+}
+.product-name__vendor-link {
+  line-height: 15px;
+  display: inline-block;
+  vertical-align: middle;
+  color: #9c9c9c;
+}
+.product-name__vendor-link:after {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
+  background: no-repeat 0 0 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAQAAADYWf5HAAAA70lEQVR4AY2SJXBEQQyGY8rgyq1X1WVVVLV15+rtumO0z/uC9zNFP28CD/S69WWG7PF9aiH5g6CkK5GRa7b8yFauI5OuQCvJiDTIYUB7tIDDtEB7GJCTRjLi68zyPZ2Hc9BEOEfnfJ/O/ivxPVbgl9x0YTU3Cb9ghe9/FaVB56pROa28lzN6p3NpfCdOzg9X2SlfltabQrt0BSKDAfQEg8iAXNMeeBSPy2HxCDxoT66BLS2Aormp2QJb4Ecc7m2Gw/w4oJrm1mLWkptW6pu1Vqp9azFr6VvrFMqZylPppGUKLTNVWmY6yIYMvm8Dbu8HCFu+2E7VJeUAAAAASUVORK5CYII=');
+  background-size: 15px 15px;
+}
+.product-name .mobile {
+  display: none;
+}
+.product-name .rating {
+  margin: 0;
 }
 .product-img {
   position: relative;
@@ -12276,8 +12302,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
     width: 100%;
   }
   .product__rating {
-    position: absolute;
-    top: 60px;
+    display: none;
   }
   .product__rating .rating__star {
     font-size: 11px;
@@ -12285,6 +12310,9 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   }
   .product__rating .rating__reviews-lk {
     display: none;
+  }
+  .product__rating.mobile {
+    display: block;
   }
   .product-name__tl {
     font-size: 14px;

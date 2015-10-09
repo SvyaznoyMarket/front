@@ -17,6 +17,7 @@
     </div>
 </div>
 {{! END окно большого изображения }}
+
 {{#product.kitBlock}}
     <!-- редактировать комплектацию -->
     <div class="id-productKit-content contentBox960 lineKitPopup js-kit-wrap">
@@ -222,6 +223,18 @@
                 {{#product.article}}
                     <div class="product-name__art">Артикул: {{product.article}}</div>
                 {{/product.article}}
+                <div class="product-name__vendor"><a class="product-name__vendor-link" target="_blank" href="">Продавец: ЗАО «Связной-Логистика»</a></div>
+
+                <div class="product__rating mobile">
+                    {{#product.rating}}
+                        <div class="rating rating--product">
+                            {{#product.rating}}
+                                {{>partial/rating/star-list}}
+                            {{/product.rating}}
+                            <span class="rating__reviews-count">{{product.rating.reviewCount}}</span>
+                        </div>
+                    {{/product.rating}}
+                </div>
             </div>
             {{! END Наименование }}
 
