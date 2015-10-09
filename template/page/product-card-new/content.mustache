@@ -210,7 +210,7 @@
         <div class="product__wrap">
             {{! виджет поделиться и в избранное }}
             <div class="product-widget">
-                <div class="product-widget__item favorit"></div>
+                <div class="product-widget__item icon-favorit{{#product.isFavorite}} icon-favorit--on{{/product.isFavorite}} js-favorites-add" data-product-ui="{{product.ui}}"></div>
                 <div class="product-widget__item share" style="display: none"></div>
             </div>
             {{! END виджет поделиться и в избранное }}
