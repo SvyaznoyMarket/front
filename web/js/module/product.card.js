@@ -248,6 +248,23 @@ define(
 
         })(config, _, $);
 
+        // скролл к отзывам
+        (function addToFavorites(config, _, $){
+            var $scrollTrigger = $('.js-review-scroll-trigger');
+            var $reviewTabNav = $('.js-change-tab[data-block="js-reviews-block"]');
 
+            $scrollTrigger.click(scrollToReviews);
+
+            function scrollToReviews(evt) {
+                evt.preventDefault();
+
+                $('html, body').animate({
+                    scrollTop: $reviewTabNav.offset().top - 100
+                }, 500);
+
+                $reviewTabNav.click();
+            }
+
+        })(config, _, $);
     }
 );
