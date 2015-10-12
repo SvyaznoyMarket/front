@@ -235,10 +235,26 @@ class DefaultPage {
             $walkByMenu($request->mainMenu->elements);
         }
 
+        if (isset($request->httpRequest)) {
+            $redirectTo = $request->httpRequest->getPathInfo();
+        } else {
+            $redirectTo = $router->getUrlByRoute(new Routing\Index());
+        }
+
         $serviceElements = [];
+
         if ($page->mainMenu) {
             if ($request->user) {
                 foreach ($request->mainMenu->serviceElements as $key => $serviceElement) {
+                    if ($key == 'delivery') {
+                        $request->mainMenu->serviceElements[$key]['link'] = $router->getUrlByRoute(
+                            new Routing\Shop\Index(),
+                            ['redirect_to' => $redirectTo]
+                        );
+                        $serviceElements[] = $request->mainMenu->serviceElements[$key];
+                        continue;
+                    }
+
                     if ($key != 'user') {
                         $serviceElements[] = $serviceElement;
                         continue;

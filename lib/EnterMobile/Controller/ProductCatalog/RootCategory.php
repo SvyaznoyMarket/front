@@ -114,6 +114,7 @@ class RootCategory {
         $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
         $pageRequest->cart = $cart;
         $pageRequest->category = $category;
+        $pageRequest->httpRequest = $request;
 
         // страница
         $page = new Page();

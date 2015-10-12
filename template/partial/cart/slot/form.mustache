@@ -2,7 +2,7 @@
     <div class="popupBox_close js-slotButton-popup-close" style="display: block;"></div>
 
     <div class="popupBox_inn">
-        <form action="/orders/slot/create" method="post">
+        <form class="form-control js-user-form" action="/orders/slot/create" method="post">
             <input type="hidden" name="productId" value="{{productId}}" />
             <input type="hidden" name="sender" value="{{sender}}" />
 
@@ -16,21 +16,27 @@
 
             <div class="popupBox-bid__err js-slotButton-popup-errors" style="display: none;"></div>
 
-            <div class="orderU_fld js-slotButton-popup-element">
-                <input class="orderU_tx textfield js-slotButton-popup-phone" type="tel" name="phone" value="{{userPhone}}" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx" />
-                <label class="orderU_lbl orderU_lbl-str">Телефон</label>
+            <div class="common-control">
+                <div class="common-control-group js-slotButton-popup-element">
+                    <input class="common-control-input js-slotButton-popup-phone" type="tel" name="phone" value="{{userPhone}}" placeholder="+7 (___) ___-__-__" data-mask="+7 (xxx) xxx-xx-xx" data-field="phone" />
+                    <label class="common-control-label">Телефон</label>
+                </div>
                 <span class="js-slotButton-popup-element-error err-elem" style="display: none">Неверный формат телефона</span>
             </div>
 
-            <div class="orderU_fld js-slotButton-popup-element">
-                <input class="orderU_tx textfield js-slotButton-popup-email" type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" />
-                <label class="orderU_lbl">E-mail</label>
+            <div class="common-control">
+                <div class="common-control-group js-slotButton-popup-element">
+                    <input class="common-control-input js-slotButton-popup-email" type="text" name="email" value="{{userEmail}}" placeholder="mail@domain.com" />
+                    <label class="common-control-label">E-mail</label>
+                </div>
                 <span class="js-slotButton-popup-element-error err-elem" style="display: none">Неверный формат email</span>
             </div>
 
-            <div class="orderU_fld">
-                <label class="orderU_lbl">Имя</label>
-                <input class="orderU_tx textfield js-slotButton-popup-name" type="text" name="name" value="{{userName}}" />
+            <div class="common-control">
+                <div class="common-control-group">
+                    <label class="common-control-label">Имя</label>
+                    <input class="common-control-input js-slotButton-popup-name" type="text" name="name" value="{{userName}}" />
+                </div>
             </div>
 
             <div class="popupBox-bid__check js-slotButton-popup-element noselect"><input type="checkbox" class="custom-input custom-input--check js-slotButton-popup-confirm" name="confirm" id="confirm" value="1" /> <label class="custom-label" for="confirm">Я ознакомлен и&nbsp;согласен с&nbsp;информацией {{#partnerOfferUrl}}<a class="underline" href="{{partnerOfferUrl}}" target="_blank">{{/partnerOfferUrl}}о&nbsp;продавце и его офертой{{#partnerOfferUrl}}</a>{{/partnerOfferUrl}}</label></div>

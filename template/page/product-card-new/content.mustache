@@ -17,6 +17,7 @@
     </div>
 </div>
 {{! END окно большого изображения }}
+
 {{#product.kitBlock}}
     <!-- редактировать комплектацию -->
     <div class="id-productKit-content contentBox960 lineKitPopup js-kit-wrap">
@@ -210,7 +211,7 @@
         <div class="product__wrap">
             {{! виджет поделиться и в избранное }}
             <div class="product-widget">
-                <div class="product-widget__item favorit"></div>
+                <div class="product-widget__item icon-favorit{{#product.isFavorite}} icon-favorit--on{{/product.isFavorite}} js-favorites-add" data-product-ui="{{product.ui}}"></div>
                 <div class="product-widget__item share" style="display: none"></div>
             </div>
             {{! END виджет поделиться и в избранное }}
@@ -222,6 +223,31 @@
                 {{#product.article}}
                     <div class="product-name__art">Артикул: {{product.article}}</div>
                 {{/product.article}}
+                {{#product.slotPartnerOffer}}
+                    {{#partner}}
+                        <div class="product-name__vendor"><a class="product-name__vendor-link" target="_blank" href="{{&offerUrl}}">Продавец: {{name}}</a></div>
+                    {{/partner}}
+                {{/product.slotPartnerOffer}}
+                {{^product.slotPartnerOffer}}
+                    {{#product.partnerOffer}}
+                        {{#partner}}
+                            <div class="product-name__vendor"><a class="product-name__vendor-link" target="_blank" href="{{&offerUrl}}">Продавец: {{name}}</a></div>
+                        {{/partner}}
+                    {{/product.partnerOffer}}
+                {{/product.slotPartnerOffer}}
+
+
+                <div class="product__rating mobile">
+                    {{#product.rating}}
+                        <div class="rating rating--product">
+                            {{#product.rating}}
+                                {{>partial/rating/star-list}}
+                            {{/product.rating}}
+                            <span class="rating__reviews-count">{{product.rating.reviewCount}}</span>
+                        </div>
+                    {{/product.rating}}
+                </div>
+
             </div>
             {{! END Наименование }}
 
@@ -269,6 +295,7 @@
                         {{/product.kitBlock}}
                     </div>
                 </div>
+                {{#product.deliveryBlock}}
                 <div class="product-delivery__info">
                     {{#product.shopStateBlock}}
                         <span class="product-delivery__info-self js-popup-middle-link">{{shownCount}}</span>
@@ -297,6 +324,7 @@
                         </div>
                     {{/product.slotPartnerOffer}}
                 </div>
+                {{/product.deliveryBlock}}
 
                 {{#product.modelBlock}}
                     <div class="product-variations toggle js-toggle-wrap">
@@ -339,7 +367,7 @@
                             {{#product.rating}}
                                 {{>partial/rating/star-list}}
                             {{/product.rating}}
-                            <span class="rating__reviews-count">{{product.rating.reviewCount}}</span>
+                            <span class="rating__reviews-count js-review-scroll-trigger borderBd">{{ratingWord}}</span>
                         </div>
                     {{/product.rating}}
                 </div>
@@ -347,11 +375,12 @@
                 <div class="product-props">
                     {{#product.propertiesSummary}}
                         <div class="product-props__i">
-                            <div class="product-props__val">{{value}}</div>
                             <div class="product-props__tl"><span class="product-props__tl-inn">{{name}}:</span></div>
+
+                            <div class="product-props__val">{{value}}</div>
                         </div>
                     {{/product.propertiesSummary}}
-                    <a href="#" class="product-props__more-link">Все характеристики</a>
+                    <a href="#" class="product-props__more-link js-specs-scroll-trigger">Все характеристики</a>
                 </div>
             </div>
 
@@ -364,16 +393,20 @@
 
         </div>
         <div class="product-tabs js-product-tabs">
-            <nav class="product-tabs__menu">
-                <div class="product-tabs__head js-change-tab active" data-block="js-description-block">Подробности</div>
-                <div class="product-tabs__head js-change-tab" data-block="js-reviews-block">Отзывы</div>
-                {{#product.accessorySlider}}
-                    <div class="product-tabs__head js-change-tab" data-block="js-accessories-block">Аксессуары</div>
-                {{/product.accessorySlider}}
-                {{#product.similarSlider}}
-                    <div class="product-tabs__head js-change-tab" data-block="js-simillar-block">Похожие товары</div>
-                {{/product.similarSlider}}
-            </nav>
+            <div class="product-tabs-wrapper js-product-tabs-scroll">
+                <nav class="product-tabs__menu js-product-tabs-inner">
+                    <div class="product-tabs-inner js-product-tabs-menu">
+                        <div class="product-tabs__head js-change-tab active" data-block="js-description-block">Подробности</div>
+                        <div class="product-tabs__head js-change-tab" data-block="js-reviews-block">Отзывы</div>
+                        {{#product.accessorySlider}}
+                            <div class="product-tabs__head js-change-tab" data-block="js-accessories-block">Аксессуары</div>
+                        {{/product.accessorySlider}}
+                        {{#product.similarSlider}}
+                            <div class="product-tabs__head js-change-tab" data-block="js-simillar-block">Похожие товары</div>
+                        {{/product.similarSlider}}
+                    </div>
+                </nav>
+            </div>
 
             <div class="product-tabs__content">
                 <div class="product-tabs__body js-tabs-block js-description-block active">

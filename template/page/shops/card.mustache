@@ -1,0 +1,52 @@
+{{#pointDescription}}
+<div class="content shops shop-detail">
+    <section class="map">
+        <div class="map-container" id="shop-map" data-lat="{{latitude}}" data-long="{{longitude}}"></div>
+        <div class="one-point">
+            <div class="one-point__photoslider">
+                <ul class="photos js-point-photos-slider">
+                    {{#images}}
+                        <li class="photos__i"><img src="{{.}}"></li>
+                    {{/images}}
+                </ul>
+            </div>
+            <div class="one-point__info">
+                <div class="shop-snippet">
+                    <div class="shop-snippet-name">
+                        <img src="{{logo}}" alt="" class="shop-snippet-name__img">
+                        <span class="shop-snippet-name__text">{{group.name}}</span>
+                    </div>
+
+                    <div class="shop-snippet-info">
+
+                        <div class="shop-snippet-metro">
+                            <span class="shop-snippet-metro__bullet" style="background: {{subway.line_color}}"></span>
+                            <span class="shop-snippet-metro__text">Метро {{subway.name}}</span>
+                        </div>
+
+
+                        <div class="shop-snippet-address">
+                            {{address}}<br/>
+                            {{regime}}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="one-point__text">
+                <p>{{description}}</p>
+                {{#carWay}}
+                <h2>Как добраться</h2>
+                <p>{{.}}</p>
+                {{/carWay}}
+                {{#walkWay}}
+                <h3>Проезд общественным транспортом</h3>
+                <p>{{.}}</p>
+                {{/walkWay}}
+            </div>
+
+        </div>
+    </section>
+</div>
+{{/pointDescription}}

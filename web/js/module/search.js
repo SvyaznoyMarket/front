@@ -70,6 +70,7 @@ define(
 
             markSuggest = function() {
                 suggest.addClass('suggest-load');
+                suggest.hide().empty();
             },
 
             // Ответ по поисковому запросу, показ саджеста
