@@ -11383,7 +11383,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   -o-background-size: cover;
   background-size: cover;
   position: absolute;
-  right: 5px;
+  right: 0;
   top: 5px;
   width: 30px;
   height: 26px;
