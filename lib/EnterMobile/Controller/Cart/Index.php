@@ -113,7 +113,7 @@ class Index {
         $renderer->setPartials([
             'content' => 'page/cart/content',
         ]);
-        $content = $renderer->render('layout/default', $page);
+        $content = $renderer->render('layout/without-footer', $page);
 
         // http-ответ
         $response = new Http\Response($content);

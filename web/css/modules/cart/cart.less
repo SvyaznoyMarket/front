@@ -5,105 +5,103 @@
 
 //итогая стоимость/купить в кредит
 .cartLine {
-	margin: 0 0 10px;
+    margin: 0 0 10px;
 
-	border-bottom: 1px solid @tabGreyBorder;
-	background: @tabGrey;
+    border-bottom: 1px solid @tabGreyBorder;
+    background: @tabGrey;
+    &_left {
+        font-size: 14px;
 
-	&_left {
-		float: right;
+        float: right;
 
-		margin: 2px 30px 0 0;
+        margin: 2px 30px 0 0;
+        &-double {
+            display: none;
+        }
+        .price {
+            font-size: 22px;
 
-		font-size: 14px;
+            padding-left: 20px;
 
-		&-double {
-			display: none;
-		}
+            white-space: nowrap;
+        }
+    }
+    &_right {
+        float: right;
 
-		.price {
-			padding-left: 20px;
+        padding: 10px 30px 10px 10px;
 
-			font-size: 22px;
-			white-space: nowrap;
-		}
-	}
-
-	&_right {
-		float: right;
-
-		padding: 10px 30px 10px 10px;
-
-		background: #ffefcb;
-
-		.custom-label {
-			line-height: 1.9;
-		}
-
-		.creditText {
-			display: block;
-		}
-	}
+        background: #ffefcb;
+        .custom-label {
+            line-height: 1.9;
+        }
+        .creditText {
+            display: block;
+        }
+    }
 }
 
 //кнопка - оформление заказа
 .cartBuy {
-	padding: 0 10px;
+    padding: 0 10px;
 
-	text-align: right;
+    text-align: right;
+    &_btn {
+        font-size: 20px;
+        font-weight: bold;
+        line-height: 38px;
 
-	&_btn {
-		display: inline-block;
-		zoom: 1;
+        display: inline-block;
+        zoom: 1;
 
-		width: 248px;
-		height: 38px;
+        width: 248px;
+        height: 38px;
 
-		font-size: 20px;
-		font-weight: bold;
-		line-height: 38px;
-
-		*display: inline;
-	}
+        *display: inline;
+    }
 }
 
 .cartEmpty {
-	padding: 105px 10px 0;
+    padding: 105px 10px 0;
+
     text-align: center;
-	background: url("@{base-url}/cart/img/emptyCart.gif") no-repeat 50% 15px;
 
-	&_title {
-		font-size: 28px;
-		margin-bottom: 15px;
-	}
+    background: url('@{base-url}/cart/img/emptyCart.gif') no-repeat 50% 15px;
+    &_title {
+        font-size: 28px;
 
-	&_now {
-		font-size: 22px;
-
-		a {
-			text-decoration: underline;
-		}
-	}
+        margin-bottom: 15px;
+    }
+    &_now {
+        font-size: 22px;
+        a {
+            text-decoration: underline;
+        }
+    }
 }
 
 .cart {
-    &__inn{
-
+    &.content {
+        padding-bottom: 60px;
     }
     &-item {
-        padding: 10px 10px 5px;
-        width: 100%;
-        .box-sizing(border-box);
         position: relative;
+
+        width: 100%;
+        padding: 10px 10px 5px;
+
         border-bottom: 1px solid #d3d3d3;
 
-        &:last-child{
+        .box-sizing(border-box);
+        &:last-child {
             border-bottom: 0;
         }
         &__img {
+            float: left;
+
             width: 74px;
             height: 74px;
-            float: left;
+
             text-align: center;
             img {
                 max-width: 100%;
@@ -111,58 +109,69 @@
             }
         }
         &__descr {
+            min-height: 74px;
             margin-left: 80px;
             padding-right: 25px;
-
-            min-height: 74px;
         }
         &__price-info {
             clear: both;
+
             width: 100%;
         }
         &__item-price {
-            color: #5d5d5d;
             font-size: 16px;
+
             width: 76px;
             padding-right: 5px;
+
+            text-align: center;
             vertical-align: middle;
             white-space: nowrap;
-            text-align: center;
+
+            color: #5d5d5d;
             .price-inn {
-                .inline-block();
                 min-width: 76px;
+
+                .inline-block();
             }
         }
         &__change {
-            max-width: 0;
             width: 100%;
+            max-width: 0;
         }
         &__item-sum {
             font-size: 16px;
+
             width: 80px;
+
             vertical-align: middle;
             white-space: nowrap;
             .price-inn {
-                .inline-block();
                 width: 80px;
+
+                .inline-block();
             }
         }
     }
     &-delete {
         position: absolute;
-        right: 10px;
         top: 10px;
+        right: 10px;
 
         width: 20px;
         height: 20px;
-        background: url("@{base-url}/cart/img/close@2x.png") no-repeat;
+
+        background: url('@{base-url}/cart/img/close@2x.png') no-repeat;
+
         .background-size(cover);
     }
-    &__min-sum{
-        color: #009712;
+    &__min-sum {
         font-size: 18px;
-        text-align: center;
+
         margin: 30px 0 20px;
 
+        text-align: center;
+
+        color: #009712;
     }
 }
