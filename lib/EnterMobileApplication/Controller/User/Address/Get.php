@@ -64,11 +64,41 @@ namespace EnterMobileApplication\Controller\User\Address {
                     $addressListResult = [$addressListResult];
                 }
 
+                $addresses = [];
+                $regionsById = [];
                 foreach ($addressListResult as $item) {
                     if (!isset($item['id'])) continue;
 
-                    $response->addresses[] = new Model\Address($item);
+                    $address = new Model\Address($item);
+                    $addresses[] = $address;
+                    $regionsById[$address->regionId] = null;
                 }
+
+                if ($regionsById) {
+                    $addressQuery = new Query\Region\GetListByIdList(array_keys($regionsById));
+                    $curl->prepare($addressQuery);
+                    $curl->execute();
+
+                    $regionsById = (new \EnterRepository\Region())->getIndexedByIdObjectListByQuery($addressQuery);
+                }
+
+                $response->addresses = array_map(function(Model\Address $address) use($regionsById) {
+                    return [
+                        'id' => $address->id,
+                        'userUi' => $address->userUi,
+                        'type' => $address->type,
+                        'kladrId' => $address->kladrId,
+                        'regionId' => $address->regionId,
+                        'regionName' => isset($regionsById[$address->regionId]) ? $regionsById[$address->regionId]->name : '',
+                        'zipCode' => $address->zipCode,
+                        'address' => $address->address,
+                        'street' => $address->street,
+                        'streetType' => $address->streetType,
+                        'building' => $address->building,
+                        'apartment' => $address->apartment,
+                        'description' => $address->description,
+                    ];
+                }, $addresses);
             } catch (\Exception $e) {
                 if ($config->debugLevel) $this->getDebugContainer()->error = $e;
             }
@@ -86,7 +116,7 @@ namespace EnterMobileApplication\Controller\User\Address\Get {
     class Response {
         /** @var string */
         public $token;
-        /** @var Model\Address[] */
+        /** @var array */
         public $addresses = [];
     }
 }

@@ -11,7 +11,7 @@ class GetListByUserUi extends Query {
     use CrmQueryTrait;
 
     /** @var array */
-    protected $result;
+    protected $result = [];
 
 
     public function __construct($userUi) {
@@ -31,6 +31,6 @@ class GetListByUserUi extends Query {
     public function callback($response) {
         $data = $this->parse($response);
 
-        $this->result = $data;
+        $this->result = is_array($data) ? $data : [];
     }
 }

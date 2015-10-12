@@ -46,4 +46,33 @@ class Coupon {
 
         return $seriesIds;
     }
+
+    /**
+     * @param Query $couponListQuery
+     * @param Query $seriesLimitListQuery
+     * @param Query $seriesListQuery
+     * @return array
+     * @throws \Exception
+     */
+    public function getFilteredCouponsAndCouponSeriesByQuery(Query $couponListQuery, Query $seriesLimitListQuery, Query $seriesListQuery) {
+        $couponSeriesRepository = new \EnterRepository\Coupon\Series();
+
+        $coupons = $this->getObjectListByQuery($couponListQuery);
+        $couponSeries = $couponSeriesRepository->getObjectListByQuery($seriesListQuery, $seriesLimitListQuery);
+
+        $couponSeriesRepository->filterObjectListByIdList($couponSeries, $this->getSeriesIdListByObjectList($coupons));
+
+        $couponSeriesIds = array_values(array_map(function(Model\Coupon\Series $couponSeries) {
+            return $couponSeries->id;
+        }, $couponSeries));
+
+        $coupons = array_values(array_filter($coupons, function(Model\Coupon $coupon) use(&$couponSeriesIds) {
+            return in_array($coupon->seriesId, $couponSeriesIds, true) && time() <= strtotime($coupon->endAt);
+        }));
+
+        // Фильтруем повторно уже с использованием отфильтрованных купонов
+        $couponSeriesRepository->filterObjectListByIdList($couponSeries, $this->getSeriesIdListByObjectList($coupons));
+
+        return ['coupons' => $coupons, 'couponSeries' => $couponSeries];
+    }
 }
