@@ -121,7 +121,7 @@ namespace EnterMobileApplication\Controller\Order {
                 $metas = [];
 
                 // бонусные карты
-                foreach ($session->get($config->order->bonusCardSessionKey) as $cardItem) {
+                foreach ($session->get($config->order->bonusCardSessionKey, []) as $cardItem) {
                     if (!isset($cardItem['type'])) continue;
 
                     if ('mnogoru' === $cardItem['type']) {

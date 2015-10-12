@@ -58,9 +58,6 @@ namespace EnterAggregator\Controller\Order {
                 $logger->push(['type' => 'error', 'error' => $e, 'query' => $createOrderQuery, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller', 'order', 'critical']]);
             }
 
-            // FIXME: заглушка
-            //$orderData = json_decode('[{"confirmed":"true","id":"7720368","is_partner":0,"number":"TD856420","number_erp":"COTD-856420","user_id":"1138","price":4690,"pay_sum":4690,"payment_invoice_id":null,"payment_url":null}]', true);
-
             /** @var \Enter\Curl\Query[] $orderItemQueries */
             $orderItemQueries = [];
             /** @var \Enter\Curl\Query[] $paymentMethodListQueriesByOrderNumberErp */
@@ -182,9 +179,9 @@ namespace EnterAggregator\Controller\Order {
             }
 
             // возможные методы оплат
-            $paymentMethodsByOrderNumber = [];
+            $paymentMethodsByOrderNumberErp = [];
             foreach ($paymentMethodListQueriesByOrderNumberErp as $numberErp => $paymentMethodListQuery) {
-                $paymentMethodsByOrderNumber[$numberErp] = $paymentMethodRepository->getIndexedObjectListByQuery($paymentMethodListQuery);
+                $paymentMethodsByOrderNumberErp[$numberErp] = $paymentMethodRepository->getIndexedObjectListByQuery($paymentMethodListQuery);
             }
 
             // доставка
@@ -192,7 +189,7 @@ namespace EnterAggregator\Controller\Order {
 
             // установка возможных методов оплат
             foreach ($orders as $order) {
-                $order->paymentMethods = isset($paymentMethodsByOrderNumber[$order->number]) ? array_values((array)$paymentMethodsByOrderNumber[$order->number]) : [];
+                $order->paymentMethods = isset($paymentMethodsByOrderNumberErp[$order->numberErp]) ? array_values((array)$paymentMethodsByOrderNumberErp[$order->numberErp]) : [];
             }
 
             // магазин
