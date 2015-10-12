@@ -45,7 +45,7 @@ class Register {
 
         try {
             if (!$form->name) {
-                throw new \Exception('Не указано имя', 689);
+                throw new \Exception('Не указано имя', 10002);
             }
             if (!$form->email) {
                 throw new \Exception('Не указан email', 684);
@@ -86,17 +86,17 @@ class Register {
                 case 680:
                     $errors['email'] = $errors['phone'] = 'Неверные email или телефон';
                     break;
-                case 684:
+                case 684: case 689:
                     $errors['email'] = $e->getMessage();
                     break;
-                case 686:
+                case 686: case 690:
                     $errors['phone'] = $e->getMessage();
-                    break;
-                case 689: case 690:
-                    $errors['name'] = $e->getMessage();
                     break;
                 case 10001:
                     $errors['agreed'] = $e->getMessage();
+                    break;
+                case 10002:
+                    $errors['name'] = $e->getMessage();
                     break;
                 default:
                     $messageRepository->setObjectListToHttpSesion('messages', [
