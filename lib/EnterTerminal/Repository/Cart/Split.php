@@ -2,7 +2,11 @@
 
 namespace EnterTerminal\Repository\Cart;
 
+use EnterAggregator\LoggerTrait;
+
 class Split {
+    use LoggerTrait;
+
     public function correctResponse(\EnterTerminal\Model\ControllerResponse\Cart\Split $response, \EnterModel\Cart\Split $splitModel = null) {
         if (isset($response->split['orders'])) {
             $orderNum = -1;
@@ -73,8 +77,16 @@ class Split {
                             }
 
                             if (!isset($response->pointFilters[$orderToken]['nearestDay'][$point['nearest_day']])) {
+                                $dateName = null;
+                                try {
+                                    $dateName = \Enter\Util\Date::humanizeDate(\DateTime::createFromFormat('Y-m-d', $point['nearest_day']));
+                                } catch (\Exception $e) {
+                                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['cart', 'order']]);
+                                    continue;
+                                }
+
                                 $response->pointFilters[$orderToken]['nearestDay'][$point['nearest_day']] = [
-                                    'name' => \Enter\Util\Date::humanizeDate(\DateTime::createFromFormat('Y-m-d', $point['nearest_day'])),
+                                    'name'  => $dateName,
                                     'value' => $point['nearest_day'],
                                 ];
                             }
