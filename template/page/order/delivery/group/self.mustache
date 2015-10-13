@@ -1,5 +1,9 @@
 <div class="checkout-order__inn box-show js-delivery-type id-order-{{id}}-delivery" data-data-selector="#order-{{id}}-map-data">
     <a href="#" class="checkout-celendar js-order-delivery-celendar-link" data-data-selector="#order-{{id}}-date-data" data-modal-position="fixed-untill-640" data-modal-title="Дата">{{delivery.date}}</a>
+    {{#delivery.interval}}
+        с {{from}} по {{to}}
+    {{/delivery.interval}}
+
 
     {{^delivery.point}}
     <div class="self-delivery-choose">
