@@ -54,7 +54,7 @@ namespace EnterAggregator\Controller {
                 $productDescriptionListQuery = new Query\Product\GetDescriptionListByTokenList([$request->productCriteria['token']], $productDescriptionFilter);
             } else if (!empty($request->productCriteria['ui'])) {
                 //$productListQuery = new Query\Product\GetListByUiList([$request->productCriteria['ui']], $response->region->id);
-//                $productDescriptionListQuery = new Query\Product\GetDescriptionListByUiList([$request->productCriteria['ui']], $productDescriptionFilter);
+                //$productDescriptionListQuery = new Query\Product\GetDescriptionListByUiList([$request->productCriteria['ui']], $productDescriptionFilter);
             }
             if (!$productListQuery) {
                 throw new \Exception('Неверный критерий для получения товара');
@@ -210,10 +210,14 @@ namespace EnterAggregator\Controller {
                 $relatedDescriptionListQuery = new Query\Product\GetDescriptionListByIdList(
                     $relatedIds,
                     [
-                        'media'    => true,
-                        'category' => true,
-                        'label'    => true,
-                        'brand'    => true,
+                        'trustfactor' => false,
+                        'media'       => true,
+                        'category'    => true,
+                        'label'       => true,
+                        'brand'       => true,
+                        'property'    => true,
+                        'tag'         => false,
+                        'seo'         => false,
                     ]
                 );
                 $curl->prepare($relatedDescriptionListQuery);
