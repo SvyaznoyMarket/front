@@ -24,7 +24,13 @@ namespace EnterMobileApplication\Controller\Order {
         {
             $config = $this->getConfig();
             $curl = $this->getCurl();
+            $cartRepository = new Repository\Cart();
 
+            // ид региона
+            $regionId = is_string($request->query['regionId']) ? $request->query['regionId'] : null;
+            if (!$regionId) {
+                throw new \Exception('Не передан regionId', Http\Response::STATUS_BAD_REQUEST);
+            }
             // токен для получения заказа
             $accessToken = is_string($request->query['accessToken']) ? $request->query['accessToken'] : null;
             if (!$accessToken) {
@@ -63,6 +69,18 @@ namespace EnterMobileApplication\Controller\Order {
                 throw new \Exception('Заказ не найден', Http\Response::STATUS_NOT_FOUND);
             }
 
+            $cart = call_user_func(function() use (&$order, &$cartRepository) {
+                $return = new Model\Cart();
+                foreach ($order->product as $orderProduct) {
+                    $cartRepository->setProductForObject($return, new Model\Cart\Product(['id' => $orderProduct->id, 'quantity' => $orderProduct->quantity]));
+                }
+
+                return $return;
+            });
+
+            $paymentGroupQuery = new Query\PaymentGroup\GetList($regionId, $cart);
+            $curl->prepare($paymentGroupQuery);
+
             // пользователь
             $user = null;
             try {
@@ -73,6 +91,35 @@ namespace EnterMobileApplication\Controller\Order {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['controller']]);
             }
 
+            $curl->execute();
+
+            $action = call_user_func(function() use (&$paymentGroupQuery, &$order) {
+                $data = [];
+                try {
+                    $data = $paymentGroupQuery->getResult();
+                } catch (\Exception $e) {
+                    $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
+                }
+
+                foreach ($data as $item) {
+                    if (!isset($item['payment_methods'][0])) continue;
+
+                    foreach ($item['payment_methods'] as $methodItem) {
+                        if (
+                            ((string)$methodItem['id'] !== $order->paymentMethodId)
+                            || empty($methodItem['available_actions'])
+                            || !is_array($methodItem['available_actions'])
+                        ) {
+                            continue;
+                        }
+
+                        return reset($methodItem['available_actions']);
+                    }
+                }
+
+                return null;
+            });
+
             $paymentConfigQuery = new Query\Payment\GetConfig(
                 $paymentMethodId,
                 $order->id,
@@ -80,6 +127,11 @@ namespace EnterMobileApplication\Controller\Order {
                     'back_ref' => $successUrl,
                     'email'    => false && $user ? $user->email : null,
                 ]
+                + (
+                    !empty($action['alias'])
+                    ? ['action_alias' => $action['alias']]
+                    : []
+                )
             );
             $paymentConfigQuery->setTimeout(8 * $config->corePrivateService->timeout);
             $curl->prepare($paymentConfigQuery);
