@@ -41,10 +41,15 @@ namespace EnterMobileApplication\Controller\Order {
             if (!$paymentMethodId) {
                 throw new \Exception('Не передан paymentMethodId', Http\Response::STATUS_BAD_REQUEST);
             }
-            // url
+            // success url
             $successUrl = is_string($request->query['successUrl']) ? $request->query['successUrl'] : null;
             if (!$successUrl) {
-                //throw new \Exception('Не передан successUrl', Http\Response::STATUS_BAD_REQUEST);
+                throw new \Exception('Не передан successUrl', Http\Response::STATUS_BAD_REQUEST);
+            }
+            // fail url
+            $failUrl = is_string($request->query['failUrl']) ? $request->query['failUrl'] : null;
+            if (!$failUrl) {
+                throw new \Exception('Не передан failUrl', Http\Response::STATUS_BAD_REQUEST);
             }
             // токен пользователя
             $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
