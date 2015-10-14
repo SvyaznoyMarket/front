@@ -43,7 +43,7 @@ namespace EnterTerminal\Controller {
             $descriptionListQuery = null;
             $productListQuery = null;
             if ((bool)$productsById) {
-                $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $regionId, ['model' => false, 'related' => false]);
+                $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $regionId, ['related' => false]);
                 $curl->prepare($productListQuery);
 
                 $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(

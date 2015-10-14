@@ -2,20 +2,9 @@ define(
     ['jquery', 'jquery.scrollTo'],
     function ($) {
 
-        var chooseModelWrap = $('.chooseModel'),
-            chooseModelMoreLink = chooseModelWrap.find('.chooseModel_moreLink'),
-            chooseModelMoreBox = chooseModelWrap.find('.chooseModel_moreBox'),
-            chooseModelMoreBoxDown = chooseModelWrap.find('.chooseModel_moreBox.more'),
-
-            chooseModelMoreModel = function chooseModelMoreModel() {
-                chooseModelMoreBox.slideToggle('800');
-                chooseModelMoreLink.toggleClass('more');
-            },
-            $snapContent = $('#wrapper');
-            ;
+        var $snapContent = $('#wrapper');
         // end of vars
 
-        chooseModelMoreLink.click(chooseModelMoreModel);
 
         /**
          * Навигация сайта, показывается при клике по иконке .navIco

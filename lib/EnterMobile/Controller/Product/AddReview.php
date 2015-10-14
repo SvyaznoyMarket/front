@@ -34,7 +34,7 @@ class AddReview {
             $review->{$key} = $value;
         }
 
-        $productItemQuery = new Query\Product\GetItemById($productId, $config->region->defaultId, ['model' => false, 'related' => false]);
+        $productItemQuery = new Query\Product\GetItemById($productId, $config->region->defaultId, ['related' => false]);
         $curl->prepare($productItemQuery);
 
         $curl->execute();

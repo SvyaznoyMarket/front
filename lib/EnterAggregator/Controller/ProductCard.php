@@ -204,6 +204,9 @@ namespace EnterAggregator\Controller {
             );
             $curl->prepare($descriptionListQuery);
 
+            $productModelListQuery = new Query\Product\Model\GetListByUiList([$response->product->ui], $response->region->id);
+            $curl->prepare($productModelListQuery);
+
             // запрос статических данных связанных товаров
             $relatedDescriptionListQuery = null;
             if ($relatedIds) {
@@ -295,6 +298,13 @@ namespace EnterAggregator\Controller {
                 $productRepository->setDescriptionForListByListQuery(
                     $productsById,
                     [$relatedDescriptionListQuery]
+                );
+            }
+
+            if ($productModelListQuery) {
+                $productRepository->setModelForListByListQueryList(
+                    [$response->product],
+                    [$productModelListQuery]
                 );
             }
 

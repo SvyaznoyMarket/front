@@ -143,7 +143,7 @@ namespace EnterAggregator\Controller\Cart {
                     }
                 }
 
-                $productListQuery = new Query\Product\GetListByIdList($productIds, $response->region->id, ['model' => false, 'related' => false]);
+                $productListQuery = new Query\Product\GetListByIdList($productIds, $response->region->id, ['related' => false]);
                 $curl->prepare($productListQuery);
 
                 $curl->execute();

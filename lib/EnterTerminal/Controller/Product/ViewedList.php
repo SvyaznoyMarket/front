@@ -54,7 +54,7 @@ class ViewedList {
             $productListQueries = [];
             $descriptionListQueries = [];
             foreach (array_chunk($productUis, $config->curl->queryChunkSize) as $uisInChunk) {
-                $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $region->id, ['model' => false, 'related' => false]);
+                $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $region->id, ['related' => false]);
                 $curl->prepare($productListQuery);
                 $productListQueries[] = $productListQuery;
 

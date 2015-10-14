@@ -65,7 +65,7 @@ class SetProductList {
             }
 
             if ($productsById) {
-                $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id, ['model' => false, 'related' => false]);
+                $productListQuery = new Query\Product\GetListByIdList(array_keys($productsById), $region->id, ['related' => false]);
                 $curl->prepare($productListQuery);
                 $curl->execute();
 
@@ -102,7 +102,7 @@ class SetProductList {
 
             $cartProductListQuery = null;
             if ($cart->product) {
-                $cartProductListQuery = new \EnterQuery\Product\GetListByUiList(array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), $region->id, ['model' => false, 'related' => false]);
+                $cartProductListQuery = new \EnterQuery\Product\GetListByUiList(array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), $region->id, ['related' => false]);
                 $curl->prepare($cartProductListQuery);
             }
 

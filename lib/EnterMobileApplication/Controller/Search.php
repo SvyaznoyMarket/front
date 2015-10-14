@@ -130,7 +130,7 @@ class Search {
         $descriptionListQuery = null;
         $productListQuery = null;
         if ($searchResult->productIds) {
-            $productListQuery = new Query\Product\GetListByIdList($searchResult->productIds, $region->id, ['model' => false, 'related' => false]);
+            $productListQuery = new Query\Product\GetListByIdList($searchResult->productIds, $region->id, ['related' => false]);
             $curl->prepare($productListQuery);
 
             $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
