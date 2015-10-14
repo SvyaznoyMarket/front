@@ -61,7 +61,7 @@ class DeleteProductList {
         // Удаление товаров
         call_user_func(function() use(&$ids, &$uis, &$quantity, &$user, &$region, &$curl) {
             if ($ids) {
-                $productListQuery = new \EnterQuery\Product\GetListByIdList($ids, $region->id, ['model' => false, 'related' => false]);
+                $productListQuery = new \EnterQuery\Product\GetListByIdList($ids, $region->id, ['related' => false]);
                 $curl->prepare($productListQuery);
                 $curl->execute();
 
@@ -87,7 +87,7 @@ class DeleteProductList {
 
             $cartProductListQuery = null;
             if ($cart->product) {
-                $cartProductListQuery = new \EnterQuery\Product\GetListByUiList(array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), $region->id, ['model' => false, 'related' => false]);
+                $cartProductListQuery = new \EnterQuery\Product\GetListByUiList(array_map(function (\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product), $region->id, ['related' => false]);
                 $curl->prepare($cartProductListQuery);
             }
 

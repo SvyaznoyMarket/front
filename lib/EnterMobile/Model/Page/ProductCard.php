@@ -88,12 +88,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
         public $similarSlider;
         /** @var Product\ReviewBlock|null */
         public $reviewBlock;
-        /** @var bool */
-        public $hasModel;
         /** @var Product\ModelBlock|null */
         public $modelBlock;
-        /** @var Product\ModelBlock|null */
-        public $moreModelBlock;
         /** @var Partial\DirectCredit|null */
         public $credit;
         /** @var Product\Brand|null */
@@ -209,8 +205,6 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product {
     class ModelBlock {
         /** @var ModelBlock\Property[] */
         public $properties = [];
-        /** @var bool */
-        public $isImage;
         /** @var string */
         public $shownValue;
     }
@@ -307,8 +301,6 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product\ModelBlock {
     class Property {
         /** @var string */
         public $name;
-        /** @var bool */
-        public $isImage;
         /** @var Property\Option[] */
         public $options = [];
     }
@@ -322,9 +314,5 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product\ModelBlock\Property
         public $url;
         /** @var bool */
         public $isActive;
-        /** @var string */
-        public $image;
-        /** @var string */
-        public $unit;
     }
 }

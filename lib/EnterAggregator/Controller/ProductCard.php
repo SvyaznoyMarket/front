@@ -46,21 +46,26 @@ namespace EnterAggregator\Controller {
                 'tag'         => true,
                 'seo'         => true,
             ];
+            $productModelListQuery = null;
             if (!empty($request->productCriteria['id'])) {
                 $productListQuery = new Query\Product\GetListByIdList([$request->productCriteria['id']], $response->region->id);
                 $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList([$request->productCriteria['id']], $productDescriptionFilter);
+                $productModelListQuery = new Query\Product\Model\GetListByIdList([$request->productCriteria['id']], $response->region->id);
             } else if (!empty($request->productCriteria['token'])) {
                 $productListQuery = new Query\Product\GetListByTokenList([$request->productCriteria['token']], $response->region->id);
                 $productDescriptionListQuery = new Query\Product\GetDescriptionListByTokenList([$request->productCriteria['token']], $productDescriptionFilter);
+                $productModelListQuery = new Query\Product\Model\GetListByTokenList([$request->productCriteria['token']], $response->region->id);
             } else if (!empty($request->productCriteria['ui'])) {
                 //$productListQuery = new Query\Product\GetListByUiList([$request->productCriteria['ui']], $response->region->id);
-//                $productDescriptionListQuery = new Query\Product\GetDescriptionListByUiList([$request->productCriteria['ui']], $productDescriptionFilter);
+                //$productDescriptionListQuery = new Query\Product\GetDescriptionListByUiList([$request->productCriteria['ui']], $productDescriptionFilter);
+//                $productModelListQuery = new Query\Product\Model\GetListByUiList([$request->productCriteria['ui']], $response->region->id);
             }
             if (!$productListQuery) {
                 throw new \Exception('Неверный критерий для получения товара');
             }
             $curl->prepare($productListQuery);
             $curl->prepare($productDescriptionListQuery);
+            $curl->prepare($productModelListQuery);
 
             // запрос пользователя
             $userItemQuery = null;
@@ -78,6 +83,13 @@ namespace EnterAggregator\Controller {
 
             // товар
             $response->product = $productRepository->getObjectByQueryList([$productListQuery], [$productDescriptionListQuery]);
+
+            if ($productModelListQuery) {
+                $productRepository->setModelForListByListQueryList(
+                    [$response->product],
+                    [$productModelListQuery]
+                );
+            }
 
             if (!$response->product) {
                 return $response;
@@ -282,7 +294,7 @@ namespace EnterAggregator\Controller {
                 /** @var Model\Product $iProduct */
                 $productsById[$iProduct->id] = $iProduct;
             }
-            
+
             // доставка товара
             if ($deliveryListQuery) {
                 $productRepository->setDeliveryForObjectListByQuery($productsById, $deliveryListQuery);
