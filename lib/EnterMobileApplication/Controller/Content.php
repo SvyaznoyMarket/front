@@ -80,7 +80,7 @@ namespace EnterMobileApplication\Controller {
                         $curl->prepare($matches[$key]['query']);
                     }
                     else if (0 === strpos($path, '/product/')) {
-                        $matches[$key]['query'] = new Query\Product\GetItemByToken($contentRepository->getTokenByPath($path), $regionId, ['model' => false, 'related' => false]);
+                        $matches[$key]['query'] = new Query\Product\GetItemByToken($contentRepository->getTokenByPath($path), $regionId, ['related' => false]);
                         $curl->prepare($matches[$key]['query']);
                     }
                 }

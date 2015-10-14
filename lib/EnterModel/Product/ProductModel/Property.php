@@ -9,24 +9,18 @@ class Property {
     public $id = '';
     /** @var string */
     public $name = '';
-    /** @var string */
-    public $unit = '';
-    /** @var bool */
-    public $isImage = false;
     /** @var Model\Product\ProductModel\Property\Option[] */
     public $options = [];
 
     /**
-     * @param array $data
+     * @param mixed $data
      */
-    public function __construct(array $data = []) {
-        if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
-        if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
-        if (array_key_exists('unit', $data)) $this->unit = (string)$data['unit'];
-        if (array_key_exists('is_image', $data)) $this->isImage = (bool)$data['is_image'];
-        if (isset($data['option'][0])) {
-            foreach ($data['option'] as $optionItem) {
-                $this->options[] = new Model\Product\ProductModel\Property\Option($optionItem);
+    public function __construct($data = []) {
+        if (isset($data['property']['id'])) $this->id = (string)$data['property']['id'];
+        if (isset($data['property']['name'])) $this->name = (string)$data['property']['name'];
+        if (isset($data['items']) && is_array($data['items'])) {
+            foreach ($data['items'] as $item) {
+                $this->options[] = new Model\Product\ProductModel\Property\Option($item);
             }
         }
     }
