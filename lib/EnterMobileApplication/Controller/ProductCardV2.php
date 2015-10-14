@@ -237,7 +237,29 @@ namespace EnterMobileApplication\Controller {
                         ];
                     }, $controllerResponse->product->labels),
                     'media' => $productRepository->getMedia($controllerResponse->product),
-                    'model' => $controllerResponse->product->model,
+                    'model' => $controllerResponse->product->model ? [
+                        'properties' => $controllerResponse->product->model->property ? [
+                            [
+                                'id' => $controllerResponse->product->model->property->id,
+                                'name' => $controllerResponse->product->model->property->name,
+                                'unit' => '',
+                                'isImage' => false,
+                                'options' => array_map(function(\EnterModel\Product\ProductModel\Property\Option $option) {
+                                    return [
+                                        'value' => $option->value,
+                                        'product' => $option->product ? [
+                                            'id' => $option->product->id,
+                                            'name' => $option->product->name,
+                                            'link' => $option->product->link,
+                                            'token' => $option->product->token,
+                                            'image' => '',
+                                        ] : null,
+                                        'shownValue' => $option->value,
+                                    ];
+                                }, $controllerResponse->product->model->property->options),
+                            ]
+                        ] : [],
+                    ] : null,
                     'line' => $controllerResponse->product->line,
                     'nearestDeliveries' => call_user_func(function() use($controllerResponse) {
                         if (!is_array($controllerResponse->product->nearestDeliveries)) {

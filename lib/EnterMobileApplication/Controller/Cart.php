@@ -62,7 +62,7 @@ namespace EnterMobileApplication\Controller {
                 $cartProductDescriptionListQuery = null;
                 if ($cart->product) {
                     $productUis = array_map(function(\EnterModel\Cart\Product $product) { return $product->ui; }, $cart->product);
-                    $cartProductListQuery = new \EnterQuery\Product\GetListByUiList($productUis, $region->id, ['model' => false, 'related' => false]);
+                    $cartProductListQuery = new \EnterQuery\Product\GetListByUiList($productUis, $region->id, ['related' => false]);
                     $cartProductDescriptionListQuery = new Query\Product\GetDescriptionListByUiList($productUis, ['media' => true, 'label' => true]);
                     $curl->prepare($cartProductListQuery);
                     $curl->prepare($cartProductDescriptionListQuery);

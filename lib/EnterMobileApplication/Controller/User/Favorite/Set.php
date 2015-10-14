@@ -37,7 +37,7 @@ class Set {
             $userItemQuery = new Query\User\GetItemByToken($token);
             $curl->prepare($userItemQuery);
 
-            $productListQuery = new Query\Product\GetListByIdList([$productId], $config->region->defaultId, ['model' => false, 'related' => false]);
+            $productListQuery = new Query\Product\GetListByIdList([$productId], $config->region->defaultId, ['related' => false]);
             $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList([$productId]);
             $curl->prepare($productListQuery);
             $curl->prepare($productDescriptionListQuery);
