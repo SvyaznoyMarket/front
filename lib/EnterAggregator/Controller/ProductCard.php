@@ -206,6 +206,9 @@ namespace EnterAggregator\Controller {
             );
             $curl->prepare($descriptionListQuery);
 
+            $productModelListQuery = new Query\Product\Model\GetListByUiList([$response->product->ui], $response->region->id);
+            $curl->prepare($productModelListQuery);
+
             // запрос настроек каталога
             $categoryItemQuery = null;
             if ($response->product->category && $response->product->category->ui) {
@@ -332,6 +335,13 @@ namespace EnterAggregator\Controller {
                 ],
                 $descriptionListQuery
             );
+
+            if ($productModelListQuery) {
+                $productRepository->setModelForListByListQueryList(
+                    [$response->product],
+                    [$productModelListQuery]
+                );
+            }
 
             // доступность кредита
             $response->hasCredit =

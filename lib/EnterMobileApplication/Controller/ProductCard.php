@@ -48,7 +48,74 @@ namespace EnterMobileApplication\Controller {
 
             // ответ
             $response = new Response();
-            $response->product = $controllerResponse->product;
+            $response->product = $controllerResponse->product ? [
+                'id' => $controllerResponse->product->id,
+                'ui' => $controllerResponse->product->ui,
+                'wikimartId' => $controllerResponse->product->wikimartId,
+                'article' => $controllerResponse->product->article,
+                'barcode' => $controllerResponse->product->barcode,
+                'typeId' => $controllerResponse->product->typeId,
+                'webName' => $controllerResponse->product->webName,
+                'namePrefix' => $controllerResponse->product->namePrefix,
+                'name' => $controllerResponse->product->name,
+                'token' => $controllerResponse->product->token,
+                'link' => $controllerResponse->product->link,
+                'description' => $controllerResponse->product->description,
+                'tagline' => $controllerResponse->product->tagline,
+                'isBuyable' => $controllerResponse->product->isBuyable,
+                'isInShopOnly' => $controllerResponse->product->isInShopOnly,
+                'isInShopStockOnly' => $controllerResponse->product->isInShopStockOnly,
+                'isInShopShowroomOnly' => $controllerResponse->product->isInShopShowroomOnly,
+                'isInWarehouse' => $controllerResponse->product->isInWarehouse,
+                'isKitLocked' => $controllerResponse->product->isKitLocked,
+                'category' => $controllerResponse->product->category,
+                'brand' => $controllerResponse->product->brand,
+                'properties' => $controllerResponse->product->properties,
+                'propertyGroups' => $controllerResponse->product->propertyGroups,
+                'stock' => $controllerResponse->product->stock,
+                'shopStates' => $controllerResponse->product->shopStates,
+                'price' => $controllerResponse->product->price,
+                'oldPrice' => $controllerResponse->product->oldPrice,
+                'labels' => $controllerResponse->product->labels,
+                'media' => $controllerResponse->product->media,
+                'rating' => $controllerResponse->product->rating,
+                'model' => $controllerResponse->product->model ? [
+                    'properties' => $controllerResponse->product->model->property ? [
+                        [
+                            'id' => $controllerResponse->product->model->property->id,
+                            'name' => $controllerResponse->product->model->property->name,
+                            'unit' => null,
+                            'isImage' => false,
+                            'options' => array_map(function(\EnterModel\Product\ProductModel\Property\Option $option) {
+                                return [
+                                    'value' => $option->value,
+                                    'product' => $option->product ? [
+                                        'id' => $option->product->id,
+                                        'name' => $option->product->name,
+                                        'link' => $option->product->link,
+                                        'token' => $option->product->token,
+                                        'image' => '',
+                                    ] : null,
+                                    'shownValue' => $option->value,
+                                ];
+                            }, $controllerResponse->product->model->property->options),
+                        ]
+                    ] : [],
+                ] : null,
+                'line' => $controllerResponse->product->line,
+                'nearestDeliveries' => $controllerResponse->product->nearestDeliveries,
+                'accessoryIds' => $controllerResponse->product->accessoryIds,
+                'relatedIds' => $controllerResponse->product->relatedIds,
+                'relation' => $controllerResponse->product->relation,
+                'kit' => $controllerResponse->product->kit,
+                'reviews' => $controllerResponse->product->reviews,
+                'trustfactors' => $controllerResponse->product->trustfactors,
+                'partnerOffers' => $controllerResponse->product->partnerOffers,
+                'availableStoreQuantity' => $controllerResponse->product->availableStoreQuantity,
+                'favorite' => $controllerResponse->product->favorite,
+                'sender' => $controllerResponse->product->sender,
+                'ga' => $controllerResponse->product->ga,
+            ] : null;
 
             return new Http\JsonResponse($response);
         }
@@ -59,7 +126,7 @@ namespace EnterMobileApplication\Controller\ProductCard {
     use EnterModel as Model;
 
     class Response {
-        /** @var Model\Product|null */
+        /** @var array|null */
         public $product;
     }
 }
