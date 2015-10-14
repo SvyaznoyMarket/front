@@ -23,6 +23,7 @@ class GetItemById extends Query {
         $this->url->query = [
             'select_type' => 'id',
             'id'          => $id,
+            'withModels'  => 0,
         ];
         if ($regionId) {
             $this->url->query['geo_id'] = $regionId;

@@ -23,6 +23,7 @@ class GetItemByToken extends Query {
         $this->url->query = [
             'select_type' => 'slug',
             'slug'        => $token,
+            'withModels'  => 0,
         ];
         if ($regionId) {
             $this->url->query['geo_id'] = $regionId;

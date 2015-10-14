@@ -229,7 +229,7 @@ namespace EnterAggregator\Controller {
             $productListQueries = [];
             if ($response->productUiPager && $response->productUiPager->uis) {
                 foreach (array_chunk($response->productUiPager->uis, $config->curl->queryChunkSize) as $uisInChunk) {
-                    $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $response->region->id, ['model' => false, 'related' => false, 'availability' => false]);
+                    $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $response->region->id, ['related' => false, 'availability' => false]);
                     $curl->prepare($productListQuery);
                     $productListQueries[] = $productListQuery;
                 }
