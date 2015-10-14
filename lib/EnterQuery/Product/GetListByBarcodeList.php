@@ -23,6 +23,7 @@ class GetListByBarcodeList extends Query {
         $this->url->query = [
             'select_type' => 'bar_code',
             'bar_code'    => $barcodes,
+            'withModels'  => 0,
         ];
         if ($regionId) {
             $this->url->query['geo_id'] = $regionId;
