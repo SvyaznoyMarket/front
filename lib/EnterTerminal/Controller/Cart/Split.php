@@ -199,6 +199,12 @@ namespace EnterTerminal\Controller\Cart {
                 }
                 unset($possibleDay);
             }
+
+            $paymentMethodsById = [];
+            foreach ($response->split->paymentMethods as $paymentMethod) {
+                $paymentMethodsById[$paymentMethod->id] = $paymentMethod;
+            }
+            $response->split->paymentMethods = $paymentMethodsById;
         }
     }
 }
