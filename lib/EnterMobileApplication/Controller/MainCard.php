@@ -69,7 +69,7 @@ namespace EnterMobileApplication\Controller {
             $productListQueries = [];
             $descriptionListQueries = [];
             foreach (array_chunk(array_values(array_filter(array_unique(array_merge($popularProductIds, $viewedProductIds)))), $config->curl->queryChunkSize) as $idsInChunk) {
-                $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id, ['model' => false, 'related' => false]);
+                $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id, ['related' => false]);
                 $curl->prepare($productListQuery);
                 $productListQueries[] = $productListQuery;
 

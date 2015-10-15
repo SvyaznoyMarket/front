@@ -37,7 +37,7 @@ namespace EnterAggregator\Controller\Product {
             $region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
             // запрос товара
-            $productListQuery = new Query\Product\GetListByIdList($request->productIds, $region->id, ['model' => false, 'related' => false]);
+            $productListQuery = new Query\Product\GetListByIdList($request->productIds, $region->id, ['related' => false]);
             $productDescriptionListQuery = new Query\Product\GetDescriptionListByIdList($request->productIds);
 
             $curl->prepare($productListQuery);
@@ -123,7 +123,7 @@ namespace EnterAggregator\Controller\Product {
             $descriptionListQueries = [];
             $productListQueries = [];
             foreach (array_chunk($recommendedIds, $config->curl->queryChunkSize) as $idsInChunk) {
-                $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id, ['model' => true, 'related' => false]);
+                $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id, ['related' => false]);
                 $productListQuery->setTimeout(1.5 * $config->coreService->timeout);
                 $curl->prepare($productListQuery);
                 $productListQueries[] = $productListQuery;

@@ -81,7 +81,7 @@ namespace EnterMobileApplication\Controller {
                     }
                     else if (0 === strpos($path, '/product/')) {
                         $token = $contentRepository->getTokenByPath($path);
-                        $matches[$key]['query'] = new Query\Product\GetListByTokenList([$token], $regionId, ['model' => false, 'related' => false]);
+                        $matches[$key]['query'] = new Query\Product\GetListByTokenList([$token], $regionId, ['related' => false]);
                         $matches[$key]['productDescriptionListQuery'] = new Query\Product\GetDescriptionListByTokenList([$token]);
                         $curl->prepare($matches[$key]['query']);
                         $curl->prepare($matches[$key]['productDescriptionListQuery']);
