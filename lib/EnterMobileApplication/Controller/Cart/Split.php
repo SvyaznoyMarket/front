@@ -66,7 +66,7 @@ namespace EnterMobileApplication\Controller\Cart {
 
                 if (isset($request->data['user']['bonusCards'][0])) {
                     $bonusCardData = $request->data['user']['bonusCards'];
-                } else if ($changeData['user']['bonusCards'][0]) {
+                } else if (isset($changeData['user']['bonusCards'][0])) {
                     $bonusCardData = $changeData['user']['bonusCards'];
                 }
 
