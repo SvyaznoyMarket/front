@@ -70,7 +70,7 @@ class CreatePacketBySplit extends Query {
                 'bonus_card_number'   => ($split->user && $split->user->bonusCardNumber) ? $split->user->bonusCardNumber : null,
                 'delivery_type_id'    => $delivery ? $delivery->modeId : null, // ATTENTION
                 'delivery_type_token' => $delivery ? $delivery->methodToken : null,
-                'delivery_price'      => $delivery ? $delivery->price : null,
+                'delivery_price'      => (int)($delivery ? $delivery->price : 0), // MAPI-158
                 'delivery_period'     => ($delivery && $delivery->interval) ? [$delivery->interval->from, $delivery->interval->to] : null,
                 'delivery_date'       => $deliveryDate ? $deliveryDate->format('Y-m-d') : null,
                 'ip'                  => $split->clientIp,
