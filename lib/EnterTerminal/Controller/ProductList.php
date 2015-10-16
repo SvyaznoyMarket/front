@@ -55,7 +55,7 @@ class ProductList {
         $productListQueries = [];
         $descriptionListQueries = [];
         foreach (array_chunk($productIds, $config->curl->queryChunkSize) as $idsInChunk) {
-            $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id, ['model' => false, 'related' => false]);
+            $productListQuery = new Query\Product\GetListByIdList($idsInChunk, $region->id, ['related' => false]);
             $curl->prepare($productListQuery);
             $productListQueries[] = $productListQuery;
 

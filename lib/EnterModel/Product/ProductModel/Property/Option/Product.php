@@ -3,6 +3,7 @@
 namespace EnterModel\Product\ProductModel\Property\Option;
 
 class Product {
+    public $ui = '';
     /** @var string */
     public $id = '';
     /** @var string */
@@ -11,17 +12,15 @@ class Product {
     public $link = '';
     /** @var string */
     public $token = '';
-    /** @var string */
-    public $image = '';
 
     /**
-     * @param array $data
+     * @param mixed $data
      */
-    public function __construct(array $data = []) {
+    public function __construct($data = []) {
+        if (array_key_exists('uid', $data)) $this->ui = (string)$data['uid'];
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
-        if (array_key_exists('link', $data)) $this->link = rtrim((string)$data['link'], '/');
-        if (array_key_exists('token', $data)) $this->token = (string)$data['token'];
-        if (array_key_exists('media_image', $data)) $this->image = (string)$data['media_image'];
+        if (array_key_exists('url', $data)) $this->link = (string)$data['url'];
+        if (array_key_exists('slug', $data)) $this->token = (string)$data['slug'];
     }
 }
