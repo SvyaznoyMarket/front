@@ -21,6 +21,8 @@ define(
                 center: [lat, long],
                 zoom: 15,
                 controls: []
+            }, {
+                suppressObsoleteBrowserNotifier: true
             });
 
             yaMap.geoObjects.add(new ymaps.Placemark([lat, long]));
