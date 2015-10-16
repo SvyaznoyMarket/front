@@ -65,9 +65,12 @@ class GetList {
         $partners = [];
 
         $parsedReferer = (isset($request->server['HTTP_REFERER'])) ? parse_url($request->server['HTTP_REFERER']) : false;
-        parse_str($parsedReferer['query'], $backLink);
 
-        $redirectTo = $backLink['redirect_to'];
+        if (isset($parsedReferer['query'])) {
+            parse_str($parsedReferer['query'], $backLink);
+            $redirectTo = isset($backLink['redirect_to']) ? $backLink['redirect_to'] : '';
+        }
+
 
         foreach ($result['partners'] as $key => $partner) {
             $partnerMedia = $pointRepository->getMedia($partner['slug'], ['logo', 'marker']);
