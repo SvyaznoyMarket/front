@@ -11,10 +11,12 @@
 
                 <div class="shop-snippet-info table_cell">
                     {{#subway}}
-                        <div class="shop-snippet-metro">
-                            <span class="shop-snippet-metro__bullet" style="background: {{line.color}};"></span>
-                            <span class="shop-snippet-metro__text">Метро {{name}}</span>
-                        </div>
+                        {{#name}}
+                            <div class="shop-snippet-metro">
+                                <span class="shop-snippet-metro__bullet" style="background: {{line.color}};"></span>
+                                <span class="shop-snippet-metro__text">Метро {{name}}</span>
+                            </div>
+                        {{/name}}
                     {{/subway}}
 
                     <div class="shop-snippet-address">
