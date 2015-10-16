@@ -175,7 +175,8 @@ define(
                     iconLayout: 'default#image',
                     iconImageHref: currentPoint.marker,
                     balloonContentLayout: BalloonContentLayout,
-                    balloonPanelMaxMapArea: 0
+                    balloonPanelMaxMapArea: 0,
+                    hideIconOnBalloonOpen: false
                 }));
 
             }
