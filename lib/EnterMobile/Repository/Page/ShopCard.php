@@ -74,6 +74,7 @@ class ShopCard {
             'carWay' => isset($point['way_auto']) ? $helper->unescape(strip_tags($point['way_auto'])) : '',
             'images' => $images,
             'logo' => (new \EnterRepository\Media())->getSourceObjectByList($partnerMedia->photos, 'logo', '100x100')->url,
+            'marker' => (new \EnterRepository\Media())->getSourceObjectByList($partnerMedia->photos, 'marker', '31x40')->url
         ];
 
         $page->content->pointDescription = $result;

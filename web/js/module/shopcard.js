@@ -16,6 +16,7 @@ define(
 
             var lat = $shopMap.data('lat');
             var long = $shopMap.data('long');
+            var marker = $shopMap.data('marker');
 
             yaMap = new ymaps.Map("shop-map", {
                 center: [lat, long],
@@ -25,7 +26,13 @@ define(
                 suppressObsoleteBrowserNotifier: true
             });
 
-            yaMap.geoObjects.add(new ymaps.Placemark([lat, long]));
+            yaMap.geoObjects.add(new ymaps.Placemark(
+                [lat, long],
+                {},
+                {
+                    iconLayout: 'default#image',
+                    iconImageHref: marker
+                }));
 
             yaMap.container.fitToViewport();
         }
