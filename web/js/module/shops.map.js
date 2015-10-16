@@ -102,6 +102,8 @@ define(
 
                     if (redrawMapPoints) {
                         placePoints(result.data.points);
+                    } else {
+                        yaMap.setZoom(14);
                     }
                 }
             });
