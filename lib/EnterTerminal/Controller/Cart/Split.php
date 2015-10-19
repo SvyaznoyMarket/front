@@ -189,9 +189,9 @@ namespace EnterTerminal\Controller\Cart {
                     }
                 }
 
-                $response->pointFilters[$order->blockName]['type'] = array_values($response->pointFilters[$order->blockName]['type']);
-                $response->pointFilters[$order->blockName]['cost'] = array_values($response->pointFilters[$order->blockName]['cost']);
-                $response->pointFilters[$order->blockName]['nearestDay'] = array_values($response->pointFilters[$order->blockName]['nearestDay']);
+                $response->pointFilters[$order->blockName]['type'] = $response->pointFilters[$order->blockName]['type'] ? array_values($response->pointFilters[$order->blockName]['type']) : [];
+                $response->pointFilters[$order->blockName]['cost'] = $response->pointFilters[$order->blockName]['cost'] ? array_values($response->pointFilters[$order->blockName]['cost']) : [];
+                $response->pointFilters[$order->blockName]['nearestDay'] = $response->pointFilters[$order->blockName]['nearestDay'] ? array_values($response->pointFilters[$order->blockName]['nearestDay']) : [];
 
                 $possibleDay = null;
                 foreach ($order->possibleDays as &$possibleDay) {
