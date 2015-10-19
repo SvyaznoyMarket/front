@@ -47,17 +47,17 @@
     {{>partial/javascript}}
 </head>
 
-<body{{#bodyClass}} class="{{bodyClass}}"{{/bodyClass}} data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="{{&dataUser}}" data-cart="{{&dataCart}}" data-widget="{{&dataWidget}}">
+<body class="{{#bodyClass}}{{bodyClass}}{{/bodyClass}} {{#deliveryBanner}}contain-top-banner{{/deliveryBanner}}" data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-user="{{&dataUser}}" data-cart="{{&dataCart}}" data-widget="{{&dataWidget}}">
     {{>partial/counters}}
-
-    {{#deliveryBanner}}
-        {{>partial/delivery-banner}}
-    {{/deliveryBanner}}
 
     {{>partial/menu}}
     <div class="menu-overlay js-fader"></div>
 
     <div class="page" id="wrapper">
+        {{#deliveryBanner}}
+            {{>partial/delivery-banner}}
+        {{/deliveryBanner}}
+
         {{>partial/header}}
 
         {{#content}}

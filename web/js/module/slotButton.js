@@ -146,8 +146,7 @@ define(
                     $popup.remove(); // Удаляем, т.к. каждый раз создаётся попап с новыми данными (для нового товара)
                 });
                 $contentHidden.css({'opacity' : 1, 'height' : 'auto', 'overflow' : 'visible'});
-                $('.top-banner').css('position', oldHeaderPosition);
-                $header.css('position', oldHeaderPosition);
+                $body.removeClass('body-modal');
                 scrollTo(0);
             }
 
@@ -155,8 +154,7 @@ define(
             $content.append($popup);
             $popup.show();
             $contentHidden.css({'overflow': 'hidden', 'opacity': 0, 'height': 0});
-            $('.top-banner').css('position', 'absolute');
-            $header.css('position', 'absolute');
+            $body.addClass('body-modal');
 
             $close.click(function(e) {
                 e.preventDefault();

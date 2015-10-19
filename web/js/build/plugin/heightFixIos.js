@@ -1,1 +1,152 @@
-define(["jquery","underscore"],function(n){var i=function(){return{init:function(){o.init(),r.init(),t.init(),e.init()}}}(),t=function(){var i=n(".footer"),t=n("body"),o=t.hasClass("noIOS");return{init:function(){i.removeClass("fixed"),o&&t.addClass("noIOS"),n(".content").height()+i.outerHeight()+n(".header").height()<n(window).height()&&"index"!==t.data("module")&&(t.removeClass("noIOS"),i.addClass("fixed"))}}}(),o=function(){var i=["iPad Simulator","iPhone Simulator","iPod Simulator","iPad","iPhone","iPod"],t=function(){for(console.info(navigator.platform);i.length;)if(navigator.platform===i.pop())return!0;return!1};return{init:function(){t()||n("body").addClass("noIOS")}}}(),e=function(){var i=function(){navigator.userAgent.match("CriOS")&&n("body").addClass("criOS")};return{init:function(){i()}}}(),r=function(){var i=function(){var i=n(window).height(),t=n(window).width(),o=n("body");document.documentElement.style.height=n(window).innerHeight+"px",o.removeAttr("style"),0!==document.body.scrollTop,t>i&&o.height(i-20)};return{init:function(){navigator.userAgent.match(/iPad;.*CPU.*OS 7_\d/i)&&window.innerHeight!=document.documentElement.clientHeight?(window.addEventListener("scroll",i,!1),window.addEventListener("orientationchange",function(){i(),t.init()},!1),i(),document.body.style.webkitTransform="translate3d(0,0,0)"):n(window).on("load resize",t.init)}}}();i.init()});
+define(
+    [
+        'jquery', 'underscore'
+    ],
+    function (
+        $, _
+    ) {
+        var
+
+            iOSFix = (function(){
+
+                return {
+                    init : function() {
+
+                        iOS.init();
+
+                        fixViewportHeight.init();
+
+                        //footerFix.init();
+
+                        chromeiOSDetect.init();
+
+                    }
+                }
+            })(),
+
+            /**
+             * фиксация футера, если на странице слишком мало контента
+             */
+
+      //       footerFix = (function(){
+      //           var
+      //               footer = $('.footer'),
+      //               body = $('body'),
+      //               hasNoIosClass = body.hasClass('noIOS');
+
+      //           return {
+      //               init: function() {
+						// footer.removeClass('fixed');
+						// hasNoIosClass && body.addClass('noIOS');
+
+						// if (($('.content').height() + footer.outerHeight() + $('.header').height() < ($(window).height()) && (body.data('module')) !== 'index')) {
+						// 	body.removeClass('noIOS');
+						// 	footer.addClass('fixed');
+						// }
+      //               }
+      //           }
+      //       })(),
+
+            /**
+             * проверка платформы (в iOS делаем css фикс, который не нужен на android)
+             */
+            iOS = (function() {
+
+                var iDevices = [
+                    'iPad Simulator',
+                    'iPhone Simulator',
+                    'iPod Simulator',
+                    'iPad',
+                    'iPhone',
+                    'iPod'
+                    ],
+                    checkIOS = function(){
+                        console.info(navigator.platform);
+
+                        while (iDevices.length) {
+                            if (navigator.platform === iDevices.pop()){ return true; }
+                        }
+
+                        return false;
+                    };
+                return {
+                    init: function(){
+
+                        //check if iOS
+                        if ( !checkIOS() ){
+                            $('body').addClass('noIOS') ;
+                        }
+
+                    }
+                }
+            })(),
+
+            chromeiOSDetect = (function() {
+                var
+                checkChrome = function(){
+                    if(navigator.userAgent.match('CriOS')) {
+                        $('body').addClass('criOS');
+                    }
+                };
+                return {
+                    init: function(){
+                        checkChrome();
+                    }
+                }
+            })(),
+            /**
+             * фиксация бага iOS7(неверный расчет высоты окна) + события на ресайз
+             * (полезно в случаях, когда есть страницы, которые должны  быть вписаны в окно браузера по высоте - например ЛК)
+             */
+            fixViewportHeight = (function() {
+
+                var fixBodyHeight = function(){
+                        var wh = $(window).height(),
+                            ww = $(window).width(),
+
+                            body = $('body');
+
+                        document.documentElement.style.height = $(window).innerHeight + "px";
+                        body.removeAttr('style');
+
+                        if (document.body.scrollTop !== 0) {
+                           // $(window).scrollTo(0, 0);
+                        }
+
+
+                        if (wh < ww){
+                            //landscape position
+                            body.height(wh - 20);
+                        }
+
+                    };
+
+                return {
+                    init: function() {
+
+                        //check if iOS7 & fix body height
+                        if (
+                            navigator.userAgent.match(/iPad;.*CPU.*OS 7_\d/i) &&
+                            window.innerHeight != document.documentElement.clientHeight
+                        ) {
+                            window.addEventListener("scroll", fixBodyHeight, false);
+                            window.addEventListener("orientationchange", function(){
+                                fixBodyHeight();
+                                footerFix.init();
+                            }, //false);
+
+                            fixBodyHeight();
+
+                            document.body.style.webkitTransform = "translate3d(0,0,0)";
+                        } else {
+                            //$(window).on("load resize", footerFix.init);
+                        }
+
+                    }
+                }
+            })()
+            ;
+
+        iOSFix.init();
+
+    });
