@@ -19,17 +19,15 @@ class GetItemByToken extends Query {
      * @param array $view
      */
     public function __construct($token, $regionId = null, $view = []) {
-        $view = array_merge(['model' => true, 'related' => true], $view);
+        $view = array_merge(['related' => true], $view);
 
         $this->url = new Url();
         $this->url->path = 'v2/product/get-v3';
         $this->url->query = [
             'select_type' => 'slug',
             'slug'        => $token,
+            'withModels'  => 0,
         ];
-        if (false === $view['model']) {
-            $this->url->query['withModels'] = 0;
-        }
         if (false === $view['related']) {
             $this->url->query['withRelated'] = 0;
         }

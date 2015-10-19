@@ -37,7 +37,7 @@ class Delete {
             $userItemQuery = new Query\User\GetItemByToken($token);
             $curl->prepare($userItemQuery);
 
-            $productItemQuery = new Query\Product\GetItemById($productId, $config->region->defaultId, ['model' => false, 'related' => false]);
+            $productItemQuery = new Query\Product\GetItemById($productId, $config->region->defaultId, ['related' => false]);
             $curl->prepare($productItemQuery);
 
             $curl->execute();

@@ -453,6 +453,34 @@ class Product {
     }
 
     /**
+     * @param Model\Product[] $products
+     * @param Query[] $modelListQueryList
+     */
+    public function setModelForListByListQueryList(array $products, array $modelListQueryList) {
+        $productsByUi = [];
+        foreach ($products as $product) {
+            $productsByUi[$product->ui] = $product;
+        }
+
+        try {
+            foreach ($modelListQueryList as $modelQuery) {
+                foreach ($modelQuery->getResult() as $modelItem) {
+                    if (!isset($modelItem['uid']) || !isset($productsByUi[$modelItem['uid']])) continue;
+
+                    /** @var Model\Product|null $product */
+                    $product = $productsByUi[$modelItem['uid']];
+
+                    if (!empty($modelItem['model']['property']) && !empty($modelItem['model']['items'])) {
+                        $product->model = new Model\Product\ProductModel($modelItem['model']);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
+        }
+    }
+
+    /**
      * @param string[] $productIds
      * @param Model\Product[] $productsById
      * @param bool $randomize
