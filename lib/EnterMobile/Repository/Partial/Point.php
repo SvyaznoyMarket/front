@@ -43,7 +43,8 @@ class Point {
             'Магазин'           => 'Магазин Enter',
             'Магазин "Связной"' => 'Связной',
             'Постамат'          => 'Постамат PickPoint',
-            'Hermes DPD'        => 'Постамат Hermes-DPD',
+            'Hermes'            => 'Постамат Hermes',
+            'Hermes DPD'        => 'Постамат Hermes',
         ]);
     }
 
@@ -58,7 +59,7 @@ class Point {
                 $return = 'Связной';
                 break;
             case 'hermes':
-                $return = 'Постамат Hermes-DPD';
+                $return = 'Постамат Hermes';
                 break;
             default:
                 $return = 'Магазин Enter';
