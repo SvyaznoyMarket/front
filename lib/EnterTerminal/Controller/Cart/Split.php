@@ -189,9 +189,9 @@ namespace EnterTerminal\Controller\Cart {
                     }
                 }
 
-                $response->pointFilters[$order->blockName]['type'] = array_values($response->pointFilters[$order->blockName]['type']);
-                $response->pointFilters[$order->blockName]['cost'] = array_values($response->pointFilters[$order->blockName]['cost']);
-                $response->pointFilters[$order->blockName]['nearestDay'] = array_values($response->pointFilters[$order->blockName]['nearestDay']);
+                $response->pointFilters[$order->blockName]['type'] = !empty($response->pointFilters[$order->blockName]['type']) ? array_values($response->pointFilters[$order->blockName]['type']) : [];
+                $response->pointFilters[$order->blockName]['cost'] = !empty($response->pointFilters[$order->blockName]['cost']) ? array_values($response->pointFilters[$order->blockName]['cost']) : [];
+                $response->pointFilters[$order->blockName]['nearestDay'] = !empty($response->pointFilters[$order->blockName]['nearestDay']) ? array_values($response->pointFilters[$order->blockName]['nearestDay']) : [];
 
                 $possibleDay = null;
                 foreach ($order->possibleDays as &$possibleDay) {
@@ -199,6 +199,12 @@ namespace EnterTerminal\Controller\Cart {
                 }
                 unset($possibleDay);
             }
+
+            $paymentMethodsById = [];
+            foreach ($response->split->paymentMethods as $paymentMethod) {
+                $paymentMethodsById[$paymentMethod->id] = $paymentMethod;
+            }
+            $response->split->paymentMethods = $paymentMethodsById;
         }
     }
 }

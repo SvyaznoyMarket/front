@@ -87,7 +87,7 @@ namespace EnterTerminal\Controller\Order {
 
             try {
                 // запрос товаров
-                $productListQuery = new Query\Product\GetListByIdList(array_map(function(Model\Cart\Product $cartProduct) { return $cartProduct->id; }, $cart->product), $config->region->defaultId, ['model' => false, 'related' => false]);
+                $productListQuery = new Query\Product\GetListByIdList(array_map(function(Model\Cart\Product $cartProduct) { return $cartProduct->id; }, $cart->product), $config->region->defaultId, ['related' => false]);
                 $curl->prepare($productListQuery);
 
                 $curl->execute();
@@ -120,8 +120,8 @@ namespace EnterTerminal\Controller\Order {
                 $metas[] = $meta;
             }
 
-            if (!empty($request->data['user_info']['sms_code'])) {
-                $split->user->smsCode = (string)$request->data['user_info']['sms_code'];
+            if (!empty($request->data['user_info']['smsCode'])) {
+                $split->user->smsCode = (string)$request->data['user_info']['smsCode'];
             }
 
             $controllerResponse = (new \EnterAggregator\Controller\Order\Create())->execute(

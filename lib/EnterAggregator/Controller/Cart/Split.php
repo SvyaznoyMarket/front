@@ -143,10 +143,11 @@ namespace EnterAggregator\Controller\Cart {
                 foreach ($response->split->orders as $order) {
                     if ($order->sum > $config->order->prepayment->priceLimit) {
                         foreach ($order->possiblePaymentMethodIds as $i => $possiblePaymentMethodId) {
-                            if (in_array($possiblePaymentMethodId, ['1', '2']) && (count($order->possiblePaymentMethodIds) > 1)) {
+                            if (in_array($possiblePaymentMethodId, ['1']) && (count($order->possiblePaymentMethodIds) > 1)) {
                                 unset($order->possiblePaymentMethodIds[$i]);
                             }
                         }
+                        $order->possiblePaymentMethodIds = array_values($order->possiblePaymentMethodIds);
                     }
                 }
 
@@ -160,7 +161,7 @@ namespace EnterAggregator\Controller\Cart {
                     }
                 }
 
-                $productListQuery = new Query\Product\GetListByIdList($productIds, $response->region->id, ['model' => false, 'related' => false]);
+                $productListQuery = new Query\Product\GetListByIdList($productIds, $response->region->id, ['related' => false]);
                 $curl->prepare($productListQuery);
 
                 $descriptionListQuery = new Query\Product\GetDescriptionListByIdList(
