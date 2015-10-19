@@ -143,7 +143,7 @@ namespace EnterAggregator\Controller\Cart {
                 foreach ($response->split->orders as $order) {
                     if ($order->sum > $config->order->prepayment->priceLimit) {
                         foreach ($order->possiblePaymentMethodIds as $i => $possiblePaymentMethodId) {
-                            if (in_array($possiblePaymentMethodId, ['1', '2']) && (count($order->possiblePaymentMethodIds) > 1)) {
+                            if (in_array($possiblePaymentMethodId, ['1']) && (count($order->possiblePaymentMethodIds) > 1)) {
                                 unset($order->possiblePaymentMethodIds[$i]);
                             }
                         }
