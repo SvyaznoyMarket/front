@@ -20,7 +20,7 @@ class Point extends \EnterRepository\Point {
             case 'pickpoint': // Приходит из метода http://scms.enter.ru/api/point/get
                 return 'PickPoint';
             case 'hermes': // Приходит из метода http://scms.enter.ru/api/point/get
-                return 'Hermes-DPD';
+                return 'Hermes';
             default:
                 return $defaultName;
         }
