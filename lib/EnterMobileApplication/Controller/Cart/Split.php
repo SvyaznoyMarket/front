@@ -154,6 +154,8 @@ namespace EnterMobileApplication\Controller\Cart {
                         array_map(function(Model\Product $product) { return $product->ui; }, $productsById),
                         [
                             'media'       => true,
+                            'label'       => true,
+                            'brand'       => true,
                             'media_types' => ['main'], // только главная картинка
                         ]
                     );

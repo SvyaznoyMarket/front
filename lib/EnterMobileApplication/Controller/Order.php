@@ -103,6 +103,8 @@ namespace EnterMobileApplication\Controller {
                     [
                         'media'       => true,
                         'category'    => true,
+                        'label'       => true,
+                        'brand'       => true,
                         'media_types' => ['main'], // только главная картинка
                     ]
                 );

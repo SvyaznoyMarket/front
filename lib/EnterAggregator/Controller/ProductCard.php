@@ -118,6 +118,8 @@ namespace EnterAggregator\Controller {
                     $response->product->accessoryIds,
                     [
                         'category'    => true,
+                        'label'       => true,
+                        'brand'       => true,
                     ]
                 );
                 $curl->prepare($accessoryDescriptionListQuery);
@@ -156,6 +158,8 @@ namespace EnterAggregator\Controller {
                     $kitIds,
                     [
                         'category'    => true,
+                        'label'       => true,
+                        'brand'       => true,
                     ]
                 );
                 $curl->prepare($kitDescriptionListQuery);
@@ -202,6 +206,8 @@ namespace EnterAggregator\Controller {
                     'property'    => true,
                     'tag'         => true,
                     'seo'         => true,
+                    'label'       => true,
+                    'brand'       => true,
                 ]
             );
             $curl->prepare($descriptionListQuery);

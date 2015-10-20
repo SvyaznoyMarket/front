@@ -65,6 +65,8 @@ class ProductList {
                 $idsInChunk,
                 [
                     'media'       => true,
+                    'label'       => true,
+                    'brand'       => true,
                     'media_types' => ['main'], // только главная картинка
                 ]
             );

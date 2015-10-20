@@ -58,6 +58,8 @@ namespace EnterMobileApplication\Controller {
                     array_keys($productsById),
                     [
                         'category'    => true,
+                        'label'       => true,
+                        'brand'       => true,
                     ]
                 );
                 $curl->prepare($descriptionListQuery);

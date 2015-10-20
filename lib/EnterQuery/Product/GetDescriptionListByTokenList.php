@@ -26,6 +26,8 @@ class GetDescriptionListByTokenList extends Query {
             'property'    => false,
             'tag'         => false,
             'seo'         => false,
+            'label'       => false,
+            'brand'       => false,
         ];
 
         $this->url = new Url();
@@ -50,6 +52,12 @@ class GetDescriptionListByTokenList extends Query {
         }
         if ($filter['seo']) {
             $this->url->query['seo'] = true;
+        }
+        if ($filter['label']) {
+            $this->url->query['label'] = true;
+        }
+        if ($filter['brand']) {
+            $this->url->query['brand'] = true;
         }
 
         $this->init();

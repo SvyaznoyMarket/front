@@ -19,10 +19,11 @@ class GetItemById extends Query {
      */
     public function __construct($id, $regionId = null) {
         $this->url = new Url();
-        $this->url->path = 'v2/product/get';
+        $this->url->path = 'v2/product/get-v3';
         $this->url->query = [
             'select_type' => 'id',
             'id'          => $id,
+            'withModels'  => 0,
         ];
         if ($regionId) {
             $this->url->query['geo_id'] = $regionId;

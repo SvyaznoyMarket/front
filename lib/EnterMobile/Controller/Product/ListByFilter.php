@@ -136,6 +136,8 @@ class ListByFilter {
                 $productUiPager->uis,
                 [
                     'media'       => true,
+                    'label'       => true,
+                    'brand'       => true,
                     'media_types' => ['main'], // только главная картинка
                 ]
             );

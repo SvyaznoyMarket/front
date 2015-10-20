@@ -7,8 +7,8 @@ class Option {
     public $id;
     /** @var string|null */
     public $value;
-    /** @var string|null */
-    public $hint;
+    /** @var string */
+    public $hint = '';
 
     /**
      * @param array $data

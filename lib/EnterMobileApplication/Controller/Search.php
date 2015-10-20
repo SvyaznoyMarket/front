@@ -137,6 +137,8 @@ class Search {
                 $searchResult->productIds,
                 [
                     'media'       => true,
+                    'label'       => true,
+                    'brand'       => true,
                     'media_types' => ['main'], // только главная картинка
                 ]
             );
