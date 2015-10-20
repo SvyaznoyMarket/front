@@ -57,7 +57,7 @@ namespace EnterAggregator\Controller {
                 $productModelListQuery = new Query\Product\Model\GetListByTokenList([$request->productCriteria['token']], $response->region->id);
             } else if (!empty($request->productCriteria['ui'])) {
                 //$productListQuery = new Query\Product\GetListByUiList([$request->productCriteria['ui']], $response->region->id);
-                //$productDescriptionListQuery = new Query\Product\GetDescriptionListByUiList([$request->productCriteria['ui']], $productDescriptionFilter);
+//                $productDescriptionListQuery = new Query\Product\GetDescriptionListByUiList([$request->productCriteria['ui']], $productDescriptionFilter);
 //                $productModelListQuery = new Query\Product\Model\GetListByUiList([$request->productCriteria['ui']], $response->region->id);
             }
             if (!$productListQuery) {
