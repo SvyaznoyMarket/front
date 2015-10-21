@@ -12435,7 +12435,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .body-modal .header,
 .body-modal .top-banner {
   position: relative;
-  -webkit-backface-visibility: hidden;
   top: 0;
 }
 .body-modal.contain-top-banner .content {
