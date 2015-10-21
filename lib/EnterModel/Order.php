@@ -32,7 +32,10 @@ class Order {
     public $id;
     /** @var int */
     public $typeId;
-    /** @var int */
+    /**
+     * @deprecated
+     * @var int
+     */
     public $statusId;
     /** @var Model\Order\Status|null */
     public $status;
@@ -105,7 +108,7 @@ class Order {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('type_id', $data)) $this->typeId = (int)$data['type_id'];
         if (array_key_exists('status_id', $data)) $this->statusId = (int)$data['status_id'];
-        if ($this->statusId) $this->status = new Model\Order\Status(['id' => $this->statusId]);
+        if (isset($data['status']['id'])) $this->status = new Model\Order\Status($data['status']);
         if (array_key_exists('is_partner', $data)) $this->isPartner = (bool)$data['is_partner'];
         if (array_key_exists('number', $data)) $this->number = (string)$data['number'];
         if (array_key_exists('number_erp', $data)) $this->numberErp = (string)$data['number_erp'];
