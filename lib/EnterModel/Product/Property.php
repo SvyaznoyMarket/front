@@ -15,8 +15,6 @@ class Property {
     public $hint = '';
     /** @var string */
     public $valueHint = '';
-    /** @var bool */
-    public $isMultiple = false;
     /** @var string */
     public $value = '';
     /** @var string */

@@ -35,6 +35,15 @@ class AddToFavorite {
 
         $response = [];
 
+        // проверка пользователя
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        if (!$userItemQuery) {
+            throw new \Exception(
+                'Пользователь не авторизован',
+                Http\Response::STATUS_UNAUTHORIZED
+            );
+        }
+
         try {
             $postData = $request->data->all();
             $productUi = $postData['productUi'];
@@ -43,14 +52,6 @@ class AddToFavorite {
                 throw new \Exception(
                     'Не указан product_ui',
                     402
-                );
-            }
-            // проверка пользователя
-            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
-            if (!$userItemQuery) {
-                throw new \Exception(
-                    'Пользователь не авторизован',
-                    401
                 );
             }
             $curl->prepare($userItemQuery);

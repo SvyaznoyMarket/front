@@ -30,6 +30,12 @@
                     <div class="shop-snippet-address">{{address}} <br/>{{regime}}</div>
                 </div>
 
+                {{#delivery.interval}}
+                    <div class="deliv-info-snippet table_cell" style="vertical-align: top; padding-top: 5px !important;">
+                        <span class="deliv-info-snippet__date">с {{from}} по {{to}}</span>
+                    </div>
+                {{/delivery.interval}}
+
             </div>
             <a href="#" class="checkout-address-choose bb-dotted js-order-delivery-pointPopup-link" data-modal-title="Точки самовывоза" data-modal-position="fixed" data-storage-selector="#order-{{order.id}}-point-data">Изменить точку</a>
         </div>

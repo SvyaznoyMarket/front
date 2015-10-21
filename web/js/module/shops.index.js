@@ -68,6 +68,8 @@ define(
             yaMap = new ymaps.Map("map", {
                 center: [lat, long],
                 zoom: 10
+            }, {
+                suppressObsoleteBrowserNotifier: true
             });
 
             yaMap.container.fitToViewport();

@@ -48,15 +48,15 @@
         {{>partial/javascript}}
     </head>
 
-    <body data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-widget="{{&dataWidget}}">
-        {{#deliveryBanner}}
-            {{>partial/delivery-banner}}
-        {{/deliveryBanner}}
-
+    <body class="{{#deliveryBanner}}contain-top-banner{{/deliveryBanner}}" data-module="{{&dataModule}}" data-config="{{&dataConfig}}" data-widget="{{&dataWidget}}">
         {{>partial/menu}}
         <div class="menu-overlay js-fader"></div>
 
         <div class="page page--index" id="wrapper">
+            {{#deliveryBanner}}
+                {{>partial/delivery-banner}}
+            {{/deliveryBanner}}
+
             {{>partial/header}}
 
             {{#content}}

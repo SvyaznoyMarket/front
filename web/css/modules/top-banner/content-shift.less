@@ -1,26 +1,27 @@
 /*
    Смещаем контент сверху на высоту баннера(если баннер есть)
 */
-.top-banner + .nav{
-    top: @bannerHeight;
-
-    .nav-header{
+.contain-top-banner {
+    .header {
+        top: @bannerHeight;
+    }
+    .content {
+        padding-top: 50px + @bannerHeight;
+    }
+    .full-images {
+        padding-top: 50px + @bannerHeight;
+    }
+    .menu-overlay {
+        top: 50px + @bannerHeight;
+    }
+    .nav-header {
         top: @bannerHeight;
     }
 }
-.top-banner + .nav + .menu-overlay{
-    top: 50px + @bannerHeight;
-}
 
-
-.top-banner + .nav + .menu-overlay + .page {
-    .header{
-        top: @bannerHeight;
-    }
-    .content{
-        padding-top: 50px + @bannerHeight;
-    }
-    .full-images{
-        padding-top: 50px + @bannerHeight;
+.body-modal {
+    .header,
+    .top-banner {
+        position: absolute;
     }
 }

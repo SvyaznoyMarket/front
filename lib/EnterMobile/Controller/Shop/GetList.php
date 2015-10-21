@@ -65,9 +65,12 @@ class GetList {
         $partners = [];
 
         $parsedReferer = (isset($request->server['HTTP_REFERER'])) ? parse_url($request->server['HTTP_REFERER']) : false;
-        parse_str($parsedReferer['query'], $backLink);
 
-        $redirectTo = $backLink['redirect_to'];
+        if (isset($parsedReferer['query'])) {
+            parse_str($parsedReferer['query'], $backLink);
+            $redirectTo = isset($backLink['redirect_to']) ? $backLink['redirect_to'] : '';
+        }
+
 
         foreach ($result['partners'] as $key => $partner) {
             $partnerMedia = $pointRepository->getMedia($partner['slug'], ['logo', 'marker']);
@@ -94,10 +97,10 @@ class GetList {
                 'longitude' => isset($point['location'][0]) ? $point['location'][0] : null,
                 'latitude' => isset($point['location'][1]) ? $point['location'][1] : null,
                 'subway' => [[
-                    'name' => isset($point['subway']['name']) ? $point['subway']['name'] : null,
+                    'name' => isset($point['subway']['name']) ? $point['subway']['name'] : false,
                     'line' => [
-                        'name' => isset($point['subway']['line_name']) ? $point['subway']['line_name'] : null,
-                        'color' => isset($point['subway']['line_color']) ? $point['subway']['line_color'] : null,
+                        'name' => isset($point['subway']['line_name']) ? $point['subway']['line_name'] : false,
+                        'color' => isset($point['subway']['line_color']) ? $point['subway']['line_color'] : false,
                     ],
                 ]],
                 'logo' => $partners[$point['partner']]['logo'],

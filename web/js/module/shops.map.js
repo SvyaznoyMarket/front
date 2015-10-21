@@ -70,7 +70,7 @@ define(
 
             myCollection = new ymaps.GeoObjectCollection();
 
-            prepareRequest();
+            prepareRequest({}, true);
         }
 
         function findSelectedPartners() {
@@ -85,7 +85,7 @@ define(
             return partners;
         }
 
-        function makeRequest(filter) {
+        function makeRequest(filter, redrawMapPoints) {
 
             var filterCheck = filter || {};
 
@@ -93,11 +93,6 @@ define(
                 url: '/ajax/get-shops',
                 data: filterCheck,
                 type: 'POST',
-                beforeSend: function() {
-                    if (myCollection) {
-                        myCollection.removeAll();
-                    }
-                },
                 success: function(result) {
                     if (result.data.mapCenter) {
                         var center = result.data.mapCenter || false;
@@ -105,13 +100,16 @@ define(
                         yaMap.setCenter([center.latitude, center.longitude]);
                     }
 
-                    placePoints(result.data.points);
-
+                    if (redrawMapPoints) {
+                        placePoints(result.data.points);
+                    } else {
+                        yaMap.setZoom(14);
+                    }
                 }
             });
         }
 
-        function prepareRequest(filterRequest) {
+        function prepareRequest(filterRequest, redrawMapPoints) {
 
             if ($searchPointsInput.val().length > 0) {
                 filter.phrase = $searchPointsInput.val() + ' ' + defaultRegion;
@@ -123,7 +121,7 @@ define(
 
             filter.redirectTo = window.location.pathname || false;
 
-            makeRequest(filter);
+            makeRequest(filter, redrawMapPoints || false);
         }
 
         function placePoints(points) {
@@ -179,7 +177,8 @@ define(
                     iconLayout: 'default#image',
                     iconImageHref: currentPoint.marker,
                     balloonContentLayout: BalloonContentLayout,
-                    balloonPanelMaxMapArea: 0
+                    balloonPanelMaxMapArea: 0,
+                    hideIconOnBalloonOpen: false
                 }));
 
             }

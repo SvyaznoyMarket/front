@@ -34,7 +34,6 @@ class GetListByIdList extends Query {
         if ($regionId) {
             $this->url->query['geo_id'] = $regionId;
         }
-
         $this->init();
     }
 
