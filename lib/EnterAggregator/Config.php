@@ -403,6 +403,11 @@ namespace EnterAggregator\Config {
          * @var int
          */
         public $itemsInSlider;
+        /**
+         * Ui шильдика для товаров со склада поставщика
+         * @var string|null
+         */
+        public $supplierLabelUi;
     }
 
     class ProductReview {

@@ -182,8 +182,13 @@ namespace EnterTerminal\Controller\Cart {
                             'name'  => (0 == $possiblePoint->cost) ? 'Бесплатно' : $possiblePoint->cost,
                             'value' => $possiblePoint->cost,
                         ];
+
+                        $dateName = '';
+                        try {
+                            $dateName = $possiblePoint->nearestDay ? $dateHelper->humanizeDate(\DateTime::createFromFormat('Y-m-d', $possiblePoint->nearestDay)) : '';
+                        } catch (\Exception $e) {}
                         $response->pointFilters[$order->blockName]['nearestDay'][$possiblePoint->nearestDay] = [
-                            'name'  => $dateHelper->humanizeDate(\DateTime::createFromFormat('Y-m-d', $possiblePoint->nearestDay)),
+                            'name'  => $dateName,
                             'value' => $possiblePoint->nearestDay,
                         ];
                     }
