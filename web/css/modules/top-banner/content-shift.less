@@ -22,6 +22,11 @@
 .body-modal {
     .header,
     .top-banner {
-        position: absolute;
+        position: relative;
+        -webkit-backface-visibility: hidden;
+        top: 0;
+    }
+    &.contain-top-banner .content {
+        padding-top: 10px;
     }
 }
