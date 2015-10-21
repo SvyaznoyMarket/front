@@ -183,14 +183,16 @@ namespace EnterTerminal\Controller\Cart {
                             'value' => $possiblePoint->cost,
                         ];
 
-                        $dateName = '';
+                        $dateName = null;
                         try {
-                            $dateName = $possiblePoint->nearestDay ? $dateHelper->humanizeDate(\DateTime::createFromFormat('Y-m-d', $possiblePoint->nearestDay)) : '';
+                            $dateName = $possiblePoint->nearestDay ? $dateHelper->humanizeDate(\DateTime::createFromFormat('Y-m-d', $possiblePoint->nearestDay)) : null;
                         } catch (\Exception $e) {}
-                        $response->pointFilters[$order->blockName]['nearestDay'][$possiblePoint->nearestDay] = [
-                            'name'  => $dateName,
-                            'value' => $possiblePoint->nearestDay,
-                        ];
+                        if ($dateName) {
+                            $response->pointFilters[$order->blockName]['nearestDay'][$possiblePoint->nearestDay] = [
+                                'name'  => $dateName,
+                                'value' => $possiblePoint->nearestDay,
+                            ];
+                        }
                     }
                 }
 
