@@ -1484,7 +1484,6 @@ body {
   display: none;
   overflow: auto;
   width: 100%;
-  height: 100%;
   background: #fff;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -12430,8 +12429,8 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .contain-top-banner .menu-overlay {
   top: 86px;
 }
-.contain-top-banner .nav-header {
-  top: 36px;
+.contain-top-banner .search-suggest {
+  top: 86px;
 }
 .body-modal .header,
 .body-modal .top-banner {
