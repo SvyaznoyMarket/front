@@ -107,6 +107,11 @@ namespace EnterMobileApplication\Controller\Cart {
                 if (!(bool)$order->groupedPossiblePointIds) {
                     $order->groupedPossiblePointIds = null;
                 }
+
+                // MAPI-163
+                if ($order->delivery && !$order->possibleDays) {
+                    $order->delivery->date = null;
+                }
             }
 
             // response
