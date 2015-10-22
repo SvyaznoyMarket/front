@@ -13,6 +13,6 @@ define(
             e.preventDefault();
         };
 
-        $body.on('click', '.js-popup-middle-link', showPopupDef);
+        $('.js-popup-middle-link').click(showPopupDef);
     }
 );
