@@ -113,7 +113,7 @@ class Index {
         $page->headerTitle = false;
 
         // расположение главного меню
-        $page->content->mainMenuOnBottom = ('bottom' === $this->getAbTest()->getObjectByToken('msite_main_categories')->chosenItem->token) ? true : false;
+        $page->content->mainMenuOnBottom = ('top' === $this->getAbTest()->getObjectByToken('msite_main_categories')->chosenItem->token) ? true : false;
 
         // шаблоны mustache
         // ...
