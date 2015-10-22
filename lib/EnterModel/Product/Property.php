@@ -15,8 +15,6 @@ class Property {
     public $hint;
     /** @var string */
     public $valueHint;
-    /** @var bool */
-    public $isMultiple;
     /** @var string */
     public $value;
     /** @var string */
@@ -41,7 +39,6 @@ class Property {
         if (array_key_exists('unit', $data)) $this->unit = $data['unit'] ? (string)$data['unit'] : null;
         if (array_key_exists('hint', $data)) $this->hint = $data['hint'] ? (string)$data['hint'] : null;
         if (array_key_exists('value_hint', $data)) $this->valueHint = (string)$data['value_hint'];
-        if (array_key_exists('is_multiple', $data)) $this->isMultiple = (bool)$data['is_multiple'];
         if (array_key_exists('value', $data)) $this->value = $data['value'];
         if (array_key_exists('group_uid', $data)) {
             $this->groupId = $data['group_uid'] ? (string)$data['group_uid'] : null;

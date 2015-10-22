@@ -370,61 +370,22 @@ class ProductCard {
         }
 
         // модели товара
-        if ((bool)$product->model && (bool)$product->model->properties) {
+        if ($product->model && $product->model->property) {
             $page->content->product->hasModel = true;
 
-            // значения свойств, индексированные по ид
-            $propertyValuesById = [];
-            foreach ($product->properties as $propertyModel) {
-                if ($propertyModel->isMultiple) {
-                    $propertyValuesById[$propertyModel->id] = [];
-                    foreach ($propertyModel->options as $option) {
-                        $propertyValuesById[$propertyModel->id][] = $option->value;
-                    }
-                } else {
-                    $propertyValuesById[$propertyModel->id] = [$propertyModel->value];
-                }
+            $modelBlockProperty = new Page\Content\Product\ModelBlock\Property();
+            $modelBlockProperty->name = $product->model->property->name;
+            foreach ($product->model->property->options as $optionModel) {
+                $modelBlockOption = new Page\Content\Product\ModelBlock\Property\Option();
+                $modelBlockOption->isActive = $optionModel->product && $optionModel->product->ui === $product->ui;
+                $modelBlockOption->url = $optionModel->product ? $optionModel->product->link : null;
+                $modelBlockOption->shownValue = $optionModel->value;
+                $modelBlockOption->unit = '';
+                $modelBlockProperty->options[] = $modelBlockOption;
             }
 
-            foreach ([
-                 0 => [0, 1], // первое свойство модели
-                 1 => [1, count($product->properties) - 1] // остальные свойства модели (будут скрыты по умолчанию)
-            ] as $i => $range) {
-                $modelBlock = new Page\Content\Product\ModelBlock();
-                foreach (array_slice($product->model->properties, $range[0], $range[1]) as $propertyModel) {
-                    /** @var \EnterModel\Product\ProductModel\Property $propertyModel */
-                    $property = new Page\Content\Product\ModelBlock\Property();
-                    //$property->name = !$propertyModel->isImage ? $propertyModel->name : null;
-                    $property->name = $propertyModel->name;
-                    $property->isImage = $propertyModel->isImage;
-                    foreach ($propertyModel->options as $optionModel) {
-                        $option = new Page\Content\Product\ModelBlock\Property\Option();
-                        $option->isActive = isset($propertyValuesById[$propertyModel->id]) && in_array($optionModel->value, $propertyValuesById[$propertyModel->id], true);
-                        $option->url = $optionModel->product ? $optionModel->product->link : null;
-                        $option->shownValue = $optionModel->value;
-                        $option->unit = $propertyModel->unit;
-                        // TODO
-                        /*
-                        $option->image = ($propertyModel->isImage && $optionModel->product)
-                            ? (string)(new Routing\Product\Media\GetPhoto($optionModel->product->image, $optionModel->product->id, 2))
-                            : null
-                        ;
-                        */
-
-                        $property->options[] = $option;
-                    }
-
-                    $modelBlock->properties[] = $property;
-                }
-
-                if (!(bool)$modelBlock->properties) continue;
-
-                if (0 === $i) {
-                    $page->content->product->modelBlock = $modelBlock;
-                } else if (1 === $i) {
-                    $page->content->product->moreModelBlock = $modelBlock;
-                }
-            }
+            $page->content->product->modelBlock = new Page\Content\Product\ModelBlock();
+            $page->content->product->modelBlock->properties[] = $modelBlockProperty;
         }
 
         // partner

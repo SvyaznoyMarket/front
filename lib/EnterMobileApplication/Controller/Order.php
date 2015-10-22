@@ -61,7 +61,7 @@ namespace EnterMobileApplication\Controller {
 
             $productListQuery = null;
             if ((bool)$orderProductsById) {
-                $productListQuery = new Query\Product\GetListByIdList(array_keys($orderProductsById), $order->regionId, ['model' => false, 'related' => false]);
+                $productListQuery = new Query\Product\GetListByIdList(array_keys($orderProductsById), $order->regionId, ['related' => false]);
                 $curl->prepare($productListQuery);
             }
 

@@ -90,8 +90,6 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
         public $hasModel;
         /** @var Product\ModelBlock|null */
         public $modelBlock;
-        /** @var Product\ModelBlock|null */
-        public $moreModelBlock;
         /** @var Partial\DirectCredit|null */
         public $credit;
         /** @var Product\Brand|null */
@@ -201,8 +199,6 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product {
     class ModelBlock {
         /** @var ModelBlock\Property[] */
         public $properties = [];
-        /** @var bool */
-        public $isImage;
     }
 }
 
@@ -297,8 +293,6 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product\ModelBlock {
     class Property {
         /** @var string */
         public $name;
-        /** @var bool */
-        public $isImage;
         /** @var Property\Option[] */
         public $options = [];
     }
