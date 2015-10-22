@@ -182,10 +182,17 @@ namespace EnterTerminal\Controller\Cart {
                             'name'  => (0 == $possiblePoint->cost) ? 'Бесплатно' : $possiblePoint->cost,
                             'value' => $possiblePoint->cost,
                         ];
-                        $response->pointFilters[$order->blockName]['nearestDay'][$possiblePoint->nearestDay] = [
-                            'name'  => $dateHelper->humanizeDate(\DateTime::createFromFormat('Y-m-d', $possiblePoint->nearestDay)),
-                            'value' => $possiblePoint->nearestDay,
-                        ];
+
+                        $dateName = null;
+                        try {
+                            $dateName = $possiblePoint->nearestDay ? $dateHelper->humanizeDate(\DateTime::createFromFormat('Y-m-d', $possiblePoint->nearestDay)) : null;
+                        } catch (\Exception $e) {}
+                        if ($dateName) {
+                            $response->pointFilters[$order->blockName]['nearestDay'][$possiblePoint->nearestDay] = [
+                                'name'  => $dateName,
+                                'value' => $possiblePoint->nearestDay,
+                            ];
+                        }
                     }
                 }
 
@@ -198,6 +205,11 @@ namespace EnterTerminal\Controller\Cart {
                     $possibleDay = (int)$possibleDay;
                 }
                 unset($possibleDay);
+
+                // TAPI-46
+                if ($order->delivery && !$order->possibleDays) {
+                    $order->delivery->date = null;
+                }
             }
 
             $paymentMethodsById = [];

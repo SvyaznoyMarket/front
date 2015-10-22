@@ -126,6 +126,7 @@ return function(\EnterAggregator\Config $config) {
 
     $config->product->itemPerPage = 19;
     $config->product->itemsInSlider = 60;
+    $config->product->supplierLabelUi = 'c06a5f82-7cbd-11e1-8cde-3c4a92f6ffb8'; // FIXME: для тестирования
 
     $config->productReview->enabled = true;
     $config->productReview->itemsInCard = 7;
