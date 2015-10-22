@@ -205,6 +205,11 @@ namespace EnterTerminal\Controller\Cart {
                     $possibleDay = (int)$possibleDay;
                 }
                 unset($possibleDay);
+
+                // TAPI-46
+                if ($order->delivery && !$order->possibleDays) {
+                    $order->delivery->date = null;
+                }
             }
 
             $paymentMethodsById = [];
