@@ -45,7 +45,8 @@ class Point {
     public function translateGroupName($groupName) {
         return strtr($groupName, [
             'Постамат'           => 'Постамат PickPoint',
-            'Hermes DPD'         => 'Постамат Hermes-DPD',
+            'Hermes'             => 'Постамат Hermes',
+            'Hermes DPD'         => 'Постамат Hermes',
             'Магазин "Евросеть"' => 'Евросеть',
             'Магазин "Связной"'  => 'Связной',
             'Магазин'            => 'Магазин Enter',
@@ -67,7 +68,7 @@ class Point {
                 $return = 'Связной';
                 break;
             case 'hermes':
-                $return = 'Постамат Hermes-DPD';
+                $return = 'Постамат Hermes';
                 break;
             default:
                 $return = 'Магазин Enter';
