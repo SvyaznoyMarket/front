@@ -117,6 +117,11 @@ namespace EnterMobileApplication\Controller\Cart {
                     $product->namePrefix = $helper->unescape($product->namePrefix);
                     $product->name = $helper->unescape($product->name);
                 }
+
+                // MAPI-163
+                if ($order->delivery && !$order->possibleDays) {
+                    $order->delivery->date = null;
+                }
             }
 
             // response
