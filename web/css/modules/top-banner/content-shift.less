@@ -14,14 +14,18 @@
     .menu-overlay {
         top: 50px + @bannerHeight;
     }
-    .nav-header {
-        top: @bannerHeight;
+    .search-suggest {
+        top: 50px + @bannerHeight;
     }
 }
 
 .body-modal {
     .header,
     .top-banner {
-        position: absolute;
+        position: relative;
+        top: 0;
+    }
+    &.contain-top-banner .content {
+        padding-top: 10px;
     }
 }
