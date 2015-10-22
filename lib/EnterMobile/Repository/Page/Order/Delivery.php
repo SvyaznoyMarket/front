@@ -173,9 +173,13 @@ class Delivery {
                                 || ($splitModel->user && $splitModel->user->address && $splitModel->user->address->street && (2 == $deliveryGroupModel->id))
                             ,
                             'date'        =>
-                                $deliveryModel->date
-                                ? mb_strtolower($dateHelper->strftimeRu('%e %B2 %G', $deliveryModel->date)) // если нужен день недели, то '%e %B2 %G, %A'
-                                : 'Выбрать'
+                                $orderModel->possibleDays
+                                ? (
+                                    $deliveryModel->date
+                                    ? mb_strtolower($dateHelper->strftimeRu('%e %B2 %G', $deliveryModel->date)) // если нужен день недели, то '%e %B2 %G, %A'
+                                    : 'Выбрать'
+                                )
+                                : null
                             ,
                             'interval'    =>
                                 $deliveryModel->interval
@@ -314,11 +318,13 @@ class Delivery {
                 }),
                 'pointJson'      => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$regionModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex, &$pointRepository) {
                     $points = [];
-                    $filtersByToken = [
-                        'type' => [],
-                        'cost' => [],
-                        'date' => [],
-                    ];
+                    $filtersByToken =
+                        [
+                            'type' => [],
+                            'cost' => [],
+                        ]
+                        + ($orderModel->possibleDays ? ['date' => []] : [])
+                    ;
 
                     foreach ($orderModel->possiblePoints as $possiblePointModel) {
                         // группа точки
@@ -349,9 +355,8 @@ class Delivery {
                         // дата
                         $date = null;
                         try {
-                            $date = new \DateTime($possiblePointModel->nearestDay);
-                        } catch (\Exception $e) {
-                        }
+                            $date = $orderModel->possibleDays ? new \DateTime($possiblePointModel->nearestDay) : null;
+                        } catch (\Exception $e) {}
 
                         $points[] = [
                             'id'        => $possiblePointModel->id,
@@ -361,10 +366,14 @@ class Delivery {
                                 'value' => $pointGroup->token,
                             ],
                             'icon'      => $pointRepository->getIconByType($pointGroup->token),
-                            'date'      => [
-                                'name'  => $date ? $dateHelper->humanizeDate($date) : null,
-                                'value' => $date ? $date->getTimestamp() : null,
-                            ],
+                            'date'      =>
+                                $orderModel->possibleDays
+                                ? [
+                                    'name'  => $date ? $dateHelper->humanizeDate($date) : null,
+                                    'value' => $date ? $date->getTimestamp() : null,
+                                ]
+                                : null
+                            ,
                             'address'   => $point->address,
                             'cost'      => [
                                 'name'  => $possiblePointModel->cost ?: false,
@@ -422,7 +431,7 @@ class Delivery {
                             ];
                         }
                         // фильтр по дате
-                        if (!isset($filtersByToken['date'][$date->getTimestamp()])) {
+                        if ($date && !isset($filtersByToken['date'][$date->getTimestamp()])) {
                             $filtersByToken['date'][$date->getTimestamp()] = [
                                 'id'        => $date->getTimestamp(),
                                 'name'      => $dateHelper->humanizeDate($date),
@@ -457,79 +466,83 @@ class Delivery {
                         ]),
                     ];
                 }), JSON_UNESCAPED_UNICODE),
-                'dateJson'       => json_encode(call_user_func(function() use (&$templateHelper, &$dateHelper, &$splitModel, &$orderModel) {
-                    $items = [];
+                'dateJson'       =>
+                    $orderModel->possibleDays
+                    ? json_encode(call_user_func(function() use (&$templateHelper, &$dateHelper, &$splitModel, &$orderModel) {
+                        $items = [];
 
-                    try {
-                        $possibleDays = $orderModel->possibleDays;
-                        $lastAvailableDay = \DateTime::createFromFormat('U', (string)end($possibleDays));
-                        $firstAvailableDay = \DateTime::createFromFormat('U', (string)reset($possibleDays));
-                        $week = (0 == $firstAvailableDay->format('w')) ?  'previous week' : 'this week';
-                        $firstDayOfAvailableWeek = \DateTime::createFromFormat('U', strtotime($week, $firstAvailableDay->format('U')));
-                        $lastDayOfAvailableMonth = \DateTime::createFromFormat('U', strtotime('Monday next week', $lastAvailableDay->format('U')));
-                        $days = new \DatePeriod($firstDayOfAvailableWeek, new \DateInterval('P1D'), $lastDayOfAvailableMonth);
-                        $currentMonth = null;
+                        try {
+                            $possibleDays = $orderModel->possibleDays;
+                            $lastAvailableDay = \DateTime::createFromFormat('U', (string)end($possibleDays));
+                            $firstAvailableDay = \DateTime::createFromFormat('U', (string)reset($possibleDays));
+                            $week = (0 == $firstAvailableDay->format('w')) ?  'previous week' : 'this week';
+                            $firstDayOfAvailableWeek = \DateTime::createFromFormat('U', strtotime($week, $firstAvailableDay->format('U')));
+                            $lastDayOfAvailableMonth = \DateTime::createFromFormat('U', strtotime('Monday next week', $lastAvailableDay->format('U')));
+                            $days = new \DatePeriod($firstDayOfAvailableWeek, new \DateInterval('P1D'), $lastDayOfAvailableMonth);
+                            $currentMonth = null;
 
-                        foreach ($days as $day) {
-                            /** @var $day \DateTime */
-                            if ($currentMonth != $day->format('F')) {
-                                $isMonday = $day->format('N') == 1;
-                                if (!$isMonday) { // TODO: выяснить зачем это нужно
-                                    for ($i = 0; $i < 8 - $day->format('N'); $i++) {
-                                        $items[] = [
-                                            'isDisabled' => true,
-                                        ];
+                            foreach ($days as $day) {
+                                /** @var $day \DateTime */
+                                if ($currentMonth != $day->format('F')) {
+                                    $isMonday = $day->format('N') == 1;
+                                    if (!$isMonday) { // TODO: выяснить зачем это нужно
+                                        for ($i = 0; $i < 8 - $day->format('N'); $i++) {
+                                            $items[] = [
+                                                'isDisabled' => true,
+                                            ];
+                                        }
+                                    }
+                                    $items[] = [
+                                        'isMonth' => true,
+                                        'name'    => strftime('%B', $day->format('U')),
+                                    ];
+
+                                    $currentMonth = $day->format('F');
+                                    if (!$isMonday) { // TODO: выяснить зачем это нужно
+                                        for ($i = 1; $i < $day->format('N'); $i++) {
+                                            $items[] = [
+                                                'isDisabled' => true,
+                                            ];
+                                        }
                                     }
                                 }
-                                $items[] = [
-                                    'isMonth' => true,
-                                    'name'    => strftime('%B', $day->format('U')),
+
+                                $item = [
+                                    'name' => $day->format('d'),
                                 ];
-
-                                $currentMonth = $day->format('F');
-                                if (!$isMonday) { // TODO: выяснить зачем это нужно
-                                    for ($i = 1; $i < $day->format('N'); $i++) {
-                                        $items[] = [
-                                            'isDisabled' => true,
-                                        ];
+                                if (in_array((int)$day->format('U'), $possibleDays)) {
+                                    if ($firstAvailableDay == $day) {
+                                        $item['isFirst'] = true;
                                     }
-                                }
-                            }
 
-                            $item = [
-                                'name' => $day->format('d'),
-                            ];
-                            if (in_array((int)$day->format('U'), $possibleDays)) {
-                                if ($firstAvailableDay == $day) {
-                                    $item['isFirst'] = true;
-                                }
-
-                                $item['dataValue'] = $templateHelper->json([
-                                    'change' => [
-                                        'orders' => [
-                                            [
-                                                'blockName' => $orderModel->blockName,
-                                                'delivery'  => [
-                                                    'date' => $day->format('U'),
+                                    $item['dataValue'] = $templateHelper->json([
+                                        'change' => [
+                                            'orders' => [
+                                                [
+                                                    'blockName' => $orderModel->blockName,
+                                                    'delivery'  => [
+                                                        'date' => $day->format('U'),
+                                                    ],
                                                 ],
                                             ],
                                         ],
-                                    ],
-                                ]);
-                            } else {
-                                $item['isDisabled'] = true;
+                                    ]);
+                                } else {
+                                    $item['isDisabled'] = true;
+                                }
+                                $items[] = $item;
                             }
-                            $items[] = $item;
+
+                        } catch (\Exception $e) {
+                            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'order.blockName' => $orderModel->blockName, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
                         }
 
-                    } catch (\Exception $e) {
-                        $this->getLogger()->push(['type' => 'error', 'error' => $e, 'order.blockName' => $orderModel->blockName, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
-                    }
-
-                    return [
-                        'items' => $items,
-                    ];
-                }), JSON_UNESCAPED_UNICODE),
+                        return [
+                            'items' => $items,
+                        ];
+                    }), JSON_UNESCAPED_UNICODE)
+                    : null
+                ,
                 'paymentMethods' => call_user_func(function() use (&$templateHelper, &$splitModel, &$orderModel, &$paymentMethodsById) {
                     $paymentMethods = [];
 
