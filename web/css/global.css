@@ -1481,6 +1481,7 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
+  height: 100%;
   display: none;
   overflow: auto;
   width: 100%;
@@ -12431,6 +12432,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .contain-top-banner .search-suggest {
   top: 86px;
+  padding-bottom: 86px;
 }
 .body-modal .header,
 .body-modal .top-banner {
