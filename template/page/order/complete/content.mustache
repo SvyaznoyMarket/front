@@ -12,7 +12,7 @@
                     <script id="order-{{id}}-onlinePayment-data" type="application/json">{{&onlinePaymentJson}}</script>
 
                     {{#delivery}}
-                        <div class="single-order__greet">Доставка назначена на {{date.name}} <br />{{address}}</div>
+                        <div class="single-order__greet">{{#date.name}}Доставка назначена на {{date.name}} <br />{{/date.name}}{{address}}</div>
                     {{/delivery}}
 
                     {{#point}}
