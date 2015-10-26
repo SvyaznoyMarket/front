@@ -149,6 +149,10 @@ class DefaultPage {
             $page->googleAnalytics->regionName = $request->region ? $request->region->name : null;
             $page->googleAnalytics->userAuth = $request->user ? '1' : '0';
             $page->googleAnalytics->hostname = $config->hostname;
+            if ($request->user) {
+                $page->googleAnalytics->user = new Page\GoogleAnalytics\User();
+                $page->googleAnalytics->user->id = $request->user->id;
+            }
 
             foreach ($this->getAbTest()->getObjectList() as $test) {
                 if ($test->gaSlotNumber) {
