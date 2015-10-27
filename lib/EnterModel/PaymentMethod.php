@@ -2,9 +2,12 @@
 
 namespace EnterModel;
 
+use EnterMobile\ConfigTrait;
 use EnterModel as Model;
 
 class PaymentMethod {
+    use ConfigTrait;
+
     /** @var string */
     public $id;
     /** @var string */
@@ -23,6 +26,8 @@ class PaymentMethod {
     public $groupId;
     /** @var Model\PaymentGroup|null */
     public $group;
+    /** @var \EnterModel\MediaList */
+    public $media;
 
     /**
      * @param array $data
@@ -36,5 +41,6 @@ class PaymentMethod {
         if (array_key_exists('is_online', $data)) $this->isOnline = (bool)$data['is_online'];
         if (array_key_exists('is_corporative', $data)) $this->isCorporative = (bool)$data['is_corporative'];
         if (array_key_exists('payment_method_group_id', $data)) $this->groupId = (string)$data['payment_method_group_id'];
+        $this->media = (new \EnterRepository\Media())->getMediaListForPaymentMethod($this->id, $this->isOnline, $this->getConfig());
     }
 }
