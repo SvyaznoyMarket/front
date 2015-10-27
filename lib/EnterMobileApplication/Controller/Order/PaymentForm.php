@@ -130,6 +130,7 @@ namespace EnterMobileApplication\Controller\Order {
                 $order->id,
                 [
                     'back_ref' => $successUrl,
+                    'fail_ref' => $failUrl,
                     'email'    => false && $user ? $user->email : null,
                 ]
                 + (
