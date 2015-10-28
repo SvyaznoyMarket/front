@@ -72,6 +72,8 @@ namespace EnterMobile\Model\Page\DefaultPage {
         public $userAuth;
         /** @var string */
         public $hostname;
+        /** @var GoogleAnalytics\User|null */
+        public $user;
         /** @var GoogleAnalytics\AbTest[] */
         public $abTests = [];
     }
@@ -182,6 +184,11 @@ namespace EnterMobile\Model\Page\DefaultPage\Search {
 }
 
 namespace EnterMobile\Model\Page\DefaultPage\GoogleAnalytics {
+    class User {
+        /** @var string */
+        public $id;
+    }
+
     class AbTest {
         /** @var string */
         public $gaSlotNumber;
