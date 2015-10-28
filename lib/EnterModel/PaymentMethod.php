@@ -28,6 +28,8 @@ class PaymentMethod {
     public $group;
     /** @var \EnterModel\MediaList */
     public $media;
+    /** @var int|null */
+    public $sum;
 
     /**
      * @param array $data
@@ -41,6 +43,14 @@ class PaymentMethod {
         if (array_key_exists('is_online', $data)) $this->isOnline = (bool)$data['is_online'];
         if (array_key_exists('is_corporative', $data)) $this->isCorporative = (bool)$data['is_corporative'];
         if (array_key_exists('payment_method_group_id', $data)) $this->groupId = (string)$data['payment_method_group_id'];
+        if (isset($data['available_actions']) && is_array($data['available_actions'])) {
+            foreach ($data['available_actions'] as $item) {
+                if (!empty($item['payment_sum']) && isset($item['alias']) && ('online_motivation_discount' === $item['alias'])) {
+                    $this->sum = $item['payment_sum'];
+                    break;
+                }
+            }
+        }
         $this->media = (new \EnterRepository\Media())->getMediaListForPaymentMethod($this->id, $this->isOnline, $this->getConfig());
     }
 }

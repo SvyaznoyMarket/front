@@ -1,4 +1,5 @@
 <?php
+
 namespace EnterModel\Cart\Split;
 
 use EnterMobileApplication\ConfigTrait;
@@ -18,6 +19,8 @@ class PaymentMethod {
     public $isOnline;
     /** @var \EnterModel\MediaList */
     public $media;
+    /** @var PaymentMethod\Discount|null */
+    public $discount;
 
     /**
      * @param array $data
@@ -29,6 +32,7 @@ class PaymentMethod {
         $this->description = $data['description'] ? (string)$data['description'] : null;
         $this->isOnline = (bool)$data['is_online'];
         $this->media = (new \EnterRepository\Media())->getMediaListForPaymentMethod($this->id, $this->isOnline, $this->getConfig());
+        if (isset($data['discount']['value'])) $this->discount = new PaymentMethod\Discount($data['discount']);
     }
 
     /**
