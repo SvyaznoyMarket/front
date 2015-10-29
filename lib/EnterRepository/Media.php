@@ -85,4 +85,82 @@ class Media {
 
         return $result;
     }
+
+    /**
+     * @return Model\MediaList
+     */
+    public function getMediaListForPaymentMethod($paymentMethodId, $isOnline, \EnterAggregator\Config $config) {
+        $mediaList = new \EnterModel\MediaList();
+        $mediaUrlPrefix = 'http://' . $config->hostname . ($config->version ? '/' . $config->version : '');
+
+        if ($isOnline) {
+            switch ($paymentMethodId) {
+                case 5:
+                    $mediaList->photos[] = new \EnterModel\Media([
+                        'content_type' => 'image/png',
+                        'provider' => 'image',
+                        'tags' => ['logo', 'card'],
+                        'sources' => [
+                            [
+                                'url' => $mediaUrlPrefix . '/img/payment/logos/original/card.png',
+                                'type' => 'original',
+                                'width' => '',
+                                'height' => '',
+                            ],
+                        ],
+                    ]);
+                    break;
+
+                case 16:
+                    $mediaList->photos[] = new \EnterModel\Media([
+                        'content_type' => 'image/png',
+                        'provider' => 'image',
+                        'tags' => ['logo', 'yandex'],
+                        'sources' => [
+                            [
+                                'url' => $mediaUrlPrefix . '/img/payment/logos/original/yandex.png',
+                                'type' => 'original',
+                                'width' => '',
+                                'height' => '',
+                            ],
+                        ],
+                    ]);
+                    break;
+
+                case 11:
+                    $mediaList->photos[] = new \EnterModel\Media([
+                        'content_type' => 'image/png',
+                        'provider' => 'image',
+                        'tags' => ['logo', 'webmoney'],
+                        'sources' => [
+                            [
+                                'url' => $mediaUrlPrefix . '/img/payment/logos/original/webmoney.png',
+                                'type' => 'original',
+                                'width' => '',
+                                'height' => '',
+                            ],
+                        ],
+                    ]);
+                    break;
+
+                case 12:
+                    $mediaList->photos[] = new \EnterModel\Media([
+                        'content_type' => 'image/png',
+                        'provider' => 'image',
+                        'tags' => ['logo', 'qiwi'],
+                        'sources' => [
+                            [
+                                'url' => $mediaUrlPrefix . '/img/payment/logos/original/qiwi.png',
+                                'type' => 'original',
+                                'width' => '',
+                                'height' => '',
+                            ],
+                        ],
+                    ]);
+                    break;
+            }
+        }
+
+        return $mediaList;
+    }
 }

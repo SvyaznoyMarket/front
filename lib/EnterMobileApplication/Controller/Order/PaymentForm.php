@@ -26,6 +26,8 @@ namespace EnterMobileApplication\Controller\Order {
             $curl = $this->getCurl();
             $cartRepository = new Repository\Cart();
 
+            $response = new Response();
+
             // ид региона
             $regionId = is_string($request->query['regionId']) ? $request->query['regionId'] : null;
             if (!$regionId) {
@@ -144,6 +146,11 @@ namespace EnterMobileApplication\Controller\Order {
 
             $curl->execute();
 
+            $response->sum = $order->sum;
+            if (!empty($action['payment_sum'])) {
+                $response->sum = (string)$action['payment_sum'];
+            }
+
             $paymentConfigResult = $paymentConfigQuery->getResult();
             if (!isset($paymentConfigResult['url'])) {
                 throw new \Exception('Не получен url оплаты');
@@ -158,7 +165,6 @@ namespace EnterMobileApplication\Controller\Order {
             }
 
             // ответ
-            $response = new Response();
             $form = $response->createForm();
             $form->url = $paymentConfigResult['url'];
             foreach ($paymentConfigResult['detail'] as $key => $value) {
@@ -181,6 +187,8 @@ namespace EnterMobileApplication\Controller\Order\PaymentForm {
     class Response {
         /** @var array */
         public $form = [];
+        /** @var string */
+        public $sum;
 
         public function createForm() {
             $this->form = new Response\Form();

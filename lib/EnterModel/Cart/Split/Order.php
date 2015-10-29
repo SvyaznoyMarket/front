@@ -35,6 +35,8 @@ class Order {
     public $possiblePoints = [];
     /** @var string|null */
     public $comment;
+    /** @var string|null */
+    private $_sum;
 
     /**
      * @param array $data
@@ -55,7 +57,8 @@ class Order {
         $this->actions = (array)$data['actions'];
 
         $this->delivery = $data['delivery'] ? new Order\Delivery($data['delivery']) : null;
-        $this->sum = $data['total_cost'] ? (string)$data['total_cost'] : null;
+        $this->_sum = $data['total_cost"'] ? (string)$data['total_cost"'] : null;
+        $this->sum = $data['total_view_cost'] ? (string)$data['total_view_cost'] : null;
         $this->originalSum = $data['total_original_cost'] ? (string)$data['total_original_cost'] : null;
         $this->paymentMethodId = $data['payment_method_id'] ? (string)$data['payment_method_id'] : null;
         foreach ($data['possible_deliveries'] as $token) {
@@ -89,6 +92,8 @@ class Order {
             }
         }
         $this->comment = $data['comment'] ? (string)$data['comment'] : null;
+
+
     }
 
     /**
@@ -108,7 +113,8 @@ class Order {
             'discounts'                => array_map(function(Order\Discount $discount) { return $discount->dump(); }, $this->discounts),
             'actions'                  => $this->actions,
             'delivery'                 => $this->delivery ? $this->delivery->dump() : null,
-            'total_cost'               => $this->sum,
+            'total_cost'               => $this->_sum,
+            'total_view_cost'          => $this->sum,
             'total_original_cost'      => $this->originalSum,
             'payment_method_id'        => $this->paymentMethodId ? (int)$this->paymentMethodId : null,
             'possible_deliveries'      => $this->possibleDeliveryMethodTokens,
