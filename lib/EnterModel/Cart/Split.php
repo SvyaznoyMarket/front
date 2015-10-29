@@ -62,10 +62,19 @@ class Split {
         }
 
         foreach ($data['orders'] as $key => $item) {
+            $order = new Split\Order($item, $format);
+            foreach ($this->paymentMethods as $paymentMethod) {
+                if ($paymentMethod->discount && $paymentMethod->discount->value && $paymentMethod->isOnline) {
+                    $order->paymentLabel = [
+                        'name' => 'Скидка ' . $paymentMethod->discount->value . $paymentMethod->discount->unit,
+                    ];
+                }
+            }
+
             if ($format) {
-                $this->orders[] = new Split\Order($item);
+                $this->orders[] = $order;
             } else {
-                $this->orders[$key] = new Split\Order($item, $format);
+                $this->orders[$key] = $order;
             }
         }
 

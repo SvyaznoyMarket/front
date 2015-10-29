@@ -21,6 +21,8 @@ class Order {
     public $originalSum;
     /** @var string|null */
     public $paymentMethodId;
+    /** @var array|null */
+    public $paymentLabel;
     /** @var array */
     public $possibleDeliveryMethodTokens = [];
     /** @var Model\Cart\Split\Interval[] */
@@ -91,8 +93,6 @@ class Order {
             }
         }
         $this->comment = $data['comment'] ? (string)$data['comment'] : null;
-
-
     }
 
     /**
