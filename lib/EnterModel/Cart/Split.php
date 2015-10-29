@@ -68,6 +68,7 @@ class Split {
                     $order->paymentLabel = [
                         'name' => 'Скидка ' . $paymentMethod->discount->value . $paymentMethod->discount->unit,
                     ];
+                    break;
                 }
             }
 
