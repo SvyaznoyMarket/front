@@ -30,6 +30,8 @@ class PaymentMethod {
     public $media;
     /** @var int|null */
     public $sum;
+    /** @var PaymentMethod\Discount|null */
+    public $discount;
 
     /**
      * @param array $data
@@ -52,5 +54,6 @@ class PaymentMethod {
             }
         }
         $this->media = (new \EnterRepository\Media())->getMediaListForPaymentMethod($this->id, $this->isOnline, $this->getConfig());
+        if (isset($data['discount']['value'])) $this->discount = new PaymentMethod\Discount($data['discount']);
     }
 }
