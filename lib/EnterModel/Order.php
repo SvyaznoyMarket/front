@@ -100,6 +100,8 @@ class Order {
     public $seller;
     /** @var Model\Order\Meta[] */
     public $meta = [];
+    /** @var array|null */
+    public $paymentLabel;
 
     /**
      * @param array $data

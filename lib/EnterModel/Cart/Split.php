@@ -63,6 +63,7 @@ class Split {
 
         foreach ($data['orders'] as $key => $item) {
             $order = new Split\Order($item, $format);
+            // MAPI-168
             foreach ($this->paymentMethods as $paymentMethod) {
                 if ($paymentMethod->discount && $paymentMethod->discount->value && $paymentMethod->isOnline) {
                     $order->paymentLabel = [

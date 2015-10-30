@@ -190,6 +190,15 @@ namespace EnterAggregator\Controller\Order {
             // установка возможных методов оплат
             foreach ($orders as $order) {
                 $order->paymentMethods = isset($paymentMethodsByOrderNumberErp[$order->numberErp]) ? array_values((array)$paymentMethodsByOrderNumberErp[$order->numberErp]) : [];
+                // MAPI-168
+                foreach ($order->paymentMethods as $paymentMethod) {
+                    if ($paymentMethod->discount && $paymentMethod->discount->value && $paymentMethod->isOnline) {
+                        $order->paymentLabel = [
+                            'name' => 'Скидка ' . $paymentMethod->discount->value . $paymentMethod->discount->unit,
+                        ];
+                        break;
+                    }
+                }
             }
 
             // магазин
