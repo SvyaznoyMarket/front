@@ -10,6 +10,9 @@ class NearestDelivery {
     const TOKEN_STANDARD = 'standart';
     const TOKEN_SELF = 'self';
     const TOKEN_NOW = 'now';
+    const TOKEN_PICKPOINT = 'self_partner_pickpoint';
+    const TOKEN_HERMES = 'self_partner_hermes';
+    const TOKEN_EUROSET = 'self_partner_euroset';
 
     /** @var string */
     public $id;
