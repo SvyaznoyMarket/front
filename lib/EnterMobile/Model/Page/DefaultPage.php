@@ -132,6 +132,12 @@ namespace EnterMobile\Model\Page\DefaultPage {
         public $regionName;
         /** @var string */
         public $pointCountMessage;
+        /** @var string */
+        public $beginning;
+        /** @var string */
+        public $condition;
+        /** @var bool */
+        public $showCount = true;
     }
 
     class MainMenu {
