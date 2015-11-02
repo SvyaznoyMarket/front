@@ -59,7 +59,7 @@ class Order {
         $this->actions = (array)$data['actions'];
 
         $this->delivery = $data['delivery'] ? new Order\Delivery($data['delivery']) : null;
-        $this->_sum = $data['total_cost"'] ? (string)$data['total_cost"'] : null;
+        $this->_sum = $data['total_cost'] ? (string)$data['total_cost'] : null;
         $this->sum = $data['total_view_cost'] ? (string)$data['total_view_cost'] : null;
         $this->originalSum = $data['total_original_cost'] ? (string)$data['total_original_cost'] : null;
         $this->paymentMethodId = $data['payment_method_id'] ? (string)$data['payment_method_id'] : null;
