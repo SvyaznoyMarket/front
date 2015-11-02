@@ -2,6 +2,17 @@
     {{#dateJson}}
     <a href="#" class="checkout-celendar js-order-delivery-celendar-link" data-data-selector="#order-{{id}}-date-data" data-modal-position="fixed-untill-640" data-modal-title="Дата">{{delivery.date}}</a>
     {{/dateJson}}
+    <div class="custom-select custom-select--button toggle js-toggle-wrap">
+        {{#delivery.interval}}
+            <span class="custom-select__value toggle-link js-toggle-link">{{from}}…{{to}} <i class="caret"></i></span>
+        {{/delivery.interval}}
+
+        <ul class="custom-select-list toggle-box">
+            {{#delivery.interval}}
+                <li class="custom-select-list__item js-order-delivery-form-control" data-value="{{&dataValue}}">{{from}}…{{to}}</li>
+            {{/delivery.interval}}
+        </ul>
+    </div>
 
     {{^delivery.point}}
     <div class="self-delivery-choose">
