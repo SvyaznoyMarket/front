@@ -81,7 +81,7 @@ class Split {
         }
 
         $this->user = $data['user_info'] ? new Split\User($data['user_info'], $format) : null;
-        $this->_sum = $data['total_cost"'] ? (string)$data['total_cost"'] : null;
+        $this->_sum = $data['total_cost'] ? (string)$data['total_cost'] : null;
         $this->sum = $data['total_view_cost'] ? (string)$data['total_view_cost'] : null;
 
         if (isset($data['errors']) && is_array($data['errors'])) {
