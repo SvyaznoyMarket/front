@@ -114,16 +114,19 @@ class Category {
     }
 
     /**
+     * @param Model\Product\Category $category
+     * @param Model\Product\Category\Config $categoryConfig
      * @return array
      */
-    private function getResponseForCategory(Model\Product\Category $category) {
+    private function getResponseForCategory(Model\Product\Category $category, Model\Product\Category\Config $categoryConfig = null) {
         $maxLevel = $category->level + 1;
-        $walkByCategory = function(\EnterModel\Product\Category $category) use (&$walkByCategory, &$maxLevel) {
+        $walkByCategory = function(\EnterModel\Product\Category $category) use (&$walkByCategory, &$maxLevel, &$categoryConfig) {
             $response = [
                 'id'          => $category->id,
                 'name'        => $category->name,
                 'media'       => $category->media,
                 'hasChildren' => $category->hasChildren,
+                'listingView' => ($categoryConfig && $categoryConfig->tchibo) ? '2' : '1', // MAPI-169
             ];
 
             if (($category->level < $maxLevel) && $category->children) {
