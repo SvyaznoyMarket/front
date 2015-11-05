@@ -12375,14 +12375,14 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   vertical-align: middle;
 }
 .top-banner__txt {
-  font-size: 23px;
+  font-size: 18px;
   color: #fff;
   font-family: 'Enter Type';
   line-height: 1em;
 }
 .top-banner__r {
   display: table-cell;
-  font-size: 15px;
+  font-size: 14px;
   padding: 0 30px;
   color: #fff;
   background-color: #007a15;
@@ -12403,12 +12403,19 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   }
 }
 @media only screen and (max-width: 480px) {
+  .top-banner {
+    padding: 0;
+  }
   .top-banner__txt {
-    font-size: 14px;
+    font-size: 13px;
   }
   .top-banner__r {
     padding: 0 10px;
-    font-size: 12px;
+    font-size: 11px;
+  }
+  .top-banner__l,
+  .top-banner__r {
+    padding: 0 5px;
   }
 }
 /*
