@@ -5264,6 +5264,7 @@ body {
 }
 .cart.content {
   padding-bottom: 60px;
+  max-width: 100%;
 }
 .cart-item {
   position: relative;
@@ -5274,9 +5275,6 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
-}
-.cart-item:last-child {
-  border-bottom: 0;
 }
 .cart-item__img {
   float: left;
