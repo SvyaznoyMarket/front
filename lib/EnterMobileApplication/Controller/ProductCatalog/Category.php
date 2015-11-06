@@ -103,7 +103,7 @@ class Category {
         }
 
         $response = [
-            'category' => $this->getResponseForCategory($controllerResponse->category),
+            'category' => $this->getResponseForCategory($controllerResponse->category, $controllerResponse->catalogConfig),
             'productCount' => $controllerResponse->productUiPager ? $controllerResponse->productUiPager->count : null,
             'products' => $this->getProductList($controllerResponse->products),
             'filters' => $this->getFilterList($controllerResponse->filters),
