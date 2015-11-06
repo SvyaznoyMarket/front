@@ -8337,8 +8337,8 @@ body {
 }
 .checkout-order {
   font-size: 14px;
-  margin: 0;
-  border-width: 1px 1px 0 5px;
+  margin: 0 0 10px;
+  border-width: 1px 1px 1px 5px;
   border-style: solid;
   border-color: #a6a6a6;
 }
