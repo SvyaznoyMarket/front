@@ -76,17 +76,8 @@ namespace EnterMobileApplication\Controller\Order {
                 throw new \Exception('Заказ не найден', Http\Response::STATUS_NOT_FOUND);
             }
 
-            $cart = call_user_func(function() use (&$order, &$cartRepository) {
-                $return = new Model\Cart();
-                foreach ($order->product as $orderProduct) {
-                    $cartRepository->setProductForObject($return, new Model\Cart\Product(['id' => $orderProduct->id, 'quantity' => $orderProduct->quantity]));
-                }
-
-                return $return;
-            });
-
-            $paymentGroupQuery = new Query\PaymentGroup\GetList($regionId, $cart);
-            $curl->prepare($paymentGroupQuery);
+            $paymentQuery = new Query\Payment\GetListByOrderNumberErp($regionId, $order->numberErp);
+            $curl->prepare($paymentQuery);
 
             // пользователь
             $user = null;
@@ -100,28 +91,24 @@ namespace EnterMobileApplication\Controller\Order {
 
             $curl->execute();
 
-            $action = call_user_func(function() use (&$paymentGroupQuery, &$order) {
+            $action = call_user_func(function() use (&$paymentQuery, &$order, $paymentMethodId) {
                 $data = [];
                 try {
-                    $data = $paymentGroupQuery->getResult();
+                    $data = $paymentQuery->getResult();
                 } catch (\Exception $e) {
                     $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
                 }
 
-                foreach ($data as $item) {
-                    if (!isset($item['payment_methods'][0])) continue;
-
-                    foreach ($item['payment_methods'] as $methodItem) {
-                        if (
-                            ((string)$methodItem['id'] !== $order->paymentMethodId)
-                            || empty($methodItem['available_actions'])
-                            || !is_array($methodItem['available_actions'])
-                        ) {
-                            continue;
-                        }
-
-                        return reset($methodItem['available_actions']);
+                foreach ($data['methods'] as $methodItem) {
+                    if (
+                        ((string)$methodItem['id'] !== $paymentMethodId)
+                        || empty($methodItem['available_actions'])
+                        || !is_array($methodItem['available_actions'])
+                    ) {
+                        continue;
                     }
+
+                    return reset($methodItem['available_actions']);
                 }
 
                 return null;
