@@ -70,6 +70,8 @@ class Order {
     /** @var float */
     public $paySum;
     /** @var float */
+    public $prepaidSum;
+    /** @var float */
     public $discountSum;
     /** @var string */
     public $deliveryType;
@@ -138,6 +140,7 @@ class Order {
             }
         }
         if (array_key_exists('pay_sum', $data)) $this->paySum = $this->getPriceHelper()->removeZeroFraction($data['pay_sum']);
+        if (!empty($data['meta_data']['prepaid_sum'])) $this->prepaidSum = $this->getPriceHelper()->removeZeroFraction($data['meta_data']['prepaid_sum']);
         if (array_key_exists('discount_sum', $data)) $this->discountSum = $this->getPriceHelper()->removeZeroFraction($data['discount_sum']);
         if (array_key_exists('delivery_type_id', $data)) {
             switch ($data['delivery_type_id']) {

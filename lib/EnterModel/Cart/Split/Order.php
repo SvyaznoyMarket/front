@@ -18,6 +18,8 @@ class Order {
     /** @var string|null */
     public $sum;
     /** @var string|null */
+    public $prepaidSum;
+    /** @var string|null */
     public $originalSum;
     /** @var string|null */
     public $paymentMethodId;
@@ -62,6 +64,7 @@ class Order {
         $this->_sum = $data['total_cost'] ? (string)$data['total_cost'] : null;
         $this->sum = $data['total_view_cost'] ? (string)$data['total_view_cost'] : null;
         $this->originalSum = $data['total_original_cost'] ? (string)$data['total_original_cost'] : null;
+        $this->prepaidSum = !empty($data['prepaid_sum']) ? (string)$data['prepaid_sum'] : null;
         $this->paymentMethodId = $data['payment_method_id'] ? (string)$data['payment_method_id'] : null;
         foreach ($data['possible_deliveries'] as $token) {
             $this->possibleDeliveryMethodTokens[] = (string)$token;

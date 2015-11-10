@@ -184,7 +184,7 @@ class Complete {
                 'isPrepayment' => call_user_func(function() use (&$config, &$orderModel) {
                     return
                         $config->order->prepayment->enabled
-                        && ($orderModel->sum >= $config->order->prepayment->priceLimit)
+                        && !empty($orderModel->prepaidSum)
                     ;
                 }),
                 'onlinePayment' => call_user_func(function() use (&$orderModel, &$onlinePaymentMethodModelsById, $onlinePaymentMethodsById) {

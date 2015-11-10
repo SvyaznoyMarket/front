@@ -616,10 +616,10 @@ class Delivery {
                     // предоплата
                     if (
                         $config->order->prepayment->enabled
-                        && ($orderModel->sum >= $config->order->prepayment->priceLimit)
+                        && !empty($orderModel->prepaidSum)
                     ) {
                         $messages[] = [
-                            'cost'         => $priceHelper->format($config->order->prepayment->priceLimit),
+                            'cost'         => $priceHelper->format($orderModel->prepaidSum),
                             'isPrepayment' => true,
                         ];
                     }
