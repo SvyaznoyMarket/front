@@ -120,6 +120,7 @@ return function(\EnterAggregator\Config $config) {
     $config->order->cookieName = 'last_order';
     $config->order->sessionName = 'createdOrder';
     $config->order->prepayment->enabled = true;
+    $config->order->prepayment->priceLimit = 100000; // чисто информационное значение
     $config->order->bonusCardSessionKey = 'order_bonusCards';
     $config->order->minSum = 990;
 
