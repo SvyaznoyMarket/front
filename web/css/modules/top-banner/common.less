@@ -23,14 +23,14 @@
         vertical-align: middle;
     }
     &__txt{
-        font-size: 23px;
+        font-size: 18px;
         color: #fff;
         font-family: 'Enter Type';
         line-height: 1em;
     }
     &__r{
         display: table-cell;
-        font-size: 15px;
+        font-size: 14px;
         padding: 0 30px;
         color: #fff;
         background-color: #007a15;
@@ -56,13 +56,19 @@
 }
 
 @media only screen and (max-width: 480px) {
-    .top-banner{
+    .top-banner {
+        padding: 0;
+
         &__txt{
-            font-size: 14px;
+            font-size: 13px;
         }
         &__r{
             padding: 0 10px;
-            font-size: 12px;
+            font-size: 11px;
+        }
+        &__l,
+        &__r {
+            padding: 0 5px;
         }
     }
 }

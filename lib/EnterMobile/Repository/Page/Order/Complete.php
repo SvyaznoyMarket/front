@@ -48,18 +48,12 @@ class Complete {
                 'images'      => ['psbfull.png'],
                 'smallImages' => ['psb.png'],
             ],
-            /*
-            '13' => [
-                'id'     => '13',
-                'name'   => 'PayPal',
-                'images' => ['paypal3.png'],
+            '16'  => [
+                'id'          => '16',
+                'name'        => 'Яндекс.Деньги',
+                'images'      => ['yandexmoney.png'],
+                'smallImages' => [],
             ],
-            '?1'  => [
-                'id'     => '?1',
-                'name'   => 'Яндекс.Деньги',
-                'images' => ['yandexmoney.png'],
-            ],
-            */
         ];
 
         foreach ($request->orders as $orderModel) {
@@ -196,7 +190,16 @@ class Complete {
                         'images' => [],
                     ];
                     foreach ($onlinePaymentMethodModelsById as $paymentMethodModel) {
-                        $paymentMethod = $onlinePaymentMethodsById[$paymentMethodModel->id];
+                        $paymentMethod =
+                            isset($onlinePaymentMethodsById[$paymentMethodModel->id])
+                            ? $onlinePaymentMethodsById[$paymentMethodModel->id]
+                            : [
+                                'id'          => $paymentMethodModel->id,
+                                'name'        => $paymentMethodModel->name,
+                                'images'      => [],
+                                'smallImages' => [],
+                            ]
+                        ;
 
                         $data['images'] = array_merge($data['images'], $paymentMethod['smallImages']);
                     }
@@ -207,12 +210,24 @@ class Complete {
                     $paymentMethods = [];
 
                     foreach ($onlinePaymentMethodModelsById as $paymentMethodModel) {
-                        $paymentMethods[] = $onlinePaymentMethodsById[$paymentMethodModel->id] + [
-                            'dataValue' => $templateHelper->json([
-                                'methodId' => $paymentMethodModel->id,
-                                'orderId'  => $orderModel->id,
-                            ]),
-                        ];
+                        $paymentMethods[] =
+                            (
+                                isset($onlinePaymentMethodsById[$paymentMethodModel->id])
+                                ? $onlinePaymentMethodsById[$paymentMethodModel->id]
+                                : [
+                                    'id'          => $paymentMethodModel->id,
+                                    'name'        => $paymentMethodModel->name,
+                                    'images'      => [],
+                                    'smallImages' => [],
+                                ]
+                            )
+                            + [
+                                'dataValue' => $templateHelper->json([
+                                    'methodId' => $paymentMethodModel->id,
+                                    'orderId'  => $orderModel->id,
+                                ]),
+                            ]
+                        ;
                     }
 
                     return [

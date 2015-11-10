@@ -5264,6 +5264,7 @@ body {
 }
 .cart.content {
   padding-bottom: 60px;
+  max-width: 100%;
 }
 .cart-item {
   position: relative;
@@ -5274,9 +5275,6 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
-}
-.cart-item:last-child {
-  border-bottom: 0;
 }
 .cart-item__img {
   float: left;
@@ -8339,8 +8337,8 @@ body {
 }
 .checkout-order {
   font-size: 14px;
-  margin: 0;
-  border-width: 1px 1px 0 5px;
+  margin: 0 0 10px;
+  border-width: 1px 1px 1px 5px;
   border-style: solid;
   border-color: #a6a6a6;
 }
@@ -12266,13 +12264,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   .product-details__right {
     min-width: 140px;
   }
-  .product__wrap {
-    padding: 10px 15px 0;
-  }
-  .product-widget {
-    top: 10px;
-    right: 15px;
-  }
   .product-price {
     line-height: .8em;
   }
@@ -12350,6 +12341,11 @@ body:not(.noIOS) .private section:not(.main-section) > * {
     padding: 5px;
   }
 }
+@media only screen and (max-width: 639px) {
+  .product-widget {
+    right: 15px;
+  }
+}
 /* ==========================================================================
    баннер о самовывозе
    ========================================================================== */
@@ -12379,14 +12375,14 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   vertical-align: middle;
 }
 .top-banner__txt {
-  font-size: 23px;
+  font-size: 18px;
   color: #fff;
   font-family: 'Enter Type';
   line-height: 1em;
 }
 .top-banner__r {
   display: table-cell;
-  font-size: 15px;
+  font-size: 14px;
   padding: 0 30px;
   color: #fff;
   background-color: #007a15;
@@ -12407,12 +12403,19 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   }
 }
 @media only screen and (max-width: 480px) {
+  .top-banner {
+    padding: 0;
+  }
   .top-banner__txt {
-    font-size: 14px;
+    font-size: 13px;
   }
   .top-banner__r {
     padding: 0 10px;
-    font-size: 12px;
+    font-size: 11px;
+  }
+  .top-banner__l,
+  .top-banner__r {
+    padding: 0 5px;
   }
 }
 /*
