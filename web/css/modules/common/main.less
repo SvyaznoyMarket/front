@@ -12,6 +12,13 @@ textarea {
 
 html {
     font-size: 100%;
+
+    &.no-scroll,
+    &.no-scroll body {
+        position: fixed;
+        overflow: hidden;
+        width: 100%;
+    }
 }
 
 body {

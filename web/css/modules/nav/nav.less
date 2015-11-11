@@ -141,11 +141,11 @@
 }
 .menu-overlay {
     position: fixed;
-    z-index: 3;
+    z-index: 13;
     top: 50px;
     right: 0;
     left: 0;
-    left: 260px;
+    left: 0;
 
     display: none;
     overflow: hidden;
@@ -157,6 +157,9 @@
     background: @white;
 
     .opacity(.5);
+}
+.menu-open .menu-overlay {
+    left: 260px;
 }
 .nav {
     position: absolute;

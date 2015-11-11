@@ -11,15 +11,15 @@ define(
         });
 
         var
-            layout        = $('html'),
-            body          = $('body'),
-            formSearch    = $('.js-search-form'),
-            inputSearch   = $('.js-search-form-input'),
-            suggest       = $('.js-search-suggest'),
-            template      = $('#tpl-search-suggest').html(),
-            header        = $('.js-header'),
-            searchClass   = 'search',
-            noScrollClass = 'no-scroll',
+            layout      = $('html'),
+            body        = $('body'),
+            overlay     = $('.js-fader'),
+            formSearch  = $('.js-search-form'),
+            inputSearch = $('.js-search-form-input'),
+            suggest     = $('.js-search-suggest'),
+            template    = $('#tpl-search-suggest').html(),
+            header      = $('.js-header'),
+            searchClass = 'search',
 
             // Показ блока поиска
             showSearch = function( event ) {
@@ -56,6 +56,7 @@ define(
                     header.removeClass(searchClass);
                     inputSearch.val('');
                     suggest.hide().empty();
+                    overlay.hide();
                 }
             },
 
@@ -66,6 +67,7 @@ define(
                 inputSearch.val('');
                 inputSearch.trigger('focus');
                 suggest.hide().empty();
+                overlay.hide();                                                   
             },
 
             markSuggest = function() {
@@ -105,7 +107,7 @@ define(
 
                         if ( result.categories.length > 1 || result.products.length >1 ) {
                             html = mustache.render(template, {suggestData: suggestData});
-                            layout.addClass(noScrollClass);
+                            overlay.show();
                             suggest.show().html(html);
                         }
                     };
@@ -137,22 +139,22 @@ define(
         body.on('keyup', '.js-search-form-input', submitSearch);
         body.on('click', '.js-search-input-clear', clearSuggest);
         body.on('click', '.js-suggest-link', markSuggest);
+        overlay.on('click', function() {
+            closeSearch( event );
+        })
 
         // закрыть блок с полем ввода поиска
         body.on('click', function() {
             // закрываем по клику если блок виден а саджест не отображен
             if( formSearch.is(':visible') && !suggest.is(':visible') ) {
                 closeSearch( event );
-                layout.removeClass(noScrollClass);
             }
         });
 
-        // скрыть блок поиска при движении пальца по экраны, только если саджест не показан
+        // скрыть блок поиска при движении пальца по экрану, только если саджест не показан
         body.on('touchmove', function() {
             if( !suggest.is(':visible') ) {
                 closeSearch( event );
-            } else {
-                inputSearch.trigger('blur');
             }
         });
     }

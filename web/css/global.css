@@ -429,6 +429,12 @@ textarea {
 html {
   font-size: 100%;
 }
+html.no-scroll,
+html.no-scroll body {
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
+}
 body {
   font-family: Tahoma, Geneva, Kalimati, sans-serif, helvetica, sans-serif;
   font-size: 75%;
@@ -1326,16 +1332,16 @@ body {
 }
 .header {
   position: fixed;
+  z-index: 20;
   top: 0;
   right: 0;
   left: 0;
-  z-index: 20;
+  overflow: hidden;
   height: 50px;
   padding: 0 10px;
   color: #ffffff;
   border-bottom: 1px solid #404040;
   background: #000000;
-  overflow: hidden;
 }
 .header-center {
   width: 100%;
@@ -1373,12 +1379,12 @@ body {
 }
 .header-controls__item {
   line-height: 50px;
+  position: relative;
   height: 50px;
   list-style-type: none;
-  position: relative;
+  vertical-align: middle;
   display: inline-block;
   vertical-align: top;
-  vertical-align: middle;
 }
 .header-controls__link {
   display: block;
@@ -1442,6 +1448,7 @@ body {
 }
 .search-form__it {
   font-size: 1rem;
+  z-index: 2;
   width: 100%;
   padding: 7px 30px 7px 38px;
   border: none;
@@ -1452,18 +1459,17 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
-  z-index: 2;
 }
 .search-form-inn {
   position: relative;
   padding: 8px 0 0;
 }
 .search-form .i-search--search-selected {
+  font-size: 0;
   position: absolute;
+  z-index: 0;
   top: 12px;
   left: 7px;
-  z-index: 0;
-  font-size: 0px;
 }
 .search-form__clear {
   line-height: 30px;
@@ -1475,22 +1481,19 @@ body {
   height: 100%;
 }
 .search-suggest {
-  position: fixed;
-  z-index: 1009;
+  position: absolute;
+  visibility: visible;
+  z-index: 16;
   top: 50px;
   right: 0;
-  bottom: 0;
   left: 0;
-  height: 100%;
   display: none;
-  overflow: auto;
   width: 100%;
   background: #fff;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
-  -webkit-overflow-scrolling: touch;
 }
 .search-suggest.suggest-load {
   overflow: hidden;
@@ -1810,11 +1813,10 @@ body {
 }
 .menu-overlay {
   position: fixed;
-  z-index: 3;
+  z-index: 13;
   top: 50px;
   right: 0;
   left: 0;
-  left: 260px;
   display: none;
   overflow: hidden;
   height: 100%;
@@ -1826,6 +1828,9 @@ body {
   -webkit-opacity: 0.5;
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
   filter: alpha(opacity=50);
+}
+.menu-open .menu-overlay {
+  left: 260px;
 }
 .nav {
   position: absolute;
@@ -12432,10 +12437,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .contain-top-banner .menu-overlay {
   top: 86px;
-}
-.contain-top-banner .search-suggest {
-  top: 86px;
-  padding-bottom: 86px;
 }
 .body-modal .header,
 .body-modal .top-banner {
