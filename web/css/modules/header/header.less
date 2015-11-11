@@ -78,6 +78,16 @@
             padding: 0 10px;
         }
     }
+
+    &.titled {
+        .header-center {
+            text-align: left;
+        }
+        .pagetitle {
+            .inline-block();
+        }
+    }
+
     // показываем поле поиска
     &.search {
         .header__logotype {
@@ -88,23 +98,15 @@
 
             padding-left: 70px;
         }
-        .header-controls__item--search {
-            display: none;
-        }
         .header-center {
             padding-right: 90px;
             padding-left: 40px;
         }
-        .bread-crumbs {
+        .bread-crumbs,
+        .pagetitle,
+        .header-controls__item--search,
+        .header-nav-link {
             display: none;
-        }
-    }
-    &.titled {
-        .header-center {
-            text-align: left;
-        }
-        .pagetitle {
-            .inline-block();
         }
     }
 }

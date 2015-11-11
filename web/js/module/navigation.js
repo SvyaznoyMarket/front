@@ -13,18 +13,14 @@ define(
 
                 e.preventDefault();
 
-                if (body.hasClass('menu-open')) {
-                    body.removeClass('menu-open');
-                } else {
-                    body.addClass('menu-open');
-                }
+                body.hasClass('menu-open') ? body.removeClass('menu-open') : body.addClass('menu-open')
             },
 
             hideMenu = function hideMenu() {
                 body.removeClass('menu-open');
             };
         // end of vars
-        
+
         $(navIco).on('click', showMenu);
         $(fader).on('click', hideMenu);
 

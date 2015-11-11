@@ -67,7 +67,7 @@ define(
                 inputSearch.val('');
                 inputSearch.trigger('focus');
                 suggest.hide().empty();
-                overlay.hide();                                                   
+                overlay.hide();
             },
 
             markSuggest = function() {
@@ -155,6 +155,8 @@ define(
         body.on('touchmove', function() {
             if( !suggest.is(':visible') ) {
                 closeSearch( event );
+            } else {
+                inputSearch.trigger('blur');
             }
         });
     }
