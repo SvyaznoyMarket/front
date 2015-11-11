@@ -18,13 +18,12 @@ define(
             inputSearch = $('.js-search-form-input'),
             suggest     = $('.js-search-suggest'),
             template    = $('#tpl-search-suggest').html(),
-            header      = $('.js-header'),
             searchClass = 'search',
 
             // Показ блока поиска
             showSearch = function( event ) {
                 body.scrollTop(0);
-                header.addClass(searchClass);
+                body.addClass(searchClass);
                 inputSearch.trigger('focus');
 
                 event.preventDefault();
@@ -53,10 +52,9 @@ define(
                     target = event.target;
 
                 if ( !formSearch.is(target) && formSearch.has(target).length === 0 ) {
-                    header.removeClass(searchClass);
+                    body.removeClass(searchClass);
                     inputSearch.val('');
                     suggest.hide().empty();
-                    overlay.hide();
                 }
             },
 
@@ -67,7 +65,6 @@ define(
                 inputSearch.val('');
                 inputSearch.trigger('focus');
                 suggest.hide().empty();
-                overlay.hide();
             },
 
             markSuggest = function() {
@@ -107,7 +104,6 @@ define(
 
                         if ( result.categories.length > 1 || result.products.length >1 ) {
                             html = mustache.render(template, {suggestData: suggestData});
-                            overlay.show();
                             suggest.show().html(html);
                         }
                     };
@@ -139,9 +135,7 @@ define(
         body.on('keyup', '.js-search-form-input', submitSearch);
         body.on('click', '.js-search-input-clear', clearSuggest);
         body.on('click', '.js-suggest-link', markSuggest);
-        overlay.on('click', function() {
-            closeSearch( event );
-        })
+        overlay.on('click', closeSearch);
 
         // закрыть блок с полем ввода поиска
         body.on('click', function() {
