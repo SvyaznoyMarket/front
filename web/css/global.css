@@ -11888,8 +11888,8 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   position: relative;
 }
 .product-card-lst {
-  *zoom: 1;
   font-size: 0;
+  *zoom: 1;
 }
 .product-card-lst:before,
 .product-card-lst:after {
@@ -11900,25 +11900,21 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   clear: both;
 }
 .product-card-lst__i {
-  display: inline-block;
-  vertical-align: top;
+  font-size: 12px;
   width: 33.3%;
   padding: 10px 20px;
   text-align: center;
   border-right: 1px solid #c7c7c7;
-  font-size: 12px;
+  border-bottom: 1px solid #c7c7c7;
+  display: inline-block;
+  vertical-align: top;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
-  border-bottom: 1px solid #c7c7c7;
 }
 .product-card-lst__i:nth-child(3n) {
   border-right: 0;
-}
-.product-card-lst__i:nth-child(3n+1):nth-last-child(-n+3),
-.product-card-lst__i:nth-child(3n+1):nth-last-child(-n+3) ~ li {
-  border-bottom: none;
 }
 .product-card-lst__img {
   line-height: 200px;
@@ -11937,7 +11933,10 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product-card-lst__categ {
   font-size: 14px;
+  overflow: hidden;
   text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   color: #616161;
 }
 .product-card-lst__name {
@@ -11957,8 +11956,8 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   vertical-align: middle;
 }
 .product-card-lst__price {
-  text-align: center;
   font-size: 22px;
+  text-align: center;
 }
 .product-card-lst__price .price {
   display: inline-block;
@@ -12364,7 +12363,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   background-color: #009812;
   text-align: center;
   padding: 0 20px;
-  height: 36px;
+  height: 40px;
   position: fixed;
   top: 0;
   left: 0;
@@ -12394,12 +12393,13 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .top-banner__r {
   display: table-cell;
   font-size: 14px;
-  padding: 0 30px;
+  padding: 0 20px;
+  white-space: nowrap;
   color: #fff;
   background-color: #007a15;
   text-align: center;
   vertical-align: middle;
-  height: 36px;
+  height: 40px;
 }
 @media only screen and (max-width: 767px) {
   .top-banner {
@@ -12433,19 +12433,19 @@ body:not(.noIOS) .private section:not(.main-section) > * {
    Смещаем контент сверху на высоту баннера(если баннер есть)
 */
 .contain-top-banner .header {
-  top: 36px;
+  top: 40px;
 }
 .contain-top-banner .content {
-  padding-top: 86px;
+  padding-top: 90px;
 }
 .contain-top-banner .full-images {
-  padding-top: 86px;
+  padding-top: 90px;
 }
 .contain-top-banner .menu-overlay {
-  top: 86px;
+  top: 90px;
 }
 .contain-top-banner .search-suggest {
-  top: 86px;
+  top: 90px;
 }
 .body-modal .header,
 .body-modal .top-banner {
