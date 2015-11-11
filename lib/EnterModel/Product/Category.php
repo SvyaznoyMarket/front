@@ -48,6 +48,12 @@ namespace EnterModel\Product {
             if (array_key_exists('is_furniture', $data)) $this->isFurniture = (bool)$data['is_furniture'];
             $this->path = trim(preg_replace('/^\/catalog\//', '', $this->link), '/');
             $this->media = new Model\MediaList(isset($data['medias']) ? $data['medias'] : []);
+
+            // not good fix
+            usort($this->media->photos, function (Model\Media $a, Model\Media $b) {
+                return count($a->sources) < count($b->sources);
+            });
+
             if (array_key_exists('level', $data)) $this->level = (int)$data['level'];
             if (array_key_exists('has_children', $data)) $this->hasChildren = (bool)$data['has_children'];
             if (array_key_exists('product_count', $data)) $this->productCount = (int)$data['product_count'];
