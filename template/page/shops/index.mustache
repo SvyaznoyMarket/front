@@ -4,7 +4,7 @@
             <div class="points-search">
                 <form class="points-search__form js-search-points-form">
                     <button class="points-search__btn" type="submit">Найти</button>
-                    <div class=points-search__inn><input class="points-search__input js-search-points-input"></div>
+                    <div class="points-search__inn"><input class="points-search__input js-search-points-input"></div>
                 </form>
             </div>
 
@@ -17,14 +17,16 @@
                     <li class="points-filter__i js-partner-icon" data-partner-slug="euroset"><img src="css/modules/shops/img/logo5.png"><i class="closer"></i></li>
                 </ul>
             </div>
-
         </div>
 
-        <div id="map" style="display:none; width: 100%; height: 700px"></div>
+        <div id="map" style="display:none; width: 100%; height: 100%"></div>
 
-        <div class="points__container js-list-block">
-            {{>partial/shops/points}}
+        <div class="points__container">
+            <div class="points__container-scroll js-list-block">
+                 {{>partial/shops/points}}
+            </div>
         </div>
+
         <div class="map-container js-map-block"></div>
     </section>
 </div>

@@ -1194,6 +1194,7 @@ body {
 }
 .wrapper-shops .content {
   height: 100%;
+  max-width: 100%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -12360,15 +12361,15 @@ body:not(.noIOS) .private section:not(.main-section) > * {
    баннер о самовывозе
    ========================================================================== */
 .top-banner {
-  background-color: #009812;
-  text-align: center;
-  padding: 0 20px;
-  height: 40px;
   position: fixed;
+  z-index: 20;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 20;
+  height: 40px;
+  padding: 0 20px;
+  text-align: center;
+  background-color: #009812;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -12385,21 +12386,21 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   vertical-align: middle;
 }
 .top-banner__txt {
-  font-size: 18px;
-  color: #fff;
   font-family: 'Enter Type';
+  font-size: 18px;
   line-height: 1em;
+  color: #fff;
 }
 .top-banner__r {
-  display: table-cell;
   font-size: 14px;
+  display: table-cell;
+  height: 40px;
   padding: 0 20px;
+  text-align: center;
+  vertical-align: middle;
   white-space: nowrap;
   color: #fff;
   background-color: #007a15;
-  text-align: center;
-  vertical-align: middle;
-  height: 40px;
 }
 @media only screen and (max-width: 767px) {
   .top-banner {
@@ -12409,8 +12410,8 @@ body:not(.noIOS) .private section:not(.main-section) > * {
     font-size: 18px;
   }
   .top-banner__r {
-    padding: 0 10px;
     font-size: 12px;
+    padding: 0 10px;
     white-space: normal;
   }
 }
@@ -12422,8 +12423,8 @@ body:not(.noIOS) .private section:not(.main-section) > * {
     font-size: 13px;
   }
   .top-banner__r {
-    padding: 0 10px;
     font-size: 11px;
+    padding: 0 10px;
   }
   .top-banner__l,
   .top-banner__r {
@@ -12582,82 +12583,82 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   border: 0;
 }
 .header-shops .header-link {
-  color: #fb9c00;
   float: right;
   padding: 17px 0;
+  color: #fb9c00;
 }
 .header-shops .header-back {
-  color: #ffffff;
   float: left;
   padding: 17px 0;
+  color: #ffffff;
 }
 .content.shops {
   padding-bottom: 0;
 }
 .points-filter {
-  padding: 10px 0 0px;
-  background-color: #ffffff;
   position: relative;
   z-index: 2;
+  padding: 10px 0 0;
   text-align: center;
+  background-color: #ffffff;
 }
 .points-filter__lst {
   font-size: 0;
   text-align: left;
 }
 .points-filter__i {
-  display: inline-block;
-  vertical-align: middle;
+  position: relative;
   width: 92px;
   height: 43px;
+  margin: 1px 6px 10px;
+  text-align: center;
   border: 1px solid #d7d7d7;
   border-bottom-width: 2px;
+  display: inline-block;
+  vertical-align: middle;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  margin: 1px 6px 10px;
-  text-align: center;
-  position: relative;
 }
 .points-filter__i .closer {
+  position: absolute;
+  top: -7px;
+  right: -8px;
   display: none;
   width: 15px;
   height: 15px;
-  background: url("modules/shops/img/close@2x.png") no-repeat;
+  background: url('modules/shops/img/close@2x.png') no-repeat;
   -webkit-background-size: 100%;
   -moz-background-size: 100%;
   -o-background-size: 100%;
   background-size: 100%;
-  position: absolute;
-  top: -7px;
-  right: -8px;
 }
 .points-filter__i img {
   max-width: 80px;
   max-height: 35px;
+  margin-top: 1px;
   display: inline-block;
   vertical-align: middle;
-  margin-top: 1px;
 }
 .points-filter__i:after {
+  width: 0;
+  height: 100%;
   content: '';
   display: inline-block;
   vertical-align: middle;
-  width: 0;
-  height: 100%;
 }
 .points-filter__i.selected {
-  border: 2px solid #f99b1c;
   margin: 0 5px 10px;
+  border: 2px solid #f99b1c;
 }
 .points-filter__i.selected .closer {
   display: block;
 }
 .points-search {
-  background-color: #666666;
-  padding: 10px;
   position: relative;
   z-index: 2;
+  padding: 10px;
+  background-color: #666;
 }
 .points-search__inn {
   margin-right: 80px;
@@ -12671,6 +12672,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   width: 100%;
   height: 24px;
   padding: 5px 10px;
+  background-color: #ffffff;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -12678,7 +12680,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
-  background-color: #ffffff;
 }
 .points-search__input::-webkit-input-placeholder {
   line-height: normal;
@@ -12697,17 +12698,17 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   color: #c7c7c7;
 }
 .points-search__btn {
+  line-height: 24px;
+  float: right;
   width: 70px;
   height: 24px;
-  line-height: 24px;
+  padding: 0;
   color: #ffffff;
+  border: 0;
   background-color: #f99b1c;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  float: right;
-  padding: 0;
-  border: 0;
 }
 .index {
   width: 100%;
@@ -12740,62 +12741,46 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   align-content: stretch;
 }
 .index .map-container {
+  display: none;
+  width: 100%;
   -webkit-box-flex: 1 1 auto;
   -webkit-flex: 1 1 auto;
   -moz-box-flex: 1 1 auto;
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
-  width: 100%;
-  display: none;
 }
 .index .map-container .map-baloon .shop-snippet-name {
   padding-right: 17px;
-}
-.points-top {
-  width: 100%;
-  -webkit-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);
-  position: relative;
-  z-index: 2;
 }
 .points__list {
   max-width: 528px;
   margin: 0 auto;
 }
 .points__i {
-  border-bottom: 1px solid #e6e6e6;
   padding: 0 4px;
+  border-bottom: 1px solid #e6e6e6;
 }
 .points__i .table_cell {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 .points__container {
+  overflow: hidden;
+  height: 100%;
   -webkit-box-flex: 1 1 auto;
   -webkit-flex: 1 1 auto;
   -moz-box-flex: 1 1 auto;
   -ms-flex: 1 1 auto;
   flex: 1 1 auto;
-  width: 100%;
-  top: 0;
-  left: 0;
-  /*.box-sizing(border-box);*/
-  overflow: scroll;
+}
+.points__container-scroll {
+  overflow: auto;
+  height: 100%;
   -webkit-overflow-scrolling: touch;
 }
 @media screen and (min-width: 768px) {
   .points-filter__lst {
     text-align: center;
-  }
-  .points-top {
-    position: relative;
-    padding-bottom: 44px;
-  }
-  .points-top .points-search {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
   }
 }
 /*.content.shops.shop-detail{
