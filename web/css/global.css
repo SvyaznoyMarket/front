@@ -12872,3 +12872,95 @@ section.map .map-container {
     height: 200px;
   }
 }
+/* ==========================================================================
+   Сетка (Thibo и тд)
+   ========================================================================== */
+.grids {
+  width: 100%;
+  padding: 0 5px 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  font: 18px Tahoma, sans-serif;
+}
+.grids__row {
+  *zoom: 1;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+.grids__row:before,
+.grids__row:after {
+  display: table;
+  content: ' ';
+}
+.grids__row:after {
+  clear: both;
+}
+.grids__cell {
+  position: relative;
+  width: 100%;
+  margin-top: 10px;
+  padding: 0 5px;
+  overflow: hidden;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+@media screen and (min-width: 767px) {
+  .grids__cell {
+    float: left;
+    width: 50%;
+    padding: 0 5px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -ms-box-sizing: border-box;
+  }
+}
+.grids__cell-inner {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
+}
+.grids__title {
+  position: absolute;
+  left: 0;
+  bottom: 20px;
+  z-index: 2;
+  width: 240px;
+  height: 50px;
+  margin: 0;
+  padding-left: 10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.8);
+  font: inherit;
+  line-height: 50px;
+  color: #363636;
+}
+@media screen and (min-width: 767px) {
+  .grids__title {
+    width: 300px;
+  }
+}
+.grids__bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: 100%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
