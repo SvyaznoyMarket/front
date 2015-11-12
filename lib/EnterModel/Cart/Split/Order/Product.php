@@ -39,10 +39,6 @@ class Product {
     public function __construct($data = []) {
         $this->id = $data['id'] ? (string)$data['id'] : null;
         $this->ui = $data['ui'] ? (string)$data['ui'] : null;
-        $this->name = $data['name'] ? (string)$data['name'] : null;
-        $this->namePrefix = $data['prefix'] ? (string)$data['prefix'] : null;
-        $this->webName = $data['name_web'] ? (string)$data['name_web'] : null;
-        $this->url = $data['url'] ? (string)$data['url'] : null;
         $this->image = $data['image'] ? (string)$data['image'] : null;
         $this->price = $data['price'] ? (string)$data['price'] : null;
         $this->originalPrice = $data['original_price'] ? (string)$data['original_price'] : null;
