@@ -1,11 +1,9 @@
 <ul class="points__list">
     {{#points}}
         <li class="points__i">
-            <div class="shop-snippet clearfix">
+            <a class="shop-snippet clearfix" href="{{link}}">
                 <div class="shop-snippet-name table_cell">
-                    <a href="{{link}}">
-                        <img src="{{logo}}" alt="" class="shop-snippet-name__img">
-                    </a>
+                    <img src="{{logo}}" alt="" class="shop-snippet-name__img">
                     <span class="shop-snippet-name__text">{{name}}</span>
                 </div>
 
@@ -24,8 +22,7 @@
                         {{regime}}
                     </div>
                 </div>
-
-            </div>
+            </a>
         </li>
     {{/points}}
 </ul>
