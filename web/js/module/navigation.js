@@ -9,20 +9,20 @@ define(
             fader = $('.js-fader'),
             navIco = $('.js-nav-open-link'),
 
-            showHideMenu = function showHideMenu(e) {
+            showMenu = function showHideMenu(e) {
 
                 e.preventDefault();
 
-                if (body.hasClass('menu-open')) {
-                    body.removeClass('menu-open');
-                } else {
-                    body.addClass('menu-open');
-                }
+                body.hasClass('menu-open') ? body.removeClass('menu-open') : body.addClass('menu-open')
+            },
+
+            hideMenu = function hideMenu() {
+                body.removeClass('menu-open');
             };
         // end of vars
-        
-        $(navIco).on('click', showHideMenu);
-        $(fader).on('click', showHideMenu);
+
+        $(navIco).on('click', showMenu);
+        $(fader).on('click', hideMenu);
 
         $(document)
             .on('focus', 'input, textarea, input + label, select', function(e) {
@@ -31,6 +31,5 @@ define(
             .on('blur', 'input, textarea, input + label, select', function(e) {
                 body.removeClass('fixfixed');
             });
-
     }
 );

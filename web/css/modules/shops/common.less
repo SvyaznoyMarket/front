@@ -1,210 +1,211 @@
-.header-shops{
-    .box-shadow(0 1px 3px 1px rgba(0, 0, 0, 0.30));
-
-    .header-center{
+.header-shops {
+    .box-shadow(0 1px 3px 1px rgba(0, 0, 0, .30));
+    .header-center {
         padding: 0 10px;
     }
-    .pagetitle__link{
+    .pagetitle__link {
         border: 0;
     }
-    .header-link{
-        color: #fb9c00;
+    .header-link {
         float: right;
-        padding: 17px 0;
-    }
-    .header-back{
-        color: @white;
-        float: left;
-        padding: 17px 0;
-    }
 
+        padding: 17px 0;
+
+        color: #fb9c00;
+    }
+    .header-back {
+        float: left;
+
+        padding: 17px 0;
+
+        color: @white;
+    }
 }
-.content.shops{
+.content.shops {
     padding-bottom: 0;
 }
-.points-filter{
-    padding: 10px 0 0px;
-    background-color: @white;
+.points-filter {
     position: relative;
     z-index: 2;
+
+    padding: 10px 0 0;
+
     text-align: center;
 
-    &__lst{
+    background-color: @white;
+    &__lst {
         font-size: 0;
+
         text-align: left;
     }
-    &__i{
-        .inline-block(middle);
-        width: 92px;
-        height: 43px;
-        border: 1px solid #d7d7d7;
-        border-bottom-width: 2px;
-        .rounded(3px);
-        margin: 1px 6px 10px;
-        text-align: center;
+    &__i {
         position: relative;
 
-        .closer{
-            display: none;
-            width: 15px;
-            height: 15px;
-            background: url("modules/shops/img/close@2x.png") no-repeat;
-            .background-size(100%);
+        width: 92px;
+        height: 43px;
+        margin: 1px 6px 10px;
+
+        text-align: center;
+
+        border: 1px solid #d7d7d7;
+        border-bottom-width: 2px;
+
+        .inline-block(middle);
+        .rounded(3px);
+        .closer {
             position: absolute;
             top: -7px;
             right: -8px;
-        }
 
-         img{
-             max-width: 80px;
-             max-height: 35px;
-             .inline-block(middle);
-             margin-top: 1px;
-         }
-        &:after{
-            content: '';
+            display: none;
+
+            width: 15px;
+            height: 15px;
+
+            background: url('modules/shops/img/close@2x.png') no-repeat;
+
+            .background-size(100%);
+        }
+        img {
+            max-width: 80px;
+            max-height: 35px;
+            margin-top: 1px;
+
             .inline-block(middle);
+        }
+        &:after {
             width: 0;
             height: 100%;
-        }
 
-        &.selected{
-            border:2px solid #f99b1c;
+            content: '';
+
+            .inline-block(middle);
+        }
+        &.selected {
             margin: 0 5px 10px;
-            .closer{
+
+            border: 2px solid #f99b1c;
+            .closer {
                 display: block;
             }
         }
-
     }
 }
-.points-search{
-    background-color: #666666;
-    padding: 10px;
+.points-search {
     position: relative;
     z-index: 2;
 
-    &__inn{
+    padding: 10px;
+
+    background-color: #666;
+    &__inn {
         margin-right: 80px;
     }
-
-    &__form{
-
+    &__form {
         max-width: 520px;
         margin: 0 auto;
     }
-    &__input{
+    &__input {
         display: block;
+
         width: 100%;
         height: 24px;
         padding: 5px 10px;
-        .rounded(3px);
 
-        .box-sizing(border-box);
         background-color: @white;
+
+        .rounded(3px);
+        .box-sizing(border-box);
         //placeholders line-height fix
         &::-webkit-input-placeholder {
             line-height: normal;
+
             color: #c7c7c7;
         }
         &::-moz-placeholder {
             line-height: normal;
+
             color: #c7c7c7;
         }
         &:-ms-input-placeholder {
             line-height: normal;
+
             color: #c7c7c7;
         }
         &:-moz-placeholder {
             line-height: normal;
+
             color: #c7c7c7;
         }
     }
-    &__btn{
+    &__btn {
+        line-height: 24px;
+
+        float: right;
+
         width: 70px;
         height: 24px;
-        line-height: 24px;
-        color: @white;
-        background-color: @typ-orange;
-        .rounded(3px);
-        float: right;
         padding: 0;
+
+        color: @white;
         border: 0;
+        background-color: @typ-orange;
+
+        .rounded(3px);
     }
 }
-.index{
+.index {
     width: 100%;
     height: 100%;
 
     .flexbox();
     .flex_direction_column();
-
     .flex-wrap(nowrap);
     .justify-content(flex-start);
     .align-items(stretch);
     .align-content(stretch);
-
-    .map-container{
-        .flex(1, 1, auto);
-        width: 100%;
+    .map-container {
         display: none;
 
-        .map-baloon .shop-snippet-name{
+        width: 100%;
+
+        .flex(1, 1, auto);
+        .map-baloon .shop-snippet-name {
             padding-right: 17px;
         }
     }
-
 }
-.points{
-    &-top{
-
-        width: 100%;
-        .box-shadow(0 2px 3px 0 rgba(0, 0, 0, 0.50));
-        position: relative;
-        z-index: 2;
-
-
-    }
-    &__list{
+.points {
+    &__list {
         max-width: 528px;
         margin: 0 auto;
     }
-    &__i{
-        border-bottom: 1px solid #e6e6e6;
+    &__i {
         padding: 0 4px;
-        .table_cell{
+
+        border-bottom: 1px solid #e6e6e6;
+        .table_cell {
             padding-top: 10px;
             padding-bottom: 10px;
         }
     }
-    &__container{
+    &__container {
+        overflow: hidden;
+
+        height: 100%;
+
         .flex(1, 1, auto);
-        //position: absolute;
-        width: 100%;
-        //height: 100%;
-        top: 0;
-        left: 0;
-        //padding-top: 161px;
-        /*.box-sizing(border-box);*/
-        overflow: scroll;
-        -webkit-overflow-scrolling: touch;
+        &-scroll {
+            overflow: auto;
+
+            height: 100%;
+
+            -webkit-overflow-scrolling: touch;
+        }
     }
 }
-@media screen and (min-width: 768px){
-    .points-filter__lst{
+@media screen and (min-width: 768px) {
+    .points-filter__lst {
         text-align: center;
     }
-
-   .points-top{
-       position: relative;
-       padding-bottom: 44px;
-       .points-filter{
-
-       }
-       .points-search{
-           position: absolute;
-           bottom: 0;
-           width: 100%;
-       }
-   }
 }

@@ -9,10 +9,12 @@
 
 .header {
     position: fixed;
+    z-index: 20;
     top: 0;
     right: 0;
     left: 0;
-    z-index: 20;
+
+    overflow: hidden;
 
     height: 50px;
     padding: 0 10px;
@@ -20,8 +22,6 @@
     color: @white;
     border-bottom: 1px solid #404040;
     background: @black;
-    overflow: hidden;
-
     &-center {
         width: 100%;
         padding-right: 130px;
@@ -62,14 +62,15 @@
         &__item {
             line-height: 50px;
 
+            position: relative;
+
             height: 50px;
 
             list-style-type: none;
 
-            position: relative;
+            vertical-align: middle;
 
             .inline-block();
-            vertical-align: middle;
         }
         &__link {
             display: block;
@@ -77,32 +78,12 @@
             padding: 0 10px;
         }
     }
-    // показываем поле поиска
-    &.search {
-        .header__logotype {
-            float: left;
-        }
-        .search-form {
-            display: block;
 
-            padding-left: 70px;
-        }
-        .header-controls__item--search {
-            display: none;
-        }
+    &.titled {
         .header-center {
-            padding-right: 90px;
-            padding-left: 40px;
+            text-align: left;
         }
-        .bread-crumbs {
-            display: none;
-        }
-    }
-    &.titled{
-        .header-center{
-           text-align: left;
-        }
-        .pagetitle{
+        .pagetitle {
             .inline-block();
         }
     }
@@ -155,6 +136,8 @@
     &__it {
         font-size: 1rem;
 
+        z-index: 2;
+
         width: 100%;
         padding: 7px 30px 7px 38px;
 
@@ -162,7 +145,6 @@
 
         .rounded(5px);
         .box-sizing();
-        z-index: 2;
     }
     &-inn {
         position: relative;
@@ -170,11 +152,12 @@
         padding: 8px 0 0;
     }
     .i-search--search-selected {
+        font-size: 0;
+
         position: absolute;
+        z-index: 0;
         top: 12px;
         left: 7px;
-        z-index: 0;
-        font-size: 0px;
     }
     &__clear {
         line-height: 30px;
@@ -192,23 +175,21 @@
 
 // автокомплит поиска
 .search-suggest {
-    position: fixed;
-    z-index: 1009;
+    position: absolute;
+    visibility: visible;
+    z-index: 16;
     top: 50px;
     right: 0;
-    bottom: 0;
     left: 0;
-    height: 100%;
 
     display: none;
-    overflow: auto;
 
     width: 100%;
 
     background: #fff;
 
     .box-sizing();
-    -webkit-overflow-scrolling: touch;
+
     &.suggest-load {
         overflow: hidden;
         &:after {
@@ -249,9 +230,10 @@
         font-size: 1rem;
 
         display: table;
-        width: 100%;
 
+        width: 100%;
         padding: 10px 20px;
+
         .box-sizing(border-box);
     }
     &__img {
@@ -276,9 +258,8 @@
         color: #6e6e6e;
     }
 }
-.pagetitle{
+.pagetitle {
     line-height: 50px;
-
     &__link {
         font-size: 1rem;
 

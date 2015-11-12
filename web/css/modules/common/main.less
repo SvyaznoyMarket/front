@@ -2,29 +2,83 @@
    Base styles: opinionated defaults
    ========================================================================== */
 
-html,
-button,
-input,
-select,
+html ,
+button ,
+input ,
+select ,
 textarea {
     color: #222;
 }
 
 html {
     font-size: 100%;
+    &.no-scroll ,
+    &.no-scroll body {
+        position: fixed;
+
+        overflow: hidden;
+
+        width: 100%;
+    }
 }
 
 body {
     font-family: Tahoma,Geneva,Kalimati,sans-serif,helvetica,sans-serif;
     font-size: 75%;
     line-height: 1.4;
+    // показываем поле поиска
+    &.search {
+        .header {
+            .header__logotype {
+                float: left;
+            }
+            .search-form {
+                display: block;
+
+                padding-left: 70px;
+            }
+            .header-center {
+                padding-right: 90px;
+                padding-left: 40px;
+            }
+            .bread-crumbs ,
+            .pagetitle ,
+            .header-controls__item--search ,
+            .header-nav-link {
+                display: none;
+            }
+        }
+        .menu-overlay {
+            display: block;
+        }
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    body {
+        &.search {
+            .header {
+                .header__logotype ,
+                .header-controls__item--user {
+                    display: none;
+                }
+                .search-form {
+                    padding-right: 0;
+                    padding-left: 0;
+                }
+                .header-center {
+                    padding-right: 48px;
+                    padding-left: 10px;
+                }
+            }
+        }
+    }
 }
 
 a {
     text-decoration: none;
 
     color: @black;
-
     &:hover {
         text-decoration: none;
 
@@ -67,18 +121,16 @@ textarea {
 /* Prevent callout */
 
 .nocallout {
-
     -webkit-touch-callout: none;
 }
 
 .pressed {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, .7);
 }
 
 /* A hack for HTML5 contenteditable attribute on mobile */
 
 textarea[contenteditable] {
-
     -webkit-appearance: none;
 }
 
@@ -144,7 +196,7 @@ textarea[contenteditable] {
  * when navigated to via the keyboard: h5bp.com/p
  */
 
-.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:active ,
 .visuallyhidden.focusable:focus {
     position: static;
 
@@ -169,11 +221,11 @@ textarea[contenteditable] {
  * Used to contain floats: h5bp.com/q
  */
 
-.clearfix:before,
+.clearfix:before ,
 .clearfix:after {
     display: table;
 
-    content: "";
+    content: '';
 }
 
 .clearfix:after {
@@ -189,7 +241,7 @@ textarea[contenteditable] {
  * Include this rule to trigger hasLayout and contain floats.
  */
 .s {
-    font-size: 12px
+    font-size: 12px;
 }
 
 .m {
@@ -201,7 +253,6 @@ textarea[contenteditable] {
 }
 
 .clearfix {
-
     *zoom: 1;
 }
 
@@ -263,27 +314,27 @@ textarea[contenteditable] {
 }
 
 .btnStyle {
-    .gradient(#ffc000, #ffaa01, #ffc000);
-    .rounded(4px);
+    font-size: 14px;
+    line-height: 34px;
+
     display: block;
 
     height: 35px;
 
     text-align: center;
 
-    color: #ffffff;
+    color: #fff;
     border: 1px solid #fb9c00;
 
-    font-size: 14px;
-    line-height: 34px;
-
+    .gradient(#ffc000, #ffaa01, #ffc000);
+    .rounded(4px);
     &:hover {
-        .gradient(#ffa200, #f79200, #ffa200);
         text-decoration: none;
 
         color: @white;
-    }
 
+        .gradient(#ffa200, #f79200, #ffa200);
+    }
     &:active {
         text-decoration: none;
 
@@ -299,16 +350,16 @@ textarea[contenteditable] {
 }
 
 .backLn {
-    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAYAAACQN/8FAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAuElEQVQoFYXR3QnCMBSG4XOlRfBGvA/1ZwQXcAjH6BiCFnUQdQq9EeoSjiAiFIX4nsIJsa148dA235c0JOK9lzYi0sUYiea/SgMKS9wxby0S9JHjjStco8hgDxlKXDDT0leRwQRbPHDAyEqhyGAHK2jpDBeX4uKE8IkbFvVSXNQV19AVT3D1cjgeQt3jDlreo7lHm004xAYvHJGGzF7sSRifY8G30yz82orVoMj/m7EJrKR3PUV11x/05fDNuFCCQAAAAABJRU5ErkJggg==) no-repeat 10px 50%;
-    padding: 0 0 0 30px;
-    line-height: 40px;
-    border-bottom: 1px solid @lightGrey1;
     font-size: 16px;
+    line-height: 40px;
+
+    padding: 0 0 0 30px;
+
+    border-bottom: 1px solid @lightGrey1;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAANCAYAAACQN/8FAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAuElEQVQoFYXR3QnCMBSG4XOlRfBGvA/1ZwQXcAjH6BiCFnUQdQq9EeoSjiAiFIX4nsIJsa148dA235c0JOK9lzYi0sUYiea/SgMKS9wxby0S9JHjjStco8hgDxlKXDDT0leRwQRbPHDAyEqhyGAHK2jpDBeX4uKE8IkbFvVSXNQV19AVT3D1cjgeQt3jDlreo7lHm004xAYvHJGGzF7sSRifY8G30yz82orVoMj/m7EJrKR3PUV11x/05fDNuFCCQAAAAABJRU5ErkJggg==) no-repeat 10px 50%;
 }
 // основные стили элементов форм
 .textfield {
-    .rounded(4px);
-    .box-sizing();
     display: block;
 
     height: 35px;
@@ -317,75 +368,80 @@ textarea[contenteditable] {
 
     border: 1px solid @inputBorder;
 
-
+    .rounded(4px);
+    .box-sizing();
     &-err {
-        border-color: @redErr;
         border-width: 3px;
+        border-color: @redErr;
     }
 }
 
 .btnsubmit {
-    .rounded(4px);
-    .inline-block();
-    padding: 5px 15px;
+    font-size: 14px;
     font-weight: bold;
+
+    padding: 5px 15px;
 
     color: @white;
     border: 1px solid #ff6c00;
     background: @submitBg;
 
-    font-size: 14px;
-
+    .rounded(4px);
+    .inline-block();
     &:hover {
         color: @white;
     }
 }
 
 .labeltext {
+    font-size: 12px;
+    line-height: 1.5;
+
     display: block;
 
     margin: 0 0 5px;
-
-    font-size: 12px;
-    line-height: 1.5;
 }
 
 .legend {
-    margin: 10px 0 15px;
-
     font-size: 18px;
+
+    margin: 10px 0 15px;
 }
 
 .fieldError {
-    border-color: #ff0000;
+    border-color: #f00;
 }
 
 .errorText {
-    background: @white;
-    color: #ff0000;
     font-size: 12px;
-    left: 10px;
     line-height: 1;
+
+    position: absolute;
+    left: 10px;
+
     margin-top: -62px;
     padding: 0 2px;
-    position: absolute;
+
+    color: #f00;
+    background: @white;
 }
 
 
 .txEvnt {
-    display: block;
     font-size: 14px;
-    left: 10px;
     line-height: 1.1;
-    margin: 0 0 10px;
+
     position: absolute;
     top: 3px;
-    width: 300px;
+    left: 10px;
 
+    display: block;
+
+    width: 300px;
+    margin: 0 0 10px;
     &-err {
         color: #ec434f;
     }
-
     &-complt {
         color: #0bb010;
     }
@@ -393,8 +449,8 @@ textarea[contenteditable] {
 
 // кастомный селект
 .customSel {
-    .inline-block();
-    .rounded(4px);
+    font-size: 14px;
+
     position: relative;
 
     height: 33px;
@@ -406,24 +462,21 @@ textarea[contenteditable] {
     border: 1px solid @lightGrey1;
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAGCAYAAAAPDoR2AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAYElEQVQIHWMMDw/fysDw34sBAzBuYwKKFQLxLzQ5EL+QacWKFbeYmBgnIkuC+GBxkCAnJ3czkHoBVfACymcAGcswd+7cz0xMzBUgNogG8UFshv///8MwI9Bxk4B8RpgYAKNoKpNJevrLAAAAAElFTkSuQmCC) no-repeat 95% 50% @white;
 
-    font-size: 14px;
-
+    .inline-block();
+    .rounded(4px);
     &_def {
         line-height: 33px;
     }
-
     &_lst {
         //display: none;
         width: 100%;
     }
-
     &_i {
         padding: 4px 5px;
 
         cursor: pointer;
 
         border-bottom: 1px solid @lightGrey1;
-
         &:last-child {
             border-bottom: none;
         }
@@ -431,30 +484,35 @@ textarea[contenteditable] {
 }
 
 .errtx {
-    bottom: -7px;
-    color: @redErr;
-    display: block;
     font-size: 12px;
-    margin: 0;
+
     position: absolute;
+    bottom: -7px;
+
+    display: block;
+
+    margin: 0;
+
     white-space: nowrap;
     word-wrap: normal;
+
+    color: @redErr;
 }
 
 .table {
     display: table;
-    width: 100%;
-    box-sizing: border-box;
 
+    box-sizing: border-box;
+    width: 100%;
     &_cell {
         display: table-cell;
-        vertical-align: middle;
+
         padding-right: 10px;
 
+        vertical-align: middle;
         &:last-child {
             padding-right: 0;
         }
-
         &-w100 {
             width: 100%;
         }
@@ -463,34 +521,36 @@ textarea[contenteditable] {
 
 .lst-tree {
     margin: 0 0 20px;
-
     &__i {
         margin-left: 10px;
-
         &--tl {
             font-size: 14px;
+
             margin: 0 0 2px;
         }
     }
-
     &__bul {
-        .inline-block();
-        height: 6px;
-        vertical-align: middle;
         width: 6px;
-        .rounded(50%);
-        background-color: @black;
+        height: 6px;
         margin-right: 2px;
+
+        vertical-align: middle;
+
+        background-color: @black;
+
+        .inline-block();
+        .rounded(50%);
     }
 }
 
 .m-body-loader {
     position: fixed;
+
     width: 100%;
     height: 100%;
-
     &:before {
         position: fixed;
+        z-index: 99;
         top: 0;
         left: 0;
 
@@ -500,22 +560,23 @@ textarea[contenteditable] {
         content: '';
 
         background: rgba(255,255,255,.6);
-        z-index: 99;
     }
     &:after {
-        background: url("@{common-url}/loader/loader.png") no-repeat 50% 50%;
         position: fixed;
-        .animation(rotated 3.5s infinite linear);
+        z-index: 99;
         top: 50%;
-        margin-top: -30px;
         left: 50%;
-        margin-left: -30px;
 
         width: 60px;
         height: 60px;
-        z-index: 99;
+        margin-top: -30px;
+        margin-left: -30px;
 
         content: '';
+
+        background: url('@{common-url}/loader/loader.png') no-repeat 50% 50%;
+
+        .animation(rotated 3.5s infinite linear);
     }
 }
 
@@ -523,6 +584,7 @@ textarea[contenteditable] {
     position: relative;
     &:before {
         position: absolute;
+        z-index: 99;
         top: 0;
         left: 0;
 
@@ -532,42 +594,47 @@ textarea[contenteditable] {
         content: '';
 
         background: rgba(255,255,255,.6);
-        z-index: 99;
     }
     &:after {
-        background: url("@{common-url}/loader/loader.png") no-repeat 50% 50%;
         position: absolute;
-        .animation(rotated 3.5s infinite linear);
+        z-index: 99;
         top: 50%;
-        margin-top: -30px;
         left: 50%;
-        margin-left: -30px;
 
         width: 60px;
         height: 60px;
-        z-index: 99;
+        margin-top: -30px;
+        margin-left: -30px;
 
         content: '';
+
+        background: url('@{common-url}/loader/loader.png') no-repeat 50% 50%;
+
+        .animation(rotated 3.5s infinite linear);
     }
 }
 
 @keyframes rotated {
     from {
         -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-        /* transform-origin: 50% 50%; */}
+                transform: rotate(0deg);
+        /* transform-origin: 50% 50%; */
+    }
     to {
         -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-        /* transform-origin: 50% 50%; */}
+                transform: rotate(360deg);
+        /* transform-origin: 50% 50%; */
+    }
 }
 @-webkit-keyframes rotated {
     from {
         -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-        /* transform-origin: 50% 50%; */}
+                transform: rotate(0deg);
+        /* transform-origin: 50% 50%; */
+    }
     to {
         -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-        /* transform-origin: 50% 50%; */}
+                transform: rotate(360deg);
+        /* transform-origin: 50% 50%; */
+    }
 }

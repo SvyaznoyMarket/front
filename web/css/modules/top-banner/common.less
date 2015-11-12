@@ -1,56 +1,70 @@
-@bannerHeight: 36px;
+@bannerHeight: 40px;
 
 .top-banner {
-    background-color: #009812;
-    text-align: center;
-    padding: 0 20px;
-    height: @bannerHeight;
     position: fixed;
+    z-index: 20;
     top: 0;
     left: 0;
-    width: 100%;
-    z-index: 20;
-    .box-sizing(border-box);
 
-    &__inn{
+    width: 100%;
+    height: @bannerHeight;
+    padding: 0 20px;
+
+    text-align: center;
+
+    background-color: #009812;
+
+    .box-sizing(border-box);
+    &__inn {
         display: table;
+
         max-width: 900px;
         margin: 0 auto;
     }
-    &__l{
+    &__l {
         display: table-cell;
+
         padding: 0 10px;
+
         vertical-align: middle;
     }
-    &__txt{
-        font-size: 18px;
-        color: #fff;
+    &__txt {
         font-family: 'Enter Type';
+        font-size: 18px;
         line-height: 1em;
-    }
-    &__r{
-        display: table-cell;
-        font-size: 14px;
-        padding: 0 30px;
+
         color: #fff;
-        background-color: #007a15;
+    }
+    &__r {
+        font-size: 14px;
+
+        display: table-cell;
+
+        height: @bannerHeight;
+        padding: 0 20px;
+
         text-align: center;
         vertical-align: middle;
-        height: @bannerHeight;
+        white-space: nowrap;
+
+        color: #fff;
+        background-color: #007a15;
     }
 }
 
 
 @media only screen and (max-width: 767px) {
-    .top-banner{
+    .top-banner {
         padding: 0 10px;
-
-        &__txt{
+        &__txt {
             font-size: 18px;
         }
-        &__r{
-            padding: 0 10px;
+        &__r {
             font-size: 12px;
+
+            padding: 0 10px;
+
+            white-space: normal;
         }
     }
 }
@@ -58,15 +72,15 @@
 @media only screen and (max-width: 480px) {
     .top-banner {
         padding: 0;
-
-        &__txt{
+        &__txt {
             font-size: 13px;
         }
-        &__r{
-            padding: 0 10px;
+        &__r {
             font-size: 11px;
+
+            padding: 0 10px;
         }
-        &__l,
+        &__l ,
         &__r {
             padding: 0 5px;
         }
