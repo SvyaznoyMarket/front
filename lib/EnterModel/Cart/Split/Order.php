@@ -37,6 +37,8 @@ class Order {
     public $possiblePoints = [];
     /** @var string|null */
     public $comment;
+    /** @var int */
+    public $isOnlinePaymentAvailable;
     /** @var string|null */
     private $_sum;
 
@@ -63,6 +65,7 @@ class Order {
         $this->sum = $data['total_view_cost'] ? (string)$data['total_view_cost'] : null;
         $this->originalSum = $data['total_original_cost'] ? (string)$data['total_original_cost'] : null;
         $this->paymentMethodId = $data['payment_method_id'] ? (string)$data['payment_method_id'] : null;
+        $this->isOnlinePaymentAvailable = isset($data['is_online_payment_available']) ? $data['is_online_payment_available'] : null;
         foreach ($data['possible_deliveries'] as $token) {
             $this->possibleDeliveryMethodTokens[] = (string)$token;
         }

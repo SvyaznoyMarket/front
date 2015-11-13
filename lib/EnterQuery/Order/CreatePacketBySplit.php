@@ -49,32 +49,33 @@ class CreatePacketBySplit extends Query {
             }
 
             $orderData = [
-                'type_id'             => $typeId,
-                'geo_id'              => $split->region->id,
-                'user_id'             => $split->user ? $split->user->id : null,
-                'is_legal'            => false, // FIXME!!!
-                'payment_id'          => $order->paymentMethodId,
-                'credit_bank_id'      => null, // FIXME!!!
-                'last_name'           => $split->user ? $split->user->lastName : null,
-                'first_name'          => $split->user ? $split->user->firstName : null,
-                'email'               => ($split->user && !empty($split->user->email)) ? $split->user->email : null,
-                'mobile'              => ($split->user && !empty($split->user->phone)) ? preg_replace('/[^\d]/', '', preg_replace('/^\+7/', '8', $split->user->phone)) : null,
-                'address_street'      => null,
-                'address_number'      => null,
-                'address_building'    => null,
-                'address_apartment'   => null,
-                'address_floor'       => null,
-                'shop_id'             => ($delivery && $delivery->point) ? $delivery->point->id : null,
-                'point_ui'            => ($delivery && $delivery->point) ? $delivery->point->ui : null,
-                'extra'               => $order->comment,
-                'bonus_card_number'   => ($split->user && $split->user->bonusCardNumber) ? $split->user->bonusCardNumber : null,
-                'delivery_type_id'    => $delivery ? $delivery->modeId : null, // ATTENTION
-                'delivery_type_token' => $delivery ? $delivery->methodToken : null,
-                'delivery_price'      => (int)($delivery ? $delivery->price : 0), // MAPI-158
-                'delivery_period'     => ($delivery && $delivery->interval) ? [$delivery->interval->from, $delivery->interval->to] : null,
-                'delivery_date'       => $deliveryDate ? $deliveryDate->format('Y-m-d') : null,
-                'ip'                  => $split->clientIp,
-                'product'             => [],
+                'type_id'                     => $typeId,
+                'geo_id'                      => $split->region->id,
+                'user_id'                     => $split->user ? $split->user->id : null,
+                'is_legal'                    => false, // FIXME!!!
+                'payment_id'                  => $order->paymentMethodId,
+                'credit_bank_id'              => null, // FIXME!!!
+                'last_name'                   => $split->user ? $split->user->lastName : null,
+                'first_name'                  => $split->user ? $split->user->firstName : null,
+                'email'                       => ($split->user && !empty($split->user->email)) ? $split->user->email : null,
+                'mobile'                      => ($split->user && !empty($split->user->phone)) ? preg_replace('/[^\d]/', '', preg_replace('/^\+7/', '8', $split->user->phone)) : null,
+                'address_street'              => null,
+                'address_number'              => null,
+                'address_building'            => null,
+                'address_apartment'           => null,
+                'address_floor'               => null,
+                'shop_id'                     => ($delivery && $delivery->point) ? $delivery->point->id : null,
+                'point_ui'                    => ($delivery && $delivery->point) ? $delivery->point->ui : null,
+                'extra'                       => $order->comment,
+                'bonus_card_number'           => ($split->user && $split->user->bonusCardNumber) ? $split->user->bonusCardNumber : null,
+                'delivery_type_id'            => $delivery ? $delivery->modeId : null, // ATTENTION
+                'delivery_type_token'         => $delivery ? $delivery->methodToken : null,
+                'delivery_price'              => (int)($delivery ? $delivery->price : 0), // MAPI-158
+                'delivery_period'             => ($delivery && $delivery->interval) ? [$delivery->interval->from, $delivery->interval->to] : null,
+                'delivery_date'               => $deliveryDate ? $deliveryDate->format('Y-m-d') : null,
+                'ip'                          => $split->clientIp,
+                'product'                     => [],
+                'is_online_payment_available' => $order->isOnlinePaymentAvailable,
             ];
 
             if ($order->delivery && $order->delivery->boxUi) {
