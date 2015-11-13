@@ -75,6 +75,7 @@ class CreatePacketBySplit extends Query {
                 'delivery_date'       => $deliveryDate ? $deliveryDate->format('Y-m-d') : null,
                 'ip'                  => $split->clientIp,
                 'product'             => [],
+                'is_online_payment_available' => $order->isOnlinePaymentAvailable,
             ];
 
             if ($order->delivery && $order->delivery->boxUi) {
