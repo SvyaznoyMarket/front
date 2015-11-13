@@ -187,7 +187,13 @@ namespace EnterAggregator\Controller\Cart {
                 if ($productsById) {
                     foreach ($response->split->orders as $order) {
                         foreach ($order->products as $product) {
-                            $product->media = isset($productsById[$product->id]) ? $productsById[$product->id]->media : [];
+                            if (isset($productsById[$product->id])) {
+                                $product->url = $productsById[$product->id]->link;
+                                $product->name = $productsById[$product->id]->name;
+                                $product->webName = $productsById[$product->id]->webName;
+                                $product->namePrefix = $productsById[$product->id]->namePrefix;
+                                $product->media = $productsById[$product->id]->media;
+                            }
                         }
                     }
                 }
