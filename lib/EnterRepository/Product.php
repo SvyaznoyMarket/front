@@ -328,6 +328,14 @@ class Product {
      */
     private function setDescription(Model\Product $product, $descriptionItem) {
         try {
+            if (isset($descriptionItem['slug'])) $product->token = (string)$descriptionItem['slug'];
+            if (isset($descriptionItem['url'])) $product->link = (string)$descriptionItem['url'];
+            if (isset($descriptionItem['name'])) $product->name = $descriptionItem['name'];
+            if (isset($descriptionItem['name_web'])) $product->webName = $descriptionItem['name_web'];
+            if (isset($descriptionItem['name_prefix'])) $product->namePrefix = $descriptionItem['name_prefix'];
+            if (isset($descriptionItem['tagline'])) $product->tagline = (string)$descriptionItem['tagline'];
+            if (isset($descriptionItem['description'])) $product->description = (string)$descriptionItem['description'];
+
             // trustfactors
             if (isset($descriptionItem['trustfactors']) && is_array($descriptionItem['trustfactors'])) {
                 foreach ($descriptionItem['trustfactors'] as $trustfactorItem) {
