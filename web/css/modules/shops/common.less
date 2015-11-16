@@ -21,8 +21,14 @@
         color: @white;
     }
 }
-.content.shops {
+.shops {
     padding-bottom: 0;
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    overflow: hidden;
 }
 .points-filter {
     position: relative;
@@ -197,12 +203,9 @@
             top: 0;
             right: 0;
             left: 0;
+            bottom: 0;
 
-            overflow: auto;
-
-            height: 100%;
-
-            .box-sizing(border-box);
+            overflow-y:auto;
             -webkit-overflow-scrolling: touch;
         }
     }
