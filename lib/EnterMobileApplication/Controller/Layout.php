@@ -34,7 +34,23 @@ namespace EnterMobileApplication\Controller {
                     'transportCompanyAvailable' => null,
                     'parent' => null,
                 ],
-                'mainMenu' => ['elements' => []],
+                'mainMenu' => [
+                    'elements' => [
+                        [
+                            'type' => 'category',
+                            'id' => '80',
+                            'name' => '',
+                            'char' => 'C',
+                            'image' => null,
+                            'url' => '/catalog/furniture',
+                            'level' => 1,
+                            'children' => [],
+                            'hasChildren' => false,
+                            'media' => [
+                            ]
+                        ]
+                    ]
+                ],
             ]);
         }
     }
