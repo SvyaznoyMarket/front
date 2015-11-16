@@ -161,15 +161,10 @@
     .flexbox();
     .flex_direction_column();
     .flex-wrap(nowrap);
-    .justify-content(flex-start);
-    .align-items(stretch);
-    .align-content(stretch);
     .map-container {
         display: none;
 
         width: 100%;
-
-        .flex(1, 1, auto);
         .map-baloon .shop-snippet-name {
             padding-right: 17px;
         }
@@ -191,19 +186,29 @@
     }
     &__container {
         overflow: hidden;
+        position: relative;
 
         height: 100%;
 
         .flex(1, 1, auto);
         &-scroll {
             overflow: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
 
             height: 100%;
+            .box-sizing(border-box);
 
             -webkit-overflow-scrolling: touch;
         }
     }
 }
+
+.points-top {
+    .flex(1, 0, auto);
+}
+
 @media screen and (min-width: 768px) {
     .points-filter__lst {
         text-align: center;
