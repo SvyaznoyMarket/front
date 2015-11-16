@@ -12771,11 +12771,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   right: 0;
   left: 0;
   bottom: 0;
-  overflow: auto;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -ms-box-sizing: border-box;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 .points-top {
