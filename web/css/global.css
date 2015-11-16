@@ -12749,8 +12749,8 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   padding-bottom: 10px;
 }
 .points__container {
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
   height: 100%;
   -webkit-box-flex: 1 1 auto;
   box-flex: 1 1 auto;
@@ -12760,10 +12760,11 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   flex: 1 1 auto;
 }
 .points__container-scroll {
-  overflow: auto;
   position: absolute;
   top: 0;
+  right: 0;
   left: 0;
+  overflow: auto;
   height: 100%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;

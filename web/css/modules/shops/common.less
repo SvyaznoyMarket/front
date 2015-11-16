@@ -185,21 +185,24 @@
         }
     }
     &__container {
-        overflow: hidden;
         position: relative;
+
+        overflow: hidden;
 
         height: 100%;
 
         .flex(1, 1, auto);
         &-scroll {
-            overflow: auto;
             position: absolute;
             top: 0;
+            right: 0;
             left: 0;
 
-            height: 100%;
-            .box-sizing(border-box);
+            overflow: auto;
 
+            height: 100%;
+
+            .box-sizing(border-box);
             -webkit-overflow-scrolling: touch;
         }
     }
