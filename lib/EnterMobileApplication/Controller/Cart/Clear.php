@@ -20,19 +20,9 @@ class Clear {
      * @return Http\JsonResponse
      */
     public function execute(Http\Request $request) {
-        $session = $this->getSession();
-        $cartRepository = new \EnterRepository\Cart();
-
-        // корзина из сессии
-        $cart = $cartRepository->getObjectByHttpSession($session);
-
-        // удаление товаров
-        $cart->product = [];
-
-        // сохранение корзины в сессию
-        $cartRepository->saveObjectToHttpSession($session, $cart);
-
-        // response
-        return (new Controller\Cart())->execute($request);
+        return new Http\JsonResponse([
+            'sum' => 0,
+            'products' => [],
+        ]);
     }
 }

@@ -18,35 +18,23 @@ namespace EnterMobileApplication\Controller\Region {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
-            $curl = $this->getCurl();
-
-            // ответ
-            $response = new Response();
-
-            $keyword = trim((string)$request->query['q']);
-            $limit = (int)$request->query['limit'] ?: 10;
-            if ($limit > 100) {
-                $limit = 100;
-            }
-
-            $regionListQuery = new Query\Region\GetListByKeyword($keyword);
-            $curl->prepare($regionListQuery)->execute();
-
-            $i = 0;
-            foreach ($regionListQuery->getResult() as $regionItem) {
-                if ($i >= $limit) break;
-
-                $region = new Model\Region($regionItem);
-                if (isset($regionItem['region']['id'])) {
-                    $region->parent = new Model\Region($regionItem['region']);
-                }
-
-                $response->regions[] = $region;
-
-                $i++;
-            }
-
-            return new Http\JsonResponse($response);
+            return new Http\JsonResponse([
+                'regions' => [
+                    [
+                        'id' => '14974',
+                        'ui' => '',
+                        'kladrId' => '',
+                        'code' => '',
+                        'parentId' => '82',
+                        'name' => 'Москва',
+                        'token' => 'moskva-g',
+                        'latitude' => 55.75578355133,
+                        'longitude' => 37.617773222432,
+                        'transportCompanyAvailable' => null,
+                        'parent' => null,
+                    ],
+                ],
+            ]);
         }
     }
 }

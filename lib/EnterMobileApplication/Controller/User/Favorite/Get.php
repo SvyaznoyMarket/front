@@ -22,85 +22,10 @@ namespace EnterMobileApplication\Controller\User\Favorite {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
-            $config = $this->getConfig();
-            $curl = $this->getCurl();
-            //$session = $this->getSession();
-
-            // ответ
-            $response = new Response();
-
-            $token = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
-            if (!$token) {
-                throw new \Exception('Не указан token', Http\Response::STATUS_BAD_REQUEST);
-            }
-
-            try {
-                $userItemQuery = new Query\User\GetItemByToken($token);
-                $curl->prepare($userItemQuery);
-
-                $curl->execute();
-
-                $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery);
-                if ($user) {
-                    $response->token = $token;
-                }
-
-                $favoriteListQuery = new Query\User\Favorite\GetListByUserUi($user->ui);
-                $favoriteListQuery->setTimeout(2 * $config->crmService->timeout);
-                $curl->prepare($favoriteListQuery);
-
-                $curl->execute();
-
-                $favoriteListResult = $favoriteListQuery->getResult() + ['products' => []];
-
-                $productUis = array_filter(
-                    array_map(
-                        function($item) {
-                            return $item['uid'];
-                        },
-                        $favoriteListResult['products']
-                    )
-                );
-                if ($productUis) {
-                    $productListQuery = new Query\Product\GetListByUiList($productUis, $config->region->defaultId);
-                    $curl->prepare($productListQuery);
-
-                    // запрос списка медиа для товаров
-                    $descriptionListQuery = new Query\Product\GetDescriptionListByUiList(
-                        $productUis,
-                        [
-                            'media'       => true,
-                            'category'    => true,
-                            'label'       => true,
-                            'brand'       => true,
-                            'media_types' => ['main'], // только главная картинка
-                        ]
-                    );
-                    $curl->prepare($descriptionListQuery);
-
-                    $curl->execute();
-
-                    $productsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$productListQuery]);
-
-                    // товары по ui
-                    $productsByUi = [];
-                    call_user_func(function() use (&$productsById, &$productsByUi) {
-                        foreach ($productsById as $product) {
-                            $productsByUi[$product->ui] = $product;
-                        }
-                    });
-                    // медиа для товаров
-                    (new \EnterRepository\Product())->setDescriptionForListByListQuery($productsByUi, $descriptionListQuery);
-
-                    $response->products = array_values($productsById);
-                }
-            } catch (\Exception $e) {
-                if ($config->debugLevel) $this->getDebugContainer()->error = $e;
-            }
-
-            if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
-
-            return new Http\JsonResponse($response);
+            return new Http\JsonResponse([
+                'token' => '',
+                'products' => [],
+            ]);
         }
     }
 }

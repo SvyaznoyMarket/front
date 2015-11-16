@@ -13,20 +13,21 @@ namespace EnterMobileApplication\Controller\Region {
         use CurlTrait;
 
         public function execute(Http\Request $request) {
-            $curl = $this->getCurl();
-
-            $response = new Response();
-
-            $regionId = $request->query['regionId'];
-
-            if (is_numeric($regionId)) {
-                $query = new GetItemById($regionId);
-                $curl->prepare($query)->execute();
-                $result = $query->getResult();
-                if (is_array($result)) $response->region = new Region($result);
-            }
-
-            return new Http\JsonResponse($response);
+            return new Http\JsonResponse([
+                'region' => [
+                    'id' => '14974',
+                    'ui' => '',
+                    'kladrId' => '',
+                    'code' => '',
+                    'parentId' => '82',
+                    'name' => 'Москва',
+                    'token' => 'moskva-g',
+                    'latitude' => 55.75578355133,
+                    'longitude' => 37.617773222432,
+                    'transportCompanyAvailable' => null,
+                    'parent' => null,
+                ],
+            ]);
         }
 
     }
