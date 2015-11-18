@@ -21,8 +21,14 @@
         color: @white;
     }
 }
-.content.shops {
+.shops {
     padding-bottom: 0;
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    overflow: hidden;
 }
 .points-filter {
     position: relative;
@@ -161,15 +167,10 @@
     .flexbox();
     .flex_direction_column();
     .flex-wrap(nowrap);
-    .justify-content(flex-start);
-    .align-items(stretch);
-    .align-content(stretch);
     .map-container {
         display: none;
 
         width: 100%;
-
-        .flex(1, 1, auto);
         .map-baloon .shop-snippet-name {
             padding-right: 17px;
         }
@@ -190,20 +191,30 @@
         }
     }
     &__container {
+        position: relative;
+
         overflow: hidden;
 
         height: 100%;
 
         .flex(1, 1, auto);
         &-scroll {
-            overflow: auto;
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
 
-            height: 100%;
-
+            overflow-y:auto;
             -webkit-overflow-scrolling: touch;
         }
     }
 }
+
+.points-top {
+    .flex(1, 0, auto);
+}
+
 @media screen and (min-width: 768px) {
     .points-filter__lst {
         text-align: center;

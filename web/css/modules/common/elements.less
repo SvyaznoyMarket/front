@@ -197,7 +197,8 @@
     display: -webkit-box;
     display:    -moz-box;
     display: -ms-flexbox;
-    display: -webkit-flex;
+    display: box;
+    // display: -webkit-flex;
     display:         flex;
 }
 
@@ -226,6 +227,7 @@
 
 .flex(@grow, @shrink, @basis) {
     -webkit-box-flex: @grow @shrink @basis;
+    box-flex: @grow @shrink @basis;
     -webkit-flex: @grow @shrink @basis;
        -moz-box-flex: @grow @shrink @basis;
         -ms-flex: @grow @shrink @basis;

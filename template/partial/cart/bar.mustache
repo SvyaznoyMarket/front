@@ -1,7 +1,12 @@
 <div class="js-widget {{widgetId}} cartBar" data-template-selector="#tpl-cart-bar">
-        <a class="js-ga-click btn--orange btn--thin" href="{{orderUrl}}" data-ga-click="{{&orderDataGa}}">Оформление заказа</a>
+    {{#orderRemainSum}}
+        <div class="cart__min-sum">До оформления заказа осталось {{orderRemainSum}} <span class="rubl">p</span></div>
+    {{/orderRemainSum}}
 
+    {{^orderRemainSum}}
+        <a class="js-ga-click btn--orange btn--thin" href="{{orderUrl}}" data-ga-click="{{&orderDataGa}}">Оформление заказа</a>
         <div class="cartBar_text">
             Итого: <span class="price">{{shownSum}} <span class="rubl">p</span></span>
         </div>
+    {{/orderRemainSum}}
 </div>
