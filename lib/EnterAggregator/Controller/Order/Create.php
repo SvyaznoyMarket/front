@@ -193,14 +193,14 @@ namespace EnterAggregator\Controller\Order {
                 foreach ($order->paymentMethods as $paymentMethod) {
                     // MAPI-179
                     if (!$paymentMethod->sum) {
-                        $paymentMethod->sum = $order->sum;
+                        $paymentMethod->sum = $order->paySum;
                     }
                     // MAPI-168
                     if ($paymentMethod->discount && $paymentMethod->discount->value && $paymentMethod->isOnline) {
                         $order->paymentLabel = [
                             'name' => 'Скидка ' . $paymentMethod->discount->value . $paymentMethod->discount->unit,
                         ];
-                        break;
+                        // break; DANGER: не применять!
                     }
                 }
             }

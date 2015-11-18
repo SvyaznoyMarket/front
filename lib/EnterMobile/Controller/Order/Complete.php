@@ -142,7 +142,7 @@ class Complete {
                                 $paymentMethod = new Model\PaymentMethod($paymentItem);
                                 // MAPI-179
                                 if (!$paymentMethod->sum) {
-                                    $paymentMethod->sum = $order->sum;
+                                    $paymentMethod->sum = $order->paySum;
                                 }
 
                                 if (!$paymentMethod->isOnline) continue;
