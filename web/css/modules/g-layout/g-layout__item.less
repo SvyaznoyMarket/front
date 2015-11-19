@@ -1,43 +1,8 @@
-.g-layout__item{
+.g-layout__item(@col: 1, @height: auto, @float: left, @colN: 12){
+  width: @g-layout-container / @colN * @col;
+  height: @height;
+  float: @float;
   padding: 0 5px;
 
   .box-sizing();
-
 }
-
-
-.g-layout__item_3{
-  .g-layout__item;
-
-  width: 25%;
-  float: left;
-}
-
-.g-layout__item_4{
-  .g-layout__item;
-
-  width: 33.333%;
-  float: left;
-}
-
-.g-layout__item_6{
-  .g-layout__item;
-
-  width: 50%;
-  float: left;
-}
-
-.g-layout__item_12{
-  .g-layout__item;
-
-  width: 100%;
-  float: none;
-}
-
-
-
-/* ==========================================================================
-   Микс-классы для создания сетки
-   ========================================================================== */
-
-

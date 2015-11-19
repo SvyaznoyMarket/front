@@ -2,16 +2,17 @@
 	<div class="pageTitle">{{title}}</div>
 
     {{#categoryBlock}}
-    <ul class="rootCategories clearfix">
-        {{#categories}}
-		<li class="rootCategories_item">
-			<a href="{{url}}" class="rootCategories_link">
-				<span class="rootCategories_img"><img src="{{image}}" alt="{{name}}" class="img"></span>
-				<span class="rootCategories_name">{{name}}</span>
-			</a>
-		</li>
-        {{/categories}}
-    </ul>
+        <div class="rootCategories">
+            <div class="rootCategories__row">
+                {{#categories}}
+                    <div class="rootCategories__item">
+                        <a href="{{url}}" class="rootCategories__link">
+                            <span class="rootCategories__img-block"><img src="{{image}}" alt="{{name}}" class="img"></span>
+                            <span class="rootCategories__name">{{name}}</span>
+                        </a>
+                    </div>
+                {{/categories}}
+            </div>
+        </div>
     {{/categoryBlock}}
 </div>
-

@@ -2,18 +2,20 @@
     <div class="contentBox960 js-content-hidden">
 
         {{#categoryBlock}}
-            <ul class="catalogCategories clearfix">
-                {{#categories}}
-                <li class="catalogCategories_item">
-                    <a href="{{url}}" class="catalogCategories_link">
-                        <div class="catalogCategories-img-container">
-                            <img src="{{image}}" alt="{{name}}" class="catalogCategories_img">
-                        </div>
-                        <span class="catalogCategories_text">{{name}}</span>
-                    </a>
-                </li>
-                {{/categories}}
-            </ul>
+            <div class="catalogCategories">
+               <div class="catalogCategories__row">
+                   {{#categories}}
+                       <div class="catalogCategories__item">
+                           <a href="{{url}}" class="catalogCategories__link">
+                               <div class="catalogCategories__img-block">
+                                   <img src="{{image}}" alt="{{name}}" class="catalogCategories__img">
+                               </div>
+                               <span class="catalogCategories__name">{{name}}</span>
+                           </a>
+                       </div>
+                   {{/categories}}
+               </div>
+            </div>
         {{/categoryBlock}}
 
         {{>partial/navigation}}
