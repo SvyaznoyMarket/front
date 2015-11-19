@@ -12833,9 +12833,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   margin: auto;
   -webkit-overflow-scrolling: touch;
 }
-.andriod-native .points__container-scroll {
-  bottom: 50px;
-}
 .points-top {
   width: 100%;
   -webkit-box-flex: 0 0 auto;

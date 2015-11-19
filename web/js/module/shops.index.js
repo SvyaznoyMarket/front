@@ -173,8 +173,7 @@ define(
         var nua = navigator.userAgent;
         var is_android = ((nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1) && !(nua.indexOf('Chrome') > -1));
         if (is_android) {
-            $body.addClass('andriod-native');
+            $('.points__container-scroll').css({ 'bottom' : $('.points-top').height() });
         }
-
     }
 );
