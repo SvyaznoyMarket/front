@@ -5,7 +5,7 @@ define(
     function (
         $, _, ymaps, Mustache
     ) {
-
+        var $body = $('body');
         var $searchPointsForm = $('.js-search-points-form');
         var $searchPointsInput = $('.js-search-points-input');
         var $partnerIcon = $('.js-partner-icon');
@@ -168,6 +168,12 @@ define(
 
             makeRequest(filter);
 
+        }
+
+        var nua = navigator.userAgent;
+        var is_android = ((nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1) && !(nua.indexOf('Chrome') > -1));
+        if (is_android) {
+            $body.addClass('andriod-native');
         }
 
     }

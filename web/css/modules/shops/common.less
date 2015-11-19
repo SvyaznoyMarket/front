@@ -199,11 +199,13 @@
         position: relative;
 
         width: 100%;
+        height: 100%;
 
         .flexbox();
         .align-content(stretch);
         .flex-wrap(wrap);
         .flex(1, 1, auto);
+
         &-scroll {
             position: absolute;
             top: 0;
@@ -220,8 +222,17 @@
     }
 }
 
+.andriod-native {
+    .points__container-scroll {
+        bottom: 50px;
+    }
+}
+
 .points-top {
     width: 100%;
+
+    .flex(0, 0, auto);
+
 }
 
 @media screen and (min-width: 768px) {
