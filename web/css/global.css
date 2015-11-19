@@ -5370,7 +5370,10 @@ body {
   font-size: 18px;
   margin: 30px 0 20px;
   text-align: center;
-  color: #009712;
+  color: #80c342;
+}
+.cart__min-sum_top {
+  margin: 5px 0;
 }
 /* ==========================================================================
    Корзина .cartItem .cartLine .cartBuy
