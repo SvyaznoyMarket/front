@@ -2789,6 +2789,7 @@ body {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
   -webkit-flex-align: center;
   -webkit-box-align: center;
@@ -3574,6 +3575,7 @@ body {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
   -webkit-flex-align: center;
   -webkit-box-align: center;
@@ -3915,6 +3917,7 @@ body {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
   -webkit-flex-align: center;
   -ms-flex-align: center;
@@ -4033,6 +4036,7 @@ body {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
   width: 100%;
   max-width: 640px;
@@ -4303,6 +4307,7 @@ body {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
   -webkit-flex-align: center;
   -webkit-box-align: center;
@@ -5789,6 +5794,7 @@ body {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
   -webkit-flex-align: center;
   -webkit-box-align: center;
@@ -6009,6 +6015,7 @@ body {
     display: -moz-box;
     display: -ms-flexbox;
     display: box;
+    display: -webkit-flex;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -8268,6 +8275,7 @@ body {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
   -webkit-flex-align: center;
   -ms-flex-align: center;
@@ -8292,6 +8300,7 @@ body {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
   -webkit-flex-align: center;
   -webkit-box-align: center;
@@ -8542,6 +8551,7 @@ body {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
   -webkit-flex-flow: row nowrap;
   -moz-flex-flow: row nowrap;
@@ -8630,6 +8640,7 @@ body {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
   -webkit-justify-content: space-between;
   -webkit-box-pack: space-between;
@@ -9809,6 +9820,7 @@ body {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
   -webkit-flex-flow: column;
   -moz-flex-flow: column;
@@ -9828,6 +9840,7 @@ body {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
 }
 .flexbox-two-rows__content {
@@ -12501,6 +12514,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
   -webkit-justify-content: space-between;
   -webkit-box-pack: space-between;
@@ -12519,6 +12533,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
   -webkit-flex-align: center;
   -webkit-box-align: center;
@@ -12608,13 +12623,13 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   color: #ffffff;
 }
 .shops {
-  padding-bottom: 0;
   position: absolute;
   top: 50px;
   bottom: 0;
-  width: 100%;
   left: 0;
   overflow: hidden;
+  width: 100%;
+  padding-bottom: 0;
 }
 .points-filter {
   position: relative;
@@ -12738,11 +12753,30 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   display: -moz-box;
   display: -ms-flexbox;
   display: box;
+  display: -webkit-flex;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-flex-wrap: nowrap;
+  -moz-flex-wrap: nowrap;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  -webkit-align-content: stretch;
+  -moz-align-content: stretch;
+  box-align: stretch;
+  -webkit-box-align: stretch;
+  align-content: stretch;
+  -webkit-flex-align: flex-start;
+  -webkit-box-align: flex-start;
+  -ms-flex-align: flex-start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+  -webkit-justify-content: flex-start;
+  -webkit-box-pack: flex-start;
+  -moz-justify-content: flex-start;
+  justify-content: flex-start;
 }
 .index .map-container {
   display: none;
@@ -12765,32 +12799,41 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .points__container {
   position: relative;
-  overflow: hidden;
-  height: 100%;
-  -webkit-box-flex: 1 0 auto;
-  box-flex: 1 0 auto;
-  -webkit-flex: 1 0 auto;
-  -moz-box-flex: 1 0 auto;
-  -ms-flex: 1 0 auto;
-  flex: 1 0 auto;
+  width: 100%;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-content: stretch;
+  -moz-align-content: stretch;
+  box-align: stretch;
+  -webkit-box-align: stretch;
+  align-content: stretch;
+  -webkit-flex-wrap: wrap;
+  -moz-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-flex: 1 1 auto;
+  box-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  -moz-box-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 .points__container-scroll {
   position: absolute;
   top: 0;
   right: 0;
-  left: 0;
-  height: 100%;
   bottom: 0;
+  left: 0;
   overflow-y: auto;
+  margin: auto;
   -webkit-overflow-scrolling: touch;
 }
 .points-top {
-  -webkit-box-flex: 0 0 auto;
-  box-flex: 0 0 auto;
-  -webkit-flex: 0 0 auto;
-  -moz-box-flex: 0 0 auto;
-  -ms-flex: 0 0 auto;
-  flex: 0 0 auto;
+  width: 100%;
 }
 @media screen and (min-width: 768px) {
   .points-filter__lst {
