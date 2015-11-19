@@ -197,12 +197,13 @@
 
         height: 100%;
 
-        .flex(1, 1, auto);
+        .flex(1, 0, auto);
         &-scroll {
             position: absolute;
             top: 0;
             right: 0;
             left: 0;
+            height: 100%;
             bottom: 0;
 
             overflow-y:auto;
@@ -212,7 +213,7 @@
 }
 
 .points-top {
-    .flex(1, 0, auto);
+    .flex(0, 0, auto);
 }
 
 @media screen and (min-width: 768px) {

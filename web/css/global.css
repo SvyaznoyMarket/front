@@ -2019,7 +2019,7 @@ body {
   position: static;
 }
 .menu-open .cartBar {
-  position: fixed;
+  position: absolute;
 }
 .menu-open.contain-top-banner .content {
   padding-top: 0;
@@ -12768,29 +12768,30 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   position: relative;
   overflow: hidden;
   height: 100%;
-  -webkit-box-flex: 1 1 auto;
-  box-flex: 1 1 auto;
-  -webkit-flex: 1 1 auto;
-  -moz-box-flex: 1 1 auto;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-}
-.points__container-scroll {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-.points-top {
   -webkit-box-flex: 1 0 auto;
   box-flex: 1 0 auto;
   -webkit-flex: 1 0 auto;
   -moz-box-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
   flex: 1 0 auto;
+}
+.points__container-scroll {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 100%;
+  bottom: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.points-top {
+  -webkit-box-flex: 0 0 auto;
+  box-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  -moz-box-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
 }
 @media screen and (min-width: 768px) {
   .points-filter__lst {
