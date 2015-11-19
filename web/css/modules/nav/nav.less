@@ -369,8 +369,15 @@
         display: block;
     }
     .header,
-    .top-banner,
+    .top-banner {
+        position: static;
+    }
     .cartBar {
-        position: absolute;
+        position: fixed;
+    }
+    &.contain-top-banner {
+        .content {
+            padding-top: 0;
+        }
     }
 }

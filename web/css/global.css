@@ -2015,9 +2015,14 @@ body {
   display: block;
 }
 .menu-open .header,
-.menu-open .top-banner,
+.menu-open .top-banner {
+  position: static;
+}
 .menu-open .cartBar {
-  position: absolute;
+  position: fixed;
+}
+.menu-open.contain-top-banner .content {
+  padding-top: 0;
 }
 /* ==========================================================================
    Навигации .nav
