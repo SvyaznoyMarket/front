@@ -2024,6 +2024,9 @@ body {
 .menu-open.contain-top-banner .content {
   padding-top: 0;
 }
+.menu-open .content {
+  padding-top: 0;
+}
 /* ==========================================================================
    Навигации .nav
    ========================================================================== */
@@ -12740,10 +12743,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
-  -webkit-flex-wrap: nowrap;
-  -moz-flex-wrap: nowrap;
-  -ms-flex-wrap: nowrap;
-  flex-wrap: nowrap;
 }
 .index .map-container {
   display: none;
