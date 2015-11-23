@@ -86,12 +86,13 @@ namespace EnterMobileApplication\Controller\User {
                     $createQuery = new Query\User\CreateItemByObject($user, true);
                     $createQuery->setTimeout(2 * $config->coreService->timeout);
 
-                    $token = $createQuery->getResult()['token'];
                     try {
                         $curl->query($createQuery);
                     } catch (\Exception $e) {
                         $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['user']]);
                     }
+
+                    $token = $createQuery->getResult()['token'];
 
                     if (empty($token)) {
                         throw new \Exception('Не получен token пользователя');
