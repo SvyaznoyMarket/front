@@ -570,32 +570,37 @@ class Delivery {
                             continue;
                         }
 
-                        if (in_array($paymentMethodId, ['1', '2', '5'])) {
-                            $paymentMethods[] = [
-                                'id'          => $paymentMethodModel->id,
-                                'name'        => $paymentMethodModel->name,
-                                'description' => $paymentMethodModel->description,
-                                'isActive'    =>
-                                    $orderModel->paymentMethodId
-                                    ? ($orderModel->paymentMethodId == $paymentMethodModel->id)
-                                    : false
-                                ,
-                                'dataValue'   => $templateHelper->json([
-                                    'change' => [
-                                        'orders' => [
-                                            [
-                                                'blockName'       => $orderModel->blockName,
-                                                'paymentMethodId' => $paymentMethodModel->id,
-                                            ],
+                        $paymentMethods[] = [
+                            'id'          => $paymentMethodModel->id,
+                            'name'        => $paymentMethodModel->name . (!$paymentMethodModel->isOnline ? ' при получении' : ''),
+                            'description' => $paymentMethodModel->description,
+                            'isActive'    =>
+                                $orderModel->paymentMethodId
+                                ? ($orderModel->paymentMethodId == $paymentMethodModel->id)
+                                : false
+                            ,
+                            'dataValue'   => $templateHelper->json([
+                                'change' => [
+                                    'orders' => [
+                                        [
+                                            'blockName'       => $orderModel->blockName,
+                                            'paymentMethodId' => $paymentMethodModel->id,
                                         ],
                                     ],
-                                ]),
-                                'order'       => [
-                                    'id' => $orderModel->blockName,
                                 ],
-                                'isOnline'    => $paymentMethodModel->isOnline,
-                            ];
-                        }
+                            ]),
+                            'order'       => [
+                                'id' => $orderModel->blockName,
+                            ],
+                            'isOnline'    => $paymentMethodModel->isOnline,
+                            'image'       => @[
+                                '5'  => 'i-bank-cart.png',
+                                '16' => 'i-ya-wallet.png',
+                                '11' => 'i-webmoney.png',
+                                '12' => 'i-qiwi.png',
+                                '8'  => 'i-psb.png',
+                            ][$paymentMethodModel->id],
+                        ];
                     }
 
                     if (

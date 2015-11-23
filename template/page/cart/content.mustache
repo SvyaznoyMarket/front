@@ -1,10 +1,16 @@
 <div class="content cart">
         <div class="pageTitle">Корзина</div>
 
+        <div class="js-widget id-cart-widget cart__min-sum cart__min-sum_top">
+            Минимальная сумма заказа 990 <span class="rubl">p</span>
+        </div>
+
         {{#productBlock}}
            <div class="cart__inn">
             {{#products}}
             <!-- товар в корзине -->
+
+
                 <div class="js-cartProduct-container cart-item clearfix">
                     {{#cartDeleteButton}}
                         {{>partial/cart/deleteButton}}
