@@ -19,6 +19,8 @@ class Order {
     public $sum;
     /** @var string|null */
     public $originalSum;
+    /** @var \EnterModel\Cart\Split\Order\Prepayment|null */
+    public $prepayment;
     /** @var string|null */
     public $paymentMethodId;
     /** @var array|null */
@@ -47,6 +49,10 @@ class Order {
      * @param $format
      */
     public function __construct($data = [], $format = true) {
+        if (!empty($data['prepaid_sum'])) {
+            $this->prepayment = new \EnterModel\Cart\Split\Order\Prepayment($data['prepaid_sum']);
+        }
+
         $this->blockName = $data['block_name'] ? (string)$data['block_name'] : null;
         $this->seller = $data['seller'] ? new Order\Seller($data['seller']) : null;
 
@@ -127,6 +133,7 @@ class Order {
             'possible_points'          => $this->groupedPossiblePointIds,
             'possible_point_data'      => $possiblePointsData,
             'comment'                  => $this->comment,
+            'prepaid_sum'              => $this->prepayment ? (float)$this->prepayment->sum : 0,
         ];
     }
 }
