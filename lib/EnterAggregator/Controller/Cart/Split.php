@@ -147,7 +147,13 @@ namespace EnterAggregator\Controller\Cart {
                                 unset($order->possiblePaymentMethodIds[$i]);
                             }
                         }
+                        foreach ($order->possiblePaymentMethods as $i => $possiblePaymentMethod) {
+                            if (in_array($possiblePaymentMethod->id, ['1']) && (count($order->possiblePaymentMethods) > 1)) {
+                                unset($order->possiblePaymentMethods[$i]);
+                            }
+                        }
                         $order->possiblePaymentMethodIds = array_values($order->possiblePaymentMethodIds);
+                        $order->possiblePaymentMethods = array_values($order->possiblePaymentMethods);
                     }
                 }
 

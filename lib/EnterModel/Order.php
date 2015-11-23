@@ -100,7 +100,10 @@ class Order {
     public $seller;
     /** @var Model\Order\Meta[] */
     public $meta = [];
-    /** @var array|null */
+    /**
+     * Данный элемент оставлен для совместимости MAPI 1.6 с версиями мобильных приложений.
+     * @var null
+     */
     public $paymentLabel;
 
     /**
