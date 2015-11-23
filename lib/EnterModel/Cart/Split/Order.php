@@ -21,13 +21,23 @@ class Order {
     public $originalSum;
     /** @var string|null */
     public $paymentMethodId;
+    /**
+     * Данный элемент оставлен для совместимости MAPI 1.6 с версиями мобильных приложений.
+     * @var null
+     */
+    public $paymentLabel;
     /** @var array */
     public $possibleDeliveryMethodTokens = [];
     /** @var Model\Cart\Split\Interval[] */
     public $possibleIntervals = [];
     /** @var array */
     public $possibleDays = [];
-    /** @var array */
+    /** @var \EnterModel\Cart\Split\Order\PaymentMethod[] */
+    public $possiblePaymentMethods = [];
+    /**
+     * @deprecated Используйте self::$possiblePaymentMethods
+     * @var array
+     */
     public $possiblePaymentMethodIds = [];
     /** @var array */
     public $groupedPossiblePointIds = [];
@@ -71,12 +81,17 @@ class Order {
             $this->possibleDays[] = (string)$day;
         }
         //$this->possibleDays = []; // FIXME: fixture
-        foreach ((array)$data['possible_payment_methods'] as $id) { // FIXME: убрать приведение к массиву
-            $id = (string)$id;
-            if (in_array($id, ['10'])) continue;
 
-            $this->possiblePaymentMethodIds[] = (string)$id;
+        if (isset($data['possible_payment_methods']) && is_array($data['possible_payment_methods'])) {
+            foreach ($data['possible_payment_methods'] as $id) {
+                // MSITE-565
+                if (in_array((string)$id, ['10'])) continue;
+
+                $this->possiblePaymentMethodIds[] = (string)$id;
+                $this->possiblePaymentMethods[] = new Order\PaymentMethod(['id' => $id] + (isset($data['payment_methods'][$id]) ? $data['payment_methods'][$id] : []));
+            }
         }
+
         foreach ($data['possible_points'] as $token => $ids) {
             foreach ($ids as $id) {
                 $this->groupedPossiblePointIds[$token][] = (string)$id;
@@ -106,7 +121,6 @@ class Order {
             $possiblePointsData[$possiblePoint->groupToken] = $possiblePoint->dump();
         }
 
-
         return [
             'block_name'               => $this->blockName,
             'seller'                   => $this->seller ? $this->seller->dump() : null,
@@ -121,6 +135,7 @@ class Order {
             'possible_intervals'       => array_map(function(Model\Cart\Split\Interval $interval) { return $interval->dump(); }, $this->possibleIntervals),
             'possible_days'            => array_map(function($day) { return (string)$day; }, $this->possibleDays),
             'possible_payment_methods' => $this->possiblePaymentMethodIds,
+            'payment_methods'          => array_map(function(\EnterModel\Cart\Split\Order\PaymentMethod $possiblePaymentMethod) { return $possiblePaymentMethod->dump(); }, $this->possiblePaymentMethods),
             'possible_points'          => $this->groupedPossiblePointIds,
             'possible_point_data'      => $possiblePointsData,
             'comment'                  => $this->comment,
