@@ -76,14 +76,12 @@ class GetForm {
 
         $renderer = $this->getRenderer();
 
-        $formContent = null;
-        if ('5' === $paymentMethodId) {
-            $form = $paymentRepository->getPsbFormByQuery($paymentConfigQuery);
-            $formContent = $renderer->render('partial/payment/psb-form', ['form' => $form]);
-        } else if ('8' === $paymentMethodId) {
-            $form = $paymentRepository->getPsbInvoiceFormByQuery($paymentConfigQuery);
-            $formContent = $renderer->render('partial/payment/psbInvoice-form', ['form' => $form]);
-        }
+        $formContent = $renderer->render(
+            'partial/payment/form',
+            [
+                'form' => $paymentRepository->getFormByQuery($paymentConfigQuery)
+            ]
+        );
 
         // http-ответ
         $response = new Http\JsonResponse([
