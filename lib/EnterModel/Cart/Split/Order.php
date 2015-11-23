@@ -72,6 +72,9 @@ class Order {
         }
         //$this->possibleDays = []; // FIXME: fixture
         foreach ((array)$data['possible_payment_methods'] as $id) { // FIXME: убрать приведение к массиву
+            $id = (string)$id;
+            if (in_array($id, ['10'])) continue;
+
             $this->possiblePaymentMethodIds[] = (string)$id;
         }
         foreach ($data['possible_points'] as $token => $ids) {
