@@ -114,9 +114,9 @@ namespace EnterMobileApplication\Controller\User {
                     } catch (\Exception $e) {
                         $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['user']]);
                     }
+                } else {
+                    $response->errors = $this->getErrorsByException($e);
                 }
-
-                $response->errors = $this->getErrorsByException($e);
             }
 
             if (2 == $config->debugLevel) $this->getLogger()->push(['response' => $response]);
