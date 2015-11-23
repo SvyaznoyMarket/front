@@ -26,6 +26,15 @@ class CreateItemByObject extends Query {
             'first_name' => $user->firstName,
             'geo_id'     => $user->regionId,
         ];
+        if (null !== $user->lastName) {
+            $this->data['last_name'] = $user->lastName;
+        }
+        if (null !== $user->sex) {
+            $this->data['sex'] = $user->sex;
+        }
+        if (null !== $user->birthday) {
+            $this->data['birthday'] = $user->birthday;
+        }
         if ($user->email) {
             $this->data['email'] = $user->email;
             // подписка по email
