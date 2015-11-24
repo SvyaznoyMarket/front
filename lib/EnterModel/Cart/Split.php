@@ -22,8 +22,6 @@ class Split {
     public $clientIp;
     /** @var string|null */
     public $sum;
-    /** @var string|null */
-    private $_sum;
     /** @var Model\Cart\Split\Error[] */
     public $errors = [];
 
@@ -63,15 +61,6 @@ class Split {
 
         foreach ($data['orders'] as $key => $item) {
             $order = new Split\Order($item, $format);
-            // MAPI-168
-            foreach ($this->paymentMethods as $paymentMethod) {
-                if ($paymentMethod->discount && $paymentMethod->discount->value && $paymentMethod->isOnline) {
-                    $order->paymentLabel = [
-                        'name' => 'Скидка ' . $paymentMethod->discount->value . $paymentMethod->discount->unit,
-                    ];
-                    break;
-                }
-            }
 
             if ($format) {
                 $this->orders[] = $order;
@@ -81,8 +70,7 @@ class Split {
         }
 
         $this->user = $data['user_info'] ? new Split\User($data['user_info'], $format) : null;
-        $this->_sum = $data['total_cost'] ? (string)$data['total_cost'] : null;
-        $this->sum = $data['total_view_cost'] ? (string)$data['total_view_cost'] : null;
+        $this->sum = $data['total_cost'] ? (string)$data['total_cost'] : null;
 
         if (isset($data['errors']) && is_array($data['errors'])) {
             foreach ($data['errors'] as $item) {
@@ -100,10 +88,9 @@ class Split {
             'delivery_methods' => array_map(function(Split\DeliveryMethod $deliveryMethod) { return $deliveryMethod->dump(); }, $this->deliveryMethods),
             'payment_methods'  => array_map(function(Split\PaymentMethod $paymentMethod) { return $paymentMethod->dump(); }, $this->paymentMethods),
             'points'           => array_map(function(Split\PointGroup $pointGroup) { return $pointGroup->dump(); }, $this->pointGroups),
-            'orders'           => array_map(function(Split\Order $product) { return $product->dump(); }, $this->orders),
+            'orders'           => array_map(function(Split\Order $order) { return $order->dump(); }, $this->orders),
             'user_info'        => $this->user ? $this->user->dump() : null,
-            'total_cost'       => $this->_sum,
-            'total_view_cost'  => $this->sum,
+            'total_cost'       => $this->sum,
             'errors'           => array_map(function(Model\Cart\Split\Error $error) { return $error->dump(); }, $this->errors),
         ];
     }

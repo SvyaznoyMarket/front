@@ -19,7 +19,10 @@ class PaymentMethod {
     public $isOnline;
     /** @var \EnterModel\MediaList */
     public $media;
-    /** @var PaymentMethod\Discount|null */
+    /**
+     * Данный элемент оставлен для совместимости MAPI 1.6 с версиями мобильных приложений.
+     * @var null
+     */
     public $discount;
 
     /**
@@ -32,7 +35,6 @@ class PaymentMethod {
         $this->description = $data['description'] ? (string)$data['description'] : null;
         $this->isOnline = (bool)$data['is_online'];
         $this->media = (new \EnterRepository\Media())->getMediaListForPaymentMethod($this->id, $this->isOnline, $this->getConfig());
-        if (isset($data['discount']['value'])) $this->discount = new PaymentMethod\Discount($data['discount']);
     }
 
     /**

@@ -139,6 +139,24 @@ namespace EnterAggregator\Controller\Cart {
                     }
                 });
 
+                // FRONT-88
+                foreach ($response->split->orders as $order) {
+                    if ($order->sum > $config->order->prepayment->priceLimit) {
+                        foreach ($order->possiblePaymentMethodIds as $i => $possiblePaymentMethodId) {
+                            if (in_array($possiblePaymentMethodId, ['1']) && (count($order->possiblePaymentMethodIds) > 1)) {
+                                unset($order->possiblePaymentMethodIds[$i]);
+                            }
+                        }
+                        foreach ($order->possiblePaymentMethods as $i => $possiblePaymentMethod) {
+                            if (in_array($possiblePaymentMethod->id, ['1']) && (count($order->possiblePaymentMethods) > 1)) {
+                                unset($order->possiblePaymentMethods[$i]);
+                            }
+                        }
+                        $order->possiblePaymentMethodIds = array_values($order->possiblePaymentMethodIds);
+                        $order->possiblePaymentMethods = array_values($order->possiblePaymentMethods);
+                    }
+                }
+
                 // MAPI-4
                 $productIds = [];
                 foreach ($response->split->orders as $order) {

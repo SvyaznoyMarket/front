@@ -76,6 +76,7 @@ class CreatePacketBySplit extends Query {
                 'ip'                          => $split->clientIp,
                 'product'                     => [],
                 'is_online_payment_available' => $order->isOnlinePaymentAvailable,
+                'total_view_cost'             => $order->sum,
             ];
 
             if ($order->delivery && $order->delivery->boxUi) {

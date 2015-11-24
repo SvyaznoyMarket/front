@@ -1,19 +1,19 @@
 <?php
 
-namespace EnterModel\Cart\Split\PaymentMethod;
+namespace EnterModel\Cart\Split\Order\PaymentMethod;
 
 class Discount {
-    /** @var float */
+    /** @var float|null */
     public $value;
-    /** @var string|null */
-    public $unit;
+    /** @var string */
+    public $unit = '';
 
     /**
      * @param array $data
      */
     public function __construct($data = []) {
         $this->value = $data['value'] ? (float)$data['value'] : null;
-        $this->unit = $data['unit'] ? (string)$data['unit'] : null;
+        $this->unit = $data['unit'] ? (string)$data['unit'] : '';
     }
 
     /**
