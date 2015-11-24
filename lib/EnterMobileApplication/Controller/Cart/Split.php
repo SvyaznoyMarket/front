@@ -109,6 +109,9 @@ namespace EnterMobileApplication\Controller\Cart {
                     $order->groupedPossiblePointIds = null;
                 }
 
+                $order->possiblePaymentMethodIds = array_values($order->possiblePaymentMethodIds);
+                $order->possiblePaymentMethods = array_values($order->possiblePaymentMethods);
+
                 // MAPI-116
                 foreach ($order->products as $product) {
                     $product->webName = $helper->unescape($product->webName);

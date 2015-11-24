@@ -182,9 +182,9 @@ namespace EnterAggregator\Controller\Order {
             }
 
             // возможные методы оплат
-            $paymentMethodsByOrderNumber = [];
+            $paymentMethodsByOrderNumberErp = [];
             foreach ($paymentMethodListQueriesByOrderNumberErp as $numberErp => $paymentMethodListQuery) {
-                $paymentMethodsByOrderNumber[$numberErp] = $paymentMethodRepository->getIndexedObjectListByQuery($paymentMethodListQuery);
+                $paymentMethodsByOrderNumberErp[$numberErp] = $paymentMethodRepository->getIndexedObjectListByQuery($paymentMethodListQuery);
             }
 
             // доставка
@@ -192,7 +192,13 @@ namespace EnterAggregator\Controller\Order {
 
             // установка возможных методов оплат
             foreach ($orders as $order) {
-                $order->paymentMethods = isset($paymentMethodsByOrderNumber[$order->number]) ? array_values((array)$paymentMethodsByOrderNumber[$order->number]) : [];
+                $order->paymentMethods = isset($paymentMethodsByOrderNumberErp[$order->numberErp]) ? array_values((array)$paymentMethodsByOrderNumberErp[$order->numberErp]) : [];
+                foreach ($order->paymentMethods as $paymentMethod) {
+                    // MAPI-179
+                    if (!$paymentMethod->sum) {
+                        $paymentMethod->sum = $order->paySum;
+                    }
+                }
             }
 
             // магазин

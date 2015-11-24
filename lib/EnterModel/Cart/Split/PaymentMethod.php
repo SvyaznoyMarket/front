@@ -12,6 +12,11 @@ class PaymentMethod {
     public $description;
     /** @var bool */
     public $isOnline;
+    /**
+     * Данный элемент оставлен для совместимости MAPI 1.6 с версиями мобильных приложений.
+     * @var null
+     */
+    public $discount;
 
     /**
      * @param array $data
