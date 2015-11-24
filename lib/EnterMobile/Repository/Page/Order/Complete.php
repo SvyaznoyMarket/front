@@ -177,13 +177,14 @@ class Complete {
                         'images' => [],
                     ];
                     foreach ($onlinePaymentMethodModelsById as $paymentMethodModel) {
-                        $paymentMethod = [
-                            'id'          => $paymentMethodModel->id,
-                            'name'        => $paymentMethodModel->name,
-                            'image'      => isset($paymentMethodImagesById[$paymentMethodModel->id]) ? $paymentMethodImagesById[$paymentMethodModel->id] : null,
-                        ];
+                        $imageUrl = isset($paymentMethodImagesById[$paymentMethodModel->id]) ? $paymentMethodImagesById[$paymentMethodModel->id] : null;
 
-                        $data['images'] = $paymentMethod['image'];
+                        if ($imageUrl) {
+                            $data['images'][] = [
+                                'name' => $paymentMethodModel->name,
+                                'file' => $imageUrl,
+                            ];
+                        }
                     }
 
                     return $data;
