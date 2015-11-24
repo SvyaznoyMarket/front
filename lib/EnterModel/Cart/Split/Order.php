@@ -92,7 +92,8 @@ class Order {
         //$this->possibleDays = []; // FIXME: fixture
         if (isset($data['possible_payment_methods']) && is_array($data['possible_payment_methods'])) {
             foreach ($data['possible_payment_methods'] as $id) {
-                if (in_array((string), ['10'])) continue;
+                // MSITE-565
+                if (in_array((string)$id, ['10'])) continue;
 
                 $this->possiblePaymentMethodIds[] = (string)$id;
                 $this->possiblePaymentMethods[] = new Order\PaymentMethod(['id' => $id] + (isset($data['payment_methods'][$id]) ? $data['payment_methods'][$id] : []));

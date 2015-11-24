@@ -50,10 +50,9 @@
 
                         <div class="single-order__row">
                             <span class="confirm-payment__types">
-                                <img class="checkout-payment__icon" src="/css/modules/checkout-payment/img/i-bank-cart.png" alt="i-bank-cart">
-                                <img class="checkout-payment__icon" src="/css/modules/checkout-payment/img/i-ya-wallet.png" alt="i-ya-wallet">
-                                <img class="checkout-payment__icon" src="/css/modules/checkout-payment/img/i-webmoney.png" alt="i-webmoney">
-                                <img class="checkout-payment__icon" src="/css/modules/checkout-payment/img/i-qiwi.png" alt="i-qiwi">
+                            {{#images}}
+                                <img class="checkout-payment__icon" src="/css/modules/checkout-payment/img/{{file}}" alt="{{name}}">
+                            {{/images}}
                             </span>
                         </div>
 
@@ -150,7 +149,7 @@
 
 						<span class="confirm-payment__types">
                             {{#images}}
-							<img class="confirm-payment__card" src="/css/modules/order/img/{{.}}" />
+							<img class="confirm-payment__card" src="/css/modules/checkout-payment/img/{{file}}" alt="{{name}}" />
                             {{/images}}
 						</span>
                     </div>

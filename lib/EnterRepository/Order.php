@@ -107,4 +107,12 @@ class Order {
 
         return $remainSum;
     }
+
+    /**
+     * @param Model\Region $region
+     * @return int|null
+     */
+    public function getMinSum(Model\Region $region) {
+        return in_array($region->id, ['82', '83', '14974', '108136']) ? 0 : $this->getConfig()->order->minSum;
+    }
 }
