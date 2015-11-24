@@ -1,9 +1,13 @@
 <div class="content cart">
         <div class="pageTitle">Корзина</div>
 
-        <div class="js-widget id-cart-widget cart__min-sum cart__min-sum_top">
-            Минимальная сумма заказа 990 <span class="rubl">p</span>
-        </div>
+        {{^cart}}
+            {{#orderRemainSum}}
+            <div class="js-widget id-cart-widget cart__min-sum cart__min-sum_top">
+                Минимальная сумма заказа {{orderRemainSum}} <span class="rubl">p</span>
+            </div>
+            {{/orderRemainSum}}
+        {{/cart}}
 
         {{#productBlock}}
            <div class="cart__inn">

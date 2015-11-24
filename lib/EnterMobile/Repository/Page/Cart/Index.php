@@ -47,6 +47,8 @@ class Index {
             $page->content->cart = false;
         }
 
+        $page->orderRemainSum = ($request->region ? (new \EnterRepository\Order())->getMinSum($request->region) : null) ?: false;
+
         foreach (array_reverse($request->cart->product) as $cartProduct) {
             /** @var \EnterModel\Cart\Product $cartProduct */
             if (!$cartProduct->product) {
