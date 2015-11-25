@@ -45,7 +45,6 @@ define(
 
                 e.stopPropagation();
 
-
                 $.ajax({
                     url: url,
                     data: data,

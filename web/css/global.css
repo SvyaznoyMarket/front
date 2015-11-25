@@ -11085,6 +11085,22 @@ body {
 .single-order .pay-sum {
   font-size: 14px;
 }
+.single-order__discount {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  padding: 2px 0;
+  background: #ffedee;
+  font: normal 16px Tahoma, sans-serif;
+  text-align: center;
+}
+.single-order__discount-size {
+  color: #fe4c40;
+}
+.single-order__discount-desc {
+  color: #363636;
+}
 /* ==========================================================================
    Категории товаров
    ========================================================================== */
