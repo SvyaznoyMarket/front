@@ -198,8 +198,9 @@ class Complete {
                             'name'      => $paymentMethodModel->name,
                             'image'     => isset($paymentMethodImagesById[$paymentMethodModel->id]) ? $paymentMethodImagesById[$paymentMethodModel->id] : null,
                             'dataValue' => $templateHelper->json([
-                                'methodId' => $paymentMethodModel->id,
-                                'orderId'  => $orderModel->id,
+                                'methodId'    => $paymentMethodModel->id,
+                                'orderId'     => $orderModel->id,
+                                'actionAlias' => $paymentMethodModel->discount ? $paymentMethodModel->discount->code : null,
                             ]),
                         ];
                     }

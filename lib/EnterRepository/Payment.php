@@ -59,6 +59,8 @@ class Payment {
 
         $fields = [];
         foreach ($result['detail'] as $k => $v) {
+            if (null === $v) continue;
+
             $fields[] = [
                 'name'  => $k,
                 'value' => $v,

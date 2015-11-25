@@ -140,7 +140,12 @@ class Complete {
 
                             foreach ($paymentData as $paymentItem) {
                                 $paymentMethod = new Model\PaymentMethod($paymentItem);
-                                if (!$paymentMethod->isOnline) continue;
+                                if (
+                                    !$paymentMethod->isOnline
+                                    || $paymentMethod->isCredit
+                                ) {
+                                    continue;
+                                }
 
                                 $onlinePaymentMethodsById[$paymentMethod->id] = $paymentMethod;
                                 $order->paymentMethods[] = $paymentMethod;
