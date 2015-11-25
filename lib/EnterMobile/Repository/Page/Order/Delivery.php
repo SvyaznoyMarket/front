@@ -132,6 +132,24 @@ class Delivery {
                             }
                         }
 
+                        $possiblePointModel = null;
+                        if ($point) {
+                            foreach ($orderModel->possiblePoints as $iPossiblePointModel) { // FIXME
+                                if ($point->id === $iPossiblePointModel->id) {
+                                    $possiblePointModel = $iPossiblePointModel;
+                                    break;
+                                }
+                            }
+                        }
+
+                        // дата и интервал дат
+                        $dateFrom = null;
+                        $dateTo = null;
+                        try {
+                            $dateFrom = ($possiblePointModel && $possiblePointModel->dateInterval && $possiblePointModel->dateInterval->from) ? new \DateTime($possiblePointModel->dateInterval->from) : null;
+                            $dateTo = ($possiblePointModel && $possiblePointModel->dateInterval && $possiblePointModel->dateInterval->to) ? new \DateTime($possiblePointModel->dateInterval->to) : null;
+                        } catch (\Exception $e) {}
+
                         $delivery = [
                             'isStandart'  => 2 == $deliveryGroupModel->id,
                             'isSelf'      => 1 == $deliveryGroupModel->id,
@@ -162,6 +180,21 @@ class Delivery {
                                             : false
                                     ,
                                     'regime'  => $point->regime,
+                                    'date'    => $orderModel->possibleDays
+                                        ? call_user_func(function() use (&$date, &$dateFrom, &$dateTo, &$dateHelper) {
+                                            $data = false;
+
+                                            if ($dateFrom) {
+                                                $data = [
+                                                    'name'  => sprintf('%s %s', 'с ' . $dateFrom->format('d.m'), $dateTo ? (' по ' . $dateTo->format('d.m')) : ''),
+                                                    'value' => $dateFrom->getTimestamp(),
+                                                ];
+                                            }
+
+                                            return $data;
+                                        })
+                                        : null
+                                    ,
                                     'order'   => [
                                         'id' => $orderModel->blockName,
                                     ],

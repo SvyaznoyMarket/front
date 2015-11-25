@@ -45,7 +45,10 @@
 
                 {{#delivery.interval}}
                     <div class="deliv-info-snippet table_cell" style="vertical-align: top; padding-top: 5px !important;">
-                        <span class="deliv-info-snippet__date">с {{from}} по {{to}}</span>
+                        <span class="deliv-info-snippet__date">
+                            {{#date}}{{date.name}}<br />{{/date}}
+                            с {{from}} по {{to}}
+                        </span>
                     </div>
                 {{/delivery.interval}}
 
