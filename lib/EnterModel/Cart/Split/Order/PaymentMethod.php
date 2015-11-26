@@ -3,8 +3,8 @@
 namespace EnterModel\Cart\Split\Order;
 
 class PaymentMethod {
-    /** @var string|null */
-    public $id;
+    /** @var string */
+    public $id = '';
     /** @var PaymentMethod\Discount|null */
     public $discount;
 

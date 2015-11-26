@@ -3,7 +3,6 @@
 namespace EnterModel\Product\ProductModel\Property\Option;
 
 class Product {
-    public $ui = '';
     /** @var string */
     public $ui = '';
     /** @var string */
