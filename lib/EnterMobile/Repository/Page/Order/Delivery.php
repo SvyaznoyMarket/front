@@ -58,6 +58,7 @@ class Delivery {
         }
 
         // индексация методов оплат
+        /** @var \EnterModel\Cart\Split\PaymentMethod[] $paymentMethodsById */
         $paymentMethodsById = [];
         foreach ($splitModel->paymentMethods as $paymentMethod) {
             $paymentMethodsById[$paymentMethod->id] = $paymentMethod;
@@ -647,6 +648,21 @@ class Delivery {
                     }
 
                     return $paymentMethods;
+                }),
+                'hasOnlineDiscount' => call_user_func(function() use (&$paymentMethodsById, &$orderModel) {
+                    $return = false;
+
+                    foreach ($orderModel->possiblePaymentMethods as $possiblePaymentMethodModel) {
+                        /** @var \EnterModel\Cart\Split\PaymentMethod|null $paymentMethod */
+                        $paymentMethod = isset($paymentMethodsById[$possiblePaymentMethodModel->id]) ? $paymentMethodsById[$possiblePaymentMethodModel->id] : null;
+
+                        if ($paymentMethod && $paymentMethod->isOnline) {
+                            $return = true;
+                            break;
+                        }
+                    }
+
+                    return $return;
                 }),
                 'messages'       => call_user_func(function() use (&$config, &$orderModel, &$priceHelper) {
                     $messages = [];
