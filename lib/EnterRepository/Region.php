@@ -18,6 +18,9 @@ class Region {
         $config = $this->getConfig()->region;
 
         $id = (string)(int)$request->cookies[$config->cookieName] ?: $config->defaultId;
+        if ('2041' === $id) {
+            $id = $config->defaultId;
+        }
 
         return $id;
     }
