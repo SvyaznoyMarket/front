@@ -3,10 +3,12 @@
     <h3 class="checkout-payment__title">
         Способы оплаты
     </h3>
+    {{#hasOnlineDiscount}}
     <div class="checkout-payment__discount">
         <span class="checkout-payment__discount-size">Скидка</span>
         <span class="checkout-payment__discount-desc">при оплате онлайн</span>
     </div>
+    {{/hasOnlineDiscount}}
     <ul class="checkout-checkbox-lst checkout-payment__list">
     {{#paymentMethods}}
         <li class="checkout-checkbox-lst__i checkout-payment__item">

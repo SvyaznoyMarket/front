@@ -154,7 +154,7 @@ class ProductCard {
             }
 
             /** @var \EnterModel\Product\NearestDelivery $closestPickupDelivery */
-            if (isset($closestPickupDelivery)) {
+            if (isset($closestPickupDelivery) && $closestPickupDelivery) {
                 $delivery = new Page\Content\Product\DeliveryBlock\Delivery();
                 $delivery->name = 'Самовывоз';
                 $delivery->token = $closestPickupDelivery->token;

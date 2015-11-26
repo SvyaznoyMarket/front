@@ -49,10 +49,12 @@
                         <div class="single-order__greet single-order__greet_tac">Онлайн-оплата в два клика</div>
 
                         <div class="single-order__row">
+                        {{#hasOnlineDiscount}}
                             <div class="single-order__discount">
                                 <span class="single-order__discount-size">Скидка</span>
                                 <span class="single-order__discount-desc">при оплате онлайн</span>
                             </div>
+                        {{/hasOnlineDiscount}}
                         </div>
 
                         <div class="single-order__row">

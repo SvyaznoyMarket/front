@@ -173,8 +173,17 @@ class Complete {
                         return false;
                     }
 
+                    $hasOnlineDiscount = false;
+                    foreach ($onlinePaymentMethodModelsById as $onlinePaymentMethodModel) {
+                        if ($onlinePaymentMethodModel->discount) {
+                            $hasOnlineDiscount = true;
+                            break;
+                        }
+                    }
+
                     $data = [
-                        'images' => [],
+                        'images'            => [],
+                        'hasOnlineDiscount' => $hasOnlineDiscount,
                     ];
                     foreach ($onlinePaymentMethodModelsById as $paymentMethodModel) {
                         $imageUrl = isset($paymentMethodImagesById[$paymentMethodModel->id]) ? $paymentMethodImagesById[$paymentMethodModel->id] : null;
