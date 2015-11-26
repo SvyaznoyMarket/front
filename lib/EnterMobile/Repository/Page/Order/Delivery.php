@@ -656,7 +656,7 @@ class Delivery {
                         /** @var \EnterModel\Cart\Split\PaymentMethod|null $paymentMethod */
                         $paymentMethod = isset($paymentMethodsById[$possiblePaymentMethodModel->id]) ? $paymentMethodsById[$possiblePaymentMethodModel->id] : null;
 
-                        if ($paymentMethod && $paymentMethod->isOnline) {
+                        if ($paymentMethod && $paymentMethod->isOnline && $paymentMethod->discount) {
                             $return = true;
                             break;
                         }
