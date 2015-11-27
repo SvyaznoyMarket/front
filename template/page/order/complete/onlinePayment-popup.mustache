@@ -16,7 +16,9 @@
                 <div class="custom-label-flex parced-items">
                     <span class="custom-label_tx checkout-payment__item-name">
                         {{name}}
-                        <span class="checkout-payment__item-discount">Скидка <span>10000</span> руб</span>
+                        {{#discount}}
+                            <span class="checkout-payment__item-discount">Скидка <span>{{name}}</span> {{unit}}</span>
+                        {{/discount}}
                     </span>
                     <span class="checkout-payment__icon-wrap">
                     {{#image}}<img class="checkout-payment__icon" src="/css/modules/checkout-payment/img/{{image}}" />{{/image}}

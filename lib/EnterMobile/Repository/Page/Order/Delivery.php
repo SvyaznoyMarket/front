@@ -595,11 +595,11 @@ class Delivery {
                 'paymentMethods' => call_user_func(function() use (&$templateHelper, &$splitModel, &$orderModel, &$paymentMethodsById) {
                     $paymentMethods = [];
 
-                    foreach ($orderModel->possiblePaymentMethodIds as $paymentMethodId) {
+                    foreach ($orderModel->possiblePaymentMethods as $possiblePaymentMethod) {
                         /** @var \EnterModel\Cart\Split\PaymentMethod|null $paymentMethodModel */
-                        $paymentMethodModel = isset($paymentMethodsById[$paymentMethodId]) ? $paymentMethodsById[$paymentMethodId] : null;
+                        $paymentMethodModel = isset($paymentMethodsById[$possiblePaymentMethod->id]) ? $paymentMethodsById[$possiblePaymentMethod->id] : null;
                         if (!$paymentMethodModel) {
-                            $this->getLogger()->push(['type' => 'error', 'message' => 'Метод оплаты не найден', 'paymentMethodId' => $paymentMethodId, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
+                            $this->getLogger()->push(['type' => 'error', 'message' => 'Метод оплаты не найден', 'possiblePaymentMethod' => $possiblePaymentMethod, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
 
                             continue;
                         }
@@ -627,6 +627,14 @@ class Delivery {
                                 'id' => $orderModel->blockName,
                             ],
                             'isOnline'    => $paymentMethodModel->isOnline,
+                            'discount'    =>
+                                $possiblePaymentMethod->discount
+                                ? [
+                                    'name' => $possiblePaymentMethod->discount->value,
+                                    'unit' => ('rub' === $possiblePaymentMethod->discount->unit) ? 'руб.' : $possiblePaymentMethod->discount->unit,
+                                ]
+                                : false
+                            ,
                             'image'       => @[
                                 '5'  => 'i-bank-cart.png',
                                 '16' => 'i-ya-wallet.png',

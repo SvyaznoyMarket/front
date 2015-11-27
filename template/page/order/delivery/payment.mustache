@@ -25,7 +25,9 @@
             <label class="custom-label" for="order-{{order.id}}-delivery-payment-method-{{id}}">
                 <span class="checkout-payment__item-name">
                     {{name}}
-                    <span class="checkout-payment__item-discount">Скидка <span>10000</span> руб</span>
+                    {{#discount}}
+                        <span class="checkout-payment__item-discount">Скидка <span>{{name}}</span> {{unit}}</span>
+                    {{/discount}}
                 </span>
                 {{#image}}<img class="checkout-payment__icon" src="/css/modules/checkout-payment/img/{{image}}" alt="{{name}}">{{/image}}
 

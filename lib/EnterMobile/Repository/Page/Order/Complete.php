@@ -202,10 +202,28 @@ class Complete {
                     $paymentMethods = [];
 
                     foreach ($onlinePaymentMethodModelsById as $paymentMethodModel) {
+                        /** @var \EnterModel\PaymentMethod|null $possiblePaymentMethodModel */
+                        $possiblePaymentMethodModel = null;
+                        foreach ($orderModel->paymentMethods as $iPossiblePaymentMethodModel) {
+                            if ($iPossiblePaymentMethodModel->id === $paymentMethodModel->id) {
+                                $possiblePaymentMethodModel = $iPossiblePaymentMethodModel;
+                                break;
+                            }
+                        }
+
+
                         $paymentMethods[] = [
                             'id'        => $paymentMethodModel->id,
                             'name'      => $paymentMethodModel->name,
                             'image'     => isset($paymentMethodImagesById[$paymentMethodModel->id]) ? $paymentMethodImagesById[$paymentMethodModel->id] : null,
+                            'discount'  =>
+                                ($possiblePaymentMethodModel && $possiblePaymentMethodModel->discount)
+                                ? [
+                                    'name' => $possiblePaymentMethodModel->discount->value,
+                                    'unit' => ('rub' === $possiblePaymentMethodModel->discount->unit) ? 'руб.' : $possiblePaymentMethodModel->discount->unit,
+                                ]
+                                : false
+                            ,
                             'dataValue' => $templateHelper->json([
                                 'methodId'    => $paymentMethodModel->id,
                                 'orderId'     => $orderModel->id,
