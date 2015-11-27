@@ -38,7 +38,7 @@ class CheckPartner {
                 $partner = new Model\Partner();
                 $partner->token = $refererHost;
 
-                foreach ($partnerRepository->getFreeHosts() as $host) {
+                foreach ($partnerRepository->getFreeSources() as $host) {
                     if (false === strpos($refererHost, $host)) continue;
 
                     $partner = new Model\Partner();
