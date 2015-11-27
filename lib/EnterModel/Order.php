@@ -75,6 +75,8 @@ class Order {
     public $deliveryType;
     /** @var string */
     public $subwayId;
+    /** @var \EnterModel\Cart\Split\Order\Prepayment|null */
+    public $prepayment;
     /** @var string */
     public $paymentMethodId;
     /** @var string|null */
@@ -186,6 +188,10 @@ class Order {
                 }
 
                 $this->meta[] = $meta;
+
+                if ($meta->key === 'prepaid_sum' && !empty($meta->value[0])) {
+                    $this->prepayment = new \EnterModel\Cart\Split\Order\Prepayment($meta->value[0]);
+                }
             }
         }
 
