@@ -1,139 +1,64 @@
 .ep{
-    &-list{
-        &-i{
-            padding: 10px;
-            border-bottom: 1px solid #a0a0a0;
-            min-height: 60px;
-            &__lnk{
-                display: block;
-                .clearfix();
-            }
-            &__fishka{
-                width: 100%;
-                height: 100%;
-            }
-            &__inn{
-                width: 60px;
-                height: 60px;
-                position: relative;
-                float: left;
-            }
-            &__lbl{
-                position: absolute;
-                width: 100%;
-                height: 100%;
 
-                text-align: center;
-                top: 0px;
-                left: 0px;
-                font-size: 25px;
-                .icon{
-                    font-family: 'menuIconFont';
-                    font-size: 70px;
-                    height: 40px;
-                    margin: 0 0 10px 0;
-                    color: #000;
-                }
-                .rubl{
-                    .inline-block(middle);
-                    margin: 0;
-                }
-                img{
-                    max-width: 25px;
-                    max-height: 25px;
-                    .inline-block(middle);
-                }
-                &:after{
-                    content: '';
-                    .inline-block(middle);
-                    width: 0;
-                    height: 100%;
-                }
-            }
-
-            &__tl{
-                width: 100%;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                font-size: 16px;
-                display: block;
-                white-space: nowrap;
-                .accented{
-                    font-size: 18px;
-                    .rubl{
-
-                    }
-                }
-            }
-            &__desc{
-                font-size: 14px;
-                display: block;
-            }
-            &__txt{
-                margin-left: 70px;
-                margin-top: 10px;
-            }
-        }
+    &__fishka{
+        width: 100%;
+        height: 100%;
     }
-    &-coupon{
-        width: 210px;
-        height: 210px;
-        margin: 15px auto 5px;
-        position: relative;
-        background-repeat: no-repeat;
-        background-position: center;
-        .background-size(contain);
+
+    &__lbl{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
         text-align: center;
+        top: 0;
+        left: 0;
+        font-size: 25px;
 
-        &__img{
-            margin: 50px 0 0;
-            max-width: 50px;
-            max-height: 50px;
+        .icon{
+            font-family: 'menuIconFont';
+            font-size: 70px;
+            height: 40px;
+            margin: 0 0 10px 0;
+            color: #000;
         }
-        &__lbl{
 
-            width: 100%;
+        .rubl{
+            .inline-block(middle);
+            margin: 0;
+        }
 
-            text-align: center;
+        img{
+            max-width: 25px;
+            max-height: 25px;
+            margin-left: -10px;
 
-            .icon{
-                font-family: 'menuIconFont';
-                font-size: 100px;
-                height: 86px;
-                margin: 0 0 10px 0;
-                color: #000;
-                display: block;
-            }
-            .type{
-                font-size: 12px;
-                display: block;
-                width: 131px;
-                margin: 5px auto 0;
-            }
-            .discount{
-                font-size: 24px;
-                display: block;
-            }
+            .inline-block(middle);
         }
-        &__info{
-            padding: 0 10px 10px;
-            display: block;
-            text-align: center;
-        }
-        &__txt{
-            font-size: 16px;
-            display: block;
-        }
-        &__disc{
-            font-size: 12px;
-            margin-top: 10px;
-            display: block;
-        }
-        &__term{
-            color: #a0a0a0;
-            font-size: 14px;
-            margin-top: 5px;
-            display: block;
+
+        &:after{
+            content: '';
+
+            .inline-block(middle);
+            width: 0;
+            height: 100%;
         }
     }
+
+    &__tl{
+        width: 100%;
+        display: block;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    &__desc{
+        display: block;
+
+        font-size: 12px;
+    }
+
 }

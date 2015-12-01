@@ -4,17 +4,38 @@
         <a class="btn btn-exit" href="/logout">Выход</a>
     </section>
     <section>
-        <table class="private-orders-list">
+        <ul class="private-list">
             {{#orders}}
-            <tr class="private-orders-list-i noselect">
-                <td class="private-orders-list-i__num"><a href="/private/order/{{id}}">{{numberErp}}</a></td>
-                <td class="private-orders-list-i__date"><a href="/private/order/{{id}}">{{createdAt}}</a></td>
-                <td class="private-orders-list-i__sum"><a href="/private/order/{{id}}">{{paySum}} <span class="rubl">p</span></a></td>
-            </tr>
+            <li class="private-list__item noselect">
+                <span class="private-list__item-block private-list__item-block_num">
+                    <a href="/private/order/{{id}}">
+                        <span>{{numberErp}}</span>
+                        <span class="private-list__item-block-status">
+                            Оплачен
+                        </span>
+                    </a>
+
+                </span>
+
+                <span class="private-list__item-block private-list__item-block_date">
+                    <a href="/private/order/{{id}}">{{createdAt}}</a>
+                </span>
+
+                <span class="private-list__item-block private-list__item-block_sum">
+                    <a href="/private/order/{{id}}">
+                        <span>{{paySum}}
+                        <span class="rubl">p</span>
+                        </span>
+                        <span class="private-list__item-block-status private-list__item-block-status_processing">
+                            В обработке
+                        </span>
+                    </a>
+                </span>
+            </li>
             {{/orders}}
             {{^orders}}
                 <p class="p-control-info-regular">Заказов не найдено</p>
             {{/orders}}
-        </table>
+        </ul>
     </section>
 </div>
