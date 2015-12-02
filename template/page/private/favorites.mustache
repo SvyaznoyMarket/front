@@ -6,26 +6,51 @@
         </div>
     </section>
     <section class="favorit-section">
-        {{#content}}
-        {{#favoriteItems}}
-            <!-- товар -->
-            <div class="favorit-item clearfix">
+        <ul class="private-list">
+            {{#content}}
+                {{#favoriteItems}}
+                    <!-- товар -->
+                    <li class="private-list__item">
 
-                <a class="favorit-delete js-favorites-delete" href="" data-product-ui="{{ui}}"></a>
-                <a class="favorit-item__img" href="{{link}}">
-                    <img src="{{media}}" alt="{{webName}}">
-                </a>
-                <div class="favorit-item__descr">
-                    <a class="favorit-item__name" href="{{link}}">
-                        <span class="favorit-item__type">{{namePrefix}}</span>
-                        {{&webName}}
-                    </a>
-                </div>
-            </div>
+                        <a class="private-list__item-del js-favorites-delete" href="" data-product-ui="{{ui}}"></a>
+                        <a class="private-list__item-block favorit-item__img" href="{{link}}">
+                            <img src="{{media}}" alt="{{webName}}">
+                        </a>
+                        <div class="private-list__item-block">
+                            <a class="favorit-section__title" href="{{link}}">
+                                <span class="favorit-item__title-type">{{namePrefix}}</span>
+                                <span class="favorit-item__title-name">{{&webName}}</span>
+                            </a>
+
+                            <div class="private-list__item-rating rating">
+                                <i class="rating__star icon-star icon-star-full"></i>
+                                <i class="rating__star icon-star icon-star-full"></i>
+                                <i class="rating__star icon-star icon-star-full"></i>
+                                <i class="rating__star icon-star icon-star-full"></i>
+                                <i class="rating__star icon-star icon-star-full"></i>
+                            </div>
+
+                            <div class="private-list__item-availability">
+                                <span>Самовывоз сегодня</span>
+                            </div>
+
+<!--                            <div class="private-list__item-availability private-list__item-availability_gray">
+                                <span>На витрине</span>
+                            </div>-->
+
+                            <div class="price favorit-item__price">
+                                <span class="price_old favorit-item__price-old">
+                                    7199 <span class="rubl">p</span>
+                                </span>
+                                <span class="price_now favorit-item__price-now">799 <span class="rubl">p</span></span>
+                            </div>
+                        </div>
+                    </li>
 
 
-            <!--/ товар -->
-        {{/favoriteItems}}
+                    <!--/ товар -->
+                {{/favoriteItems}}
             {{/content}}
+        </ul>
     </section>
 </div>

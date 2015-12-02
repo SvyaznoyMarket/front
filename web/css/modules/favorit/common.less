@@ -1,68 +1,80 @@
 
-.favorit{
-    &-item{
-        padding: 10px 10px 5px;
-        width: 100%;
-        .box-sizing(border-box);
-        position: relative;
-        border-bottom: 1px solid #d3d3d3;
+.favorit-item {
 
-        &__img{
-            width: 74px;
-            height: 74px;
-            float: left;
-            text-align: center;
-            img{
-                max-width: 100%;
-                max-height: 100%;
-            }
-        }
-        &__name{
-            padding-right: 30px;
-            display: block;
-        }
-        &__type{
-            color: #616161;
-            display: block;
-        }
-        &__descr{
-            margin-left: 80px;
+  &__img {
+    width: 110px;
+    height: 110px;
+    text-align: center;
 
-            min-height: 74px;
-        }
-
-        &__change{
-            max-width: 0;
-            width: 100%;
-        }
-
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      vertical-align: middle;
     }
-    &-delete{
-        position: absolute;
-        right: 10px;
-        top: 10px;
 
-        width: 20px;
-        height: 20px;
-        background: url("@{base-url}/favorit/img/close@2x.png") no-repeat;
-        .background-size(cover);
+    &:after {
+      content: '';
+
+      display: inline-block;
+      vertical-align: middle;
+      height: 100%;
+      width: 0;
     }
+  }
+
+  &__title{
+    display: block;
+
+    font-size: 12px;
+  }
+
+  &__title-type {
+    display: block;
+  }
+
+  &__title-name{
+    display: block;
+  }
+
+  &__change {
+    max-width: 0;
+    width: 100%;
+  }
+
+  &__price{
+    display: block;
+  }
+
+  &__price-old{
+    display: block;
+    min-height: 20px;
+
+    font-size: 14px;
+    color: #616161;
+    text-decoration: line-through;
+  }
+
+  &__price-now{
+    display: block;
+    font-size: 18px;
+  }
 }
-.icon-favorit{
-    display: none;
 
-    background: url("@{base-url}/favorit/img/favorit.png") no-repeat;
+.icon-favorit {
+  display: none;
 
-    .background-size(cover);
+  background: url("@{base-url}/favorit/img/favorit.png") no-repeat;
 
-    position: absolute;
-    right: 0;
-    top: 5px;
-    width: 30px;
-    height: 26px;
+  .background-size(cover);
 
-    &&--on{
-        background: url("@{base-url}/favorit/img/favorit_on.png") no-repeat;
-        .background-size(contain);
-    }
+  position: absolute;
+  right: 0;
+  top: 5px;
+  width: 30px;
+  height: 26px;
+
+  &&--on {
+    background: url("@{base-url}/favorit/img/favorit_on.png") no-repeat;
+    .background-size(contain);
+  }
 }

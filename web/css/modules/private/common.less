@@ -190,6 +190,8 @@ body:not(.noIOS){
     }
 
     &__item{
+        position: relative;
+
         display: table;
         width: 100%;
         margin-bottom: 10px;
@@ -259,4 +261,47 @@ body:not(.noIOS){
         }
     }
 
+    &__item-del{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+
+        width: 20px;
+        height: 20px;
+        background: url("@{base-url}/favorit/img/close@2x.png") no-repeat;
+        .background-size(cover);
+    }
+
+    &__item-rating{
+        &.rating{
+            margin: 3px 0 0 0;
+        }
+        .rating__star{
+            font-size: 11px;
+        }
+    }
+
+    &__item-availability{
+        display: block;
+        min-height: 16px;
+        margin: 5px -10px 5px 0;
+        
+        span{
+            display: block;
+            width: 100%;
+
+            background: #e5f5e9;
+
+            font-size: 12px;
+            color: #666666;
+            text-align: center;
+        }
+        
+        &_gray{
+
+            span{
+                background: #f2f2f2;
+            }
+        }
+    }
 }
