@@ -150,7 +150,9 @@ namespace EnterTerminal\Controller\Cart {
             foreach ($response->split->orders as $order) {
                 $order->sum = (float)$order->sum;
                 $order->originalSum = (float)$order->originalSum;
-
+                
+                $uniqueFitsAllProductsValuesOfPoints = [];
+                
                 foreach ($order->possiblePoints as $possiblePoints) {
                     foreach ($possiblePoints as $possiblePoint) {
                         switch ($possiblePoint->groupToken) {
@@ -172,6 +174,10 @@ namespace EnterTerminal\Controller\Cart {
                                 break;
                             default:
                                 $name = isset($response->split->pointGroups[$possiblePoint->groupToken]) ? $response->split->pointGroups[$possiblePoint->groupToken]->blockName : null;
+                        }
+                        
+                        if (!in_array($possiblePoint->fitsAllProducts, $uniqueFitsAllProductsValuesOfPoints, true)) {
+                            $uniqueFitsAllProductsValuesOfPoints[] = $possiblePoint->fitsAllProducts;
                         }
 
                         $response->pointFilters[$order->blockName]['type'][$possiblePoint->groupToken] = [
@@ -195,7 +201,14 @@ namespace EnterTerminal\Controller\Cart {
                         }
                     }
                 }
-
+                
+                if (count($uniqueFitsAllProductsValuesOfPoints) > 1) {
+                    $response->pointFilters[$order->blockName]['fitsAllProducts'][] = [
+                        'name'    => 'Оптимально для заказа',
+                        'value'   => true,
+                    ];
+                }
+                
                 $response->pointFilters[$order->blockName]['type'] = !empty($response->pointFilters[$order->blockName]['type']) ? array_values($response->pointFilters[$order->blockName]['type']) : [];
                 $response->pointFilters[$order->blockName]['cost'] = !empty($response->pointFilters[$order->blockName]['cost']) ? array_values($response->pointFilters[$order->blockName]['cost']) : [];
                 $response->pointFilters[$order->blockName]['nearestDay'] = !empty($response->pointFilters[$order->blockName]['nearestDay']) ? array_values($response->pointFilters[$order->blockName]['nearestDay']) : [];
