@@ -393,8 +393,8 @@ define(
                 newData.points = data.points.filter(function(point) {
                     for (key in params) {
                         if (
-                            //params[key].length
-                            (-1 === _.indexOf(params[key], point[key].value))
+                            ($.isArray(params[key]) && -1 === _.indexOf(params[key], point[key].value))
+                            || (!$.isArray(params[key]) && params[key] != point[key].value)
                         ) {
                             console.info('pass', key, params[key], point[key].value);
 
@@ -448,11 +448,15 @@ define(
                     key = data.name;
 
                     if (true == $this.prop('checked')) {
-                        if (typeof params[key] === 'undefined') {
-                            params[key] = [];
-                        }
+                        if (data.type == 'bool') {
+                            params[key] = data.value;
+                        } else {
+                            if (typeof params[key] === 'undefined') {
+                                params[key] = [];
+                            }
 
-                        params[key].push(data.value);
+                            params[key].push(data.value);
+                        }
                     }
                 });
 
@@ -478,7 +482,11 @@ define(
 
                 $modalWindow.lightbox_me({
                     onLoad: function() {
-                        $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data, $pointPopupTemplate.data('partial')));
+                        var
+                            $popup = $modalWindow.find('.js-modal-content').append(mustache.render($pointPopupTemplate.html(), data, $pointPopupTemplate.data('partial'))),
+                            $filterForm = $popup.find('.js-order-delivery-points-filter-form');
+                      
+                        $($filterForm.data('tabSelector')).trigger('update', [false]);
                     },
                     beforeClose: function() {
                         $mapContainer.append($pointMap);

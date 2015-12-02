@@ -359,6 +359,7 @@ class Delivery {
                         ]
                         + ($orderModel->possibleDays ? ['date' => []] : [])
                     ;
+                    $uniqueFitsAllProductsValuesOfPoints = [];
 
                     foreach ($orderModel->possiblePoints as $possiblePointModel) {
                         // группа точки
@@ -396,9 +397,17 @@ class Delivery {
                             $dateTo = ($possiblePointModel->dateInterval && $possiblePointModel->dateInterval->to) ? new \DateTime($possiblePointModel->dateInterval->to) : null;
                         } catch (\Exception $e) {}
 
+                        if (!in_array($possiblePointModel->fitsAllProducts, $uniqueFitsAllProductsValuesOfPoints, true)) {
+                            $uniqueFitsAllProductsValuesOfPoints[] = $possiblePointModel->fitsAllProducts;
+                        }
+                        
                         $point = [
                             'id'        => $possiblePointModel->id,
                             'name'      => $point->name,
+                            'fitsAllProducts'     => [
+                                'name'  => '',
+                                'value' => $possiblePointModel->fitsAllProducts,
+                            ],
                             'group'     => [
                                 'name'  => $pointRepository->translateGroupName($pointGroup->blockName),
                                 'value' => $pointGroup->token,
@@ -456,15 +465,16 @@ class Delivery {
                             ]),
                         ];
                         $points[] = $point;
-
                         // фильтр по типу точки
                         if (!isset($filtersByToken['type'][$pointGroup->blockName])) {
                             $filtersByToken['type'][$pointGroup->blockName] = [
                                 'id'        => $pointGroup->token,
                                 'name'      => $pointGroup->blockName,
+                                'checked' => false,
                                 'dataValue' => $templateHelper->json([
                                     'name'  => 'group',
                                     'value' => $pointGroup->token,
+                                    'type' => 'array',
                                 ]),
                             ];
                         }
@@ -473,9 +483,11 @@ class Delivery {
                             $filtersByToken['cost'][$possiblePointModel->cost] = [
                                 'id'        => $possiblePointModel->cost ?: uniqid(),
                                 'name'      => $possiblePointModel->cost ?: false,
+                                'checked' => false,
                                 'dataValue' => $templateHelper->json([
                                     'name'  => 'cost',
                                     'value' => $possiblePointModel->cost,
+                                    'type' => 'array',
                                 ]),
                             ];
                         }
@@ -484,12 +496,27 @@ class Delivery {
                             $filtersByToken['date'][$point['date']['value']] = [
                                 'id'        => $point['date']['value'],
                                 'name'      => $point['date']['name'],
+                                'checked' => false,
                                 'dataValue' => $templateHelper->json([
                                     'name'  => 'date',
                                     'value' => $point['date']['value'],
+                                    'type' => 'array',
                                 ]),
                             ];
                         }
+                    }
+                    
+                    if (count($uniqueFitsAllProductsValuesOfPoints) > 1) {
+                        $filtersByToken['fitsAllProducts'][] = [
+                            'id'        => '1',
+                            'name'      => 'Оптимально для заказа',
+                            'checked' => true,
+                            'dataValue' => $templateHelper->json([
+                                'name'  => 'fitsAllProducts',
+                                'value' => true,
+                                'type' => 'bool',
+                            ]),
+                        ];
                     }
 
                     // convert filter format

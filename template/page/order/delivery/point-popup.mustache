@@ -16,26 +16,36 @@
     </div>
 
     <div class="flexbox-two-rows__content flexbox-two-rows">
-        <form id="order-{{order.id}}-delivery-point-filter-form" class="dropdowns flexbox-two-rows__header" data-tab-selector="#order-{{order.id}}-delivery-point-tab-link" data-suggest-input-selector="#order-{{order.id}}-suggest-input">
+        <form id="order-{{order.id}}-delivery-point-filter-form" class="dropdowns flexbox-two-rows__header js-order-delivery-points-filter-form" data-tab-selector="#order-{{order.id}}-delivery-point-tab-link" data-suggest-input-selector="#order-{{order.id}}-suggest-input">
                 <div class="custom-select__kit custom-filter__kit">
 
                     <div class="custom-select__wr-l">
                         <div class="custom-select custom-filter toggle js-toggle-wrap js-order-delivery-points-filter-params-list">
                             <span class="custom-select__value toggle-link js-toggle-link">
-                                <span class="bb-dotted">Все точки</span>
+                                <span class="bb-dotted">Компании</span>
                                 <i class="caret"></i>
                             </span>
     
                             <ul class="custom-select-list toggle-box">
-                            {{#filters.type}}
-                                <li class="custom-select-list__item">
-                                    <input type="checkbox" id="order-{{order.id}}-delivery-filter-type-{{id}}" name="order-{{order.id}}-delivery-filter-type" class="custom-input custom-input--square-check js-order-delivery-point-filter" data-value="{{&dataValue}}" data-form-selector="#order-{{order.id}}-delivery-point-filter-form" />
-    
-                                    <label class="custom-label flex-hor-vertical-between js-order-delivery-points-filter-param" for="order-{{order.id}}-delivery-filter-type-{{id}}">
-                                        <span class="custom-label_tx">{{name}}</span>
-                                    </label>
-                                </li>
-                            {{/filters.type}}
+                                {{#filters.fitsAllProducts}}
+                                    <li class="custom-select-list__item">
+                                        <input type="checkbox" id="order-{{order.id}}-delivery-filter-fitsAllProducts-{{id}}" name="order-{{order.id}}-delivery-filter-fitsAllProducts" class="custom-input custom-input--square-check js-order-delivery-point-filter" data-value="{{&dataValue}}" data-form-selector="#order-{{order.id}}-delivery-point-filter-form" {{#checked}}checked="checked"{{/checked}} />
+        
+                                        <label class="custom-label flex-hor-vertical-between js-order-delivery-points-filter-param" for="order-{{order.id}}-delivery-filter-fitsAllProducts-{{id}}">
+                                            <span class="custom-label_tx">{{name}}</span>
+                                        </label>
+                                    </li>
+                                {{/filters.fitsAllProducts}}
+                                
+                                {{#filters.type}}
+                                    <li class="custom-select-list__item">
+                                        <input type="checkbox" id="order-{{order.id}}-delivery-filter-type-{{id}}" name="order-{{order.id}}-delivery-filter-type" class="custom-input custom-input--square-check js-order-delivery-point-filter" data-value="{{&dataValue}}" data-form-selector="#order-{{order.id}}-delivery-point-filter-form" {{#checked}}checked="checked"{{/checked}} />
+        
+                                        <label class="custom-label flex-hor-vertical-between js-order-delivery-points-filter-param" for="order-{{order.id}}-delivery-filter-type-{{id}}">
+                                            <span class="custom-label_tx">{{name}}</span>
+                                        </label>
+                                    </li>
+                                {{/filters.type}}
                             </ul>
                         </div>
                     </div>
@@ -50,7 +60,7 @@
                              <ul class="custom-select-list toggle-box">
                              {{#filters.cost}}
                                  <li class="custom-select-list__item">
-                                     <input type="checkbox" id="order-{{order.id}}-delivery-filter-cost-{{id}}" name="order-{{order.id}}-delivery-filter-cost" class="custom-input custom-input--square-check js-order-delivery-point-filter" data-value="{{&dataValue}}" data-form-selector="#order-{{order.id}}-delivery-point-filter-form" />
+                                     <input type="checkbox" id="order-{{order.id}}-delivery-filter-cost-{{id}}" name="order-{{order.id}}-delivery-filter-cost" class="custom-input custom-input--square-check js-order-delivery-point-filter" data-value="{{&dataValue}}" data-form-selector="#order-{{order.id}}-delivery-point-filter-form" {{#checked}}checked="checked"{{/checked}} />
  
                                      <label class="custom-label flex-hor-vertical-between js-order-delivery-points-filter-param" for="order-{{order.id}}-delivery-filter-cost-{{id}}">
                                          <span class="custom-label_tx">{{^name}}Бесплатно{{/name}}{{#name}}{{name}} <span class="rubl">p</span>{{/name}}</span>
@@ -72,7 +82,7 @@
                         <ul class="custom-select-list toggle-box">
                         {{#filters.date}}
                             <li class="custom-select-list__item">
-                                <input type="checkbox" id="order-{{order.id}}-delivery-filter-date-{{id}}" name="order-{{order.id}}-delivery-filter-date" class="custom-input custom-input--square-check js-order-delivery-point-filter" data-value="{{&dataValue}}" data-form-selector="#order-{{order.id}}-delivery-point-filter-form" />
+                                <input type="checkbox" id="order-{{order.id}}-delivery-filter-date-{{id}}" name="order-{{order.id}}-delivery-filter-date" class="custom-input custom-input--square-check js-order-delivery-point-filter" data-value="{{&dataValue}}" data-form-selector="#order-{{order.id}}-delivery-point-filter-form" {{#checked}}checked="checked"{{/checked}} />
     
                                 <label class="custom-label flex-hor-vertical-between js-order-delivery-points-filter-param" for="order-{{order.id}}-delivery-filter-date-{{id}}"><span class="custom-label_tx">{{name}}</span></label>
                             </li>

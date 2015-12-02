@@ -13,6 +13,8 @@ class Point {
     public $dateInterval;
     /** @var int */
     public $cost;
+    /** @var bool */
+    public $fitsAllProducts = false;
 
     /**
      * @param array $data
@@ -24,6 +26,8 @@ class Point {
         if (isset($data['date_interval']['from']) || isset($data['date_interval']['to'])) {
             $this->dateInterval = new Point\DateInterval($data['date_interval']);
         }
+        
+        if (isset($data['fits_all_products'])) $this->fitsAllProducts = (bool)$data['fits_all_products'];
     }
 
     /**
