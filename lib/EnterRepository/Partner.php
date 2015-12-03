@@ -44,11 +44,16 @@ class Partner {
         $return = [];
 
         $list = $this->getList();
+        $item = null;
         foreach ($list as $item) {
+            if (!is_array($item)) continue;
             if (isset($item['paid']) && (false === $item['paid'])) {
                 $return[] = $item;
             }
+
+            $item += ['host_name' => null];
         }
+        unset($item);
 
         return $return;
     }
