@@ -11662,8 +11662,10 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .private-menu-lst__user {
   display: block;
+  margin-bottom: 6px;
 }
 .private-menu-lst__user_name {
+  margin-bottom: 0;
   font-size: 20px;
 }
 .private-menu-lst__item-i {
@@ -11767,6 +11769,9 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .private-list__item-block-status_processing {
   color: #80c342;
+}
+.private-list__item-block-inner {
+  display: block;
 }
 .private-list__item-del {
   position: absolute;
@@ -12289,6 +12294,52 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   -moz-background-size: contain;
   -o-background-size: contain;
   background-size: contain;
+}
+.address-section__item {
+  margin-bottom: 5px;
+  padding-right: 30px;
+  font-size: 14px;
+}
+.address-section__btn {
+  color: #696969;
+}
+.address-section__btn:hover {
+  color: #696969;
+}
+.subscribe-section__item {
+  padding: 20px 15px;
+}
+.subscribe-section__block {
+  position: relative;
+}
+.subscribe-section__checkbox {
+  display: none;
+}
+.subscribe-section__checkbox:checked + .subscribe-section__check-label:before {
+  border-color: #f99b1c;
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAMAAAAolt3jAAAA1VBMVEUAAADvkhfDjAf3mRy+jQ78kQj8mwbgmQ/wkBH7mxjnjBD6oB/3lxf/lBP/uRj5nhv4mRj2lRf5mhvvlhH/mx/4mRv/mhT7mx7ykxS6dBbtlRbrkRX1mBz9nyH2mBv3mhr1lR32miL/nh//wCT/pSf6oB/6nh//oR/2mhv5oR34mxr4mhv3nBz4niD5mhz5mxv5mxz5mx35nBz5nB35nB/6mB36mh76nBz6nB36nR37nB78nB38nB78nCD8nR78oCH8qB/9nx/9oB/+nx//oCH/oiH/pyJkN3dLAAAALHRSTlMAAgwRFRUXGx0mMTg/REpMVllaYG59g4eMjpGVnJyfn7LGyc/Q2Nnw9PX5+8LikRoAAABxSURBVHgBY0ACgiLIPHYdewkkrrKlrTCCJ+lgII7g8bmZKgEpNgVpEI9V00aDBUjLOrnyAilFQxd+kDCXlpU6E4OYrp0URJOAs4k8j5mRCswQGXNrS2NtDrihagZ6jkIIOzj1LeSQnSeqyojMZeaGsQArZwof+P4jjAAAAABJRU5ErkJggg==) no-repeat center center;
+}
+.subscribe-section__check-label {
+  padding-left: 30px;
+  font-size: 14px;
+}
+.subscribe-section__check-label:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: 20px;
+  height: 20px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  border: 1px solid #868686;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
 /* ==========================================================================
    новая карточка товара
