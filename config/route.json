@@ -279,6 +279,10 @@
         "name": "Подписки пользователя",
         "pattern": "/private/subscribes"
     },
+    "User\\Message": {
+        "name": "Сообщения пользователя",
+        "pattern": "/private/messages"
+    },
 
     "Search\\Index": {
         "name": "Поиск",
