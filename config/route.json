@@ -275,6 +275,10 @@
         "name": "Адреса пользователя",
         "pattern": "/private/addresses"
     },
+    "User\\Subscribe": {
+        "name": "Подписки пользователя",
+        "pattern": "/private/subscribes"
+    },
 
     "Search\\Index": {
         "name": "Поиск",
