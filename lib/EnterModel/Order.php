@@ -69,6 +69,11 @@ class Order {
     public $product = [];
     /** @var float */
     public $paySum;
+    /**
+     * Сумма со скидками и со скидкой за онлайн оплату. Заполнена только, если была произведена онлайн оплата.
+     * @var float|null
+     */
+    public $paySumWithOnlineDiscount;
     /** @var float */
     public $discountSum;
     /** @var string */
@@ -143,6 +148,7 @@ class Order {
             }
         }
         if (array_key_exists('pay_sum', $data)) $this->paySum = $this->getPriceHelper()->removeZeroFraction($data['pay_sum']);
+        if (array_key_exists('payment_sum', $data)) $this->paySumWithOnlineDiscount = $this->getPriceHelper()->removeZeroFraction($data['payment_sum']);
         if (array_key_exists('discount_sum', $data)) $this->discountSum = $this->getPriceHelper()->removeZeroFraction($data['discount_sum']);
         if (array_key_exists('delivery_type_id', $data)) {
             switch ($data['delivery_type_id']) {
