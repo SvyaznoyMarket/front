@@ -11704,6 +11704,29 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .btn-exit:hover {
   color: #696969;
 }
+.private-btn {
+  display: block;
+  width: 180px;
+  height: 45px;
+  line-height: 45px;
+  margin: 30px auto 0;
+  background: #FFFFFF;
+  color: #696969;
+  font-size: 14px;
+  text-align: center;
+  -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
+}
+.private-btn:hover {
+  color: #696969;
+}
+.private-btn__link {
+  color: #696969;
+}
+.private-btn__link:hover {
+  color: #696969;
+}
 .private-list {
   width: 100%;
 }
@@ -12300,12 +12323,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   padding-right: 30px;
   font-size: 14px;
 }
-.address-section__btn {
-  color: #696969;
-}
-.address-section__btn:hover {
-  color: #696969;
-}
 .subscribe-section__item {
   padding: 20px 15px;
 }
@@ -12340,6 +12357,53 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+}
+.messages-section__img-block {
+  text-align: center;
+}
+.messages-section__txt {
+  display: block;
+  text-align: center;
+  font-size: 18px;
+}
+.user-section__row {
+  display: block;
+  *zoom: 1;
+}
+.user-section__row:before,
+.user-section__row:after {
+  display: table;
+  content: ' ';
+}
+.user-section__row:after {
+  clear: both;
+}
+.user-section__edit {
+  float: right;
+  margin-bottom: 10px;
+  border-bottom: 1px dotted #363636;
+  font-size: 14px;
+  color: #363636;
+  text-decoration: none;
+}
+.user-section__edit:hover {
+  text-decoration: none;
+}
+.user-section__inner {
+  margin-bottom: 15px;
+}
+.user-section__inner:last-of-type {
+  margin-bottom: 0;
+}
+.user-section__inner-block {
+  margin-bottom: 5px;
+}
+.user-section__inner-block span {
+  color: #363636;
+}
+.user-section__data {
+  margin-left: 5px;
+  font-size: 14px;
 }
 /* ==========================================================================
    новая карточка товара
