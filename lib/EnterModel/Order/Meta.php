@@ -7,6 +7,6 @@ use EnterModel as Model;
 class Meta {
     /** @var string */
     public $key;
-    /** @var string */
+    /** @var mixed */
     public $value;
 }

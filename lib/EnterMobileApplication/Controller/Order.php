@@ -46,9 +46,27 @@ namespace EnterMobileApplication\Controller {
 
             $point = null;
             try {
+                $paymentListQuery = new Query\PaymentMethod\GetListByOrderNumberErp($order->numberErp, $order->regionId);
+                $curl->prepare($paymentListQuery);
+
+                $pointItemQuery = null;
                 if ($order->point && $order->point->ui) {
                     $pointItemQuery = new Query\Point\GetItemByUi($order->point->ui);
-                    $curl->prepare($pointItemQuery)->execute();
+                    $curl->prepare($pointItemQuery);
+                }
+
+                $curl->execute();
+
+                $order->paymentMethods = array_values((new Repository\PaymentMethod())->getIndexedObjectListByQuery($paymentListQuery));
+                foreach ($order->paymentMethods as $paymentMethod) {
+                    /** @var Model\PaymentMethod $paymentMethod */
+                    // MAPI-179
+                    if (!$paymentMethod->sum) {
+                        $paymentMethod->sum = $order->paySum;
+                    }
+                }
+
+                if ($pointItemQuery) {
                     $point = $pointItemQuery->getResult();
                 }
             } catch (\Exception $e) {
@@ -112,6 +130,20 @@ namespace EnterMobileApplication\Controller {
                     'id' => $order->paymentStatus->id,
                     'name' => $order->paymentStatus->name,
                 ] : null,
+                'paymentMethods' => array_map(function(\EnterModel\PaymentMethod $paymentMethod) {
+                    return [
+                        'id' => $paymentMethod->id,
+                        'ui' => $paymentMethod->ui,
+                        'name' => $paymentMethod->name,
+                        'description' => $paymentMethod->description,
+                        'isOnline' => $paymentMethod->isOnline,
+                        'media' => $paymentMethod->media,
+                        'discount' => $paymentMethod->discount ? [
+                            'value' => $paymentMethod->discount->value,
+                            'unit' => $paymentMethod->discount->unit === 'rub' ? 'руб.' : $paymentMethod->discount->unit,
+                        ] : null,
+                    ];
+                }, $order->paymentMethods),
                 'sum' => $order->sum,
                 'address' => $order->address,
                 'createdAt' => $order->createdAt,
@@ -155,7 +187,8 @@ namespace EnterMobileApplication\Controller {
                         'storeLabel'      => $product->storeLabel,
                     ];
                 }, $order->product),
-                'paySum' => $order->paySum,
+                'oldPaySum' => $order->paySumWithOnlineDiscount ? $order->paySum : null,
+                'paySum' => $order->paySumWithOnlineDiscount ? $order->paySumWithOnlineDiscount : $order->paySum,
                 'discountSum' => $order->discountSum,
                 'subwayId' => $order->subwayId,
                 'deliveries' => $order->deliveries,

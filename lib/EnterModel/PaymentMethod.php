@@ -46,7 +46,13 @@ class PaymentMethod {
         if (array_key_exists('is_corporative', $data)) $this->isCorporative = (bool)$data['is_corporative'];
         if (array_key_exists('payment_method_group_id', $data)) $this->groupId = (string)$data['payment_method_group_id'];
         $this->media = (new \EnterRepository\Media())->getMediaListForPaymentMethod($this->id, $this->isOnline, $this->getConfig());
-        if (isset($data['discount']['sum'])) $this->sum = (float)$data['discount']['sum'];
-        if (isset($data['discount']['value'])) $this->discount = new PaymentMethod\Discount($data['discount']);
+
+        if (isset($data['discount']['value'])) {
+            $this->discount = new PaymentMethod\Discount($data['discount']);
+        }
+
+        if (!empty($data['discount']['sum'])) {
+            $this->sum = (float)$data['discount']['sum'];
+        }
     }
 }
