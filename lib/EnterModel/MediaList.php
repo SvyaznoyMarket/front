@@ -22,11 +22,6 @@ namespace EnterModel {
                 }
             }
 
-            // Not good hotfix
-            usort($this->photos, function (Model\Media $a, Model\Media $b) {
-                return count($a->sources) < count($b->sources);
-            });
-
             $this->photos = array_values(
                 array_filter(
                     $this->photos,

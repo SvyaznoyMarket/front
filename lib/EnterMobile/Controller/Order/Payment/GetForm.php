@@ -28,7 +28,6 @@ class GetForm {
         $config = $this->getConfig();
         $curl = $this->getCurl();
         $router = $this->getRouter();
-        $session = $this->getSession();
         $paymentRepository = new \EnterRepository\Payment();
 
         $orderId = $request->data['orderId'] ? (string)$request->data['orderId'] : null;
@@ -37,9 +36,11 @@ class GetForm {
         }
 
         $paymentMethodId = $request->data['methodId'] ? (string)$request->data['methodId'] : null;
-        if (!$orderId) {
+        if (!$paymentMethodId) {
             throw new \Exception('Не передан идентификатор метода оплаты', Http\Response::STATUS_BAD_REQUEST);
         }
+
+        $actionAlias = $request->data['actionAlias'] ? (string)$request->data['actionAlias'] : null;
 
         // запрос пользователя
         $userItemQuery = null;
@@ -68,7 +69,7 @@ class GetForm {
             'email'    => $user ? $user->email : null,
         ];
 
-        $paymentConfigQuery = new Query\Payment\GetConfig($paymentMethodId, $orderId, $data);
+        $paymentConfigQuery = new Query\Payment\GetConfig($paymentMethodId, $orderId, $data, $actionAlias);
         $paymentConfigQuery->setTimeout(8 * $config->corePrivateService->timeout);
         $curl->prepare($paymentConfigQuery);
 
@@ -76,14 +77,12 @@ class GetForm {
 
         $renderer = $this->getRenderer();
 
-        $formContent = null;
-        if ('5' === $paymentMethodId) {
-            $form = $paymentRepository->getPsbFormByQuery($paymentConfigQuery);
-            $formContent = $renderer->render('partial/payment/psb-form', ['form' => $form]);
-        } else if ('8' === $paymentMethodId) {
-            $form = $paymentRepository->getPsbInvoiceFormByQuery($paymentConfigQuery);
-            $formContent = $renderer->render('partial/payment/psbInvoice-form', ['form' => $form]);
-        }
+        $formContent = $renderer->render(
+            'partial/payment/form',
+            [
+                'form' => $paymentRepository->getFormByQuery($paymentConfigQuery)
+            ]
+        );
 
         // http-ответ
         $response = new Http\JsonResponse([

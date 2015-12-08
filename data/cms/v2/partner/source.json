@@ -1,0 +1,401 @@
+{
+    "result": [
+        {
+            "uid": "fe4aaf9b-76b7-413b-b01a-e50da047bf7e",
+            "token": "actionpay",
+            "matches": [
+                {
+                    "uid": "b6ceadcd-6df6-4fa2-926e-55ececa75498",
+                    "key": "utm_source",
+                    "value": "actionpay"
+                }
+            ],
+            "cookies": [
+                {
+                    "uid": "58803526-33b2-4910-8902-50d200cc6897",
+                    "name": "actionpay"
+                }
+            ],
+            "paid": true
+        },
+        {
+            "uid": "afc52eb6-9193-4ae6-9ae4-23b957404fcb",
+            "token": "cityads",
+            "matches": [
+                {
+                    "uid": "0f0a28b1-8f55-4fe8-8944-406edfd14a74",
+                    "key": "utm_source",
+                    "value": "cityads"
+                }
+            ],
+            "cookies": [
+                {
+                    "uid": "1a5d4d94-29f7-41be-b370-d1678288cdd5",
+                    "name": "prx"
+                },
+                {
+                    "uid": "218a10ea-372a-42d0-b30e-8870f997dfd2",
+                    "name": "click_id"
+                },
+                {
+                    "uid": "320f245f-d5e6-497c-96ca-0dab19dab9c4",
+                    "name": "aip"
+                }
+            ],
+            "paid": true
+        },
+        {
+            "uid": "1ea721ee-3c98-4668-9b03-63074258201e",
+            "token": "advmaker",
+            "matches": [
+                {
+                    "uid": "1eb2d845-c0ae-4ef2-9a01-4778354f7044",
+                    "key": "ams2s"
+                }
+            ],
+            "cookies": [
+                {
+                    "uid": "3500bcd5-859c-43e7-aa89-54887d581d6c",
+                    "name": "ams2s"
+                }
+            ],
+            "paid": true
+        },
+        {
+            "uid": "b299ca4a-b3c1-4d94-8888-8d634b5914cd",
+            "token": "linkprofit",
+            "matches": [
+                {
+                    "uid": "56ad3926-368d-4838-ae40-990515603b98",
+                    "key": "utm_source",
+                    "value": "linkprofit"
+                }
+            ],
+            "cookies": [
+                {
+                    "uid": "cbf21dfd-65a8-4f0f-ade0-c86ed7f35a2a",
+                    "name": "linkprofit_id"
+                }
+            ],
+            "paid": true
+        },
+        {
+            "uid": "d6e20c86-bd26-4f65-a645-a008e9280c73",
+            "token": "sociomantic",
+            "matches": [
+                {
+                    "uid": "eaaaa262-2a89-4df4-8188-eefc2084d3de",
+                    "key": "utm_source",
+                    "value": "sociomantic"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "9e85a25d-8f48-42dc-9bcb-47d3345926dc",
+            "token": "vk.com",
+            "matches": [
+                {
+                    "uid": "58445aef-5a91-4457-853e-29b3d026ad89",
+                    "key": "utm_source",
+                    "value": "vk.com"
+                },
+                {
+                    "uid": "949578ad-96fd-4df3-8260-14e418758b94",
+                    "key": "utm_medium",
+                    "value": "cpc"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "f8e51ed5-9a09-4f29-8620-ab78107cda6b",
+            "token": "hubrus",
+            "matches": [
+                {
+                    "uid": "e494ef37-8af6-42d0-a99c-02506705dfde",
+                    "key": "utm_source",
+                    "value": "hubrus"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "fa1ff407-e3e0-49ab-93c1-a5d6e7d9f90b",
+            "token": "exchange",
+            "matches": [
+                {
+                    "uid": "6d33cc8d-015a-44e9-ae4d-4f73f2992a68",
+                    "key": "utm_source",
+                    "value": "exchange"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "54451567-b632-45f2-8bc1-ac1d0016f9f5",
+            "token": "yandex",
+            "matches": [
+                {
+                    "uid": "cb543ca8-cf55-44a5-80fd-5a635a150cf7",
+                    "key": "utm_source",
+                    "value": "yandex"
+                },
+                {
+                    "uid": "78300028-5f19-49a8-8fde-cbbd5ff78db5",
+                    "key": "utm_medium",
+                    "value": "cpc"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "64467556-e01f-4a13-8c04-86fd517bde6d",
+            "token": "target",
+            "matches": [
+                {
+                    "uid": "7f9e025c-8d1d-4f66-9400-ac55e1c3c644",
+                    "key": "utm_source",
+                    "value": "target"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "4ec82061-e89f-4e38-a471-41496a321155",
+            "token": "targetmailru",
+            "matches": [
+                {
+                    "uid": "af9d3713-0d80-4319-b07f-2ff452e35c06",
+                    "key": "utm_source",
+                    "value": "targetmailru"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "d4332aba-a158-4b5f-96ec-b7152e77c264",
+            "token": "criteo",
+            "matches": [
+                {
+                    "uid": "31adb9f4-6d4c-4935-a614-57ea30f1235d",
+                    "key": "utm_source",
+                    "value": "criteo"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "e461b63e-c90d-4104-a312-db2ffa792a2e",
+            "token": "vk_cpc",
+            "matches": [
+                {
+                    "uid": "4e9bef21-d464-41ef-b0d1-2fe9ab14631e",
+                    "key": "utm_source",
+                    "value": "vk"
+                },
+                {
+                    "uid": "2366693c-2a60-4b5b-be2d-938b09e06fdd",
+                    "key": "utm_medium",
+                    "value": "vk_cpc"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "78e4d0d7-ab98-475f-8ee5-942fb08eba5a",
+            "token": "yandex_market",
+            "matches": [
+                {
+                    "uid": "3add0d7a-6d1b-49e0-b600-968a9134028c",
+                    "key": "utm_source",
+                    "value": "yandexmarket"
+                },
+                {
+                    "uid": "f6be4e50-d614-4312-b798-b361aa3bc5b4",
+                    "key": "utm_medium",
+                    "value": "cpc"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "65cb9cdf-2184-4ffd-b823-4359859ee2f2",
+            "token": "mnogoru",
+            "matches": [
+                {
+                    "uid": "e9a61163-0550-44c9-9b82-f98d7d06612d",
+                    "key": "utm_source",
+                    "value": "mnogoru"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "f4fb2e5f-7eb5-431c-aa53-3f7e0f776a3b",
+            "token": "mythings",
+            "matches": [
+                {
+                    "uid": "d88c7527-f9ac-4232-ae2a-4d8fa9c1ce66",
+                    "key": "utm_source",
+                    "value": "mythings"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "a7563264-6d4e-46ca-939a-c7a9840fa619",
+            "token": "google",
+            "matches": [
+                {
+                    "uid": "2d9ccb79-d1f5-41cb-87b7-777e4f94dafc",
+                    "key": "gclid"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "754340b5-1cf1-4048-af28-3b09b61d3494",
+            "token": "imarker",
+            "matches": [
+                {
+                    "uid": "1996495c-a39f-40c8-8cfd-899dc119d376",
+                    "key": "utm_source",
+                    "value": "imarker"
+                },
+                {
+                    "uid": "1d0f8058-9499-4978-879c-38bc44fcdba2",
+                    "key": "utm_medium",
+                    "value": "cpo"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "16905dfe-49c7-4ec4-b195-ad2e4cc9087e",
+            "token": "irr",
+            "matches": [
+                {
+                    "uid": "53761cc0-3fb4-4df7-a196-2a4deb102426",
+                    "key": "utm_source",
+                    "value": "irr"
+                }
+            ],
+            "cookies": [],
+            "paid": false
+        },
+        {
+            "uid": "ba9975fb-b928-4e9b-bc6c-3a8c4d0f31b4",
+            "token": "revolver",
+            "matches": [
+                {
+                    "uid": "6e92f148-22f6-412f-b209-e3d2bb532d3b",
+                    "key": "utm_source",
+                    "value": "revolver"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "29a8535c-e296-4cc4-9a34-8352853b9b2e",
+            "token": "pricelist",
+            "matches": [
+                {
+                    "uid": "1c1f0a48-6d05-489f-b131-3cafdf379034",
+                    "key": "utm_source",
+                    "value": "pricelist"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "b0fc787e-fde3-49ca-98a5-71ce96d79150",
+            "token": "kelkoo",
+            "matches": [
+                {
+                    "uid": "3d045450-5f42-4809-a208-0ecef650e2e5",
+                    "key": "utm_source",
+                    "value": "kelkoo"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "4774fa4a-b430-4d76-8b4d-b84d531084cb",
+            "token": "inmyroom",
+            "matches": [
+                {
+                    "uid": "1ce96d9c-9280-4ead-942c-b0caa9046871",
+                    "key": "utm_source",
+                    "value": "inmyroom"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "9ce8409a-8a99-4374-bec6-542a60294ee3",
+            "token": "skype",
+            "matches": [
+                {
+                    "uid": "57f74958-af35-4a2b-a815-a5863dc1a06f",
+                    "key": "utm_source",
+                    "value": "skype"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "2054836f-a8f3-4c6f-8124-28719bccc790",
+            "token": "blackfridaysale",
+            "matches": [
+                {
+                    "uid": "184eb2ce-81e9-44d4-b8cf-52d56fd119e4",
+                    "key": "utm_source",
+                    "value": "blackfridaysale"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "c5f7af62-f34d-47d9-962a-30fecd34126e",
+            "token": "flocktory",
+            "matches": [
+                {
+                    "uid": "04fb5be4-5e1b-4db7-a606-17966eb28b64",
+                    "key": "utm_source",
+                    "value": "flocktory"
+                }
+            ],
+            "cookies": [],
+            "paid": true
+        },
+        {
+            "uid": "b5531eee-7e64-4a6e-aab0-374c24e742de",
+            "token": "enter.ru",
+            "host_name": "enter.ru",
+            "matches": [],
+            "cookies": [],
+            "paid": false
+        }
+    ]
+}

@@ -190,7 +190,7 @@ class DefaultPage {
         }
 
         // баннер доставки
-        if ($request->region && $request->region->pointCount) {
+        if (false && $request->region && $request->region->pointCount) {
             $page->deliveryBanner = new Page\DeliveryBanner();
             $page->deliveryBanner->regionName =
                 $request->region->inflectedName

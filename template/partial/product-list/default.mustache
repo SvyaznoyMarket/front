@@ -1,8 +1,10 @@
 <!-- листинг товаров  -->
 <div class="js-productList-container catalogList {{#isProductSet}}productSet{{/isProductSet}} {{#buyBtnListing}}buyBtnListing{{/buyBtnListing}}" data-url="{{url}}" data-value="{{&dataValue}}" data-reset="{{&dataReset}}">
-    {{#products}}
-        {{>partial/product-card/default}}
-    {{/products}}
+   <div class="catalogList__row">
+        {{#products}}
+            {{>partial/product-card/default}}
+        {{/products}}
+   </div>
 </div>
 
 {{^products}}

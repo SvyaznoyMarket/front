@@ -1,0 +1,12 @@
+{{#form}}
+    <form class="form jsPaymentForms jsPaymentFormPSB" method="post" action="{{url}}">
+    {{#fields}}
+        <input type="hidden" name="{{name}}" value="{{value}}" />
+    {{/fields}}
+        <div class="btn-container">
+            <button type="submit" class="btn btn--orange btn--pay">Оплатить</button>
+        </div>
+    </form>
+
+    <p class="checkout-checkbox-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
+{{/form}}

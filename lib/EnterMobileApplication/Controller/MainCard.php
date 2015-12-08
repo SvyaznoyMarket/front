@@ -123,23 +123,30 @@ namespace EnterMobileApplication\Controller {
                 $config = [];
             }
 
-            $popularProducts = array_filter($popularProducts);
-            $personalProducts = array_filter($personalProducts);
-            $viewedProducts = array_filter($viewedProducts);
+            $popularProducts = $this->getProductList(array_filter($popularProducts), true);
+            $personalProducts = $this->getProductList(array_filter($personalProducts), true);
+            $viewedProducts = $this->getProductList(array_filter($viewedProducts), true);
+
+            $recommendations = [];
+
+            if ($popularProducts) {
+                $recommendations[] = [
+                    'name' => 'Популярные товары',
+                    'products' => $popularProducts,
+                ];
+            }
+
+            if ($personalProducts) {
+                $recommendations[] = [
+                    'name' => 'Мы рекомендуем',
+                    'products' => $personalProducts,
+                ];
+            }
 
             return new Http\JsonResponse([
                 'region' => $region,
-                'recommendations' => [
-                    [
-                        'name' => 'Популярные товары',
-                        'products' => $this->getProductList($popularProducts, true),
-                    ],
-                    [
-                        'name' => 'Мы рекомендуем',
-                        'products' => $this->getProductList($personalProducts, true),
-                    ],
-                ],
-                'viewedProducts' => $this->getProductList($viewedProducts, true),
+                'recommendations' => $recommendations,
+                'viewedProducts' => $viewedProducts,
                 'mainMenu' => (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery),
                 'promos' => (new \EnterMobileApplication\Repository\Promo())->getObjectListByQuery($promoListQuery),
                 'popularBrands' => array_map(function(\EnterModel\Brand $brand) {

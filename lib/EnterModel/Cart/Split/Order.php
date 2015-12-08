@@ -21,9 +21,14 @@ class Order {
     public $prepaidSum;
     /** @var string|null */
     public $originalSum;
+    /** @var \EnterModel\Cart\Split\Order\Prepayment|null */
+    public $prepayment;
     /** @var string|null */
     public $paymentMethodId;
-    /** @var array|null */
+    /**
+     * Данный элемент оставлен для совместимости MAPI 1.6 с версиями мобильных приложений.
+     * @var null
+     */
     public $paymentLabel;
     /** @var array */
     public $possibleDeliveryMethodTokens = [];
@@ -31,7 +36,12 @@ class Order {
     public $possibleIntervals = [];
     /** @var array */
     public $possibleDays = [];
-    /** @var array */
+    /** @var \EnterModel\Cart\Split\Order\PaymentMethod[] */
+    public $possiblePaymentMethods = [];
+    /**
+     * @deprecated Используйте self::$possiblePaymentMethods
+     * @var array
+     */
     public $possiblePaymentMethodIds = [];
     /** @var array */
     public $groupedPossiblePointIds = [];
@@ -39,14 +49,18 @@ class Order {
     public $possiblePoints = [];
     /** @var string|null */
     public $comment;
-    /** @var string|null */
-    private $_sum;
+    /** @var int */
+    public $isOnlinePaymentAvailable;
 
     /**
      * @param array $data
      * @param $format
      */
     public function __construct($data = [], $format = true) {
+        if (!empty($data['prepaid_sum'])) {
+            $this->prepayment = new \EnterModel\Cart\Split\Order\Prepayment($data['prepaid_sum']);
+        }
+
         $this->blockName = $data['block_name'] ? (string)$data['block_name'] : null;
         $this->seller = $data['seller'] ? new Order\Seller($data['seller']) : null;
 
@@ -61,11 +75,11 @@ class Order {
         $this->actions = (array)$data['actions'];
 
         $this->delivery = $data['delivery'] ? new Order\Delivery($data['delivery']) : null;
-        $this->_sum = $data['total_cost'] ? (string)$data['total_cost'] : null;
-        $this->sum = $data['total_view_cost'] ? (string)$data['total_view_cost'] : null;
+        $this->sum = $data['total_cost'] ? (string)$data['total_cost'] : null;
         $this->originalSum = $data['total_original_cost'] ? (string)$data['total_original_cost'] : null;
         $this->prepaidSum = !empty($data['prepaid_sum']) ? (string)$data['prepaid_sum'] : null;
         $this->paymentMethodId = $data['payment_method_id'] ? (string)$data['payment_method_id'] : null;
+        $this->isOnlinePaymentAvailable = isset($data['is_online_payment_available']) ? $data['is_online_payment_available'] : null;
         foreach ($data['possible_deliveries'] as $token) {
             $this->possibleDeliveryMethodTokens[] = (string)$token;
         }
@@ -76,9 +90,16 @@ class Order {
             $this->possibleDays[] = (string)$day;
         }
         //$this->possibleDays = []; // FIXME: fixture
-        foreach ((array)$data['possible_payment_methods'] as $id) { // FIXME: убрать приведение к массиву
-            $this->possiblePaymentMethodIds[] = (string)$id;
+        if (isset($data['possible_payment_methods']) && is_array($data['possible_payment_methods'])) {
+            foreach ($data['possible_payment_methods'] as $id) {
+                // MSITE-565
+                if (in_array((string)$id, ['10'])) continue;
+
+                $this->possiblePaymentMethodIds[] = (string)$id;
+                $this->possiblePaymentMethods[] = new Order\PaymentMethod(['id' => $id] + (isset($data['payment_methods'][$id]) ? $data['payment_methods'][$id] : []));
+            }
         }
+
         foreach ($data['possible_points'] as $token => $ids) {
             foreach ($ids as $id) {
                 $this->groupedPossiblePointIds[$token][] = (string)$id;
@@ -108,7 +129,6 @@ class Order {
             $possiblePointsData[$possiblePoint->groupToken] = $possiblePoint->dump();
         }
 
-
         return [
             'block_name'               => $this->blockName,
             'seller'                   => $this->seller ? $this->seller->dump() : null,
@@ -116,17 +136,18 @@ class Order {
             'discounts'                => array_map(function(Order\Discount $discount) { return $discount->dump(); }, $this->discounts),
             'actions'                  => $this->actions,
             'delivery'                 => $this->delivery ? $this->delivery->dump() : null,
-            'total_cost'               => $this->_sum,
-            'total_view_cost'          => $this->sum,
+            'total_cost'               => $this->sum,
             'total_original_cost'      => $this->originalSum,
             'payment_method_id'        => $this->paymentMethodId ? (int)$this->paymentMethodId : null,
             'possible_deliveries'      => $this->possibleDeliveryMethodTokens,
             'possible_intervals'       => array_map(function(Model\Cart\Split\Interval $interval) { return $interval->dump(); }, $this->possibleIntervals),
             'possible_days'            => array_map(function($day) { return (string)$day; }, $this->possibleDays),
             'possible_payment_methods' => $this->possiblePaymentMethodIds,
+            'payment_methods'          => array_map(function(\EnterModel\Cart\Split\Order\PaymentMethod $possiblePaymentMethod) { return $possiblePaymentMethod->dump(); }, $this->possiblePaymentMethods),
             'possible_points'          => $this->groupedPossiblePointIds,
             'possible_point_data'      => $possiblePointsData,
             'comment'                  => $this->comment,
+            'prepaid_sum'              => $this->prepayment ? (float)$this->prepayment->sum : 0,
         ];
     }
 }

@@ -1,8 +1,17 @@
 {{! Оплата }}
-<div class="checkout-checkbox">
-    <ul class="checkout-checkbox-lst">
+<div class="checkout-checkbox checkout-payment">
+    <h3 class="checkout-payment__title">
+        Способы оплаты
+    </h3>
+    {{#hasOnlineDiscount}}
+    <div class="checkout-payment__discount">
+        <span class="checkout-payment__discount-size">Скидка</span>
+        <span class="checkout-payment__discount-desc">при оплате онлайн</span>
+    </div>
+    {{/hasOnlineDiscount}}
+    <ul class="checkout-checkbox-lst checkout-payment__list">
     {{#paymentMethods}}
-        <li class="checkout-checkbox-lst__i">
+        <li class="checkout-checkbox-lst__i checkout-payment__item">
             <input
                 type="radio"
                 id="order-{{order.id}}-delivery-payment-method-{{id}}"
@@ -14,7 +23,14 @@
                 value="{{id}}"
             />
             <label class="custom-label" for="order-{{order.id}}-delivery-payment-method-{{id}}">
-                {{name}}
+                <span class="checkout-payment__item-name">
+                    {{name}}
+                    {{#discount}}
+                        <span class="checkout-payment__item-discount">Скидка <span>{{name}}</span> {{unit}}</span>
+                    {{/discount}}
+                </span>
+                {{#image}}<img class="checkout-payment__icon" src="/css/modules/checkout-payment/img/{{image}}" alt="{{name}}">{{/image}}
+
             </label>
         </li>
     {{/paymentMethods}}

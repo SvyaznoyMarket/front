@@ -1,50 +1,53 @@
-<div class="catalogList_item catalogList_item_new">
+<div class="catalogList__item">
+    <div class="catalogList__item-inner">
+        <a class="list-img_lk catalogList__img-block" href="{{url}}">
+            {{#labels.0}}
+                <div class="sticker left">
+                    <img src="{{imageUrl}}" alt="{{name}}" />
+                </div>
+            {{/labels.0}}
 
-    <a class="list-img_lk" href="{{url}}">
-        {{#labels.0}}
-            <div class="sticker left">
-                <img src="{{imageUrl}}" alt="{{name}}" />
-            </div>
-        {{/labels.0}}
 
 
-
-        <div class="img">
-            <img src="{{image}}" />
+            <img class="catalogList__img" src="{{image}}" />
             {{#brand.imageUrl}}
                 <div class="sticker right">
                     <img src="{{brand.imageUrl}}" alt="{{brand.name}}" />
                 </div>
             {{/brand.imageUrl}}
-        </div>
-    </a>
-    <div class="catalogList_desc">
-        <a class="catalogList_lk" href="{{url}}"><span class="name">{{&name}}</span>
-
-            <div class="rating">
-                {{#rating}}
-                    {{>partial/rating/star-list}}
-                {{/rating}}
-            </div>
-
-            {{#stateLabel}}
-                <div class="availability {{cssClassName}}">
-                    {{name}}
-                </div>
-            {{/stateLabel}}
-            {{^stateLabel}}
-                <div class="availability availability--nobg">&nbsp;</div>
-            {{/stateLabel}}
-
-            <div class="price">
-                <div class="price_old">{{#oldPrice}}<span class="line-through">{{shownOldPrice}}</span> <span class="rubl">p</span>{{/oldPrice}}</div>
-                {{#price}}<div class="price_now{{#oldPrice}} price_now-sale{{/oldPrice}}">{{shownPrice}} <span class="rubl">p</span></div>{{/price}}
-            </div>
         </a>
-        <div class="btn-container">
-            {{#cartButton}}
-                {{>partial/cart/button}}
-            {{/cartButton}}
+        <div class="catalogList__desc">
+            <a class="catalogList_lk" href="{{url}}"><span class="name">{{&name}}</span>
+
+                <div class="catalogList__rating">
+                    {{#rating}}
+                        {{>partial/rating/star-list}}
+                    {{/rating}}
+                </div>
+
+                {{#stateLabel}}
+                    <div class="availability {{cssClassName}} catalogList__availability_gray">
+                        {{name}}
+                    </div>
+                {{/stateLabel}}
+                {{^stateLabel}}
+                    <div class="availability availability--nobg catalogList__availability">&nbsp;</div>
+                {{/stateLabel}}
+
+                <div class="price catalogList__price">
+                    <div class="price_old catalogList__price-old">{{#oldPrice}}
+                        <span>
+                       <span>{{shownOldPrice}}</span> <span class="rubl">p</span>
+                    </span>
+                    {{/oldPrice}}</div>
+                    {{#price}}<div class="price_now{{#oldPrice}} price_now-sale{{/oldPrice}} catalogList__price-now">{{shownPrice}} <span class="rubl">p</span></div>{{/price}}
+                </div>
+            </a>
+            <div class="btn-container catalogList__btn">
+                {{#cartButton}}
+                    {{>partial/cart/button}}
+                {{/cartButton}}
+            </div>
         </div>
     </div>
 </div>

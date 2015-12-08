@@ -43,4 +43,33 @@ class Payment {
 
         return $form;
     }
+
+    /**
+     * @param Query $query
+     * @return array
+     * @throws \Exception
+     */
+    public function getFormByQuery(Query $query) {
+        $result = $query->getResult();
+
+        $url = isset($result['url']) ? $result['url'] : $result['detail']['url'];
+        if (isset($result['detail']['url'])) {
+            unset($result['detail']['url']);
+        }
+
+        $fields = [];
+        foreach ($result['detail'] as $k => $v) {
+            if (null === $v) continue;
+
+            $fields[] = [
+                'name'  => $k,
+                'value' => $v,
+            ];
+        }
+
+        return [
+            'url'    => $url,
+            'fields' => $fields,
+        ];
+    }
 }

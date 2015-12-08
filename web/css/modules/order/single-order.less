@@ -13,28 +13,74 @@
     border: 1px solid #c7c7c7;
     padding: 15px;
 
+    &__row{
+
+      &_tac{
+        text-align: center;
+      }
+    }
+
     &__greet{
         font-size: 16px;
         margin-bottom: 10px;
+
+      &_tac{
+        text-align: center;
+      }
     }
+
+  &__btn{
+    .btn;
+
+    min-width: 130px;
+    height: 34px;
+
+    .rounded(4px);
+    border: none;
+    border-bottom: 2px solid #e26500;
+
+    background: #fcaa2a;
+
+    font-size: 18px;
+    color: #FFFFFF;
+
+    &:active{
+      border-bottom: none;
+    }
+  }
+
     &__how-to-find{
         cursor: pointer;
         font-size: 14px;
         margin: 10px 0 15px;
     }
+
     &__payment-info{
         font-size: 12px;
         color: #616161;
         margin: 15px 0 0;
     }
+
     &__payment{
         .btn--submit{
             .inline-block(middle);
         }
         .confirm-payment__types{
-            margin-left: 50px;
+          display: block;
+          margin: 5px 0 20px;
+
+          text-align: center;
+          font-size: 0;
         }
+
+      .checkout-payment__icon{
+
+        &:first-child{
+          margin-left: 0;
+        }
+      }
     }
+
   &__pay-motiv{
     .single-order__greet{
       color: #f99b1c;
@@ -43,18 +89,43 @@
       margin-top: 5px;
     }
   }
+
   &__pay-row{
     padding: 0 10px;
     margin-bottom: 10px;
   }
+
   .pay{
     &-info{
       .inline-block();
       width: 180px;
       font-size: 14px;
     }
+
     &-sum{
       font-size: 14px;
     }
+  }
+
+  &__discount{
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 15px;
+
+    padding: 2px 0;
+
+    background: #ffedee;
+
+    font: normal 16px Tahoma, sans-serif;
+    text-align: center;
+  }
+
+  &__discount-size{
+    color: #fe4c40;
+  }
+
+  &__discount-desc{
+    color: #363636;
   }
 }

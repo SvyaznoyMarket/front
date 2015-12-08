@@ -1,0 +1,8 @@
+.g-layout__item(@col: 1, @height: auto, @float: left, @colN: 12){
+  width: @g-layout-container / @colN * @col;
+  height: @height;
+  float: @float;
+  padding: 0 5px;
+
+  .box-sizing();
+}

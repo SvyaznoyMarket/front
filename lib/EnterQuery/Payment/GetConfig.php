@@ -12,7 +12,13 @@ class GetConfig extends Query {
     /** @var array|null */
     protected $result;
 
-    public function __construct($methodId, $orderId, array $data) {
+    /**
+     * @param $methodId
+     * @param $orderId
+     * @param array $data
+     * @param null $actionAlias
+     */
+    public function __construct($methodId, $orderId, array $data, $actionAlias = null) {
         $this->url = new Url();
         $this->url->path = 'site-integration/payment-config';
 
@@ -22,6 +28,10 @@ class GetConfig extends Query {
         ];
         if ($actionAlias = (isset($data['action_alias']) ? $data['action_alias'] : null)) {
             unset($data['action_alias']);
+            $this->url->query['action_alias'] = $actionAlias;
+        }
+        // TODO
+        if ($actionAlias) {
             $this->url->query['action_alias'] = $actionAlias;
         }
 

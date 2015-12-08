@@ -84,7 +84,7 @@ namespace EnterAggregator\Controller {
             // товар
             $response->product = $productRepository->getObjectByQueryList([$productListQuery], [$productDescriptionListQuery]);
 
-            if ($productModelListQuery) {
+            if ($productModelListQuery && $response->product) {
                 $productRepository->setModelForListByListQueryList(
                     [$response->product],
                     [$productModelListQuery]

@@ -139,6 +139,25 @@ namespace EnterAggregator\Controller\Cart {
                     }
                 });
 
+                $excludePaymentMethodIds = ['1', '2'];
+                // FRONT-88
+                foreach ($response->split->orders as $order) {
+                    if ($order->sum > $config->order->prepayment->priceLimit) {
+                        foreach ($order->possiblePaymentMethodIds as $i => $possiblePaymentMethodId) {
+                            if (in_array($possiblePaymentMethodId, $excludePaymentMethodIds) && (count($order->possiblePaymentMethodIds) > 1)) {
+                                unset($order->possiblePaymentMethodIds[$i]);
+                            }
+                        }
+                        foreach ($order->possiblePaymentMethods as $i => $possiblePaymentMethod) {
+                            if (in_array($possiblePaymentMethod->id, $excludePaymentMethodIds) && (count($order->possiblePaymentMethods) > 1)) {
+                                unset($order->possiblePaymentMethods[$i]);
+                            }
+                        }
+                        $order->possiblePaymentMethodIds = array_values($order->possiblePaymentMethodIds);
+                        $order->possiblePaymentMethods = array_values($order->possiblePaymentMethods);
+                    }
+                }
+
                 // MAPI-4
                 $productIds = [];
                 foreach ($response->split->orders as $order) {
@@ -187,7 +206,13 @@ namespace EnterAggregator\Controller\Cart {
                 if ($productsById) {
                     foreach ($response->split->orders as $order) {
                         foreach ($order->products as $product) {
-                            $product->media = isset($productsById[$product->id]) ? $productsById[$product->id]->media : [];
+                            if (isset($productsById[$product->id])) {
+                                $product->url = $productsById[$product->id]->link;
+                                $product->name = $productsById[$product->id]->name;
+                                $product->webName = $productsById[$product->id]->webName;
+                                $product->namePrefix = $productsById[$product->id]->namePrefix;
+                                $product->media = $productsById[$product->id]->media;
+                            }
                         }
                     }
                 }

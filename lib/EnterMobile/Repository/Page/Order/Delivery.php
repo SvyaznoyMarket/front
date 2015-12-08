@@ -58,6 +58,7 @@ class Delivery {
         }
 
         // индексация методов оплат
+        /** @var \EnterModel\Cart\Split\PaymentMethod[] $paymentMethodsById */
         $paymentMethodsById = [];
         foreach ($splitModel->paymentMethods as $paymentMethod) {
             $paymentMethodsById[$paymentMethod->id] = $paymentMethod;
@@ -132,6 +133,24 @@ class Delivery {
                             }
                         }
 
+                        $possiblePointModel = null;
+                        if ($point) {
+                            foreach ($orderModel->possiblePoints as $iPossiblePointModel) { // FIXME
+                                if ($point->id === $iPossiblePointModel->id) {
+                                    $possiblePointModel = $iPossiblePointModel;
+                                    break;
+                                }
+                            }
+                        }
+
+                        // дата и интервал дат
+                        $dateFrom = null;
+                        $dateTo = null;
+                        try {
+                            $dateFrom = ($possiblePointModel && $possiblePointModel->dateInterval && $possiblePointModel->dateInterval->from) ? new \DateTime($possiblePointModel->dateInterval->from) : null;
+                            $dateTo = ($possiblePointModel && $possiblePointModel->dateInterval && $possiblePointModel->dateInterval->to) ? new \DateTime($possiblePointModel->dateInterval->to) : null;
+                        } catch (\Exception $e) {}
+
                         $delivery = [
                             'isStandart'  => 2 == $deliveryGroupModel->id,
                             'isSelf'      => 1 == $deliveryGroupModel->id,
@@ -162,6 +181,21 @@ class Delivery {
                                             : false
                                     ,
                                     'regime'  => $point->regime,
+                                    'date'    => $orderModel->possibleDays
+                                        ? call_user_func(function() use (&$date, &$dateFrom, &$dateTo, &$dateHelper) {
+                                            $data = false;
+
+                                            if ($dateFrom) {
+                                                $data = [
+                                                    'name'  => sprintf('%s %s', 'с ' . $dateFrom->format('d.m'), $dateTo ? (' по ' . $dateTo->format('d.m')) : ''),
+                                                    'value' => $dateFrom->getTimestamp(),
+                                                ];
+                                            }
+
+                                            return $data;
+                                        })
+                                        : null
+                                    ,
                                     'order'   => [
                                         'id' => $orderModel->blockName,
                                     ],
@@ -561,41 +595,54 @@ class Delivery {
                 'paymentMethods' => call_user_func(function() use (&$templateHelper, &$splitModel, &$orderModel, &$paymentMethodsById) {
                     $paymentMethods = [];
 
-                    foreach ($orderModel->possiblePaymentMethodIds as $paymentMethodId) {
+                    foreach ($orderModel->possiblePaymentMethods as $possiblePaymentMethod) {
                         /** @var \EnterModel\Cart\Split\PaymentMethod|null $paymentMethodModel */
-                        $paymentMethodModel = isset($paymentMethodsById[$paymentMethodId]) ? $paymentMethodsById[$paymentMethodId] : null;
+                        $paymentMethodModel = isset($paymentMethodsById[$possiblePaymentMethod->id]) ? $paymentMethodsById[$possiblePaymentMethod->id] : null;
                         if (!$paymentMethodModel) {
-                            $this->getLogger()->push(['type' => 'error', 'message' => 'Метод оплаты не найден', 'paymentMethodId' => $paymentMethodId, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
+                            $this->getLogger()->push(['type' => 'error', 'message' => 'Метод оплаты не найден', 'possiblePaymentMethod' => $possiblePaymentMethod, 'sender' => __FILE__ . ' ' . __LINE__, 'tag' => ['order.split', 'critical']]);
 
                             continue;
                         }
 
-                        if (in_array($paymentMethodId, ['1', '2', '5'])) {
-                            $paymentMethods[] = [
-                                'id'          => $paymentMethodModel->id,
-                                'name'        => $paymentMethodModel->name,
-                                'description' => $paymentMethodModel->description,
-                                'isActive'    =>
-                                    $orderModel->paymentMethodId
-                                    ? ($orderModel->paymentMethodId == $paymentMethodModel->id)
-                                    : false
-                                ,
-                                'dataValue'   => $templateHelper->json([
-                                    'change' => [
-                                        'orders' => [
-                                            [
-                                                'blockName'       => $orderModel->blockName,
-                                                'paymentMethodId' => $paymentMethodModel->id,
-                                            ],
+                        $paymentMethods[] = [
+                            'id'          => $paymentMethodModel->id,
+                            'name'        => $paymentMethodModel->name . (!$paymentMethodModel->isOnline ? ' при получении' : ''),
+                            'description' => $paymentMethodModel->description,
+                            'isActive'    =>
+                                $orderModel->paymentMethodId
+                                ? ($orderModel->paymentMethodId == $paymentMethodModel->id)
+                                : false
+                            ,
+                            'dataValue'   => $templateHelper->json([
+                                'change' => [
+                                    'orders' => [
+                                        [
+                                            'blockName'       => $orderModel->blockName,
+                                            'paymentMethodId' => $paymentMethodModel->id,
                                         ],
                                     ],
-                                ]),
-                                'order'       => [
-                                    'id' => $orderModel->blockName,
                                 ],
-                                'isOnline'    => $paymentMethodModel->isOnline,
-                            ];
-                        }
+                            ]),
+                            'order'       => [
+                                'id' => $orderModel->blockName,
+                            ],
+                            'isOnline'    => $paymentMethodModel->isOnline,
+                            'discount'    =>
+                                $possiblePaymentMethod->discount
+                                ? [
+                                    'name' => $possiblePaymentMethod->discount->value,
+                                    'unit' => ('rub' === $possiblePaymentMethod->discount->unit) ? 'руб.' : $possiblePaymentMethod->discount->unit,
+                                ]
+                                : false
+                            ,
+                            'image'       => @[
+                                '5'  => 'i-bank-cart.png',
+                                '16' => 'i-ya-wallet.png',
+                                '11' => 'i-webmoney.png',
+                                '12' => 'i-qiwi.png',
+                                '8'  => 'i-psb.png',
+                            ][$paymentMethodModel->id],
+                        ];
                     }
 
                     if (
@@ -609,6 +656,21 @@ class Delivery {
                     }
 
                     return $paymentMethods;
+                }),
+                'hasOnlineDiscount' => call_user_func(function() use (&$paymentMethodsById, &$orderModel) {
+                    $return = false;
+
+                    foreach ($orderModel->possiblePaymentMethods as $possiblePaymentMethodModel) {
+                        /** @var \EnterModel\Cart\Split\PaymentMethod|null $paymentMethod */
+                        $paymentMethod = isset($paymentMethodsById[$possiblePaymentMethodModel->id]) ? $paymentMethodsById[$possiblePaymentMethodModel->id] : null;
+
+                        if ($paymentMethod && $paymentMethod->isOnline && $paymentMethod->discount) {
+                            $return = true;
+                            break;
+                        }
+                    }
+
+                    return $return;
                 }),
                 'messages'       => call_user_func(function() use (&$config, &$orderModel, &$priceHelper) {
                     $messages = [];

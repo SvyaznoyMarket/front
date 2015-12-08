@@ -140,7 +140,17 @@ class Complete {
 
                             foreach ($paymentData as $paymentItem) {
                                 $paymentMethod = new Model\PaymentMethod($paymentItem);
-                                if (!$paymentMethod->isOnline) continue;
+                                // MAPI-179
+                                if (!$paymentMethod->sum) {
+                                    $paymentMethod->sum = $order->paySum;
+                                }
+
+                                if (
+                                    !$paymentMethod->isOnline
+                                    || $paymentMethod->isCredit
+                                ) {
+                                    continue;
+                                }
 
                                 $onlinePaymentMethodsById[$paymentMethod->id] = $paymentMethod;
                                 $order->paymentMethods[] = $paymentMethod;

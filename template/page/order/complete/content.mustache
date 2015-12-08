@@ -46,15 +46,27 @@
                 </div>
                     {{#onlinePayment}}
                     <div class="checkout__single-order single-order single-order__payment">
-                        <div class="single-order__greet">Онлайн-оплата в два клика</div>
-                        <div class="single-order__row">
+                        <div class="single-order__greet single-order__greet_tac">Онлайн-оплата в два клика</div>
 
-                            <button class="btn btn--submit btn--orange btn--medium js-order-complete-onlinePayment-link" data-modal-position="fixed-untill-640" data-modal-title="Оплатить онлайн" data-storage-selector="#order-{{id}}-onlinePayment-data">Оплатить</button>
+                        <div class="single-order__row">
+                        {{#hasOnlineDiscount}}
+                            <div class="single-order__discount">
+                                <span class="single-order__discount-size">Скидка</span>
+                                <span class="single-order__discount-desc">при оплате онлайн</span>
+                            </div>
+                        {{/hasOnlineDiscount}}
+                        </div>
+
+                        <div class="single-order__row">
                             <span class="confirm-payment__types">
-                                {{#images}}
-                                    <img class="confirm-payment__card" src="/css/modules/order/img/{{.}}" />
-                                {{/images}}
+                            {{#images}}
+                                <img class="checkout-payment__icon" src="/css/modules/checkout-payment/img/{{file}}" alt="{{name}}">
+                            {{/images}}
                             </span>
+                        </div>
+
+                        <div class="single-order__row single-order__row_tac">
+                            <button class="js-order-complete-onlinePayment-link single-order__btn" data-modal-position="fixed-untill-640" data-modal-title="Оплатить онлайн" data-storage-selector="#order-{{id}}-onlinePayment-data">Оплатить</button>
                         </div>
                     </div>
                     {{/onlinePayment}}
@@ -146,7 +158,7 @@
 
 						<span class="confirm-payment__types">
                             {{#images}}
-							<img class="confirm-payment__card" src="/css/modules/order/img/{{.}}" />
+							<img class="confirm-payment__card" src="/css/modules/checkout-payment/img/{{file}}" alt="{{name}}" />
                             {{/images}}
 						</span>
                     </div>

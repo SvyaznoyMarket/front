@@ -6,42 +6,83 @@ use Enter\Http;
 use Enter\Util;
 use EnterAggregator\ConfigTrait;
 use EnterAggregator\LoggerTrait;
+use EnterAggregator\CurlTrait;
 use EnterModel as Model;
+use EnterQuery as Query;
 
 class Partner {
-    use ConfigTrait, LoggerTrait;
+    use ConfigTrait, LoggerTrait, CurlTrait;
+
+    private $list = [];
 
     /**
      * @return array
      */
     public function getList() {
-        static $data = [];
+        if (!$this->list) {
+            $curl = $this->getCurl();
 
-        if (!(bool)$data) {
-            $data = Util\Json::toArray(file_get_contents($this->getConfig()->dir . '/data/cms/v2/partner/paid-source.json'));
+            $query = new Query\Partner\GetTrafficSource();
+            $curl->prepare($query);
+
+            $curl->execute();
+
+            foreach ($query->getResult() as $item) {
+                if (!isset($item['token'])) continue;
+
+                $this->list[] = $item;
+            }
         }
 
-        return $data;
+        return $this->list;
     }
 
     /**
      * @return array
      */
-    public function getFreeHosts() {
-        static $data = [];
+    public function getFreeSources() {
+        $return = [];
 
-        if (!(bool)$data) {
-            $data = Util\Json::toArray(file_get_contents($this->getConfig()->dir . '/data/cms/v2/partner/free-host.json'));
+        $list = $this->getList();
+        $item = null;
+        foreach ($list as $item) {
+            if (!is_array($item)) continue;
+            if (isset($item['paid']) && (false === $item['paid'])) {
+                $return[] = $item;
+            }
+
+            $item += ['host_name' => null];
+        }
+        unset($item);
+
+        return $return;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPaidSources() {
+        $return = [];
+
+        $list = $this->getList();
+        foreach ($list as $item) {
+            if (isset($item['paid']) && (true === $item['paid'])) {
+                $return[] = $item;
+            }
         }
 
-        return $data;
+        return $return;
     }
 
     /**
      * @return string[]
      */
     public function getDefaultCookieNames() {
-        return ['utm_source', 'utm_content', 'utm_term'];
+        return [
+            ['name' => 'utm_source'],
+            ['name' => 'utm_content'],
+            ['name' => 'utm_term'],
+        ];
     }
 
     /**
@@ -56,15 +97,18 @@ class Partner {
         $data = $this->getList();
 
         foreach ($data as $partnerToken => $item) {
-            if (!isset($item['match'])) {
+            if (!isset($item['matches'])) {
                 $this->getLogger()->push(['type' => 'error', 'error' => 'Не указан match', 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['partner']]);;
                 continue;
             }
 
             $isMatched = false;
-            if ((bool)$item['match']) {
+            if ($item['matches']) {
                 $isMatched = true;
-                foreach ($item['match'] as $k => $v) {
+                foreach ($item['matches'] as $match) {
+                    $k = @$match['key'];
+                    $v = @$match['value'];
+
                     if (null === $v) {
                         $isMatched = $isMatched && isset($request->query[$k]);
                     } else if ($k) {
@@ -74,10 +118,9 @@ class Partner {
             }
 
             if ($isMatched) {
-                $item['token'] = $partnerToken;
                 $partner = new Model\Partner($item);
 
-                $cookies = array_merge($this->getDefaultCookieNames(), isset($item['cookie']) ? (array)$item['cookie'] : []);
+                $cookies = array_merge($this->getDefaultCookieNames(), (isset($item['cookies']) && is_array($item['cookies'])) ? (array)$item['cookies'] : []);
                 foreach ($cookies as $cookieName) {
                     if ($cookieValue = $request->query[$cookieName]) {
                         $partner->cookie[$cookieName] = $cookieValue;
@@ -102,16 +145,20 @@ class Partner {
 
         $partnerToken = $request->cookies[$this->getConfig()->partner->cookieName];
         if ($partnerToken) {
-            foreach ($this->getList() as $iPartnerToken => $item) {
+            foreach ($this->getList() as $item) {
+                $iPartnerToken = $item['token'];
+
                 if ($partnerToken !== $iPartnerToken) continue;
 
                 $item['token'] = $partnerToken;
                 $partner = new Model\Partner($item);
 
-                $cookies = array_merge($this->getDefaultCookieNames(), isset($item['cookie']) ? (array)$item['cookie'] : []);
-                foreach ($cookies as $cookieName) {
-                    if ($cookieValue = $request->cookies[$cookieName]) {
-                        $partner->cookie[$cookieName] = $cookieValue;
+                $cookies = array_replace_recursive($this->getDefaultCookieNames(), (isset($item['cookies']) && is_array(isset($item['cookies']))) ? $item['cookies'] : []);
+                foreach ($cookies as $cookie) {
+                    if (!empty($cookie['name'])) continue;
+
+                    if ($cookieValue = $request->cookies[$cookie['name']]) {
+                        $partner->cookie[$cookie['name']] = $cookieValue;
                     }
                 }
 
