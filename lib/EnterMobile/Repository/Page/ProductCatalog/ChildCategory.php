@@ -105,14 +105,22 @@ class ChildCategory {
         $page->content->productBlock->dataValue = $templateHelper->json($dataValue);
         $page->content->productBlock->dataReset = $templateHelper->json($dataReset);
 
-            foreach ($request->products as $productModel) {
-                $productCard = $productCardRepository->getObject(
-                    $productModel,
-                    $cartProductButtonRepository->getObject($productModel, null, true, true, ['position' => 'listing']),
-                    $request->category
-                );
+        foreach ($request->products as $productModel) {
+            $productCard = $productCardRepository->getObject(
+                $productModel,
+                $cartProductButtonRepository->getObject($productModel, null, true, true, ['position' => 'listing']),
+                $request->category
+            );
 
-                $page->content->productBlock->products[] = $productCard;
+            $page->content->productBlock->products[] = $productCard;
+        }
+        if ($request->catalogConfig && $request->catalogConfig->tchibo) {
+            foreach (array_chunk($page->content->productBlock->products, 2) as $i => $products) {
+                $page->content->productBlock->productsGroupedByRow[] = [
+                    'id'       => $i,
+                    'products' => $products,
+                ];
+            }
         }
 
         $page->content->sortingBlock = (new Repository\Partial\ProductSortingBlock())->getObject(
