@@ -191,6 +191,7 @@ namespace EnterAggregator\Controller\Order {
             foreach ($orders as $order) {
                 $order->paymentMethods = isset($paymentMethodsByOrderNumberErp[$order->numberErp]) ? array_values((array)$paymentMethodsByOrderNumberErp[$order->numberErp]) : [];
                 foreach ($order->paymentMethods as $paymentMethod) {
+                    /** @var Model\PaymentMethod $paymentMethod */
                     // MAPI-179
                     if (!$paymentMethod->sum) {
                         $paymentMethod->sum = $order->paySum;
