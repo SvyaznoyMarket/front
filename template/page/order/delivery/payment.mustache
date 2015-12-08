@@ -23,8 +23,14 @@
                 value="{{id}}"
             />
             <label class="custom-label" for="order-{{order.id}}-delivery-payment-method-{{id}}">
-                <span>{{name}}</span>
+                <span class="checkout-payment__item-name">
+                    {{name}}
+                    {{#discount}}
+                        <span class="checkout-payment__item-discount">Скидка <span>{{name}}</span> {{unit}}</span>
+                    {{/discount}}
+                </span>
                 {{#image}}<img class="checkout-payment__icon" src="/css/modules/checkout-payment/img/{{image}}" alt="{{name}}">{{/image}}
+
             </label>
         </li>
     {{/paymentMethods}}

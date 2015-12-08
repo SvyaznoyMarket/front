@@ -1,7 +1,7 @@
-<div class="checkout-done-popup">
-    <ul class="checkout-checkbox-lst">
+<div class="checkout-done-popup checkout-payment">
+    <ul class="checkout-checkbox-lst checkout-payment__list">
     {{#paymentMethods}}
-        <li class="checkout-checkbox-lst__i">
+        <li class="checkout-checkbox-lst__i checkout-payment__item">
             <input
                 type="radio"
                 id="order-{{order.id}}-delivery-onlinePayment-method-{{id}}"
@@ -14,9 +14,14 @@
 
             <label class="custom-label" for="order-{{order.id}}-delivery-onlinePayment-method-{{id}}">
                 <div class="custom-label-flex parced-items">
-                    <span class="custom-label_tx">{{name}}</span>
+                    <span class="custom-label_tx checkout-payment__item-name">
+                        {{name}}
+                        {{#discount}}
+                            <span class="checkout-payment__item-discount">Скидка <span>{{name}}</span> {{unit}}</span>
+                        {{/discount}}
+                    </span>
                     <span class="checkout-payment__icon-wrap">
-                    {{#image}}<img src="/css/modules/checkout-payment/img/{{image}}" />{{/image}}
+                    {{#image}}<img class="checkout-payment__icon" src="/css/modules/checkout-payment/img/{{image}}" />{{/image}}
                     </span>
                 </div>
             </label>

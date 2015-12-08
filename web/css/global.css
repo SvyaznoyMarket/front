@@ -13964,9 +13964,22 @@ section.map .map-container {
   list-style: none;
 }
 .checkout-payment__item {
-  border: none;
+  padding: 17px 15px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.checkout-payment__item-name {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 14px;
+}
+.checkout-payment__item-discount {
+  display: block;
+  font-size: 12px;
+  color: #fe4c40;
 }
 .checkout-payment__icon {
+  display: inline-block;
+  vertical-align: middle;
   margin-left: 10px;
 }
 .checkout-payment__discount {
@@ -13975,7 +13988,7 @@ section.map .map-container {
   margin-top: 5px;
   padding: 2px 0;
   background: #ffedee;
-  font: normal 16px Tahoma, sans-serif;
+  font: normal 14px Tahoma, sans-serif;
   text-align: center;
 }
 .checkout-payment__discount-size {
