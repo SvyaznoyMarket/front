@@ -56,7 +56,7 @@ class Category {
 
     /**
      * @param Query $query
-     * @return Model\Product\Category
+     * @return Model\Product\Category|null
      */
     public function getObjectByQuery(Query $query) {
         $category = null;
