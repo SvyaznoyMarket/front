@@ -6,8 +6,6 @@ use EnterMobile\Model\Partial;
 class ProductBlock {
     /** @var Partial\ProductCard[] */
     public $products = [];
-    /** @var array */
-    public $productsGroupedByRow = [];
     /** @var int */
     public $limit;
     /** @var string */

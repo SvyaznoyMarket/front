@@ -28,7 +28,7 @@ class RootCategory {
 
         $page->content->title = $request->category->name;
 
-
+        $isTchibo = $request->catalogConfig && $request->catalogConfig->tchibo;
         $page->content->categoryBlock = false;
         if ((bool)$request->category->children) {
             $page->content->categoryBlock = new Partial\ProductCatalog\CategoryBlock();
@@ -36,9 +36,18 @@ class RootCategory {
                 $childCategory = new Partial\ProductCatalog\CategoryBlock\Category();
                 $childCategory->name = $childCategoryModel->name;
                 $childCategory->url = $childCategoryModel->link;
-                $childCategory->image = (string)(new Routing\Product\Category\GetImage($childCategoryModel, 'category_163x163'));
+                $childCategory->image = (string)(new Routing\Product\Category\GetImage($childCategoryModel, $isTchibo ? 'category_480x480' : 'category_163x163'));
 
                 $page->content->categoryBlock->categories[] = $childCategory;
+            }
+        }
+
+        if ($isTchibo) {
+            foreach (array_chunk($page->content->categoryBlock->categories, 2) as $i => $categories) {
+                $page->content->categoryBlock->categoriesGroupedByRow[] = [
+                    'id'         => $i,
+                    'categories' => $categories,
+                ];
             }
         }
 

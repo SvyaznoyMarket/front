@@ -103,7 +103,10 @@ class ChildCategory {
 
         // рендер
         $renderer = $this->getRenderer();
-        if ($controllerResponse->catalogConfig && $controllerResponse->catalogConfig->tchibo) {
+        if (
+            $controllerResponse->category && $controllerResponse->category->children
+            && $controllerResponse->catalogConfig && $controllerResponse->catalogConfig->tchibo // is Tchibo
+        ) {
             $renderer->setPartials([
                 'content' => 'page/product-catalog/grid-category/content',
             ]);

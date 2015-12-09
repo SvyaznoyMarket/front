@@ -1,23 +1,23 @@
 <div class="content js-content">
     <div class="contentBox960 js-content-hidden">
-    {{#productBlock}}
+    {{#categoryBlock}}
         <div class="grids grids__gray">
-        {{#productsGroupedByRow}}
+        {{#categoriesGroupedByRow}}
             <div class="grids__row">
-                {{#products}}
+                {{#categories}}
                 <div class="grids__cell grids__cell_fix">
-                    <a href="#">
+                    <a href="{{url}}">
                         <div class="grids__cell-inner ">
                             <img class="grids__bg" src="{{image}}" alt="{{name}}">
                             <h3 class="grids__title">{{name}}</h3>
                         </div>
                     </a>
                 </div>
-                {{/products}}
+                {{/categories}}
             </div>
-        {{/productsGroupedByRow}}
+        {{/categoriesGroupedByRow}}
         </div>
-    {{/productBlock}}
+    {{/categoryBlock}}
     </div>
 </div>
 
