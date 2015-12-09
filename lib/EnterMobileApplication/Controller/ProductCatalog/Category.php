@@ -131,10 +131,7 @@ class Category {
                 'media'       => $category->media,
                 'hasChildren' => $category->hasChildren,
                 'listingView' => ($categoryConfig && $categoryConfig->tchibo) ? '2' : '1', // MAPI-169
-                'discount'    => [
-                    'value'   => 0,
-                    'unit'   => '',
-                ],
+                'discount'    => null,
             ];
 
             if (($category->level < $maxLevel) && $category->children) {
@@ -411,10 +408,7 @@ class Category {
                             'media' => $category->media,
                             'hasChildren' => false,
                             'listingView' => '1',
-                            'discount' => [
-                                'value' => 0,
-                                'unit' => '%',
-                            ],
+                            'discount' => null,
                             'children' => [],
                         ];
                     } else {
@@ -427,6 +421,7 @@ class Category {
                             'discount' => [
                                 'value' => (int)$secretSalePromo->discount,
                                 'unit' => '%',
+                                'endAt' => (int)$secretSalePromo->endAt,
                             ],
                             'children' => [],
                         ];
@@ -453,10 +448,7 @@ class Category {
                                     'media' => $category->media,
                                     'hasChildren' => false,
                                     'listingView' => '1',
-                                    'discount' => [
-                                        'value' => 0,
-                                        'unit' => '%',
-                                    ],
+                                    'discount' => null,
                                     'children' => [],
                                 ];
                             }
@@ -472,10 +464,7 @@ class Category {
                         'media' => $media,
                         'hasChildren' => false,
                         'listingView' => '1',
-                        'discount' => [
-                            'value' => 0,
-                            'unit' => '%',
-                        ],
+                        'discount' => null,
                         'children' => [],
                     ];
 
@@ -489,6 +478,7 @@ class Category {
                             'discount' => [
                                 'value' => (int)$secretSalePromo->discount,
                                 'unit' => '%',
+                                'endAt' => (int)$secretSalePromo->endAt,
                             ],
                             'children' => [],
                         ];
