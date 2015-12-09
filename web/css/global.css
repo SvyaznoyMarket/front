@@ -13908,7 +13908,7 @@ section.map .map-container {
    ========================================================================== */
 .grids {
   width: 100%;
-  padding: 0 5px 0;
+  padding: 0 5px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -13921,6 +13921,7 @@ section.map .map-container {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+  position: relative;
 }
 .grids__row:before,
 .grids__row:after {
@@ -13931,22 +13932,22 @@ section.map .map-container {
   clear: both;
 }
 .grids__cell {
-  position: relative;
   width: 100%;
   height: 255px;
-  margin-top: 10px;
+  float: left;
   padding: 0 5px;
-  overflow: hidden;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+  margin-top: 10px;
+  overflow: hidden;
 }
 @media screen and (min-width: 767px) {
   .grids__cell {
-    float: left;
-    height: 276px;
     width: 50%;
+    height: 276px;
+    float: left;
     padding: 0 5px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
