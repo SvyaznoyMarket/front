@@ -84,8 +84,7 @@ namespace EnterMobileApplication\Controller\User {
                             'name' => $order->paymentStatus->name,
                         ] : null,
                         'createdAt' => $order->createdAt,
-                        'oldPaySum' => $order->paySumWithOnlineDiscount ? $order->paySum : null,
-                        'paySum' => $order->paySumWithOnlineDiscount ? $order->paySumWithOnlineDiscount : $order->paySum,
+                        'paySum' => $order->paySum,
                     ];
                 }, $orders);
             } catch (\Exception $e) {
