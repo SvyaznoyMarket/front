@@ -40,25 +40,12 @@ namespace EnterMobileApplication\Controller {
             $regionQuery = new Query\Region\GetItemById($regionId);
             $curl->prepare($regionQuery);
 
-            /** @var \EnterQuery\User\GetItemByToken|null $userItemQuery */
-            $userItemQuery = null;
-            if (0 !== strpos($userAuthToken, 'anonymous-')) {
-                $userItemQuery = new Query\User\GetItemByToken($userAuthToken);
-                $curl->prepare($userItemQuery);
-            }
-
             $popularItemsQuery = new Query\Product\Relation\ItemsToMain\GetIdList();
             $curl->prepare($popularItemsQuery);
 
             $curl->execute();
 
             $region = (new Repository\Region())->getObjectByQuery($regionQuery);
-
-            if ($userItemQuery) {
-                $user = (new \EnterRepository\User())->getObjectByQuery($userItemQuery, false);
-            } else {
-                $user = null;
-            }
 
             try {
                 $popularProductIds = $popularItemsQuery->getResult();
@@ -75,12 +62,6 @@ namespace EnterMobileApplication\Controller {
             // запрос меню
             $mainMenuQuery = new Query\MainMenu\GetItem();
             $curl->prepare($mainMenuQuery);
-
-            $secretSalePromoListQuery = null;
-            if ($user) {
-                $secretSalePromoListQuery = new \EnterQuery\Promo\SecretSale\GetList();
-                $curl->prepare($secretSalePromoListQuery);
-            }
             
             $promoListQuery = new Query\Promo\GetList(['app-mobile']);
             $curl->prepare($promoListQuery);
@@ -166,7 +147,7 @@ namespace EnterMobileApplication\Controller {
                 'region' => $region,
                 'recommendations' => $recommendations,
                 'viewedProducts' => $viewedProducts,
-                'mainMenu' => (new \EnterMobileApplication\Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery, $secretSalePromoListQuery && (bool)$secretSalePromoListQuery->getResult()),
+                'mainMenu' => (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery),
                 'promos' => (new \EnterMobileApplication\Repository\Promo())->getObjectListByQuery($promoListQuery),
                 'popularBrands' => array_map(function(\EnterModel\Brand $brand) {
                     return [

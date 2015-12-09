@@ -111,7 +111,6 @@ namespace EnterModel {
 
             if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
             if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
-            if (array_key_exists('uid', $data)) $this->ui = (string)$data['uid'];
             if (array_key_exists('article', $data)) $this->article = (string)$data['article'];
             if (array_key_exists('bar_code', $data)) $this->barcode = (string)$data['bar_code'];
             if (array_key_exists('type_id', $data)) $this->typeId = (string)$data['type_id'];

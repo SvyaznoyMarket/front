@@ -117,38 +117,6 @@ class Product {
     }
 
     /**
-     * @param Model\Product[] $products
-     * @param Query[] $ratingListQueryList
-     */
-    public function setRatingForObjectListByQueryList(array $products, array $ratingListQueryList) {
-        /** @var Model\Product[] $productsById */
-        $productsById = [];
-        foreach ($products as $product) {
-            $productsById[$product->id] = $product;
-        }
-
-        try {
-            foreach ($ratingListQueryList as $ratingListQuery) {
-                foreach ($ratingListQuery->getResult() as $ratingItem) {
-                    if (!isset($ratingItem['product_id'])) {
-                        continue;
-                    }
-
-                    $productId = (string)$ratingItem['product_id'];
-
-                    if (!isset($productsById[$productId])) {
-                        continue;
-                    }
-
-                    $productsById[$productId]->rating = new Model\Product\Rating($ratingItem);
-                }
-            }
-        } catch (\Exception $e) {
-            $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
-        }
-    }
-
-    /**
      * @param Model\Product[] $productsById
      * @param Query $ratingListQuery
      */
