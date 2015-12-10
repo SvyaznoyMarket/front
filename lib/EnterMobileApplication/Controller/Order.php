@@ -130,20 +130,38 @@ namespace EnterMobileApplication\Controller {
                     'id' => $order->paymentStatus->id,
                     'name' => $order->paymentStatus->name,
                 ] : null,
-                'paymentMethods' => array_map(function(\EnterModel\PaymentMethod $paymentMethod) {
-                    return [
-                        'id' => $paymentMethod->id,
-                        'ui' => $paymentMethod->ui,
-                        'name' => $paymentMethod->name,
-                        'description' => $paymentMethod->description,
-                        'isOnline' => $paymentMethod->isOnline,
-                        'media' => $paymentMethod->media,
-                        'discount' => $paymentMethod->discount ? [
-                            'value' => $paymentMethod->discount->value,
-                            'unit' => $paymentMethod->discount->unit === 'rub' ? 'руб.' : $paymentMethod->discount->unit,
-                        ] : null,
-                    ];
-                }, $order->paymentMethods),
+                'paymentMethods' => call_user_func(function() use($order) {
+                    $paymentMethods = [];
+                    foreach ($order->paymentMethods as $paymentMethod) {
+                        if (!$paymentMethod->isOnline) {
+                            continue;
+                        }
+
+                        $paymentMethods[] = [
+                            'id' => (string)$paymentMethod->id,
+                            'ui' => (string)$paymentMethod->ui,
+                            'name' => (string)$paymentMethod->name,
+                            'description' => (string)$paymentMethod->description,
+                            'isCredit' => (bool)$paymentMethod->isCredit,
+                            'isOnline' => (bool)$paymentMethod->isOnline,
+                            'isCorporative' => (bool)$paymentMethod->isCorporative,
+                            'groupId' => (string)$paymentMethod->groupId,
+                            'group' => $paymentMethod->group ? [
+                                'id' => (string)$paymentMethod->group->id,
+                                'name' => (string)$paymentMethod->group->name,
+                                'description' => (string)$paymentMethod->group->description,
+                            ] : null,
+                            'media' => $paymentMethod->media,
+                            'sum' => $paymentMethod->sum,
+                            'discount' => $paymentMethod->discount ? [
+                                'value' => $paymentMethod->discount->value,
+                                'unit' => $paymentMethod->discount->unit === 'rub' ? 'руб.' : $paymentMethod->discount->unit,
+                            ] : null,
+                        ];
+                    }
+
+                    return $paymentMethods;
+                }),
                 'sum' => $order->sum,
                 'address' => $order->address,
                 'createdAt' => $order->createdAt,
