@@ -4031,6 +4031,71 @@ body {
   padding-top: 10px;
   padding-bottom: 10px;
 }
+.custom-select-list__item-optimal {
+  padding-right: 30px;
+}
+.custom-select-list__item-optimal .custom-input--square-check:checked + .custom-label {
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABDElEQVQoFZWSvUrEQBSFvzubgH+7FipYRGSbbYNp1cbOF7C2ENt9AF/A2s6AwvYKJq9gJW4hVgriFqaRRRu7hMk4gyHuClnwwoWZe75zOQMjaZruG2NiILA9qzIROSZJkrc8z61ndjnGsZ5dGfi+37i5/BohVvXbXccEqpG0Qvl8gb7Zohxd1VhlMJTjIeXnYy3opxi5O4LlHq3eYT13kcAYzMsAXmN0dIa0N5FhH90J8fauYW7tj0EUKjxBv9/CfR/jdxC1SGt3gCxt1LA71G+QhXXUzqWdzOOVY4hOkZVwCnaXn0jVWK1GsH2O/nhATeSedE0ZnKC6B+C6oVykrCiKBvl3XDGZ/PdrfAP0UnSFG7XiZgAAAABJRU5ErkJggg==');
+}
+.custom-select-list__item-optimal-help-i {
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  width: 15px;
+  height: 15px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  border: 1px solid #afafaf;
+  color: #afafaf;
+  text-align: center;
+  font: normal 12px/16px Helvetica;
+  padding: 0;
+}
+.custom-select-list__item-optimal-help-i > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.custom-select-list__item-optimal-help {
+  display: none;
+  position: absolute;
+  top: 130%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 285px;
+  height: 120px;
+  margin-left: -143px;
+  padding: 15px;
+  background: #f2f2f2;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.5);
+  white-space: normal;
+  font-size: 12px;
+}
+.custom-select-list__item-optimal-help span {
+  display: block;
+  text-align: left;
+  color: #363636;
+}
+.custom-select-list__item-optimal-help-btn {
+  display: inline-block;
+  vertical-align: baseline;
+  margin-top: 25px;
+  border-bottom: 1px dotted #5e5e5e;
+  text-align: center;
+  text-decoration: none;
+  color: #5e5e5e;
+}
+.custom-select-list__item-optimal-help-btn:hover {
+  color: #5e5e5e;
+}
 .custom-select__kit {
   display: -webkit-box;
   display: -moz-box;
@@ -4041,7 +4106,7 @@ body {
   width: 100%;
   max-width: 640px;
   margin: 0 auto;
-  padding: 10px 0px;
+  padding: 10px 0;
 }
 .custom-select__kit .custom-select-list {
   width: auto;
