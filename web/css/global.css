@@ -6295,8 +6295,13 @@ body {
 }
 .catalogList__availability span {
   display: inline-block;
+  width: 100%;
   padding: 0 30px;
-  background: #e5f5e9;
+  background: #c1d837;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
   font-size: 12px;
   text-align: center;
   color: #666666;
@@ -6393,6 +6398,11 @@ body {
     display: inline-block;
     width: 110px;
   }
+}
+.catalogList__btn__view a {
+  border: 1px solid #afafaf;
+  background: none;
+  color: #363636;
 }
 .catalog-filter.filter {
   margin-bottom: 0;

@@ -26,12 +26,16 @@
                 </div>
 
                 {{#stateLabel}}
-                    <div class="availability {{cssClassName}} catalogList__availability_gray">
-                        {{name}}
+                    <div class="availability {{cssClassName}} catalogList__availability catalogList__availability_gray">
+                        <span>{{name}}</span>
                     </div>
                 {{/stateLabel}}
                 {{^stateLabel}}
-                    <div class="availability availability--nobg catalogList__availability">&nbsp;</div>
+                    <div class="availability availability--nobg catalogList__availability">
+                        <span>
+
+                        </span>
+                    </div>
                 {{/stateLabel}}
 
                 <div class="price catalogList__price">
@@ -43,7 +47,15 @@
                     {{#price}}<div class="price_now{{#oldPrice}} price_now-sale{{/oldPrice}} catalogList__price-now">{{shownPrice}} <span class="rubl">p</span></div>{{/price}}
                 </div>
             </a>
-            <div class="btn-container catalogList__btn">
+            <div class="btn-container catalogList__btn catalogList__btn__view">
+                {{#cartButton}}
+                    {{>partial/cart/button}}
+                {{/cartButton}}
+            </div>
+
+
+            <!--Кнопка посмотреть-->
+           <div class="btn-container catalogList__btn">
                 {{#cartButton}}
                     {{>partial/cart/button}}
                 {{/cartButton}}
