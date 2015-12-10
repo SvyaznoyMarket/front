@@ -36,7 +36,7 @@ class RootCategory {
                 $childCategory = new Partial\ProductCatalog\CategoryBlock\Category();
                 $childCategory->name = $childCategoryModel->name;
                 $childCategory->url = $childCategoryModel->link;
-                $childCategory->image = (string)(new Routing\Product\Category\GetImage($childCategoryModel, $isTchibo ? 'category_480x480' : 'category_163x163'));
+                $childCategory->image = (string)(new Routing\Product\Category\GetImage($childCategoryModel, $isTchibo ? 'category_1000x1000' : 'category_163x163'));
 
                 $page->content->categoryBlock->categories[] = $childCategory;
             }
