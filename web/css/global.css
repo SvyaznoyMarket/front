@@ -6183,7 +6183,8 @@ body {
 }
 .catalogList__name {
   display: block;
-  min-height: 30px;
+  height: 40px;
+  overflow: hidden;
 }
 .catalogList__img-block {
   position: relative;
