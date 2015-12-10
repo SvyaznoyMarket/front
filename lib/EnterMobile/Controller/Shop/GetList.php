@@ -96,13 +96,23 @@ class GetList {
                 'regime' => $point['working_time'],
                 'longitude' => isset($point['location'][0]) ? $point['location'][0] : null,
                 'latitude' => isset($point['location'][1]) ? $point['location'][1] : null,
-                'subway' => [[
-                    'name' => isset($point['subway']['name']) ? $point['subway']['name'] : false,
-                    'line' => [
-                        'name' => isset($point['subway']['line_name']) ? $point['subway']['line_name'] : false,
-                        'color' => isset($point['subway']['line_color']) ? $point['subway']['line_color'] : false,
-                    ],
-                ]],
+                'subway' =>
+                    isset($point['subway']['name'])
+                    ? [
+                        [
+                            'name' => $point['subway']['name'],
+                            'line' =>
+                                isset($point['subway']['line_name'])
+                                ? [
+                                    'name'  => $point['subway']['line_name'],
+                                    'color' => $point['subway']['line_color'],
+                                ]
+                                : false
+                            ,
+                        ]
+                    ]
+                    : []
+                ,
                 'logo' => $partners[$point['partner']]['logo'],
                 'marker' => $partners[$point['partner']]['marker'],
                 'name' => $partners[$point['partner']]['name']
