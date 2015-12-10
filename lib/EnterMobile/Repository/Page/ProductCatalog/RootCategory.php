@@ -42,7 +42,7 @@ class RootCategory {
             }
         }
 
-        if ($isTchibo) {
+        if ($isTchibo && $page->content->categoryBlock) {
             foreach (array_chunk($page->content->categoryBlock->categories, 2) as $i => $categories) {
                 $page->content->categoryBlock->categoriesGroupedByRow[] = [
                     'id'         => $i,
