@@ -25,6 +25,8 @@ namespace EnterAggregator\Controller\User{
 
             $response = new Index\Response();
 
+            $userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request->httpRequest);
+
             /* регион */
             $regionQuery = new Query\Region\GetItemById($request->regionId);
             $curl->prepare($regionQuery);
@@ -44,12 +46,15 @@ namespace EnterAggregator\Controller\User{
                 $response->redirect = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
             }
 
+            $orderCountQuery = new Query\Order\GetListByUserToken($userToken, 0, 0);
+            $curl->prepare($orderCountQuery);
 
             /* корзина */
             $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
             $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $request->regionId);
             $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $request->regionId);
             $curl->execute();
+
             (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
             $response->cart = $cart;
 
@@ -59,14 +64,20 @@ namespace EnterAggregator\Controller\User{
 
             $mainMenuQuery = new Query\MainMenu\GetItem();
             $curl->prepare($mainMenuQuery);
+
             $curl->execute();
+
             // меню
             if ($mainMenuQuery) {
                 $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
             }
 
-            $response->userMenu = (new Repository\UserMenu())->getMenuItems();
-
+            $response->userMenu = (new Repository\UserMenu())->getItems();
+            if (isset($response->userMenu['orders'])) {
+                try {
+                    $response->userMenu['orders']['count'] = $orderCountQuery->getResult()['total'];
+                } catch (\Exception $e) {}
+            }
 
             return $response;
         }

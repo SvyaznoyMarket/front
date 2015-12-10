@@ -50,7 +50,7 @@ class Index {
 
         (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
-        $userMenu = (new \EnterRepository\UserMenu())->getMenuItems();
+        $userMenu = (new \EnterRepository\UserMenu())->getItems();
 
         //запрос для получения страницы
         $pageRequest = new Repository\Page\User\Message\Request();

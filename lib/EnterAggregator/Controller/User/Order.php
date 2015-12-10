@@ -134,7 +134,7 @@ namespace EnterAggregator\Controller\User {
 
             $response->order = $orderRepo;
 
-            $response->userMenu = (new Repository\UserMenu())->getMenuItems();
+            $response->userMenu = (new Repository\UserMenu())->getItems();
 
             return $response;
         }

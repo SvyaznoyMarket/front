@@ -24,6 +24,7 @@ class User {
      */
     public function getQueryByHttpRequest(Http\Request $request) {
         $userToken = $this->getTokenByHttpRequest($request);
+
         return $userToken ? new \EnterQuery\User\GetItemByToken($userToken) : null;
     }
 

@@ -67,7 +67,7 @@ namespace EnterAggregator\Controller\User {
                     $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
                 }
 
-                $response->userMenu = (new Repository\UserMenu())->getMenuItems();
+                $response->userMenu = (new Repository\UserMenu())->getItems();
 
                 $user = new \EnterMobile\Repository\User();
                 $token = $user->getTokenByHttpRequest($request->httpRequest);

@@ -120,7 +120,7 @@ namespace EnterAggregator\Controller\User{
 
             }
 
-            $response->userMenu = (new Repository\UserMenu())->getMenuItems();
+            $response->userMenu = (new Repository\UserMenu())->getItems();
 
 
 

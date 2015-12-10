@@ -102,7 +102,7 @@ namespace EnterAggregator\Controller\User {
 
             $response->favoriteProducts = $pr;
 
-            $response->userMenu = (new Repository\UserMenu())->getMenuItems();
+            $response->userMenu = (new Repository\UserMenu())->getItems();
 
             return $response;
         }

@@ -51,6 +51,7 @@ class Index {
 
         $page = new Page();
         (new Repository\Page\User\Index())->buildObjectByRequest($page, $pageRequest);
+        if ($config->debugLevel) $this->getDebugContainer()->page = $page;
 
         // рендер
         $renderer = $this->getRenderer();

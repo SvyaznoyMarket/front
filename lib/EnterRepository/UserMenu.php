@@ -20,37 +20,37 @@ class UserMenu {
         $this->logger = $this->getLogger();
     }
 
-    public function getMenuItems() {
+    public function getItems() {
         $menuItems = [
-            [
+            'orders' => [
                 'token' => 'orders',
                 'name' => 'Заказы',
                 'url' => '/private/orders',
-                'isActive' => false
+                'isActive' => false,
             ],
-            [
+            'edit' => [
                 'token' => 'edit',
                 'name' => 'Личные данные',
                 'url' => '/private/edit',
-                'isActive' => false
+                'isActive' => false,
             ],
-            [
+            'password' => [
                 'token' => 'password',
                 'name' => 'Изменение пароля',
                 'url' => '/private/password',
-                'isActive' => false
+                'isActive' => false,
             ],
-            [
+            'enterprize' => [
                 'token' => 'enterprize',
                 'name' => 'Фишки EnterPrize',
                 'url' => '/private/enterprize',
-                'isActive' => false
+                'isActive' => false,
             ],
-            [
+            'favorit' => [
                 'token' => 'favorit',
                 'name' => 'Избранное',
                 'url' => '/private/favorites',
-                'isActive' => false
+                'isActive' => false,
             ]
         ];
 

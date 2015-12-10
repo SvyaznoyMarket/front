@@ -24,10 +24,10 @@ class GetListByUserToken extends Query {
         $this->url->query = [
             'token' => $token,
         ];
-        if ($offset) {
+        if (null !== $offset) {
             $this->url->query['offset'] = $offset;
         }
-        if ($limit) {
+        if (null !== $limit) {
             $this->url->query['limit'] = $limit;
         }
 

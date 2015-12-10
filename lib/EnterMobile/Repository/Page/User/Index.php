@@ -53,9 +53,7 @@ class Index {
         // шаблоны mustache
         // ...
 
-        (new Repository\Template())->setListForPage($page, [
-
-        ]);
+        (new Repository\Template())->setListForPage($page, []);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
