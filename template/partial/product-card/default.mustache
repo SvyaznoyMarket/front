@@ -47,15 +47,7 @@
                     {{#price}}<div class="price_now{{#oldPrice}} price_now-sale{{/oldPrice}} catalogList__price-now">{{shownPrice}} <span class="rubl">p</span></div>{{/price}}
                 </div>
             </a>
-            <div class="btn-container catalogList__btn catalogList__btn__view">
-                {{#cartButton}}
-                    {{>partial/cart/button}}
-                {{/cartButton}}
-            </div>
-
-
-            <!--Кнопка посмотреть-->
-           <div class="btn-container catalogList__btn">
+            <div class="btn-container catalogList__btn{{#cartButton.seeProductBtn}} catalogList__btn__view{{/cartButton.seeProductBtn}}">
                 {{#cartButton}}
                     {{>partial/cart/button}}
                 {{/cartButton}}

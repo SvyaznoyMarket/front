@@ -100,6 +100,7 @@ class ProductButton {
         $button->isInShopOnly = false;
         $button->isInCart = false;
         $button->isQuick = false;
+        $button->seeProductBtn = false;
 
         // если товар в корзине
         if ($slotPartnerOffer = $product->getSlotPartnerOffer()) {
