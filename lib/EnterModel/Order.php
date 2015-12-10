@@ -58,6 +58,14 @@ class Order {
     /** @var string */
     public $address;
     /** @var string */
+    public $email = '';
+    /** @var string */
+    public $firstName = '';
+    /** @var string */
+    public $lastName = '';
+    /** @var string */
+    public $phone = '';
+    /** @var string */
     public $comment;
     /** @var string */
     public $ipAddress;
@@ -100,6 +108,8 @@ class Order {
     public $seller;
     /** @var Model\Order\Meta[] */
     public $meta = [];
+    /** @var Model\Order\User|null */
+    public $user;
     /**
      * Данный элемент оставлен для совместимости MAPI 1.6 с версиями мобильных приложений.
      * @var null
@@ -123,6 +133,10 @@ class Order {
         if (array_key_exists('geo_id', $data)) $this->regionId = (string)$data['geo_id'];
         if (isset($data['geo']['id'])) $this->region = new Model\Region($data['geo']);
         if (array_key_exists('address', $data)) $this->address = (string)$data['address'];
+        if (isset($data['email'])) $this->email = (string)$data['email'];
+        if (isset($data['first_name'])) $this->firstName = (string)$data['first_name'];
+        if (isset($data['last_name'])) $this->lastName = (string)$data['last_name'];
+        if (isset($data['phone'])) $this->phone = (string)$data['phone'];
         if (array_key_exists('extra', $data)) $this->comment = (string)$data['extra'];
         if (array_key_exists('ip', $data)) $this->ipAddress = (string)$data['ip'];
         if (array_key_exists('added', $data) && $data['added'] && ('0000-00-00' != $data['added'])) {
@@ -189,6 +203,8 @@ class Order {
             }
         }
 
+        if (isset($data['user'])) $this->user = new Model\Order\User($data['user']);
+
         if (isset($data['point_ui'])) $this->point = new Model\Point(['ui' => $data['point_ui']]);
     }
 
@@ -212,6 +228,10 @@ class Order {
             $this->region->fromArray($data['region']);;
         }
         if (array_key_exists('address', $data)) $this->address = (string)$data['address'];
+        if (array_key_exists('email', $data)) $this->email = (string)$data['email'];
+        if (array_key_exists('firstName', $data)) $this->firstName = (string)$data['firstName'];
+        if (array_key_exists('lastName', $data)) $this->lastName = (string)$data['lastName'];
+        if (array_key_exists('phone', $data)) $this->phone = (string)$data['phone'];
         if (array_key_exists('comment', $data)) $this->comment = (string)$data['comment'];
         if (array_key_exists('ipAddress', $data)) $this->ipAddress = (string)$data['ipAddress'];
         if (array_key_exists('createdAt', $data) && $data['createdAt']) $data['createdAt'];
@@ -247,6 +267,8 @@ class Order {
             $this->seller = new Model\Seller();
             $this->seller->fromArray($data['seller']);
         }
+
+        if (isset($data['user'])) $this->user = new Model\Order\User($data['user']);
 
         if (isset($data['point']['ui'])) {
             $this->point = new Model\Point(['ui' => $data['point']['ui']]);

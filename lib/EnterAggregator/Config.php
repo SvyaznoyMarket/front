@@ -457,6 +457,8 @@ namespace EnterAggregator\Config\Partner {
         public $googleRetargeting;
         /** @var Service\Cityads */
         public $cityads;
+        /** @var Service\Flocktory */
+        public $flocktory;
 
         public function __construct() {
             $this->actionpay = new Service\Actionpay();
@@ -464,6 +466,7 @@ namespace EnterAggregator\Config\Partner {
             $this->sociomantic = new Service\Sociomantic();
             $this->googleRetargeting = new Service\GoogleRetargeting();
             $this->cityads = new Service\Cityads();
+            $this->flocktory = new Service\Flocktory();
         }
     }
 }
@@ -486,6 +489,10 @@ namespace EnterAggregator\Config\Partner\Service {
     class GoogleRetargeting extends PartnerConfig {}
 
     class Cityads extends PartnerConfig {}
+    class Flocktory extends PartnerConfig {
+        /** @var int */
+        public $siteId;
+    }
 }
 
 namespace EnterAggregator\Config\Credit {

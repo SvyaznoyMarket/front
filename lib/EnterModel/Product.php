@@ -234,10 +234,10 @@ namespace EnterModel {
 //                    $this->labels[] = $entity;
 //                }
 //            }
-//            if (isset($data['media'])) {
-//                $this->media = new Model\MediaList();
-//                $this->media->fromArray($data['media']);
-//            }
+            if (isset($data['media'])) {
+                $this->media = new Model\MediaList();
+                $this->media->fromArray($data['media']);
+            }
 //            if (isset($data['rating'])) {
 //                $this->rating = new Model\Product\Rating();
 //                $this->rating->fromArray($data['rating']);

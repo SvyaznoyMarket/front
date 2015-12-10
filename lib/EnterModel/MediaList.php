@@ -22,5 +22,18 @@ namespace EnterModel {
                 }
             }
         }
+
+        /**
+         * @param array $data
+         */
+        public function fromArray(array $data) {
+            if (isset($data['photos']) && is_array($data['photos'])) {
+                $this->photos = array_map(function($item) {
+                    $media = new Model\Media();
+                    $media->fromArray($item);
+                    return $media;
+                }, $data['photos']);
+            }
+        }
     }
 }

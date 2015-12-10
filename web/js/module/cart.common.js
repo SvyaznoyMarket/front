@@ -29,7 +29,8 @@ define(
                             });
                         }
 
-                        $body.trigger(config.event.productAddedToCart, data.value);
+                        $.extend(true, response.products, data.value.product);
+                        $body.trigger(config.event.productAddedToCart, $.extend(true, {}, data.value, {products: response.products}));
 
                         // FIXME
                         $('.js-kit-close').trigger('click');
@@ -73,6 +74,9 @@ define(
                                 });
                             }
                         }
+
+                        $.extend(true, response.products[data.value.product.id], data.value.product);
+                        $body.trigger(config.event.productRemovedFromCart, $.extend(true, {}, data.value, {products: response.products}));
                     });
 
                     e.preventDefault();
@@ -86,8 +90,6 @@ define(
                             console.warn(error);
                         }
                     }
-
-                    $body.trigger(config.event.productRemovedFromCart, data.value);
                 }
             },
 
