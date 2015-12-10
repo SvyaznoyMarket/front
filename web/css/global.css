@@ -6181,6 +6181,10 @@ body {
     text-align: center;
   }
 }
+.catalogList__name {
+  display: block;
+  min-height: 30px;
+}
 .catalogList__img-block {
   position: relative;
   float: left;
@@ -6399,7 +6403,12 @@ body {
     width: 110px;
   }
 }
-.catalogList__btn__view a {
+.catalogList__btn_view a {
+  border: 1px solid #afafaf;
+  background: none;
+  color: #363636;
+}
+.catalogList__btn_view a:hover {
   border: 1px solid #afafaf;
   background: none;
   color: #363636;

@@ -17,7 +17,7 @@
             {{/brand.imageUrl}}
         </a>
         <div class="catalogList__desc">
-            <a class="catalogList_lk" href="{{url}}"><span class="name">{{&name}}</span>
+            <a class="catalogList__lk" href="{{url}}"><span class="catalogList__name">{{&name}}</span>
 
                 <div class="catalogList__rating">
                     {{#rating}}
@@ -47,7 +47,7 @@
                     {{#price}}<div class="price_now{{#oldPrice}} price_now-sale{{/oldPrice}} catalogList__price-now">{{shownPrice}} <span class="rubl">p</span></div>{{/price}}
                 </div>
             </a>
-            <div class="btn-container catalogList__btn{{#cartButton.seeProductBtn}} catalogList__btn__view{{/cartButton.seeProductBtn}}">
+            <div class="btn-container catalogList__btn{{#cartButton.seeProductBtn}} catalogList__btn_view{{/cartButton.seeProductBtn}}">
                 {{#cartButton}}
                     {{>partial/cart/button}}
                 {{/cartButton}}

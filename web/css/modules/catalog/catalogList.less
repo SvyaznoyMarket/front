@@ -293,6 +293,13 @@
 	}
   }
 
+  &__name{
+	display: block;
+
+	min-height: 30px;
+	overflow: hidden;
+  }
+  
   &__img-block{
 	position: relative;
 
@@ -495,13 +502,20 @@
 	  width: 110px;
 	}
 
-	&__view{
+	&_view{
 
 	  a{
 		border: 1px solid #afafaf;
 		background: none;
 
 		color: #363636;
+
+		&:hover{
+		  border: 1px solid #afafaf;
+		  background: none;
+
+		  color: #363636;
+		}
 	  }
 	}
   }
