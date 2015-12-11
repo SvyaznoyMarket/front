@@ -69,6 +69,11 @@ class Order {
     public $product = [];
     /** @var float */
     public $paySum;
+    /**
+     * Сумма со скидками и со скидкой за онлайн оплату. Заполнена только, если была произведена онлайн оплата.
+     * @var float|null
+     */
+    public $paySumWithOnlineDiscount;
     /** @var float */
     public $prepaidSum;
     /** @var float */
@@ -77,6 +82,8 @@ class Order {
     public $deliveryType;
     /** @var string */
     public $subwayId;
+    /** @var \EnterModel\Cart\Split\Order\Prepayment|null */
+    public $prepayment;
     /** @var string */
     public $paymentMethodId;
     /** @var string|null */
@@ -144,6 +151,7 @@ class Order {
         }
         if (array_key_exists('pay_sum', $data)) $this->paySum = $this->getPriceHelper()->removeZeroFraction($data['pay_sum']);
         if (!empty($data['meta_data']['prepaid_sum'])) $this->prepaidSum = $this->getPriceHelper()->removeZeroFraction($data['meta_data']['prepaid_sum']);
+        if (array_key_exists('payment_sum', $data)) $this->paySumWithOnlineDiscount = $this->getPriceHelper()->removeZeroFraction($data['payment_sum']);
         if (array_key_exists('discount_sum', $data)) $this->discountSum = $this->getPriceHelper()->removeZeroFraction($data['discount_sum']);
         if (array_key_exists('delivery_type_id', $data)) {
             switch ($data['delivery_type_id']) {
@@ -189,6 +197,10 @@ class Order {
                 }
 
                 $this->meta[] = $meta;
+
+                if ($meta->key === 'prepaid_sum' && !empty($meta->value[0])) {
+                    $this->prepayment = new \EnterModel\Cart\Split\Order\Prepayment($meta->value[0]);
+                }
             }
         }
 

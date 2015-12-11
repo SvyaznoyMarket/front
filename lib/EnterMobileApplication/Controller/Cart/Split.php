@@ -109,6 +109,12 @@ namespace EnterMobileApplication\Controller\Cart {
                     $order->groupedPossiblePointIds = null;
                 }
 
+                foreach ($order->possiblePaymentMethods as $possiblePaymentMethod) {
+                    if ($possiblePaymentMethod->discount && $possiblePaymentMethod->discount->unit === 'rub') {
+                        $possiblePaymentMethod->discount->unit = 'руб.';
+                    }
+                }
+
                 $order->possiblePaymentMethodIds = array_values($order->possiblePaymentMethodIds);
                 $order->possiblePaymentMethods = array_values($order->possiblePaymentMethods);
 
@@ -134,7 +140,7 @@ namespace EnterMobileApplication\Controller\Cart {
          */
         private function correctPoints($pointGroups) {
             $pointRepository = new \EnterMobileApplication\Repository\Point();
-            
+
             foreach ($pointGroups as $pointGroup) {
                 // MAPI-78
                 $pointGroup->blockName = $pointRepository->getName($pointGroup->id, $pointGroup->blockName);

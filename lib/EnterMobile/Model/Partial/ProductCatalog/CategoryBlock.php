@@ -6,6 +6,8 @@ namespace EnterMobile\Model\Partial\ProductCatalog {
     class CategoryBlock {
         /** @var CategoryBlock\Category[] */
         public $categories = [];
+        /** @var array */
+        public $categoriesGroupedByRow = [];
     }
 }
 

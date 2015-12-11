@@ -131,6 +131,20 @@ class Create {
                     }
                 }
             }
+            // заголовки запроса
+            if ($value = $request->getHeader('HTTP_USER_AGENT')) {
+                $meta = new Model\Order\Meta();
+                $meta->key = 'user_agent';
+                $meta->value = $value;
+                $metas[] = $meta;
+            }
+            // последний партнер
+            if ($value = $request->cookies[$config->partner->cookieName]) {
+                $meta = new Model\Order\Meta();
+                $meta->key = 'last_partner';
+                $meta->value = $value;
+                $metas[] = $meta;
+            }
 
             $controller = new \EnterAggregator\Controller\Order\Create();
             $controllerResponse = $controller->execute(

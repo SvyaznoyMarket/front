@@ -1,0 +1,24 @@
+<div class="content js-content">
+    <div class="contentBox960 js-content-hidden">
+    {{#categoryBlock}}
+        <div class="grids grids__gray">
+        {{#categoriesGroupedByRow}}
+            <div class="grids__row">
+                {{#categories}}
+                <div class="grids__cell grids__cell_fix">
+                    <a href="{{url}}">
+                        <div class="grids__cell-inner ">
+                            <img class="grids__bg" src="{{image}}" alt="{{name}}">
+                            <h3 class="grids__title">{{name}}</h3>
+                        </div>
+                    </a>
+                </div>
+                {{/categories}}
+            </div>
+        {{/categoriesGroupedByRow}}
+        </div>
+    {{/categoryBlock}}
+    </div>
+</div>
+
+

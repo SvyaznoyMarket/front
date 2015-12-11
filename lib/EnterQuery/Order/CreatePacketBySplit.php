@@ -120,6 +120,10 @@ class CreatePacketBySplit extends Query {
                 $orderData['meta_data'][$meta->key] = $meta->value;
             }
 
+            if ($order->prepayment) {
+                $orderData['meta_data']['prepaid_sum'] = $order->prepayment->sum;
+            }
+
             $data[] = $orderData;
         }
 

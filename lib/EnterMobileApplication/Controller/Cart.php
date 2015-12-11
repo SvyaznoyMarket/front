@@ -89,7 +89,7 @@ namespace EnterMobileApplication\Controller {
             header_remove('Expires');
             header_remove('Pragma');
 
-            $eTags = $request->getHeader('if-none-match');
+            $eTags = $request->getHeader('HTTP_IF_NONE_MATCH');
             if ($eTags) {
                 $eTags = array_map(function($eTag) { return trim($eTag); }, explode(',', $eTags));
                 // См. RFC 2616, раздел 14.26 If-None-Match

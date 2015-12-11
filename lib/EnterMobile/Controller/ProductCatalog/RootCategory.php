@@ -46,6 +46,9 @@ class RootCategory {
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+
+        $categoryItemQuery = new Query\Product\Category\GetItemByToken($categoryToken, $region->id, null);
+        $curl->prepare($categoryItemQuery);
         
         $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
         $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
@@ -70,7 +73,10 @@ class RootCategory {
         $curl->prepare($mainMenuQuery);
 
         $curl->execute();
-        
+
+        // FIXME: удалить
+        $catalogConfig = $categoryItemQuery ? (new \EnterRepository\Product\Category())->getConfigObjectByQuery($categoryItemQuery) : null;
+
         (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         $availableDataByUi = null;
@@ -114,6 +120,7 @@ class RootCategory {
         $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
         $pageRequest->cart = $cart;
         $pageRequest->category = $category;
+        $pageRequest->catalogConfig = $catalogConfig;
         $pageRequest->httpRequest = $request;
 
         // страница
@@ -126,9 +133,17 @@ class RootCategory {
 
         // рендер
         $renderer = $this->getRenderer();
-        $renderer->setPartials([
-            'content' => 'page/product-catalog/root-category/content',
-        ]);
+        if (
+            $catalogConfig && $catalogConfig->tchibo // is Tchibo
+        ) {
+            $renderer->setPartials([
+                'content' => 'page/product-catalog/grid-category/content',
+            ]);
+        } else {
+            $renderer->setPartials([
+                'content' => 'page/product-catalog/root-category/content',
+            ]);
+        }
         $content = $renderer->render('layout/default', $page);
 
         // http-ответ

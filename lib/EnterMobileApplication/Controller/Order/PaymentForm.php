@@ -91,7 +91,9 @@ namespace EnterMobileApplication\Controller\Order {
 
             $curl->execute();
 
-            $action = call_user_func(function() use (&$paymentQuery, &$order, $paymentMethodId) {
+            $actionAlias = null;
+            $actionSum = null;
+            call_user_func(function() use (&$actionAlias, &$actionSum, $paymentQuery, $order, $paymentMethodId) {
                 $data = [];
                 try {
                     $data = $paymentQuery->getResult();
@@ -99,19 +101,22 @@ namespace EnterMobileApplication\Controller\Order {
                     $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
                 }
 
-                foreach ($data['methods'] as $methodItem) {
-                    if (
-                        ((string)$methodItem['id'] !== $paymentMethodId)
-                        || empty($methodItem['available_actions'])
-                        || !is_array($methodItem['available_actions'])
-                    ) {
-                        continue;
+                if (isset($data['methods']) && is_array($data['methods'])) {
+                    foreach ($data['methods'] as $methodItem) {
+                        if (
+                            !isset($methodItem['id'])
+                            || ((string)$methodItem['id'] !== $paymentMethodId)
+                            || empty($methodItem['discount'])
+                            || !is_array($methodItem['discount'])
+                        ) {
+                            continue;
+                        }
+
+                        $actionAlias = $methodItem['discount']['code'];
+                        $actionSum = $methodItem['discount']['sum'];
+                        break;
                     }
-
-                    return reset($methodItem['available_actions']);
                 }
-
-                return null;
             });
 
             $paymentConfigQuery = new Query\Payment\GetConfig(
@@ -123,8 +128,8 @@ namespace EnterMobileApplication\Controller\Order {
                     'email'    => false && $user ? $user->email : null,
                 ]
                 + (
-                    !empty($action['alias'])
-                    ? ['action_alias' => $action['alias']]
+                    !empty($actionAlias)
+                    ? ['action_alias' => $actionAlias]
                     : []
                 )
             );
@@ -134,8 +139,8 @@ namespace EnterMobileApplication\Controller\Order {
             $curl->execute();
 
             $response->sum = $order->sum;
-            if (!empty($action['payment_sum'])) {
-                $response->sum = (string)$action['payment_sum'];
+            if (!empty($actionSum)) {
+                $response->sum = (string)$actionSum;
             }
 
             $paymentConfigResult = $paymentConfigQuery->getResult();

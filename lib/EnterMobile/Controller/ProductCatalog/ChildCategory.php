@@ -103,9 +103,18 @@ class ChildCategory {
 
         // рендер
         $renderer = $this->getRenderer();
-        $renderer->setPartials([
-            'content' => 'page/product-catalog/child-category/content', //'content' => file_get_contents($this->getConfig()->mustacheRenderer->templateDir . '/page/product-catalog/child-category/content.mustache'),
-        ]);
+        if (
+            $controllerResponse->category && $controllerResponse->category->children
+            && $controllerResponse->catalogConfig && $controllerResponse->catalogConfig->tchibo // is Tchibo
+        ) {
+            $renderer->setPartials([
+                'content' => 'page/product-catalog/grid-category/content',
+            ]);
+        } else {
+            $renderer->setPartials([
+                'content' => 'page/product-catalog/child-category/content',
+            ]);
+        }
         $content = $renderer->render('layout/default', $page);
 
         // http-ответ

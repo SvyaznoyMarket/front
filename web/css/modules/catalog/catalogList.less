@@ -281,6 +281,8 @@
 
 	background: #FFFFFF;
 
+	.box-shadow(0 0 3px 0 rgba(0, 0, 0, 0.10));
+
 	.clearfix;
 
 	@media only screen and (min-width: 768px) {
@@ -291,6 +293,14 @@
 	}
   }
 
+  &__name{
+	display: block;
+
+	height: 40px;
+	
+	overflow: hidden;
+  }
+  
   &__img-block{
 	position: relative;
 
@@ -377,10 +387,12 @@
 
 	span{
 	  display: inline-block;
+	  width: 100%;
 
 	  padding: 0 30px;
 
-	  background: #e5f5e9;
+	  background: #c1d837;
+	  .box-sizing();
 
 	  font-size: 12px;
 	  text-align: center;
@@ -489,6 +501,23 @@
 	  float: none;
 	  display: inline-block;
 	  width: 110px;
+	}
+
+	&_view{
+
+	  a{
+		border: 1px solid #afafaf;
+		background: none;
+
+		color: #363636;
+
+		&:hover{
+		  border: 1px solid #afafaf;
+		  background: none;
+
+		  color: #363636;
+		}
+	  }
 	}
   }
 }

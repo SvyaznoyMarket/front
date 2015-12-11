@@ -105,9 +105,9 @@ class ProductCard {
             && !$product->getSlotPartnerOffer()
         ) {
             $card->stateLabel = ['name' => 'Товар со склада', 'cssClassName' => 'availability--instock'];
-        } elseif($product->isInShopOnly && $product->isInShopStockOnly) {
+        } else if($product->isInShopOnly && $product->isInShopStockOnly) {
             $card->stateLabel = ['name' => 'Только в магазинах', 'cssClassName' => 'availability--on-display'];
-        } elseif($product->isInShopShowroomOnly) {
+        } else if($product->isInShopShowroomOnly) {
             $card->stateLabel = ['name' => 'Только на витрине', 'cssClassName' => 'availability--on-display'];
         }
 

@@ -65,6 +65,7 @@ class ChildCategory {
 
         $currentRoute = new Routing\ProductCatalog\GetChildCategory($request->category->path);
 
+        $isTchibo = $request->catalogConfig && $request->catalogConfig->tchibo;
         $page->content->categoryBlock = false;
         if ((bool)$request->category->children) {
             $page->content->categoryBlock = new Partial\ProductCatalog\CategoryBlock();
@@ -72,9 +73,17 @@ class ChildCategory {
                 $childCategory = new Partial\ProductCatalog\CategoryBlock\Category();
                 $childCategory->name = $childCategoryModel->name;
                 $childCategory->url = $childCategoryModel->link;
-                $childCategory->image = (string)(new Routing\Product\Category\GetImage($childCategoryModel, 'category_163x163'));
+                $childCategory->image = (string)(new Routing\Product\Category\GetImage($childCategoryModel, $isTchibo ? 'category_1000x1000' : 'category_163x163'));
 
                 $page->content->categoryBlock->categories[] = $childCategory;
+            }
+        }
+        if ($isTchibo && $page->content->categoryBlock) {
+            foreach (array_chunk($page->content->categoryBlock->categories, 2) as $i => $categories) {
+                $page->content->categoryBlock->categoriesGroupedByRow[] = [
+                    'id'         => $i,
+                    'categories' => $categories,
+                ];
             }
         }
 
@@ -105,14 +114,14 @@ class ChildCategory {
         $page->content->productBlock->dataValue = $templateHelper->json($dataValue);
         $page->content->productBlock->dataReset = $templateHelper->json($dataReset);
 
-            foreach ($request->products as $productModel) {
-                $productCard = $productCardRepository->getObject(
-                    $productModel,
-                    $cartProductButtonRepository->getObject($productModel, null, true, true, ['position' => 'listing']),
-                    $request->category
-                );
+        foreach ($request->products as $productModel) {
+            $productCard = $productCardRepository->getObject(
+                $productModel,
+                $cartProductButtonRepository->getObject($productModel, null, true, true, ['position' => 'listing']),
+                $request->category
+            );
 
-                $page->content->productBlock->products[] = $productCard;
+            $page->content->productBlock->products[] = $productCard;
         }
 
         $page->content->sortingBlock = (new Repository\Partial\ProductSortingBlock())->getObject(

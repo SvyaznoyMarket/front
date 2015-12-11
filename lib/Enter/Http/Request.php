@@ -228,7 +228,6 @@ class Request {
      * @return string|null
      */
     public function getHeader($headerName) {
-        $headerName = 'HTTP_' . str_replace('-', '_', strtoupper($headerName));
         return isset($_SERVER[$headerName]) ? $_SERVER[$headerName] : null;
     }
 
