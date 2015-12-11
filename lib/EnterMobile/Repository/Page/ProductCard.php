@@ -200,6 +200,9 @@ class ProductCard {
                 $page->content->product->shopStateBlock = false;
             } else {
                 $page->content->product->shopStateBlock->shownCount = 'Забрать сегодня в ' . $stateCount . ' ' . $translateHelper->numberChoice($stateCount, ['магазине', 'магазинах', 'магазинах']);
+                if (!$page->content->product->deliveryBlock) {
+                    $page->content->product->deliveryBlock = true; // FIXME MSITE-586
+                }
                 //$page->content->product->shopStateBlock->hasOnlyOne = 1 === $stateCount;
             }
         }
