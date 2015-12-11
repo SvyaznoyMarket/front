@@ -945,21 +945,10 @@ textarea[contenteditable] {
   font-family: "Rouble";
   font-size: 90%;
 }
-/*
 @font-face {
   font-family: 'menuIconFont';
-
   src: url('/css/modules/common/fonts/iconFont/entericon-regular-webfont.eot');
-  src: local('menuIconFont'),
-
-    url('/css/modules/common/fonts/iconFont/entericon-regular-webfont.woff') format('woff'),
-    url('/css/modules/common/fonts/iconFont/entericon-regular-webfont.ttf') format('truetype'),
-    url('/css/modules/common/fonts/iconFont/entericon-regular-webfont.svg#menuIconFont') format('svg');
-}*/
-@font-face {
-  font-family: 'menuIconFont';
-  src: url('/css/modules/common/fonts/iconFont/entericonregularwebfont.eot');
-  src: url('/css/modules/common/fonts/iconFont/entericonregularwebfont.eot') format('embedded-opentype'), url('/css/modules/common/fonts/iconFont/entericonregularwebfont.woff2') format('woff2'), url('/css/modules/common/fonts/iconFont/entericonregularwebfont.woff') format('woff'), url('/css/modules/common/fonts/iconFont/entericonregularwebfont.ttf') format('truetype'), url('/css/modules/common/fonts/iconFont/entericonregularwebfont.svg#entericonregularwebfont') format('svg');
+  src: url('/css/modules/common/fonts/iconFont/entericon-regular-webfont.eot') format('embedded-opentype'), url('/css/modules/common/fonts/iconFont/entericon-regular-webfont.woff2') format('woff2'), url('/css/modules/common/fonts/iconFont/entericon-regular-webfont.woff') format('woff'), url('/css/modules/common/fonts/iconFont/entericon-regular-webfont.ttf') format('truetype'), url('/css/modules/common/fonts/iconFont/entericon-regular-webfont.svg#entericon-regular-webfont') format('svg');
 }
 #smartbanner {
   position: absolute;
