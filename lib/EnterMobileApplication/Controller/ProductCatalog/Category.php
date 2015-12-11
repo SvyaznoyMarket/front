@@ -386,6 +386,7 @@ class Category {
 
         return new Http\JsonResponse([
             'category' => call_user_func(function() use($secretSalePromo, $secretSalePromos, $categoryId, $categoryRepository, $region, $curl) {
+                $listingView = '3';
                 $resultCategory = [];
                 $secretSaleMenuElement = (new \EnterMobileApplication\Repository\MainMenu())->getSecretSaleElement();
 
@@ -407,8 +408,12 @@ class Category {
                             'name' => (string)$category->name,
                             'media' => $category->media,
                             'hasChildren' => false,
-                            'listingView' => '1',
-                            'discount' => null,
+                            'listingView' => $listingView,
+                            'discount' => [
+                                'value' => (int)$secretSalePromo->discount,
+                                'unit' => '%',
+                                'endAt' => (int)$secretSalePromo->endAt,
+                            ],
                             'children' => [],
                         ];
                     } else {
@@ -417,7 +422,7 @@ class Category {
                             'name' => (string)$secretSalePromo->name,
                             'media' => $secretSalePromo->media,
                             'hasChildren' => false,
-                            'listingView' => '1',
+                            'listingView' => $listingView,
                             'discount' => [
                                 'value' => (int)$secretSalePromo->discount,
                                 'unit' => '%',
@@ -447,8 +452,12 @@ class Category {
                                     'name' => (string)$category->name,
                                     'media' => $category->media,
                                     'hasChildren' => false,
-                                    'listingView' => '1',
-                                    'discount' => null,
+                                    'listingView' => $listingView,
+                                    'discount' => [
+                                        'value' => (int)$secretSalePromo->discount,
+                                        'unit' => '%',
+                                        'endAt' => (int)$secretSalePromo->endAt,
+                                    ],
                                     'children' => [],
                                 ];
                             }
@@ -463,7 +472,7 @@ class Category {
                         'name' => (string)$secretSaleMenuElement->name,
                         'media' => $media,
                         'hasChildren' => false,
-                        'listingView' => '1',
+                        'listingView' => $listingView,
                         'discount' => null,
                         'children' => [],
                     ];
@@ -474,7 +483,7 @@ class Category {
                             'name' => (string)$secretSalePromo->name,
                             'media' => $secretSalePromo->media,
                             'hasChildren' => false,
-                            'listingView' => '1',
+                            'listingView' => $listingView,
                             'discount' => [
                                 'value' => (int)$secretSalePromo->discount,
                                 'unit' => '%',
