@@ -152,7 +152,7 @@ class Category {
      * @throws \Exception
      * @return Http\Response
      */
-    public function getResponseForSecretSale(Http\Request $request) {
+    private function getResponseForSecretSale(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
         $categoryRepository = new \EnterRepository\Product\Category();
@@ -385,7 +385,7 @@ class Category {
         }
 
         return new Http\JsonResponse([
-            'category' => call_user_func(function() use($secretSalePromo, $secretSalePromos, $categoryId, $categoryRepository, $region, $curl) {
+            'category' => call_user_func(function() use($secretSalePromo, $secretSalePromos, $categoryId, $categoryRepository, $region, $curl, $config) {
                 $listingView = '3';
                 $resultCategory = [];
                 $secretSaleMenuElement = (new \EnterMobileApplication\Repository\MainMenu())->getSecretSaleElement();
@@ -420,7 +420,7 @@ class Category {
                         $resultCategory = [
                             'id' => $secretSaleMenuElement->id . ':' . $secretSalePromo->ui,
                             'name' => (string)$secretSalePromo->name,
-                            'media' => $secretSalePromo->media,
+                            'media' => $this->getResponseForSecretSaleMediaList($secretSalePromo->media),
                             'hasChildren' => false,
                             'listingView' => $listingView,
                             'discount' => [
@@ -470,7 +470,7 @@ class Category {
                     $resultCategory = [
                         'id' => (string)$secretSaleMenuElement->id,
                         'name' => (string)$secretSaleMenuElement->name,
-                        'media' => $media,
+                        'media' => $this->getResponseForSecretSaleMediaList($media, 'http://' . $config->hostname . ($config->version ? '/' . $config->version : '') . '/img/menu/250x250/secretSale.png'),
                         'hasChildren' => false,
                         'listingView' => $listingView,
                         'discount' => null,
@@ -481,7 +481,7 @@ class Category {
                         $resultCategory['children'][] = [
                             'id' => $secretSaleMenuElement->id . ':' . $secretSalePromo->ui,
                             'name' => (string)$secretSalePromo->name,
-                            'media' => $secretSalePromo->media,
+                            'media' => $this->getResponseForSecretSaleMediaList($secretSalePromo->media),
                             'hasChildren' => false,
                             'listingView' => $listingView,
                             'discount' => [
@@ -501,5 +501,66 @@ class Category {
             'filters' => [],
             'sortings' => $productsOnPage ? $sortings : [],
         ]);
+    }
+    
+    private function getResponseForSecretSaleMediaList(Model\MediaList $mediaList, $sourceUrl = null) {
+        $mediaRepository = new \EnterRepository\Media();
+        $media = reset($mediaList->photos);
+        return [[
+            'uid' => null,
+            'contentType' => $media->contentType,
+            'type' => $media->type,
+            'tags' => ['main'],
+            'sources' => [
+                [
+                    'width' => '96',
+                    'height' => '96',
+                    'type' => 'category_96x96',
+                    'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_315x231')->url,
+                ],
+                [
+                    'width' => '130',
+                    'height' => '130',
+                    'type' => 'category_130x130',
+                    'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_315x231')->url,
+                ],
+                [
+                    'width' => '163',
+                    'height' => '163',
+                    'type' => 'category_163x163',
+                    'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_315x231')->url,
+                ],
+                [
+                    'width' => '200',
+                    'height' => '200',
+                    'type' => 'category_200x200',
+                    'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_315x231')->url,
+                ],
+                [
+                    'width' => '350',
+                    'height' => '350',
+                    'type' => 'category_350x350',
+                    'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_483x357')->url,
+                ],
+                [
+                    'width' => '480',
+                    'height' => '480',
+                    'type' => 'category_480x480',
+                    'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_651x483')->url,
+                ],
+                [
+                    'width' => '1000',
+                    'height' => '1000',
+                    'type' => 'category_1000x1000',
+                    'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_987x725')->url,
+                ],
+                [
+                    'width' => '300',
+                    'height' => '300',
+                    'type' => 'original',
+                    'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_483x357')->url,
+                ],
+            ],
+        ]];
     }
 }
