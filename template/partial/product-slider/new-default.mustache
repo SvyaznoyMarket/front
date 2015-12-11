@@ -21,7 +21,7 @@
                         <div class="slider-box-product__name ellipsis"><div>{{&name}}</div></div>
                     </a>
                     <div class="slider-box-product__price">{{shownPrice}} <span class="rubl">p</span></div>
-                    <div class="slider-box-product__buy">
+                    <div class="slider-box-product__buy{{#cartButton.seeProductBtn}} catalogList__btn_view{{/cartButton.seeProductBtn}}">
                         {{#cartButton}}
                             {{>partial/cart/button-new}}
                         {{/cartButton}}
