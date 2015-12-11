@@ -39,7 +39,7 @@ class CheckPartner {
                 $partner->token = $refererHost;
 
                 foreach ($partnerRepository->getFreeSources() as $freeSource) {
-                    if ($freeSource['host_name'] && (false === strpos($refererHost, $freeSource['host_name']))) {
+                    if (!empty($freeSource['host_name']) && (false === strpos($refererHost, $freeSource['host_name']))) {
                         continue;
                     }
 
