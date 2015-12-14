@@ -159,6 +159,12 @@ namespace EnterMobileApplication\Controller\Order {
                             foreach ($order->product as $product) {
                                 $product->meta = !empty($cartProductsById[$product->id]) ? $cartProductsById[$product->id]->clientMeta : null;
                             }
+
+                            foreach ($order->paymentMethods as $paymentMethod) {
+                                if ($paymentMethod->discount && $paymentMethod->discount->unit === 'rub') {
+                                    $paymentMethod->discount->unit = 'руб.';
+                                }
+                            }
                         }
                     });
                 } catch (\Exception $e) {
