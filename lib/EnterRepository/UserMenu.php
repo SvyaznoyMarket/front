@@ -27,31 +27,41 @@ class UserMenu {
                 'name' => 'Заказы',
                 'url' => '/private/orders',
                 'isActive' => false,
+                'count' => false,
+                'image' => 'i-orders.png',
             ],
-            'edit' => [
-                'token' => 'edit',
-                'name' => 'Личные данные',
-                'url' => '/private/edit',
+            'subscribes' => [
+                'token' => 'subscribes',
+                'name' => 'Подписки',
+                'url' => '/private/subscribes',
                 'isActive' => false,
-            ],
-            'password' => [
-                'token' => 'password',
-                'name' => 'Изменение пароля',
-                'url' => '/private/password',
-                'isActive' => false,
-            ],
-            'enterprize' => [
-                'token' => 'enterprize',
-                'name' => 'Фишки EnterPrize',
-                'url' => '/private/enterprize',
-                'isActive' => false,
+                'count' => false,
+                'image' => 'i-subscription.png',
             ],
             'favorit' => [
                 'token' => 'favorit',
                 'name' => 'Избранное',
                 'url' => '/private/favorites',
                 'isActive' => false,
-            ]
+                'count' => false,
+                'image' => 'i-favorit.png',
+            ],
+            'addresses' => [
+                'token' => 'addresses',
+                'name' => 'Избранное',
+                'url' => '/private/addresses',
+                'isActive' => false,
+                'count' => false,
+                'image' => 'i-address.png',
+            ],
+            'enterprize' => [
+                'token' => 'enterprize',
+                'name' => 'Фишки EnterPrize',
+                'url' => '/private/enterprize',
+                'isActive' => false,
+                'count' => false,
+                'image' => 'i-ep.png',
+            ],
         ];
 
         return $menuItems;

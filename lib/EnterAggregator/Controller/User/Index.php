@@ -46,13 +46,15 @@ namespace EnterAggregator\Controller\User{
                 $response->redirect = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
             }
 
+            // подготовка количества заказов
             $orderCountQuery = new Query\Order\GetListByUserToken($userToken, 0, 0);
             $curl->prepare($orderCountQuery);
 
-            /* корзина */
+            // корзина
             $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
             $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $request->regionId);
             $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $request->regionId);
+
             $curl->execute();
 
             (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);

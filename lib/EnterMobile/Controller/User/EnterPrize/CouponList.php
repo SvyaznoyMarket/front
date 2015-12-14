@@ -46,8 +46,6 @@ namespace EnterMobile\Controller\User\EnterPrize {
                 return $controllerResponse->redirect;
             }
 
-
-
             //запрос для получения страницы
             $pageRequest = new Repository\Page\User\Enterprize\Request();
             $pageRequest->httpRequest = $request;

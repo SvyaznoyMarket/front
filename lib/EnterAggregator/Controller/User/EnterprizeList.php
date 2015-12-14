@@ -46,7 +46,6 @@ namespace EnterAggregator\Controller\User{
                 $response->redirect = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
             }
 
-
             /* корзина */
             $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
             $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $request->regionId);
