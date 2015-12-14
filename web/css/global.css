@@ -14044,9 +14044,16 @@ section.map .map-container {
   background: #FFFFFF;
 }
 .grids__cell-inner_bg {
+  -o-background-size: cover;
+  /* opera ≥ 9.5 */
+  -khtml-background-size: cover;
+  /* Konqueror ≥ 3.5.4 */
+  -moz-background-size: cover;
+  /* Firefox ≥ 3.6 */
   -webkit-background-size: cover;
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center center;
 }
 .grids__title {
   position: absolute;
