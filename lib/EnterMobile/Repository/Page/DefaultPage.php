@@ -297,7 +297,7 @@ class DefaultPage {
         (new Repository\Template())->setListForPage($page, [
             [
                 'id'   => 'tpl-product-buyButton',
-                'name' => 'partial/cart/button',
+                'name' => 'partial/cart/button-new',
             ],
             [
                 'id'   => 'tpl-product-buySpinner',
