@@ -18,6 +18,7 @@ class Orders {
         DebugContainerTrait;
 
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
@@ -46,6 +47,7 @@ class Orders {
 
         $page = new Page();
         (new Repository\Page\User\Orders())->buildObjectByRequest($page, $pageRequest);
+        if ($config->debugLevel) $this->getDebugContainer()->page = $page;
 
         // рендер
         $renderer = $this->getRenderer();

@@ -10,9 +10,7 @@
                 <span class="private-list__item-block private-list__item-block_num">
                     <a href="/private/order/{{id}}">
                         <span>{{numberErp}}</span>
-                        <span class="private-list__item-block-status">
-                            Оплачен
-                        </span>
+                        {{#paymentStatus}}<span class="private-list__item-block-status">{{paymentStatus.name}}</span>{{/paymentStatus}}
                     </a>
 
                 </span>
@@ -26,9 +24,7 @@
                         <span>{{paySum}}
                         <span class="rubl">p</span>
                         </span>
-                        <span class="private-list__item-block-status private-list__item-block-status_processing">
-                            В обработке
-                        </span>
+                        {{#status}}<span class="private-list__item-block-status private-list__item-block-status_processing" data-id="{{status.id}}">{{status.name}}</span>{{/status}}
                     </a>
                 </span>
             </li>
