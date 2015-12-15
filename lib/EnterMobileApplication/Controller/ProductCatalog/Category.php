@@ -431,6 +431,10 @@ class Category {
                             'children' => [],
                         ];
 
+                        // Отключаем подкатегории промо до решения FCMS-998, т.к. моб. приложениям для корректной работы
+                        // нужен флаг hasChildren для подкатегорий подкатегорий при запросе категории самого верхнего
+                        // уровня (secretSale)
+                        /*
                         $categoryUis = [];
                         foreach ($secretSalePromo->products as $product) {
                             if ($product->category) {
@@ -462,6 +466,7 @@ class Category {
                                 ];
                             }
                         }
+                        */
                     }
                 } else if ($secretSalePromos) {
                     $media = new Model\MediaList();
@@ -492,6 +497,10 @@ class Category {
                             'children' => [],
                         ];
                     }
+                }
+
+                if (!empty($resultCategory['children'])) {
+                    $resultCategory['hasChildren'] = true;
                 }
 
                 return $resultCategory;
