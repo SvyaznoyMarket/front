@@ -63,7 +63,7 @@ define(
             yaMap = new ymaps.Map("map", {
                 center: [lat, long],
                 zoom: 10,
-                controls: ['zoomControl']
+                controls: ['zoomControl', 'geolocationControl']
             });
 
             yaMap.container.fitToViewport();
@@ -182,9 +182,6 @@ define(
                         hideIconOnBalloonOpen: false
                     }));
                 }
-
-                console.log(currentPoint);
-
             }
 
             yaMap.geoObjects.add(myCollection);

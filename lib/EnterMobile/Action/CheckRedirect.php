@@ -35,9 +35,8 @@ class CheckRedirect {
             //|| ($route instanceof Routing\ProductCatalog\GetBrandCategory)
             //|| ($route instanceof Routing\Content)
             //|| ($route instanceof Routing\User\Index)
-            || ($route instanceof Routing\ShopCard\Get)
-            || ($route instanceof Routing\Shop\Index)
-            || ($route instanceof Routing\Shop\Map)
+//            || ($route instanceof Routing\ShopCard\Get)
+//            || ($route instanceof Routing\Shop\Index)
         ;
         if ('disabled' === $abTest->getObjectByToken('order')->chosenItem->token) {
             $hasRedirect =
