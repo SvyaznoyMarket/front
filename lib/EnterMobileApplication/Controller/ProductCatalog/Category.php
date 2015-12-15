@@ -288,7 +288,8 @@ class Category {
 
             $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
 
-            (new \EnterRepository\Product\Category())->filterSecretSaleProducts($secretSalePromo->products, $categoryId, $requestFilters);
+            $uniquePrices = [];
+            (new \EnterRepository\Product\Category())->filterSecretSaleProducts($secretSalePromo->products, $categoryId, $requestFilters, $uniquePrices);
 
             // Сортировка товаров
             call_user_func(function() use(&$secretSalePromo, $sorting) {
@@ -485,17 +486,13 @@ class Category {
             }),
             'productCount' => $productCount,
             'products' => $this->getProductList($productsOnPage),
-            'filters' => call_user_func(function() use($secretSalePromo) {
+            'filters' => call_user_func(function() use($secretSalePromo, $uniquePrices) {
                 if (!$secretSalePromo || !$secretSalePromo->products) {
                     return [];
                 }
 
-                $prices = array_map(function(\EnterModel\Product $product) {
-                    return $product->price;
-                }, $secretSalePromo->products);
-
-                $minPrice = min($prices);
-                $maxPrice = max($prices);
+                $minPrice = min($uniquePrices);
+                $maxPrice = max($uniquePrices);
 
                 return [
                     [

@@ -217,7 +217,13 @@ class Category {
         return $object;
     }
 
-    public function filterSecretSaleProducts(&$products, $categoryId, $requestFilters) {
+    /**
+     * @param Model\Product[] $products
+     * @param string $categoryId
+     * @param Model\Product\RequestFilter[] $requestFilters
+     * @param array $uniquePrices
+     */
+    public function filterSecretSaleProducts(&$products, $categoryId, $requestFilters, &$uniquePrices = []) {
         $categoryRepository = new \EnterRepository\Product\Category();
 
         $fromPrice = null;
@@ -254,6 +260,10 @@ class Category {
             if ($categoryId && (!$product->category || $categoryRepository->getRootObject($product->category)->id !== $categoryId)) {
                 unset($products[$key]);
                 continue;
+            }
+
+            if (!in_array($product->price, $uniquePrices, true)) {
+                $uniquePrices[] = $product->price;
             }
 
             if (($fromPrice && $product->price < $fromPrice) || ($toPrice && $product->price > $toPrice)) {
