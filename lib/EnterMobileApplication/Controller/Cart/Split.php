@@ -103,13 +103,23 @@ namespace EnterMobileApplication\Controller\Cart {
             $response->errors = $controllerResponse->errors;
             $response->split = $controllerResponse->split;
 
+            /** @var \EnterModel\Cart\Split\PaymentMethod[] $paymentMethodsById */
+            $paymentMethodsById = [];
+            foreach ($response->split->paymentMethods as $paymentMethod) {
+                $paymentMethodsById[$paymentMethod->id] = $paymentMethod;
+            }
+
             // type fix
             foreach ($response->split->orders as $order) {
                 if (!(bool)$order->groupedPossiblePointIds) {
                     $order->groupedPossiblePointIds = null;
                 }
 
-                foreach ($order->possiblePaymentMethods as $possiblePaymentMethod) {
+                foreach ($order->possiblePaymentMethods as $key => $possiblePaymentMethod) {
+                    if (isset($paymentMethodsById[$possiblePaymentMethod->id]) && $paymentMethodsById[$possiblePaymentMethod->id]->isOnline) {
+                        unset($order->possiblePaymentMethods[$key]);
+                    }
+
                     if ($possiblePaymentMethod->discount && $possiblePaymentMethod->discount->unit === 'rub') {
                         $possiblePaymentMethod->discount->unit = 'руб.';
                     }

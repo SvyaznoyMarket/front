@@ -156,6 +156,14 @@ namespace EnterMobileApplication\Controller\Order {
                         }
 
                         foreach ($controllerResponse->orders as $order) {
+                            foreach ($order->paymentMethods as $key => $paymentMethod) {
+                                if ($paymentMethod->isOnline) {
+                                    unset($order->paymentMethods[$key]);
+                                }
+                            }
+
+                            $order->paymentMethods = array_values($order->paymentMethods);
+
                             foreach ($order->product as $product) {
                                 $product->meta = !empty($cartProductsById[$product->id]) ? $cartProductsById[$product->id]->clientMeta : null;
                             }
