@@ -96,6 +96,7 @@ class Media {
         if ($isOnline) {
             switch ($paymentMethodId) {
                 case 5:
+                case 17:
                     $mediaList->photos[] = new \EnterModel\Media([
                         'content_type' => 'image/png',
                         'provider' => 'image',
