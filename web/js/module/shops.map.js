@@ -63,7 +63,7 @@ define(
             yaMap = new ymaps.Map("map", {
                 center: [lat, long],
                 zoom: 10,
-                controls: []
+                controls: ['zoomControl', 'geolocationControl']
             });
 
             yaMap.container.fitToViewport();
@@ -173,14 +173,15 @@ define(
                     '<a class="shop-snippet__more" href="{{properties.pointLink}}">Подробнее</a>'
                 );
 
-                myCollection.add(new ymaps.Placemark([currentPoint.latitude, currentPoint.longitude],props, {
-                    iconLayout: 'default#image',
-                    iconImageHref: currentPoint.marker,
-                    balloonContentLayout: BalloonContentLayout,
-                    balloonPanelMaxMapArea: 0,
-                    hideIconOnBalloonOpen: false
-                }));
-
+                if ( currentPoint.latitude && currentPoint.longitude ) {
+                    myCollection.add(new ymaps.Placemark([currentPoint.latitude, currentPoint.longitude],props, {
+                        iconLayout: 'default#image',
+                        iconImageHref: currentPoint.marker,
+                        balloonContentLayout: BalloonContentLayout,
+                        balloonPanelMaxMapArea: 0,
+                        hideIconOnBalloonOpen: false
+                    }));
+                }
             }
 
             yaMap.geoObjects.add(myCollection);

@@ -73,6 +73,11 @@ class Map {
             ];
         }, $result['points']);
 
+        $result['points'] = array_values(array_filter($result['points'], function($item) {
+            return !empty($item['latitude']) && !empty($item['longitude']);
+        }));
+
+
         $page->content->points = $result['points'];
 
         $backLink = trim((string)($request->httpRequest->query['redirect_to'] ?: $request->httpRequest->data['redirect_to']));
