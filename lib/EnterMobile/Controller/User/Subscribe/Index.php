@@ -31,13 +31,22 @@ class Index {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        $userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request);
+
         // запрос пользователя
         $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
         if ($userItemQuery) {
             $curl->prepare($userItemQuery);
         }
 
+        // запрос каналов подписки
+        $channelQuery = new Query\Subscribe\Channel\GetList();
+        $curl->prepare($channelQuery);
+
         $curl->execute();
+
+        // пользователь
+        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
@@ -46,9 +55,40 @@ class Index {
         $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
         $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
 
+        // каналы подписок
+        if ($error = $channelQuery->getError()) {
+            throw $error;
+        }
+        /** @var \EnterModel\Subscribe\Channel[] $channelsById */
+        $channelsById = [];
+        foreach ($channelQuery->getResult() as $item) {
+            if (empty($item['id'])) continue;
+
+            $channel = new \EnterModel\Subscribe\Channel($item);
+            $channelsById[$channel->id] = $channel;
+        }
+
+        // запрос подписок пользователя
+        $subscribeQuery = new Query\Subscribe\GetListByUserToken($userToken);
+        $curl->prepare($subscribeQuery);
+
         $curl->execute();
 
         (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
+
+        // подписки пользователя
+        if ($error = $subscribeQuery->getError()) {
+            throw $error;
+        }
+        $subscriptionsGroupedByChannel = [];
+        foreach ($subscribeQuery->getResult() as $item) {
+            if (empty($item['channel_id'])) continue;
+
+            $subscription = new \EnterModel\Subscribe($item);
+            if (!$subscription->channelId) continue;
+
+            $subscriptionsGroupedByChannel[$subscription->channelId][] = $subscription;
+        }
 
         $userMenu = (new \EnterRepository\UserMenu())->getItems();
 
@@ -56,12 +96,15 @@ class Index {
         $pageRequest = new Repository\Page\User\Subscribe\Request();
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $region;
-        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->user = $user;
         $pageRequest->cart = $cart;
         $pageRequest->userMenu = $userMenu;
+        $pageRequest->subscriptionsGroupedByChannel = $subscriptionsGroupedByChannel;
+        $pageRequest->channelsById = $channelsById;
 
         $page = new Page();
         (new Repository\Page\User\Subscribe())->buildObjectByRequest($page, $pageRequest);
+        if ($config->debugLevel) $this->getDebugContainer()->page = $page;
 
         // рендер
         $renderer = $this->getRenderer();

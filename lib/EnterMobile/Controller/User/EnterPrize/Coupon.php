@@ -58,6 +58,7 @@ namespace EnterMobile\Controller\User\EnterPrize {
 
             $page = new Page();
             (new Repository\Page\User\EnterprizeCoupon())->buildObjectByRequest($page, $pageRequest);
+            if ($config->debugLevel) $this->getDebugContainer()->page = $page;
 
             // рендер
             $renderer = $this->getRenderer();
