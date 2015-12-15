@@ -216,4 +216,50 @@ class Category {
 
         return $object;
     }
+
+    public function filterSecretSaleProducts(&$products, $categoryId, $requestFilters) {
+        $categoryRepository = new \EnterRepository\Product\Category();
+
+        $fromPrice = null;
+        $toPrice = null;
+        foreach ($requestFilters as $requestFilter) {
+            if ($requestFilter->token === 'price' && $requestFilter->optionToken === 'from') {
+                $fromPrice = $requestFilter->value;
+            }
+
+            if ($requestFilter->token === 'price' && $requestFilter->optionToken === 'to') {
+                $toPrice = $requestFilter->value;
+            }
+        }
+
+        $modelUis = [];
+        foreach ($products as $key => $product) {
+            // Удаляем товары, которые нельзя купить
+            if (!$product->isBuyable) {
+                unset($products[$key]);
+                continue;
+            }
+
+            // Удаляем товары из одного модельного ряда
+            if ($product->model && $product->model->ui) {
+                if (!in_array($product->model->ui, $modelUis, true)) {
+                    $modelUis[] = $product->model->ui;
+                } else {
+                    unset($products[$key]);
+                    continue;
+                }
+            }
+
+            // Удаляем товары, которых нет в выбранной категории
+            if ($categoryId && (!$product->category || $categoryRepository->getRootObject($product->category)->id !== $categoryId)) {
+                unset($products[$key]);
+                continue;
+            }
+
+            if (($fromPrice && $product->price < $fromPrice) || ($toPrice && $product->price > $toPrice)) {
+                unset($products[$key]);
+                continue;
+            }
+        }
+    }
 }

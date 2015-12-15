@@ -157,6 +157,7 @@ class Category {
         $curl = $this->getCurl();
         $categoryRepository = new \EnterRepository\Product\Category();
         $productRepository = new \EnterRepository\Product();
+        $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME!!!
 
         $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request);
         $userAuthToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
@@ -285,32 +286,9 @@ class Category {
             $secretSalePromo->products = $productRepository->getIndexedObjectListByQueryList($productListQueries, $productDescriptionListQueries);
             $productRepository->setRatingForObjectListByQueryList($secretSalePromo->products, $productRatingListQueries);
 
-            call_user_func(function() use(&$secretSalePromo, $categoryId, $categoryRepository) {
-                $modelUis = [];
-                foreach ($secretSalePromo->products as $key => $product) {
-                    // Удаляем товары, которые нельзя купить
-                    if (!$product->isBuyable) {
-                        unset($secretSalePromo->products[$key]);
-                        continue;
-                    }
+            $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
 
-                    // Удаляем товары из одного модельного ряда
-                    if ($product->model && $product->model->ui) {
-                        if (!in_array($product->model->ui, $modelUis, true)) {
-                            $modelUis[] = $product->model->ui;
-                        } else {
-                            unset($secretSalePromo->products[$key]);
-                            continue;
-                        }
-                    }
-
-                    // Удаляем товары, которых нет в выбранной категории
-                    if ($categoryId && (!$product->category || $categoryRepository->getRootObject($product->category)->id !== $categoryId)) {
-                        unset($secretSalePromo->products[$key]);
-                        continue;
-                    }
-                }
-            });
+            (new \EnterRepository\Product\Category())->filterSecretSaleProducts($secretSalePromo->products, $categoryId, $requestFilters);
 
             // Сортировка товаров
             call_user_func(function() use(&$secretSalePromo, $sorting) {
@@ -507,7 +485,46 @@ class Category {
             }),
             'productCount' => $productCount,
             'products' => $this->getProductList($productsOnPage),
-            'filters' => [],
+            'filters' => call_user_func(function() use($secretSalePromo) {
+                if (!$secretSalePromo || !$secretSalePromo->products) {
+                    return [];
+                }
+
+                $prices = array_map(function(\EnterModel\Product $product) {
+                    return $product->price;
+                }, $secretSalePromo->products);
+
+                $minPrice = min($prices);
+                $maxPrice = max($prices);
+
+                return [
+                    [
+                        'name' => 'Цена',
+                        'token' => 'price',
+                        'isSlider' => true,
+                        'isMultiple' => false,
+                        'min' => (float)$minPrice,
+                        'max' => (float)$maxPrice,
+                        'unit' => null,
+                        'isSelected' => false,
+                        'value' => null,
+                        'option' => [
+                            [
+                                'id' => (string)$minPrice,
+                                'token' => 'from',
+                                'name' => 'от',
+                                'quantity' => null
+                            ],
+                            [
+                                'id' => (string)$maxPrice,
+                                'token' => 'to',
+                                'name' => 'до',
+                                'quantity' => null
+                            ],
+                        ],
+                    ],
+                ];
+            }),
             'sortings' => $productsOnPage ? $sortings : [],
         ]);
     }
