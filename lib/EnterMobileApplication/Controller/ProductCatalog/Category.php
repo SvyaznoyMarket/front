@@ -513,7 +513,7 @@ class Category {
                         'min' => (float)$minPrice,
                         'max' => (float)$maxPrice,
                         'unit' => null,
-                        'isSelected' => false,
+                        'isSelected' => (bool)$values,
                         'value' => $values ? $values : null,
                         'option' => [
                             [
