@@ -62,10 +62,37 @@ class Index {
         }
 
         // адреса
+        /** @var \EnterModel\Address[] $addresses */
         $addresses = [];
         foreach ($addressQuery->getResult() as $item) {
             if (empty($item['id'])) continue;
             $addresses[] = new \EnterModel\Address($item);
+        }
+
+        /** @var \EnterModel\Region[] $regionsById */
+        $regionsById = [];
+        // ид регионов
+        $regionIds = [];
+        foreach ($addresses as $address) {
+            if (!$address->regionId) continue;
+            $regionIds[] = $address->regionId;
+        }
+        $regionIds = array_values(array_unique($regionIds));
+        if ((1 === count($regionIds)) && ($regionIds[0] === $region->id)) {
+            $regionsById[$region->id] = $region;
+        } else {
+            $regionQuery = new Query\Region\GetListByIdList($regionIds);
+            $curl->prepare($regionQuery);
+
+            $curl->execute();
+
+            foreach ($regionQuery->getResult() as $item) {
+                if (empty($item['id'])) continue;
+                $iRegion = new \EnterModel\Region($item);
+
+                $regionsById[$iRegion->id] = $iRegion;
+            }
+
         }
 
         $userMenu = (new \EnterRepository\UserMenu())->getItems();
@@ -78,9 +105,11 @@ class Index {
         $pageRequest->cart = $cart;
         $pageRequest->userMenu = $userMenu;
         $pageRequest->addresses = $addresses;
+        $pageRequest->regionsById = $regionsById;
 
         $page = new Page();
         (new Repository\Page\User\Address())->buildObjectByRequest($page, $pageRequest);
+        if ($config->debugLevel) $this->getDebugContainer()->page = $page;
 
         // рендер
         $renderer = $this->getRenderer();

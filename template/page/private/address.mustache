@@ -8,43 +8,24 @@
     </section>
     <section class="address-section">
         <ul class="private-list">
-
+        {{#addresses}}
             <li class="private-list__item">
-
                 <a class="private-list__item-del js-favorites-delete" href=""></a>
-
                 <div class="private-list__item-block" >
+                    {{#region}}
+                        <span class="private-list__item-block-inner address-section__item">{{region.name}}</span>
+                    {{/region}}
                     <span class="private-list__item-block-inner address-section__item">
-                        City
+                        {{shownStreet}}
                     </span>
                     <span class="private-list__item-block-inner address-section__item">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat, libero?
-                    </span>
-                    <span class="private-list__item-block-inner address-section__item">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing.
+                        {{shownBuilding}}
+                        {{#apartment}}кв. {{apartment}}{{/apartment}}
                     </span>
                 </div>
 
             </li>
-
-            <li class="private-list__item">
-
-                <a class="private-list__item-del js-favorites-delete" href=""></a>
-
-                <div class="private-list__item-block" >
-                    <span class="private-list__item-block-inner address-section__item">
-                        City
-                    </span>
-                    <span class="private-list__item-block-inner address-section__item">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat, libero?
-                    </span>
-                    <span class="private-list__item-block-inner address-section__item">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing.
-                    </span>
-                </div>
-
-            </li>
-
+        {{/addresses}}
         </ul>
 
         <div class="btn private-btn">

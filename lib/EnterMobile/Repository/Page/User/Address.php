@@ -34,8 +34,17 @@ class Address {
         foreach ($request->addresses as $addressModel) {
             $regionModel = ($addressModel->regionId && isset($request->regionsById[$addressModel->regionId])) ? $request->regionsById[$addressModel->regionId] : null;
 
-            $page->content->addresses = [
-                'region' =>
+            $page->content->addresses[] = [
+                'shownStreet'   =>
+                    $addressModel->street
+                    ? (($addressModel->streetType && (false === strpos($addressModel->street, $addressModel->streetType . '.'))) ? ($addressModel->streetType . '.') : '') . $addressModel->street
+                    : ''
+                ,
+                'shownBuilding' =>
+                    ($addressModel->building ? (!empty($addressModel->buildingType) ? ($addressModel->buildingType . ' ') : 'д. ') : '') . $addressModel->building
+                ,
+                'apartment'     => $addressModel->apartment,
+                'region'        =>
                     $regionModel
                     ? [
                         'name' => $regionModel->name,
