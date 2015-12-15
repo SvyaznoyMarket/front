@@ -253,6 +253,8 @@ class Category {
             }, $secretSalePromoListQuery->getResult());
         }
 
+        $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
+        $uniquePrices = [];
         $productCount = null;
         $productsOnPage = [];
         if ($secretSalePromo && $secretSalePromo->products) {
@@ -286,9 +288,6 @@ class Category {
             $secretSalePromo->products = $productRepository->getIndexedObjectListByQueryList($productListQueries, $productDescriptionListQueries);
             $productRepository->setRatingForObjectListByQueryList($secretSalePromo->products, $productRatingListQueries);
 
-            $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
-
-            $uniquePrices = [];
             (new \EnterRepository\Product\Category())->filterSecretSaleProducts($secretSalePromo->products, $categoryId, $requestFilters, $uniquePrices);
 
             // Сортировка товаров
@@ -486,13 +485,24 @@ class Category {
             }),
             'productCount' => $productCount,
             'products' => $this->getProductList($productsOnPage),
-            'filters' => call_user_func(function() use($secretSalePromo, $uniquePrices) {
+            'filters' => call_user_func(function() use($secretSalePromo, $uniquePrices, $requestFilters) {
                 if (!$secretSalePromo || !$secretSalePromo->products) {
                     return [];
                 }
 
                 $minPrice = min($uniquePrices);
                 $maxPrice = max($uniquePrices);
+
+                $values = [];
+                foreach ($requestFilters as $requestFilter) {
+                    if ($requestFilter->token === 'price' && $requestFilter->optionToken === 'from') {
+                        $values['from'] = $requestFilter->value;
+                    }
+
+                    if ($requestFilter->token === 'price' && $requestFilter->optionToken === 'to') {
+                        $values['to'] = $requestFilter->value;
+                    }
+                }
 
                 return [
                     [
@@ -504,7 +514,7 @@ class Category {
                         'max' => (float)$maxPrice,
                         'unit' => null,
                         'isSelected' => false,
-                        'value' => null,
+                        'value' => $values ? $values : null,
                         'option' => [
                             [
                                 'id' => (string)$minPrice,
