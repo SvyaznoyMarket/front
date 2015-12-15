@@ -423,7 +423,7 @@ class Category {
                             }
                         }
 
-                        if ($categoryUis) {
+                        if (count($categoryUis) > 1) {
                             $categoryListQuery = new \EnterQuery\Product\Category\GetListByUiList($categoryUis, $region->id);
                             $curl->prepare($categoryListQuery);
                             $curl->execute();
