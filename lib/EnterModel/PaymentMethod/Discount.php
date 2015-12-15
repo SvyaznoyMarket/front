@@ -5,18 +5,18 @@ namespace EnterModel\PaymentMethod;
 class Discount {
     /** @var string */
     public $code;
-    /** @var float */
-    public $value;
-    /** @var string|null */
-    public $unit;
+    /** @var string */
+    public $value = '';
+    /** @var string */
+    public $unit = '';
     /**
      * @param array $data
      */
     public function __construct($data = []) {
 
-        $this->code = $data['code'] ? (string)$data['code'] : null;
-        $this->value = $data['value'] ? (float)$data['value'] : null;
-        $this->unit = $data['unit'] ? (string)$data['unit'] : null;
+        if (isset($data['code'])) $this->code = (string)$data['code'];
+        if (isset($data['value'])) $this->value = (string)$data['value'];
+        if (isset($data['unit'])) $this->unit = (string)$data['unit'];
     }
     /**
      * @return array

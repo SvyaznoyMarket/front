@@ -10,7 +10,7 @@ class Delivery {
     /** @var int|null */
     public $date;
     /** @var string|null */
-    public $price;
+    public $price = '0';
     /** @var Model\Cart\Split\Interval|null */
     public $interval;
     /** @var Delivery\Point|null */
@@ -31,7 +31,7 @@ class Delivery {
         $this->methodToken = $data['delivery_method_token'] ? (string)$data['delivery_method_token'] : null;
         $this->modeId = $data['mode_id'] ? (string)$data['mode_id'] : null;
         $this->date = (int)$data['date'];
-        $this->price = $data['price'] ? (string)$data['price'] : null;
+        $this->price = $data['price'] ? (string)$data['price'] : '0';
         $this->interval = $data['interval'] ? new Model\Cart\Split\Interval($data['interval']) : null;
         $this->point = $data['point'] ? new Delivery\Point($data['point']) : null;
         $this->useUserAddress = (bool)$data['use_user_address'];

@@ -42,21 +42,98 @@ class MainMenu extends \EnterRepository\MainMenu {
         $element->url = '';
         $element->level = 1;
         $element->hasChildren = false;
-        // TODO
-//        $element->media = new \EnterModel\Media([
-//            'content_type' => 'image/png',
-//            'provider' => 'image',
-//            'tags' => ['logo', 'card'],
-//            'sources' => [
-//                [
-//                    'url' => $mediaUrlPrefix . '/img/payment/logos/original/card.png',
-//                    'type' => 'original',
-//                    'width' => '',
-//                    'height' => '',
-//                ],
-//            ],
-//        ]);
 
+        $element->media[] = new \EnterModel\Media([
+            'content_type' => 'image/png',
+            'provider' => 'image',
+            'tags' => [
+                'mobile-app',
+                'mdpi',
+                'android',
+                'app-mobile'
+            ],
+            'sources' => [
+                [
+                    'width' => '40',
+                    'height' => '40',
+                    'type' => 'original',
+                    'url' => $mediaUrlPrefix . '/img/menu/40x40/secretSale.png',
+                ],
+            ],
+        ]);
+        
+        $element->media[] = new \EnterModel\Media([
+            'content_type' => 'image/png',
+            'provider' => 'image',
+            'tags' => [
+                'mobile-app',
+                'hdpi',
+                'android',
+                'app-mobile'
+            ],
+            'sources' => [
+                [
+                    'width' => '125',
+                    'height' => '125',
+                    'type' => 'original',
+                    'url' => $mediaUrlPrefix . '/img/menu/125x125/secretSale.png',
+                ],
+            ],
+        ]);
+
+        $element->media[] = new \EnterModel\Media([
+            'content_type' => 'image/png',
+            'provider' => 'image',
+            'tags' => [
+                'mobile-app',
+                'xhdpi',
+                'android',
+                'app-mobile'
+            ],
+            'sources' => [
+                [
+                    'width' => '250',
+                    'height' => '250',
+                    'type' => 'original',
+                    'url' => $mediaUrlPrefix . '/img/menu/250x250/secretSale.png',
+                ],
+            ],
+        ]);
+
+        $element->media[] = new \EnterModel\Media([
+            'content_type' => 'image/png',
+            'provider' => 'image',
+            'tags' => [
+                'landscape',
+                'app-mobile'
+            ],
+            'sources' => [
+                [
+                    'width' => '125',
+                    'height' => '125',
+                    'type' => 'original',
+                    'url' => $mediaUrlPrefix . '/img/menu/125x125/secretSale.png',
+                ],
+            ],
+        ]);
+
+        $element->media[] = new \EnterModel\Media([
+            'content_type' => 'image/png',
+            'provider' => 'image',
+            'tags' => [
+                'portait',
+                'app-mobile'
+            ],
+            'sources' => [
+                [
+                    'width' => '125',
+                    'height' => '125',
+                    'type' => 'original',
+                    'url' => $mediaUrlPrefix . '/img/menu/125x125/secretSale.png',
+                ],
+            ],
+        ]);
+        
         return $element;
     }
 }

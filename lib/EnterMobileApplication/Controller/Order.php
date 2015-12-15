@@ -208,6 +208,7 @@ namespace EnterMobileApplication\Controller {
                 'oldPaySum' => $order->paySumWithOnlineDiscount ? $order->paySum : null,
                 'paySum' => $order->paySumWithOnlineDiscount ? $order->paySumWithOnlineDiscount : $order->paySum,
                 'discountSum' => $order->discountSum,
+                'isCancelAvailable' => $order->isCancelAvailable,
                 'subwayId' => $order->subwayId,
                 'deliveries' => $order->deliveries,
                 'deliveryType' => $order->deliveryType,
