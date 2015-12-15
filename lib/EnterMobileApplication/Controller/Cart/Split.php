@@ -125,8 +125,21 @@ namespace EnterMobileApplication\Controller\Cart {
                     }
                 }
 
-                $order->possiblePaymentMethodIds = array_values($order->possiblePaymentMethodIds);
+                foreach ($order->possiblePaymentMethodIds as $key => $possiblePaymentMethodId) {
+                    if (isset($paymentMethodsById[$possiblePaymentMethodId]) && $paymentMethodsById[$possiblePaymentMethodId]->isOnline) {
+                        unset($order->possiblePaymentMethodIds[$key]);
+                    }
+                }
+
+                if (!isset($paymentMethodsById[$order->paymentMethodId]) || $paymentMethodsById[$order->paymentMethodId]->isOnline) {
+                    /** @var \EnterModel\Cart\Split\Order\PaymentMethod $firstPossiblePaymentMethod */
+                    $firstPossiblePaymentMethod = reset($order->possiblePaymentMethods);
+                    $order->paymentMethodId = $firstPossiblePaymentMethod ? $firstPossiblePaymentMethod->id : null;
+                }
+
+                $order->isOnlinePaymentAvailable = false;
                 $order->possiblePaymentMethods = array_values($order->possiblePaymentMethods);
+                $order->possiblePaymentMethodIds = array_values($order->possiblePaymentMethodIds);
 
                 // MAPI-116
                 foreach ($order->products as $product) {
