@@ -48,7 +48,7 @@ class UserMenu {
             ],
             'addresses' => [
                 'token' => 'addresses',
-                'name' => 'Избранное',
+                'name' => 'Адреса',
                 'url' => '/private/addresses',
                 'isActive' => false,
                 'count' => false,

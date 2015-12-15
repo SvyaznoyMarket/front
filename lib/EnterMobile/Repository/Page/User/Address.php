@@ -31,6 +31,20 @@ class Address {
 
         $page->title = 'Личный кабинет';
 
+        foreach ($request->addresses as $addressModel) {
+            $regionModel = ($addressModel->regionId && isset($request->regionsById[$addressModel->regionId])) ? $request->regionsById[$addressModel->regionId] : null;
+
+            $page->content->addresses = [
+                'region' =>
+                    $regionModel
+                    ? [
+                        'name' => $regionModel->name,
+                    ]
+                    : false
+                ,
+            ];
+        }
+
         // шаблоны mustache
         // ...
 

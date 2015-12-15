@@ -46,9 +46,27 @@ class Index {
         $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
         $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
 
+        // пользователь
+        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+
+        // запрос адресов
+        $addressQuery = new Query\User\Address\GetListByUserUi($user->ui);
+        $curl->prepare($addressQuery);
+
         $curl->execute();
 
         (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
+
+        if ($error = $addressQuery->getError()) {
+            throw $error;
+        }
+
+        // адреса
+        $addresses = [];
+        foreach ($addressQuery->getResult() as $item) {
+            if (empty($item['id'])) continue;
+            $addresses[] = new \EnterModel\Address($item);
+        }
 
         $userMenu = (new \EnterRepository\UserMenu())->getItems();
 
@@ -56,9 +74,10 @@ class Index {
         $pageRequest = new Repository\Page\User\Address\Request();
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $region;
-        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->user = $user;
         $pageRequest->cart = $cart;
         $pageRequest->userMenu = $userMenu;
+        $pageRequest->addresses = $addresses;
 
         $page = new Page();
         (new Repository\Page\User\Address())->buildObjectByRequest($page, $pageRequest);

@@ -20,6 +20,8 @@ namespace EnterMobile\Model\Page\User\Address\Index {
     use EnterMobile\Model\Partial;
 
     class Content extends Page\User\DefaultPage\Content {
+        /** @var array */
+        public $addresses = [];
 
         public function __construct() {
             parent::__construct();
