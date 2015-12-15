@@ -6161,8 +6161,8 @@ body {
 }
 @media only screen and (min-width: 768px) {
   .catalogList__item-inner {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
     text-align: center;
   }
 }
@@ -6280,7 +6280,7 @@ body {
   }
 }
 .catalogList__availability {
-  min-height: 16px;
+  min-height: 22px;
   margin: 5px 0;
 }
 .catalogList__availability span {
@@ -6327,19 +6327,19 @@ body {
   -ms-box-sizing: border-box;
   font-size: 14px;
   text-decoration: line-through;
+  color: #666666;
 }
 .catalogList__price-old span {
   text-decoration: none;
 }
 @media only screen and (min-width: 768px) {
   .catalogList__price-old span {
-    padding-right: 20px;
+    padding-right: 10px;
   }
 }
 @media only screen and (min-width: 768px) {
   .catalogList__price-old {
     display: inline-block;
-    max-width: 50%;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -6355,7 +6355,6 @@ body {
 @media only screen and (min-width: 768px) {
   .catalogList__price-now {
     display: inline-block;
-    max-width: 50%;
     font-size: 22px;
     text-align: center;
   }
@@ -9247,6 +9246,9 @@ body {
 .checkout-order-err__msg {
   font-weight: bold;
 }
+.checkout-order-err__info-txt {
+  white-space: nowrap;
+}
 .checkout-delivery-type {
   font-size: 16px;
   margin: 0;
@@ -9344,7 +9346,7 @@ body {
 .checkout-order-head__info:after {
   content: '';
   position: absolute;
-  left: 0px;
+  left: 0;
   top: 50%;
   margin-top: -8.5px;
   width: 17px;
@@ -14133,6 +14135,18 @@ section.map .map-container {
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
   background: #FFFFFF;
 }
+.grids__cell-inner_bg {
+  -o-background-size: cover;
+  /* opera ≥ 9.5 */
+  -khtml-background-size: cover;
+  /* Konqueror ≥ 3.5.4 */
+  -moz-background-size: cover;
+  /* Firefox ≥ 3.6 */
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
 .grids__title {
   position: absolute;
   left: 0;
@@ -14155,11 +14169,6 @@ section.map .map-container {
   .grids__title {
     width: 300px;
   }
-}
-.grids__bg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 .grids__gray {
   background: #f2f2f2;

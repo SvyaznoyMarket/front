@@ -78,6 +78,8 @@ class Order {
     public $prepaidSum;
     /** @var float */
     public $discountSum;
+    /** @var bool */
+    public $isCancelAvailable = false;
     /** @var string */
     public $deliveryType;
     /** @var string */
@@ -153,6 +155,7 @@ class Order {
         if (!empty($data['meta_data']['prepaid_sum'])) $this->prepaidSum = $this->getPriceHelper()->removeZeroFraction($data['meta_data']['prepaid_sum']);
         if (array_key_exists('payment_sum', $data)) $this->paySumWithOnlineDiscount = $this->getPriceHelper()->removeZeroFraction($data['payment_sum']);
         if (array_key_exists('discount_sum', $data)) $this->discountSum = $this->getPriceHelper()->removeZeroFraction($data['discount_sum']);
+        if (array_key_exists('is_cancel_request_available', $data)) $this->isCancelAvailable = (bool)$data['is_cancel_request_available'];
         if (array_key_exists('delivery_type_id', $data)) {
             switch ($data['delivery_type_id']) {
                 case 1:

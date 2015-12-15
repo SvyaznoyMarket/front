@@ -152,11 +152,12 @@ class Category {
      * @throws \Exception
      * @return Http\Response
      */
-    public function getResponseForSecretSale(Http\Request $request) {
+    private function getResponseForSecretSale(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
         $categoryRepository = new \EnterRepository\Product\Category();
         $productRepository = new \EnterRepository\Product();
+        $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME!!!
 
         $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request);
         $userAuthToken = is_scalar($request->query['token']) ? (string)$request->query['token'] : null;
@@ -252,6 +253,8 @@ class Category {
             }, $secretSalePromoListQuery->getResult());
         }
 
+        $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
+        $uniquePrices = [];
         $productCount = null;
         $productsOnPage = [];
         if ($secretSalePromo && $secretSalePromo->products) {
@@ -285,32 +288,7 @@ class Category {
             $secretSalePromo->products = $productRepository->getIndexedObjectListByQueryList($productListQueries, $productDescriptionListQueries);
             $productRepository->setRatingForObjectListByQueryList($secretSalePromo->products, $productRatingListQueries);
 
-            call_user_func(function() use(&$secretSalePromo, $categoryId, $categoryRepository) {
-                $modelUis = [];
-                foreach ($secretSalePromo->products as $key => $product) {
-                    // Удаляем товары, которые нельзя купить
-                    if (!$product->isBuyable) {
-                        unset($secretSalePromo->products[$key]);
-                        continue;
-                    }
-
-                    // Удаляем товары из одного модельного ряда
-                    if ($product->model && $product->model->ui) {
-                        if (!in_array($product->model->ui, $modelUis, true)) {
-                            $modelUis[] = $product->model->ui;
-                        } else {
-                            unset($secretSalePromo->products[$key]);
-                            continue;
-                        }
-                    }
-
-                    // Удаляем товары, которых нет в выбранной категории
-                    if ($categoryId && (!$product->category || $categoryRepository->getRootObject($product->category)->id !== $categoryId)) {
-                        unset($secretSalePromo->products[$key]);
-                        continue;
-                    }
-                }
-            });
+            (new \EnterRepository\Product\Category())->filterSecretSaleProducts($secretSalePromo->products, $categoryId, $requestFilters, $uniquePrices);
 
             // Сортировка товаров
             call_user_func(function() use(&$secretSalePromo, $sorting) {
@@ -385,7 +363,8 @@ class Category {
         }
 
         return new Http\JsonResponse([
-            'category' => call_user_func(function() use($secretSalePromo, $secretSalePromos, $categoryId, $categoryRepository, $region, $curl) {
+            'category' => call_user_func(function() use($secretSalePromo, $secretSalePromos, $categoryId, $categoryRepository, $region, $curl, $config) {
+                $listingView = '3';
                 $resultCategory = [];
                 $secretSaleMenuElement = (new \EnterMobileApplication\Repository\MainMenu())->getSecretSaleElement();
 
@@ -407,17 +386,21 @@ class Category {
                             'name' => (string)$category->name,
                             'media' => $category->media,
                             'hasChildren' => false,
-                            'listingView' => '1',
-                            'discount' => null,
+                            'listingView' => $listingView,
+                            'discount' => [
+                                'value' => (int)$secretSalePromo->discount,
+                                'unit' => '%',
+                                'endAt' => (int)$secretSalePromo->endAt,
+                            ],
                             'children' => [],
                         ];
                     } else {
                         $resultCategory = [
                             'id' => $secretSaleMenuElement->id . ':' . $secretSalePromo->ui,
                             'name' => (string)$secretSalePromo->name,
-                            'media' => $secretSalePromo->media,
+                            'media' => $this->getResponseForSecretSaleMediaList($secretSalePromo->media),
                             'hasChildren' => false,
-                            'listingView' => '1',
+                            'listingView' => $listingView,
                             'discount' => [
                                 'value' => (int)$secretSalePromo->discount,
                                 'unit' => '%',
@@ -426,6 +409,10 @@ class Category {
                             'children' => [],
                         ];
 
+                        // Отключаем подкатегории промо до решения FCMS-998, т.к. моб. приложениям для корректной работы
+                        // нужен флаг hasChildren для подкатегорий подкатегорий при запросе категории самого верхнего
+                        // уровня (secretSale)
+                        /*
                         $categoryUis = [];
                         foreach ($secretSalePromo->products as $product) {
                             if ($product->category) {
@@ -436,7 +423,7 @@ class Category {
                             }
                         }
 
-                        if ($categoryUis) {
+                        if (count($categoryUis) > 1) {
                             $categoryListQuery = new \EnterQuery\Product\Category\GetListByUiList($categoryUis, $region->id);
                             $curl->prepare($categoryListQuery);
                             $curl->execute();
@@ -447,12 +434,17 @@ class Category {
                                     'name' => (string)$category->name,
                                     'media' => $category->media,
                                     'hasChildren' => false,
-                                    'listingView' => '1',
-                                    'discount' => null,
+                                    'listingView' => $listingView,
+                                    'discount' => [
+                                        'value' => (int)$secretSalePromo->discount,
+                                        'unit' => '%',
+                                        'endAt' => (int)$secretSalePromo->endAt,
+                                    ],
                                     'children' => [],
                                 ];
                             }
                         }
+                        */
                     }
                 } else if ($secretSalePromos) {
                     $media = new Model\MediaList();
@@ -461,9 +453,9 @@ class Category {
                     $resultCategory = [
                         'id' => (string)$secretSaleMenuElement->id,
                         'name' => (string)$secretSaleMenuElement->name,
-                        'media' => $media,
+                        'media' => $this->getResponseForSecretSaleMediaList($media, 'http://' . $config->hostname . ($config->version ? '/' . $config->version : '') . '/img/menu/250x250/secretSale.png'),
                         'hasChildren' => false,
-                        'listingView' => '1',
+                        'listingView' => $listingView,
                         'discount' => null,
                         'children' => [],
                     ];
@@ -472,9 +464,9 @@ class Category {
                         $resultCategory['children'][] = [
                             'id' => $secretSaleMenuElement->id . ':' . $secretSalePromo->ui,
                             'name' => (string)$secretSalePromo->name,
-                            'media' => $secretSalePromo->media,
+                            'media' => $this->getResponseForSecretSaleMediaList($secretSalePromo->media),
                             'hasChildren' => false,
-                            'listingView' => '1',
+                            'listingView' => $listingView,
                             'discount' => [
                                 'value' => (int)$secretSalePromo->discount,
                                 'unit' => '%',
@@ -485,12 +477,127 @@ class Category {
                     }
                 }
 
+                if (!empty($resultCategory['children'])) {
+                    $resultCategory['hasChildren'] = true;
+                }
+
                 return $resultCategory;
             }),
             'productCount' => $productCount,
             'products' => $this->getProductList($productsOnPage),
-            'filters' => [],
+            'filters' => call_user_func(function() use($secretSalePromo, $uniquePrices, $requestFilters) {
+                if (!$secretSalePromo || !$secretSalePromo->products) {
+                    return [];
+                }
+
+                $minPrice = min($uniquePrices);
+                $maxPrice = max($uniquePrices);
+
+                $values = [];
+                foreach ($requestFilters as $requestFilter) {
+                    if ($requestFilter->token === 'price' && $requestFilter->optionToken === 'from') {
+                        $values['from'] = $requestFilter->value;
+                    }
+
+                    if ($requestFilter->token === 'price' && $requestFilter->optionToken === 'to') {
+                        $values['to'] = $requestFilter->value;
+                    }
+                }
+
+                return [
+                    [
+                        'name' => 'Цена',
+                        'token' => 'price',
+                        'isSlider' => true,
+                        'isMultiple' => false,
+                        'min' => (float)$minPrice,
+                        'max' => (float)$maxPrice,
+                        'unit' => null,
+                        'isSelected' => (bool)$values,
+                        'value' => $values ? $values : null,
+                        'option' => [
+                            [
+                                'id' => (string)$minPrice,
+                                'token' => 'from',
+                                'name' => 'от',
+                                'quantity' => null
+                            ],
+                            [
+                                'id' => (string)$maxPrice,
+                                'token' => 'to',
+                                'name' => 'до',
+                                'quantity' => null
+                            ],
+                        ],
+                    ],
+                ];
+            }),
             'sortings' => $productsOnPage ? $sortings : [],
         ]);
+    }
+    
+    private function getResponseForSecretSaleMediaList(Model\MediaList $mediaList, $sourceUrl = null) {
+        $mediaRepository = new \EnterRepository\Media();
+        $media = reset($mediaList->photos);
+        return [
+            'photos' => [
+                [
+                    'uid' => null,
+                    'contentType' => $media->contentType,
+                    'type' => $media->type,
+                    'tags' => ['main'],
+                    'sources' => [
+                        [
+                            'width' => '96',
+                            'height' => '96',
+                            'type' => 'category_96x96',
+                            'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_315x231')->url,
+                        ],
+                        [
+                            'width' => '130',
+                            'height' => '130',
+                            'type' => 'category_130x130',
+                            'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_315x231')->url,
+                        ],
+                        [
+                            'width' => '163',
+                            'height' => '163',
+                            'type' => 'category_163x163',
+                            'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_315x231')->url,
+                        ],
+                        [
+                            'width' => '200',
+                            'height' => '200',
+                            'type' => 'category_200x200',
+                            'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_315x231')->url,
+                        ],
+                        [
+                            'width' => '350',
+                            'height' => '350',
+                            'type' => 'category_350x350',
+                            'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_483x357')->url,
+                        ],
+                        [
+                            'width' => '480',
+                            'height' => '480',
+                            'type' => 'category_480x480',
+                            'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_651x483')->url,
+                        ],
+                        [
+                            'width' => '1000',
+                            'height' => '1000',
+                            'type' => 'category_1000x1000',
+                            'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_987x725')->url,
+                        ],
+                        [
+                            'width' => '300',
+                            'height' => '300',
+                            'type' => 'original',
+                            'url' => $sourceUrl ?: $mediaRepository->getSourceObjectByItem($media, 'closed_sale_483x357')->url,
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 }

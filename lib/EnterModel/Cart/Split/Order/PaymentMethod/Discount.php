@@ -3,8 +3,8 @@
 namespace EnterModel\Cart\Split\Order\PaymentMethod;
 
 class Discount {
-    /** @var float|null */
-    public $value;
+    /** @var string */
+    public $value = '';
     /** @var string */
     public $unit = '';
 
@@ -12,8 +12,8 @@ class Discount {
      * @param array $data
      */
     public function __construct($data = []) {
-        $this->value = $data['value'] ? (float)$data['value'] : null;
-        $this->unit = $data['unit'] ? (string)$data['unit'] : '';
+        if (isset($data['value'])) $this->value = (string)$data['value'];
+        if (isset($data['unit'])) $this->unit = (string)$data['unit'];
     }
 
     /**

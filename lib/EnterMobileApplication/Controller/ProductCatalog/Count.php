@@ -3,12 +3,14 @@
 namespace EnterMobileApplication\Controller\ProductCatalog;
 
 use Enter\Http;
+use EnterMobileApplication\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterQuery as Query;
 use EnterModel as Model;
 use EnterMobileApplication\Controller;
 
 class Count {
+    use ConfigTrait;
     use Controller\ProductListingTrait;
     use CurlTrait;
 
@@ -35,6 +37,10 @@ class Count {
 
         // ид категории
         $categoryId = trim((string)$request->query['categoryId']);
+
+        if (strpos($categoryId, (new \EnterMobileApplication\Repository\MainMenu())->getSecretSaleElement()->id) === 0) {
+            return $this->getResponseForSecretSale($request);
+        }
 
         // запрос среза
         $sliceItemQuery = null;
@@ -101,5 +107,97 @@ class Count {
         ];
 
         return new Http\JsonResponse($response);
+    }
+
+    /**
+     * @param Http\Request $request
+     * @throws \Exception
+     * @return Http\Response
+     */
+    private function getResponseForSecretSale(Http\Request $request) {
+        $config = $this->getConfig();
+        $curl = $this->getCurl();
+        $productRepository = new \EnterRepository\Product();
+        $filterRepository = new \EnterTerminal\Repository\Product\Filter(); // FIXME!!!
+
+        $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request);
+
+        $promoUi = null;
+        $categoryId = null;
+        call_user_func(function() use(&$promoUi, &$categoryId, $request) {
+            $ids = explode(':', trim((string)$request->query['categoryId']));
+            if (isset($ids[1])) {
+                $promoUi = $ids[1];
+            }
+
+            if (isset($ids[2])) {
+                $categoryId = $ids[2];
+            }
+        });
+
+        if (!$regionId) {
+            throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
+        }
+
+        if (!$promoUi) {
+            throw new \Exception('Не указан promo ui в параметре categoryId', Http\Response::STATUS_BAD_REQUEST);
+        }
+
+        $regionItemQuery = new Query\Region\GetItemById($regionId);
+        $curl->prepare($regionItemQuery);
+
+        $secretSalePromoItemQuery = new \EnterQuery\Promo\SecretSale\GetItemByUi($promoUi);
+        $curl->prepare($secretSalePromoItemQuery);
+
+        $curl->execute();
+
+        $region = (new \EnterRepository\Region())->getObjectByQuery($regionItemQuery);
+
+        /** @var Model\SecretSalePromo|null $secretSalePromo */
+        $secretSalePromo = $secretSalePromoItemQuery->getResult();
+        if ($secretSalePromo) {
+            $secretSalePromo = new Model\SecretSalePromo($secretSalePromo);
+            $time = time();
+            if ($secretSalePromo->startAt > $time || $secretSalePromo->endAt < $time) {
+                $secretSalePromo = null;
+            }
+        }
+
+        $productCount = 0;
+        if ($secretSalePromo && $secretSalePromo->products) {
+            $productListQueries = [];
+            $productDescriptionListQueries = [];
+            foreach (array_chunk(array_map(function(Model\Product $product) { return $product->ui; }, $secretSalePromo->products), $config->curl->queryChunkSize) as $uisInChunk) {
+                $productListQuery = new Query\Product\GetListByUiList($uisInChunk, $region->id, ['related' => false]);
+                $productDescriptionListQuery = new Query\Product\GetDescriptionListByUiList($uisInChunk, [
+                    'media'       => true,
+                    'media_types' => ['main'],
+                    'category'    => true,
+                    'label'       => true,
+                    'brand'       => true,
+                    'tag'         => true,
+                    'model'       => true,
+                ]);
+
+                $curl->prepare($productListQuery);
+                $curl->prepare($productDescriptionListQuery);
+
+                $productListQueries[] = $productListQuery;
+                $productDescriptionListQueries[] = $productDescriptionListQuery;
+            }
+
+            $curl->execute();
+
+            $secretSalePromo->products = $productRepository->getIndexedObjectListByQueryList($productListQueries, $productDescriptionListQueries);
+            $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
+
+            (new \EnterRepository\Product\Category())->filterSecretSaleProducts($secretSalePromo->products, $categoryId, $requestFilters);
+
+            $productCount = count($secretSalePromo->products);
+        }
+
+        return new Http\JsonResponse([
+            'count' => $productCount,
+        ]);
     }
 }

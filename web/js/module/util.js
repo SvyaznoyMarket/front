@@ -32,7 +32,7 @@ define(
             trackGoogleAnalyticsTransaction: function(data) {
                 try {
                     data = correctDataForAnalytics(data);
-                    trackClassicAnalytics(data);
+                    //trackClassicAnalytics(data);
                     trackUniversalAnalytics(data);
                 } catch (exception) {
                     console.error('[Google Analytics Ecommerce] %s', exception)
@@ -168,9 +168,11 @@ define(
                     ga.apply(ga, dataGa);
                 }
 
+                /*
                 if (typeof _gaq != 'undefined') {
                     _gaq.push(['_trackEvent'].concat(dataGa.slice(2)));
                 }
+                */
             },
 
             sendOrdersToGoogleAnalytics: function(orders) {
