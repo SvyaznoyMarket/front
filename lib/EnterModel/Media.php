@@ -33,48 +33,31 @@ namespace EnterModel {
                 }
             }
         }
-    }
-}
-
-namespace EnterModel\Media {
-    class Source {
-        /** @var string */
-        public $type;
-        /** @var string */
-        public $url;
 
         /**
-         * @param mixed $data
+         * @param array $data
          */
-        public function __construct($data = []) {
-            if (isset($data['type'])) $this->type = (string)$data['type'];
-            if (isset($data['url'])) $this->url = (string)$data['url'];
-        }
-    }
+        public function fromArray(array $data) {
+            if (isset($data['uid'])) $this->uid =  $data['uid'];
+            if (isset($data['contentType'])) $this->contentType =  $data['contentType'];
+            if (isset($data['type'])) $this->type =  $data['type'];
+            if (isset($data['tags'])) $this->tags =  $data['tags'];
 
-    class ImageSource extends Source {
-        /** @var int */
-        public $width;
-        /** @var int */
-        public $height;
-
-        /**
-         * @param mixed $data
-         */
-        public function __construct($data = []) {
-            parent::__construct($data);
-
-            if (isset($data['width'])) $this->width = (string)$data['width'];
-            if (isset($data['height'])) $this->height = (string)$data['height'];
-        }
-    }
-
-    class SvgSource extends Source {
-        /**
-         * @param mixed $data
-         */
-        public function __construct($data = []) {
-            parent::__construct($data);
+            if (isset($data['sources']) && is_array($data['sources'])) {
+                if ($this->type === 'image') {
+                    $this->sources = array_map(function($item) use($data) {
+                        $source = new Model\Media\ImageSource();
+                        $source->fromArray($item);
+                        return $source;
+                    }, $data['sources']);
+                } else if ($this->type === 'svg') {
+                    $this->sources = array_map(function($item) use($data) {
+                        $source = new Model\Media\SvgSource();
+                        $source->fromArray($item);
+                        return $source;
+                    }, $data['sources']);
+                }
+            }
         }
     }
 }

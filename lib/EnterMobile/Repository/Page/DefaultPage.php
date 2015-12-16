@@ -87,7 +87,20 @@ class DefaultPage {
                 ]
                 : null
             ,
-            'productId' => $productId
+            'productId' => $productId,
+            'partner'   => [
+                'service' => call_user_func(function() use($config) {
+                    $result = [];
+
+                    if ($config->partner->service->flocktory->enabled) {
+                        $result['flocktory'] = [
+                            'siteId' => $config->partner->service->flocktory->siteId,
+                        ];
+                    }
+
+                    return $result;
+                }),
+            ],
         ]);
 
         $page->dataUser = $templateHelper->json($request->user ? [

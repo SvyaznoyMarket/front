@@ -39,6 +39,15 @@ class DeleteProduct {
         }
         $cartProduct->quantity = 0;
 
+        $previousProduct = $cartRepository->getProductById($cartProduct->id, $cart);
+
+        $responseProduct = [
+            (string)$cartProduct->id => [
+                'newQuantity' => 0,
+                'previousQuantity' => $previousProduct ? $previousProduct->quantity : 0,
+            ],
+        ];
+
         // добавление товара в корзину
         $cartRepository->setProductForObject($cart, $cartProduct);
 
@@ -62,9 +71,11 @@ class DeleteProduct {
         $curl->prepare($cartItemQuery);
 
         $productsById = [];
-        foreach ($cart->product as $cartProduct) {
-            $productsById[$cartProduct->id] = null;
-        }
+        call_user_func(function() use($cart, &$productsById) {
+            foreach ($cart->product as $cartProduct) {
+                $productsById[$cartProduct->id] = null;
+            }
+        });
 
         $productListQuery = null;
         if ($productsById) {
@@ -149,6 +160,7 @@ class DeleteProduct {
         // response
         $response = new Http\JsonResponse([
             'result' => $page, // TODO: вынести на уровень JsonPage.result
+            'products' => $responseProduct,
         ]);
 
         return $response;
