@@ -109,6 +109,42 @@ namespace EnterAggregator\Controller\Cart {
                     ),
                 ];
 
+                if ($request->disableOnlinePaymentMethods) {
+                    call_user_func(function() use(&$splitData) {
+                        if (isset($splitData['orders']) && is_array($splitData['orders'])) {
+                            foreach ($splitData['orders'] as $orderKey => $order) {
+                                if (isset($order['possible_payment_methods']) && is_array($order['possible_payment_methods'])) {
+                                    foreach ($order['possible_payment_methods'] as $key => $paymentMethodId) {
+                                        if (!isset($splitData['payment_methods'][$paymentMethodId]['is_online']) || $splitData['payment_methods'][$paymentMethodId]['is_online']) {
+                                            unset($splitData['orders'][$orderKey]['possible_payment_methods'][$key]);
+                                        }
+                                    }
+
+                                    $splitData['orders'][$orderKey]['possible_payment_methods'] = array_values($splitData['orders'][$orderKey]['possible_payment_methods']);
+                                    $order['possible_payment_methods'] = $splitData['orders'][$orderKey]['possible_payment_methods'];
+
+                                    foreach ($order['payment_methods'] as $paymentMethodId => $paymentMethod) {
+                                        if (!in_array($paymentMethodId, $order['possible_payment_methods'])) {
+                                            unset($splitData['orders'][$orderKey]['payment_methods'][$paymentMethodId]);
+                                        }
+                                    }
+                                }
+
+                                if (isset($order['payment_method_id']) && (!isset($splitData['payment_methods'][$order['payment_method_id']]['is_online']) || $splitData['payment_methods'][$order['payment_method_id']]['is_online'])) {
+                                    if (isset($order['possible_payment_methods']) && is_array($order['possible_payment_methods'])) {
+                                        /** @var \EnterModel\Cart\Split\Order\PaymentMethod $firstPossiblePaymentMethodId */
+                                        $firstPossiblePaymentMethodId = reset($order['possible_payment_methods']);
+                                    } else {
+                                        $firstPossiblePaymentMethodId = null;
+                                    }
+
+                                    $splitData['orders'][$orderKey]['payment_method_id'] = $firstPossiblePaymentMethodId ? $firstPossiblePaymentMethodId : null;
+                                }
+                            }
+                        }
+                    });
+                }
+
                 // сохранение в сессии
                 if ($request->splitReceivedSuccessfullyCallback && is_callable($request->splitReceivedSuccessfullyCallback->handler)) {
                     try {
@@ -285,6 +321,8 @@ namespace EnterAggregator\Controller\Cart\Split {
          * @var Request\SplitReceivedSuccessfullyCallback
          */
         public $splitReceivedSuccessfullyCallback;
+        /** @var bool */
+        public $disableOnlinePaymentMethods = false;
 
         public function __construct() {
             $this->splitReceivedSuccessfullyCallback = new Request\SplitReceivedSuccessfullyCallback();
