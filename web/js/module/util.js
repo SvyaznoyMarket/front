@@ -1,6 +1,6 @@
 define(
-    [],
-    function () {
+    ['jquery', 'module/config'],
+    function ($, config) {
 
         var util = {
             formatCurrency: function (price) {
@@ -183,7 +183,7 @@ define(
                 $.each(orders, function(i, order) {
                     util.trackGoogleAnalyticsTransaction({
                         transaction: {
-                            id: order.number,
+                            id: order.numberErp,
                             affiliation: order.isPartner ? 'Партнер' : 'Enter',
                             total: order.paySum,
                             shipping: order.delivery.price,
@@ -202,6 +202,55 @@ define(
                         })
                     });
                 });
+            },
+
+            partner: {
+                flocktory: {
+                    send: function(data) {
+                        if (!config.partner.service.flocktory) {
+                            return;
+                        }
+
+                        function send(data) {
+                            window.flocktory = window.flocktory || [];
+                            window.flocktory.push(data);
+                        }
+
+                        switch (data.action) {
+                            case 'postcheckout':
+                                var orderNumber = 0;
+                                $.each(data.orders, function(key, order) {
+                                    orderNumber++;
+
+                                    send(['postcheckout', {
+                                        user: {
+                                            name: $.trim(order.firstName + ' ' + order.lastName),
+                                            email: order.email ? order.email : order.phone + '@unknown.email', // http://flocktory.com/help
+                                            sex: order.user.sex == 1 ? 'm' : (order.user.sex == 2 ? 'f' : '')
+                                        },
+                                        order: {
+                                            id: order.numberErp,
+                                            price: order.paySum,
+                                            items: $.map(order.products, function(product) {
+                                                return {
+                                                    id: product.id,
+                                                    title: product.name,
+                                                    price: product.price,
+                                                    image: product.images['120x120'].url,
+                                                    count: product.quantity
+                                                };
+                                            })
+                                        },
+                                        spot: orderNumber > 1 ? 'no_popup' : data.spot || ''
+                                    }]);
+                                });
+                                break;
+                            default:
+                                send([data.action, {item: data.item}]);
+                                break;
+                        }
+                    }
+                }
             }
         };
 

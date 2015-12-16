@@ -1,1 +1,1 @@
-define(["require","jquery","underscore","module/util"],function(e,n,o,t){var i=function(e){"function"==typeof window.ga&&(console.info("ga",["send","event","Воронка_m.enter"].concat(e)),window.ga.apply(this,["send","event","Воронка_m.enter"].concat(e)))};return{push:i}});
+define(["require","jquery","underscore","module/util"],function(){var e=function(e){"function"==typeof window.ga&&(console.info("ga",["send","event","Воронка_m.enter"].concat(e)),window.ga.apply(this,["send","event","Воронка_m.enter"].concat(e)))};return{push:e}});

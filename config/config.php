@@ -41,6 +41,9 @@ return function(\EnterAggregator\Config $config) {
     $config->partner->service->googleRetargeting->enabled = true;
     // cityads
     $config->partner->service->cityads->enabled = true;
+    // flocktory
+    $config->partner->service->flocktory->enabled = true;
+    $config->partner->service->flocktory->siteId = 427;
 
     $config->curl->queryChunkSize = 30;
     $config->curl->logResponse = false;

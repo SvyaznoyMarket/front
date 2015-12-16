@@ -50,16 +50,23 @@ class SetProductList {
         // пользователь
         $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
+        $responseProducts = [];
         // добавление товаров в корзину
         foreach ($cartProducts as $cartProduct) {
+            /** @var \EnterModel\Cart\Product|null $existsCartProduct */
+            $existsCartProduct = isset($cart->product[$cartProduct->id]) ? $cart->product[$cartProduct->id] : null;
+
             // если у товара есть знак количества (+|-) ...
             if (isset($cartProduct->quantitySign)) {
-                /** @var \EnterModel\Cart\Product|null $existsCartProduct */
-                $existsCartProduct = isset($cart->product[$cartProduct->id]) ? $cart->product[$cartProduct->id] : null;
                 if ($existsCartProduct) {
                     $cartProduct->quantity = $existsCartProduct->quantity + (int)($cartProduct->quantitySign . $cartProduct->quantity);
                 }
             }
+
+            $responseProducts[(string)$cartProduct->id] = [
+                'newQuantity' => $cartProduct->quantity,
+                'previousQuantity' => $existsCartProduct ? $existsCartProduct->quantity : 0,
+            ];
         }
 
         // агрегирующий контроллер
@@ -128,6 +135,7 @@ class SetProductList {
         // response
         $response = new Http\JsonResponse([
             'result' => $page, // TODO: вынести на уровень JsonPage.result
+            'products' => $responseProducts,
         ]);
 
         return $response;

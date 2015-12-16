@@ -22,6 +22,7 @@ class Index {
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
         $curl = $this->getCurl();
         $productRepository = new \EnterRepository\Product();
+        $mediaRepository = new \EnterRepository\Media();
         $userItemQuery = null;
         $cartSplitQuery = null;
         $createOrderQuery = null;
@@ -101,16 +102,20 @@ class Index {
 
             return $request->isXmlHttpRequest() ? new Http\JsonResponse([
                 'order' => [
-                    'number' => $orderCreatePacketResponse[0]['number_erp'],
+                    'numberErp' => $orderCreatePacketResponse[0]['number_erp'],
                     'isPartner' => $orderCreatePacketResponse[0]['is_partner'],
                     'paySum' => $orderCreatePacketResponse[0]['pay_sum'],
+                    'email' => $orderCreatePacketResponse[0]['email'],
+                    'firstName' => $orderCreatePacketResponse[0]['first_name'],
+                    'lastName' => $orderCreatePacketResponse[0]['last_name'],
+                    'phone' => $orderCreatePacketResponse[0]['phone'],
                     'delivery' => [
                         'price' => isset($orderCreatePacketResponse[0]['delivery'][0]) ? $orderCreatePacketResponse[0]['delivery'][0]['price'] : '',
                     ],
                     'region' => [
                         'name' => $orderCreatePacketResponse[0]['geo']['name'],
                     ],
-                    'products' => array_map(function($product) use(&$products, $productRepository) {
+                    'products' => array_map(function($product) use(&$products, $productRepository, $mediaRepository) {
                         $coreProduct = $productRepository->getObjectFromListById($products, $product['id']);
                         if (!$coreProduct) {
                             return [];
@@ -125,8 +130,16 @@ class Index {
                             }, $coreProduct->category) : [],
                             'price' => $product['price'],
                             'quantity' => $product['quantity'],
+                            'images' => [
+                                '120x120' => [
+                                    'url' => $mediaRepository->getSourceObjectByList($coreProduct->media->photos, 'main', 'product_120')->url,
+                                ],
+                            ],
                         ];
                     }, $orderCreatePacketResponse[0]['product']),
+                    'user' => [
+                        'sex' => isset($orderCreatePacketResponse[0]['user']['sex']) ? (int)$orderCreatePacketResponse[0]['user']['sex'] : null,
+                    ],
                 ],
             ]) : (new \EnterAggregator\Controller\Redirect())->execute($referer, 302);
         } catch (\Exception $e) {
