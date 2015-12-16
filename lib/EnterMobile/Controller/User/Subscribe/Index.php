@@ -9,12 +9,15 @@ use EnterAggregator\CurlTrait;
 use EnterAggregator\SessionTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterAggregator\DebugContainerTrait;
+use EnterMobile\Controller\SecurityTrait;
 use EnterMobile\Repository;
 use EnterQuery as Query;
 use EnterMobile\Model\Page\User\Subscribe\Index as Page;
 
 class Index {
-    use ConfigTrait,
+    use
+        SecurityTrait,
+        ConfigTrait,
         LoggerTrait,
         CurlTrait,
         MustacheRendererTrait,
@@ -31,7 +34,7 @@ class Index {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
-        $userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request);
+        $userToken = $this->getUserToken($request);
 
         // запрос пользователя
         $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
@@ -46,7 +49,7 @@ class Index {
         $curl->execute();
 
         // пользователь
-        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $user = $this->getUser($userItemQuery);
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);

@@ -66,7 +66,16 @@ class HandleResponse {
                 ] : null,
             ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
 
-            if ($request->isXmlHttpRequest() && ($e->getCode() > 300) && ($e->getCode() < 600)) {
+            if (in_array($e->getCode(), [401, 403])) {
+                if ($request->isXmlHttpRequest()) {
+                    $response = new Http\JsonResponse([
+                        'redirect' => '/login',
+                        'error'    => ['code' => $e->getCode(), 'message' => $e->getMessage()],
+                    ], $e->getCode());
+                } else {
+                    $response = (new \EnterAggregator\Controller\Redirect())->execute('/login', 302);
+                }
+            } else if ($request->isXmlHttpRequest() && ($e->getCode() > 300) && ($e->getCode() < 600)) {
                 $response = new Http\JsonResponse([
                     'error' => ['code' => $e->getCode(), 'message' => $e->getMessage()],
                 ], $e->getCode());
