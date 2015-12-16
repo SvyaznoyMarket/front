@@ -90,6 +90,7 @@ namespace EnterMobileApplication\Controller\Cart {
             $controllerRequest->shopId = $shopId;
             $controllerRequest->changeData = (new \EnterRepository\Cart())->dumpSplitChange($changeData, $previousSplitData);
             $controllerRequest->previousSplitData = $previousSplitData;
+            $controllerRequest->disableOnlinePaymentMethods = true;
             $controllerRequest->cart = $cart;
             // при получении данных о разбиении корзины - записать их в сессию немедленно
             $controllerRequest->splitReceivedSuccessfullyCallback->handler = function() use (&$controllerRequest, &$config, &$session) {
@@ -103,43 +104,20 @@ namespace EnterMobileApplication\Controller\Cart {
             $response->errors = $controllerResponse->errors;
             $response->split = $controllerResponse->split;
 
-            /** @var \EnterModel\Cart\Split\PaymentMethod[] $paymentMethodsById */
-            $paymentMethodsById = [];
-            foreach ($response->split->paymentMethods as $paymentMethod) {
-                $paymentMethodsById[$paymentMethod->id] = $paymentMethod;
-            }
-
             // type fix
             foreach ($response->split->orders as $order) {
                 if (!(bool)$order->groupedPossiblePointIds) {
                     $order->groupedPossiblePointIds = null;
                 }
 
-                foreach ($order->possiblePaymentMethods as $key => $possiblePaymentMethod) {
-                    if (isset($paymentMethodsById[$possiblePaymentMethod->id]) && $paymentMethodsById[$possiblePaymentMethod->id]->isOnline) {
-                        unset($order->possiblePaymentMethods[$key]);
-                    }
-
+                foreach ($order->possiblePaymentMethods as $possiblePaymentMethod) {
                     if ($possiblePaymentMethod->discount && $possiblePaymentMethod->discount->unit === 'rub') {
                         $possiblePaymentMethod->discount->unit = 'руб.';
                     }
                 }
 
-                foreach ($order->possiblePaymentMethodIds as $key => $possiblePaymentMethodId) {
-                    if (isset($paymentMethodsById[$possiblePaymentMethodId]) && $paymentMethodsById[$possiblePaymentMethodId]->isOnline) {
-                        unset($order->possiblePaymentMethodIds[$key]);
-                    }
-                }
-
-                if (!isset($paymentMethodsById[$order->paymentMethodId]) || $paymentMethodsById[$order->paymentMethodId]->isOnline) {
-                    /** @var \EnterModel\Cart\Split\Order\PaymentMethod $firstPossiblePaymentMethod */
-                    $firstPossiblePaymentMethod = reset($order->possiblePaymentMethods);
-                    $order->paymentMethodId = $firstPossiblePaymentMethod ? $firstPossiblePaymentMethod->id : null;
-                }
-
-                $order->isOnlinePaymentAvailable = false;
-                $order->possiblePaymentMethods = array_values($order->possiblePaymentMethods);
                 $order->possiblePaymentMethodIds = array_values($order->possiblePaymentMethodIds);
+                $order->possiblePaymentMethods = array_values($order->possiblePaymentMethods);
 
                 // MAPI-116
                 foreach ($order->products as $product) {
