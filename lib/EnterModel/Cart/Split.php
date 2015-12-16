@@ -22,8 +22,6 @@ class Split {
     public $clientIp;
     /** @var string|null */
     public $sum;
-    /** @var string|null */
-    private $_sum;
     /** @var Model\Cart\Split\Error[] */
     public $errors = [];
 
@@ -81,8 +79,7 @@ class Split {
         }
 
         $this->user = $data['user_info'] ? new Split\User($data['user_info'], $format) : null;
-        $this->_sum = $data['total_cost'] ? (string)$data['total_cost'] : null;
-        $this->sum = $data['total_view_cost'] ? (string)$data['total_view_cost'] : null;
+        $this->sum = $data['total_cost'] ? (string)$data['total_cost'] : null;
 
         if (isset($data['errors']) && is_array($data['errors'])) {
             foreach ($data['errors'] as $item) {
@@ -102,8 +99,7 @@ class Split {
             'points'           => array_map(function(Split\PointGroup $pointGroup) { return $pointGroup->dump(); }, $this->pointGroups),
             'orders'           => array_map(function(Split\Order $product) { return $product->dump(); }, $this->orders),
             'user_info'        => $this->user ? $this->user->dump() : null,
-            'total_cost'       => $this->_sum,
-            'total_view_cost'  => $this->sum,
+            'total_cost'       => $this->sum,
             'errors'           => array_map(function(Model\Cart\Split\Error $error) { return $error->dump(); }, $this->errors),
         ];
     }
