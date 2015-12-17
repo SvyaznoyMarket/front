@@ -27,9 +27,36 @@ class Subscribe {
     public function buildObjectByRequest(Page $page, Subscribe\Request $request) {
         (new Repository\Page\User\DefaultPage)->buildObjectByRequest($page, $request);
 
+        $router = $this->getRouter();
+
         $templateHelper = $this->getTemplateHelper();
 
         $page->title = 'Личный кабинет';
+
+        $page->dataModule = 'user';
+
+        $setUrl = $router->getUrlByRoute(new Routing\User\Subscribe\Set());
+        $deleteUrl = $router->getUrlByRoute(new Routing\User\Subscribe\Delete());
+
+        foreach ($request->channelsById as $channelModel) {
+            $subscribeModels = isset($request->subscriptionsGroupedByChannel[$channelModel->id]) ? $request->subscriptionsGroupedByChannel[$channelModel->id] : null;
+            if (!$subscribeModels) continue;
+
+            $page->content->subscribes[] = [
+                'name'      => $channelModel->name,
+                'elementId' => sprintf('channel-%s', md5(json_encode($channelModel, JSON_UNESCAPED_UNICODE))),
+                'checked'   => (bool)$subscribeModels,
+                'setUrl'    => $setUrl,
+                'deleteUrl' => $deleteUrl,
+                'dataValue' => $templateHelper->json([
+                    'subscribe' => [
+                        'channel_id' => $channelModel->id,
+                        'type'       => 'email',
+                        'email'      => $request->user->email,
+                    ],
+                ]),
+            ];
+        }
 
         // шаблоны mustache
         // ...

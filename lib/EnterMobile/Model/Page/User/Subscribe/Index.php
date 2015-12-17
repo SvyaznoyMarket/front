@@ -20,6 +20,8 @@ namespace EnterMobile\Model\Page\User\Subscribe\Index {
     use EnterMobile\Model\Partial;
 
     class Content extends Page\User\DefaultPage\Content {
+        /** @var array */
+        public $subscribes =[];
 
         public function __construct() {
             parent::__construct();

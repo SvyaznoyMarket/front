@@ -1,0 +1,1 @@
+define(["jquery","underscore"],function(e,r){var s=e("body");s.on("click",".js-user-subscribe-input",function(){var r=e(this),s=r.data("value"),c=!!r.is(":checked"),t=c?r.data("setUrl"):r.data("deleteUrl");try{if(!t)throw{message:"Нет url"};e.post(t,s).done(function(e){!e.success})}catch(n){console.error(n)}})});

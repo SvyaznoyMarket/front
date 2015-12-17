@@ -279,6 +279,14 @@
         "name": "Подписки пользователя",
         "pattern": "/private/subscribes"
     },
+    "User\\Subscribe\\Set": {
+        "name": "Установить подписку пользователя",
+        "pattern": "/private/subscribes/set"
+    },
+    "User\\Subscribe\\Delete": {
+        "name": "Удалить подписку пользователя",
+        "pattern": "/private/subscribes/delete"
+    },
     "User\\Message": {
         "name": "Сообщения пользователя",
         "pattern": "/private/messages"

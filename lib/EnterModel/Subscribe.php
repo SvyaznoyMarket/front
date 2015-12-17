@@ -3,6 +3,8 @@
 namespace EnterModel;
 
 class Subscribe {
+    const TYPE_EMAIL = 'email';
+
     /** @var string */
     //public $id;
     /** @var string */

@@ -90,6 +90,9 @@ class Index {
             $subscription = new \EnterModel\Subscribe($item);
             if (!$subscription->channelId) continue;
 
+            // пропустить подписки, у которых email не совпадает с email-ом пользователя
+            if (('email' === $subscription->type) && $user->email && ($user->email !== $subscription->email)) continue;
+
             $subscriptionsGroupedByChannel[$subscription->channelId][] = $subscription;
         }
 
