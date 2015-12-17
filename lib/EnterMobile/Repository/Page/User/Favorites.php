@@ -33,11 +33,15 @@ class Favorites {
         (new Repository\Page\User\DefaultPage)->buildObjectByRequest($page, $request);
 
         $templateHelper = $this->getTemplateHelper();
+        $router = $this->getRouter();
 
         $page->title = 'Избранное';
         $page->dataModule = 'user.favorites';
 
-        $page->content->favoriteItems = $request->favoriteProducts;
+        foreach ($request->favoriteProducts as $favoriteProductModel) {
+            $favoriteProductModel->deleteUrl = $router->getUrlByRoute(new Routing\Product\DeleteFavorite($favoriteProductModel->ui));
+            $page->content->favoriteItems[] = $favoriteProductModel;
+        }
 
         // шаблоны mustache
         // ...

@@ -19,8 +19,7 @@ class DeleteFavorite {
     use ConfigTrait,
         RouterTrait,
         LoggerTrait,
-        CurlTrait,
-        SessionTrait;
+        CurlTrait;
 
     /**
      * @param Http\Request $request
@@ -29,12 +28,11 @@ class DeleteFavorite {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $session = $this->getSession();
         $curl = $this->getCurl();
 
+        $error = null;
         try {
-            $postData = $request->data->all();
-            $productUi = $postData['productUi'];
+            $productUi = $request->query['productUi'];
 
             $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
             if ($userItemQuery) {
@@ -54,18 +52,17 @@ class DeleteFavorite {
 
             $curl->execute();
         } catch (\Exception $e) {
-            echo '<pre>';
-            print_r ($e);
-            echo '</pre>';
+            $error = $e;
         }
 
+        if ($request->isXmlHttpRequest()) {
+            $response = new Http\JsonResponse([
+                'success' => (bool)$error,
+            ]);
+        } else {
+            $response = (new \EnterAggregator\Controller\Redirect())->execute(isset($request->server['HTTP_REFERER']) ? $request->server['HTTP_REFERER'] : '/', 302);
+        }
 
-
-        return new Http\JsonResponse([
-            'data' => [
-                'success' => true
-            ],
-            'statusCode' => 200
-        ]);
+        return $response;
     }
 }

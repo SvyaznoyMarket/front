@@ -235,7 +235,7 @@ define(
 
                 var productUi = $(this).data('productUi');
 
-                $.post('/ajax/favorite/add', {productUi: productUi}, function(result) {
+                $.post('/favorite/add', {productUi: productUi}, function(result) {
 
                     if (result.data.success) {
                         $addToFavorites.addClass(ADDED_TO_FAVORITES_CLASS);
