@@ -8,26 +8,24 @@
     <section class="favorit-section">
         <ul class="private-list">
             {{#content}}
-                {{#favoriteItems}}
+                {{#productCards}}
                     <!-- товар -->
                     <li class="private-list__item">
 
                         <a class="private-list__item-del" href="{{deleteUrl}}" data-product-ui="{{ui}}"></a>
-                        <a class="private-list__item-block favorit-item__img" href="{{link}}">
-                            <img src="{{media}}" alt="{{webName}}">
+                        <a class="private-list__item-block favorit-item__img" href="{{url}}">
+                            <img src="{{image}}" alt="{{webName}}">
                         </a>
                         <div class="private-list__item-block">
-                            <a class="favorit-section__title" href="{{link}}">
+                            <a class="favorit-section__title" href="{{url}}">
                                 <span class="favorit-item__title-type">{{namePrefix}}</span>
                                 <span class="favorit-item__title-name">{{&webName}}</span>
                             </a>
 
                             <div class="private-list__item-rating rating">
-                                <i class="rating__star icon-star icon-star-full"></i>
-                                <i class="rating__star icon-star icon-star-full"></i>
-                                <i class="rating__star icon-star icon-star-full"></i>
-                                <i class="rating__star icon-star icon-star-full"></i>
-                                <i class="rating__star icon-star icon-star-full"></i>
+                                {{#rating}}
+                                    {{>partial/rating/star-list}}
+                                {{/rating}}
                             </div>
 
                             <div class="private-list__item-availability">
@@ -39,17 +37,17 @@
                             </div>-->
 
                             <div class="price favorit-item__price">
-                                <span class="price_old favorit-item__price-old">
-                                    7199 <span class="rubl">p</span>
-                                </span>
-                                <span class="price_now favorit-item__price-now">799 <span class="rubl">p</span></span>
+                                {{#shownOldPrice}}
+                                    <span class="price_old favorit-item__price-old">{{shownOldPrice}} <span class="rubl">p</span></span>
+                                {{/shownOldPrice}}
+                                <span class="price_now favorit-item__price-now">{{shownPrice}} <span class="rubl">p</span></span>
                             </div>
                         </div>
                     </li>
 
 
                     <!--/ товар -->
-                {{/favoriteItems}}
+                {{/productCards}}
             {{/content}}
         </ul>
     </section>

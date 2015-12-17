@@ -16,7 +16,7 @@ class Favorites {
     use ConfigTrait, CurlTrait, MustacheRendererTrait, DebugContainerTrait;
 
     public function execute(Http\Request $request) {
-
+        $config = $this->getConfig();
         $curl = $this->getCurl();
 
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
@@ -46,6 +46,7 @@ class Favorites {
 
         $page = new Page();
         (new Repository\Page\User\Favorites())->buildObjectByRequest($page, $pageRequest);
+        if ($config->debugLevel) $this->getDebugContainer()->page = $page;
 
         // рендер
         $renderer = $this->getRenderer();

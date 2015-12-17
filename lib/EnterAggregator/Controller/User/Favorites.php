@@ -78,29 +78,28 @@ namespace EnterAggregator\Controller\User {
             }
 
             $productsQuery = new Query\Product\GetListByUiList($uis, $request->regionId);
+            $curl->prepare($productsQuery);
+
             $productDescriptionListQuery = new Query\Product\GetDescriptionListByUiList($uis, [
                 'media'       => true,
-                'media_types' => ['main']
+                'media_types' => ['main'],
             ]);
-            $curl->prepare($productsQuery);
             $curl->prepare($productDescriptionListQuery);
+
+            // запрос рейтинга для товаров
+            $ratingListQuery = new Query\Product\Rating\GetListByProductUiList($uis);
+            $curl->prepare($ratingListQuery);
 
             $curl->execute();
 
-            $productRepo = new \EnterRepository\Product();
-            $products = $productRepo->getIndexedObjectListByQueryList([$productsQuery], [$productDescriptionListQuery]);
+            $productRepository = new \EnterRepository\Product();
+            $productsById = $productRepository->getIndexedObjectListByQueryList([$productsQuery], [$productDescriptionListQuery]);
 
-            foreach ($products as $product) {
-                $product->media = (new \EnterRepository\Media())->getSourceObjectByList($product->media->photos, 'main', 'product_60')->url;
+            if (isset($ratingListQuery)) {
+                $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
             }
 
-            $pr = [];
-
-            foreach ($products as $product) {
-                $pr[] = $product;
-            }
-
-            $response->favoriteProducts = $pr;
+            $response->favoriteProducts = array_values($productsById);
 
             $response->userMenu = (new Repository\UserMenu())->getItems();
 

@@ -20,7 +20,8 @@ namespace EnterMobile\Model\Page\User\Favorites {
     use EnterMobile\Model\Partial;
 
     class Content extends Page\User\DefaultPage\Content {
-        public $favoriteItems;
+        /** @var Partial\ProductCard[] */
+        public $productCards = [];
 
         public function __construct() {
             parent::__construct();

@@ -78,7 +78,7 @@ class Product {
         $listQueryList = array_filter($listQueryList);
         /** @var Query[] $descriptionListQueryList */
         $descriptionListQueryList = array_filter($descriptionListQueryList);
-        
+
         $descriptionItemsById = [];
         foreach ($descriptionListQueryList as $query) {
             try {

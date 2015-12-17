@@ -34,13 +34,15 @@ class Favorites {
 
         $templateHelper = $this->getTemplateHelper();
         $router = $this->getRouter();
+        $productCardRepository = new Repository\Partial\ProductCard();
+        $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
 
         $page->title = 'Избранное';
         $page->dataModule = 'user.favorites';
 
-        foreach ($request->favoriteProducts as $favoriteProductModel) {
-            $favoriteProductModel->deleteUrl = $router->getUrlByRoute(new Routing\Product\DeleteFavorite($favoriteProductModel->ui));
-            $page->content->favoriteItems[] = $favoriteProductModel;
+        foreach ($request->favoriteProducts as $productModel) {
+            $productModel->deleteUrl = $router->getUrlByRoute(new Routing\Product\DeleteFavorite($productModel->ui));
+            $page->content->productCards[] = $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel, null, true, true, ['position' => 'private']), null, 'product_60');
         }
 
         // шаблоны mustache
