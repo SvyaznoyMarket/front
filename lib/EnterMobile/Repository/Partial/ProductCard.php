@@ -82,6 +82,7 @@ class ProductCard {
         $card->states['isBuyable'] = $product->isBuyable;
         $card->states['isInShopOnly'] = $product->isInShopOnly;
         $card->states['isInShopStockOnly'] = $product->isInShopStockOnly;
+        $card->states['isInShopStock'] = $product->isInShopStock;
         $card->states['isInShopShowroomOnly'] = $product->isInShopShowroomOnly;
         $card->states['isInWarehouse'] = $product->isInWarehouse;
         $card->states['isKitLocked'] = $product->isKitLocked;

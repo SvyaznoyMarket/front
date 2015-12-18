@@ -38,6 +38,8 @@ namespace EnterModel {
         /** @var bool|null */
         public $isInShopStockOnly;
         /** @var bool|null */
+        public $isInShopStock;
+        /** @var bool|null */
         public $isInShopShowroomOnly;
         /** @var bool|null */
         public $isInWarehouse;
@@ -186,6 +188,7 @@ namespace EnterModel {
             if (isset($data['isBuyable'])) $this->isBuyable = (bool)$data['isBuyable'];
             if (isset($data['isInShopOnly'])) $this->isInShopOnly = (bool)$data['isInShopOnly'];
             if (isset($data['isInShopStockOnly'])) $this->isInShopStockOnly = (bool)$data['isInShopStockOnly'];
+            if (isset($data['isInShopStock'])) $this->isInShopStock = (bool)$data['isInShopStock'];
             if (isset($data['isInShopShowroomOnly'])) $this->isInShopShowroomOnly = (bool)$data['isInShopShowroomOnly'];
             if (isset($data['isInWarehouse'])) $this->isInWarehouse = (bool)$data['isInWarehouse'];
             if (isset($data['isKitLocked'])) $this->isKitLocked = (bool)$data['isKitLocked'];
@@ -367,6 +370,7 @@ namespace EnterModel {
             $this->isInShopOnly = !$inWarehouse && ($inShop || $inShowroom); // не на центральном складе, на складе магазина или на витрине магазина
             $this->isInShopStockOnly = !$inWarehouse && $inShop && !$inShowroom; // не на центральном складе, на складе магазина, не на витрине магазина
             $this->isInShopShowroomOnly = !$inWarehouse && !$inShop && $inShowroom; // не на центральном складе, не на складе магазина, на витрине магазина
+            $this->isInShopStock = $inShop;
         }
 
         /**

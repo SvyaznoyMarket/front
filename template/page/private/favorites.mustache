@@ -28,13 +28,17 @@
                                 {{/rating}}
                             </div>
 
-                            <div class="private-list__item-availability">
-                                <span>Самовывоз сегодня</span>
-                            </div>
+                            {{#states.isInShopStock}}
+                                <div class="private-list__item-availability">
+                                    <span>Самовывоз сегодня</span>
+                                </div>
+                            {{/states.isInShopStock}}
 
-<!--                            <div class="private-list__item-availability private-list__item-availability_gray">
+                            <!--
+                            <div class="private-list__item-availability private-list__item-availability_gray">
                                 <span>На витрине</span>
-                            </div>-->
+                            </div>
+                            -->
 
                             <div class="price favorit-item__price">
                                 {{#shownOldPrice}}
