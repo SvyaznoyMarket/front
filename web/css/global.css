@@ -7612,7 +7612,7 @@ body {
 .shop-info {
   border-top: 1px dotted #a0a0a0;
   border-bottom: 1px dotted #a0a0a0;
-  margin-right: 0px;
+  margin-right: 0;
   margin-bottom: 10px;
 }
 .shop-info__item {
@@ -7737,15 +7737,15 @@ body {
   .items-slider-nav__desc {
     margin: 0 20px;
   }
-  .shop-info {
-    border-bottom: none;
-  }
   .shop-info__item {
     border-bottom: 1px dotted #a0a0a0;
   }
   .shop-info__item:nth-child(2n+1):nth-last-child(-n+2),
   .shop-info__item:nth-child(2n+1):nth-last-child(-n+2) ~ li {
     border-bottom: none;
+  }
+  .shop-info__item:nth-child(even) {
+    border-right: none;
   }
   .shop-info__item-text {
     font-size: .9rem;
