@@ -12824,8 +12824,8 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   color: #666;
 }
 .slider-box-product__buy .btn-buy {
-  font-size: 12px;
-  padding: 4px 12px;
+  font-size: 16px;
+  padding: 5px 11px;
   display: inline-block;
   vertical-align: top;
 }
