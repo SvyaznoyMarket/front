@@ -61,13 +61,18 @@
     }
 
     .shop-info {
-        border-bottom: none;
+
         &__item {
             border-bottom: 1px dotted #a0a0a0;
             &:nth-child(2n+1):nth-last-child(-n+2) ,
             &:nth-child(2n+1):nth-last-child(-n+2) ~ li {
                 border-bottom: none;
             }
+
+            &:nth-child(even){
+                border-right: none;
+            }
+
             &-text {
                 font-size: .9rem;
             }
