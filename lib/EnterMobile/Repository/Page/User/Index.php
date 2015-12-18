@@ -34,6 +34,8 @@ class Index {
 
         $page->title = 'Личный кабинет';
 
+        $page->dataModule = 'user';
+
         // ga
         $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$templateHelper) {
             /** @var \EnterModel\MainMenu\Element[] $menuElements */

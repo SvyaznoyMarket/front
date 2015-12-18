@@ -31,6 +31,8 @@ class Address {
 
         $page->title = 'Личный кабинет';
 
+        $page->dataModule = 'user';
+
         foreach ($request->addresses as $addressModel) {
             $regionModel = ($addressModel->regionId && isset($request->regionsById[$addressModel->regionId])) ? $request->regionsById[$addressModel->regionId] : null;
 

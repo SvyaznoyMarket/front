@@ -1,7 +1,7 @@
 <ul class="private-menu-lst">
 {{#userMenu}}
     <li class="private-menu-lst__item {{#isActive}} active{{/isActive}}">
-        <a href="{{url}}" class="private-menu-lst__lk">
+        <a href="{{url}}" class="js-user-menu private-menu-lst__lk">
             {{#image}}<img class="private-menu-lst__item-i" src="/css/modules/private/img/{{image}}" alt="{{name}}">{{/image}}
             <span class="private-menu-lst__item-txt">{{name}}</span>
             {{#count}}<span class="private-menu-lst__item-number">{{count}}</span>{{/count}}

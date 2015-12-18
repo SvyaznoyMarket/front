@@ -27,13 +27,16 @@ class Order {
 
     /**
      * @param Page $page
-     * @param Index\Request $request
+     * @param Order\Request $request
      */
     public function buildObjectByRequest(Page $page, Order\Request $request) {
         (new Repository\Page\User\DefaultPage)->buildObjectByRequest($page, $request);
 
         $templateHelper = $this->getTemplateHelper();
+
         $page->title = 'Заказ';
+
+        $page->dataModule = 'user';
 
         // ga
         $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$templateHelper) {

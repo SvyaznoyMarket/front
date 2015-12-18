@@ -38,7 +38,8 @@ class Favorites {
         $cartProductButtonRepository = new Repository\Partial\Cart\ProductButton();
 
         $page->title = 'Избранное';
-        $page->dataModule = 'user.favorites';
+
+        $page->dataModule = 'user';
 
         foreach ($request->favoriteProducts as $productModel) {
             $productModel->deleteUrl = $router->getUrlByRoute(new Routing\Product\DeleteFavorite($productModel->ui));

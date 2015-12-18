@@ -20,7 +20,7 @@ class PasswordReset {
 
     /**
      * @param Page $page
-     * @param Login\Request $request
+     * @param PasswordReset\Request $request
      */
     public function buildObjectByRequest(Page $page, PasswordReset\Request $request) {
         (new Repository\Page\User\DefaultPage)->buildObjectByRequest($page, $request);
@@ -30,6 +30,8 @@ class PasswordReset {
         $templateHelper = $this->getTemplateHelper();
 
         $page->title = 'Поменять пароль';
+
+        $page->dataModule = 'user';
 
         // ga
         $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$templateHelper) {

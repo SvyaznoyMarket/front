@@ -31,6 +31,8 @@ class Message {
 
         $page->title = 'Личный кабинет';
 
+        $page->dataModule = 'user';
+
         // шаблоны mustache
         // ...
 
