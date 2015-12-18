@@ -50,6 +50,23 @@ class Index {
         };
         $walkByMenu($request->mainMenu->elements);
 
+        $userModel = $request->user;
+        $page->content->user = [
+            'firstName'  => $userModel->firstName,
+            'lastName'   => $userModel->lastName,
+            'middleName' => $userModel->middleName,
+            'birthday'   => $userModel->birthday,
+            'phone'      => $userModel->phone,
+            'homePhone'  => $userModel->homePhone,
+            'sex'        =>
+                null === $userModel->sex
+                ? false
+                : (1 == $userModel->sex ? 'муж' : 'жен')
+            ,
+            'email'      => $userModel->email,
+            'occupation' => $userModel->occupation,
+        ];
+
         // шаблоны mustache
         // ...
 

@@ -3,6 +3,7 @@
 namespace EnterMobile\Controller\User;
 
 use Enter\Http;
+use EnterMobile\Controller\SecurityTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\CurlTrait;
@@ -14,7 +15,8 @@ use EnterQuery as Query;
 use EnterMobile\Model\Page\User\Index as Page;
 
 class Index {
-    use ConfigTrait,
+    use SecurityTrait,
+        ConfigTrait,
         LoggerTrait,
         CurlTrait,
         MustacheRendererTrait,
@@ -48,6 +50,7 @@ class Index {
         $pageRequest->cart = $controllerResponse->cart;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
         $pageRequest->userMenu = $controllerResponse->userMenu;
+        $pageRequest->user = $controllerResponse->user;
 
         $page = new Page();
         (new Repository\Page\User\Index())->buildObjectByRequest($page, $pageRequest);

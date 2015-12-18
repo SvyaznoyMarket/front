@@ -19,54 +19,72 @@
                 <div class="private-list__item-block subscribe-section__block">
 
                     <div class="user-section__inner">
+                        {{#user.firstName}}
                         <div class="private-list__item-block-inner user-section__inner-block">
                             <span>Имя:</span>
-                            <span class="user-section__data">Вася</span>
+                            <span class="user-section__data">{{user.firstName}}</span>
                         </div>
+                        {{/user.firstName}}
 
+                        {{#user.middleName}}
                         <div class="private-list__item-block-inner user-section__inner-block">
                             <span>Отчество:</span>
-                            <span class="user-section__data">Петрович</span>
+                            <span class="user-section__data">{{user.middleName}}</span>
                         </div>
+                        {{/user.middleName}}
 
+                        {{#user.lastName}}
                         <div class="private-list__item-block-inner user-section__inner-block">
                             <span>Фамилия:</span>
-                            <span class="user-section__data">Яковлев</span>
+                            <span class="user-section__data">{{user.lastName}}</span>
                         </div>
+                        {{/user.lastName}}
                     </div>
 
                     <div class="user-section__inner">
+                        {{#user.birthday}}
                         <div class="private-list__item-block-inner user-section__inner-block">
                             <span>Дата рождения:</span>
-                            <span class="user-section__data">09.10.2029</span>
+                            <span class="user-section__data">{{user.birthday}}</span>
                         </div>
+                        {{/user.birthday}}
 
+                        {{#user.sex}}
                         <div class="private-list__item-block-inner user-section__inner-block">
                             <span>Пол:</span>
-                            <span class="user-section__data">мужик</span>
+                            <span class="user-section__data">{{user.sex}}</span>
                         </div>
+                        {{/user.sex}}
                     </div>
 
                     <div class="user-section__inner">
+                        {{#user.email}}
                         <div class="private-list__item-block-inner user-section__inner-block">
                             <span>Email:</span>
-                            <span class="user-section__data">fvds@ya.ru</span>
+                            <span class="user-section__data">{{user.email}}</span>
                         </div>
+                        {{/user.email}}
 
+                        {{#user.phone}}
                         <div class="private-list__item-block-inner user-section__inner-block">
                             <span>Мобильный телефон:</span>
-                            <span class="user-section__data">+7 (904) 948-88-88</span>
+                            <span class="user-section__data">{{user.phone}}</span>
                         </div>
+                        {{/user.phone}}
 
+                        {{#user.homePhone}}
                         <div class="private-list__item-block-inner user-section__inner-block">
                             <span>Домашний телефон:</span>
-                            <span class="user-section__data"></span>
+                            <span class="user-section__data">{{user.homePhone}}</span>
                         </div>
+                        {{/user.homePhone}}
 
+                        {{#user.occupation}}
                         <div class="private-list__item-block-inner user-section__inner-block">
                             <span>Род деятельности:</span>
-                            <span class="user-section__data">Путешественник во времени</span>
+                            <span class="user-section__data">{{user.occupation}}</span>
                         </div>
+                        {{/user.occupation}}
                     </div>
 
                 </div>
