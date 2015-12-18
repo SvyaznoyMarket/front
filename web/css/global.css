@@ -2312,8 +2312,7 @@ body {
   height: 38px;
   text-align: center;
   color: #ffffff;
-  border-bottom: 2px solid #ea7900;
-  background: #f99b1c;
+  background: #ffa400;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -2330,7 +2329,7 @@ body {
   font-weight: bold;
   color: #fff;
   border-bottom: 2px solid #ea7900;
-  background: #f99b1c;
+  background: #ffa400;
 }
 .btn--buy-lst:hover {
   color: #ffffff;
@@ -6249,7 +6248,7 @@ body {
 }
 .catalogList__rating__star {
   font-size: 14px;
-  color: #f99b1c;
+  color: #ffa400;
   vertical-align: middle;
   margin-right: 2px;
 }
@@ -7184,7 +7183,7 @@ body {
 }
 .rating__star {
   font-size: 14px;
-  color: #f99b1c;
+  color: #ffa400;
   vertical-align: middle;
   margin-right: 2px;
 }
@@ -7498,16 +7497,15 @@ body {
   background: no-repeat 50% 50% url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAWCAQAAABTL8XWAAAAh0lEQVQY02Owk3VZ46bIgAocdJx/u6xEEwxlc5rk8tk5GU3YUtr5ocslBxU0YecA1/9O89AEXfidZ7h8d7JCF9Z1vuOyzFYUTdg11u0/hnWefC5HXN666aAbEebyzmWZJx+68HSgK+wICzqHY2jHahEWJ2FxPMSbzpaEAgRL0GENZKzRgS3iAEP8O9WGZbdFAAAAAElFTkSuQmCC');
 }
 .items-slider .btn--buy {
-  font-size: 12px;
-  line-height: 1.3;
   display: inline-block;
   vertical-align: top;
+  width: auto;
+  height: auto;
+  padding: 5px 11px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  width: auto;
-  height: auto;
-  padding: 3px 12px;
+  font-size: 16px;
 }
 .items-slider-slides {
   display: none;
@@ -10978,8 +10976,7 @@ body {
   height: 38px;
   text-align: center;
   color: #ffffff;
-  border-bottom: 2px solid #ea7900;
-  background: #f99b1c;
+  background: #ffa400;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
@@ -10996,7 +10993,7 @@ body {
   font-weight: bold;
   color: #fff;
   border-bottom: 2px solid #ea7900;
-  background: #f99b1c;
+  background: #ffa400;
 }
 .single-order__btn--buy-lst:hover {
   color: #ffffff;
@@ -13711,7 +13708,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   padding: 0;
   color: #ffffff;
   border: 0;
-  background-color: #f99b1c;
+  background-color: #ffa400;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
