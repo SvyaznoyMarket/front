@@ -6,13 +6,16 @@ namespace EnterAggregator\Controller\User{
     use EnterAggregator\CurlTrait;
     use EnterAggregator\LoggerTrait;
     use EnterAggregator\RouterTrait;
+    use EnterMobile\Controller\SecurityTrait;
     use EnterMobile\Routing;
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterRepository as Repository;
 
     class Index {
-        use ConfigTrait,
+        use
+            SecurityTrait,
+            ConfigTrait,
             CurlTrait,
             LoggerTrait,
             SessionTrait,
@@ -25,30 +28,20 @@ namespace EnterAggregator\Controller\User{
 
             $response = new Index\Response();
 
-            $userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request->httpRequest);
+            $userToken = $this->getUserToken($request->httpRequest);
 
             /* регион */
             $regionQuery = new Query\Region\GetItemById($request->regionId);
             $curl->prepare($regionQuery);
-            $curl->execute();
-            $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
             /* пользователь */
             $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request->httpRequest);
-            if ($userItemQuery) {
-                $curl->prepare($userItemQuery);
-                $curl->execute();
-                $response->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
-            } else {
-                // редирект
-                $redirectUrl = (new \EnterMobile\Repository\User())->getRedirectUrlByHttpRequest($request->httpRequest, $router->getUrlByRoute(new Routing\User\Login()));
-                // http-ответ
-                $response->redirect = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
-            }
+            $curl->prepare($userItemQuery);
 
-            // подготовка количества заказов
-            $orderCountQuery = new Query\Order\GetListByUserToken($userToken, 0, 0);
-            $curl->prepare($orderCountQuery);
+            $curl->execute();
+
+            $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
+            $response->user = $this->getUser($userItemQuery);
 
             // корзина
             $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
@@ -74,12 +67,7 @@ namespace EnterAggregator\Controller\User{
                 $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
             }
 
-            $response->userMenu = (new Repository\UserMenu())->getItems();
-            if (isset($response->userMenu['orders'])) {
-                try {
-                    $response->userMenu['orders']['count'] = $orderCountQuery->getResult()['total'];
-                } catch (\Exception $e) {}
-            }
+            $response->userMenu = (new Repository\UserMenu())->getItems($userToken, $response->user);
 
             return $response;
         }

@@ -6,13 +6,16 @@ namespace EnterAggregator\Controller\User {
     use EnterAggregator\CurlTrait;
     use EnterAggregator\LoggerTrait;
     use EnterAggregator\RouterTrait;
+    use EnterMobile\Controller\SecurityTrait;
     use EnterMobile\Routing;
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterRepository as Repository;
 
     class Favorites {
-        use ConfigTrait,
+        use
+            SecurityTrait,
+            ConfigTrait,
             CurlTrait,
             LoggerTrait,
             SessionTrait,
@@ -28,22 +31,17 @@ namespace EnterAggregator\Controller\User {
             /* регион */
             $regionQuery = new Query\Region\GetItemById($request->regionId);
             $curl->prepare($regionQuery);
-            $curl->execute();
-            $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
+
+            $userToken = $this->getUserToken($request->httpRequest);
 
             /* пользователь */
             $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request->httpRequest);
-            if ($userItemQuery) {
-                $curl->prepare($userItemQuery);
-                $curl->execute();
-                $response->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
-            } else {
-                // редирект
-                $redirectUrl = (new \EnterMobile\Repository\User())->getRedirectUrlByHttpRequest($request->httpRequest, $router->getUrlByRoute(new Routing\User\Login()));
-                // http-ответ
-                $response->redirect = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
-                return $response;
-            }
+            $curl->prepare($userItemQuery);
+
+            $curl->execute();
+
+            $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
+            $response->user = $this->getUser($userItemQuery);
 
             /* корзина */
             $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
@@ -65,12 +63,12 @@ namespace EnterAggregator\Controller\User {
                 $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
             }
 
-            $getFavQuery = new Query\User\Favorite\GetListByUserUi($response->user->ui);
-            $curl->prepare($getFavQuery);
+            $favoriteQuery = new Query\User\Favorite\GetListByUserUi($response->user->ui);
+            $curl->prepare($favoriteQuery);
 
             $curl->execute();
 
-            $favorites = $getFavQuery->getResult();
+            $favorites = $favoriteQuery->getResult();
 
             $uis = [];
             foreach ($favorites['products'] as $favorite) {
@@ -101,7 +99,7 @@ namespace EnterAggregator\Controller\User {
 
             $response->favoriteProducts = array_values($productsById);
 
-            $response->userMenu = (new Repository\UserMenu())->getItems();
+            $response->userMenu = (new Repository\UserMenu())->getItems($userToken, $response->user);
 
             return $response;
         }

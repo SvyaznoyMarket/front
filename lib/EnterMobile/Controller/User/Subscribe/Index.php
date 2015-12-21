@@ -38,9 +38,7 @@ class Index {
 
         // запрос пользователя
         $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
-        if ($userItemQuery) {
-            $curl->prepare($userItemQuery);
-        }
+        $curl->prepare($userItemQuery);
 
         // запрос каналов подписки
         $channelQuery = new Query\Subscribe\Channel\GetList();
@@ -96,7 +94,7 @@ class Index {
             $subscriptionsGroupedByChannel[$subscription->channelId][] = $subscription;
         }
 
-        $userMenu = (new \EnterRepository\UserMenu())->getItems();
+        $userMenu = (new \EnterRepository\UserMenu())->getItems($userToken, $user);
 
         //запрос для получения страницы
         $pageRequest = new Repository\Page\User\Subscribe\Request();
@@ -114,12 +112,20 @@ class Index {
 
         // рендер
         $renderer = $this->getRenderer();
-        $renderer->setPartials([
-            'content' => 'page/private/subscribe'
-        ]);
 
-        $content = $renderer->render('layout/footerless', $page);
+        if ($request->isXmlHttpRequest()) {
+            $response = new Http\JsonResponse([
+                'content' => $renderer->render('page/private/subscribe/content', $page->content),
+            ]);
+        } else {
+            $renderer->setPartials([
+                'content' => 'page/private/subscribe'
+            ]);
+            $content = $renderer->render('layout/footerless', $page);
 
-        return new Http\Response($content);
+            $response = new Http\Response($content);
+        }
+
+        return $response;
     }
 }

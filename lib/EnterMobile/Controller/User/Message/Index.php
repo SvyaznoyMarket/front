@@ -9,12 +9,14 @@ use EnterAggregator\CurlTrait;
 use EnterAggregator\SessionTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterAggregator\DebugContainerTrait;
+use EnterMobile\Controller\SecurityTrait;
 use EnterMobile\Repository;
 use EnterQuery as Query;
 use EnterMobile\Model\Page\User\Message\Index as Page;
 
 class Index {
-    use ConfigTrait,
+    use SecurityTrait,
+        ConfigTrait,
         LoggerTrait,
         CurlTrait,
         MustacheRendererTrait,
@@ -31,16 +33,18 @@ class Index {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        $userToken = $this->getUserToken($request);
+
         // запрос пользователя
         $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
-        if ($userItemQuery) {
-            $curl->prepare($userItemQuery);
-        }
+        $curl->prepare($userItemQuery);
 
         $curl->execute();
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+        // пользователь
+        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
         $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
         $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
@@ -50,13 +54,13 @@ class Index {
 
         (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
-        $userMenu = (new \EnterRepository\UserMenu())->getItems();
+        $userMenu = (new \EnterRepository\UserMenu())->getItems($userToken, $user);
 
         //запрос для получения страницы
         $pageRequest = new Repository\Page\User\Message\Request();
         $pageRequest->httpRequest = $request;
         $pageRequest->region = $region;
-        $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+        $pageRequest->user = $user;
         $pageRequest->cart = $cart;
         $pageRequest->userMenu = $userMenu;
 

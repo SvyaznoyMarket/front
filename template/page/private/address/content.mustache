@@ -1,0 +1,27 @@
+<ul class="private-list">
+    {{#addresses}}
+        <li class="private-list__item">
+            {{#empty}}
+                <a class="private-list__item-del js-favorites-delete" href=""></a>
+            {{/empty}}
+            <div class="private-list__item-block">
+                {{#region}}
+                    <span class="private-list__item-block-inner address-section__item">{{region.name}}</span>
+                {{/region}}
+                <span class="private-list__item-block-inner address-section__item">
+                    {{shownStreet}}
+                </span>
+                    <span class="private-list__item-block-inner address-section__item">
+                        {{shownBuilding}}
+                        {{#apartment}}кв. {{apartment}}{{/apartment}}
+                    </span>
+            </div>
+        </li>
+    {{/addresses}}
+</ul>
+
+{{#empty}}
+    <div class="btn private-btn">
+        <a class="private-btn__link" href="#">Добавить адрес</a>
+    </div>
+{{/empty}}

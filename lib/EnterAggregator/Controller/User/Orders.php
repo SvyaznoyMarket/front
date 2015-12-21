@@ -6,13 +6,15 @@ namespace EnterAggregator\Controller\User {
     use EnterAggregator\CurlTrait;
     use EnterAggregator\LoggerTrait;
     use EnterAggregator\RouterTrait;
+    use EnterMobile\Controller\SecurityTrait;
     use EnterMobile\Routing;
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterRepository as Repository;
 
     class Orders {
-        use ConfigTrait,
+        use SecurityTrait,
+            ConfigTrait,
             CurlTrait,
             LoggerTrait,
             SessionTrait,
@@ -21,71 +23,51 @@ namespace EnterAggregator\Controller\User {
         public function execute(Orders\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
-            $router = $this->getRouter();
 
             $response = new Orders\Response();
 
             /* регион */
             $regionQuery = new Query\Region\GetItemById($request->regionId);
             $curl->prepare($regionQuery);
-            $curl->execute();
-            $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
+
+            $userToken = $this->getUserToken($request->httpRequest);
 
             /* пользователь */
-            try {
-                $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request->httpRequest);
+            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request->httpRequest);
+            $curl->prepare($userItemQuery);
 
-                if ($userItemQuery) {
-                    $curl->prepare($userItemQuery);
-                    $curl->execute();
-                    $response->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
-                } else {
-                    // редирект
-                    $redirectUrl = (new \EnterMobile\Repository\User())->getRedirectUrlByHttpRequest($request->httpRequest, $router->getUrlByRoute(new Routing\User\Login()));
-                    // http-ответ
-                    $response->redirect = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
-                    return $response;
-                }
+            $ordersQuery = new Query\Order\GetListByUserToken($userToken, 0, 40);
+            $ordersQuery->setTimeout(1.5 * $config->coreService->timeout);
+            $curl->prepare($ordersQuery);
 
-                /* корзина */
-                $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
-                $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $request->regionId);
-                $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $request->regionId);
-                $curl->execute();
-                (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
-                $response->cart = $cart;
+            $curl->execute();
 
-                /* меню */
-                $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
-                $curl->prepare($categoryTreeQuery);
+            $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
+            $response->user = $this->getUser($userItemQuery);
 
-                $mainMenuQuery = new Query\MainMenu\GetItem();
-                $curl->prepare($mainMenuQuery);
-                $curl->execute();
-                // меню
-                if ($mainMenuQuery) {
-                    $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
-                }
+            /* корзина */
+            $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
+            $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $request->regionId);
+            $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $request->regionId);
+            $curl->execute();
+            (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
+            $response->cart = $cart;
 
-                $response->userMenu = (new Repository\UserMenu())->getItems();
+            /* меню */
+            $categoryTreeQuery = (new \EnterRepository\MainMenu())->getCategoryTreeQuery(1);
+            $curl->prepare($categoryTreeQuery);
 
-                $user = new \EnterMobile\Repository\User();
-                $token = $user->getTokenByHttpRequest($request->httpRequest);
-
-                $ordersQuery = new Query\Order\GetListByUserToken($token, 0, 40);
-                $ordersQuery->setTimeout(1.5 * $config->coreService->timeout);
-                $ordersQuery->setRetry(3);
-                $curl->prepare($ordersQuery);
-                $curl->execute();
-
-                $response->orders = $ordersQuery->getResult();
-            } catch (\Exception $e) {
-
-                $response->orders = [];
-                return $response;
+            $mainMenuQuery = new Query\MainMenu\GetItem();
+            $curl->prepare($mainMenuQuery);
+            $curl->execute();
+            // меню
+            if ($mainMenuQuery) {
+                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
             }
 
+            $response->userMenu = (new Repository\UserMenu())->getItems($userToken, $response->user);
 
+            $response->orders = $ordersQuery->getResult();
 
 
             return $response;

@@ -42,10 +42,6 @@ namespace EnterMobile\Controller\User\EnterPrize {
             // ответ
             $controllerResponse = $controller->execute($controllerRequest);
 
-            if ($controllerResponse->redirect) {
-                return $controllerResponse->redirect;
-            }
-
             //запрос для получения страницы
             $pageRequest = new Repository\Page\User\Enterprize\Request();
             $pageRequest->httpRequest = $request;
@@ -60,16 +56,23 @@ namespace EnterMobile\Controller\User\EnterPrize {
             $page = new Page();
             (new Repository\Page\User\EnterprizeList())->buildObjectByRequest($page, $pageRequest);
 
-
             // рендер
             $renderer = $this->getRenderer();
-            $renderer->setPartials([
-                'content' => 'page/private/prizelist'
-            ]);
 
-            $content = $renderer->render('layout/footerless', $page);
+            if ($request->isXmlHttpRequest()) {
+                $response = new Http\JsonResponse([
+                    'content' => $renderer->render('page/private/enterprize/content', $page->content),
+                ]);
+            } else {
+                $renderer->setPartials([
+                    'content' => 'page/private/enterprize'
+                ]);
+                $content = $renderer->render('layout/footerless', $page);
 
-            return new Http\Response($content);
+                $response = new Http\Response($content);
+            }
+
+            return $response;
         }
     }
 }

@@ -8,23 +8,6 @@
     </section>
 
     <section class="id-content-container subscribe-section">
-        <ul class="private-list">
-        {{#subscribes}}
-            <li class="private-list__item subscribe-section__item">
-                <div class="private-list__item-block subscribe-section__block">
-                    <input
-                        class="js-user-subscribe-input subscribe-section__checkbox"
-                        type="checkbox"
-                        id="{{elementId}}"
-                        {{#checked}} checked{{/checked}}
-                        data-value="{{&dataValue}}"
-                        data-set-url="{{setUrl}}"
-                        data-delete-url="{{deleteUrl}}"
-                    >
-                    <label class="subscribe-section__check-label" for="{{elementId}}">{{name}}</label>
-                </div>
-            </li>
-        {{/subscribes}}
-        </ul>
+        {{>page/private/subscribe/content}}
     </section>
 </div>

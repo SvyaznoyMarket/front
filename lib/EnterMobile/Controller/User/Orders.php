@@ -54,7 +54,7 @@ class Orders {
 
         if ($request->isXmlHttpRequest()) {
             $response = new Http\JsonResponse([
-                'content' => $renderer->render('page/private/order/content', $page->content),
+                'content' => $renderer->render('page/private/order-list/content', $page->content),
             ]);
         } else {
             $renderer->setPartials([

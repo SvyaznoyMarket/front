@@ -1,0 +1,28 @@
+<ul class="private-list">
+    {{#orders}}
+        <li class="private-list__item noselect">
+                <span class="private-list__item-block private-list__item-block_num">
+                    <a href="/private/order/{{id}}" class="js-user-menu">
+                        <span>{{numberErp}}</span>
+                        {{#paymentStatus}}<span class="private-list__item-block-status">{{paymentStatus.name}}</span>{{/paymentStatus}}
+                    </a>
+                </span>
+
+                <span class="private-list__item-block private-list__item-block_date">
+                    <a href="/private/order/{{id}}">{{createdAt}}</a>
+                </span>
+
+                <span class="private-list__item-block private-list__item-block_sum">
+                    <a href="/private/order/{{id}}">
+                        <span>{{paySum}}
+                            <span class="rubl">p</span>
+                        </span>
+                        {{#status}}<span class="private-list__item-block-status private-list__item-block-status_processing" data-id="{{status.id}}">{{status.name}}</span>{{/status}}
+                    </a>
+                </span>
+        </li>
+    {{/orders}}
+    {{^orders}}
+        <p class="p-control-info-regular">Заказов не найдено</p>
+    {{/orders}}
+</ul>

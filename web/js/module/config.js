@@ -6,6 +6,9 @@ define(
             statusCode: {
                 401: function () {
                     window.location.href = '/login?redirect_to=' + window.location.pathname;
+                },
+                403: function () {
+                    window.location.href = '/login?redirect_to=' + window.location.pathname;
                 }
             }
         });

@@ -8,6 +8,7 @@ define(
 
         var $body = $('body');
 
+        /*
         $body.on('click', '.js-user-menu', function(e) {
             var
                 $el = $(this),
@@ -29,6 +30,7 @@ define(
                 e.preventDefault();
             } catch (error) { console.error(error); }
         });
+        */
 
         $body.on('click', '.js-user-subscribe-input', function() {
             var

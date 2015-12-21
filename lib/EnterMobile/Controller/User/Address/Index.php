@@ -9,12 +9,14 @@ use EnterAggregator\CurlTrait;
 use EnterAggregator\SessionTrait;
 use EnterAggregator\MustacheRendererTrait;
 use EnterAggregator\DebugContainerTrait;
+use EnterMobile\Controller\SecurityTrait;
 use EnterMobile\Repository;
 use EnterQuery as Query;
 use EnterMobile\Model\Page\User\Address\Index as Page;
 
 class Index {
-    use ConfigTrait,
+    use SecurityTrait,
+        ConfigTrait,
         LoggerTrait,
         CurlTrait,
         MustacheRendererTrait,
@@ -31,23 +33,22 @@ class Index {
         $regionQuery = new Query\Region\GetItemById($regionId);
         $curl->prepare($regionQuery);
 
+        $userToken = $this->getUserToken($request);
+
         // запрос пользователя
         $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
-        if ($userItemQuery) {
-            $curl->prepare($userItemQuery);
-        }
+        $curl->prepare($userItemQuery);
 
         $curl->execute();
 
         // регион
         $region = (new \EnterRepository\Region())->getObjectByQuery($regionQuery);
+        // пользователь
+        $user = $this->getUser($userItemQuery);
 
         $cart = (new \EnterRepository\Cart())->getObjectByHttpSession($this->getSession(), $config->cart->sessionKey);
         $cartItemQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartItemQuery($cart, $region->id);
         $cartProductListQuery = (new \EnterMobile\Repository\Cart())->getPreparedCartProductListQuery($cart, $region->id);
-
-        // пользователь
-        $user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
 
         // запрос адресов
         $addressQuery = new Query\User\Address\GetListByUserUi($user->ui);
@@ -95,7 +96,7 @@ class Index {
 
         }
 
-        $userMenu = (new \EnterRepository\UserMenu())->getItems();
+        $userMenu = (new \EnterRepository\UserMenu())->getItems($userToken, $user);
 
         //запрос для получения страницы
         $pageRequest = new Repository\Page\User\Address\Request();
@@ -113,12 +114,20 @@ class Index {
 
         // рендер
         $renderer = $this->getRenderer();
-        $renderer->setPartials([
-            'content' => 'page/private/address'
-        ]);
 
-        $content = $renderer->render('layout/footerless', $page);
+        if ($request->isXmlHttpRequest()) {
+            $response = new Http\JsonResponse([
+                'content' => $renderer->render('page/private/address/content', $page->content),
+            ]);
+        } else {
+            $renderer->setPartials([
+                'content' => 'page/private/address'
+            ]);
+            $content = $renderer->render('layout/footerless', $page);
 
-        return new Http\Response($content);
+            $response = new Http\Response($content);
+        }
+
+        return $response;
     }
 }

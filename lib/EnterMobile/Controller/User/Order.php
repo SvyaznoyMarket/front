@@ -51,12 +51,20 @@ class Order {
 
         // рендер
         $renderer = $this->getRenderer();
-        $renderer->setPartials([
-            'content' => 'page/private/order'
-        ]);
 
-        $content = $renderer->render('layout/footerless', $page);
+        if ($request->isXmlHttpRequest()) {
+            $response = new Http\JsonResponse([
+                'content' => $renderer->render('page/private/order/content', $page->content),
+            ]);
+        } else {
+            $renderer->setPartials([
+                'content' => 'page/private/order'
+            ]);
+            $content = $renderer->render('layout/footerless', $page);
 
-        return new Http\Response($content);
+            $response = new Http\Response($content);
+        }
+
+        return $response;
     }
 }

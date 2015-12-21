@@ -6,53 +6,6 @@
         </div>
     </section>
     <section class="id-content-container favorit-section">
-        <ul class="private-list">
-            {{#content}}
-                {{#productCards}}
-                    <!-- товар -->
-                    <li class="private-list__item">
-
-                        <a class="private-list__item-del" href="{{deleteUrl}}" data-product-ui="{{ui}}"></a>
-                        <a class="private-list__item-block favorit-item__img" href="{{url}}">
-                            <img src="{{image}}" alt="{{webName}}">
-                        </a>
-                        <div class="private-list__item-block">
-                            <a class="favorit-section__title" href="{{url}}">
-                                <span class="favorit-item__title-type">{{namePrefix}}</span>
-                                <span class="favorit-item__title-name">{{&webName}}</span>
-                            </a>
-
-                            <div class="private-list__item-rating rating">
-                                {{#rating}}
-                                    {{>partial/rating/star-list}}
-                                {{/rating}}
-                            </div>
-
-                            {{#states.isInShopStock}}
-                                <div class="private-list__item-availability">
-                                    <span>Самовывоз сегодня</span>
-                                </div>
-                            {{/states.isInShopStock}}
-
-                            <!--
-                            <div class="private-list__item-availability private-list__item-availability_gray">
-                                <span>На витрине</span>
-                            </div>
-                            -->
-
-                            <div class="price favorit-item__price">
-                                {{#shownOldPrice}}
-                                    <span class="price_old favorit-item__price-old">{{shownOldPrice}} <span class="rubl">p</span></span>
-                                {{/shownOldPrice}}
-                                <span class="price_now favorit-item__price-now">{{shownPrice}} <span class="rubl">p</span></span>
-                            </div>
-                        </div>
-                    </li>
-
-
-                    <!--/ товар -->
-                {{/productCards}}
-            {{/content}}
-        </ul>
+        {{>page/private/favorite/content}}
     </section>
 </div>
