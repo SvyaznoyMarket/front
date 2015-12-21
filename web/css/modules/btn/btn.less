@@ -106,14 +106,13 @@
         line-height: 30px;
 
         max-width: 100%;
-        height: 34px;
+        height: 30px;
 
         text-align: center;
 
         color: #fff;
         border: 0;
-        border-bottom: 2px solid #e26500;
-        background: #fcaa2a;
+        background: @orange;
 
         .inline-block();
         &:active {
@@ -153,16 +152,15 @@
             padding: 0 20px;
         }
         &.btn--thin {
-            font-size: 12px;
-            font-weight: bold;
-            line-height: 28px;
-
+            width: 180px;
+            height: 30px;
             float: right;
 
-            height: 30px;
             padding: 0 15px;
+            .rounded(3px);
+            .box-sizing();
 
-            .rounded(4px);
+            font-size: 16px;
         }
     }
     &--pay {
