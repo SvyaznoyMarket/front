@@ -166,18 +166,33 @@
 
   &__img-block {
 	display: block;
-	overflow: hidden;
+	height: 86px;
 
+	overflow: hidden;
 	padding: 10px;
 
 	text-align: center;
-  }
-  &__img {
-	height: 86px;
+	font-size: 0;
+
+	&:before{
+	  content: '';
+	  display: inline-block;
+	  vertical-align: middle;
+	  height: 100%;
+	}
 
 	@media only screen and (min-width: 768px) {
 	  height: 180px;
 	}
+  }
+
+  &__img {
+	max-width: 100%;
+	max-height: 100%;
+	display: inline-block;
+	vertical-align: middle;
+
+
   }
 
   &__name {
