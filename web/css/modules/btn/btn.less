@@ -333,33 +333,31 @@
 
 //TODO: привести все кнопки к единому стилю.
 .btnStyleOrange {
+    display: block;
+    height: 35px;
+
+    background: @orange;
+    .rounded(3px);
+    .box-sizing();
+
+    text-align: center;
+    color: #fff;
     font-size: 14px;
     line-height: 34px;
 
-    display: block;
-
-    height: 35px;
-
-    text-align: center;
-
-    color: #fff;
-    border: 1px solid #e26500;
-    background: #f89b1c;
-
-    .rounded(4px);
     &:hover {
         text-decoration: none;
-
         color: @white;
-
-        .gradient(#ffa200, #f79200, #ffa200);
     }
-    &:active {
-        text-decoration: none;
 
-        background: #f79200;
+    &:active {
+        background: @orange;
+
+        text-decoration: none;
     }
 }
+
+
 .btnStyleBlack {
     font-size: 14px;
     line-height: 34px;
@@ -373,9 +371,12 @@
     color: @white;
     border: 1px solid @black;
     background: @black;
+    .box-sizing();
 
     .rounded(4px);
 }
+
+
 .btnStyleGrey {
     font-size: 14px;
     line-height: 34px;
@@ -386,9 +387,10 @@
 
     text-align: center;
 
-    color: @black;
-    border: 1px solid @tabLightGreyBorder;
-    background: @tabGrey;
+    color: @gray;
+    border: 1px solid @gray;
+    background: @grayL6;
+    .box-sizing();
 
     .rounded(3px);
     &:hover {
