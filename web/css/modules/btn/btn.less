@@ -13,32 +13,28 @@
         text-align: center;
     }
     &--big {
-        overflow: visible;
-
+        .inline-block();
         width: auto;
+
+        overflow: visible;
         padding: 4px 23px 3px;
+        .box-sizing();
 
         text-align: center;
         text-decoration: none;
-
-        .inline-block();
-        .box-sizing();
     }
     &--medium {
-        font-size: 16px;
-        line-height: 38px;
-
-        display: block;
-        overflow: visible;
-
+        .inline-block();
         width: 120px;
         height: 38px;
+
         padding: 0;
+        .rounded(3px);
+        overflow: visible;
 
+        font-size: 16px;
         text-align: center;
-
-        .rounded(4px);
-        .inline-block();
+        line-height: 38px;
     }
     &--lstn {
         font-size: 14px;
@@ -93,14 +89,15 @@
         }
     }
     &--close {
-        color: #666;
-        border: 1px solid;
+        color: @gray;
+        border: 1px solid @gray;
         background: @white;
     }
     &--submit {
+        background: @orange;
+        border: none;
+
         color: #fff;
-        border: 1px solid #ea7900;
-        background: #fcaa2a;
     }
     &--orange {
         line-height: 30px;
@@ -141,7 +138,7 @@
             min-width: 100px;
             padding: 0 6px;
 
-            .rounded(4px);
+            .rounded(3px);
         }
         &.btn--tall {
             font-size: 20px;
