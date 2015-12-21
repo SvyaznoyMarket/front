@@ -42,8 +42,9 @@ class Favorites {
         $page->dataModule = 'user';
 
         foreach ($request->favoriteProducts as $productModel) {
-            $productModel->deleteUrl = $router->getUrlByRoute(new Routing\Product\DeleteFavorite($productModel->ui));
-            $page->content->productCards[] = $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel, null, true, true, ['position' => 'private']), null, 'product_60');
+            $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel, null, true, true, ['position' => 'private']), null, 'product_60');
+            $productCard->deleteUrl = $router->getUrlByRoute(new Routing\Product\DeleteFavorite($productModel->ui));
+            $page->content->productCards[] = $productCard;
         }
 
         // шаблоны mustache

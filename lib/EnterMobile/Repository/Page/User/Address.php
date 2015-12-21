@@ -28,6 +28,7 @@ class Address {
         (new Repository\Page\User\DefaultPage)->buildObjectByRequest($page, $request);
 
         $templateHelper = $this->getTemplateHelper();
+        $router = $this->getRouter();
 
         $page->title = 'Личный кабинет';
 
@@ -53,6 +54,7 @@ class Address {
                     ]
                     : false
                 ,
+                'deleteUrl'     => false,
             ];
         }
 
