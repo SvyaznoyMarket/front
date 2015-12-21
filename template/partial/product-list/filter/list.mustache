@@ -2,7 +2,7 @@
 {{#elements}}
     <li class="paramsList_item">
         <input class="js-productFilter-set custom-input jsCustomRadio" type="{{#isMultiple}}checkbox{{/isMultiple}}{{^isMultiple}}radio{{/isMultiple}}" name="{{name}}" id="{{id}}" value="{{value}}"{{#isActive}} checked="checked"{{/isActive}} />
-        <label class="custom-label" for="{{id}}">{{title}}</label>
+        <label class="custom-label paramsList__item-label" for="{{id}}">{{title}}</label>
     </li>
 {{/elements}}
 </ul>
