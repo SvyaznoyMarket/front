@@ -81,7 +81,7 @@ class Index {
         $regionIds = array_values(array_unique($regionIds));
         if ((1 === count($regionIds)) && ($regionIds[0] === $region->id)) {
             $regionsById[$region->id] = $region;
-        } else {
+        } else if ($regionIds) {
             $regionQuery = new Query\Region\GetListByIdList($regionIds);
             $curl->prepare($regionQuery);
 
