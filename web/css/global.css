@@ -2454,31 +2454,28 @@ body {
   filter: alpha(opacity=60);
 }
 .btnStyleOrange {
-  font-size: 14px;
-  line-height: 34px;
   display: block;
   height: 35px;
+  background: #ffa400;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
   text-align: center;
   color: #fff;
-  border: 1px solid #e26500;
-  background: #f89b1c;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
+  font-size: 14px;
+  line-height: 34px;
 }
 .btnStyleOrange:hover {
   text-decoration: none;
   color: #ffffff;
-  background: #ffa200;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #f79200), color-stop(1, #ffa200));
-  background: -ms-linear-gradient(bottom, #f79200, #ffa200);
-  background: -moz-linear-gradient(center bottom, #f79200 0%, #ffa200 100%);
-  background: -o-linear-gradient(#ffa200, #f79200);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa200', endColorstr='#f79200', GradientType=0);
 }
 .btnStyleOrange:active {
+  background: #ffa400;
   text-decoration: none;
-  background: #f79200;
 }
 .btnStyleBlack {
   font-size: 14px;
@@ -2489,6 +2486,10 @@ body {
   color: #ffffff;
   border: 1px solid #000000;
   background: #000000;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   border-radius: 4px;
@@ -2499,9 +2500,13 @@ body {
   display: block;
   height: 35px;
   text-align: center;
-  color: #000000;
-  border: 1px solid #d8d8d8;
-  background: #f6f6f6;
+  color: #363636;
+  border: 1px solid #363636;
+  background: #f2f2f2;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -5698,15 +5703,12 @@ body {
   text-align: center;
   font-size: 0;
 }
-<<<<<<< HEAD
-=======
 .catalogCategories__img-block:before {
   content: '';
   display: inline-block;
   vertical-align: middle;
   height: 100%;
 }
->>>>>>> master-603
 @media only screen and (min-width: 768px) {
   .catalogCategories__img-block {
     height: 180px;
@@ -5715,11 +5717,12 @@ body {
 .catalogCategories__img {
   max-width: 100%;
   max-height: 100%;
-<<<<<<< HEAD
-=======
+}
+.catalogCategories__img {
+  max-width: 100%;
+  max-height: 100%;
   display: inline-block;
   vertical-align: middle;
->>>>>>> master-603
 }
 .catalogCategories__name {
   display: block;
