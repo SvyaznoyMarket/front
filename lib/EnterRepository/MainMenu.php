@@ -135,7 +135,7 @@ class MainMenu {
 
         $menu->serviceElements = [
             'delivery' => [
-                'link' => '/delivery',
+                'link' => '/shops',
                 'name' => 'Магазины и самовывоз',
                 'iconClass' => 'nav-icon--shops'
             ],

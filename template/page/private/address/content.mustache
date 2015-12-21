@@ -1,9 +1,9 @@
 <ul class="private-list">
     {{#addresses}}
         <li class="private-list__item">
-            {{#empty}}
-                <a class="private-list__item-del js-favorites-delete" href=""></a>
-            {{/empty}}
+            {{#deleteUrl}}
+                <a class="private-list__item-del" href="{{deleteUrl}}"></a>
+            {{/deleteUrl}}
             <div class="private-list__item-block">
                 {{#region}}
                     <span class="private-list__item-block-inner address-section__item">{{region.name}}</span>
