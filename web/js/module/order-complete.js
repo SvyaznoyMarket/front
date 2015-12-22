@@ -84,7 +84,17 @@ define(
         });
 
         try {
-            util.sendOrdersToGoogleAnalytics($('.js-order-complete').data('google-analytic-orders'));
+            !function() {
+                var orders = $('.js-order-complete').data('orders');
+                if (orders) {
+                    util.sendOrdersToGoogleAnalytics(orders);
+                    util.partner.flocktory.send({
+                        action: 'postcheckout',
+                        orders: orders,
+                        spot: 'mob'
+                    });
+                }
+            }();
 
             analytics.push(['16 Вход_Оплата_ОБЯЗАТЕЛЬНО']);
 

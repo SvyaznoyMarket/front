@@ -32,6 +32,7 @@ class Complete {
         $dateHelper = $this->getDateHelper();
         $translateHelper = $this->getTranslateHelper();
         $pointRepository = new Repository\Partial\Point();
+        $mediaRepository = new \EnterRepository\Media();
 
         $onlinePaymentMethodModelsById = $request->onlinePaymentMethodsById;
 
@@ -247,18 +248,22 @@ class Complete {
         $page->content->isSingleOrder = 1 === count($request->orders);
 
         if (!$request->isCompletePageReaded) {
-            $page->content->dataGoogleAnalyticOrders = $templateHelper->json(array_map(function(\EnterModel\Order $orderModel) {
+            $page->content->dataOrders = $templateHelper->json(array_map(function(\EnterModel\Order $orderModel) use($mediaRepository) {
                 return [
-                    'number' => $orderModel->numberErp,
+                    'numberErp' => $orderModel->numberErp,
                     'isPartner' => $orderModel->isPartner,
                     'paySum' => $orderModel->paySum,
+                    'email' => $orderModel->email,
+                    'firstName' => $orderModel->firstName,
+                    'lastName' => $orderModel->lastName,
+                    'phone' => $orderModel->phone,
                     'delivery' => [
                         'price' => isset($orderModel->deliveries[0]) ? $orderModel->deliveries[0]->price : '',
                     ],
                     'region' => [
                         'name' => $orderModel->region->name,
                     ],
-                    'products' => array_map(function (\EnterModel\Order\Product $product) {
+                    'products' => array_map(function (\EnterModel\Order\Product $product) use($mediaRepository) {
                         return [
                             'id' => $product->id,
                             'name' => $product->name,
@@ -268,8 +273,16 @@ class Complete {
                             }, $product->category) : [],
                             'price' => $product->price,
                             'quantity' => $product->quantity,
+                            'images' => [
+                                '120x120' => [
+                                    'url' => $mediaRepository->getSourceObjectByList($product->media->photos, 'main', 'product_120')->url,
+                                ],
+                            ],
                         ];
                     }, $orderModel->product),
+                    'user' => [
+                        'sex' => $orderModel->user ? $orderModel->user->sex : 0,
+                    ],
                 ];
             }, $request->orders));
         }

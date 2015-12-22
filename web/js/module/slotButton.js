@@ -230,6 +230,11 @@ define(
                         scrollTo(0);
 
                         util.sendOrdersToGoogleAnalytics([result.order]);
+                        util.partner.flocktory.send({
+                            action: 'postcheckout',
+                            orders: [result.order],
+                            spot: 'mob_slot'
+                        });
                     },
                     error: function(){
                         $errors.text('Ошибка при создании заявки').show();

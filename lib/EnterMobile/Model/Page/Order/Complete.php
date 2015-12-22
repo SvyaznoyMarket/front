@@ -25,7 +25,7 @@ namespace EnterMobile\Model\Page\Order\Complete {
         /** @var array */
         public $orders = [];
         /** @var string */
-        public $dataGoogleAnalyticOrders = '';
+        public $dataOrders = '';
         /** @var bool */
         public $isSingleOrder;
 

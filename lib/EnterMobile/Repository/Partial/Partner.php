@@ -55,6 +55,11 @@ class Partner {
             $partners[] = $partner;
         }
 
+        // flocktory
+        if ($config->flocktory->enabled) {
+            $partners[] = $this->createFlocktoryPartner($request, $dataAction);
+        }
+
         return $partners;
     }
 
@@ -105,6 +110,11 @@ class Partner {
             $partner->dataValue = $templateHelper->json([]);
 
             $partners[] = $partner;
+        }
+
+        // flocktory
+        if ($config->flocktory->enabled) {
+            $partners[] = $this->createFlocktoryPartner($request, $dataAction);
         }
 
         return $partners;
@@ -196,6 +206,14 @@ class Partner {
             $partners[] = $partner;
         }
 
+        // flocktory
+        if ($config->flocktory->enabled) {
+            $partners[] = $this->createFlocktoryPartner($request, $dataAction, [
+                'fl-action' => 'track-category-view',
+                'fl-category-id' => $category->id,
+            ]);
+        }
+
         return $partners;
     }
 
@@ -252,6 +270,11 @@ class Partner {
             $partner->dataValue = $templateHelper->json([]);
 
             $partners[] = $partner;
+        }
+
+        // flocktory
+        if ($config->flocktory->enabled) {
+            $partners[] = $this->createFlocktoryPartner($request, $dataAction);
         }
 
         return $partners;
@@ -371,6 +394,14 @@ class Partner {
             $partners[] = $partner;
         }
 
+        // flocktory
+        if ($config->flocktory->enabled) {
+            $partners[] = $this->createFlocktoryPartner($request, $dataAction, [
+                'fl-action' => 'track-item-view',
+                'fl-item-id' => $product->id,
+            ]);
+        }
+
         return $partners;
     }
 
@@ -481,6 +512,11 @@ class Partner {
             $partners[] = $partner;
         }
 
+        // flocktory
+        if ($config->flocktory->enabled) {
+            $partners[] = $this->createFlocktoryPartner($request, $dataAction);
+        }
+
         return $partners;
     }
 
@@ -516,5 +552,64 @@ class Partner {
                 'pagetype' => 'default',
             ],
         ];
+    }
+
+    /**
+     * @param Repository\Page\DefaultPage\Request $request
+     * @param string $dataAction
+     * @param array $data
+     * @return Partial\Partner
+     */
+    private function createFlocktoryPartner(Repository\Page\DefaultPage\Request $request, $dataAction, array $data = []) {
+        $templateHelper = $this->getTemplateHelper();
+        $html = '';
+
+        // user
+        call_user_func(function() use(&$html, $request, $templateHelper) {
+            $attributes = '';
+
+            if ($request->user) {
+                if ($request->user->email) {
+                    $attributes .= 'data-fl-user-email="' . $templateHelper->escape($request->user->email) . '" ';
+                }
+
+                $name = trim($request->user->firstName . ' ' . $request->user->lastName);
+                if ($name) {
+                    $attributes .= 'data-fl-user-name="' . $templateHelper->escape($name) . '" ';
+                }
+            }
+
+            if (!$request->user || !$request->user->isEnterprizeMember) {
+                $attributes .= 'data-fl-action="precheckout" ';
+                $attributes .= 'data-fl-spot="no_enterprize_reg" ';
+            }
+
+            if ($attributes) {
+                $html .= '<div class="i-flocktory" ' . $attributes . '></div>';
+            }
+        });
+
+        call_user_func(function() use(&$html, $data, $templateHelper) {
+            if (!$data) {
+                return;
+            }
+            
+            $attributes = '';
+            foreach ($data as $key => $value) {
+                $attributes .= 'data-' . $templateHelper->escape($key) . '="' . $templateHelper->escape($value) . '" ';
+            }
+
+            $html .= '<div class="i-flocktory" ' . $attributes . '></div>';
+        });
+
+        $partner = new Partial\Partner();
+        $partner->id = 'flocktory';
+        $partner->html = $html;
+        $partner->dataAction = $dataAction;
+        $partner->dataValue = $templateHelper->json([
+            'siteId' => $this->getConfig()->partner->service->flocktory->siteId
+        ]);
+
+        return $partner;
     }
 }
