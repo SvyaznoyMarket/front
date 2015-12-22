@@ -18,6 +18,7 @@ class Product extends Model\Product {
      * @param array $data
      */
     public function __construct(array $data = []) {
+        parent::__construct($data);
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
         if (array_key_exists('price', $data)) $this->price = (float)$data['price'];
         if (array_key_exists('sum', $data)) $this->sum = (float)$data['sum'];
