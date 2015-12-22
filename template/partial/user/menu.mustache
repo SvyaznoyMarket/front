@@ -1,4 +1,19 @@
 <ul class="private-menu-lst">
+    <li class="private-menu-lst__item active">
+        <a href="/private" class="private-menu-lst__lk">
+            <img class="private-menu-lst__item-i private-menu-lst__item-i_big" src="/css/modules/private/img/i-main.png" alt="#">
+
+            <span class="private-menu-lst__item-txt private-menu-lst__item-txt_user">
+                <span class="private-menu-lst__user private-menu-lst__user_name">{{user.name}}</span>
+                {{#user.email}}
+                    <span class="private-menu-lst__user">{{user.email}}</span>
+                {{/user.email}}
+                {{#user.phone}}
+                <span class="private-menu-lst__user">{{user.phone}}</span>
+                {{/user.phone}}
+            </span>
+        </a>
+    </li>
 {{#userMenu}}
     <li class="private-menu-lst__item {{#isActive}} active{{/isActive}}">
         <a href="{{url}}" class="js-user-menu private-menu-lst__lk">

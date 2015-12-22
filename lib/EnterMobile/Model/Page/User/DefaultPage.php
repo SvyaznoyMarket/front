@@ -17,8 +17,10 @@ namespace EnterMobile\Model\Page\User {
 namespace EnterMobile\Model\Page\User\DefaultPage {
 
     class Content extends \EnterMobile\Model\Page\DefaultPage\Content{
-        /** @var string */
+        /** @var array */
         public $userMenu;
+        /** @var array */
+        public $user;
 
         public function __construct() {
             parent::__construct();
