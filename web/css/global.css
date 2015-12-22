@@ -12077,7 +12077,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   display: block;
   font-size: 12px;
 }
-.ep__coupon {
+.ep-coupon {
   width: 210px;
   height: 210px;
   margin: 15px auto 5px;
@@ -12090,16 +12090,47 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   background-size: contain;
   text-align: center;
 }
-.ep__coupon-img {
+.ep-coupon__img {
   margin: 50px 0 0;
   max-width: 50px;
   max-height: 50px;
 }
-.ep__coupon-title {
-  font-size: 12px;
+.ep-coupon__title {
+  width: 100%;
+  text-align: center;
+}
+.ep-coupon__title-type {
   display: block;
   width: 131px;
   margin: 5px auto 0;
+  font-size: 12px;
+}
+.ep-coupon__title-discount {
+  display: block;
+  font-size: 24px;
+}
+.ep-coupon__info {
+  display: block;
+  padding: 0 10px 10px;
+  text-align: center;
+}
+.ep-coupon__info-txt {
+  display: block;
+  font-size: 16px;
+}
+.ep-coupon__info-term {
+  margin-top: 5px;
+  display: block;
+  color: #a0a0a0;
+  font-size: 14px;
+}
+.ep-coupon__info-disc {
+  margin-top: 10px;
+  display: block;
+  font-size: 12px;
+}
+.ep-coupon__info-min-sum {
+  display: block;
 }
 .favorit-item__img {
   width: 110px;

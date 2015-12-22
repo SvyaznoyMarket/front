@@ -5,12 +5,12 @@
     </section>
     <section class="id-content-container ep">
         {{#coupon}}
-        <div class="ep__coupon" style="background-image:url({{background_image_url}})">
+        <div class="ep-coupon" style="background-image:url({{background_image_url}})">
 
-            <img class="ep__coupon-img" src="{{segment_image_url}}">
-            <div class="ep__coupon-title">
-                <span class="type">{{segment}}</span>
-                <span class="discount">
+            <img class="ep-coupon__img" src="{{segment_image_url}}">
+            <div class="ep-coupon__title">
+                <span class="ep-coupon__title-type">{{segment}}</span>
+                <span class="ep-coupon__title-discount">
                     {{value}}
                     {{#is_currency}}<span class="rubl">p</span>{{/is_currency}}
                     {{^is_currency}}%{{/is_currency}}
@@ -18,13 +18,13 @@
             </div>
         </div>
         <div class="ep-coupon__info">
-            <span class="ep-coupon__txt">Фишка со скидкой {{value}}
+            <span class="ep-coupon__info-txt">Фишка со скидкой {{value}}
                 {{#is_currency}}<span class="rubl">p</span>{{/is_currency}}
                 {{^is_currency}}%{{/is_currency}}<br>
                 на {{segment}}</span>
-            <span class="ep-coupon__term">Действует c {{start_date}} по {{end_date}}</span>
-            <div class="ep-coupon__disc">{{&segment_description}}</div>
-            <p>Минимальная сумма заказа {{min_order_sum}} <span class="rubl">p</span></p>
+            <span class="ep-coupon__info-term">Действует c {{start_date}} по {{end_date}}</span>
+            <div class="ep-coupon__info-disc">{{&segment_description}}</div>
+            <span class="ep-coupon__info-min-sum">Минимальная сумма заказа {{min_order_sum}} <span class="rubl">p</span></span>
         </div>
         {{/coupon}}
     </section>
