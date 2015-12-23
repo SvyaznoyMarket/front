@@ -25,11 +25,11 @@
 
             $page->content->userMenu = $userMenu;
 
-            if ($userEntity = $request->user) {
+            if ($userModel = $request->user) {
                 $page->content->user = [
-                    'email' => $userEntity->email,
-                    'phone' => (11 === strlen($userEntity->phone)) ? preg_replace('/(\d{1,3})(\d{1,3})(\d{1,2})(\d{1,2})/i', '+7 ($1) $2-$3-$4', substr($userEntity->phone, 1)) : $userEntity->phone,
-                    'name'  => implode(' ', [$userEntity->firstName, $userEntity->lastName]),
+                    'email' => $userModel->email,
+                    'phone' => (11 === strlen($userModel->phone)) ? preg_replace('/(\d{1,3})(\d{1,3})(\d{1,2})(\d{1,2})/i', '+7 ($1) $2-$3-$4', substr($userModel->phone, 1)) : $userModel->phone,
+                    'name'  => implode(' ', [$userModel->firstName, $userModel->lastName]),
                 ];
             }
         }

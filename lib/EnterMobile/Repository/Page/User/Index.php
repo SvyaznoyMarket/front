@@ -54,11 +54,12 @@ class Index {
 
         $userModel = $request->user;
         $page->content->user = [
+            'name'       => implode(' ', [$userModel->firstName, $userModel->lastName]),
             'firstName'  => $userModel->firstName,
             'lastName'   => $userModel->lastName,
             'middleName' => $userModel->middleName,
             'birthday'   => $userModel->birthday,
-            'phone'      => $userModel->phone,
+            'phone'      => (11 === strlen($userModel->phone)) ? preg_replace('/(\d{1,3})(\d{1,3})(\d{1,2})(\d{1,2})/i', '+7 ($1) $2-$3-$4', substr($userModel->phone, 1)) : $userModel->phone,
             'homePhone'  => $userModel->homePhone,
             'sex'        =>
                 null === $userModel->sex
@@ -68,6 +69,7 @@ class Index {
             'email'      => $userModel->email,
             'occupation' => $userModel->occupation,
         ];
+        $page->content->isIndexActive = true;
 
         // шаблоны mustache
         // ...
