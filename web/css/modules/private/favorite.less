@@ -1,8 +1,16 @@
-.favorit-item {
+.favorit-section {
+
+  &__item-block{
+    vertical-align: top;
+  }
 
   &__img {
+    position: relative;
+
     width: 35%;
     height: 110px;
+    vertical-align: top;
+
     text-align: center;
 
     img {
@@ -19,10 +27,16 @@
       height: 100%;
       width: 0;
     }
+
+    .right{
+      right: 10px;
+    }
   }
 
   &__title{
     display: block;
+    max-width: 135px;
+    height: 32px;
 
     font-size: 12px;
   }

@@ -8,13 +8,22 @@
   }
 
   &__cell{
-    .g-layout__item(12, 255px);
+    .g-layout__item(12);
     margin-top: 10px;
 
     overflow: hidden;
 
+
+    &_fix{
+      height: 255px;
+
+      @media screen and (min-width:767px){
+        height: 276px;
+      }
+    }
+
     @media screen and (min-width:767px){
-      .g-layout__item(6, 276px);
+      .g-layout__item(6);
     }
   }
 
