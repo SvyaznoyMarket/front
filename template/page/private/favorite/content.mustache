@@ -4,13 +4,12 @@
         <li class="private-list__item">
 
             <a class="private-list__item-del" href="{{deleteUrl}}" data-product-ui="{{ui}}"></a>
-            <a class="private-list__item-block favorit-item__img" href="{{url}}">
+            <a class="private-list__item-block favorit-section__img" href="{{url}}">
                 <img src="{{image}}" alt="{{webName}}">
             </a>
-            <div class="private-list__item-block">
+            <div class="private-list__item-block favorit-section__item-block">
                 <a class="favorit-section__title" href="{{url}}">
-                    <span class="favorit-item__title-type">{{namePrefix}}</span>
-                    <span class="favorit-item__title-name">{{&webName}}</span>
+                    {{namePrefix}}
                 </a>
 
                 <div class="private-list__item-rating rating">
@@ -19,28 +18,19 @@
                     {{/rating}}
                 </div>
 
-
-                    <div class="private-list__item-availability">
-                        <span>{{#states.isInShopStock}}Самовывоз сегодня{{/states.isInShopStock}}</span>
-                    </div>
-
-
-
-                <div class="private-list__item-availability private-list__item-availability_gray">
+                <div class="private-list__item-availability{{#states.isInShopShowroomOnly}} private-list__item-availability_gray{{/states.isInShopShowroomOnly}}">
+                    <span>{{#states.isInShopStock}}Самовывоз сегодня{{/states.isInShopStock}}</span>
                     <span>{{#states.isInShopShowroomOnly}}На витрине{{/states.isInShopShowroomOnly}}</span>
                 </div>
 
+                <div class="price favorit-section__price">
 
-                <div class="price favorit-item__price">
-                    {{#shownOldPrice}}
-                        <span class="price_old favorit-item__price-old">{{shownOldPrice}} <span class="rubl">p</span></span>
-                    {{/shownOldPrice}}
-                    <span class="price_now favorit-item__price-now">{{shownPrice}} <span class="rubl">p</span></span>
+                        <span class="price_old favorit-section__price-old">{{#shownOldPrice}}{{shownOldPrice}} <span class="rubl">p</span>{{/shownOldPrice}}</span>
+
+                    <span class="price_now favorit-section__price-now">{{shownPrice}} <span class="rubl">p</span></span>
                 </div>
             </div>
         </li>
-
-
         <!--/ товар -->
     {{/productCards}}
 </ul>
