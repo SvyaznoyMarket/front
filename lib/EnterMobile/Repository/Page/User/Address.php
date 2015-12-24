@@ -56,7 +56,7 @@ class Address {
                     ]
                     : false
                 ,
-                'deleteUrl'     => false,
+                'deleteUrl'     => $router->getUrlByRoute(new Routing\User\Address\Delete(), ['addressId' => $addressModel->id]),
             ];
         }
 

@@ -272,6 +272,13 @@
       "name": "Избранное",
       "pattern": "/private/favorites"
     },
+    "User\\Address\\Delete": {
+        "name": "Удалить адрес",
+        "pattern": "/private/address/delete",
+        "require": {
+            "addressId": "[\\w\\d-_]+"
+        }
+    },
     "User\\Address": {
         "name": "Адреса пользователя",
         "pattern": "/private/addresses"
