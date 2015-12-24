@@ -420,6 +420,11 @@ ul li {
   left: 0;
   top: 0;
 }
+.right {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 /** основные стили, вспомогательные классы **/
 /* ==========================================================================
    Base styles: opinionated defaults
@@ -11760,6 +11765,11 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   color: #868686;
   font-size: 18px;
 }
+.p-control-input[disabled] {
+  color: #000000;
+  opacity: 1;
+  background: #fff;
+}
 .p-control-label {
   font-size: 12px;
   color: #363636;
@@ -14108,7 +14118,7 @@ section.map .map-container {
 }
 .grids__cell {
   width: 100%;
-  float: 255px;
+  float: left;
   padding: 0 5px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -14117,10 +14127,18 @@ section.map .map-container {
   margin-top: 10px;
   overflow: hidden;
 }
+.grids__cell_fix {
+  height: 255px;
+}
+@media screen and (min-width: 767px) {
+  .grids__cell_fix {
+    height: 276px;
+  }
+}
 @media screen and (min-width: 767px) {
   .grids__cell {
     width: 50%;
-    float: 276px;
+    float: left;
     padding: 0 5px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
