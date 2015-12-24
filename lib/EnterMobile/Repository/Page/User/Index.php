@@ -53,18 +53,25 @@ class Index {
         $walkByMenu($request->mainMenu->elements);
 
         $userModel = $request->user;
+        $birthday = null;
+        try {
+            if ($userModel->birthday) {
+                $birthday = (new \DateTime($userModel->birthday))->format('d.m.Y');
+            }
+        } catch (\Exception $e) {}
+
         $page->content->user = [
             'name'       => implode(' ', [$userModel->firstName, $userModel->lastName]),
             'firstName'  => $userModel->firstName,
             'lastName'   => $userModel->lastName,
             'middleName' => $userModel->middleName,
-            'birthday'   => $userModel->birthday,
+            'birthday'   => $birthday,
             'phone'      => (11 === strlen($userModel->phone)) ? preg_replace('/(\d{1,3})(\d{1,3})(\d{1,2})(\d{1,2})/i', '+7 ($1) $2-$3-$4', substr($userModel->phone, 1)) : $userModel->phone,
-            'homePhone'  => $userModel->homePhone,
+            'homePhone'  => (11 === strlen($userModel->homePhone)) ? preg_replace('/(\d{1,3})(\d{1,3})(\d{1,2})(\d{1,2})/i', '+7 ($1) $2-$3-$4', substr($userModel->homePhone, 1)) : $userModel->homePhone,
             'sex'        =>
                 null === $userModel->sex
                 ? false
-                : (1 == $userModel->sex ? 'муж' : 'жен')
+                : (1 == $userModel->sex ? 'мужской' : 'женский')
             ,
             'email'      => $userModel->email,
             'occupation' => $userModel->occupation,
