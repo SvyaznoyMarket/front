@@ -12490,6 +12490,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .favorit-section__img {
   width: 35%;
   height: 110px;
+  vertical-align: top;
   text-align: center;
 }
 .favorit-section__img img {
