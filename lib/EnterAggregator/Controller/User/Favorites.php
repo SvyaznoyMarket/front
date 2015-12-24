@@ -81,6 +81,8 @@ namespace EnterAggregator\Controller\User {
             $productDescriptionListQuery = new Query\Product\GetDescriptionListByUiList($uis, [
                 'media'       => true,
                 'media_types' => ['main'],
+                'label'       => true,
+                'brand'       => true,
             ]);
             $curl->prepare($productDescriptionListQuery);
 
