@@ -158,7 +158,11 @@ class ProductCard {
                 $delivery = new Page\Content\Product\DeliveryBlock\Delivery();
                 $delivery->name = 'Самовывоз';
                 $delivery->token = $closestPickupDelivery->token;
-                $delivery->deliveredAtText = $closestPickupDelivery->deliveredAt->format('d.m.Y');
+
+                if ($closestPickupDelivery->deliveredAt) {
+                    $delivery->deliveredAtText = $closestPickupDelivery->deliveredAt->format('d.m.Y');
+                }
+
                 $delivery->priceText = (!$minPickupPrice || $minPickupPrice == 0)
                     ? 'бесплатно'
                     : ($this->getPriceHelper()->format($minPickupPrice) . ' p')
