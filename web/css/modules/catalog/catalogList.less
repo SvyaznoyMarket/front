@@ -2,279 +2,273 @@
    Каталог -> листинг товаров .catalogList 
    ========================================================================== */
 
-
 .catalogList {
   .g-layout;
 
   background: #f2f2f2;
 
   &__row {
-	.g-layout__row;
+    .g-layout__row;
   }
 
   &__item {
-	.g-layout__item(12);
+    .g-layout__item(12);
+    height: 146px;
+    margin-bottom: 10px;
 
-	margin-bottom: 10px;
+    @media only screen and (min-width: 768px) {
+      .g-layout__item(4);
+      height: auto;
+    }
 
-	@media only screen and (min-width: 768px) {
-	  .g-layout__item(4);
-	}
-
-	@media only screen and (min-width: 1024px) {
-	  .g-layout__item(3);
-	}
+    @media only screen and (min-width: 1024px) {
+      .g-layout__item(3);
+    }
   }
 
-  &__item-inner{
-	padding: 10px;
+  &__item-inner {
+    height: 100%;
 
-	background: #FFFFFF;
+    padding: 10px;
+    background: #FFFFFF;
+    .box-shadow(0 0 3px 0 rgba(0, 0, 0, 0.10));
+    .box-sizing();
 
-	.box-shadow(0 0 3px 0 rgba(0, 0, 0, 0.10));
+    .clearfix;
 
-	.clearfix;
+    @media only screen and (min-width: 768px) {
+      padding-left: 10px;
+      padding-right: 10px;
 
-	@media only screen and (min-width: 768px) {
-	  padding-left: 10px;
-	  padding-right: 10px;
-
-	  text-align: center;
-	}
+      text-align: center;
+    }
   }
 
-  &__name{
-	display: block;
+  &__name {
+    display: block;
 
-	height: 40px;
-	
-	overflow: hidden;
-  }
-  
-  &__img-block{
-	position: relative;
+    height: 40px;
 
-	float: left;
-	display: block;
-	width: 35%;
-	height: 100px;
-
-	padding-right: 5px;
-
-	text-align: center;
-	.box-sizing();
-
-	&:after{
-	  content: '';
-
-	  position: relative;
-	  top: 0;
-	  bottom: 0;
-	  left: 0;
-	  height: 100%;
-
-	  display: inline-block;
-
-	  vertical-align: middle;
-	}
-
-	@media only screen and (min-width: 768px) {
-	  float: none;
-	  width: 100%;
-	  height: 200px;
-	  padding-right: 0;
-	}
+    overflow: hidden;
   }
 
-  &__img{
-	max-width: 96%;
-	max-height: 100%;
+  &__img-block {
+    position: relative;
 
-	vertical-align: middle;
+    float: left;
+    display: block;
+    width: 35%;
+    height: 100%;
+
+    padding-right: 5px;
+    font-size: 0;
+    text-align: center;
+    .box-sizing();
+
+    &:after {
+      content: '';
+
+      height: 100%;
+
+      display: inline-block;
+
+      vertical-align: middle;
+    }
+
+    @media only screen and (min-width: 768px) {
+      float: none;
+      width: 100%;
+      height: 200px;
+      padding-right: 0;
+    }
   }
 
-  &__desc{
-	float: left;
-	width: 65%;
+  &__img {
+    max-width: 100%;
+    max-height: 100%;
 
-	.box-sizing();
-
-	@media only screen and (min-width: 768px) {
-	  position: relative;
-	  float: none;
-	  width: 100%;
-	  height: 170px;
-	  padding-top: 20px;
-	  padding-bottom: 35px;
-	}
+    vertical-align: middle;
   }
 
-  &__name{
-	font-size: 12px;
+  &__desc {
+    float: left;
+    width: 65%;
 
-	@media only screen and (min-width: 768px) {
-	  font-size: 14px;
-	  text-align: left;
-	}
+    .box-sizing();
+
+    @media only screen and (min-width: 768px) {
+      position: relative;
+      float: none;
+      width: 100%;
+      height: 170px;
+      padding-top: 20px;
+      padding-bottom: 35px;
+    }
   }
 
-  &__rating{
-	.rating;
+  &__name {
+    font-size: 12px;
 
-	margin: 0;
-
-	@media only screen and (min-width: 768px) {
-	  position: absolute;
-	  top: 0;
-	  width: 100%;
-	  text-align: center;
-	}
+    @media only screen and (min-width: 768px) {
+      font-size: 14px;
+      text-align: left;
+    }
   }
 
-  &__availability{
-	min-height: 22px;
-	margin: 5px 0;
+  &__rating {
+    .rating;
 
-	span{
-	  display: inline-block;
-	  width: 100%;
+    margin: 0;
 
-	  padding: 0 30px;
+    @media only screen and (min-width: 768px) {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      text-align: center;
+    }
+  }
 
-	  background: @infoL4;
-	  .box-sizing();
+  &__availability {
+    min-height: 22px;
+    margin: 5px 0;
 
-	  font-size: 12px;
-	  text-align: center;
-	  color: #666666;
+    span {
+      display: inline-block;
+      width: 100%;
 
-	  @media only screen and (min-width: 768px) {
-		width: 100%;
+      padding: 0 30px;
 
-		padding: 0;
+      background: @infoL4;
+      .box-sizing();
 
-		line-height: 22px;
-		font-size: 14px;
-	  }
-	}
+      font-size: 12px;
+      text-align: center;
+      color: #666666;
 
-	&_gray{
+      @media only screen and (min-width: 768px) {
+        width: 100%;
 
-	  span{
-		background: @grayL6;
-	  }
-	}
+        padding: 0;
 
+        line-height: 22px;
+        font-size: 14px;
+      }
+    }
+
+    &_gray {
+
+      span {
+        background: @grayL6;
+      }
+    }
 
   }
 
-  &__price{
-	float: left;
-	min-height: 40px;
+  &__price {
+    float: left;
+    min-height: 40px;
 
-	@media only screen and (min-width: 768px) {
-	  float: none;
-	  width: 100%;
-	  display: block;
+    @media only screen and (min-width: 768px) {
+      float: none;
+      width: 100%;
+      display: block;
 
-	  font-size: 0;
-	  text-align: center;
-	}
+      font-size: 0;
+      text-align: center;
+    }
   }
 
-  &__price-old{
-	//min-height: 19px;
-	.box-sizing();
+  &__price-old {
+    //min-height: 19px;
+    .box-sizing();
 
-	font-size: 14px;
-	text-decoration: line-through;
-	color: #666666;
+    font-size: 14px;
+    text-decoration: line-through;
+    color: #666666;
 
-	span{
-	  text-decoration: none;
+    span {
+      text-decoration: none;
 
-	  @media only screen and (min-width: 768px) {
-		padding-right: 10px;
-	  }
-	}
+      @media only screen and (min-width: 768px) {
+        padding-right: 10px;
+      }
+    }
 
-	@media only screen and (min-width: 768px) {
-	  display: inline-block;
-	  .box-sizing();
+    @media only screen and (min-width: 768px) {
+      display: inline-block;
+      .box-sizing();
 
-	  font-size: 22px;
-	  text-align: center;
-	}
+      font-size: 22px;
+      text-align: center;
+    }
   }
 
-  &__price-now{
-	font-size: 18px;
+  &__price-now {
+    font-size: 18px;
 
-	color: #000;
+    color: #000;
 
-	@media only screen and (min-width: 768px) {
-	  display: inline-block;
+    @media only screen and (min-width: 768px) {
+      display: inline-block;
 
-	  font-size: 22px;
-	  text-align: center;
-	}
+      font-size: 22px;
+      text-align: center;
+    }
   }
 
-  &__btn{
-	float: right;
-	width: auto;
+  &__btn {
+    float: right;
+    width: auto;
 
-	a{
-	  width: auto;
-	  min-width: 62px;
-	  height: 30px;
+    a {
+      width: auto;
+      min-width: 62px;
+      height: 30px;
 
+      padding: 0 10px;
+      border-bottom: none;
 
-	  padding: 0 10px;
-	  border-bottom: none;
+      font-size: 14px;
+      text-align: center;
+      line-height: 30px;
 
-	  font-size: 14px;
-	  text-align: center;
-	  line-height: 30px;
+      .rounded(3px);
+    }
 
-	  .rounded(3px);
-	}
+    @media only screen and (min-width: 768px) {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
 
-	@media only screen and (min-width: 768px) {
-	  position: absolute;
-	  bottom: 0;
-	  left: 0;
-	  right: 0;
-	  margin: auto;
+      float: none;
+      display: inline-block;
+      width: 110px;
+    }
 
-	  float: none;
-	  display: inline-block;
-	  width: 110px;
-	}
+    &_view {
 
-	&_view{
+      a {
+        border: 1px solid #afafaf;
+        background: none;
 
-	  a{
-		border: 1px solid #afafaf;
-		background: none;
+        color: #363636;
 
-		color: #363636;
+        &:hover {
+          border: 1px solid #afafaf;
+          background: none;
 
-		&:hover{
-		  border: 1px solid #afafaf;
-		  background: none;
-
-		  color: #363636;
-		}
-	  }
-	}
+          color: #363636;
+        }
+      }
+    }
   }
 }
 
+.catalog-filter {
 
-.catalog-filter{
-
-  &.filter{
-	margin-bottom: 0;
+  &.filter {
+    margin-bottom: 0;
   }
 }

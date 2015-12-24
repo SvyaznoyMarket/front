@@ -422,8 +422,13 @@ ul li {
 }
 .right {
   position: absolute;
-  right: 0;
+  right: 10px;
   top: 0;
+}
+@media only screen and (min-width: 768px) {
+  .right {
+    right: 0;
+  }
 }
 /** основные стили, вспомогательные классы **/
 /* ==========================================================================
@@ -5875,6 +5880,7 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   -ms-box-sizing: border-box;
+  height: 146px;
   margin-bottom: 10px;
 }
 @media only screen and (min-width: 768px) {
@@ -5886,6 +5892,7 @@ body {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     -ms-box-sizing: border-box;
+    height: auto;
   }
 }
 @media only screen and (min-width: 1024px) {
@@ -5900,11 +5907,16 @@ body {
   }
 }
 .catalogList__item-inner {
+  height: 100%;
   padding: 10px;
   background: #FFFFFF;
   -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
   *zoom: 1;
 }
 .catalogList__item-inner:before,
@@ -5932,8 +5944,9 @@ body {
   float: left;
   display: block;
   width: 35%;
-  height: 100px;
+  height: 100%;
   padding-right: 5px;
+  font-size: 0;
   text-align: center;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -5942,10 +5955,6 @@ body {
 }
 .catalogList__img-block:after {
   content: '';
-  position: relative;
-  top: 0;
-  bottom: 0;
-  left: 0;
   height: 100%;
   display: inline-block;
   vertical-align: middle;
@@ -5959,7 +5968,7 @@ body {
   }
 }
 .catalogList__img {
-  max-width: 96%;
+  max-width: 100%;
   max-height: 100%;
   vertical-align: middle;
 }
@@ -12487,26 +12496,27 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .favorit-section__item-block {
   vertical-align: top;
 }
-.favorit-section__img {
+.favorit-section__img-block {
   position: relative;
   width: 35%;
-  height: 110px;
+  height: 146px;
   vertical-align: top;
+  font-size: 0;
   text-align: center;
 }
-.favorit-section__img img {
+.favorit-section__img-block img {
   max-width: 100%;
   max-height: 100%;
   vertical-align: middle;
 }
-.favorit-section__img:after {
+.favorit-section__img-block:after {
   content: '';
   display: inline-block;
   vertical-align: middle;
   height: 100%;
   width: 0;
 }
-.favorit-section__img .right {
+.favorit-section__img-block .right {
   right: 10px;
 }
 .favorit-section__title {
