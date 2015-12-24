@@ -207,7 +207,7 @@ class Partner {
         }
 
         // flocktory
-        if ($config->flocktory->enabled) {
+        if ($config->flocktory->enabled && $category) {
             $partners[] = $this->createFlocktoryPartner($request, $dataAction, [
                 'fl-action' => 'track-category-view',
                 'fl-category-id' => $category->id,
