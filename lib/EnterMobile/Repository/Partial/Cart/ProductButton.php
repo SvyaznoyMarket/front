@@ -109,11 +109,6 @@ class ProductButton {
             $dataValue['product'][$product->id]['partnerName'] = $slotPartnerOffer->partner->name;
             $dataValue['product'][$product->id]['partnerOfferUrl'] = $slotPartnerOffer->partner->offerUrl;
             $dataValue['isFull'] = $isFull;
-        } else if ($cartProduct) {
-//            $button->text = 'В корзине';
-//            $button->url = '/cart'; // TODO: route
-//            $button->dataUrl = '';
-//            $button->isInCart = true;
         } else if ($product->isInShopOnly && $context['position'] !== 'listing') {
             $button->isInShopOnly = true;
             $button->text = 'Резерв';

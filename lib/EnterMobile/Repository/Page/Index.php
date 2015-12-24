@@ -8,6 +8,7 @@ use EnterAggregator\CurlTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\AbTestTrait;
+use EnterMobile\TemplateRepositoryTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
@@ -21,7 +22,8 @@ class Index {
         TemplateHelperTrait,
         RouterTrait,
         CurlTrait,
-        AbTestTrait
+        AbTestTrait,
+        TemplateRepositoryTrait
     ;
 
     /**
@@ -116,9 +118,11 @@ class Index {
         $page->content->mainMenuOnBottom = ('top' === $this->getAbTest()->getObjectByToken('msite_main_categories')->chosenItem->token) ? true : false;
 
         // шаблоны mustache
-        // ...
-
-        (new Repository\Template())->setListForPage($page, [
+        $this->getTemplateRepository()->setListForPage($page, [
+            [
+                'id'   => 'tpl-product-buyButton',
+                'name' => 'partial/cart/flat_button',
+            ],
             [
                 'id'       => 'tpl-product-slider',
                 'name'     => 'partial/product-slider/mainPage',

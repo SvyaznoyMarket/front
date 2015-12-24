@@ -8,13 +8,13 @@ use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\PriceHelperTrait;
 use EnterAggregator\DateHelperTrait;
+use EnterMobile\TemplateRepositoryTrait;
 use EnterMobile\ConfigTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\User\Favorites as Page;
-
 
 class Favorites {
     use LoggerTrait,
@@ -23,7 +23,8 @@ class Favorites {
         CurlTrait,
         ConfigTrait,
         PriceHelperTrait,
-        DateHelperTrait;
+        DateHelperTrait,
+        TemplateRepositoryTrait;
 
     /**
      * @param Page $page
@@ -48,11 +49,7 @@ class Favorites {
         }
 
         // шаблоны mustache
-        // ...
-
-        (new Repository\Template())->setListForPage($page, [
-
-        ]);
+        $this->getTemplateRepository()->setListForPage($page, []);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }

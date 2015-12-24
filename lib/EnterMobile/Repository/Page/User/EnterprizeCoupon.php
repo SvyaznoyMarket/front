@@ -8,13 +8,13 @@ use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\PriceHelperTrait;
 use EnterAggregator\DateHelperTrait;
+use EnterMobile\TemplateRepositoryTrait;
 use EnterMobile\ConfigTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\User\EnterprizeCoupon as Page;
-
 
 class EnterprizeCoupon {
     use LoggerTrait,
@@ -23,11 +23,12 @@ class EnterprizeCoupon {
         CurlTrait,
         ConfigTrait,
         PriceHelperTrait,
-        DateHelperTrait;
+        DateHelperTrait,
+        TemplateRepositoryTrait;
 
     /**
      * @param Page $page
-     * @param Enterprize\Request $request
+     * @param EnterprizeCoupon\Request $request
      */
     public function buildObjectByRequest(Page $page, EnterprizeCoupon\Request $request) {
         (new Repository\Page\User\DefaultPage)->buildObjectByRequest($page, $request);
@@ -61,11 +62,7 @@ class EnterprizeCoupon {
         $page->content->coupon = $coupon;
 
         // шаблоны mustache
-        // ...
-
-        (new Repository\Template())->setListForPage($page, [
-
-        ]);
+        $this->getTemplateRepository()->setListForPage($page, []);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }

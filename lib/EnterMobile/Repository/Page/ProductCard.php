@@ -9,6 +9,7 @@ use EnterAggregator\RouterTrait;
 use EnterAggregator\DateHelperTrait;
 use EnterAggregator\TranslateHelperTrait;
 use EnterAggregator\TemplateHelperTrait;
+use EnterMobile\TemplateRepositoryTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
@@ -16,7 +17,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\ProductCard as Page;
 
 class ProductCard {
-    use ConfigTrait, LoggerTrait, RouterTrait, DateHelperTrait, TranslateHelperTrait, TemplateHelperTrait, PriceHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, DateHelperTrait, TranslateHelperTrait, TemplateHelperTrait, PriceHelperTrait, TemplateRepositoryTrait;
 
     /**
      * @param Page $page
@@ -459,7 +460,7 @@ class ProductCard {
         }
 
         // шаблоны mustache
-        (new Repository\Template())->setListForPage($page, [
+        $this->getTemplateRepository()->setListForPage($page, [
             [
                 'id'       => 'tpl-product-slider',
                 'name'     => 'partial/product-slider/new-default',

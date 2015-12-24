@@ -5,6 +5,7 @@ namespace EnterMobile\Repository\Page\Shops;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
+use EnterMobile\TemplateRepositoryTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
@@ -13,13 +14,13 @@ use EnterMobile\Model\Page\Shops\Index as Page;
 use EnterAggregator\CurlTrait;
 use EnterMobile\ConfigTrait;
 
-
 class Map {
     use LoggerTrait,
         TemplateHelperTrait,
         RouterTrait,
         CurlTrait,
-        ConfigTrait;
+        ConfigTrait,
+        TemplateRepositoryTrait;
 
     /**
      * @param Page $page
@@ -93,16 +94,7 @@ class Map {
         ];
 
         // шаблоны mustache
-        // ...
-
-        (new Repository\Template())->setListForPage($page, [
-//            [
-//                'id'       => 'tpl-product-slider',
-//                'name'     => 'partial/product-slider/mainPage',
-//                'partials' => [
-//                    'partial/cart/flat_button',
-//                ],
-//            ],
+        $this->getTemplateRepository()->setListForPage($page, [
             [
                 'id'       => 'tpl-points-list',
                 'name'     => 'partial/shops/points'

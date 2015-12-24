@@ -3,16 +3,20 @@
 namespace EnterMobile\Controller\Index;
 
 use Enter\Http;
+use EnterMobile\ConfigTrait;
 use EnterAggregator\MustacheRendererTrait;
+use EnterAggregator\DebugContainerTrait;
 use EnterMobile\Repository;
 use EnterQuery as Query;
 use EnterMobile\Model;
 use EnterMobile\Model\Page\Index\RecommendedList as Page;
 
 class RecommendedList {
-    use MustacheRendererTrait;
+    use ConfigTrait, MustacheRendererTrait, DebugContainerTrait;
 
     public function execute(Http\Request $request) {
+        $config = $this->getConfig();
+
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 
@@ -34,6 +38,7 @@ class RecommendedList {
         // страница
         $page = new Page();
         (new Repository\Page\Index\RecommendedList())->buildObjectByRequest($page, $pageRequest);
+        if ($config->debugLevel) $this->getDebugContainer()->page = $page;
 
         return new Http\JsonResponse([
             'result' => $page

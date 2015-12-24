@@ -12,13 +12,15 @@ use EnterMobile\Repository;
 use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\User\Subscribe\Index as Page;
+use EnterMobile\TemplateRepositoryTrait;
 
 class Subscribe {
     use LoggerTrait,
         TemplateHelperTrait,
         RouterTrait,
         CurlTrait,
-        ConfigTrait;
+        ConfigTrait,
+        TemplateRepositoryTrait;
 
     /**
      * @param Page $page
@@ -59,11 +61,7 @@ class Subscribe {
         }
 
         // шаблоны mustache
-        // ...
-
-        (new Repository\Template())->setListForPage($page, [
-
-        ]);
+        $this->getTemplateRepository()->setListForPage($page, []);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }

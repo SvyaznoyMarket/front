@@ -6,6 +6,7 @@ use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
+use EnterMobile\TemplateRepositoryTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
@@ -13,7 +14,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\ProductCatalog\ChildCategory as Page;
 
 class ChildCategory {
-    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, TemplateRepositoryTrait;
 
     /**
      * @param Page $page
@@ -168,7 +169,7 @@ class ChildCategory {
 
 
         // шаблоны mustache
-        (new Repository\Template())->setListForPage($page, [
+        $this->getTemplateRepository()->setListForPage($page, [
             [
                 'id'   => 'tpl-productList-moreLink',
                 'name' => 'partial/product-list/moreLink',

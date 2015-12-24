@@ -25,7 +25,7 @@ class Index {
 
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
-        $curl = $this->getCurl();
+
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
 

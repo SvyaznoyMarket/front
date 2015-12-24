@@ -67,11 +67,7 @@ class Orders {
         $page->content->orders = $orders;
 
         // шаблоны mustache
-        // ...
-
-        (new Repository\Template())->setListForPage($page, [
-
-        ]);
+        $this->getTemplateRepository()->setListForPage($page, []);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }

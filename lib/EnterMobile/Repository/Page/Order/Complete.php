@@ -9,6 +9,7 @@ use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\PriceHelperTrait;
 use EnterAggregator\DateHelperTrait;
 use EnterAggregator\TranslateHelperTrait;
+use EnterMobile\TemplateRepositoryTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
@@ -16,7 +17,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\Order\Complete as Page;
 
 class Complete {
-    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, PriceHelperTrait, DateHelperTrait, TranslateHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, PriceHelperTrait, DateHelperTrait, TranslateHelperTrait, TemplateRepositoryTrait;
 
     /**
      * @param Page $page
@@ -299,7 +300,7 @@ class Complete {
         ];
 
         // шаблоны mustache
-        (new Repository\Template())->setListForPage($page, [
+        $this->getTemplateRepository()->setListForPage($page, [
             // модальное окно для выбора онлайн оплат
             [
                 'id'       => 'tpl-order-complete-onlinePayment-popup',

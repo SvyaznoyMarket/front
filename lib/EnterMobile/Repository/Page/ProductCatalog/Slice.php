@@ -6,6 +6,7 @@ use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
+use EnterMobile\TemplateRepositoryTrait;
 use EnterMobile\Model\Page\ProductCatalog\ChildCategory;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
@@ -14,7 +15,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\ProductCatalog\ChildCategory as Page;
 
 class Slice {
-    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, TemplateRepositoryTrait;
 
     /**
      * @param Page $page
@@ -165,7 +166,7 @@ class Slice {
         $page->buyBtnListing = $request->buyBtnListing;
 
         // шаблоны mustache
-        (new Repository\Template())->setListForPage($page, [
+        $this->getTemplateRepository()->setListForPage($page, [
             [
                 'id'   => 'tpl-productList-moreLink',
                 'name' => 'partial/product-list/moreLink',

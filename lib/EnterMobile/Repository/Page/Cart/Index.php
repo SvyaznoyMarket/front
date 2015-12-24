@@ -7,6 +7,7 @@ use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TranslateHelperTrait;
 use EnterAggregator\TemplateHelperTrait;
+use EnterMobile\TemplateRepositoryTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
@@ -14,7 +15,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\Cart\Index as Page;
 
 class Index {
-    use ConfigTrait, LoggerTrait, RouterTrait, TranslateHelperTrait, TemplateHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, TranslateHelperTrait, TemplateHelperTrait, TemplateRepositoryTrait;
 
     /**
      * @param Page $page
@@ -73,7 +74,7 @@ class Index {
         }
 
         // шаблоны mustache
-        (new Repository\Template())->setListForPage($page, [
+        $this->getTemplateRepository()->setListForPage($page, [
             [
                 'id'   => 'tpl-cart-productSum',
                 'name' => 'partial/cart/productSum',

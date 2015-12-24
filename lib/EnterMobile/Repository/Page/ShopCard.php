@@ -12,6 +12,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\ShopCard as Page;
 use EnterAggregator\CurlTrait;
 use EnterMobile\ConfigTrait;
+use EnterMobile\TemplateRepositoryTrait;
 
 
 class ShopCard {
@@ -19,7 +20,8 @@ class ShopCard {
         TemplateHelperTrait,
         RouterTrait,
         CurlTrait,
-        ConfigTrait;
+        ConfigTrait,
+        TemplateRepositoryTrait;
 
     /**
      * @param Page $page
@@ -92,21 +94,7 @@ class ShopCard {
         ];
 
         // шаблоны mustache
-        // ...
-
-//        (new Repository\Template())->setListForPage($page, [
-//            [
-//                'id'       => 'tpl-product-slider',
-//                'name'     => 'partial/product-slider/mainPage',
-//                'partials' => [
-//                    'partial/cart/flat_button',
-//                ],
-//            ],
-//            [
-//                'id'       => 'tpl-points-list',
-//                'name'     => 'partial/shops/points'
-//            ]
-//        ]);
+        $this->getTemplateRepository()->setListForPage($page, []);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }

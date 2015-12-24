@@ -15,6 +15,9 @@ class Template {
      * @param array $templateData ['id' => null, 'name' => null, 'partials' => []]
      */
     public function setListForPage(Model\Page\DefaultPage $page, array $templateData) {
+        /** @var int[] */
+        static $indexesById = [];
+
         $templateHelper = $this->getTemplateHelper();
         $templateDir = $this->getConfig()->mustacheRenderer->templateDir;
 
@@ -33,7 +36,13 @@ class Template {
 
                 $template->dataPartial = $templateHelper->json($partialData);
 
-                $page->templates[] = $template;
+                $index = (array_key_exists($template->id, $indexesById) ? $indexesById[$template->id] : null);
+                if (null !== $index) {
+                    $page->templates[$index] = $template;
+                } else {
+                    $index = array_push($page->templates, $template) - 1;
+                    $indexesById[$template->id] = $index;
+                }
             } catch (\Exception $e) {
                 $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['template']]);
             }

@@ -9,6 +9,7 @@ use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\PriceHelperTrait;
 use EnterAggregator\TranslateHelperTrait;
 use EnterAggregator\DateHelperTrait;
+use EnterMobile\TemplateRepositoryTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
@@ -16,7 +17,7 @@ use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\Order\Delivery as Page;
 
 class Delivery {
-    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, PriceHelperTrait, TranslateHelperTrait, DateHelperTrait;
+    use ConfigTrait, LoggerTrait, RouterTrait, TemplateHelperTrait, PriceHelperTrait, TranslateHelperTrait, DateHelperTrait, TemplateRepositoryTrait;
 
     /**
      * @param Page $page
@@ -847,7 +848,7 @@ class Delivery {
         ];
 
         // шаблоны mustache
-        (new Repository\Template())->setListForPage($page, [
+        $this->getTemplateRepository()->setListForPage($page, [
             // модальное окно с точками самовывоза
             [
                 'id'       => 'tpl-order-delivery-point-popup',

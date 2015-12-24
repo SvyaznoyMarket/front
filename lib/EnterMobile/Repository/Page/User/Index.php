@@ -13,6 +13,7 @@ use EnterMobile\Repository;
 use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\User\Index as Page;
+use EnterMobile\TemplateRepositoryTrait;
 
 
 class Index {
@@ -21,7 +22,8 @@ class Index {
         RouterTrait,
         CurlTrait,
         ConfigTrait,
-        PriceHelperTrait;
+        PriceHelperTrait,
+        TemplateRepositoryTrait;
 
     /**
      * @param Page $page
@@ -79,9 +81,7 @@ class Index {
         $page->content->isIndexActive = true;
 
         // шаблоны mustache
-        // ...
-
-        (new Repository\Template())->setListForPage($page, []);
+        $this->getTemplateRepository()->setListForPage($page, []);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }

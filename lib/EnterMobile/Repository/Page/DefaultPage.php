@@ -9,13 +9,14 @@ use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
 use EnterAggregator\TranslateHelperTrait;
+use EnterMobile\TemplateRepositoryTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
 use EnterMobile\Model;
 use EnterMobile\Model\Page\DefaultPage as Page;
 
 class DefaultPage {
-    use RequestIdTrait, ConfigTrait, RouterTrait, LoggerTrait, TemplateHelperTrait, TranslateHelperTrait, AbTestTrait;
+    use RequestIdTrait, ConfigTrait, RouterTrait, LoggerTrait, TemplateHelperTrait, TranslateHelperTrait, AbTestTrait, TemplateRepositoryTrait;
 
     /**
      * @param Page $page
@@ -307,7 +308,7 @@ class DefaultPage {
         }
 
         // шаблоны mustache
-        (new Repository\Template())->setListForPage($page, [
+        $this->getTemplateRepository()->setListForPage($page, [
             [
                 'id'   => 'tpl-product-buyButton',
                 'name' => 'partial/cart/button-new',

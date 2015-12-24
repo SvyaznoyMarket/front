@@ -6,6 +6,7 @@ use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
 use EnterAggregator\RouterTrait;
 use EnterAggregator\TemplateHelperTrait;
+use EnterMobile\TemplateRepositoryTrait;
 use EnterMobile\ConfigTrait;
 use EnterMobile\Routing;
 use EnterMobile\Repository;
@@ -18,7 +19,8 @@ class Address {
         TemplateHelperTrait,
         RouterTrait,
         CurlTrait,
-        ConfigTrait;
+        ConfigTrait,
+        TemplateRepositoryTrait;
 
     /**
      * @param Page $page
@@ -59,11 +61,7 @@ class Address {
         }
 
         // шаблоны mustache
-        // ...
-
-        (new Repository\Template())->setListForPage($page, [
-
-        ]);
+        $this->getTemplateRepository()->setListForPage($page, []);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }

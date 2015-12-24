@@ -4,6 +4,7 @@ namespace EnterMobile;
 
 use EnterAggregator\Service as BaseService;
 use EnterMobile\Config;
+use EnterMobile\Repository;
 
 class Service extends BaseService {
     /**
@@ -20,6 +21,19 @@ class Service extends BaseService {
             if ($instance->editable && $instance->cacheDir) {
                 $instance = $this->loadConfigFromJsonFile($instance);
             }
+        }
+
+        return $instance;
+    }
+
+    /**
+     * @return Repository\Template
+     */
+    public function getTemplateRepository() {
+        static $instance;
+
+        if (!$instance) {
+            $instance = new Repository\Template();
         }
 
         return $instance;
