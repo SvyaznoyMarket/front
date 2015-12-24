@@ -1,9 +1,7 @@
 <ul class="private-list">
     {{#addresses}}
         <li class="private-list__item">
-            {{#deleteUrl}}
                 <a class="private-list__item-del" href="{{deleteUrl}}"></a>
-            {{/deleteUrl}}
             <div class="private-list__item-block">
                 {{#region}}
                     <span class="private-list__item-block-inner address-section__item">{{region.name}}</span>
@@ -25,3 +23,24 @@
         <a class="private-btn__link" href="#">Добавить адрес</a>
     </div>
 {{/empty}}
+
+<div class="private-list__modal js-modal">
+    <article class="private-list__modal-body private-list__modal-body_small">
+        <header class="private-list__modal-head">
+            Удалить адрес?
+        </header>
+
+        <form action="{{url}}" method="post">
+
+            <div>
+                <span class="address-section__item">bsdfgbgf</span>
+                <span class="address-section__item">12332</span>
+                <span class="address-section__item">23</span>
+            </div>
+
+            <button type="submit" class="address-section__item-del js-modal-close">Удалить</button>
+        </form>
+
+        <a class="private-list__item-del js-modal-close" href="#"></a>
+    </article>
+</div>
