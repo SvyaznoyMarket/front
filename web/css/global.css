@@ -12539,26 +12539,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   display: block;
   font-size: 18px;
 }
-.icon-favorit {
-  display: none;
-  background: url("modules/favorit/img/favorit.png") no-repeat;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  position: absolute;
-  right: 0;
-  top: 5px;
-  width: 30px;
-  height: 26px;
-}
-.icon-favorit.icon-favorit--on {
-  background: url("modules/favorit/img/favorit_on.png") no-repeat;
-  -webkit-background-size: contain;
-  -moz-background-size: contain;
-  -o-background-size: contain;
-  background-size: contain;
-}
 /* ==========================================================================
    новая карточка товара
    ========================================================================== */
