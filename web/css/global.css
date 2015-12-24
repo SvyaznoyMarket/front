@@ -1817,6 +1817,9 @@ body {
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(opacity=20);
   filter: alpha(opacity=20);
 }
+.menu-overlay_lk {
+  top: 0;
+}
 .menu-open .menu-overlay {
   left: 260px;
 }
@@ -11532,15 +11535,18 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   line-height: 45px;
   margin: 30px auto 0;
   background: #FFFFFF;
-  color: #696969;
+  color: #363636;
   font-size: 14px;
   text-align: center;
   -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
 }
-.btn-exit:hover {
-  color: #696969;
+.btn-exit__lnk {
+  color: #363636;
+}
+.btn-exit__lnk:hover {
+  color: #363636;
 }
 .private-btn {
   display: block;
@@ -11549,7 +11555,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   line-height: 45px;
   margin: 30px auto 0;
   background: #FFFFFF;
-  color: #696969;
+  color: #363636;
   font-size: 14px;
   text-align: center;
   -webkit-box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
@@ -11557,13 +11563,13 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
 }
 .private-btn:hover {
-  color: #696969;
+  color: #363636;
 }
 .private-btn__link {
-  color: #696969;
+  color: #363636;
 }
 .private-btn__link:hover {
-  color: #696969;
+  color: #363636;
 }
 .private-list {
   width: 100%;

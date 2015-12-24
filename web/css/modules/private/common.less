@@ -176,15 +176,18 @@ body:not(.noIOS){
 
     background: #FFFFFF;
 
-    color: #696969;
+    color: @gray;
     font-size: 14px;
     text-align: center;
 
     .box-shadow(0 0 3px 0 rgba(0, 0, 0, 0.10));
 
+    &__lnk{
+        color: @gray;
 
-    &:hover{
-        color: #696969;
+        &:hover{
+            color: @gray;
+        }
     }
 }
 
@@ -198,7 +201,7 @@ body:not(.noIOS){
 
     background: #FFFFFF;
 
-    color: #696969;
+    color: @gray;
     font-size: 14px;
     text-align: center;
 
@@ -206,14 +209,14 @@ body:not(.noIOS){
 
 
     &:hover{
-        color: #696969;
+        color: @gray;
     }
 
     &__link{
-        color: #696969;
+        color: @gray;
 
         &:hover{
-            color: #696969;
+            color:@gray;
         }
     }
 }

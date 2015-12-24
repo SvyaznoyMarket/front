@@ -19,17 +19,17 @@
                     {{/rating}}
                 </div>
 
-                {{#states.isInShopStock}}
-                    <div class="private-list__item-availability">
-                        <span>Самовывоз сегодня</span>
-                    </div>
-                {{/states.isInShopStock}}
 
-                {{#states.isInShopShowroomOnly}}
+                    <div class="private-list__item-availability">
+                        <span>{{#states.isInShopStock}}Самовывоз сегодня{{/states.isInShopStock}}</span>
+                    </div>
+
+
+
                 <div class="private-list__item-availability private-list__item-availability_gray">
-                    <span>На витрине</span>
+                    <span>{{#states.isInShopShowroomOnly}}На витрине{{/states.isInShopShowroomOnly}}</span>
                 </div>
-                {{/states.isInShopShowroomOnly}}
+
 
                 <div class="price favorit-item__price">
                     {{#shownOldPrice}}
