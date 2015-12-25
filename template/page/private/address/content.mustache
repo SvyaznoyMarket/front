@@ -1,7 +1,7 @@
 <ul class="private-list">
     {{#addresses}}
         <li class="private-list__item">
-                <a class="private-list__item-del" href="{{deleteUrl}}"></a>
+            <a class="private-list__item-del" href="{{deleteUrl}}"></a>
             <div class="private-list__item-block">
                 {{#region}}
                     <span class="private-list__item-block-inner address-section__item">{{region.name}}</span>
@@ -9,10 +9,10 @@
                 <span class="private-list__item-block-inner address-section__item">
                     {{shownStreet}}
                 </span>
-                    <span class="private-list__item-block-inner address-section__item">
-                        {{shownBuilding}}
-                        {{#apartment}}кв. {{apartment}}{{/apartment}}
-                    </span>
+                <span class="private-list__item-block-inner address-section__item">
+                    {{shownBuilding}}
+                    {{#apartment}}кв. {{apartment}}{{/apartment}}
+                </span>
             </div>
         </li>
     {{/addresses}}
