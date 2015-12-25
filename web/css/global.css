@@ -12499,7 +12499,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .favorit-section__img-block {
   position: relative;
   width: 35%;
-  height: 146px;
+  height: 110px;
   vertical-align: top;
   font-size: 0;
   text-align: center;
