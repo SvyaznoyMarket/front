@@ -12446,6 +12446,10 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
+.subscribe-section__check-label-txt {
+  display: inline-block;
+  vertical-align: middle;
+}
 .messages-section__img-block {
   text-align: center;
 }
