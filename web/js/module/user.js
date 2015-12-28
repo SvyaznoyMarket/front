@@ -34,6 +34,17 @@ define(
         });
         */
 
+        $body.on('click', '.js-menuHide', function(e){
+            var $this = $(this),
+                url = document.location.pathname;
+            console.log(123);
+            if(url == '/private'){
+                e.preventDefault();
+                console.log(123);
+                $('.js-content').removeClass('private-index');
+            }
+
+        });
 
 
         $body.on('click', '.js-user-subscribe-input', function() {
