@@ -32,7 +32,7 @@ class EditProfile {
         $templateHelper = $this->getTemplateHelper();
 
         $page->title = 'Редактирование профиля';
-        $page->dataModule = 'user.profile';
+        $page->dataModule = 'user';
 
         // ga
         $walkByMenu = function(array $menuElements) use(&$walkByMenu, &$templateHelper) {
@@ -71,8 +71,6 @@ class EditProfile {
         ];
 
         $page->content->messages = (new Repository\Partial\Message())->getList($request->messages);
-
-        $page->dataModule = 'user.profile';
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
