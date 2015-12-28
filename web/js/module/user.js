@@ -7,7 +7,9 @@ define(
     ) {
 
         var $body = $('body'),
-            $modalWindowTemplate = $('#tpl-modalWindow')
+            $modalWindowTemplate = $('#tpl-modalWindow'),
+            url = document.location.pathname,
+            urlHash = document.location.hash
         ;
 
         /*
@@ -35,17 +37,23 @@ define(
         */
 
         $body.on('click', '.js-menuHide', function(e){
-            var $this = $(this),
-                url = document.location.pathname;
-            console.log(123);
+            urlHash = document.location.hash;
+
             if(url == '/private'){
                 e.preventDefault();
-                console.log(123);
                 $('.js-content').removeClass('private-index');
+            }
+        });
+
+        $(document).ready(function(){
+
+            
+            if(urlHash == '#active' &&  url == '/private'){
+                //document.location.hash = '#active';
+                $('.js-menuHide').trigger('click');
             }
 
         });
-
 
         $body.on('click', '.js-user-subscribe-input', function() {
             var
