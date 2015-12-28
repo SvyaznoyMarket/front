@@ -1,0 +1,9 @@
+<form action="{{deleteUrl}}" method="post">
+    <div>
+        <span class="address-section__item">{{&favorite.name}}</span>
+    </div>
+
+    <input type="hidden" name="productUi" value="{{favorite.productUi}}">
+
+    <button type="submit" class="address-section__item-del">Удалить</button>
+</form>

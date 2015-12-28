@@ -45,11 +45,27 @@ class Favorites {
         foreach ($request->favoriteProducts as $productModel) {
             $productCard = $productCardRepository->getObject($productModel, $cartProductButtonRepository->getObject($productModel, null, true, true, ['position' => 'private']), null, 'product_160');
             $productCard->deleteUrl = $router->getUrlByRoute(new Routing\Product\DeleteFavorite($productModel->ui));
+            $productCard->dataValue = $templateHelper->json([
+                'deleteUrl' => $productCard->deleteUrl,
+                'favorite'  => [
+                    'productUi' => $productModel->ui,
+                    'name'      => $productModel->name,
+                ],
+            ]);
             $page->content->productCards[] = $productCard;
         }
 
         // шаблоны mustache
-        $this->getTemplateRepository()->setListForPage($page, []);
+        $this->getTemplateRepository()->setListForPage($page, [
+            [
+                'id'   => 'tpl-modalWindow',
+                'name' => 'partial/private/popup',
+            ],
+            [
+                'id'   => 'tpl-deleteForm',
+                'name' => 'page/private/favorite/delete-form',
+            ],
+        ]);
 
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
