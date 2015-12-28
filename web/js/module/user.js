@@ -1,6 +1,6 @@
 define(
     [
-        'jquery', 'underscore', 'mustache'
+        'jquery', 'underscore', 'mustache', 'module/user.profile'
     ],
     function (
         $, _, mustache
@@ -109,6 +109,6 @@ define(
             });
 
             e.preventDefault();
-        })
+        });
     }
 );
