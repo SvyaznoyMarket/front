@@ -33,11 +33,11 @@ class Save {
         $redirectUrl = (new \EnterMobile\Repository\User())->getRedirectUrlByHttpRequest($request, $router->getUrlByRoute(new Routing\User\Edit()));
         // http-ответ
         $response = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
-        $postData = $request->data->all();
+        $postData = $request->data->all() + [
+            'mobile' => '',
+        ];
 
         try {
-            $postData = $request->data->all();
-
             // дату рождения и телефоны нужно привести к стандартному виду
             $postData['birthday'] = date('Y-m-d', strtotime($postData['birthday']));
             $postData['mobile'] = preg_replace('/^\+7/', '8', $postData['mobile']);
@@ -55,6 +55,7 @@ class Save {
             }
 
             // одно из полей должно быть заполнено
+            /*
             $userMail = $postData['email'];
             $userPhone = $postData['mobile'];
 
@@ -64,6 +65,7 @@ class Save {
                     630
                 );
             }
+            */
 
             // модель старого пользователя
             $userQuery = $user->getQueryByHttpRequest($request);
