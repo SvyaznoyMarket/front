@@ -31,7 +31,7 @@ class Delete {
 
         $error = null;
         try {
-            $addressId = $request->query['addressId'];
+            $addressId = $request->query['addressId'] ?: $request->data['addressId'];
             if (!$addressId) {
                 throw new \Exception('Не передан addressId', 400);
             }

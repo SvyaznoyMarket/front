@@ -1,12 +1,14 @@
 define(
     [
-        'jquery', 'underscore'
+        'jquery', 'underscore', 'mustache'
     ],
     function (
-        $, _
+        $, _, mustache
     ) {
 
-        var $body = $('body');
+        var $body = $('body'),
+            $modalWindowTemplate = $('#tpl-modalWindow')
+        ;
 
         /*
         $body.on('click', '.js-user-menu', function(e) {
@@ -51,5 +53,32 @@ define(
                 });
             } catch(error) { console.error(error) };
         });
+
+        $body.on('click', '.js-user-address-delete', function(e) {
+            var
+                $el = $(this),
+                $modalWindow,
+                $deleteFormTemplate = $('#tpl-deleteForm'),
+                modalPosition = $el.data('modal-position'),
+                templateData = $el.data('value') || {},
+                content
+            ;
+            console.info($modalWindowTemplate.html());
+
+            e.stopPropagation();
+
+            content = mustache.render($deleteFormTemplate.html(), templateData);
+            $modalWindow = $(mustache.render($modalWindowTemplate.html(), {'title': 'Удалить адрес', content: content})).appendTo($body);
+            $modalWindow.addClass(modalPosition);
+
+            $modalWindow.lightbox_me({
+                onLoad: function() {
+                    $modalWindow.find('.js-modal-content').append(content);
+                },
+                beforeClose: function() {}
+            });
+
+            e.preventDefault();
+        })
     }
 );
