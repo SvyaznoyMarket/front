@@ -14,6 +14,7 @@ use EnterMobile\Repository;
 use EnterMobile\Model;
 use EnterMobile\Model\Partial;
 use EnterMobile\Model\Page\User\Orders as Page;
+use EnterMobile\TemplateRepositoryTrait;
 
 
 class Orders {
@@ -23,7 +24,8 @@ class Orders {
         CurlTrait,
         ConfigTrait,
         PriceHelperTrait,
-        DateHelperTrait;
+        DateHelperTrait,
+        TemplateRepositoryTrait;
 
     /**
      * @param Page $page
