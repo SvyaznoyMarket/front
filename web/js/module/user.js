@@ -34,6 +34,8 @@ define(
         });
         */
 
+
+
         $body.on('click', '.js-user-subscribe-input', function() {
             var
                 $el = $(this),
@@ -55,6 +57,7 @@ define(
         });
 
         $body.on('click', '.js-user-address-delete', function(e) {
+
             var
                 $el = $(this),
                 $modalWindow,

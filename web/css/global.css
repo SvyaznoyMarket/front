@@ -12547,6 +12547,8 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   min-height: 20px;
   font-size: 14px;
   color: #616161;
+}
+.favorit-section__price-old-sum {
   text-decoration: line-through;
 }
 .favorit-section__price-now {
