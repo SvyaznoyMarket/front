@@ -6,10 +6,27 @@ define(
         $, _, mustache
     ) {
 
-        var $body = $('body'),
+        var
+            $body = $('body'),
             $modalWindowTemplate = $('#tpl-modalWindow'),
-            url = document.location.pathname,
-            urlHash = document.location.hash
+
+            toggleMenu = function() {
+                var
+                    url = document.location.pathname,
+                    urlHash = document.location.hash;
+
+                console.info('hideMenu');
+                if (url == '/private') {
+                    //e.preventDefault();
+                    if (urlHash == '#active') {
+                        console.info('hideMenu', 'OK');
+                        $('.js-content').removeClass('private-index')
+                    } else {
+                        console.info('hideMenu', 'NO');
+                        $('.js-content').addClass('private-index');
+                    }
+                }
+            }
         ;
 
         /*
@@ -36,23 +53,14 @@ define(
         });
         */
 
+        toggleMenu();
+
+        window.addEventListener('popstate', function(e){
+            toggleMenu();
+        }, false);
+
         $body.on('click', '.js-menuHide', function(e){
-            urlHash = document.location.hash;
-
-            if(url == '/private'){
-                e.preventDefault();
-                $('.js-content').removeClass('private-index');
-            }
-        });
-
-        $(document).ready(function(){
-
-            
-            if(urlHash == '#active' &&  url == '/private'){
-                //document.location.hash = '#active';
-                $('.js-menuHide').trigger('click');
-            }
-
+            toggleMenu();
         });
 
         $body.on('click', '.js-user-subscribe-input', function() {
