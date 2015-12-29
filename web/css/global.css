@@ -12265,7 +12265,6 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 14px;
-  white-space: nowrap;
 }
 .ep__desc {
   display: block;
