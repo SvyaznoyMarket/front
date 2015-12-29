@@ -12530,6 +12530,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   display: block;
   max-width: 135px;
   height: 32px;
+  overflow: hidden;
   font-size: 12px;
 }
 .favorit-section__title-type {
