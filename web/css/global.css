@@ -11439,7 +11439,7 @@ body {
 }
 .private section.main-section {
   position: relative;
-  display: table;
+  display: block;
   min-height: 100%;
   padding-right: 10px;
   padding-left: 5px;
@@ -11542,7 +11542,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
   width: 180px;
   height: 45px;
   line-height: 45px;
-  margin: 30px auto 0;
+  margin: 30px auto;
   background: #FFFFFF;
   color: #363636;
   font-size: 14px;
@@ -12053,7 +12053,7 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .private-order__tl {
   font-size: 14px;
-  margin: 0px;
+  margin: 0;
 }
 .private-order__date {
   font-size: 12px;
@@ -12216,6 +12216,9 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 .address-simple__val {
   display: block;
   margin-left: 64px;
+}
+.select-order__block a {
+  text-align: left;
 }
 .ep__fishka {
   width: 100%;

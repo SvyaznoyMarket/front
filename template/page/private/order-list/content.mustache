@@ -1,8 +1,8 @@
 <ul class="private-list">
     {{#orders}}
         <li class="private-list__item noselect">
-                <span class="private-list__item-block private-list__item-block_num">
-                    <a href="/private/order/{{id}}" class="js-user-menu">
+                <span class="private-list__item-block private-list__item-block_num select-order__block">
+                    <a href="/private/order/{{id}}" class="js-user-menu ">
                         <span>{{numberErp}}</span>
                         {{#paymentStatus}}<span class="private-list__item-block-status">{{paymentStatus.name}}</span>{{/paymentStatus}}
                     </a>

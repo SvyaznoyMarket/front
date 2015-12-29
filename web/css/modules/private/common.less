@@ -33,7 +33,7 @@
         &.main-section{
             position: relative;
 
-            display: table;
+            display: block;
 
             min-height: 100%;
 
@@ -41,6 +41,10 @@
             padding-left: 5px;
 
             .box-shadow(4px 0 4px 0 rgba(0, 0, 0, 0.30));
+
+            @media only screen and (min-width: 768px){
+               // display: table;
+            }
         }
 
         &.ep{
@@ -172,7 +176,7 @@ body:not(.noIOS){
     height: 45px;
     line-height: 45px;
 
-    margin: 30px auto 0;
+    margin: 30px auto;
 
     background: #FFFFFF;
 
