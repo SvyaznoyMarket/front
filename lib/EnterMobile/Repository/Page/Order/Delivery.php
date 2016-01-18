@@ -709,7 +709,6 @@ class Delivery {
                         && !empty($orderModel->prepaidSum)
                     ) {
                         $messages[] = [
-                            'cost'         => $priceHelper->format($config->order->prepayment->priceLimit),
                             'isPrepayment' => true,
                         ];
                     }

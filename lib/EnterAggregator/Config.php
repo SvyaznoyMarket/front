@@ -442,11 +442,6 @@ namespace EnterAggregator\Config\Order {
     class Prepayment {
         /** @var bool */
         public $enabled;
-        /**
-         * Если стоимость заказа >= priceLimit, то появится плашка с текстом про предоплату
-         * @var int|null
-         */
-        public $priceLimit;
     }
 }
 

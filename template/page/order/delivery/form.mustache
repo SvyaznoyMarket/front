@@ -103,11 +103,7 @@
                 {{#isPrepayment}}
                     <div class="checkout-order-err">
                         <span class="checkout-order-err__msg">Требуется предоплата.</span>
-                        <span class="checkout-order-err__info">
-                            <span class="checkout-order-err__info-txt">{{#cost}}Сумма заказа превышает {{cost}} <span class="rubl">p</span>.{{/cost}}</span>
-
-                            <a href="/how_pay" target="_blank" class="bb-dotted">Подробнее</a>
-                        </span>
+                        <span class="checkout-order-err__info"></span>
                     </div>
                 {{/isPrepayment}}
             {{/messages}}

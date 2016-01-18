@@ -142,7 +142,7 @@ namespace EnterAggregator\Controller\Cart {
                 $excludePaymentMethodIds = ['1', '2'];
                 // FRONT-88
                 foreach ($response->split->orders as $order) {
-                    if ($order->sum > $config->order->prepayment->priceLimit) {
+                    if ($order->prepaidSum) {
                         foreach ($order->possiblePaymentMethodIds as $i => $possiblePaymentMethodId) {
                             if (in_array($possiblePaymentMethodId, $excludePaymentMethodIds) && (count($order->possiblePaymentMethodIds) > 1)) {
                                 unset($order->possiblePaymentMethodIds[$i]);

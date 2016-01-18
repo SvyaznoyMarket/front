@@ -263,6 +263,7 @@ class Order {
         }
         if (array_key_exists('paySum', $data)) $this->paySum = $this->getPriceHelper()->removeZeroFraction($data['paySum']);
         if (array_key_exists('discountSum', $data)) $this->discountSum = $this->getPriceHelper()->removeZeroFraction($data['discountSum']);
+        if (array_key_exists('prepaidSum', $data)) $this->prepaidSum = (float)$data['prepaidSum'];
         if (array_key_exists('deliveryType', $data)) $this->deliveryType = (string)$data['deliveryType'];
         if (array_key_exists('subwayId', $data)) $this->subwayId = (string)$data['subwayId'];
         if (array_key_exists('paymentMethodId', $data)) $this->paymentMethodId = (string)$data['paymentMethodId'];
