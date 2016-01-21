@@ -63,9 +63,6 @@ namespace EnterMobileApplication\Controller {
             $mainMenuQuery = new Query\MainMenu\GetItem();
             $curl->prepare($mainMenuQuery);
             
-            $promoListQuery = new Query\Promo\GetList(['app-mobile']);
-            $curl->prepare($promoListQuery);
-
             $productListQueries = [];
             $descriptionListQueries = [];
             foreach (array_chunk(array_values(array_filter(array_unique(array_merge($popularProductIds, $viewedProductIds)))), $config->curl->queryChunkSize) as $idsInChunk) {
@@ -142,7 +139,7 @@ namespace EnterMobileApplication\Controller {
                 ],
                 'viewedProducts' => $this->getProductList($viewedProducts, true),
                 'mainMenu' => (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery),
-                'promos' => (new \EnterMobileApplication\Repository\Promo())->getObjectListByQuery($promoListQuery),
+                'promos' => (new \EnterMobileApplication\Repository\Promo())->getUpdateStub(),
                 'popularBrands' => array_map(function(\EnterModel\Brand $brand) {
                     return [
                         'name' => $brand->name,

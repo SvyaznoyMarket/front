@@ -12,6 +12,42 @@ class Promo extends \EnterRepository\Promo {
     use LoggerTrait, ConfigTrait;
 
     /**
+     * @return array
+     */
+    public function getUpdateStub() {
+        return [
+            [
+                "ui" => "",
+                "name" => "Обнови приложение!",
+                "target" => [
+                    "type" => "Content",
+                    "contentId" => "mobile_apps",
+                ],
+                "media" => [
+                    "photos" => [
+                        [
+                            "uid" => "",
+                            "contentType" => "image/jpeg",
+                            "type" => "image",
+                            "tags" => [
+                                "mobile"
+                            ],
+                            "sources" => [
+                                [
+                                    "width" => "720",
+                                    "height" => "240",
+                                    "type" => "original",
+                                    "url" => 'http://' . $this->getConfig()->hostname . ($this->getConfig()->version ? '/' . $this->getConfig()->version : '') . '/img/updateBanner.jpg',
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ];
+    }
+
+    /**
      * @param Query $query
      * @return Model\Promo[]
      */
@@ -31,7 +67,7 @@ class Promo extends \EnterRepository\Promo {
 
             $this->deleteNotMobileSourcesAndPromos($promos, $promoKey, $promo);
         }
-        
+
         return $promos;
     }
 

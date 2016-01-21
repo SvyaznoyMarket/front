@@ -12,7 +12,7 @@ namespace EnterMobileApplication\Controller {
     use EnterMobileApplication\Controller\MainPromo\Response;
 
     /**
-     * @deprecated Удалить в версии MAPI 1.5. Вместо данного метода следует использовать MainPage
+     * @deprecated Удалить в версии MAPI 1.5. Вместо данного метода следует использовать MainCard
      */
     class MainPromo {
         use ConfigTrait, CurlTrait;
@@ -23,22 +23,9 @@ namespace EnterMobileApplication\Controller {
          * @return Http\JsonResponse
          */
         public function execute(Http\Request $request) {
-            $curl = $this->getCurl();
-
-            // В будущей планируется ввести таргетирование по регионам, поэтому заранее закладываем получение региона от мобильных приложений
-            $regionId = (new \EnterMobileApplication\Repository\Region())->getIdByHttpRequest($request); // FIXME
-            if (!$regionId) {
-                throw new \Exception('Не указан параметр regionId', Http\Response::STATUS_BAD_REQUEST);
-            }
-
-            $promoListQuery = new Query\Promo\GetList(['app-mobile']);
-            $curl->prepare($promoListQuery);
-            $curl->execute();
-
-            $response = new Response();
-            $response->promos = (new \EnterMobileApplication\Repository\Promo())->getObjectListByQuery($promoListQuery);
-
-            return new Http\JsonResponse($response);
+            return new Http\JsonResponse([
+                "promos" => (new \EnterMobileApplication\Repository\Promo())->getUpdateStub(),
+            ]);
         }
     }
 }
