@@ -35,8 +35,6 @@ class Complete {
         $pointRepository = new Repository\Partial\Point();
         $mediaRepository = new \EnterRepository\Media();
 
-        $onlinePaymentMethodModelsById = $request->onlinePaymentMethodsById;
-
         $paymentMethodImagesById = (new \EnterMobile\Repository\Order())->getPaymentImagesByPaymentMethodId();
 
         foreach ($request->orders as $orderModel) {
@@ -164,13 +162,13 @@ class Complete {
                         && !empty($orderModel->prepaidSum)
                     ;
                 }),
-                'onlinePayment' => call_user_func(function() use (&$orderModel, &$onlinePaymentMethodModelsById, $paymentMethodImagesById) {
-                    if (!count($onlinePaymentMethodModelsById) || !count($orderModel->paymentMethods)) {
+                'onlinePayment' => call_user_func(function() use (&$orderModel, $paymentMethodImagesById) {
+                    if (!count($orderModel->paymentMethods)) {
                         return false;
                     }
 
                     $hasOnlineDiscount = false;
-                    foreach ($onlinePaymentMethodModelsById as $onlinePaymentMethodModel) {
+                    foreach ($orderModel->paymentMethods as $onlinePaymentMethodModel) {
                         if ($onlinePaymentMethodModel->discount) {
                             $hasOnlineDiscount = true;
                             break;
@@ -181,7 +179,7 @@ class Complete {
                         'images'            => [],
                         'hasOnlineDiscount' => $hasOnlineDiscount,
                     ];
-                    foreach ($onlinePaymentMethodModelsById as $paymentMethodModel) {
+                    foreach ($orderModel->paymentMethods as $paymentMethodModel) {
                         $imageUrl = isset($paymentMethodImagesById[$paymentMethodModel->id]) ? $paymentMethodImagesById[$paymentMethodModel->id] : null;
 
                         if ($imageUrl) {
@@ -194,10 +192,10 @@ class Complete {
 
                     return $data;
                 }),
-                'onlinePaymentJson' => json_encode(call_user_func(function() use (&$orderModel, &$onlinePaymentMethodModelsById, $paymentMethodImagesById, &$templateHelper, &$router) {
+                'onlinePaymentJson' => json_encode(call_user_func(function() use (&$orderModel, $paymentMethodImagesById, &$templateHelper, &$router) {
                     $paymentMethods = [];
 
-                    foreach ($onlinePaymentMethodModelsById as $paymentMethodModel) {
+                    foreach ($orderModel->paymentMethods as $paymentMethodModel) {
                         /** @var \EnterModel\PaymentMethod|null $possiblePaymentMethodModel */
                         $possiblePaymentMethodModel = null;
                         foreach ($orderModel->paymentMethods as $iPossiblePaymentMethodModel) {
