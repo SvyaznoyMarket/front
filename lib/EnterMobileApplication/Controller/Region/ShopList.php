@@ -17,15 +17,11 @@ class ShopList {
     public function execute(Http\Request $request) {
         $curl = $this->getCurl();
 
-        // ответ
-        $response = [
-            'regions' => [],
-        ];
-
         // ид региона
         $filteredRegionId = is_scalar($request->query['regionId']) ? (string)$request->query['regionId'] : null;
 
-        $firstRegionIds = ['14974', '108136'];
+        $regionListQuery = new Query\Region\GetMainList();
+        $curl->prepare($regionListQuery)->execute();
 
         $shopListQuery = new Query\Shop\GetList();
         $curl->prepare($shopListQuery);
@@ -33,13 +29,22 @@ class ShopList {
         $curl->execute();
 
         $regionDataById = [];
+        foreach ((new \EnterRepository\Region())->getObjectListByQuery($regionListQuery) as $region) {
+            if (!$region->id || ($filteredRegionId && ($region->id !== $filteredRegionId))) {
+                continue;
+            }
+
+            $regionDataById[$region->id] = [
+                'id'      => $region->id,
+                'kladrId' => $region->kladrId,
+                'name'    => $region->name,
+                'shops'   => [],
+            ];
+        }
 
         foreach ($shopListQuery->getResult() as $shopItem) {
             $regionId = !empty($shopItem['geo']['id']) ? (string)$shopItem['geo']['id'] : null;
-            if (
-                !$regionId
-                || ($filteredRegionId && ($regionId !== $filteredRegionId))
-            ) {
+            if (!$regionId || ($filteredRegionId && ($regionId !== $filteredRegionId))) {
                 continue;
             }
 
@@ -54,7 +59,7 @@ class ShopList {
 
             $shop = new \EnterModel\Shop($shopItem);
 
-            $shopItem = [
+            $regionDataById[$regionId]['shops'][] = [
                 'id'               => $shop->id,
                 'address'          => $shop->address,
                 'longitude'        => $shop->longitude,
@@ -64,28 +69,28 @@ class ShopList {
                 'subway'           => $shop->subway,
                 'hasGreenCorridor' => $shop->hasGreenCorridor,
             ];
-
-            $regionDataById[$regionId]['shops'][] = $shopItem;
         }
 
-        try {
-            usort($regionDataById, function($a, $b) use (&$firstRegionIds) {
-                if (in_array($a['id'], $firstRegionIds)) {
-                    return -1;
-                } else if (in_array($b['id'], $firstRegionIds)) {
-                    return 1;
-                } else if ($a['name'] == $b['name']) {
-                    return 0;
-                }
+        $firstRegionIds = ['14974', '108136'];
+        $firstRegions = [];
+        foreach ($firstRegionIds as $firstRegionId) {
+            if (isset($regionDataById[$firstRegionId])) {
+                $firstRegions[$firstRegionId] = $regionDataById[$firstRegionId];
+                unset($regionDataById[$firstRegionId]);
+            }
+        }
 
-                return $a['name'] < $b['name'] ? -1 : 1;
-            });
-        } catch (\Exception $e) {}
+        $regionDataById = array_merge($firstRegions, $regionDataById);
 
-        $response['regions'] = array_values(array_filter($regionDataById, function($regionItem) {
-            return (bool)$regionItem['shops'];
-        }));
-
-        return new Http\JsonResponse($response);
+        return new Http\JsonResponse([
+            'regions' => array_values(array_map(function($regionData) {
+                return [
+                    'id'      => (string)$regionData['id'],
+                    'kladrId' => $regionData['kladrId'] ? (string)$regionData['kladrId'] : null,
+                    'name'    => $regionData['name'] ? (string)$regionData['name'] : null,
+                    'shops'   => $regionData['shops'],
+                ];
+            }, $regionDataById)),
+        ]);
     }
 }
