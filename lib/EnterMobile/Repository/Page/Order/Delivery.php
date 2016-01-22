@@ -622,6 +622,7 @@ class Delivery {
                 ,
                 'paymentMethods' => call_user_func(function() use (&$templateHelper, &$splitModel, &$orderModel, &$paymentMethodsById) {
                     $paymentMethods = [];
+                    $paymentMethodImagesById = (new \EnterMobile\Repository\Order())->getPaymentImagesByPaymentMethodId();
 
                     foreach ($orderModel->possiblePaymentMethods as $possiblePaymentMethod) {
                         /** @var \EnterModel\Cart\Split\PaymentMethod|null $paymentMethodModel */
@@ -663,13 +664,7 @@ class Delivery {
                                 ]
                                 : false
                             ,
-                            'image'       => @[
-                                '5'  => 'i-bank-cart.png',
-                                '16' => 'i-ya-wallet.png',
-                                '11' => 'i-webmoney.png',
-                                '12' => 'i-qiwi.png',
-                                '8'  => 'i-psb.png',
-                            ][$paymentMethodModel->id],
+                            'image'       => @$paymentMethodImagesById[$paymentMethodModel->id],
                         ];
                     }
 

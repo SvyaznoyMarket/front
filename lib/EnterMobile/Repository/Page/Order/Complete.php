@@ -37,13 +37,7 @@ class Complete {
 
         $onlinePaymentMethodModelsById = $request->onlinePaymentMethodsById;
 
-        $paymentMethodImagesById = [
-            '5'  => 'i-bank-cart.png',
-            '16' => 'i-ya-wallet.png',
-            '11' => 'i-webmoney.png',
-            '12' => 'i-qiwi.png',
-            '8'  => 'i-psb.png',
-        ];
+        $paymentMethodImagesById = (new \EnterMobile\Repository\Order())->getPaymentImagesByPaymentMethodId();
 
         foreach ($request->orders as $orderModel) {
             /** @var \EnterModel\Order\Delivery|null $deliveryModel */
