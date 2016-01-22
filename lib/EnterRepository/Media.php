@@ -97,6 +97,7 @@ class Media {
             switch ($paymentMethodId) {
                 case 5:
                 case 17:
+                case 20:
                     $mediaList->photos[] = new \EnterModel\Media([
                         'content_type' => 'image/png',
                         'provider' => 'image',
@@ -113,6 +114,7 @@ class Media {
                     break;
 
                 case 16:
+                case 21:
                     $mediaList->photos[] = new \EnterModel\Media([
                         'content_type' => 'image/png',
                         'provider' => 'image',
@@ -129,6 +131,7 @@ class Media {
                     break;
 
                 case 11:
+                case 19:
                     $mediaList->photos[] = new \EnterModel\Media([
                         'content_type' => 'image/png',
                         'provider' => 'image',
@@ -145,6 +148,7 @@ class Media {
                     break;
 
                 case 12:
+                case 18:
                     $mediaList->photos[] = new \EnterModel\Media([
                         'content_type' => 'image/png',
                         'provider' => 'image',
