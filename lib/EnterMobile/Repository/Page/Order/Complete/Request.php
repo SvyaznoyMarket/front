@@ -11,6 +11,4 @@ class Request extends Repository\Page\DefaultPage\Request {
     public $isCompletePageReaded;
     /** @var \EnterModel\Order[] */
     public $orders = [];
-    /** @var \EnterModel\PaymentMethod[] */
-    public $onlinePaymentMethodsById = [];
 }

@@ -62,8 +62,6 @@ class Complete {
 
         /** @var Model\Order[] $orders */
         $orders = [];
-        /** @var Model\PaymentMethod[] $onlinePaymentMethodsById */
-        $onlinePaymentMethodsById = [];
         /** @var array $orderData */
         $orderData = ($session->get($config->order->sessionName) ?: []) + [
             'updatedAt'            => null,
@@ -152,7 +150,6 @@ class Complete {
                                     continue;
                                 }
 
-                                $onlinePaymentMethodsById[$paymentMethod->id] = $paymentMethod;
                                 $order->paymentMethods[] = $paymentMethod;
                             }
                         }
@@ -176,7 +173,6 @@ class Complete {
         $pageRequest->cart = $cart;
         $pageRequest->isCompletePageReaded = $orderData['isCompletePageReaded'];
         $pageRequest->orders = $orders;
-        $pageRequest->onlinePaymentMethodsById = $onlinePaymentMethodsById;
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // страница
