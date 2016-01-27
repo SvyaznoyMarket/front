@@ -106,8 +106,8 @@ class Media {
                             [
                                 'url' => $mediaUrlPrefix . '/img/payment/logos/original/card.png',
                                 'type' => 'original',
-                                'width' => '',
-                                'height' => '',
+                                'width' => '1127',
+                                'height' => '200',
                             ],
                         ],
                     ]);
@@ -123,8 +123,8 @@ class Media {
                             [
                                 'url' => $mediaUrlPrefix . '/img/payment/logos/original/yandex.png',
                                 'type' => 'original',
-                                'width' => '',
-                                'height' => '',
+                                'width' => '176',
+                                'height' => '200',
                             ],
                         ],
                     ]);
@@ -140,8 +140,8 @@ class Media {
                             [
                                 'url' => $mediaUrlPrefix . '/img/payment/logos/original/webmoney.png',
                                 'type' => 'original',
-                                'width' => '',
-                                'height' => '',
+                                'width' => '201',
+                                'height' => '200',
                             ],
                         ],
                     ]);
@@ -157,8 +157,8 @@ class Media {
                             [
                                 'url' => $mediaUrlPrefix . '/img/payment/logos/original/qiwi.png',
                                 'type' => 'original',
-                                'width' => '',
-                                'height' => '',
+                                'width' => '191',
+                                'height' => '200',
                             ],
                         ],
                     ]);
