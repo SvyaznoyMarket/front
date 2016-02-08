@@ -39,7 +39,7 @@ class Product {
     public function __construct($data = []) {
         $this->id = $data['id'] ? (string)$data['id'] : null;
         $this->ui = $data['ui'] ? (string)$data['ui'] : null;
-        $this->image = $data['image'] ? (string)$data['image'] : null;
+        $this->image = isset($data['image']) ? (string)$data['image'] : null;
         $this->price = $data['price'] ? (string)$data['price'] : null;
         $this->originalPrice = $data['original_price'] ? (string)$data['original_price'] : null;
         $this->sum = $data['sum'] ? (string)$data['sum'] : null;

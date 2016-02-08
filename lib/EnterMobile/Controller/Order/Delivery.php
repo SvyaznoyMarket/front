@@ -64,7 +64,7 @@ class Delivery {
         }
 
         // изменения
-        $changeData = $request->data['change'] ?: null;
+        $changeData = is_array($request->data['change']) ? $request->data['change'] : [];
         // если это первый запрос на разбиение, то подставляет данные пользователя
         $userFromSplit = null;
         if (!$request->isXmlHttpRequest()) {
