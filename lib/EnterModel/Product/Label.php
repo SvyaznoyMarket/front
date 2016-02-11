@@ -15,6 +15,7 @@ class Label {
      */
     public function __construct(array $data = []) {
         if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
+        if (array_key_exists('core_id', $data)) $this->id = (string)$data['core_id'];
         if (array_key_exists('name', $data)) $this->name = (string)$data['name'];
 
         $this->media = new \EnterModel\MediaList(isset($data['medias']) ? $data['medias'] : []);

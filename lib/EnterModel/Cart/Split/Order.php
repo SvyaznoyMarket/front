@@ -21,7 +21,7 @@ class Order {
     public $prepaidSum;
     /** @var string|null */
     public $originalSum;
-    /** @var \EnterModel\Cart\Split\Order\Prepayment|null */
+    /** @var \EnterModel\Prepayment|null */
     public $prepayment;
     /** @var string|null */
     public $paymentMethodId;
@@ -58,7 +58,7 @@ class Order {
      */
     public function __construct($data = [], $format = true) {
         if (!empty($data['prepaid_sum'])) {
-            $this->prepayment = new \EnterModel\Cart\Split\Order\Prepayment($data['prepaid_sum']);
+            $this->prepayment = new Model\Prepayment($data['prepaid_sum']);
         }
 
         $this->blockName = $data['block_name'] ? (string)$data['block_name'] : null;

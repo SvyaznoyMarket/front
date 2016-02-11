@@ -101,6 +101,8 @@ namespace EnterModel {
         public $storeLabel;
         /** @var \EnterModel\Product\AssemblingLabel|null Метка "Собери сам" */
         public $assemblingLabel;
+        /** @var \EnterModel\Prepayment|null */
+        public $prepayment;
 
         /**
          * @param array $data

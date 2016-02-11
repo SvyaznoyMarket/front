@@ -236,6 +236,10 @@ namespace EnterMobileApplication\Controller {
                             'media' => $label->media,
                         ];
                     }, $controllerResponse->product->labels),
+                    'prepayment' => $controllerResponse->product->prepayment ? [
+                        'message' => $controllerResponse->product->prepayment->message,
+                        'contentId' => $controllerResponse->product->prepayment->contentId,
+                    ] : null,
                     'media' => $productRepository->getMedia($controllerResponse->product),
                     'model' => $controllerResponse->product->model ? [
                         'properties' => $controllerResponse->product->model->property ? [

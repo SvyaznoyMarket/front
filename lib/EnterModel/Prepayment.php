@@ -1,5 +1,5 @@
 <?php
-namespace EnterModel\Cart\Split\Order;
+namespace EnterModel;
 
 class Prepayment {
     /** @var string */
@@ -10,9 +10,9 @@ class Prepayment {
     public $contentId = 'how_pay';
 
     /**
-     * @param string|int|null $prepaymentSum
+     * @param string|int|float|null $prepaymentSum
      */
     public function __construct($prepaymentSum) {
-        $this->sum = (string)$prepaymentSum;
+        $this->sum = !empty($prepaymentSum) ? (string)$prepaymentSum : '';
     }
 }
