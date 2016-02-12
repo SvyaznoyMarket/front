@@ -155,6 +155,24 @@ class MainMenu {
                 'iconClass' => 'nav-icon--phone'
             ]
         ];
+        
+        $menu->contentElements = [
+            [
+                'type' => 'content',
+                'id' => 'shops',
+                'name' => 'Самовывоз'
+            ],
+            [
+                'type' => 'content',
+                'id' => 'dostavka',
+                'name' => 'Доставка'
+            ],
+            [
+                'type' => 'content',
+                'id' => 'how_pay',
+                'name' => 'Оплата'
+            ]
+        ];
 
 
 //        die(json_encode($menu, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
