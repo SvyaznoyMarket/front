@@ -179,8 +179,11 @@ namespace EnterMobileApplication\Controller {
                     'isInShopStockOnly' => $controllerResponse->product->isInShopStockOnly,
                     'isInShopShowroomOnly' => $controllerResponse->product->isInShopShowroomOnly,
                     'isInWarehouse' => $controllerResponse->product->isInWarehouse,
-                    'isKitLocked' => $controllerResponse->product->isKitLocked,
-                    'kitCount' => $controllerResponse->product->kitCount,
+                    'isKit' => (bool)$controllerResponse->product->relation->kits,
+                    'isKitLocked' => (bool)$controllerResponse->product->isKitLocked,
+                    'kitProducts' => $this->getProductList($controllerResponse->product->relation->kits, false, true),
+                    'kitCount' => $controllerResponse->product->kitCount, // deprecated
+                    'kit' => $controllerResponse->product->kit, // deprecated
                     'category' => [
                         'id' => $controllerResponse->product->category->id,
                     ],
@@ -337,7 +340,6 @@ namespace EnterMobileApplication\Controller {
                         'similar' => $this->getProductList($recommendations['similar']),
                         'alsoBought' => $this->getProductList($recommendations['alsoBought']),
                     ],
-                    'kit' => $controllerResponse->product->kit,
                     'rating' => $controllerResponse->product->rating ? [
                         'score'       => $controllerResponse->product->rating->score,
                         'starScore'   => $controllerResponse->product->rating->starScore,

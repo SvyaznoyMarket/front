@@ -9,6 +9,8 @@ class Kit {
     public $id;
     /** @var int */
     public $count;
+    /** @var \EnterModel\Product|null */
+    public $product;
 
     /**
      * @param array $data

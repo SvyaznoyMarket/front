@@ -8,11 +8,13 @@ trait ProductListingTrait {
     /**
      * @param Model\Product[] $products
      * @param bool $excludeProductsWithoutMedia
+     * @param bool $returnKitQuantity
      * @return array
      */
     private function getProductList(
         array $products,
-        $excludeProductsWithoutMedia = false
+        $excludeProductsWithoutMedia = false,
+        $returnKitQuantity = false
     ) {
         $result = [];
 
@@ -34,7 +36,7 @@ trait ProductListingTrait {
                 }
             }
 
-            $result[] = [
+            $resultItem = [
                 'id'                   => $product->id,
                 'ui'                   => $product->ui,
                 'article'              => $product->article,
@@ -46,7 +48,8 @@ trait ProductListingTrait {
                 'isInShopStockOnly'    => $product->isInShopStockOnly,
                 'isInShopShowroomOnly' => $product->isInShopShowroomOnly,
                 'isInWarehouse'        => $product->isInWarehouse,
-                'isKitLocked'          => $product->isKitLocked,
+                'isKit'                => (bool)$product->kit,
+                'isKitLocked'          => (bool)$product->isKitLocked,
                 'brand'                => $product->brand ? [
                     'id'   => $product->brand->id,
                     'name' => $product->brand->name,
@@ -70,6 +73,12 @@ trait ProductListingTrait {
                 'partnerOffers'   => $productRepository->getPartnerOffers($product),
                 'storeLabel'      => $product->storeLabel,
             ];
+            
+            if ($returnKitQuantity) {
+                $resultItem['quantity'] = (int)$product->kitCount;
+            }
+            
+            $result[] = $resultItem;
         }
 
         return $result;
