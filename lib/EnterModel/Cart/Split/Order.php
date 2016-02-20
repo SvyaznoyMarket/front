@@ -69,6 +69,11 @@ class Order {
         }
 
         foreach ($data['discounts'] as $item) {
+            // MSITE-621
+            if ($item['type'] === 'delivery') {
+                continue;
+            }
+
             $this->discounts[] = new Order\Discount($item);
         }
 
