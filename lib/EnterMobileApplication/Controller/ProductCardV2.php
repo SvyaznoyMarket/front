@@ -4,13 +4,15 @@ namespace EnterMobileApplication\Controller {
 
     use Enter\Http;
     use EnterAggregator\CurlTrait;
+    use EnterAggregator\LoggerTrait;
     use EnterAggregator\SessionTrait;
+    use EnterAggregator\TranslateHelperTrait;
     use EnterQuery as Query;
     use EnterModel as Model;
     use EnterMobileApplication\Controller;
 
     class ProductCardV2 {
-        use ProductListingTrait, SessionTrait, CurlTrait;
+        use ProductListingTrait, SessionTrait, CurlTrait, LoggerTrait, TranslateHelperTrait;
         
         /**
          * @param Http\Request $request
@@ -268,43 +270,44 @@ namespace EnterMobileApplication\Controller {
                         ] : [],
                     ] : null,
                     'line' => $controllerResponse->product->line,
-                    'nearestDeliveries' => call_user_func(function() use($controllerResponse) {
-                        if (!is_array($controllerResponse->product->nearestDeliveries)) {
+                    'nearestDeliveries' => call_user_func(function() use($controllerResponse, $productRepository) {
+                        if (!is_array($controllerResponse->product->deliveries)) {
                             return [];
                         }
 
                         $result = [];
-                        // Объединяем блоки self* в один блок self (MAPI-92, MAPI-101)
-                        foreach ($controllerResponse->product->nearestDeliveries as $nearestDelivery) {
-                            $token = $nearestDelivery->token === 'standart' ? 'standart' : 'self';
+                        foreach ($controllerResponse->product->deliveries as $delivery) {
+                            // Объединяем блоки self* в один блок self (MAPI-92, MAPI-101)
+                            $token = $delivery->isPickup ? 'self' : 'standart';
 
                             if (isset($result[$token])) {
-                                $result[$token]['price']['from'] = min($result[$token]['price']['from'], (float)$nearestDelivery->price);
-                                $result[$token]['price']['to'] = max($result[$token]['price']['to'], (float)$nearestDelivery->price);
+                                $result[$token]['price']['from'] = min($result[$token]['price']['from'], (float)$delivery->price);
+                                $result[$token]['price']['to'] = max($result[$token]['price']['to'], (float)$delivery->price);
 
-                                if ($nearestDelivery->deliveredAt) {
+                                if ($delivery->nearestDeliveredAt) {
                                     if ($result[$token]['deliveredAt']) {
-                                        $result[$token]['deliveredAt']['from'] = min($result[$token]['deliveredAt']['from'], $nearestDelivery->deliveredAt);
-                                        $result[$token]['deliveredAt']['to'] = max($result[$token]['deliveredAt']['to'], $nearestDelivery->deliveredAt);
+                                        $result[$token]['deliveredAt']['from'] = min($result[$token]['deliveredAt']['from'], $delivery->nearestDeliveredAt);
+                                        $result[$token]['deliveredAt']['to'] = max($result[$token]['deliveredAt']['to'], $delivery->nearestDeliveredAt);
                                     } else {
                                         $result[$token]['deliveredAt'] = [
-                                            'from' => $nearestDelivery->deliveredAt,
-                                            'to' => $nearestDelivery->deliveredAt,
+                                            'from' => $delivery->nearestDeliveredAt,
+                                            'to' => $delivery->nearestDeliveredAt,
                                         ];
                                     }
                                 }
                             } else {
                                 $result[$token] = [
+                                    // Объединяем блоки self* в один блок self (MAPI-92, MAPI-101)
                                     'id' => $token === 'standart' ? 1 : 3,
                                     'token' => $token,
-                                    'productId' => $nearestDelivery->productId,
+                                    'productId' => $delivery->productId,
                                     'price' => [
-                                        'from' => (float)$nearestDelivery->price,
-                                        'to' => (float)$nearestDelivery->price,
+                                        'from' => (float)$delivery->price,
+                                        'to' => (float)$delivery->price,
                                     ],
-                                    'deliveredAt' => $nearestDelivery->deliveredAt ? [
-                                        'from' => $nearestDelivery->deliveredAt,
-                                        'to' => $nearestDelivery->deliveredAt,
+                                    'deliveredAt' => $delivery->nearestDeliveredAt ? [
+                                        'from' => $delivery->nearestDeliveredAt,
+                                        'to' => $delivery->nearestDeliveredAt,
                                     ] : null,
                                 ];
                             }
@@ -329,6 +332,38 @@ namespace EnterMobileApplication\Controller {
                                     $result[$key]['deliveredAt']['single'] = null;
                                 }
                             }
+                        }
+
+                        try {
+                            // Заполняем deliveredAt.text
+                            foreach ($result as $token => $item) {
+                                $result[$token]['deliveredAt']['text'] = '';
+
+                                $deliveryWithMinDate = $productRepository->getDeliveriesWithMinDate($controllerResponse->product->deliveries, $token === 'self' ? true : false);
+                                if ($deliveryWithMinDate) {
+                                    if ($deliveryWithMinDate->dateInterval && $token === 'self') {
+                                        $result[$token]['deliveredAt']['text'] = '';
+                                        if ($deliveryWithMinDate->dateInterval->from) {
+                                            $result[$token]['deliveredAt']['text'] .= 'с ' . $deliveryWithMinDate->dateInterval->from->format('d.m');
+                                        }
+
+                                        if ($deliveryWithMinDate->dateInterval->to) {
+                                            $result[$token]['deliveredAt']['text'] .= ' по ' . $deliveryWithMinDate->dateInterval->to->format('d.m');
+                                        }
+                                        
+                                        $result[$token]['deliveredAt']['text'] = trim($result[$token]['deliveredAt']['text']);
+                                    } else if (!empty($deliveryWithMinDate->dates[0]) && !$deliveryWithMinDate->dateInterval && $deliveryWithMinDate->dates[0] && $dayFrom = $deliveryWithMinDate->dates[0]->diff((new \DateTime())->setTime(0, 0, 0))->days) {
+                                        $dayRangeFrom = $dayFrom > 1 ? $dayFrom - 1 : $dayFrom;
+                                        $dayRangeTo = $dayRangeFrom + 2;
+
+                                        $result[$token]['deliveredAt']['text'] = $dayRangeFrom . '-' . $dayRangeTo . ' ' . $this->getTranslateHelper()->numberChoice($dayRangeTo, ['день', 'дня', 'дней']);
+                                    } else if (!empty($deliveryWithMinDate->dates[0])) {
+                                        $result[$token]['deliveredAt']['text'] = mb_strtolower($this->getTranslateHelper()->humanizeDate2($deliveryWithMinDate->dates[0]));
+                                    }
+                                }
+                            }
+                        } catch (\Exception $e) {
+                            $this->getLogger()->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['delivery']]);
                         }
 
                         return array_values($result);

@@ -4,7 +4,7 @@ namespace EnterModel\Product;
 
 use EnterModel as Model;
 
-class NearestDelivery {
+class Delivery {
     const ID_NOW = '4';
 
     const TOKEN_STANDARD = 'standart';
@@ -25,5 +25,11 @@ class NearestDelivery {
     /** @var Model\Shop[] */
     public $shopsById = [];
     /** @var \DateTime|null */
-    public $deliveredAt;
+    public $nearestDeliveredAt;
+    /** @var bool */
+    public $isPickup = false;
+    /** @var \DateTime[] */
+    public $dates = [];
+    /** @var \EnterModel\DateInterval|null */
+    public $dateInterval;
 }

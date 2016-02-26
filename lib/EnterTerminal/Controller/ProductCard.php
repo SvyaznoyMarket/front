@@ -106,7 +106,7 @@ namespace EnterTerminal\Controller {
                     ] : [],
                 ] : null,
                 'line' => $controllerResponse->product->line,
-                'nearestDeliveries' => $controllerResponse->product->nearestDeliveries,
+                'nearestDeliveries' => $controllerResponse->product->deliveries,
                 'accessoryIds' => $controllerResponse->product->accessoryIds,
                 'relatedIds' => $controllerResponse->product->relatedIds,
                 'relation' => $controllerResponse->product->relation,

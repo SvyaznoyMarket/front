@@ -47,7 +47,7 @@ namespace EnterTerminal\Controller\Product {
 
             // ответ
             $response = new Response();
-            $response->nearestDeliveries = (new \EnterRepository\Product())->getDeliveryObjectByListQuery($deliveryListQuery);
+            $response->nearestDeliveries = (new \EnterTerminal\Repository\Product())->getDeliveryObjectByListQuery($deliveryListQuery);
 
             return new Http\JsonResponse($response);
         }
@@ -58,7 +58,7 @@ namespace EnterTerminal\Controller\Product\Delivery {
     use EnterModel as Model;
 
     class Response {
-        /** @var Model\Product\NearestDelivery[] */
+        /** @var Model\Product\Delivery[] */
         public $nearestDeliveries = [];
     }
 }
