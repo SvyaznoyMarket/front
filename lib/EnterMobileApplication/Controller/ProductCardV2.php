@@ -253,7 +253,7 @@ namespace EnterMobileApplication\Controller {
                                 'name' => $controllerResponse->product->model->property->name,
                                 'unit' => '',
                                 'isImage' => false,
-                                'options' => array_map(function(\EnterModel\Product\ProductModel\Property\Option $option) {
+                                'options' => array_map(function(\EnterModel\Product\ProductModel\Property\Option $option) use($controllerResponse) {
                                     return [
                                         'value' => $option->value,
                                         'product' => $option->product ? [
@@ -264,6 +264,7 @@ namespace EnterMobileApplication\Controller {
                                             'image' => '',
                                         ] : null,
                                         'shownValue' => $option->value,
+                                        'isSelected' => $option->product && $controllerResponse->product && $option->product->id === $controllerResponse->product->id,
                                     ];
                                 }, $controllerResponse->product->model->property->options),
                             ]
