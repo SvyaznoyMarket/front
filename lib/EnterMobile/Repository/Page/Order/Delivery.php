@@ -344,6 +344,28 @@ class Delivery {
                         ];
                     }
 
+                    if ($orderModel->certificate) {
+                        $discounts[] = [
+                            'name'            => 'Подарочный сертификат',
+                            'discount'        => [
+                                'value'      => $orderModel->certificate->par,
+                                'isCurrency' => true,
+                            ],
+                            'deleteDataValue' => $templateHelper->json([
+                                'change' => [
+                                    'orders' => [
+                                        [
+                                            'blockName' => $orderModel->blockName,
+                                            'certificate' => [
+                                                'delete' => true,
+                                            ],
+                                        ]
+                                    ],
+                                ],
+                            ]),
+                        ];
+                    }
+
                     return $discounts;
                 }),
                 'hasDiscountLink' => call_user_func(function() use (&$orderModel) {

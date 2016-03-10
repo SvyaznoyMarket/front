@@ -648,7 +648,7 @@ define(
                                     $discountContainer.on('click', '.js-user-discount', function(e) {
                                         var
                                             $el = $(this),
-                                            value = $el.data('value')
+                                            value = $el.data('value'),
                                             $field = $form.find('[data-field="number"]')
                                         ;
 
@@ -872,7 +872,8 @@ define(
                 $.ajax({
                     url: checkUrl,
                     data: {
-                        code: $form.find('[data-field="number"]').val()
+                        code: $form.find('[data-field="number"]').val(),
+                        pin: $form.find('[data-field="pin"]').val()
                     },
                     type: 'post',
                     timeout: 15000

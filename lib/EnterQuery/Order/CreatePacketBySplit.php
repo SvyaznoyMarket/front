@@ -115,6 +115,11 @@ class CreatePacketBySplit extends Query {
                 $orderData['action'] = $order->actions;
             }
 
+            if ($order->certificate) {
+                $orderData['certificate'] = $order->certificate->code;
+                $orderData['certificate_pin'] = $order->certificate->pin;
+            }
+
             // meta
             foreach ($metas as $meta) {
                 $orderData['meta_data'][$meta->key] = $meta->value;
