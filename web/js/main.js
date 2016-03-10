@@ -138,7 +138,6 @@ require(
         'jquery.modal',
         'module/widget',      // виджеты
         'module/cart.common', // кнопка купить, спиннер
-        //'module/order',
         'module/product.catalog.common',
 		'module/siteVersionSwitcher',
 		'module/slotButton',
