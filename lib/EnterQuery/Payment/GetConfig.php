@@ -26,11 +26,13 @@ class GetConfig extends Query {
             'method_id' => $methodId,
             'order_id'  => $orderId,
         ];
-        if ($actionAlias = (isset($data['action_alias']) ? $data['action_alias'] : null)) {
+
+        // TODO delete
+        if (isset($data['action_alias'])) {
+            $this->url->query['action_alias'] = $data['action_alias'];
             unset($data['action_alias']);
-            $this->url->query['action_alias'] = $actionAlias;
         }
-        // TODO
+
         if ($actionAlias) {
             $this->url->query['action_alias'] = $actionAlias;
         }
