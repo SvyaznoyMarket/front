@@ -39,37 +39,28 @@ class Address {
         foreach ($request->addresses as $addressModel) {
             $regionModel = ($addressModel->regionId && isset($request->regionsById[$addressModel->regionId])) ? $request->regionsById[$addressModel->regionId] : null;
 
-            $address = [
-                'shownStreet'   =>
-                    $addressModel->street
-                        ? (($addressModel->streetType && (false === strpos($addressModel->street, $addressModel->streetType . '.'))) ? ($addressModel->streetType . '.') : '') . $addressModel->street
-                        : ''
-                ,
-                'shownBuilding' =>
-                    ($addressModel->building ? (!empty($addressModel->buildingType) ? ($addressModel->buildingType . ' ') : 'д. ') : '') . $addressModel->building
-                ,
-                'apartment'     => $addressModel->apartment,
-                'region'        =>
-                    $regionModel
-                    ? [
-                        'name' => $regionModel->name,
-                    ]
-                    : false
-                ,
-                'deleteUrl'     => $router->getUrlByRoute(new Routing\User\Address\Delete(), ['addressId' => $addressModel->id]),
-            ];
-            $address['dataValue'] = $templateHelper->json([
-                'deleteUrl' => $router->getUrlByRoute(new Routing\User\Address\Delete()),
-                'address'   => [
-                    'id'            => $addressModel->id,
-                    'region'        => $address['region'],
-                    'shownStreet'   => $address['shownStreet'],
-                    'shownBuilding' => $address['shownBuilding'],
-                    'apartment'     => $address['apartment'],
-                ],
-            ]);
+            $region = $regionModel ? ['name'  => $regionModel->name] : false;
+            $street = $addressModel->street ? $addressModel->street . ' ' . (($addressModel->streetType && (false === strpos($addressModel->street, $addressModel->streetType . '.'))) ? $addressModel->streetType : '') : '';
+            $building = ($addressModel->building ? (!empty($addressModel->buildingType) ? ($addressModel->buildingType . ' ') : 'д. ') : '') . $addressModel->building;
+            $apartment = $addressModel->apartment ? 'кв. ' . $addressModel->apartment : '';
 
-            $page->content->addresses[] = $address;
+            $page->content->addresses[] = [
+                'region'    => $region,
+                'street'    => $street,
+                'building'  => $building,
+                'apartment' => $apartment,
+                'deleteUrl' => $router->getUrlByRoute(new Routing\User\Address\Delete(), ['addressId' => $addressModel->id]),
+                'dataValue' => $templateHelper->json([
+                    'deleteUrl' => $router->getUrlByRoute(new Routing\User\Address\Delete()),
+                    'address'   => [
+                        'id'        => $addressModel->id,
+                        'region'    => $region,
+                        'street'    => $street,
+                        'building'  => $building,
+                        'apartment' => $apartment,
+                    ],
+                ]),
+            ];
         }
 
         // шаблоны mustache

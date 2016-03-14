@@ -419,7 +419,7 @@ class Cart {
                     $dump['user_info']['address']['street'] = $changeData['user']['address']['street'];
                 }
                 if (array_key_exists('streetType', $changeData['user']['address']) && !empty($dump['user_info']['address']['street'])) {
-                    $dump['user_info']['address']['street'] = $changeData['user']['address']['streetType'] . ' ' . $dump['user_info']['address']['street'];
+                    $dump['user_info']['address']['street'] = $dump['user_info']['address']['street'] . ' ' . $changeData['user']['address']['streetType'];
                 }
                 if (array_key_exists('building', $changeData['user']['address'])) {
                     $dump['user_info']['address']['building'] = $changeData['user']['address']['building'];

@@ -788,10 +788,10 @@ class Delivery {
                                 $name .= ', ' . $splitModel->user->address->street;
                             }
                             if ($splitModel->user->address->building) {
-                                $name .= ', д.' . $splitModel->user->address->building;
+                                $name .= ', д. ' . $splitModel->user->address->building;
                             }
                             if ($splitModel->user->address->apartment) {
-                                $name .= ', кв.' . $splitModel->user->address->apartment;
+                                $name .= ', кв. ' . $splitModel->user->address->apartment;
                             }
 
                             $address = [

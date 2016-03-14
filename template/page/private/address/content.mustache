@@ -6,12 +6,13 @@
                 {{#region}}
                     <span class="private-list__item-block-inner address-section__item">{{region.name}}</span>
                 {{/region}}
+
                 <span class="private-list__item-block-inner address-section__item">
-                    {{shownStreet}}
+                    {{street}}
                 </span>
+
                 <span class="private-list__item-block-inner address-section__item">
-                    {{shownBuilding}}
-                    {{#apartment}}кв. {{apartment}}{{/apartment}}
+                    {{building}}{{#apartment}}{{#building}}, {{/building}}{{apartment}}{{/apartment}}
                 </span>
             </div>
         </li>

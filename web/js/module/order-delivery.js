@@ -214,6 +214,48 @@ define(
                             } else {
                                 //showError($input, 'Введено неверно');
                             }
+                        },
+                        labelFormat: function (obj, query) {
+                            var objs;
+
+                            if (query.oneString) {
+                                if (obj.parents) {
+                                    objs = [].concat(obj.parents);
+                                    objs.push(obj);
+
+                                    return $.kladr.buildAddress(objs);
+                                }
+
+                                return obj.name + (obj.typeShort ? ' ' + obj.typeShort : '');
+                            }
+
+                            var label = '',
+                                name,
+                                objName,
+                                queryName,
+                                start;
+
+                            name = obj.name;
+                            objName = name.toLowerCase();
+                            queryName = query.name.toLowerCase();
+                            start = objName.indexOf(queryName);
+                            start = ~start ? start : 0;
+
+                            if (queryName.length < objName.length) {
+                                label += name.substr(0, start);
+                                label += '<strong>';
+                                label += name.substr(start, queryName.length);
+                                label += '</strong>';
+                                label += name.substr(start + queryName.length);
+                            } else {
+                                label += '<strong>' + name + '</strong>';
+                            }
+
+                            if (obj.typeShort) {
+                                label += ' ' + obj.typeShort;
+                            }
+
+                            return label;
                         }
                     });
 
