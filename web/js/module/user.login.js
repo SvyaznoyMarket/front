@@ -43,7 +43,7 @@ define(
         });
         console.info($authContainer);
 
-        $(".js-phone-mask").mask("+7 (999) 999 - 99 - 99");
+        $(".js-phone-mask").mask("+7 (999) 999-99-99", {autoclear: false});
 
         //hack for inputs cursor on iOS
         $('.wrapper').scroll(function () {
