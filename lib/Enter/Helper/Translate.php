@@ -35,4 +35,33 @@ class Translate {
 
         return 'через ' . ($interval->days - 1) . ' ' . $this->numberChoice(($interval->days - 1), ['день', 'дня', 'дней']) . ' (' . $date->format('d.m.Y') . ')';
     }
+
+    /**
+     * @param \DateTime $date
+     * @return string
+     */
+    public function humanizeDate2(\DateTime $date) {
+        $format = 'd.m.Y';
+        $formatted = $date->format($format);
+
+        $namesByDay = [
+            0 => 'Сегодня',
+            1 => 'Завтра',
+            2 => 'Послезавтра',
+        ];
+
+        $now = new \DateTime('now');
+
+        foreach ($namesByDay as $day => $name) {
+            if ($day > 0) {
+                $now->modify('+1 day');
+            }
+
+            if ($formatted == $now->format($format)) {
+                return $name;
+            }
+        }
+
+        return $formatted;
+    }
 }

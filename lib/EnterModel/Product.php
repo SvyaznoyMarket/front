@@ -73,8 +73,8 @@ namespace EnterModel {
         public $model;
         /** @var Model\Product\Line|null */
         public $line;
-        /** @var Model\Product\NearestDelivery[] */
-        public $nearestDeliveries = [];
+        /** @var Model\Product\Delivery[] */
+        public $deliveries = [];
         /** @var string[] */
         public $accessoryIds = [];
         /** @var string[] */
@@ -103,6 +103,8 @@ namespace EnterModel {
         public $storeLabel;
         /** @var \EnterModel\Product\AssemblingLabel|null Метка "Собери сам" */
         public $assemblingLabel;
+        /** @var \EnterModel\Prepayment|null */
+        public $prepayment;
 
         /**
          * @param array $data
@@ -254,11 +256,11 @@ namespace EnterModel {
 //                $this->line = new Model\Product\Line();
 //                $this->line->fromArray($data['line']);
 //            }
-//            if (isset($data['nearestDeliveries'][0])) {
-//                foreach ($data['nearestDeliveries'] as $item) {
-//                    $entity = new Model\Product\NearestDelivery();
+//            if (isset($data['deliveries'][0])) {
+//                foreach ($data['deliveries'] as $item) {
+//                    $entity = new Model\Product\Delivery();
 //                    $entity->fromArray($item);
-//                    $this->nearestDeliveries[] = $entity;
+//                    $this->deliveries[] = $entity;
 //                }
 //            }
 //            if (isset($data['accessoryIds'][0])) $this->accessoryIds = $data['accessoryIds'];

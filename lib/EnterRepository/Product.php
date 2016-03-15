@@ -166,78 +166,6 @@ class Product {
     }
 
     /**
-     * @param Query $query
-     * @return Model\Product\NearestDelivery[]
-     */
-    public function getDeliveryObjectByListQuery(Query $query) {
-        $nearestDeliveries = [];
-
-        try {
-            $result = $query->getResult();
-        } catch (\Exception $e) {
-            return $nearestDeliveries;
-        }
-
-        $productData = &$result['product_list'];
-        $shopData = &$result['shop_list'];
-
-        $regionData = [];
-        foreach ($result['geo_list'] as $regionItem) {
-            $regionData[(string)$regionItem['id']] = $regionItem;
-        }
-
-        foreach ($productData as $item) {
-            $productId = (string)$item['id'];
-
-            if (!isset($item['delivery_mode_list'])) continue;
-            foreach ($item['delivery_mode_list'] as $deliveryItem) {
-                if (!isset($deliveryItem['date_list']) || !is_array($deliveryItem['date_list'])) continue;
-
-                // FIXME
-                if (in_array($deliveryItem['token'], ['now'])) continue;
-
-                $delivery = new Model\Product\NearestDelivery();
-                $delivery->productId = $productId;
-                $delivery->id = (string)$deliveryItem['id'];
-                $delivery->token = (string)$deliveryItem['token'];
-                $delivery->price = (int)$deliveryItem['price'];
-
-                /** @var string $date Ближайшая дата доставки */
-                $date = reset($deliveryItem['date_list']);
-                $date = !empty($date['date']) ? $date['date'] : null;
-                $delivery->deliveredAt = $date ? new \DateTime($date) : null;
-
-                $day = 0;
-                foreach ($deliveryItem['date_list'] as $dateItem) {
-                    $day++;
-                    if ($day > 7) break;
-
-                    if (in_array($deliveryItem['token'], ['self', 'now'])) {
-                        foreach ($dateItem['shop_list'] as $shopIntervalItem) {
-                            $shopId = (string)$shopIntervalItem['id'];
-                            $shopItem = (!array_key_exists($shopId, $delivery->shopsById) && isset($shopData[$shopId]['id'])) ? $shopData[$shopId] : null;
-                            if (!$shopItem) continue;
-
-                            $regionId = (string)$shopItem['geo_id'];
-                            if (array_key_exists($regionId, $regionData)) {
-                                $shopItem['geo'] = $regionData[$regionId];
-                            }
-
-                            $shop = new Model\Shop($shopItem);
-
-                            $delivery->shopsById[$shopId] = $shop;
-                        }
-                    }
-                }
-
-                $nearestDeliveries[] = $delivery;
-            }
-        }
-
-        return $nearestDeliveries;
-    }
-
-    /**
      * @param Model\Product[] $productsById
      * @param Query $deliveryListQuery
      */
@@ -257,53 +185,124 @@ class Product {
                 $productId = (string)$item['id'];
                 if (!$productId || !isset($productsById[$productId])) continue;
 
-                if (!isset($item['delivery_mode_list'])) continue;
-                foreach ($item['delivery_mode_list'] as $deliveryItem) {
-                    if (!isset($deliveryItem['date_list']) || !is_array($deliveryItem['date_list'])) continue;
+                if (isset($item['delivery_mode_list']) && is_array($item['delivery_mode_list'])) {
+                    foreach ($item['delivery_mode_list'] as $deliveryItem) {
+                        if (!isset($deliveryItem['date_list']) || !is_array($deliveryItem['date_list'])) continue;
+    
+                        // FIXME
+                        if (in_array($deliveryItem['token'], ['now'])) continue;
+    
+                        $delivery = new Model\Product\Delivery();
+                        $delivery->productId = $productId;
+                        $delivery->id = (string)$deliveryItem['id'];
+                        $delivery->token = (string)$deliveryItem['token'];
+                        $delivery->isPickup = (bool)$deliveryItem['is_pickup'];
+                        $delivery->price = (int)$deliveryItem['price'];
 
-                    // FIXME
-                    if (in_array($deliveryItem['token'], ['now'])) continue;
-
-                    $delivery = new Model\Product\NearestDelivery();
-                    $delivery->productId = $productId;
-                    $delivery->id = (string)$deliveryItem['id'];
-                    $delivery->token = (string)$deliveryItem['token'];
-                    $delivery->price = (int)$deliveryItem['price'];
-
-                    /** @var string $date Ближайшая дата доставки */
-                    $date = reset($deliveryItem['date_list']);
-                    $date = !empty($date['date']) ? $date['date'] : null;
-                    $delivery->deliveredAt = $date ? new \DateTime($date) : null;
-
-                    $day = 0;
-                    foreach ($deliveryItem['date_list'] as $dateItem) {
-                        $day++;
-                        if ($day > 7) break;
-
-                        if (isset($dateItem['shop_list']) && in_array($deliveryItem['token'], ['self', 'now'])) {
-                            foreach ($dateItem['shop_list'] as $shopIntervalItem) {
-                                $shopId = (string)$shopIntervalItem['id'];
-                                $shopItem = (!array_key_exists($shopId, $delivery->shopsById) && isset($shopData[$shopId]['id'])) ? $shopData[$shopId] : null;
-                                if (!$shopItem) continue;
-
-                                $regionId = (string)$shopItem['geo_id'];
-                                if (array_key_exists($regionId, $regionData)) {
-                                    $shopItem['geo'] = $regionData[$regionId];
+                        if (isset($deliveryItem['date_list']) && is_array($deliveryItem['date_list'])) {
+                            foreach ($deliveryItem['date_list'] as $dateItem) {
+                                if (isset($dateItem['date'])) {
+                                    $delivery->dates[] = new \DateTime($dateItem['date']);
                                 }
+                            }
+                        }
 
-                                $shop = new Model\Shop($shopItem);
+                        if (isset($deliveryItem['date_interval']['from']) && isset($deliveryItem['date_interval']['to'])) {
+                            $delivery->dateInterval = new \EnterModel\DateInterval();
+                            if ($deliveryItem['date_interval']['from']) {
+                                $delivery->dateInterval->from = new \DateTime($deliveryItem['date_interval']['from']);
+                            }
+                            if ($deliveryItem['date_interval']['to']) {
+                                $delivery->dateInterval->to = new \DateTime($deliveryItem['date_interval']['to']);
+                            }
+                        }
 
-                                $delivery->shopsById[$shopId] = $shop;
+                        /** @var string $date Ближайшая дата доставки */
+                        $date = reset($deliveryItem['date_list']);
+                        $date = !empty($date['date']) ? $date['date'] : null;
+                        $delivery->nearestDeliveredAt = $date ? new \DateTime($date) : null;
+    
+                        $day = 0;
+                        foreach ($deliveryItem['date_list'] as $dateItem) {
+                            $day++;
+                            if ($day > 7) break;
+
+                            if (isset($dateItem['shop_list']) && in_array($deliveryItem['token'], ['self', 'now'])) {
+                                foreach ($dateItem['shop_list'] as $shopIntervalItem) {
+                                    $shopId = (string)$shopIntervalItem['id'];
+                                    $shopItem = (!array_key_exists($shopId, $delivery->shopsById) && isset($shopData[$shopId]['id'])) ? $shopData[$shopId] : null;
+                                    if (!$shopItem) continue;
+    
+                                    $regionId = (string)$shopItem['geo_id'];
+                                    if (array_key_exists($regionId, $regionData)) {
+                                        $shopItem['geo'] = $regionData[$regionId];
+                                    }
+    
+                                    $shop = new Model\Shop($shopItem);
+    
+                                    $delivery->shopsById[$shopId] = $shop;
+                                }
+                            }
+                        }
+    
+                        $productsById[$productId]->deliveries[] = $delivery;
+                    }
+                }
+                
+                if (isset($item['prepay_rules']) && is_array($item['prepay_rules'])) {
+                    $productLabelIds = array_map(function(\EnterModel\Product\Label $label) {
+                        return $label->id;
+                    }, $productsById[$productId]->labels);
+            
+                    if (isset($item['prepay_rules']['priorities']) && is_array($item['prepay_rules']['priorities'])) {
+                        foreach ($item['prepay_rules']['priorities'] as $ruleNames => $priority) {
+                            $ruleNames = explode(':', $ruleNames);
+
+                            if (isset($ruleNames[0]) && isset($ruleNames[1]) && isset($item['prepay_rules'][$ruleNames[0]]) && is_array($item['prepay_rules'][$ruleNames[0]])) {
+                                foreach ($item['prepay_rules'][$ruleNames[0]] as $ruleSubname => $ruleItem) {
+                                    if (
+                                        ($ruleNames[1] === '*' || $ruleNames[1] == $ruleSubname)
+                                        && !empty($ruleItem['prepay_sum'])
+                                        && (
+                                            ($ruleNames[0] === 'deliveries' && isset($item['delivery_mode_list'][$ruleSubname]))
+                                            || ($ruleNames[0] === 'labels' && in_array($ruleSubname, $productLabelIds))
+                                            || ($ruleNames[0] === 'others')
+                                        )
+                                    ) {
+                                        $productsById[$productId]->prepayment = new \EnterModel\Prepayment($ruleItem['prepay_sum']);
+                                        break(2);
+                                    }
+                                }
                             }
                         }
                     }
-
-                    $productsById[$productId]->nearestDeliveries[] = $delivery;
                 }
             }
         } catch (\Exception $e) {
             $this->logger->push(['type' => 'error', 'error' => $e, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['repository']]);
         }
+    }
+
+    /**
+     * @param \EnterModel\Product\Delivery[] $deliveries
+     * @param bool $isPickup
+     * @return \EnterModel\Product\Delivery|null
+     */
+    public function getDeliveriesWithMinDate($deliveries, $isPickup){
+        $deliveryWithMinDate = null;
+        $minDate = null;
+        foreach ($deliveries as $delivery) {
+            if ($isPickup == $delivery->isPickup) {
+                foreach ($delivery->dates as $date) {
+                    if ($date < $minDate || $minDate === null) {
+                        $deliveryWithMinDate = $delivery;
+                        $minDate = $date;
+                    }
+                }
+            }
+        }
+
+        return $deliveryWithMinDate;
     }
 
     /**

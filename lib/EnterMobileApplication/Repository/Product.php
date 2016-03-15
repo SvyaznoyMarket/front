@@ -26,14 +26,18 @@ class Product extends \EnterRepository\Product {
      * @return array
      */
     public function getMedia(\EnterModel\Product $product) {
-        return [
-            'photos' => array_values(array_filter(array_map(function(\EnterModel\Media $photo) {
-                if (!array_intersect(['main', 'additional'], $photo->tags)) {
-                    return null;
-                }
+        $mainPhotos = [];
+        $additionalPhotos = [];
+        foreach ($product->media->photos as $photo) {
+            if (in_array('main', $photo->tags, true)) {
+                $mainPhotos[] = $photo;
+            } else if (in_array('additional', $photo->tags, true)) {
+                $additionalPhotos[] = $photo;
+            }
+        }
 
-                return $photo;
-            }, $product->media->photos))),
+        return [
+            'photos' => array_merge($mainPhotos, $additionalPhotos),
         ];
     }
 

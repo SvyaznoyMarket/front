@@ -8,6 +8,8 @@ namespace EnterModel {
         public $elements = [];
         /** @var array */
         public $serviceElements = [];
+        /** @var array */
+        public $contentElements = [];
 
         /**
          * @param array $data
