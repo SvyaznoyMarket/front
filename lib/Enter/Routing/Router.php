@@ -70,12 +70,15 @@ class Router {
      * @param $path
      * @param null $method
      * @param array $query
+     * @param bool $needRedirect true, если маршрут был найден по алиасу и требуется сделать редирект на возвращённый маршрут
      * @throws \LogicException
      * @throws \RuntimeException
      * @throws \Exception
      * @return Route
      */
-    public function getRouteByPath($path, $method = null, array $query = []) {
+    public function getRouteByPath($path, $method = null, array $query = [], &$needRedirect = false) {
+        $needRedirect = false;
+
         $path = rawurldecode($path);
 
         $route = null;
@@ -83,41 +86,58 @@ class Router {
         foreach ($this->config->routes as $routeClass => $routeItem) {
             // Если не указан http-метод или http-метод совпадает с правилом маршрута ...
             if (!array_key_exists('method', $routeItem) || in_array($method, $routeItem['method'])) {
+                $patterns = [];
 
-                $patternReplaces = [];
-                $varNames = [];
-                preg_match_all('#\{(\w+)\}#', $routeItem['pattern'], $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
-                foreach ($matches as $match) {
-                    $varName = $match[1][0];
-                    $patternReplaces['{' . $varName . '}'] = isset($routeItem['require'][$varName]) ? ('('.$routeItem['require'][$varName].')') : '([^\/]+)';
-                    if (in_array($varName, $varNames)) {
-                        throw new \LogicException(sprintf('Шаблон маршрута %s не может содержать более одного объявления переменной %s', $routeItem['pattern'], $varName));
+                $patterns[] = [
+                    'pattern' => $routeItem['pattern'],
+                    'needRedirect' => false,
+                ];
+
+                if (isset($routeItem['aliases'])) {
+                    foreach ($routeItem['aliases'] as $alias) {
+                        if ($alias['pattern'] !== $routeItem['pattern']) {
+                            $patterns[] = [
+                                'pattern' => $alias['pattern'],
+                                'needRedirect' => $alias['needRedirect'],
+                            ];
+                        }
                     }
-                    $varNames[] = $varName;
-                }
-                $pattern = '#^' . strtr($routeItem['pattern'], $patternReplaces) . '$#s';
-
-                if (!preg_match($pattern, $path, $matches)) {
-                    continue;
-                }
-
-                $vars = array_merge($query, array_combine($varNames, array_slice($matches, 1)));
-
-                $routeClass = $this->config->routeClassPrefix . $routeClass;
-                $reflectedClass = new \ReflectionClass($routeClass);
-
-                $arguments = [];
-                foreach ((new \ReflectionMethod($routeClass, '__construct'))->getParameters() as $reflectedParameter) {
-                    if ($reflectedParameter->isDefaultValueAvailable()) {
-                        $vars[$reflectedParameter->name] = $reflectedParameter->getDefaultValue();
-                    }
-                    if (!array_key_exists($reflectedParameter->name, $vars)) {
-                        throw new \RuntimeException(sprintf('Маршруту %s необходим обязательный параметр %s', $routeClass, $reflectedParameter->name));
-                    }
-                    $arguments[] = $vars[$reflectedParameter->name];
                 }
 
-                return $reflectedClass->newInstanceArgs($arguments);
+                foreach ($patterns as $pattern) {
+                    $patternReplaces = [];
+                    $varNames = [];
+                    preg_match_all('#\{(\w+)\}#', $pattern['pattern'], $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
+                    foreach ($matches as $match) {
+                        $varName = $match[1][0];
+                        $patternReplaces['{' . $varName . '}'] = isset($routeItem['require'][$varName]) ? ('('.$routeItem['require'][$varName].')') : '([^\/]+)';
+                        if (in_array($varName, $varNames)) {
+                            throw new \LogicException(sprintf('Шаблон маршрута %s не может содержать более одного объявления переменной %s', $pattern['pattern'], $varName));
+                        }
+                        $varNames[] = $varName;
+                    }
+
+                    if (preg_match('#^' . strtr($pattern['pattern'], $patternReplaces) . '$#s', $path, $matches)) {
+                        $vars = array_merge($query, array_combine($varNames, array_slice($matches, 1)));
+
+                        $routeClass = $this->config->routeClassPrefix . $routeClass;
+                        $reflectedClass = new \ReflectionClass($routeClass);
+
+                        $arguments = [];
+                        foreach ((new \ReflectionMethod($routeClass, '__construct'))->getParameters() as $reflectedParameter) {
+                            if ($reflectedParameter->isDefaultValueAvailable()) {
+                                $vars[$reflectedParameter->name] = $reflectedParameter->getDefaultValue();
+                            }
+                            if (!array_key_exists($reflectedParameter->name, $vars)) {
+                                throw new \RuntimeException(sprintf('Маршруту %s необходим обязательный параметр %s', $routeClass, $reflectedParameter->name));
+                            }
+                            $arguments[] = $vars[$reflectedParameter->name];
+                        }
+
+                        $needRedirect = $pattern['needRedirect'];
+                        return $reflectedClass->newInstanceArgs($arguments);
+                    }
+                }
             }
         }
 
