@@ -1,9 +1,8 @@
 <form action="{{deleteUrl}}" method="post">
     <div>
         <span class="address-section__item">{{address.region.name}}</span>
-        <span class="address-section__item">{{address.shownStreet}}</span>
-        <span class="address-section__item">{{address.shownBuilding}}</span>
-        <span class="address-section__item">{{#apartment}}кв. {{apartment}}{{/apartment}}</span>
+        <span class="address-section__item">{{address.street}}</span>
+        <span class="address-section__item">{{address.building}}{{#address.apartment}}{{#address.building}}, {{/address.building}}{{address.apartment}}{{/address.apartment}}</span>
     </div>
 
     <input type="hidden" name="addressId" value="{{address.id}}">

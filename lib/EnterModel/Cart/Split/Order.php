@@ -13,6 +13,8 @@ class Order {
     public $discounts = [];
     /** @var array */
     public $actions = [];
+    /** @var Order\Certificate */
+    public $certificate = null;
     /** @var Order\Delivery|null */
     public $delivery;
     /** @var string|null */
@@ -77,6 +79,10 @@ class Order {
             $this->discounts[] = new Order\Discount($item);
         }
 
+        if (isset($data['certificate'])) {
+            $this->certificate = new Order\Certificate($data['certificate']);
+        }
+
         $this->actions = (array)$data['actions'];
 
         $this->delivery = $data['delivery'] ? new Order\Delivery($data['delivery']) : null;
@@ -139,6 +145,7 @@ class Order {
             'seller'                   => $this->seller ? $this->seller->dump() : null,
             'products'                 => array_map(function(Order\Product $product) { return $product->dump(); }, $this->products),
             'discounts'                => array_map(function(Order\Discount $discount) { return $discount->dump(); }, $this->discounts),
+            'certificate'              => $this->certificate ? $this->certificate->dump() : null,
             'actions'                  => $this->actions,
             'delivery'                 => $this->delivery ? $this->delivery->dump() : null,
             'total_cost'               => $this->sum,

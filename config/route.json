@@ -127,35 +127,79 @@
 
     "Order\\Slot\\Index": {
         "name": "Оформление заказа-слота",
-        "pattern": "/orders/slot/create"
+        "pattern": "/order/slot/create",
+        "method": ["POST"]
     },
     "Order\\Quick\\Index": {
         "name": "Оформление заказа в один клик",
-        "pattern": "/orders/one-click/new"
+        "pattern": "/order/one-click/new",
+        "aliases": [
+            {
+                "pattern": "/orders/one-click/new",
+                "needRedirect": true
+            }
+        ]
     },
     "Order\\Index": {
         "name": "Оформление заказа",
-        "pattern": "/orders/new"
-    },
-    "Order\\SetUser": {
-        "name": "Оформление заказа - инфо пользователя",
-        "pattern": "/orders/set-user"
+        "pattern": "/order/new",
+        "aliases": [
+            {
+                "pattern": "/orders/new",
+                "needRedirect": true
+            }
+        ]
     },
     "Order\\Delivery": {
         "name": "Оформление заказа - выбор доставки",
-        "pattern": "/orders/delivery"
+        "pattern": "/order/delivery",
+        "aliases": [
+            {
+                "pattern": "/orders/delivery",
+                "needRedirect": true
+            }
+        ]
     },
     "Order\\Create": {
         "name": "Оформление заказа - создание",
-        "pattern": "/orders/create"
+        "pattern": "/order/create",
+        "aliases": [
+            {
+                "pattern": "/orders/create",
+                "needRedirect": false
+            }
+        ]
     },
     "Order\\Complete": {
         "name": "Оформление заказа - завершение",
-        "pattern": "/orders/complete"
+        "pattern": "/order/complete",
+        "aliases": [
+            {
+                "pattern": "/orders/complete",
+                "needRedirect": true
+            }
+        ]
+    },
+    "Order\\SetUser": {
+        "name": "Оформление заказа - инфо пользователя",
+        "pattern": "/order/set-user",
+        "aliases": [
+            {
+                "pattern": "/orders/set-user",
+                "needRedirect": false
+            }
+        ],
+        "method": ["POST"]
     },
     "Order\\Payment\\GetForm": {
         "name": "Оформление заказа - форма онлайн-оплаты",
-        "pattern": "/orders/payment/get-form",
+        "pattern": "/order/payment/get-form",
+        "aliases": [
+            {
+                "pattern": "/orders/payment/get-form",
+                "needRedirect": false
+            }
+        ],
         "method": ["POST"]
     },
 

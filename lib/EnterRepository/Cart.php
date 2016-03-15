@@ -370,19 +370,27 @@ class Cart {
                                 if ($existsDiscountItem['number'] == $discountItem['number']) {
                                     // удаление найденной скидки
                                     unset($dump['orders'][$blockName]['discounts'][$i]);
+                                    $isDeleted = true;
                                 }
                             }
                             if (!$isDeleted) {
                                 $this->getLogger()->push(['type' => 'warn', 'message' => 'Купон не найден', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
                             }
                         } else { // добавление купона
-                            $dump['orders'][$blockName]['discounts'][] =
-                                ['number' => $discountItem['number'], 'name' => null, 'type' => null, 'discount' => null]
-                                + (!empty($discountItem['pin']) ? ['pin' => $discountItem['pin']] : [])
-                            ;
+                            if (empty($discountItem['pin'])) {
+                                $dump['orders'][$blockName]['discounts'][] = ['number' => $discountItem['number'], 'name' => null, 'type' => null, 'discount' => null];
+                            } else {
+                                $dump['orders'][$blockName]['certificate'] = ['code' => $discountItem['number'], 'pin' => $discountItem['pin']];
+                            }
                         }
                     }
                     unset($discountItem);
+                }
+
+                if (isset($orderItem['certificate']) && is_array($orderItem['certificate'])) {
+                    if (isset($orderItem['certificate']['delete']) && $orderItem['certificate']['delete']) {
+                        $dump['orders'][$blockName]['certificate'] = null;
+                    }
                 }
             }
         }
@@ -411,7 +419,7 @@ class Cart {
                     $dump['user_info']['address']['street'] = $changeData['user']['address']['street'];
                 }
                 if (array_key_exists('streetType', $changeData['user']['address']) && !empty($dump['user_info']['address']['street'])) {
-                    $dump['user_info']['address']['street'] = $changeData['user']['address']['streetType'] . ' ' . $dump['user_info']['address']['street'];
+                    $dump['user_info']['address']['street'] = $dump['user_info']['address']['street'] . ' ' . $changeData['user']['address']['streetType'];
                 }
                 if (array_key_exists('building', $changeData['user']['address'])) {
                     $dump['user_info']['address']['building'] = $changeData['user']['address']['building'];

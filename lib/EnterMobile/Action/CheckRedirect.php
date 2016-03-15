@@ -25,7 +25,10 @@ class CheckRedirect {
 
         $route = null;
         try {
-            $route = $router->getRouteByPath($request->getPathInfo(), $request->getMethod(), $request->query->all());
+            $route = $router->getRouteByPath($request->getPathInfo(), $request->getMethod(), $request->query->all(), $needRedirect);
+            if ($needRedirect) {
+                return (new \EnterAggregator\Controller\Redirect())->execute($router->getUrlByRoute($route), 301);
+            }
         } catch (\Exception $e) {}
 
         $hasRedirect = false

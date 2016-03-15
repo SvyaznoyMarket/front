@@ -469,14 +469,14 @@ class ProductCard {
                 'id'       => 'tpl-product-slider',
                 'name'     => 'partial/product-slider/new-default',
                 'partials' => [
-                    'partial/cart/button-new',
+                    'partial/cart/button',
                 ],
             ],
             [
                 'id'       => 'tpl-product-buyButtonBlock',
                 'name'     => 'page/product-card-new/buttonBlock',
                 'partials' => [
-                    'partial/cart/button-new',
+                    'partial/cart/button',
                     //'partial/cart/spinner',
                     //'partial/cart/quickButton',
                 ],
@@ -494,7 +494,7 @@ class ProductCard {
                 'id'       => 'tpl-product-slider-large',
                 'name'     => 'partial/product-slider/large-images',
                 'partials' => [
-                    'partial/cart/button-new',
+                    'partial/cart/button',
                     'partial/rating/star-list'
                 ],
             ]

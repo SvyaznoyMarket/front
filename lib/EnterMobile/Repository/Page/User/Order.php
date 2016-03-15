@@ -128,7 +128,7 @@ class Order {
 
         $request->order->deliveries = $deliveryInfo;
 
-        $request->order->sum = $this->getPriceHelper()->format($request->order->sum);
+        $request->order->sum = $this->getPriceHelper()->format($request->order->paySum);
 
         $page->content->order = $request->order;
 

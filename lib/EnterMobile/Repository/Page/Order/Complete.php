@@ -46,10 +46,10 @@ class Complete {
                 'number'    => $orderModel->number,
                 'numberErp' => $orderModel->numberErp,
                 'sum'       =>
-                    $orderModel->sum
+                    $orderModel->paySum
                     ? [
-                        'name'  => $priceHelper->format($orderModel->sum),
-                        'value' => $orderModel->sum,
+                        'name'  => $priceHelper->format($orderModel->paySum),
+                        'value' => $orderModel->paySum,
                     ]
                     : null
                 ,

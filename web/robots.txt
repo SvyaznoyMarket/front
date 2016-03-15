@@ -4,6 +4,7 @@ Disallow: /
 User-agent: Googlebot
 Disallow: /region/change/*
 Disallow: /orders/*
+Disallow: /order/*
 Disallow: /private/*
 Disallow: /cart
 Disallow: /login

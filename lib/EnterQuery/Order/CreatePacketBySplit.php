@@ -100,6 +100,12 @@ class CreatePacketBySplit extends Query {
                 $orderData['address_building'] = $address->building;
                 $orderData['address_apartment'] = $address->apartment;
                 $orderData['address_floor'] = $address->floor;
+
+                if ((!$delivery || !$delivery->point || $delivery->point->id == '') && !empty($address->street)) {
+                    $orderData['address'] = $address->street;
+                    if (!empty($address->building)) $orderData['address'] .= ', д. ' . $address->building;
+                    if (!empty($address->apartment)) $orderData['address'] .= ', кв. ' . $address->apartment;
+                }
             }
 
             // товары
@@ -113,6 +119,11 @@ class CreatePacketBySplit extends Query {
             // action
             if ((bool)$order->actions) {
                 $orderData['action'] = $order->actions;
+            }
+
+            if ($order->certificate) {
+                $orderData['certificate'] = $order->certificate->code;
+                $orderData['certificate_pin'] = $order->certificate->pin;
             }
 
             // meta

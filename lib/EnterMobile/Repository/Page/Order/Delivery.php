@@ -344,12 +344,34 @@ class Delivery {
                         ];
                     }
 
+                    if ($orderModel->certificate) {
+                        $discounts[] = [
+                            'name'            => 'Подарочный сертификат',
+                            'discount'        => [
+                                'value'      => $orderModel->certificate->par,
+                                'isCurrency' => true,
+                            ],
+                            'deleteDataValue' => $templateHelper->json([
+                                'change' => [
+                                    'orders' => [
+                                        [
+                                            'blockName' => $orderModel->blockName,
+                                            'certificate' => [
+                                                'delete' => true,
+                                            ],
+                                        ]
+                                    ],
+                                ],
+                            ]),
+                        ];
+                    }
+
                     return $discounts;
                 }),
                 'hasDiscountLink' => call_user_func(function() use (&$orderModel) {
                     $sellerModel = $orderModel->seller;
 
-                    return !$sellerModel || ($sellerModel->ui === $sellerModel::UI_ENTER);
+                    return !$sellerModel || (in_array($sellerModel->ui, [$sellerModel::UI_ENTER, $sellerModel::UI_SVYAZNOY, $sellerModel::UI_SORDEX], true));
                 }),
                 'pointJson'      => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$regionModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex, &$pointRepository) {
                     $points = [];
@@ -766,10 +788,10 @@ class Delivery {
                                 $name .= ', ' . $splitModel->user->address->street;
                             }
                             if ($splitModel->user->address->building) {
-                                $name .= ', д.' . $splitModel->user->address->building;
+                                $name .= ', д. ' . $splitModel->user->address->building;
                             }
                             if ($splitModel->user->address->apartment) {
-                                $name .= ', кв.' . $splitModel->user->address->apartment;
+                                $name .= ', кв. ' . $splitModel->user->address->apartment;
                             }
 
                             $address = [
