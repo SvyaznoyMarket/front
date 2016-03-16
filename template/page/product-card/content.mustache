@@ -346,10 +346,15 @@
                                 <ul class="deliveryList">
                                     {{#deliveries}}
                                         <li class="deliveryList_item deliveryList_item-{{token}}">
-                                            {{#name}}
-                                                {{name}} {{#priceText}}<strong>{{priceText}}</strong>{{/priceText}}
-                                            {{/name}}
-                                            <span class="{{#name}}descText{{/name}}{{^name}}descTextDotted{{/name}}">{{deliveredAtText}}</span>
+                                            {{name}}
+
+                                            {{#price}}
+                                                <strong>{{text}}</strong>{{#showRub}}&nbsp;<span class="rubl">p</span>{{/showRub}}
+                                            {{/price}}
+
+                                            {{#date}}
+                                                <span class="descText">{{date}}</span>
+                                            {{/date}}
                                         </li>
                                     {{/deliveries}}
                                 </ul>

@@ -295,36 +295,39 @@
                         {{/product.kitBlock}}
                     </div>
                 </div>
-                {{#product.deliveryBlock}}
-                <div class="product-delivery__info">
-                    {{#product.shopStateBlock}}
-                        <span class="product-delivery__info-self js-popup-middle-link">{{shownCount}}</span>
-                    {{/product.shopStateBlock}}
-                    {{^product.slotPartnerOffer}}
-                        {{#product.deliveryBlock}}
-                            {{#deliveries}}
-                                <div class="product-delivery__row">
-                                    {{#name}}
-                                        <span class="product-delivery__type">{{name}}</span>
-                                    {{/name}}
-                                    <span class="product-delivery__price">{{deliveredAtText}}</span>
-                                    {{#name}}
-                                        {{#priceText}}
-                                            <span class="product-delivery__plan">{{priceText}}</span>
-                                        {{/priceText}}
-                                    {{/name}}
-                                </div>
-                            {{/deliveries}}
-                        {{/product.deliveryBlock}}
-                    {{/product.slotPartnerOffer}}
-                    {{#product.slotPartnerOffer}}
-                        <div class="product-delivery__row">
-                            <span class="product-delivery__type">Доставка</span>
-                            <span class="product-delivery__txt">Срок доставки базового<br>комплекта 3 дня</span>
-                        </div>
-                    {{/product.slotPartnerOffer}}
-                </div>
-                {{/product.deliveryBlock}}
+                {{#product.deliveryBlock.deliveries.0}}
+                    <div class="product-delivery__info">
+                        {{#product.shopStateBlock}}
+                            <span class="product-delivery__info-self js-popup-middle-link">{{shownCount}}</span>
+                        {{/product.shopStateBlock}}
+
+                        {{^product.slotPartnerOffer}}
+                            {{#product.deliveryBlock}}
+                                {{#deliveries}}
+                                    <div class="product-delivery__row">
+                                        {{#name}}
+                                            <span class="product-delivery__type">{{name}}</span>
+                                        {{/name}}
+
+                                        {{#date}}
+                                            <span class="product-delivery__plan">{{date}}</span>
+                                        {{/date}}
+
+                                        {{#price}}
+                                            <span class="product-delivery__price">{{text}}{{#showRub}}&nbsp;<span class="rubl">p</span>{{/showRub}}</span>
+                                        {{/price}}
+                                    </div>
+                                {{/deliveries}}
+                            {{/product.deliveryBlock}}
+                        {{/product.slotPartnerOffer}}
+                        {{#product.slotPartnerOffer}}
+                            <div class="product-delivery__row">
+                                <span class="product-delivery__type">Доставка</span>
+                                <span class="product-delivery__txt">Срок доставки базового<br>комплекта 3 дня</span>
+                            </div>
+                        {{/product.slotPartnerOffer}}
+                    </div>
+                {{/product.deliveryBlock.deliveries.0}}
 
                 {{#product.modelBlock}}
                     <div class="product-variations toggle js-toggle-wrap">

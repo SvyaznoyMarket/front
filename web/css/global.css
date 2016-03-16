@@ -12736,14 +12736,14 @@ body:not(.noIOS) .private section:not(.main-section) > * {
 }
 .product-delivery__price {
   display: table-cell;
-  width: 80px;
   padding-top: 10px;
-  padding-right: 10px;
   vertical-align: middle;
 }
 .product-delivery__plan {
   display: table-cell;
+  width: 80px;
   padding-top: 10px;
+  padding-right: 10px;
   vertical-align: middle;
 }
 .product-delivery__txt {

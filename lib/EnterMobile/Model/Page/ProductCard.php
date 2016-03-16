@@ -216,10 +216,19 @@ namespace EnterMobile\Model\Page\ProductCard\Content\Product\DeliveryBlock {
         public $token;
         /** @var string */
         public $name;
+        /** @var \EnterMobile\Model\Page\ProductCard\Content\Product\DeliveryBlock\Delivery\Price|null */
+        public $price;
         /** @var string */
-        public $priceText;
+        public $date = '';
+    }
+}
+
+namespace EnterMobile\Model\Page\ProductCard\Content\Product\DeliveryBlock\Delivery {
+    class Price {
         /** @var string */
-        public $deliveredAtText;
+        public $text = '';
+        /** @var bool */
+        public $showRub = false;
     }
 }
 

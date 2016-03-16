@@ -102,75 +102,31 @@ class ProductCard {
             $page->content->product->labels[] = $viewLabel;
         }
 
-        // доставка товара
-        $minPickupPrice = 0;
-
-        if ((bool)$product->deliveries) {
-            $pickupDeliveries = $this->getPickupDeliveries($product->deliveries);
-            $closestPickupDelivery = $this->getClosestPickup($pickupDeliveries);
-
+        if ($product->deliveries) {
+            $productRepository = new \EnterMobileApplication\Repository\Product();
             $page->content->product->deliveryBlock = new Page\Content\Product\DeliveryBlock();
-            foreach ($product->deliveries as $deliveryModel) {
-                if (\EnterModel\Product\Delivery::TOKEN_NOW == $deliveryModel->token) continue;
 
+            $deliveryWithMinDate = $productRepository->getDeliveriesWithMinDate($product->deliveries, true);
+            if ($deliveryWithMinDate) {
                 $delivery = new Page\Content\Product\DeliveryBlock\Delivery();
-
-                if (\EnterModel\Product\Delivery::TOKEN_STANDARD == $deliveryModel->token) {
-                    $delivery->name = 'Доставка';
-                } else if (
-                    \EnterModel\Product\Delivery::TOKEN_SELF == $deliveryModel->token ||
-                    \EnterModel\Product\Delivery::TOKEN_PICKPOINT == $deliveryModel->token ||
-                    \EnterModel\Product\Delivery::TOKEN_HERMES == $deliveryModel->token ||
-                    \EnterModel\Product\Delivery::TOKEN_EUROSET == $deliveryModel->token
-                ) {
-                    $delivery->name = 'Самовывоз';
-                    $minPickupPrice = ($deliveryModel->price && $deliveryModel->price > $minPickupPrice) ? $deliveryModel->price : $minPickupPrice;
-                } else if (\EnterModel\Product\Delivery::TOKEN_NOW == $deliveryModel->token) {
-                    $delivery->deliveredAtText = 'Сегодня есть в магазинах';
-                } else {
-                    continue;
-                }
-
-                if (in_array($deliveryModel->token, [
-                        \EnterModel\Product\Delivery::TOKEN_STANDARD,
-                        \EnterModel\Product\Delivery::TOKEN_SELF,
-                        \EnterModel\Product\Delivery::TOKEN_EUROSET,
-                        \EnterModel\Product\Delivery::TOKEN_HERMES,
-                    ])
-                ) {
-                    $delivery->priceText = !$deliveryModel->price
-                        ? 'бесплатно'
-                        : ($this->getPriceHelper()->format($deliveryModel->price) . ' p')
-                    ;
-                    if ($deliveryModel->nearestDeliveredAt) {
-                        $delivery->deliveredAtText = $deliveryModel->nearestDeliveredAt->format('d.m.Y');
-                    }
-                }
-
-                $delivery->token = $deliveryModel->token;
-
-                if ($delivery->token == \EnterModel\Product\Delivery::TOKEN_STANDARD) {
-                    $page->content->product->deliveryBlock->deliveries[] = $delivery;
-                }
-            }
-
-            /** @var \EnterModel\Product\Delivery $closestPickupDelivery */
-            if (isset($closestPickupDelivery) && $closestPickupDelivery) {
-                $delivery = new Page\Content\Product\DeliveryBlock\Delivery();
+                $delivery->token = $deliveryWithMinDate->token;
                 $delivery->name = 'Самовывоз';
-                $delivery->token = $closestPickupDelivery->token;
+                $delivery->price = $this->getDeliveryPrice($deliveryWithMinDate);
+                $delivery->date = $this->getDeliveryDate($deliveryWithMinDate, true);
 
-                if ($closestPickupDelivery->nearestDeliveredAt) {
-                    $delivery->deliveredAtText = $closestPickupDelivery->nearestDeliveredAt->format('d.m.Y');
-                }
-
-                $delivery->priceText = (!$minPickupPrice || $minPickupPrice == 0)
-                    ? 'бесплатно'
-                    : ($this->getPriceHelper()->format($minPickupPrice) . ' p')
-                ;
                 $page->content->product->deliveryBlock->deliveries[] = $delivery;
             }
 
+            $deliveryWithMinDate = $productRepository->getDeliveriesWithMinDate($product->deliveries, false);
+            if ($deliveryWithMinDate) {
+                $delivery = new Page\Content\Product\DeliveryBlock\Delivery();
+                $delivery->token = $deliveryWithMinDate->token;
+                $delivery->name = 'Доставка';
+                $delivery->price = $this->getDeliveryPrice($deliveryWithMinDate);
+                $delivery->date = $this->getDeliveryDate($deliveryWithMinDate, false);
+
+                $page->content->product->deliveryBlock->deliveries[] = $delivery;
+            }
         }
 
         // состояние магазинов
@@ -533,36 +489,42 @@ class ProductCard {
     }
 
     /**
-     * @param \EnterModel\Product\Delivery[] $deliveries
-     * @return \EnterModel\Product\Delivery[]
+     * @param \EnterModel\Product\Delivery $delivery
+     * @return Page\Content\Product\DeliveryBlock\Delivery\Price
      */
-    private function getPickupDeliveries(array $deliveries) {
-        $pickupDeliveries = array_filter($deliveries, function ($delivery) {
-            return $delivery->token == \EnterModel\Product\Delivery::TOKEN_SELF
-            || $delivery->token == \EnterModel\Product\Delivery::TOKEN_PICKPOINT
-            || $delivery->token == \EnterModel\Product\Delivery::TOKEN_HERMES
-            || $delivery->token == \EnterModel\Product\Delivery::TOKEN_EUROSET;
-        });
-
-        return $pickupDeliveries;
+    private function getDeliveryPrice(\EnterModel\Product\Delivery $delivery) {
+        $deliveryPrice = new \EnterMobile\Model\Page\ProductCard\Content\Product\DeliveryBlock\Delivery\Price();
+        $deliveryPrice->text = $delivery->price ? $this->getPriceHelper()->format($delivery->price) : 'бесплатно';
+        $deliveryPrice->showRub = (bool)$delivery->price;
+        return $deliveryPrice;
     }
 
     /**
-     * @param \EnterModel\Product\Delivery[] $pickupDeliveries
-     * @return \EnterModel\Product\Delivery[]
+     * @param \EnterModel\Product\Delivery $delivery
+     * @param bool $withDateInterval
+     * @return string
      */
-    private function getClosestPickup(array $pickupDeliveries) {
-        $pickupDate = null;
-        $minDelivery = null;
-
-        foreach ($pickupDeliveries as $pickupDelivery) {
-            if ($pickupDelivery->nearestDeliveredAt < $pickupDate || $pickupDate === null) {
-                $pickupDate = $pickupDelivery->nearestDeliveredAt;
-                $minDelivery = $pickupDelivery;
+    private function getDeliveryDate(\EnterModel\Product\Delivery $delivery, $withDateInterval) {
+        if ($withDateInterval && $delivery->dateInterval) {
+            $deliveryDate = '';
+            if ($delivery->dateInterval->from) {
+                $deliveryDate .= 'с ' . $delivery->dateInterval->from->format('d.m');
             }
+
+            if ($delivery->dateInterval->to) {
+                $deliveryDate .= ' по ' . $delivery->dateInterval->to->format('d.m');
+            }
+
+            return trim($deliveryDate);
+        } else if (!empty($delivery->dates[0]) && !$delivery->dateInterval && $delivery->dates[0] && $dayFrom = $delivery->dates[0]->diff((new \DateTime())->setTime(0, 0, 0))->days) {
+            $dayRangeFrom = $dayFrom > 1 ? $dayFrom - 1 : $dayFrom;
+            $dayRangeTo = $dayRangeFrom + 2;
+
+            return $dayRangeFrom . '-' . $dayRangeTo . ' ' . $this->getTranslateHelper()->numberChoice($dayRangeTo, ['день', 'дня', 'дней']);
+        } else if (!empty($delivery->dates[0])) {
+            return mb_strtolower($this->getTranslateHelper()->humanizeDate2($delivery->dates[0]));
         }
 
-        return $minDelivery;
+        return '';
     }
-
 }
