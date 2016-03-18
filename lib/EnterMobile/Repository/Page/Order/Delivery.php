@@ -371,7 +371,7 @@ class Delivery {
                 'hasDiscountLink' => call_user_func(function() use (&$orderModel) {
                     $sellerModel = $orderModel->seller;
 
-                    return !$sellerModel || (in_array($sellerModel->ui, [$sellerModel::UI_ENTER, $sellerModel::UI_SVYAZNOY, $sellerModel::UI_SORDEX], true));
+                    return !$sellerModel || (in_array($sellerModel->ui, [$sellerModel::UI_ENTER, $sellerModel::UI_SORDEX], true));
                 }),
                 'pointJson'      => json_encode(call_user_func(function() use (&$templateHelper, &$priceHelper, &$dateHelper, &$splitModel, &$regionModel, &$orderModel, &$pointGroupByTokenIndex, &$pointByGroupAndIdIndex, &$pointRepository) {
                     $points = [];
