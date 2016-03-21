@@ -112,7 +112,7 @@ class ProductCard {
                 $delivery->token = $deliveryWithMinDate->token;
                 $delivery->name = 'Самовывоз';
                 $delivery->price = $this->getDeliveryPrice($deliveryWithMinDate);
-                $delivery->date = $this->getDeliveryDate($deliveryWithMinDate, true);
+                $delivery->date = $this->getDeliveryDate($deliveryWithMinDate, false, false);
 
                 $page->content->product->deliveryBlock->deliveries[] = $delivery;
             }
@@ -123,7 +123,7 @@ class ProductCard {
                 $delivery->token = $deliveryWithMinDate->token;
                 $delivery->name = 'Доставка';
                 $delivery->price = $this->getDeliveryPrice($deliveryWithMinDate);
-                $delivery->date = $this->getDeliveryDate($deliveryWithMinDate, false);
+                $delivery->date = $this->getDeliveryDate($deliveryWithMinDate, false, false);
 
                 $page->content->product->deliveryBlock->deliveries[] = $delivery;
             }
@@ -502,9 +502,10 @@ class ProductCard {
     /**
      * @param \EnterModel\Product\Delivery $delivery
      * @param bool $withDateInterval
+     * @param bool $withDayInterval
      * @return string
      */
-    private function getDeliveryDate(\EnterModel\Product\Delivery $delivery, $withDateInterval) {
+    private function getDeliveryDate(\EnterModel\Product\Delivery $delivery, $withDateInterval = true, $withDayInterval = true) {
         if ($withDateInterval && $delivery->dateInterval) {
             $deliveryDate = '';
             if ($delivery->dateInterval->from) {
@@ -516,7 +517,7 @@ class ProductCard {
             }
 
             return trim($deliveryDate);
-        } else if (!empty($delivery->dates[0]) && !$delivery->dateInterval && $delivery->dates[0] && $dayFrom = $delivery->dates[0]->diff((new \DateTime())->setTime(0, 0, 0))->days) {
+        } else if ($withDayInterval && !empty($delivery->dates[0]) && !$delivery->dateInterval && $delivery->dates[0] && $dayFrom = $delivery->dates[0]->diff((new \DateTime())->setTime(0, 0, 0))->days) {
             $dayRangeFrom = $dayFrom > 1 ? $dayFrom - 1 : $dayFrom;
             $dayRangeTo = $dayRangeFrom + 2;
 
