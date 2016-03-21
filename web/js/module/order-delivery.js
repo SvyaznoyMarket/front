@@ -226,7 +226,7 @@ define(
                                     return $.kladr.buildAddress(objs);
                                 }
 
-                                return obj.name + (obj.typeShort ? ' ' + obj.typeShort : '');
+                                return obj.name + (obj.typeShort && query.type == 'street' ? ' ' + obj.typeShort : '');
                             }
 
                             var label = '',
@@ -251,7 +251,7 @@ define(
                                 label += '<strong>' + name + '</strong>';
                             }
 
-                            if (obj.typeShort) {
+                            if (obj.typeShort && query.type == 'street') {
                                 label += ' ' + obj.typeShort;
                             }
 
