@@ -298,12 +298,12 @@ class Delivery {
                             'name'       => $productModel->webName,
                             'quantity'   => $productModel->quantity,
                             'price'      => [
-                                'name'  => $priceHelper->format($productModel->price),
-                                'value' => $productModel->price,
+                                'name'  => $priceHelper->format($productModel->originalPrice),
+                                'value' => $productModel->originalPrice,
                             ],
                             'sum'        => [
-                                'name'  => $priceHelper->format($productModel->sum),
-                                'value' => $productModel->sum,
+                                'name'  => $priceHelper->format($productModel->originalSum),
+                                'value' => $productModel->originalSum,
                             ],
                             'url'        => $productModel->url,
                             'image'      =>

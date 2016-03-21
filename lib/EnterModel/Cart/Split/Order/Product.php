@@ -25,6 +25,8 @@ class Product {
     /** @var string|null */
     public $sum;
     /** @var string|null */
+    public $originalSum;
+    /** @var string|null */
     public $quantity;
     /** @var string|null */
     public $stockQuantity;
@@ -43,6 +45,7 @@ class Product {
         $this->price = $data['price'] ? (string)$data['price'] : null;
         $this->originalPrice = $data['original_price'] ? (string)$data['original_price'] : null;
         $this->sum = $data['sum'] ? (string)$data['sum'] : null;
+        $this->originalSum = $data['original_sum'] ? (string)$data['original_sum'] : null;
         $this->quantity = (int)$data['quantity'];
         $this->stockQuantity = (int)$data['stock'];
         $this->sender = isset($data['meta_data']['sender']['name']) ? $data['meta_data']['sender'] : null;
@@ -64,6 +67,7 @@ class Product {
             'price'          => $this->price,
             'original_price' => $this->originalPrice,
             'sum'            => $this->sum,
+            'original_sum'   => $this->originalSum,
             'quantity'       => $this->quantity,
             'stock'          => $this->stockQuantity,
             'meta_data'      => $this->sender ? ['sender' => $this->sender] : [],
