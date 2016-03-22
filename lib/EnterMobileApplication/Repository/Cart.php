@@ -26,6 +26,7 @@ class Cart {
         }
 
         $helper = new \Enter\Helper\Template();
+        $productRepository = new \EnterMobileApplication\Repository\Product();
 
         foreach (array_reverse($cart->product) as $cartProduct) {
             /** @var Model\Cart\Product $cartProduct */
@@ -45,7 +46,7 @@ class Cart {
                     $product['namePrefix'] = $helper->unescape($cartProduct->product->namePrefix);
                     $product['name'] = $helper->unescape($cartProduct->product->name);
                     $product['price'] = $cartProduct->product->price;
-                    $product['media'] = $cartProduct->product->media;
+                    $product['media'] = $productRepository->getMedia($cartProduct->product);
                 }
 
                 $response['products'][] = $product;
