@@ -13,8 +13,34 @@ namespace EnterMobileApplication\Controller {
 
     class ProductCardV2 {
         use ProductListingTrait, SessionTrait, CurlTrait, LoggerTrait, TranslateHelperTrait;
-        
+
         /**
+         * @SWG\Get(
+         *     path="/ProductCardV2",
+         *     summary="Возвращает информацию о товаре",
+         *     @SWG\Parameter(name="clientId",                  type="string",                  in="query", required=true,               description=""),
+         *     @SWG\Parameter(name="regionId",                  type="string",                  in="query", required=true,               description=""),
+         *     @SWG\Parameter(name="token",                     type="string",                  in="query", required=true,               description=""),
+         *     @SWG\Parameter(name="token",                     type="string",                  in="query", required=true,               description="токен аутентификации пользователя"),
+         *     @SWG\Parameter(name="productId",                 type="string",                  in="query", required=true,               description="id товара"),
+         *     @SWG\Parameter(name="returnReviews",             type="string", enum={"0", "1"}, in="query", required=false, default="0", description="возвращать ли содержимое элемента product.reviews"),
+         *     @SWG\Parameter(name="returnSimilarRelations",    type="string", enum={"0", "1"}, in="query", required=false, default="0", description="возвращать ли содержимое элемента product.relation.alsoBought"),
+         *     @SWG\Parameter(name="returnAlsoBoughtRelations", type="string", enum={"0", "1"}, in="query", required=false, default="0", description="возвращать ли содержимое элемента product.relation.similar"),
+         *     @SWG\Parameter(name="returnUser",                type="string", enum={"0", "1"}, in="query", required=false, default="0", description="возвращать ли содержимое элемента user"),
+         *     @SWG\Response(
+         *         response="200",
+         *         description="",
+         *         @SWG\Schema(
+         *             @SWG\Property(property="product", type="object", properties={@SWG\Property(property="id", type="string")}
+         *             )
+         *         )
+         *     ),
+         *     @SWG\Response(
+         *         description="",
+         *         response="500"
+         *     )
+         * )
+         *
          * @param Http\Request $request
          * @throws \Exception
          * @return Http\JsonResponse

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @SWG\Info(title="MAPI", version="1.7")
+ */
 
 return function(EnterMobileApplication\Config $config) {
     /** @var \Closure $handler */

@@ -13,6 +13,23 @@ namespace EnterMobileApplication\Controller {
         use LoggerTrait, CurlTrait, SessionTrait;
 
         /**
+         * @SWG\Get(
+         *     path="/Cart",
+         *     summary="Возвращает соодержимое корзины",
+         *     @SWG\Parameter(name="regionId", type="string", in="query", required=true),
+         *     @SWG\Parameter(name="token", type="string", in="query", required=false),
+         *     @SWG\Response(
+         *         response="200",
+         *         description="",
+         *         @SWG\Schema(
+         *             @SWG\Property(property="products", type="array")
+         *         ),
+         *     ),
+         *     @SWG\Response(
+         *         description="",
+         *         response="500"
+         *     )
+         * )
          * @param Http\Request $request
          * @throws \Exception
          * @return Http\JsonResponse
