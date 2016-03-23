@@ -129,6 +129,18 @@ namespace EnterMobileApplication\Controller\Cart {
                 if ($order->delivery && !$order->possibleDays) {
                     $order->delivery->date = null;
                 }
+
+                if ($order->certificate) {
+                    $certificateDiscount = new \EnterModel\Cart\Split\Order\Discount();
+                    $certificateDiscount->ui = null;
+                    $certificateDiscount->name = 'Подарочный сертификат на ' . $order->certificate->par . ' руб.';
+                    $certificateDiscount->discount = $order->certificate->par;
+                    $certificateDiscount->type = 'certificate';
+                    $certificateDiscount->number = $order->certificate->code;
+                    $order->discounts[] = $certificateDiscount;
+                }
+
+                unset($order->certificate);
             }
 
             // response

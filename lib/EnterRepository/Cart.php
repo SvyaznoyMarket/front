@@ -370,16 +370,24 @@ class Cart {
                                 if ($existsDiscountItem['number'] == $discountItem['number']) {
                                     // удаление найденной скидки
                                     unset($dump['orders'][$blockName]['discounts'][$i]);
+                                    $isDeleted = true;
                                 }
                             }
+
+                            if (isset($dump['orders'][$blockName]['certificate']['code']) && (string)$dump['orders'][$blockName]['certificate']['code'] === (string)$discountItem['number']) {
+                                $dump['orders'][$blockName]['certificate'] = null;
+                                $isDeleted = true;
+                            }
+
                             if (!$isDeleted) {
                                 $this->getLogger()->push(['type' => 'warn', 'message' => 'Купон не найден', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
                             }
                         } else { // добавление купона
-                            $dump['orders'][$blockName]['discounts'][] =
-                                ['number' => $discountItem['number'], 'name' => null, 'type' => null, 'discount' => null]
-                                + (!empty($discountItem['pin']) ? ['pin' => $discountItem['pin']] : [])
-                            ;
+                            if (empty($discountItem['pin'])) {
+                                $dump['orders'][$blockName]['discounts'][] = ['number' => $discountItem['number'], 'name' => null, 'type' => null, 'discount' => null];
+                            } else {
+                                $dump['orders'][$blockName]['certificate'] = ['code' => $discountItem['number'], 'pin' => $discountItem['pin']];
+                            }
                         }
                     }
                     unset($discountItem);
