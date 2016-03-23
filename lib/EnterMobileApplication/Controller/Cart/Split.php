@@ -132,7 +132,7 @@ namespace EnterMobileApplication\Controller\Cart {
 
                 if ($order->certificate) {
                     $certificateDiscount = new \EnterModel\Cart\Split\Order\Discount();
-                    $certificateDiscount->ui = null;
+                    $certificateDiscount->ui = '';
                     $certificateDiscount->name = 'Подарочный сертификат на ' . $order->certificate->par . ' руб.';
                     $certificateDiscount->discount = $order->certificate->par;
                     $certificateDiscount->type = 'certificate';

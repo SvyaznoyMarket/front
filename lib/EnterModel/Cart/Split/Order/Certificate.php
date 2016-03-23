@@ -2,12 +2,12 @@
 namespace EnterModel\Cart\Split\Order;
 
 class Certificate {
-    /** @var string|null */
-    public $code;
-    /** @var string|null */
-    public $pin;
-    /** @var string|null */
-    public $par;
+    /** @var string */
+    public $code = '';
+    /** @var string */
+    public $pin = '';
+    /** @var string */
+    public $par = '';
 
     /**
      * @param array $data
