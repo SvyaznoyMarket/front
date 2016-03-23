@@ -130,6 +130,22 @@ namespace EnterMobileApplication\Controller\Cart {
                     $order->delivery->date = null;
                 }
 
+                foreach ($order->discounts as $discount) {
+                    $discount->media->photos[] = new Model\Media([
+                        'content_type' => 'image/png',
+                        'provider' => 'image',
+                        'tags' => ['logo'],
+                        'sources' => [
+                            [
+                                'type' => '150x150',
+                                'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/discounts/150x150/coupon.png',
+                                'width' => '150',
+                                'height' => '150',
+                            ],
+                        ],
+                    ]);
+                }
+
                 if ($order->certificate) {
                     $certificateDiscount = new \EnterModel\Cart\Split\Order\Discount();
                     $certificateDiscount->ui = '';
@@ -137,6 +153,19 @@ namespace EnterMobileApplication\Controller\Cart {
                     $certificateDiscount->discount = $order->certificate->par;
                     $certificateDiscount->type = 'certificate';
                     $certificateDiscount->number = $order->certificate->code;
+                    $certificateDiscount->media->photos[] = new Model\Media([
+                        'content_type' => 'image/png',
+                        'provider' => 'image',
+                        'tags' => ['logo'],
+                        'sources' => [
+                            [
+                                'type' => '150x150',
+                                'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/discounts/150x150/certificate.png',
+                                'width' => '150',
+                                'height' => '150',
+                            ],
+                        ],
+                    ]);
                     $order->discounts[] = $certificateDiscount;
                 }
 

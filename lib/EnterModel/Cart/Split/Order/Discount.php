@@ -12,6 +12,8 @@ class Discount {
     public $type = '';
     /** @var string */
     public $number = '';
+    /** @var \EnterModel\MediaList */
+    public $media;
 
     /**
      * @param array $data
@@ -22,6 +24,8 @@ class Discount {
         if (isset($data['discount'])) $this->discount = (string)$data['discount'];
         if (isset($data['type'])) $this->type = (string)$data['type'];
         if (isset($data['number'])) $this->number = (string)$data['number'];
+
+        $this->media = new \EnterModel\MediaList();
     }
 
     /**
