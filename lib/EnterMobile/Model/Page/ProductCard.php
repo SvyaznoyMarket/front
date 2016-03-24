@@ -54,6 +54,8 @@ namespace EnterMobile\Model\Page\ProductCard\Content {
         public $shownOldPrice;
         /** @var Partial\ProductCard\CartButtonBlock|null */
         public $cartButtonBlock;
+        /** @var bool */
+        public $showDeliveryBlock = false;
         /** @var Product\DeliveryBlock|null */
         public $deliveryBlock;
         /** @var Product\ShopStateBlock|null */

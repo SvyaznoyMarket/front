@@ -412,6 +412,8 @@ class ProductCard {
             $page->content->product->modelBlock->properties[] = $modelBlockProperty;
         });
 
+        $page->content->product->showDeliveryBlock = $page->content->product->shopStateBlock || ($page->content->product->deliveryBlock && $page->content->product->deliveryBlock->deliveries) || $page->content->product->slotPartnerOffer;
+
         // partner
         try {
             $page->partners = (new Repository\Partial\Partner())->getListForProductCard($request);

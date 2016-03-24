@@ -295,7 +295,7 @@
                         {{/product.kitBlock}}
                     </div>
                 </div>
-                {{#product.deliveryBlock.deliveries.0}}
+                {{#product.showDeliveryBlock}}
                     <div class="product-delivery__info">
                         {{#product.shopStateBlock}}
                             <span class="product-delivery__info-self js-popup-middle-link">{{shownCount}}</span>
@@ -320,6 +320,7 @@
                                 {{/deliveries}}
                             {{/product.deliveryBlock}}
                         {{/product.slotPartnerOffer}}
+
                         {{#product.slotPartnerOffer}}
                             <div class="product-delivery__row">
                                 <span class="product-delivery__type">Доставка</span>
@@ -327,7 +328,7 @@
                             </div>
                         {{/product.slotPartnerOffer}}
                     </div>
-                {{/product.deliveryBlock.deliveries.0}}
+                {{/product.showDeliveryBlock}}
 
                 {{#product.modelBlock}}
                     <div class="product-variations toggle js-toggle-wrap">
