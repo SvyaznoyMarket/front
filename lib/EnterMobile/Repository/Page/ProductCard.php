@@ -169,18 +169,22 @@ class ProductCard {
         }
 
         // фотографии товара
-        foreach ($product->media->photos as $i => $photoModel) {
+        foreach ($product->media->photos as $photoModel) {
             $photo = new Page\Content\Product\Photo();
             $photo->name = $product->name;
             $photo->url = $mediaRepository->getSourceObjectByItem($photoModel, 'product_500')->url;
             $photo->previewUrl = $mediaRepository->getSourceObjectByItem($photoModel, 'product_60')->url;
             $photo->originalUrl = $mediaRepository->getSourceObjectByItem($photoModel, 'product_1500')->url;
 
-            $page->content->product->photos[] = $photo;
-
-            if (0 == $i) {
+            if (in_array('main', $photoModel->tags, true)) {
                 $page->content->product->mainPhoto = $photo;
+            } else if (in_array('additional', $photoModel->tags, true)) {
+                $page->content->product->photos[] = $photo;
             }
+        }
+
+        if ($page->content->product->mainPhoto) {
+            $page->content->product->photos = array_merge([$page->content->product->mainPhoto], $page->content->product->photos);
         }
 
         // характеристики товара

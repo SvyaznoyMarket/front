@@ -47,10 +47,7 @@ class ProductCard {
         $card->shownPrice = $product->price ? $this->getPriceHelper()->format($product->price) : null;
         $card->oldPrice = $product->oldPrice;
         $card->shownOldPrice = $product->oldPrice ? $this->getPriceHelper()->format($product->oldPrice) : null;
-        /** @var \EnterModel\Media|null $photo */
-        if ($photo = reset($product->media->photos)) {
-            $card->image = $mediaRepository->getSourceObjectByItem($photo, $imageSize)->url;
-        }
+        $card->image = $mediaRepository->getSourceObjectByList($product->media->photos, 'main', $imageSize)->url;
         $card->id = $product->id;
         $card->categoryId = $product->category ? $product->category->id : null;
         $card->cartButton = $cartButton;
