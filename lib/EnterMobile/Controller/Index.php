@@ -4,6 +4,7 @@ namespace EnterMobile\Controller;
 
 use Enter\Http;
 use EnterAggregator\AbTestTrait;
+use EnterAggregator\RouterTrait;
 use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\LoggerTrait;
@@ -22,12 +23,14 @@ class Index {
         MustacheRendererTrait,
         DebugContainerTrait,
         SessionTrait,
-        AbTestTrait
+        AbTestTrait,
+        RouterTrait
     ;
 
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
+        $router = $this->getRouter();
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
@@ -49,7 +52,14 @@ class Index {
         $pageRequest->cart = $controllerResponse->cart;
         $pageRequest->mainMenu = $controllerResponse->mainMenu;
         $pageRequest->promos = $controllerResponse->promos;
-        $pageRequest->popularBrands = (new \EnterRepository\Brand())->getPopularObjects();
+        $pageRequest->popularBrands = call_user_func(function() use($router) {
+            $brands = (new \EnterRepository\Brand())->getPopularObjects();
+            foreach ($brands as $brand) {
+                $brand->url = $router->getUrlByRoute(new \EnterMobile\Routing\ProductSlice\Get($brand->sliceId));
+            }
+
+            return $brands;
+        });
 
         //die(json_encode($pageRequest, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 

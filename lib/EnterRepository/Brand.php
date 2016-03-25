@@ -32,7 +32,10 @@ class Brand {
 
         return $brand;
     }
-    
+
+    /**
+     * @return \EnterModel\Brand[]
+     */
     public function getPopularObjects() {
         $brands = [
             [
