@@ -134,28 +134,38 @@ class MainMenu {
         $walkByMenuElementItem($menuData['item']);
 
         $menu->serviceElements = [
-            'delivery' => [
+            'deliveryShops' => [
                 'link' => '/shops',
-                'name' => 'Магазины и самовывоз',
-                'iconClass' => 'nav-icon--shops'
+                'name' => 'Точки самовывоза'
             ],
-            'user' => [
-                'link' => '/private',
-                'name' => 'Личный кабинет',
-                'iconClass' => 'nav-icon--lk'
+            'self' => [
+                'link' => '/delivery_types#delivr_self',
+                'name' => 'Самовывоз'
             ],
-            'feedback' => [
-                'link' => 'mailto:feedback@enter.ru',
-                'name' => 'Обратная связь',
-                'iconClass' => 'nav-icon--callback'
+            'delivery' => [
+                'link' => '/how_get_order',
+                'name' => 'Доставка'
             ],
-            'phone' => [
-                'link' => 'tel:+74957750006',
-                'name' => '+7 495 775-00-06',
-                'iconClass' => 'nav-icon--phone'
+            'payment' => [
+                'link' => '/how_pay',
+                'name' => 'Оплата'
             ]
         ];
 
+        $menu->enterInfo = [
+            'feedback' => [
+                'link' => 'mailto:feedback@enter.ru',
+                'name' => 'Обратная связь'
+            ],
+            'phone' => [
+                'link' => 'tel:+74957750006',
+                'name' => '+7 495 775-00-06'
+            ],
+            'companyInfo' => [
+                'link' => '/about_company',
+                'name' => 'О компании'
+            ]
+        ];
 
 //        die(json_encode($menu, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 

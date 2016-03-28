@@ -298,6 +298,7 @@ class DefaultPage {
             }
 
             $page->mainMenu->serviceElements = $serviceElements;
+            $page->mainMenu->enterInfo = array_values($request->mainMenu->enterInfo);
         }
 
         // partner
@@ -332,6 +333,10 @@ class DefaultPage {
             [
                 'id'   => 'tpl-modalWindow',
                 'name' => 'partial/modalWindow',
+            ],
+            [
+                'id'   => 'tpl-modalCart',
+                'name' => 'page/cart/content',
             ],
         ]);
 

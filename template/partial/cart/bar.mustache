@@ -4,9 +4,14 @@
     {{/orderRemainSum}}
 
     {{^orderRemainSum}}
-        <a class="js-ga-click btn--orange btn--thin" href="{{orderUrl}}" data-ga-click="{{&orderDataGa}}">Оформление заказа</a>
-        <div class="cartBar_text">
-            Итого: <span class="price">{{shownSum}} <span class="rubl">p</span></span>
+
+        <div class="cartBar__text">
+            <span>
+                Итого:
+            </span>
+            <span class="price">{{shownSum}} <span class="rubl">p</span></span>
         </div>
+
+        <a class="js-ga-click cartBar__btn" href="{{orderUrl}}" data-ga-click="{{&orderDataGa}}">Оформить</a>
     {{/orderRemainSum}}
 </div>

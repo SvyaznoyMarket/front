@@ -1,47 +1,90 @@
 <div class="nav">
-    <div class="nav-header">
-        <a class="header__logotype-link" href="/"></a>
-        <a class="nav-header__col nav-header__wrap jsSelectCity">
-            <span class="nav-header__wrap-text"><span class="text">{{regionBlock.regionName}}</span></span>
-            <div class="transBg"></div>
-        </a>
+    <div class="nav__block js-menu-header">
+        <div class="nav__block-inner nav__block-inner_header">
+            <a class="nav__block-link jsSelectCity">
+                <span class="nav__block-text nav__block-text_header"><span>{{regionBlock.regionName}}</span></span>
+            </a>
+        </div>
     </div>
 
-    <div class="nav-menu">
-        <div class="nav-menu__top">
-            {{#breadcrumbBlock}}
-            <ul class="nav-breadcrumbs nav-list">
-                {{#breadcrumbs}}
-                    <li class="nav-list-i"><a href="{{url}}" class="nav-list-i__lk">{{name}}</a></li>
-                {{/breadcrumbs}}
-            </ul>
-            {{/breadcrumbBlock}}
+
+    <div class="nav__scroll js-menu-scroll">
+        <div class="nav__block">
+            <div class="nav__block-inner">
+                <a class="nav__block-link" href="/">
+                    <span class="nav__block-text">На главную</span>
+                </a>
+            </div>
         </div>
+
         {{#mainMenu}}
-            <ul class="nav-links nav-list">
-                {{#serviceElements}}
-                    <li class="nav-list-i"><a href="{{link}}" class="nav-list-i__lk"><i class="nav-icon {{iconClass}}"></i>{{name}}</a></li>
-                {{/serviceElements}}
-            </ul>
+            <div class="nav__block js-menu-block">
+                <div class="nav__title js-menu-block-name">Каталог</div>
 
-        <div class="nav-catalog">
-            <div class="nav-catalog__h">КАТАЛОГ</div>
-            <ul class="nav-catalog-items nav-list">
-            {{#elements}}
-                <li class="nav-list-i">
-                    <a href="{{url}}" class="nav-list-i__lk">
-                         <span class="nav-icon">
+                <ul class="nav__block-inner nav__block-inner_list">
+
+                    <li class="nav__block-item js-menu-categoryToggle is-active">
+                        <a href="#" class="nav__block-link">
+                            <span class="nav__block-text">Все категории</span>
+                            <i class="i-header i-header--category"></i>
+                        </a>
+                    </li>
+
+                    {{#elements}}
+                        <li class="nav__block-item">
+                            <a href="{{url}}" class="nav__block-link">
+                         <span class="nav__block-item-icon">
                             {{char}}
-                            {{^char}}
-                                {{#image}}<img src="{{image}}" />{{/image}}
-                            {{/char}}
+                             {{^char}}
+                                 {{#image}}<img src="{{image}}"/>{{/image}}
+                             {{/char}}
                          </span>
-                        <span class="nav-name">{{&name}}</span>
+                                <span class="nav__block-text">{{&name}}</span>
+                            </a>
+                        </li>
+                    {{/elements}}
+                </ul>
+            </div>
+
+            <div class="nav__block js-menu-block">
+                <div class="nav__title js-menu-block-name">Личные данные</div>
+                <div class="nav__block-inner nav__block-inner_alt">
+                    <a class="nav__block-link">
+                        <span class="nav__block-text"><span>Иван Петров</span></span>
                     </a>
-                </li>
-            {{/elements}}
-            </ul>
-        </div>
+                </div>
+            </div>
+
+            <div class="nav__block js-menu-block">
+                <div class="nav__title js-menu-block-name">Как получить товар</div>
+
+                <ul class="nav__block-inner nav__block-inner_list">
+                    {{#serviceElements}}
+                        <li class="nav__block-item">
+                            <a href="{{link}}" class="nav__block-link">
+                                <span class="nav__block-text">{{name}}</span>
+                            </a>
+                        </li>
+                    {{/serviceElements}}
+                </ul>
+            </div>
+
+            <div class="nav__block js-menu-block">
+                <div class="nav__title js-menu-block-name">Об Enter</div>
+
+                <ul class="nav__block-inner nav__block-inner_list">
+                    {{#enterInfo}}
+                        <li class="nav__block-item">
+                            <a href="{{link}}" class="nav__block-link">
+                                <span class="nav__block-text">{{name}}</span>
+                            </a>
+                        </li>
+                    {{/enterInfo}}
+                </ul>
+            </div>
+
         {{/mainMenu}}
+
     </div>
+
 </div>

@@ -7,6 +7,8 @@ define(
 
         var $body = $('body'),
 
+            cartOverlay = $('.js-cart-overlay')
+
             addProductToCart = function(e) {
                 e.stopPropagation();
 
@@ -295,8 +297,23 @@ define(
                 } else {
                     $elements.removeAttr('checked');
                 }
-            }
-        ;
+            },
+
+            toggleOptionList  = function() {
+                var $this       = $(this),
+                    optionList  = $this.siblings('.js-options-list');
+
+                optionList.toggleClass('is-active');
+                cartOverlay.toggleClass('is-active');
+            },
+
+            removeOptionList = function(){
+                var optionList = $('.js-options-list');
+                if(cartOverlay.hasClass('is-active') || optionList.hasClass('is-active')){
+                    cartOverlay.removeClass('is-active');
+                    optionList.removeClass('is-active')
+                }
+            };
 
 
         // кнопка купить
@@ -304,7 +321,7 @@ define(
             .on('click', '.js-buyButton', addProductToCart)
             .on('changeProductQuantityData', '.js-buyButton', changeProductQuantity)
             .on('changeProductQuantityData', '.js-quickBuyButton', changeProductQuantity)
-            .on('click', '.js-deleteButton', deleteProductFromCart)
+            .on('click', '.js-deleteButton', deleteProductFromCart);
 
         // спиннер для кнопки купить
         $body
@@ -312,12 +329,16 @@ define(
             .on('click dblclick contextmenu', '.js-buySpinner-dec', decSpinnerValue)
             .on('change keyup', '.js-buySpinner-value', changeSpinnerValue)
             .on('renderValue', '.js-buySpinner', renderSpinnerValue)
-            .on('changeProductQuantityData', '.js-buySpinner-value', changeProductQuantity)
+            .on('changeProductQuantityData', '.js-buySpinner-value', changeProductQuantity);
 
         // купить в кредит
         $body
             .on('change', '.js-creditButton', setCredit)
-            .on('change', '.js-creditButton-remove', removeCredit)
+            .on('change', '.js-creditButton-remove', removeCredit);
+
+
+        $body.on('click', '.js-options-btn', toggleOptionList);
+        $body.on('click', '.js-cart-overlay', removeOptionList);
 
         initCredit($('.js-creditButton'));
 

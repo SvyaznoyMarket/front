@@ -1,5 +1,11 @@
 <header class="header js-header {{#headerTitle}} titled{{/headerTitle}}">
-    <a class="header-nav-link js-ga-click js-nav-open-link" href="" data-ga-click="{&quot;m_sidebar&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_sidebar&quot;,&quot;click&quot;]}"><i class="i-header i-header--menu"></i></a>
+    <a class="header-nav-link js-historyBack" href="#">
+        <i class="i-header i-header--back"></i>
+    </a>
+
+    <a class="header-nav-link js-ga-click js-nav-open-link" href="" data-ga-click="{&quot;m_sidebar&quot;:[&quot;send&quot;,&quot;event&quot;,&quot;m_sidebar&quot;,&quot;click&quot;]}">
+        <i class="i-header i-header--menu"></i>
+    </a>
 
     {{#userBlock}}
         {{>partial/user}}

@@ -132,12 +132,14 @@ require(
         'module/util',
         'module/jira',
         'module/navigation',
+        'module/mainMenu',
         'module/region',
         'module/search',
         'module/popupShow',
         'jquery.modal',
         'module/widget',      // виджеты
         'module/cart.common', // кнопка купить, спиннер
+        'module/cart.active', // вызов корзины на планшетах
         //'module/order',
         'module/product.catalog.common',
 		'module/siteVersionSwitcher',

@@ -55,6 +55,7 @@ define(
             $pointSuggestTemplate       = $('#tpl-order-delivery-point-suggest'),
             $discountPopupTemplate      = $('#tpl-order-delivery-discount-popup'),
             $modalWindowTemplate        = $('#tpl-modalWindow'),
+            $modalCartTemplate          = $('#tpl-modalCart'),
 
             initMap = function() {
                 if (null === ymapsDefer) {
