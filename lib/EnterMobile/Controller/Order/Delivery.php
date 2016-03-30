@@ -41,7 +41,7 @@ class Delivery {
         $shopId = is_scalar($request->query['shopId']) ? (string)$request->query['shopId']: null;
 
         // токен пользователя
-        $userToken = (new Repository\User())->getTokenByHttpRequest($request);
+        $userToken = (new Repository\User())->getTokenBySessionAndHttpRequest($session, $request);
 
         // корзина
         $cart = $cartRepository->getObjectByHttpSession($session, $cartSessionKey);

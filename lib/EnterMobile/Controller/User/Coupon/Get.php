@@ -23,9 +23,10 @@ class Get {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
+        $session = $this->getSession();
         $couponSeriesRepository = new \EnterRepository\Coupon\Series();
 
-        $userToken = $this->getUserToken($request);
+        $userToken = $this->getUserToken($session, $request);
 
         // запрос пользователя
         $userItemQuery = new Query\User\GetItemByToken($userToken);

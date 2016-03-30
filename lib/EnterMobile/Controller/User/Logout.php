@@ -35,7 +35,7 @@ class Logout {
         // http-ответ
         $response = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, 302);
         // сброс cookie
-        (new \EnterMobile\Repository\User())->setTokenToHttpResponse(null, $response);
+        (new \EnterMobile\Repository\User())->setTokenToSessionAndHttpResponse(null, $session, $response);
 
         // удаление данных пользователя для ОЗ
         $session->remove($config->order->userSessionKey);

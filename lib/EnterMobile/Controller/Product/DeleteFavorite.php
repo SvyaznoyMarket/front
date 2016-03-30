@@ -29,12 +29,13 @@ class DeleteFavorite {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
+        $session = $this->getSession();
 
         $error = null;
         try {
             $productUi = $request->query['productUi'];
 
-            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryBySessionAndHttpRequest($session, $request);
             if ($userItemQuery) {
                 $curl->prepare($userItemQuery);
             }

@@ -12,32 +12,46 @@ class User {
     use ConfigTrait, LoggerTrait;
 
     /**
+     * @param Http\Session $session
      * @param Http\Request $request
      * @return string|null
      */
-    public function getTokenByHttpRequest(Http\Request $request) {
-        return $request->cookies[$this->getConfig()->userToken->authName];
+    public function getTokenBySessionAndHttpRequest(Http\Session $session, Http\Request $request) {
+        $config = $this->getConfig();
+
+        // TODO удалить данный блок получения токена пользователя из сookie через 1-2 месяца после релиза MSITE-637 и SITE-6685; удаление производить одновременно с подобным удалением в проекте SITE
+        $userTokenInCookie = $request->cookies[$config->userToken->authCookieName];
+        if ($userTokenInCookie) {
+            $session->set($config->userToken->authSessionName, $userTokenInCookie);
+        }
+
+        return $session->get($config->userToken->authSessionName);
     }
 
     /**
+     * @param Http\Session $session
+     * @param Http\Request $request
      * @return \EnterQuery\User\GetItemByToken|null
      */
-    public function getQueryByHttpRequest(Http\Request $request) {
-        $userToken = $this->getTokenByHttpRequest($request);
+    public function getQueryBySessionAndHttpRequest(Http\Session $session, Http\Request $request) {
+        $userToken = $this->getTokenBySessionAndHttpRequest($session, $request);
 
         return $userToken ? new \EnterQuery\User\GetItemByToken($userToken) : null;
     }
 
     /**
      * @param $token
+     * @param Http\Session $session
      * @param Http\Response $response
      */
-    public function setTokenToHttpResponse($token, Http\Response $response) {
+    public function setTokenToSessionAndHttpResponse($token, Http\Session $session, Http\Response $response) {
         $config = $this->getConfig();
-        $cookieName = $config->userToken->authName;
+        $cookieName = $config->userToken->authCookieName;
         $cookieDomain = $config->session->cookieDomain;
 
         if ($token) {
+            $session->set($config->userToken->authSessionName, $token);
+            // TODO заменить setCookie на clearCookie через 1-2 месяца после релиза MSITE-637 и SITE-6685; замену производить одновременно с подобной заменой в проекте SITE
             $response->headers->setCookie(new Http\Cookie(
                 $cookieName,
                 $token,
@@ -48,6 +62,7 @@ class User {
                 true
             ));
         } else {
+            $session->remove($config->userToken->authSessionName);
             $response->headers->clearCookie($cookieName, '/', $cookieDomain);
         }
     }

@@ -29,6 +29,7 @@ class Index {
         $config = $this->getConfig();
         $logger = $this->getLogger();
         $curl = $this->getCurl();
+        $session = $this->getSession();
         $productRepository = new \EnterRepository\Product();
         $filterRepository = new Repository\Product\Filter();
 
@@ -59,7 +60,7 @@ class Index {
         $curl->prepare($regionQuery);
 
         // запрос пользователя
-        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryBySessionAndHttpRequest($session, $request);
         if ($userItemQuery) {
             $curl->prepare($userItemQuery);
         }

@@ -73,7 +73,7 @@ class ChangePassword {
             }
 
             $user = new \EnterMobile\Repository\User();
-            $token = $user->getTokenByHttpRequest($request);
+            $token = $user->getTokenBySessionAndHttpRequest($session, $request);
             if (empty($token)) {
                 throw new \Exception('Не получен токен пользователя');
             }

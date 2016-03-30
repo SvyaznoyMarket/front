@@ -61,7 +61,7 @@ class DeleteProduct {
         $curl->prepare($cartProductDescriptionListQuery);
 
         // запрос пользователя
-        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryBySessionAndHttpRequest($session, $request);
         if ($userItemQuery) {
             $curl->prepare($userItemQuery);
         }

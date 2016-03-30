@@ -28,6 +28,7 @@ class GetForm {
         $config = $this->getConfig();
         $curl = $this->getCurl();
         $router = $this->getRouter();
+        $session = $this->getSession();
         $paymentRepository = new \EnterRepository\Payment();
 
         $orderId = $request->data['orderId'] ? (string)$request->data['orderId'] : null;
@@ -44,7 +45,7 @@ class GetForm {
 
         // запрос пользователя
         $userItemQuery = null;
-        if ($userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request)) {
+        if ($userToken = (new \EnterMobile\Repository\User())->getTokenBySessionAndHttpRequest($session, $request)) {
             $userItemQuery = new Query\User\GetItemByToken($userToken);
             $curl->prepare($userItemQuery);
         }

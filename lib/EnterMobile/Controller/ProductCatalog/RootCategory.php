@@ -24,6 +24,7 @@ class RootCategory {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
+        $session = $this->getSession();
         $productCategoryRepository = new \EnterRepository\Product\Category();
 
         // ид региона
@@ -37,7 +38,7 @@ class RootCategory {
         $curl->prepare($regionQuery);
 
         // запрос пользователя
-        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryBySessionAndHttpRequest($session, $request);
         if ($userItemQuery) {
             $curl->prepare($userItemQuery);
         }

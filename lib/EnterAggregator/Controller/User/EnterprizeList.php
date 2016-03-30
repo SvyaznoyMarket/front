@@ -26,6 +26,7 @@ namespace EnterAggregator\Controller\User{
             $config = $this->getConfig();
             $curl = $this->getCurl();
             $router = $this->getRouter();
+            $session = $this->getSession();
 
             $response = new EnterprizeList\Response();
 
@@ -33,10 +34,10 @@ namespace EnterAggregator\Controller\User{
             $regionQuery = new Query\Region\GetItemById($request->regionId);
             $curl->prepare($regionQuery);
 
-            $userToken = $this->getUserToken($request->httpRequest);
+            $userToken = $this->getUserToken($session, $request->httpRequest);
 
             /* пользователь */
-            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request->httpRequest);
+            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryBySessionAndHttpRequest($session, $request->httpRequest);
             $curl->prepare($userItemQuery);
 
             $curl->execute();
@@ -68,7 +69,7 @@ namespace EnterAggregator\Controller\User{
             $user = new \EnterMobile\Repository\User();
             try {
 
-                $token = $user->getTokenByHttpRequest($request->httpRequest);
+                $token = $user->getTokenBySessionAndHttpRequest($session, $request->httpRequest);
 
                 // список купонов
                 $couponListQuery = new Query\Coupon\GetListByUserToken($token);

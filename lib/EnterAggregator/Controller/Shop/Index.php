@@ -18,6 +18,7 @@ namespace EnterAggregator\Controller\Shop {
         public function execute(Index\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
+            $session = $this->getSession();
 
             $response = new Index\Response();
 
@@ -28,7 +29,7 @@ namespace EnterAggregator\Controller\Shop {
             $response->region = (new Repository\Region())->getObjectByQuery($regionQuery);
 
             /* пользователь */
-            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request->httpRequest);
+            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryBySessionAndHttpRequest($session, $request->httpRequest);
             if ($userItemQuery) {
                 $curl->prepare($userItemQuery);
             }

@@ -22,6 +22,7 @@ class ChildCategory {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
+        $session = $this->getSession();
         $productCategoryRepository = new \EnterRepository\Product\Category();
         $filterRepository = new Repository\Product\Filter();
 
@@ -61,7 +62,7 @@ class ChildCategory {
         $controllerRequest->filterRepository = $filterRepository;
         $controllerRequest->baseRequestFilters = $baseRequestFilters;
         $controllerRequest->requestFilters = $requestFilters;
-        $controllerRequest->userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request);
+        $controllerRequest->userToken = (new \EnterMobile\Repository\User())->getTokenBySessionAndHttpRequest($session, $request);
         $controllerRequest->cart = $cart;
 
         // ответ от контроллера

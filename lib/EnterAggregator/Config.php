@@ -172,7 +172,12 @@ namespace EnterAggregator\Config {
          * Кука авторизованного пользователя
          * @var string
          */
-        public $authName;
+        public $authCookieName;
+        /**
+         * Сессия авторизованного пользователя
+         * @var string
+         */
+        public $authSessionName;
     }
 
     class AbTest {

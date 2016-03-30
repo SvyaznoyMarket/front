@@ -26,6 +26,7 @@ class Set {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
+        $session = $this->getSession();
 
         $subscribeItem = is_array($request->data['subscribe']) ? $request->data['subscribe'] : [];
         $subscribeItem += [
@@ -33,7 +34,7 @@ class Set {
         ];
         $subscribe = new \EnterModel\Subscribe($subscribeItem);
 
-        $userToken = $this->getUserToken($request);
+        $userToken = $this->getUserToken($session, $request);
 
         $setQuery = new Query\Subscribe\SetItemByUserToken($userToken, $subscribe);
         $curl->prepare($setQuery);

@@ -36,7 +36,7 @@ class AddToFavorite {
         $response = [];
 
         // проверка пользователя
-        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryBySessionAndHttpRequest($session, $request);
         if (!$userItemQuery) {
             throw new \Exception(
                 'Пользователь не авторизован',
