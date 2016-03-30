@@ -26,6 +26,7 @@ class Delete {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
+        $session = $this->getSession();
 
         $subscribeItem = is_array($request->data['subscribe']) ? $request->data['subscribe'] : [];
         $subscribeItem += [
@@ -33,7 +34,7 @@ class Delete {
         ];
         $subscribe = new \EnterModel\Subscribe($subscribeItem);
 
-        $userToken = $this->getUserToken($request);
+        $userToken = $this->getUserToken($session, $request);
 
         $deleteQuery = new Query\Subscribe\DeleteItemByUserToken($userToken, $subscribe);
         $curl->prepare($deleteQuery);

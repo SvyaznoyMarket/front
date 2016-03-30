@@ -3,6 +3,7 @@
 namespace EnterMobile\Controller\User\Address;
 
 use Enter\Http;
+use EnterAggregator\SessionTrait;
 use EnterMobile\ConfigTrait;
 use EnterAggregator\CurlTrait;
 use EnterAggregator\LoggerTrait;
@@ -18,7 +19,8 @@ class Delete {
         ConfigTrait,
         RouterTrait,
         LoggerTrait,
-        CurlTrait;
+        CurlTrait,
+        SessionTrait;
 
     /**
      * @param Http\Request $request
@@ -28,6 +30,7 @@ class Delete {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
+        $session = $this->getSession();
 
         $error = null;
         try {
@@ -36,9 +39,9 @@ class Delete {
                 throw new \Exception('Не передан addressId', 400);
             }
 
-            $userToken = $this->getUserToken($request);
+            $this->getUserToken($session, $request);
 
-            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryBySessionAndHttpRequest($session, $request);
             $curl->prepare($userItemQuery);
 
             $curl->execute();

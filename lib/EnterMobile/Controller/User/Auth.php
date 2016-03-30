@@ -55,10 +55,8 @@ class Auth {
             }
 
             // установка cookie
-            (new \EnterMobile\Repository\User())->setTokenToHttpResponse($token, $response);
+            (new \EnterMobile\Repository\User())->setTokenToSessionAndHttpResponse($token, $session, $response);
 
-            // FIXME: примочка для project13
-            $session->set($config->userToken->authName, $token);
             $session->set('authSource', $isEmailAuth ? 'email' : 'phone');
 
             try {

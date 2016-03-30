@@ -23,6 +23,7 @@ namespace EnterAggregator\Controller\User {
         public function execute(Orders\Request $request) {
             $config = $this->getConfig();
             $curl = $this->getCurl();
+            $session = $this->getSession();
 
             $response = new Orders\Response();
 
@@ -30,10 +31,10 @@ namespace EnterAggregator\Controller\User {
             $regionQuery = new Query\Region\GetItemById($request->regionId);
             $curl->prepare($regionQuery);
 
-            $userToken = $this->getUserToken($request->httpRequest);
+            $userToken = $this->getUserToken($session, $request->httpRequest);
 
             /* пользователь */
-            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request->httpRequest);
+            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryBySessionAndHttpRequest($session, $request->httpRequest);
             $curl->prepare($userItemQuery);
 
             $ordersQuery = new Query\Order\GetListByUserToken($userToken, 0, 40);

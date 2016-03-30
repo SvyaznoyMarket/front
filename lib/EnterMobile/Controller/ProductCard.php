@@ -28,6 +28,7 @@ class ProductCard {
      */
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
+        $session = $this->getSession();
         $productRepository = new \EnterRepository\Product();
 
         // ид региона
@@ -47,7 +48,7 @@ class ProductCard {
         $controllerRequest->config->favourite = true;
         $controllerRequest->regionId = $regionId;
         $controllerRequest->productCriteria = ['token' => $productToken];
-        $controllerRequest->userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request);
+        $controllerRequest->userToken = (new \EnterMobile\Repository\User())->getTokenBySessionAndHttpRequest($session, $request);
         $controllerRequest->cart = $cart;
 
         // ответ от контроллера

@@ -28,6 +28,7 @@ class Index {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
+        $session = $this->getSession();
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
@@ -37,7 +38,7 @@ class Index {
         $curl->prepare($regionQuery);
 
         // запрос пользователя
-        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryBySessionAndHttpRequest($session, $request);
         if ($userItemQuery) {
             $curl->prepare($userItemQuery);
         }

@@ -48,7 +48,7 @@ class Save {
 
             // token
             $user = new \EnterMobile\Repository\User();
-            $token = $user->getTokenByHttpRequest($request);
+            $token = $user->getTokenBySessionAndHttpRequest($session, $request);
 
             if (!$token) {
                 throw new \Exception('Нет токена');
@@ -68,7 +68,7 @@ class Save {
             */
 
             // модель старого пользователя
-            $userQuery = $user->getQueryByHttpRequest($request);
+            $userQuery = $user->getQueryBySessionAndHttpRequest($session, $request);
             $curl->prepare($userQuery);
             $curl->execute();
 

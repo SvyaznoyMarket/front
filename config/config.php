@@ -15,7 +15,8 @@ return function(\EnterAggregator\Config $config) {
     $config->session->cookieDomain = '.enter.ru';
     $config->session->flashKey = '_flash';
 
-    $config->userToken->authName = '_token';
+    $config->userToken->authCookieName = '_token';
+    $config->userToken->authSessionName = 'userToken';
 
     $config->googleAnalytics->enabled = true;
 

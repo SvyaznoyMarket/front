@@ -21,6 +21,7 @@ class Content {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
+        $session = $this->getSession();
 
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
         $contentToken = $request->query['contentToken'];
@@ -37,7 +38,7 @@ class Content {
         $curl->prepare($regionQuery);
 
         // запрос пользователя
-        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+        $userItemQuery = (new \EnterMobile\Repository\User())->getQueryBySessionAndHttpRequest($session, $request);
         if ($userItemQuery) {
             $curl->prepare($userItemQuery);
         }

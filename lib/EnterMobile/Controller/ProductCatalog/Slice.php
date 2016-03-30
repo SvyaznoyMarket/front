@@ -26,6 +26,7 @@ class Slice {
     public function execute(Http\Request $request) {
         $config = $this->getConfig();
         $curl = $this->getCurl();
+        $session = $this->getSession();
         $filterRepository = new Repository\Product\Filter();
 
         // ид региона
@@ -88,7 +89,7 @@ class Slice {
         $controllerRequest->filterRepository = $filterRepository;
         $controllerRequest->baseRequestFilters = $baseRequestFilters;
         $controllerRequest->requestFilters = array_merge($requestFilters, $baseRequestFilters);
-        $controllerRequest->userToken = (new \EnterMobile\Repository\User())->getTokenByHttpRequest($request);
+        $controllerRequest->userToken = (new \EnterMobile\Repository\User())->getTokenBySessionAndHttpRequest($session, $request);
         $controllerRequest->cart = $cart;
         // ответ от контроллера
         $controllerResponse = $controller->execute($controllerRequest);

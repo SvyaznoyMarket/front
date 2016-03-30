@@ -21,6 +21,7 @@ class Index {
         $referer = isset($request->server['HTTP_REFERER']) ? $request->server['HTTP_REFERER'] : '/';
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
         $curl = $this->getCurl();
+        $session = $this->getSession();
         $productRepository = new \EnterRepository\Product();
         $mediaRepository = new \EnterRepository\Media();
         $userItemQuery = null;
@@ -34,7 +35,7 @@ class Index {
                 throw new \Exception('Не подтверждено согласие с офертой');
             }
 
-            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryByHttpRequest($request);
+            $userItemQuery = (new \EnterMobile\Repository\User())->getQueryBySessionAndHttpRequest($session, $request);
             if ($userItemQuery) {
                 $curl->prepare($userItemQuery);
             }

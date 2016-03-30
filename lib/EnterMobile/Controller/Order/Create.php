@@ -71,7 +71,7 @@ class Create {
         $curl->prepare($regionQuery);
 
         // токен пользователя
-        $userToken = (new Repository\User())->getTokenByHttpRequest($request);
+        $userToken = (new Repository\User())->getTokenBySessionAndHttpRequest($session, $request);
 
         // запрос пользователя
         $userItemQuery = null;

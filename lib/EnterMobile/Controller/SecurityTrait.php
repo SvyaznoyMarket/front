@@ -9,12 +9,13 @@ use EnterMobile\Repository;
 
 trait SecurityTrait {
     /**
+     * @param Http\Session $session
      * @param Http\Request $request
      * @return string
      * @throws \Exception
      */
-    public function getUserToken(Http\Request $request) {
-        $userToken = (new Repository\User())->getTokenByHttpRequest($request);
+    public function getUserToken(Http\Session $session, Http\Request $request) {
+        $userToken = (new Repository\User())->getTokenBySessionAndHttpRequest($session, $request);
         if (empty($userToken)) {
             throw new \Exception('Доступ запрещен', Http\Response::STATUS_FORBIDDEN);
         }
