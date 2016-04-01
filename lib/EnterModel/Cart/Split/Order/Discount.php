@@ -9,6 +9,8 @@ class Discount {
     /** @var string */
     public $discount = '';
     /** @var string */
+    public $unit = 'rub';
+    /** @var string */
     public $type = '';
     /** @var string */
     public $number = '';
