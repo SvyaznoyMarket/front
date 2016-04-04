@@ -602,7 +602,7 @@ class Product {
      * @param Model\MediaList $media
      * @return Model\MediaList
      */
-    public function getMedia(\EnterModel\MediaList $media) {
+    public function getMediaObject(\EnterModel\MediaList $media) {
         $mainPhotos = [];
         $additionalPhotos = [];
         foreach ($media->photos as $photo) {
