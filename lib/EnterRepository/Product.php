@@ -597,4 +597,25 @@ class Product {
             ]; // FIXME
         }
     }
+
+    /**
+     * @param Model\MediaList $media
+     * @return Model\MediaList
+     */
+    public function getMedia(\EnterModel\MediaList $media) {
+        $mainPhotos = [];
+        $additionalPhotos = [];
+        foreach ($media->photos as $photo) {
+            if (in_array('main', $photo->tags, true)) {
+                $mainPhotos[] = $photo;
+            } else if (in_array('additional', $photo->tags, true)) {
+                $additionalPhotos[] = $photo;
+            }
+        }
+
+        $newMedia = new \EnterModel\MediaList();
+        $newMedia->photos = array_merge($mainPhotos, $additionalPhotos);
+
+        return $newMedia;
+    }
 }
