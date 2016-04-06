@@ -373,6 +373,12 @@ class Cart {
                                     $isDeleted = true;
                                 }
                             }
+
+                            if (isset($dump['orders'][$blockName]['certificate']['code']) && (string)$dump['orders'][$blockName]['certificate']['code'] === (string)$discountItem['number']) {
+                                $dump['orders'][$blockName]['certificate'] = null;
+                                $isDeleted = true;
+                            }
+
                             if (!$isDeleted) {
                                 $this->getLogger()->push(['type' => 'warn', 'message' => 'Купон не найден', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
                             }

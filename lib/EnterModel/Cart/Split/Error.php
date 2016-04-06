@@ -77,6 +77,45 @@ class Error {
                     ];
                     $this->message = 'Купон не может быть применен к этому заказу';
                     break;
+                case 738:
+                    $this->detail = [
+                        'discount'  => [
+                            'number' => @$detailItem['certificate_code'] ? (string)$detailItem['certificate_code'] : null,
+                        ],
+                        'blockName' => @$detailItem['block_name'] ?: null,
+                    ];
+
+                    $this->message = 'Сертификат не активирован';
+                    break;
+                case 739:
+                    $this->detail = [
+                        'discount'  => [
+                            'number' => @$detailItem['certificate_code'] ? (string)$detailItem['certificate_code'] : null,
+                        ],
+                        'blockName' => @$detailItem['block_name'] ?: null,
+                    ];
+
+                    $this->message = 'Сертификат уже применён в другом заказе';
+                    break;
+                case 740:
+                    $this->detail = [
+                        'discount'  => [
+                            'number' => @$detailItem['certificate_code'] ? (string)$detailItem['certificate_code'] : null,
+                        ],
+                        'blockName' => @$detailItem['block_name'] ?: null,
+                    ];
+
+                    if (preg_match('/\[(\d+)\]/', (string)$data['message'], $matches)) {
+                        switch ($matches[1]) {
+                            case 742:
+                                $this->message = 'Неверный пин-код сертификата';
+                                break;
+                            case 743:
+                                $this->message = 'Сертификат не найден';
+                                break;
+                        }
+                    }
+                    break;
             }
         }
     }

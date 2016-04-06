@@ -20,12 +20,20 @@ class Order {
         $errors = [];
 
         $messagesByCode = json_decode(file_get_contents($this->getConfig()->dir . '/data/core-error.json'), true);
-        if (isset($messagesByCode[(string)$error->getCode()])) {
-            $errors[] = ['code' => $error->getCode(), 'message' => $messagesByCode[(string)$error->getCode()], 'detail' => $error->getDetail()];
+
+        // MAPI-229
+        if ($error->getCode() == 600 && $error->getMessage() === 'Неверно заполнены товары в заказе (нет ни одного с quantity > 0)') {
+            $code = '10001';
+        } else {
+            $code = (string)$error->getCode();
         }
 
-        if (!(bool)$errors) {
-            $errors[] = ['code' => $error->getCode(), 'message' => 'Невозможно создать заказ', 'detail' => $error->getDetail()];
+        if (isset($messagesByCode[$code])) {
+            $errors[] = ['code' => (int)$code, 'message' => $messagesByCode[$code], 'detail' => $error->getDetail()];
+        }
+
+        if (!$errors) {
+            $errors[] = ['code' => (int)$code, 'message' => 'Невозможно создать заказ', 'detail' => $error->getDetail()];
         }
 
         return $errors;

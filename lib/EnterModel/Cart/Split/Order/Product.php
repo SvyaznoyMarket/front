@@ -26,9 +26,9 @@ class Product {
     public $sum;
     /** @var string|null */
     public $originalSum;
-    /** @var string|null */
+    /** @var int|null */
     public $quantity;
-    /** @var string|null */
+    /** @var int|null */
     public $stockQuantity;
     /** @var array */
     public $sender;
@@ -39,16 +39,16 @@ class Product {
      * @param array $data
      */
     public function __construct($data = []) {
-        $this->id = $data['id'] ? (string)$data['id'] : null;
-        $this->ui = $data['ui'] ? (string)$data['ui'] : null;
-        $this->image = isset($data['image']) ? (string)$data['image'] : null;
-        $this->price = $data['price'] ? (string)$data['price'] : null;
-        $this->originalPrice = $data['original_price'] ? (string)$data['original_price'] : null;
-        $this->sum = $data['sum'] ? (string)$data['sum'] : null;
-        $this->originalSum = $data['original_sum'] ? (string)$data['original_sum'] : null;
-        $this->quantity = (int)$data['quantity'];
-        $this->stockQuantity = (int)$data['stock'];
-        $this->sender = isset($data['meta_data']['sender']['name']) ? $data['meta_data']['sender'] : null;
+        if (isset($data['id'])) $this->id = (string)$data['id'];
+        if (isset($data['ui'])) $this->ui = (string)$data['ui'];
+        if (isset($data['image'])) $this->image = (string)$data['image'];
+        if (isset($data['price'])) $this->price = (string)$data['price'];
+        if (isset($data['original_price'])) $this->originalPrice = (string)$data['original_price'];
+        if (isset($data['sum'])) $this->sum = (string)$data['sum'];
+        if (isset($data['original_sum'])) $this->originalSum = (string)$data['original_sum'];
+        if (isset($data['quantity'])) $this->quantity = (int)$data['quantity'];
+        if (isset($data['stock'])) $this->stockQuantity = (int)$data['stock'];
+        if (isset($data['meta_data']['sender']['name'])) $this->sender = $data['meta_data']['sender'];
         $this->media = new Model\MediaList();
     }
 

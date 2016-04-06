@@ -211,7 +211,7 @@ namespace EnterAggregator\Controller\Cart {
                                 $product->name = $productsById[$product->id]->name;
                                 $product->webName = $productsById[$product->id]->webName;
                                 $product->namePrefix = $productsById[$product->id]->namePrefix;
-                                $product->media = $productsById[$product->id]->media;
+                                $product->media = $productRepository->getMediaObject($productsById[$product->id]->media);
                             }
                         }
                     }

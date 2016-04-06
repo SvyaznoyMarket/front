@@ -129,6 +129,49 @@ namespace EnterMobileApplication\Controller\Cart {
                 if ($order->delivery && !$order->possibleDays) {
                     $order->delivery->date = null;
                 }
+
+                foreach ($order->discounts as $discount) {
+                    $discount->unit = $discount->unit === 'rub' ? 'руб.' : $discount->unit;
+                    $discount->media->photos[] = new Model\Media([
+                        'content_type' => 'image/png',
+                        'provider' => 'image',
+                        'tags' => ['logo'],
+                        'sources' => [
+                            [
+                                'type' => '150x150',
+                                'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/discounts/150x150/coupon.png',
+                                'width' => '150',
+                                'height' => '150',
+                            ],
+                        ],
+                    ]);
+                }
+
+                if ($order->certificate) {
+                    $certificateDiscount = new \EnterModel\Cart\Split\Order\Discount();
+                    $certificateDiscount->ui = '';
+                    $certificateDiscount->name = 'Подарочный сертификат на ' . $order->certificate->par . ' руб.';
+                    $certificateDiscount->discount = $order->certificate->par;
+                    $certificateDiscount->unit = $certificateDiscount->unit === 'rub' ? 'руб.' : $certificateDiscount->unit;
+                    $certificateDiscount->type = 'certificate';
+                    $certificateDiscount->number = $order->certificate->code;
+                    $certificateDiscount->media->photos[] = new Model\Media([
+                        'content_type' => 'image/png',
+                        'provider' => 'image',
+                        'tags' => ['logo'],
+                        'sources' => [
+                            [
+                                'type' => '150x150',
+                                'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/discounts/150x150/certificate.png',
+                                'width' => '150',
+                                'height' => '150',
+                            ],
+                        ],
+                    ]);
+                    $order->discounts[] = $certificateDiscount;
+                }
+
+                unset($order->certificate);
             }
 
             // response
