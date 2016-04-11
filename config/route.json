@@ -162,13 +162,7 @@
     },
     "Order\\Create": {
         "name": "Оформление заказа - создание",
-        "pattern": "/order/create",
-        "aliases": [
-            {
-                "pattern": "/orders/create",
-                "needRedirect": false
-            }
-        ]
+        "pattern": "/order/create"
     },
     "Order\\Complete": {
         "name": "Оформление заказа - завершение",
@@ -183,23 +177,11 @@
     "Order\\SetUser": {
         "name": "Оформление заказа - инфо пользователя",
         "pattern": "/order/set-user",
-        "aliases": [
-            {
-                "pattern": "/orders/set-user",
-                "needRedirect": false
-            }
-        ],
         "method": ["POST"]
     },
     "Order\\Payment\\GetForm": {
         "name": "Оформление заказа - форма онлайн-оплаты",
         "pattern": "/order/payment/get-form",
-        "aliases": [
-            {
-                "pattern": "/orders/payment/get-form",
-                "needRedirect": false
-            }
-        ],
         "method": ["POST"]
     },
 
