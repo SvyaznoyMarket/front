@@ -3,6 +3,7 @@
 /nbproject
 *.nblh~
 config-local.php
+config-demo.php
 /node_modules
 sftp-config.json
 /version
