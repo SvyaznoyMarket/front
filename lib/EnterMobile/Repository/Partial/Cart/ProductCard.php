@@ -38,10 +38,7 @@ class ProductCard {
         $card->sum = (new Repository\Partial\Cart\ProductSum())->getObject($cartProduct);
         $card->oldPrice = $product->oldPrice;
         $card->shownOldPrice = $product->oldPrice ? $this->getPriceHelper()->format($product->oldPrice) : null;
-        /** @var \EnterModel\Media|null $photo */
-        if ($photo = reset($product->media->photos)) {
-            $card->image = (new \EnterRepository\Media())->getSourceObjectByItem($photo, 'product_120')->url;
-        }
+        $card->image = (new \EnterRepository\Media())->getSourceObjectByList($product->media->photos, 'main', 'product_120')->url;
         $card->id = $product->id;
         $card->cartSpinner = $cartSpinner;
         $card->cartDeleteButton = $cartDeleteButton;
