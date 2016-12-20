@@ -78,7 +78,7 @@ class Index {
             $request->httpRequest
         );
 
-        $page->content->productBlock->moreLink = (new Repository\Partial\ProductList\MoreLink())->getObject($request->pageNum, $request->limit, $request->count, $request->category) ?: false;
+//        $page->content->productBlock->moreLink = (new Repository\Partial\ProductList\MoreLink())->getObject($request->pageNum, $request->limit, $request->count, $request->category) ?: false;
 
         // фильтры
         $page->content->filterBlock = false;

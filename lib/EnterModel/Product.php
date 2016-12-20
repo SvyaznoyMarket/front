@@ -11,6 +11,8 @@ namespace EnterModel {
         public $id = '';
         /** @var string */
         public $ui = '';
+        /** @var int|null */
+        public $statusId;
         /** @var string */
         public $article = '';
         /** @var string */
@@ -115,6 +117,7 @@ namespace EnterModel {
 
             if (array_key_exists('id', $data)) $this->id = (string)$data['id'];
             if (array_key_exists('ui', $data)) $this->ui = (string)$data['ui'];
+            if (isset($data['status_id'])) $this->statusId = (int)$data['status_id'];
             if (array_key_exists('uid', $data)) $this->ui = (string)$data['uid'];
             if (array_key_exists('article', $data)) $this->article = (string)$data['article'];
             if (array_key_exists('bar_code', $data)) $this->barcode = (string)$data['bar_code'];

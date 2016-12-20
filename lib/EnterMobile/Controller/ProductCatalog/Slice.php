@@ -59,6 +59,11 @@ class Slice {
             return (new Controller\Error\NotFound())->execute($request, sprintf('Срез товаров @%s не найден', $sliceToken));
         }
 
+        if (!empty($slice->filters['barcode'])) {
+            $request->query['productBarcodes'] = implode(',', $slice->filters['barcode']);
+            return (new \EnterMobile\Controller\ProductSet\Index())->execute($request);
+        }
+
         // фильтры в http-запросе и настройках среза
         $baseRequestFilters = $filterRepository->getRequestObjectListByHttpRequest(new Http\Request($slice->filters));
         // AG-43: если выбрана категория, то удялять замороженные фильтры-категории

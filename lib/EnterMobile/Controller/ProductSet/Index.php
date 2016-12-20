@@ -36,7 +36,6 @@ class Index {
         if (!(bool)$barcodes) {
             return (new Controller\Error\NotFound())->execute($request, 'Не переданы баркоды товаров');
         }
-        $barcodes = array_slice($barcodes, 0, $config->product->itemPerPage * 3); // TODO сделать листалку
 
         // ид региона
         $regionId = (new \EnterRepository\Region())->getIdByHttpRequestCookie($request);
@@ -103,6 +102,38 @@ class Index {
 
         // товары
         $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$productDescriptionListQuery]);
+
+        $productsById = array_filter($productsById, function(\EnterModel\Product $product) {
+            return ($product->isBuyable || $product->isInShopShowroomOnly) && $product->statusId != 5;
+        });
+
+
+        if ($config->productReview->enabled) {
+            $ratingListQuery = new Query\Product\Rating\GetListByProductIdList(array_map(function(\EnterModel\Product $product) { return $product->id; }, $productsById));
+            $curl->prepare($ratingListQuery);
+            $curl->execute();
+            $productRepository->setRatingForObjectListByQuery($productsById, $ratingListQuery);
+        }
+
+        usort($productsById, function (\EnterModel\Product $productX, \EnterModel\Product $productY) {
+            $a = $productX->isBuyable;
+            $b = $productY->isBuyable;
+
+            if ($a != $b) {
+                return (int)$a < (int)$b ? -1 : 1;
+            }
+
+            $a = $productX->rating ? $productX->rating->score : 0;
+            $b = $productY->rating ? $productY->rating->score : 0;
+
+            if ($a == $b) {
+                return 0;
+            }
+
+            return (int)$a < (int)$b ? -1 : 1;
+        });
+
+        $productsById = array_reverse($productsById, true);
 
         // запрос для получения страницы
         $pageRequest = new Repository\Page\ProductSet\Index\Request();
