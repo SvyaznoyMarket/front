@@ -164,7 +164,7 @@ class MainMenu {
             ],
             [
                 'type' => 'content',
-                'id' => 'dostavka',
+                'id' => 'delivery',
                 'name' => 'Доставка'
             ],
             [
