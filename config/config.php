@@ -135,6 +135,8 @@ return function(\EnterAggregator\Config $config) {
 
     $config->search->minPhraseLength = 2;
 
+    $config->discountCodes->enabled = false;
+    
     $config->credit->enabled = false;
 
     $config->credit->directCredit->enabled = false;

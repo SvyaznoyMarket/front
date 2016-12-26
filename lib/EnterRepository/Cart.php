@@ -274,6 +274,8 @@ class Cart {
      * @return array
      */
     public function dumpSplitChange($changeData, $previousSplitData) {
+        $config = $this->getConfig();
+
         $dump = [];
 
         // заказ
@@ -350,52 +352,53 @@ class Cart {
                     unset($productItem);
                 }
 
-                // скидки
-                if (isset($orderItem['discounts']) && is_array($orderItem['discounts'])) {
-                    $discountItem = null;
-                    foreach ($orderItem['discounts'] as $discountItem) {
-                        $this->getLogger()->push(['message' => 'Применение купона', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                if ($config->discountCodes->enabled) {
+                    if (isset($orderItem['discounts']) && is_array($orderItem['discounts'])) {
+                        $discountItem = null;
+                        foreach ($orderItem['discounts'] as $discountItem) {
+                            $this->getLogger()->push(['message' => 'Применение купона', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
 
-                        if (empty($discountItem['number'])) {
-                            $this->getLogger()->push(['type' => 'warn', 'message' => 'Не передан номер купона', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
-                            continue;
-                        }
+                            if (empty($discountItem['number'])) {
+                                $this->getLogger()->push(['type' => 'warn', 'message' => 'Не передан номер купона', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                                continue;
+                            }
 
-                        if (isset($discountItem['delete']) && $discountItem['delete']) { // удаление купона
-                            $isDeleted = false;
-                            // поиск существующей скидки
-                            foreach ($dump['orders'][$blockName]['discounts'] as $i => $existsDiscountItem) {
-                                if (!isset($existsDiscountItem['number'])) continue;
+                            if (isset($discountItem['delete']) && $discountItem['delete']) { // удаление купона
+                                $isDeleted = false;
+                                // поиск существующей скидки
+                                foreach ($dump['orders'][$blockName]['discounts'] as $i => $existsDiscountItem) {
+                                    if (!isset($existsDiscountItem['number'])) continue;
 
-                                if ($existsDiscountItem['number'] == $discountItem['number']) {
-                                    // удаление найденной скидки
-                                    unset($dump['orders'][$blockName]['discounts'][$i]);
+                                    if ($existsDiscountItem['number'] == $discountItem['number']) {
+                                        // удаление найденной скидки
+                                        unset($dump['orders'][$blockName]['discounts'][$i]);
+                                        $isDeleted = true;
+                                    }
+                                }
+
+                                if (isset($dump['orders'][$blockName]['certificate']['code']) && (string)$dump['orders'][$blockName]['certificate']['code'] === (string)$discountItem['number']) {
+                                    $dump['orders'][$blockName]['certificate'] = null;
                                     $isDeleted = true;
                                 }
-                            }
 
-                            if (isset($dump['orders'][$blockName]['certificate']['code']) && (string)$dump['orders'][$blockName]['certificate']['code'] === (string)$discountItem['number']) {
-                                $dump['orders'][$blockName]['certificate'] = null;
-                                $isDeleted = true;
-                            }
-
-                            if (!$isDeleted) {
-                                $this->getLogger()->push(['type' => 'warn', 'message' => 'Купон не найден', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
-                            }
-                        } else { // добавление купона
-                            if (empty($discountItem['pin'])) {
-                                $dump['orders'][$blockName]['discounts'][] = ['number' => $discountItem['number'], 'name' => null, 'type' => null, 'discount' => null];
-                            } else {
-                                $dump['orders'][$blockName]['certificate'] = ['code' => $discountItem['number'], 'pin' => $discountItem['pin']];
+                                if (!$isDeleted) {
+                                    $this->getLogger()->push(['type' => 'warn', 'message' => 'Купон не найден', 'discount' => $discountItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order.split']]);
+                                }
+                            } else { // добавление купона
+                                if (empty($discountItem['pin'])) {
+                                    $dump['orders'][$blockName]['discounts'][] = ['number' => $discountItem['number'], 'name' => null, 'type' => null, 'discount' => null];
+                                } else {
+                                    $dump['orders'][$blockName]['certificate'] = ['code' => $discountItem['number'], 'pin' => $discountItem['pin']];
+                                }
                             }
                         }
+                        unset($discountItem);
                     }
-                    unset($discountItem);
-                }
 
-                if (isset($orderItem['certificate']) && is_array($orderItem['certificate'])) {
-                    if (isset($orderItem['certificate']['delete']) && $orderItem['certificate']['delete']) {
-                        $dump['orders'][$blockName]['certificate'] = null;
+                    if (isset($orderItem['certificate']) && is_array($orderItem['certificate'])) {
+                        if (isset($orderItem['certificate']['delete']) && $orderItem['certificate']['delete']) {
+                            $dump['orders'][$blockName]['certificate'] = null;
+                        }
                     }
                 }
             }

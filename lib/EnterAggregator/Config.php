@@ -44,6 +44,8 @@ namespace EnterAggregator {
         public $yandexMetrika;
         /** @var Config\MailRu */
         public $mailRu;
+        /** @var Config\DiscountCodes */
+        public $discountCodes;
         /** @var Config\Credit */
         public $credit;
         /** @var Config\Partner */
@@ -102,6 +104,7 @@ namespace EnterAggregator {
             $this->mailRu = new Config\MailRu();
 
             $this->region = new Config\Region();
+            $this->discountCodes = new Config\DiscountCodes();
             $this->credit = new Config\Credit();
             $this->partner = new Config\Partner();
 
@@ -220,6 +223,11 @@ namespace EnterAggregator\Config {
         public $cookieName;
     }
 
+    class DiscountCodes {
+        /** @var bool */
+        public $enabled;
+    }
+    
     class Credit {
         /** @var bool */
         public $enabled;

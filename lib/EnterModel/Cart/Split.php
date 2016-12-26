@@ -74,6 +74,10 @@ class Split {
 
         if (isset($data['errors']) && is_array($data['errors'])) {
             foreach ($data['errors'] as $item) {
+                if ($item['code'] == 0 && $item['message'] === 'Невозможно применить купон: ' && !isset($item['details']['coupon_number'])) {
+                    continue;
+                }
+
                 $this->errors[] = new Split\Error($item);
             }
         }
