@@ -149,11 +149,6 @@ class MainMenu {
                 'name' => 'Обратная связь',
                 'iconClass' => 'nav-icon--callback'
             ],
-            'phone' => [
-                'link' => 'tel:+74957750006',
-                'name' => '+7 495 775-00-06',
-                'iconClass' => 'nav-icon--phone'
-            ]
         ];
         
         $menu->contentElements = [
