@@ -34,7 +34,7 @@ return function(\EnterAggregator\Config $config) {
     // actionpay
     $config->partner->service->actionpay->enabled = true;
     // criteo
-    $config->partner->service->criteo->enabled = true;
+    $config->partner->service->criteo->enabled = false;
     $config->partner->service->criteo->account = 10442;
     // sociomantic
     $config->partner->service->sociomantic->enabled = true;
