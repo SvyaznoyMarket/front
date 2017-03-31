@@ -86,6 +86,13 @@ class Slice {
         $controllerRequest->config->mainMenu = true;
         $controllerRequest->config->parentCategory = false;
         $controllerRequest->config->branchCategory = true;
+
+		if ($sliceToken === 'all_labels') {
+			$controllerRequest->config->defaultSortings = [
+				'price' => 'desc',
+			];
+		}
+
         $controllerRequest->regionId = $regionId;
         $controllerRequest->categoryCriteria = $categoryToken ? ['token' => $categoryToken] : []; // критерий получения категории товара
         $controllerRequest->pageNum = $pageNum;

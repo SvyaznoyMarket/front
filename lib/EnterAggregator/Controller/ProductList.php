@@ -182,8 +182,13 @@ namespace EnterAggregator\Controller {
             // корневые категории
             $response->categories = $categoryRootListQuery ? (new \EnterRepository\Product\Category())->getObjectListByQuery($categoryRootListQuery) : [];
 
-            // FIXME
-            if ($request->config->isSlice && !$request->sorting) {
+            if ($request->config->defaultSortings && !$request->sorting) {
+				$response->catalogConfig = new Model\Product\Category\Config();
+				$response->catalogConfig->sortings = $request->config->defaultSortings;
+
+				$sorting = clone $response->sorting;
+				$sorting->token = 'default';
+			} else if ($request->config->isSlice && !$request->sorting) { // FIXME
                 $response->catalogConfig = new Model\Product\Category\Config();
                 $response->catalogConfig->sortings = [
                     'in_shop' => 'desc',
@@ -520,5 +525,9 @@ namespace EnterAggregator\Controller\ProductList\Request {
          * @var bool
          */
         public $favourite = false;
+		/**
+		 * @var array
+		 */
+        public $defaultSortings = [];
     }
 }

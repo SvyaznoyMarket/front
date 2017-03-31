@@ -73,6 +73,8 @@ class ListByFilter {
         // фильтры в запросе
         $requestFilters = $filterRepository->getRequestObjectListByHttpRequest($request);
 
+		$catalogConfig = $categoryItemQuery ? (new \EnterRepository\Product\Category())->getConfigObjectByQuery($categoryItemQuery) : new \EnterModel\Product\Category\Config();
+
         // основные фильтры
         $baseRequestFilters = [];
         // фильтр категории
@@ -94,6 +96,12 @@ class ListByFilter {
                     $baseRequestFilters[] = $requestFilter;
                     $requestFilters[] = $requestFilter;
                 }
+
+				if ($slice->token === 'all_labels') {
+					$catalogConfig->sortings = [
+						'price' => 'desc',
+					];
+				}
             }
         }
 
@@ -111,7 +119,7 @@ class ListByFilter {
             $region->id,
             ($pageNum - 1) * $limit,
             $limit,
-            $categoryItemQuery ? (new \EnterRepository\Product\Category())->getConfigObjectByQuery($categoryItemQuery) : null
+			$catalogConfig
         );
         $curl->prepare($productUiPagerQuery);
 
