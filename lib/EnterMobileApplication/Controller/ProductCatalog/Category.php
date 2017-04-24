@@ -453,7 +453,7 @@ class Category {
                     $resultCategory = [
                         'id' => (string)$secretSaleMenuElement->id,
                         'name' => (string)$secretSaleMenuElement->name,
-                        'media' => $this->getResponseForSecretSaleMediaList($media, 'http://' . $config->hostname . ($config->version ? '/' . $config->version : '') . '/img/menu/250x250/secretSale.png'),
+                        'media' => $this->getResponseForSecretSaleMediaList($media, '//' . $config->hostname . ($config->version ? '/' . $config->version : '') . '/img/menu/250x250/secretSale.png'),
                         'hasChildren' => false,
                         'listingView' => $listingView,
                         'discount' => null,

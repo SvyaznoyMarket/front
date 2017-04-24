@@ -31,7 +31,7 @@ class MainMenu extends \EnterRepository\MainMenu {
      */
     public function getSecretSaleElement() {
         $config = $this->getConfig();
-        $mediaUrlPrefix = 'http://' . $config->hostname . ($config->version ? '/' . $config->version : '');
+        $mediaUrlPrefix = '//' . $config->hostname . ($config->version ? '/' . $config->version : '');
 
         $element = new \EnterModel\MainMenu\Element();
         $element->type = 'category';

@@ -69,10 +69,11 @@ class Content {
         if (!$contentPage->contentHtml || !$contentPage->isAvailableByDirectLink)
             return (new \EnterMobile\Controller\Error\NotFound())->execute($request);
 
-        $contentPage->contentHtml = preg_replace('/http:\/\/www.enter.ru/i', '', $contentPage->contentHtml);
+        $contentPage->contentHtml = preg_replace('/https?:\/\/www.enter.ru/i', '', $contentPage->contentHtml);
         $contentPage->contentHtml = '<script src="//yandex.st/jquery/1.8.3/jquery.js" type="text/javascript"></script>' . "\n" . $contentPage->contentHtml;
 
         $pageRequest = new \EnterMobile\Repository\Page\Content\Request();
+		$pageRequest->httpRequest = $request;
         $pageRequest->title = $contentPage->title;
         $pageRequest->content = $contentPage->contentHtml;
         $pageRequest->region = $region;

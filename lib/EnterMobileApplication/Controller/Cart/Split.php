@@ -139,7 +139,7 @@ namespace EnterMobileApplication\Controller\Cart {
                         'sources' => [
                             [
                                 'type' => '150x150',
-                                'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/discounts/150x150/coupon.png',
+                                'url' => '//' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/discounts/150x150/coupon.png',
                                 'width' => '150',
                                 'height' => '150',
                             ],
@@ -162,7 +162,7 @@ namespace EnterMobileApplication\Controller\Cart {
                         'sources' => [
                             [
                                 'type' => '150x150',
-                                'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/discounts/150x150/certificate.png',
+                                'url' => '//' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/discounts/150x150/certificate.png',
                                 'width' => '150',
                                 'height' => '150',
                             ],

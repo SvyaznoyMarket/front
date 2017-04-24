@@ -34,6 +34,7 @@ class DefaultPage {
         // заголовок
         $page->title = 'Enter - все товары для жизни по интернет ценам!';
 
+		$page->url = $request->httpRequest->getScheme() . '://' . $this->getConfig()->fullHost . $_SERVER['REQUEST_URI'];
         $page->fullHost = $this->getConfig()->fullHost;
         $page->dataDebug = $config->debugLevel ? 'true' : '';
         try {

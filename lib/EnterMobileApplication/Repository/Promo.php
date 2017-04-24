@@ -22,7 +22,7 @@ class Promo extends \EnterRepository\Promo {
             if (!$promo->target instanceof \EnterModel\Promo\Target\Content) {
                 unset($promo->target->url);
             } else {
-                $promo->target->url = 'http://m.enter.ru/' . $promo->target->contentId;
+                $promo->target->url = '//m.enter.ru/' . $promo->target->contentId;
             }
 
             if ($promo->target instanceof \EnterModel\Promo\Target\Slice) {

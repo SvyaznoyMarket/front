@@ -5,6 +5,8 @@ namespace EnterMobile\Model\Page {
     use EnterMobile\Model\Partial;
 
     class DefaultPage extends HtmlPage {
+		/** @var string */
+		public $url;
         /** @var string */
         public $fullHost;
         /** @var string */

@@ -14,7 +14,7 @@ require.config({
     paths: {
         //'jquery': 'http://yandex.st/jquery/2.1.0/jquery',
         //'jquery'            : 'vendor/jquery-1.11.0',
-        'jquery'                : ['http://yandex.st/jquery/1.8.3/jquery', 'vendor/jquery-1.8.3'],
+        'jquery'                : ['//yandex.st/jquery/1.8.3/jquery', 'vendor/jquery-1.8.3'],
         'jquery.cookie'         : 'vendor/jquery/jquery.cookie-1.4.1',
         'jquery.ui'             : 'vendor/jquery/jquery-ui',
         'jquery.ui.touch-punch' : 'vendor/jquery/jquery.ui.touch-punch-0.2.3',
@@ -32,17 +32,17 @@ require.config({
         'jquery.kladr'          : 'plugin/jquery.kladr',
         'heightFixIos'          : 'plugin/heightFixIos',
 
-        'underscore'         : ['http://yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
+        'underscore'         : ['//yandex.st/underscore/1.6.0/underscore', 'vendor/underscore-1.6.0'],
         'mustache'           : 'vendor/mustache-0.8.2',
         'hammer'             : 'vendor/hammer-2.0.4',
         'modernizr'          : 'vendor/modernizr.custom',
         'boilerplate.helper' : 'vendor/boilerplate.helper-4.1.0',
 
-        'yandexmaps' : (debug) ? 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=debug' : 'http://api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=release',
+        'yandexmaps' : (debug) ? '//api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=debug' : '//api-maps.yandex.ru/2.1/?load=package.full&lang=ru-RU&mode=release',
 
         'kladr' : 'vendor/kladr/core',
 
-        'direct-credit' : 'http://direct-credit.ru/widget/api_script_utf'
+        'direct-credit' : '//direct-credit.ru/widget/api_script_utf'
     },
 
     shim: {

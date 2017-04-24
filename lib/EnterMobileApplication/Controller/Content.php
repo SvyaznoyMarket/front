@@ -69,7 +69,7 @@ namespace EnterMobileApplication\Controller {
         }
 
         private function processContentLinks($content, Client $curl, $regionId) {
-            if (preg_match_all('/<a\s+[^>]*href="(?:http:\/\/(?:www\.)?enter\.ru)?(\/[^"]*)"/i', $content, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
+            if (preg_match_all('/<a\s+[^>]*href="(?:https?:\/\/(?:www\.)?enter\.ru)?(\/[^"]*)"/i', $content, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
                 $contentRepository = new \EnterRepository\Content();
 
                 foreach ($matches as $key => $match) {

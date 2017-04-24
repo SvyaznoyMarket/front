@@ -54,19 +54,19 @@ class Point {
                     'sources' => [
                         [
                             'type' => '100x100',
-                            'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/logos/100x100/' . $image,
+                            'url' => '//' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/logos/100x100/' . $image,
                             'width' => '100',
                             'height' => '100',
                         ],
                         [
                             'type' => '160х70',
-                            'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/logos/160х70/' . $image,
+                            'url' => '//' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/logos/160х70/' . $image,
                             'width' => '160',
                             'height' => '70',
                         ],
                         [
                             'type' => '320x140',
-                            'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/logos/320x140/' . $image,
+                            'url' => '//' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/logos/320x140/' . $image,
                             'width' => '320',
                             'height' => '140',
                         ],
@@ -82,13 +82,13 @@ class Point {
                     'sources' => [
                         [
                             'type' => '31x40',
-                            'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/markers/31x40/' . $image,
+                            'url' => '//' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/markers/31x40/' . $image,
                             'width' => '31',
                             'height' => '40',
                         ],
                         [
                             'type' => '61x80',
-                            'url' => 'http://' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/markers/61x80/' . $image,
+                            'url' => '//' . $this->getConfig()->hostname . '/' . $this->getConfig()->version . '/img/points/markers/61x80/' . $image,
                             'width' => '61',
                             'height' => '80',
                         ],

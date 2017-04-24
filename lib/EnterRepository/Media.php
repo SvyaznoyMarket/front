@@ -91,7 +91,7 @@ class Media {
      */
     public function getMediaListForPaymentMethod($paymentMethodId, $isOnline, \EnterAggregator\Config $config) {
         $mediaList = new \EnterModel\MediaList();
-        $mediaUrlPrefix = 'http://' . $config->hostname . ($config->version ? '/' . $config->version : '');
+        $mediaUrlPrefix = '//' . $config->hostname . ($config->version ? '/' . $config->version : '');
 
         if ($isOnline) {
             switch ($paymentMethodId) {

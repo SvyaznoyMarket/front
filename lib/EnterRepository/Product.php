@@ -429,7 +429,7 @@ class Product {
                             'sources' => [
                                 [
                                     'type' => 'original',
-                                    'url' => 'http://content.enter.ru/wp-content/uploads/2014/05/tchibo.png',
+                                    'url' => '//content.enter.ru/wp-content/uploads/2014/05/tchibo.png',
                                     'width' => '40',
                                     'height' => '40',
                                 ],

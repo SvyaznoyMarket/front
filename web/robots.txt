@@ -35,4 +35,4 @@ Disallow: /*scrollTo=
 Disallow: /slices/blackfriday
 Disallow: /slices/
 Disallow: /compare
-Host: m.enter.ru
+Host: https://m.enter.ru

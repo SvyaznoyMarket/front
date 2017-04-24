@@ -114,7 +114,7 @@ class Request {
      * @return bool
      */
     public function isSecure() {
-        return 'on' == strtolower($this->server['HTTPS']) || 1 == $this->server['HTTPS'];
+        return 'on' == strtolower($this->server['HTTPS']) || 1 == $this->server['HTTPS'] || 'https' === strtolower($this->server['HTTP_X_FORWARDED_PROTO']);
     }
 
     /**
