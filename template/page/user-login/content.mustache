@@ -69,21 +69,15 @@
 				                <input type="text" placeholder="Телефон" value="{{phone}}" name="phone" class="js-phone-mask authForm_it textfield{{#errors.phone}} fieldError{{/errors.phone}}">
                                 {{#errors.phone}}<span class="errorText">{{errors.phone}}</span>{{/errors.phone}}
 
-				                <div class="authForm_sbscr">
-				                    <input type="checkbox" checked="checked" id="subscribe" name="subscribe" class="custom-input custom-input--defcheck jsCustomRadio" disabled>
-				                    <label for="subscribe" class="custom-label">Стать участником Enter Prize,<br> получить скидку 300 рублей </label>
-				                </div>
                                 <div class="oferta-agreement">
                                     <input type="checkbox" id="oferta" name="agreed" class="custom-input custom-input--defcheck jsCustomRadio{{#errors.agreed}} fieldError{{/errors.agreed}}">
-                                    <label for="oferta" class="custom-label">Согласен <a href="/reklamnaya-akcia-enterprize" target="_blank">с условиями оферты</a> </label>
+                                    <label for="oferta" class="custom-label">Согласен <a href="/terms-sordex" target="_blank">с условиями оферты</a> </label>
                                     {{#errors.agreed}}<span class="errorText">{{errors.agreed}}</span>{{/errors.agreed}}
                                 </div>
 
                                 <input type="hidden" name="redirect_to" value="{{redirectUrl}}" />
 
 				                <input type="submit" value="Регистрация" name="" class="authForm_is btnsubmit">
-
-				                <p class="authForm_accept">Нажимая кнопку «Регистрация», я подтверждаю<br> свое согласие с <a href="/terms" target="_blank">Условиями продажи...</a></p>
 
 				                <div class="authForm_socn">
 				                    Войти через
