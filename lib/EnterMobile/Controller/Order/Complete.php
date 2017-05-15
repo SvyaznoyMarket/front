@@ -74,6 +74,7 @@ class Complete {
 
             $pointUis = [];
             $orderNumberErps = [];
+            $orderProductIds = [];
             foreach ($orderData['orders'] as $orderItem) {
                 if (empty($orderItem['numberErp'])) {
                     $this->getLogger()->push(['type' => 'error', 'error' => ['message' => 'Некорректные данные'], 'orderItem' => $orderItem, 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['order', 'critical']]);
@@ -84,6 +85,11 @@ class Complete {
                 $order->fromArray($orderItem);
 
                 $orderNumberErps[] = $order->numberErp;
+
+                foreach ($order->product as $orderProduct) {
+                    $orderProductIds[] = $orderProduct->id;
+                }
+
                 if ($order->point) {
                     $pointUis[] = $order->point->ui;
                 }
@@ -111,6 +117,9 @@ class Complete {
                     $paymentListQueriesByNumberErp[$orderNumberErp] = $paymentListQuery;
                 }
 
+                $orderProductListQuery = new \EnterQuery\Product\GetListByIdList($orderProductIds, $regionId);
+                $this->getCurl()->prepare($orderProductListQuery);
+
                 $curl->execute();
 
                 /** @var Model\Point[] $pointsByUi */
@@ -124,6 +133,8 @@ class Complete {
                         $pointsByUi[$point->ui] = $point;
                     }
                 }
+
+                $orderProductsById = (new \EnterRepository\Product())->getIndexedObjectListByQueryList([$orderProductListQuery]);
 
                 foreach ($orders as $order) {
                     if ($order->point && isset($pointsByUi[$order->point->ui])) {
@@ -151,6 +162,10 @@ class Complete {
                                 }
 
                                 $order->paymentMethods[] = $paymentMethod;
+                            }
+
+                            foreach ($order->product as $orderProduct) {
+                                $orderProduct->oldPrice = $orderProductsById[$orderProduct->id]->oldPrice;
                             }
                         }
                     } catch (\Exception $e) {
