@@ -8704,7 +8704,11 @@ body {
 }
 .checkout-head-steps__text {
   line-height: 1.2;
+  color: inherit;
   display: block;
+}
+.checkout-head-steps__text:hover {
+  color: inherit;
 }
 @media only screen and (max-width: 560px) {
   .checkout-head {
