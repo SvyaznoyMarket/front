@@ -8813,6 +8813,45 @@ body {
 .checkout-order-info__r {
   float: right;
 }
+.checkout-delivery-group-layout {
+  display: table;
+}
+.checkout-delivery-group-layout > div {
+  display: table-row;
+}
+.checkout-delivery-group-layout > div > div {
+  display: table-cell;
+  vertical-align: top;
+}
+.checkout-delivery-group-layout > div > div:first-child {
+  white-space: nowrap;
+}
+.checkout-delivery-group-layout > div > div:last-child {
+  padding-left: 10px;
+}
+.checkout-delay-discount {
+  margin-right: 10px;
+}
+.checkout-delay-discount .custom-input--check + label {
+  font-size: 12px;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  width: 100%;
+  margin-left: 10px;
+  padding: 10px 10px 10px 40px;
+  text-align: left;
+  background-color: rgba(255, 255, 255, 0.75);
+  background-position: 10px 50%;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+.checkout-delay-discount .custom-input--check:checked + label {
+  background-position: 10px 50%;
+}
 .checkout-celendar {
   font-size: 14px;
   line-height: 1;
@@ -8960,7 +8999,7 @@ body {
   text-align: center;
 }
 .checkout-order-items {
-  padding: 10px 10px 5px;
+  padding: 10px 0 5px;
   border-bottom: 1px solid #e6e6e6;
 }
 .checkout-order-items:last-child {
@@ -8989,6 +9028,30 @@ body {
 }
 .checkout-order-items__data.del-link {
   text-align: right;
+}
+.checkout-order-items__discount-icon {
+  width: 90px;
+  padding-right: 0;
+  font-family: Tahoma, sans-serif;
+  font-size: 24px;
+  text-align: center;
+  color: #fe4c40;
+}
+.checkout-order-items__discount-icon > div {
+  min-width: 38px;
+}
+.checkout-order-items__discount-name {
+  line-height: 1.2;
+}
+.checkout-order-items__discount-name .del-link {
+  padding-left: 10px;
+  color: #777;
+}
+.checkout-order-items__discount-value,
+.checkout-order-items__discount-value:last-child {
+  padding: 0 10px 0 20px;
+  white-space: nowrap;
+  color: #e8303c;
 }
 .checkout-order-items.error {
   margin-top: -1px;

@@ -316,7 +316,7 @@ class Delivery {
 
                     return $products;
                 }),
-                'discounts'      => call_user_func(function() use (&$templateHelper, &$priceHelper, &$splitModel, &$orderModel) {
+                'discounts'      => call_user_func(function() use (&$templateHelper, &$priceHelper, &$splitModel, &$orderModel, $paymentMethodsById) {
                     $discounts = [];
 
                     foreach ($orderModel->discounts as $discountModel) {
@@ -363,6 +363,33 @@ class Delivery {
                                     ],
                                 ],
                             ]),
+                        ];
+                    }
+
+                    if ($orderModel->paymentMethodId) {
+                        foreach ($orderModel->possiblePaymentMethods as $possiblePaymentMethod) {
+                            if ($possiblePaymentMethod->id == $orderModel->paymentMethodId) {
+                                if ($possiblePaymentMethod->discount) {
+                                    $discounts[] = [
+                                        'name'            => 'Скидка при онлайн-оплате',
+                                        'discount'        => [
+                                            'value'      => $possiblePaymentMethod->discount->value,
+                                            'isCurrency' => $possiblePaymentMethod->discount->unit == 'rub',
+                                        ],
+                                    ];
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    if ($orderModel->delayDiscount && $orderModel->hasDelayDiscount) {
+                        $discounts[] = [
+                            'name'            => 'Скидка за увеличение срока доставки (+3 дня)',
+                            'discount'        => [
+                                'value'      => $orderModel->delayDiscount,
+                                'isCurrency' => true,
+                            ],
                         ];
                     }
 
@@ -807,6 +834,11 @@ class Delivery {
                         : false
 
                 ],
+                'delayDiscount' => [
+                    'orderId'   => $orderModel->blockName,
+                    'isShow'   => (bool)$orderModel->delayDiscount,
+                    'isActive' => $orderModel->hasDelayDiscount,
+                ],
             ];
 
             $page->content->orders[] = $order;
@@ -871,6 +903,7 @@ class Delivery {
                 'name'     => 'page/order/delivery/point-popup',
                 'partials' => [
                     'page/order/delivery/point-list',
+                    'page/order/delivery/delayDiscount',
                 ],
             ],
             // календарь

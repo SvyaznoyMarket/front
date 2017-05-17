@@ -1,0 +1,8 @@
+{{#delayDiscount}}
+    {{#isShow}}
+        <div class="checkout-delay-discount">
+            <input id="delayDiscount-{{orderId}}" type="checkbox" class="custom-input custom-input--check js-order-form-changeHasDelayDiscount" name="" value="1" data-order-id="{{orderId}}" {{#isActive}}checked="checked"{{/isActive}}>
+            <label for="delayDiscount-{{orderId}}" class="custom-label custom-label--top">Получить скидку за увеличение срока доставки (+3 дня)</label>
+        </div>
+    {{/isShow}}
+{{/delayDiscount}}

@@ -54,6 +54,11 @@ class Order {
     /** @var int */
     public $isOnlinePaymentAvailable;
 
+    /** @var bool */
+    public $hasDelayDiscount = false;
+    /** @var string */
+    public $delayDiscount = '';
+
     /**
      * @param array $data
      * @param $format
@@ -129,6 +134,8 @@ class Order {
             }
         }
         $this->comment = $data['comment'] ? (string)$data['comment'] : null;
+        if (isset($data['has_delay_discount'])) $this->hasDelayDiscount = (bool)$data['has_delay_discount'];
+        if (isset($data['delay_discount'])) $this->delayDiscount = (string)$data['delay_discount'];
     }
 
     /**
@@ -160,6 +167,8 @@ class Order {
             'possible_point_data'      => $possiblePointsData,
             'comment'                  => $this->comment,
             'prepaid_sum'              => $this->prepayment ? (float)$this->prepayment->sum : 0,
+            'has_delay_discount'       => $this->hasDelayDiscount,
+            'delay_discount'           => $this->delayDiscount,
         ];
     }
 }

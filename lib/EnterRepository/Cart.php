@@ -328,6 +328,10 @@ class Cart {
                     $dump['orders'][$blockName]['payment_method_id'] = $orderItem['paymentMethodId'];
                 }
 
+                if (array_key_exists('hasDelayDiscount', $orderItem)) {
+                    $dump['orders'][$blockName]['has_delay_discount'] = (bool)$orderItem['hasDelayDiscount'];
+                }
+
                 // количество товаров
                 if (isset($orderItem['products'][0])) {
                     $quantitiesByProductId = [];

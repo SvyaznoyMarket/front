@@ -856,7 +856,7 @@ define(
             var
                 $el = $(this),
                 data = $el.data('value')
-            ;
+                ;
 
             console.info('changeSplit', $el, $el.is(':checkbox'));
 
@@ -870,6 +870,20 @@ define(
                 changeSplit(data);
             }
         });
+
+        $body.on('click', '.js-order-form-changeHasDelayDiscount', function() {
+            changeSplit({
+                'change': {
+                    'orders': [
+                        {
+                            'blockName': $(this).data('orderId'),
+                            'hasDelayDiscount': $(this).is(':checked') ? '1' : ''
+                        }
+                    ]
+                }
+            });
+        });
+
         $body.on('click', '.js-order-delivery-pointPopup-link', showPointPopup);
         $body.on('click', '.js-order-delivery-addressPopup-link', showAddressPopup);
         $body.on('click', '.js-order-delivery-discountPopup-link', showDiscountPopup);

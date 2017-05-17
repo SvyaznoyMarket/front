@@ -1,17 +1,20 @@
 {{! примененные скидки }}
 {{#discounts}}
     <div class="checkout-order-items table">
-        <div class="checkout-order-items__left table_cell">
-            <img alt="" src="/css/modules/order/img/sertificate.png">
+        <div class="checkout-order-items__discount-icon table_cell">
+            <div>%</div>
         </div>
 
-        <div class="checkout-order-items__right table_cell">
-            <div class="checkout-order-items__name">
-                {{name}}
-            </div>
-            <a href="#" class="checkout-order-items__data del-link js-order-delivery-form-control" data-value="{{&deleteDataValue}}"><span class="bb-dotted">удалить</span></a>
-            <div class="checkout-order-items__data">&nbsp;</div>
-            <div class="checkout-order-items__data checkout-order-items__data--sale l ta-r">-{{discount.value}}{{#discount.isCurrency}} <span class="rubl">p</span>{{/discount.isCurrency}}{{^discount.isCurrency}}%{{/discount.isCurrency}}</div>
+        <div class="checkout-order-items__discount-name table_cell">
+            {{name}}
+
+            {{#deleteDataValue}}
+                <a href="#" class="del-link js-order-delivery-form-control" data-value="{{&deleteDataValue}}"><span class="bb-dotted">удалить</span></a>
+            {{/deleteDataValue}}
+        </div>
+
+        <div class="checkout-order-items__discount-value table_cell">
+            <div class="l ta-r">-{{discount.value}}{{#discount.isCurrency}} <span class="rubl">p</span>{{/discount.isCurrency}}{{^discount.isCurrency}}%{{/discount.isCurrency}}</div>
         </div>
     </div>
 {{/discounts}}

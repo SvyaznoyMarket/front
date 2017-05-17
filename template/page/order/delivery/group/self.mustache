@@ -1,25 +1,35 @@
 <div class="checkout-order__inn box-show js-delivery-type id-order-{{id}}-delivery" data-data-selector="#order-{{id}}-map-data">
-    {{#dateJson}}
-    <a href="#" class="checkout-celendar js-order-delivery-celendar-link" data-data-selector="#order-{{id}}-date-data" data-modal-position="fixed-untill-640" data-modal-title="Дата">{{delivery.date}}</a>
-    {{/dateJson}}
-    <div class="custom-select custom-select--button toggle js-toggle-wrap">
-        {{#delivery.interval}}
-            <span class="custom-select__value toggle-link js-toggle-link">{{from}}…{{to}} <i class="caret"></i></span>
-        {{/delivery.interval}}
+    <div class="checkout-delivery-group-layout">
+        <div>
+            <div>
+                {{#dateJson}}
+                    <a href="#" class="checkout-celendar js-order-delivery-celendar-link" data-data-selector="#order-{{id}}-date-data" data-modal-position="fixed-untill-640" data-modal-title="Дата">{{delivery.date}}</a>
+                {{/dateJson}}
 
-        <ul class="custom-select-list toggle-box">
-            {{#delivery.interval}}
-                <li class="custom-select-list__item js-order-delivery-form-control" data-value="{{&dataValue}}">{{from}}…{{to}}</li>
-            {{/delivery.interval}}
-        </ul>
+                <div class="custom-select custom-select--button toggle js-toggle-wrap">
+                    {{#delivery.interval}}
+                        <span class="custom-select__value toggle-link js-toggle-link">{{from}}…{{to}} <i class="caret"></i></span>
+                    {{/delivery.interval}}
+
+                    <ul class="custom-select-list toggle-box">
+                        {{#delivery.interval}}
+                            <li class="custom-select-list__item js-order-delivery-form-control" data-value="{{&dataValue}}">{{from}}…{{to}}</li>
+                        {{/delivery.interval}}
+                    </ul>
+                </div>
+            </div>
+            <div>
+                {{>page/order/delivery/delayDiscount}}
+            </div>
+        </div>
     </div>
 
     {{^delivery.point}}
-    <div class="self-delivery-choose">
-        <a href="#" class="btn-transparent btn-transparent--normal js-order-delivery-pointPopup-link" data-modal-title="Точки самовывоза" data-modal-position="fixed" data-storage-selector="#order-{{id}}-point-data" data-btn="select-shop">
-            <span class="bb-dotted">Выбрать точку самовывоза</span>
-        </a>
-    </div>
+        <div class="self-delivery-choose">
+            <a href="#" class="btn-transparent btn-transparent--normal js-order-delivery-pointPopup-link" data-modal-title="Точки самовывоза" data-modal-position="fixed" data-storage-selector="#order-{{id}}-point-data" data-btn="select-shop">
+                <span class="bb-dotted">Выбрать точку самовывоза</span>
+            </a>
+        </div>
     {{/delivery.point}}
 
     {{#delivery.point}}

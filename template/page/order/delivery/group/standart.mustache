@@ -1,23 +1,30 @@
 <div class="checkout-order__inn box-show">
-    {{#dateJson}}
-    <a href="#order-delivery-celendar-link" class="checkout-celendar js-order-delivery-celendar-link" data-data-selector="#order-{{id}}-date-data" data-modal-position="fixed-untill-640" data-modal-title="Дата">{{delivery.date}}</a>
-    {{/dateJson}}
-    <div class="custom-select custom-select--button toggle js-toggle-wrap">
-        {{#delivery.interval}}
-            <span class="custom-select__value toggle-link js-toggle-link">{{from}}…{{to}} <i class="caret"></i></span>
-        {{/delivery.interval}}
+    <div class="checkout-delivery-group-layout">
+        <div>
+            <div>
+                {{#dateJson}}
+                    <a href="#order-delivery-celendar-link" class="checkout-celendar js-order-delivery-celendar-link" data-data-selector="#order-{{id}}-date-data" data-modal-position="fixed-untill-640" data-modal-title="Дата">{{delivery.date}}</a>
+                {{/dateJson}}
 
-        <ul class="custom-select-list toggle-box">
-        {{#delivery.interval}}
-            <li class="custom-select-list__item js-order-delivery-form-control" data-value="{{&dataValue}}">{{from}}…{{to}}</li>
-        {{/delivery.interval}}
-        </ul>
+                <div class="custom-select custom-select--button toggle js-toggle-wrap">
+                    {{#delivery.interval}}
+                        <span class="custom-select__value toggle-link js-toggle-link">{{from}}…{{to}} <i class="caret"></i></span>
+                    {{/delivery.interval}}
+
+                    <ul class="custom-select-list toggle-box">
+                        {{#delivery.interval}}
+                            <li class="custom-select-list__item js-order-delivery-form-control" data-value="{{&dataValue}}">{{from}}…{{to}}</li>
+                        {{/delivery.interval}}
+                    </ul>
+                </div>
+            </div>
+            <div>
+                {{>page/order/delivery/delayDiscount}}
+            </div>
+        </div>
     </div>
 
     <div class="checkout-address">
-       
-
-        
         {{#user.address}}
             <div class="checkout-address__title"><strong>Адрес</strong> для всех заказов с доставкой</div>
             <p class="checkout-address__selected">{{user.address.name}}</p>
@@ -26,24 +33,5 @@
         <a href="#" class="btn {{^user.address}}btn-transparent btn-transparent--normal{{/user.address}} js-order-delivery-addressPopup-link" data-modal-title="Адрес доставки" data-modal-position="fixed" data-data-selector="#order-{{id}}-address-data" data-map-container-selector="#order-{{id}}-address-map-container">
             <span class="bb-dotted">{{^user.address}}Указать адрес{{/user.address}}{{#user.address}}Изменить адрес{{/user.address}}</span>
         </a>
-
-
-        <!--
-        <div class="checkout-address__select custom-select">
-            <span class="custom-select__value js-order-btn" data-btn="select-address">
-                <span class="bb-dotted js-order-delivery-addressPopup-link" data-modal-title="Адрес доставки" data-modal-position="fixed" data-data-selector="#order-{{id}}-address-data">Указать адрес</span>
-                <i class="caret"></i>
-            </span>
-
-            <ul class="custom-select-list js-order-box" data-box="data-select-address">
-                <li class="custom-select-list__item">ул. Линии Октябрьской Железной Дороги, 12/1, 23</li>
-                <li class="custom-select-list__item">ул. Орджоникидзе, 10</li>
-                <li class="custom-select-list__item custom-select-list__item--add">
-                    <span class="icon-plus">+</span>
-                    <span class="bb-dotted">Добавить адрес</span>
-                </li>
-            </ul>
-        </div>
-        -->
     </div>
 </div>

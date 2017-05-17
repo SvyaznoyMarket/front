@@ -135,6 +135,10 @@ class CreatePacketBySplit extends Query {
                 $orderData['meta_data']['prepaid_sum'] = $order->prepayment->sum;
             }
 
+            if ($order->hasDelayDiscount && $order->delayDiscount) {
+                $orderData['meta_data']['delay_discount'] = $order->delayDiscount;
+            }
+
             $data[] = $orderData;
         }
 
