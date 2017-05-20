@@ -21,6 +21,14 @@ define(
                 return price.join('.');
             },
 
+            loadScript: function(url, isAsync) {
+                var script = document.createElement('script');
+                script.src = url;
+                script.async = !!isAsync;
+                script.type = 'text/javascript';
+                document.getElementsByTagName('head')[0].appendChild(script);
+            },
+
             /**
              * Логирование транзакции в Google Analytics (Classical + Universal)
              * Если в action передаётся несколько меток, то для удобства фильтрации по ним в аналитеке нужно заключать каждую метку в скобки, например: RR_покупка (marketplace)(gift)

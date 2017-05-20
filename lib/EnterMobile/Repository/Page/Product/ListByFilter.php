@@ -57,6 +57,17 @@ class ListByFilter {
         $widget->shownProductCount = sprintf('Показать (%s)', $request->count > 999 ? '&infin;' : $request->count);
         $page->widgets['.' . $widget->widgetId] = $widget;
 
+        $page->gdeSlonLandingUrls = call_user_func(function() use($request) {
+            $codes = '';
+            foreach ($request->products as $product) {
+                $codes .= $product->id.':'.$product->price.',';
+            }
+
+            return [
+                'https://www.gdeslon.ru/landing.js?mode=list&codes='.urlencode(mb_substr($codes, 0, -1, 'utf-8')).($request->category && $request->category->id ? '&cat_id='.urlencode($request->category->id) : '').'&mid=81901'
+            ];
+        });
+
         //die(json_encode($page, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
     }
 }

@@ -418,6 +418,10 @@ class ProductCard {
 
         $page->content->product->showDeliveryBlock = $page->content->product->shopStateBlock || ($page->content->product->deliveryBlock && $page->content->product->deliveryBlock->deliveries) || $page->content->product->slotPartnerOffer;
 
+        $page->gdeSlonLandingUrls = [
+            'https://www.gdeslon.ru/landing.js?mode=card&codes='.urlencode($product->id.':'.$product->price).'&mid=81901',
+        ];
+
         // partner
         try {
             $page->partners = (new Repository\Partial\Partner())->getListForProductCard($request);
