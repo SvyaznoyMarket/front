@@ -156,6 +156,17 @@ class ChildCategory {
         );
         $page->content->selectedFilterBlock->hasFilter = (bool)$page->content->selectedFilterBlock->filters;
 
+        $page->gdeSlonLandingUrls = call_user_func(function() use($request) {
+            $codes = '';
+            foreach ($request->products as $product) {
+                $codes .= $product->id.':'.$product->price.',';
+            }
+
+            return [
+                'https://www.gdeslon.ru/landing.js?mode=list&codes='.urlencode(mb_substr($codes, 0, -1, 'utf-8')).'&cat_id=' . urlencode($request->category->id).'&mid=81901'
+            ];
+        });
+
         // partner
         try {
             $page->partners = (new Repository\Partial\Partner())->getListForProductCatalog($request);

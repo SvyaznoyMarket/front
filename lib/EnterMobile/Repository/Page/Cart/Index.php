@@ -66,6 +66,17 @@ class Index {
             $page->content->productBlock->products[] = $productCard;
         }
 
+        $page->gdeSlonLandingUrls = call_user_func(function() use($request) {
+            $urls = [];
+            $codes = '';
+            foreach ($request->cart->product as $product) {
+                $codes .= str_repeat($product->id.':'.$product->price.',', $product->quantity);
+            }
+
+            $urls[] = 'https://www.gdeslon.ru/landing.js?mode=basket&codes='.urlencode(mb_substr($codes, 0, -1, 'utf-8')).'&mid=81901';
+            return $urls;
+        });
+
         // partner
         try {
             $page->partners = (new Repository\Partial\Partner())->getListForCart($request);

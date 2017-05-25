@@ -112,6 +112,10 @@ class Index {
             }
         });
 
+        $page->gdeSlonLandingUrls = [
+            'https://www.gdeslon.ru/landing.js?mode=main&mid=81901',
+        ];
+
         $page->headerTitle = false;
 
         // расположение главного меню

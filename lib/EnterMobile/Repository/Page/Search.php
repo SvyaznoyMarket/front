@@ -123,6 +123,15 @@ class Search {
         );
         $page->content->selectedFilterBlock->hasFilter = (bool)$page->content->selectedFilterBlock->filters;
 
+        $page->gdeSlonLandingUrls = call_user_func(function() use($request) {
+            $codes = '';
+            foreach ($request->products as $product) {
+                $codes .= $product->id.':'.$product->price.',';
+            }
+
+            return ['https://www.gdeslon.ru/landing.js?mode=list&codes='.urlencode(mb_substr($codes, 0, -1, 'utf-8')).'&mid=81901'];
+        });
+
         // partner
         try {
             $page->partners = (new Repository\Partial\Partner())->getListForSearch($request);

@@ -234,62 +234,6 @@ class Complete {
                         'url'            => $router->getUrlByRoute(new Routing\Order\Payment\GetForm()),
                     ];
                 }), JSON_UNESCAPED_UNICODE),
-                'gdeSlon' => [
-                    'isShow' => !$request->isCompletePageReaded,
-                    'comission' => urlencode(call_user_func(function() use($orderModel) {
-                        $commission = '0';
-                        foreach ($orderModel->product as $orderProduct) {
-                            $productCommission = call_user_func(function() use($orderProduct) {
-                                // todo использовать цену товара с учётом скидки
-                                if ($orderProduct->oldPrice) {
-                                    return '3.9';
-                                }
-
-                                $category = $orderProduct->category;
-                                do {
-                                    if ($category) {
-                                        switch ($category->ui) {
-                                            case \EnterModel\Product\Category::UI_MEBEL:
-                                            case \EnterModel\Product\Category::UI_UKRASHENIYA_I_CHASY:
-                                                return '15.6';
-                                            case \EnterModel\Product\Category::UI_ODEZHDA_AKSESSUARY:
-                                            case \EnterModel\Product\Category::UI_BYTOVAYA_TEHNIKA_AKSESSUARY:
-                                            case \EnterModel\Product\Category::UI_SPORT_I_OTDYH_VELOSIPEDY_AKSESSUARY:
-                                            case \EnterModel\Product\Category::UI_TOVARY_DLYA_DOMA_AKSESSUARY_DLYA_VANNOI:
-                                            case \EnterModel\Product\Category::UI_ELECTRONIKA_AKSESSUARY:
-                                            case \EnterModel\Product\Category::UI_DETSKIE_TOVARY_AKSESSUARY_DLYA_AVTOKRESEL:
-                                            case \EnterModel\Product\Category::UI_ZOOTOVARY_AKSESSUARY_DLYA_AKVARIUMOV:
-                                                return '13';
-                                            case \EnterModel\Product\Category::UI_SPORT_I_OTDYH:
-                                                return '11.7';
-                                            case \EnterModel\Product\Category::UI_ODEZHDA:
-                                            case \EnterModel\Product\Category::UI_DETSKIE_TOVARY:
-                                            case \EnterModel\Product\Category::UI_PARFUMERIA_I_COSMETIKA:
-                                            case \EnterModel\Product\Category::UI_SDELAY_SAM:
-                                            case \EnterModel\Product\Category::UI_SAD_I_OGOROD:
-                                                return '10.4';
-                                            case \EnterModel\Product\Category::UI_PODARKI_I_HOBBY:
-                                                return '9.1';
-                                            case \EnterModel\Product\Category::UI_TOVARY_DLYA_DOMA:
-                                            case \EnterModel\Product\Category::UI_AVTO:
-                                            case \EnterModel\Product\Category::UI_ZOOTOVARY:
-                                                return '7.8';
-                                            case \EnterModel\Product\Category::UI_ELECTRONIKA:
-                                            case \EnterModel\Product\Category::UI_BYTOVAYA_TEHNIKA:
-                                                return '3.9';
-                                        }
-                                    }
-                                } while ($category = $category->parent);
-
-                                return '0';
-                            });
-
-                            $commission = bcadd($commission, bcdiv(bcmul(bcmul($orderProduct->price, $orderProduct->quantity, 10), $productCommission, 10), 100, 10), 2);
-                        }
-
-                        return $commission;
-                    })),
-                ],
             ];
 
             $page->content->orders[] = $order;
@@ -335,6 +279,76 @@ class Complete {
                 ];
             }, $request->orders));
         }
+
+        $page->gdeSlonLandingUrls = call_user_func(function() use($request) {
+            $urls = [];
+            foreach ($request->orders as $order) {
+                $codes = '';
+                foreach ($order->product as $product) {
+                    $codes .= str_repeat($product->id.':'.$product->price.',', $product->quantity);
+                }
+
+                $urls[] = 'https://www.gdeslon.ru/landing.js?mode=thanks&codes='.urlencode(mb_substr($codes, 0, -1, 'utf-8')).'&order_id='.urlencode($order->numberErp).'&mid=81901';
+
+                $comission = urlencode(call_user_func(function() use($order) {
+                    $commission = '0';
+                    foreach ($order->product as $orderProduct) {
+                        $productCommission = call_user_func(function() use($orderProduct) {
+                            // todo использовать цену товара с учётом скидки
+                            if ($orderProduct->oldPrice) {
+                                return '3.9';
+                            }
+
+                            $category = $orderProduct->category;
+                            do {
+                                if ($category) {
+                                    switch ($category->ui) {
+                                        case \EnterModel\Product\Category::UI_MEBEL:
+                                        case \EnterModel\Product\Category::UI_UKRASHENIYA_I_CHASY:
+                                            return '15.6';
+                                        case \EnterModel\Product\Category::UI_ODEZHDA_AKSESSUARY:
+                                        case \EnterModel\Product\Category::UI_BYTOVAYA_TEHNIKA_AKSESSUARY:
+                                        case \EnterModel\Product\Category::UI_SPORT_I_OTDYH_VELOSIPEDY_AKSESSUARY:
+                                        case \EnterModel\Product\Category::UI_TOVARY_DLYA_DOMA_AKSESSUARY_DLYA_VANNOI:
+                                        case \EnterModel\Product\Category::UI_ELECTRONIKA_AKSESSUARY:
+                                        case \EnterModel\Product\Category::UI_DETSKIE_TOVARY_AKSESSUARY_DLYA_AVTOKRESEL:
+                                        case \EnterModel\Product\Category::UI_ZOOTOVARY_AKSESSUARY_DLYA_AKVARIUMOV:
+                                            return '13';
+                                        case \EnterModel\Product\Category::UI_SPORT_I_OTDYH:
+                                            return '11.7';
+                                        case \EnterModel\Product\Category::UI_ODEZHDA:
+                                        case \EnterModel\Product\Category::UI_DETSKIE_TOVARY:
+                                        case \EnterModel\Product\Category::UI_PARFUMERIA_I_COSMETIKA:
+                                        case \EnterModel\Product\Category::UI_SDELAY_SAM:
+                                        case \EnterModel\Product\Category::UI_SAD_I_OGOROD:
+                                            return '10.4';
+                                        case \EnterModel\Product\Category::UI_PODARKI_I_HOBBY:
+                                            return '9.1';
+                                        case \EnterModel\Product\Category::UI_TOVARY_DLYA_DOMA:
+                                        case \EnterModel\Product\Category::UI_AVTO:
+                                        case \EnterModel\Product\Category::UI_ZOOTOVARY:
+                                            return '7.8';
+                                        case \EnterModel\Product\Category::UI_ELECTRONIKA:
+                                        case \EnterModel\Product\Category::UI_BYTOVAYA_TEHNIKA:
+                                            return '3.9';
+                                    }
+                                }
+                            } while ($category = $category->parent);
+
+                            return '0';
+                        });
+
+                        $commission = bcadd($commission, bcdiv(bcmul(bcmul($orderProduct->price, $orderProduct->quantity, 10), $productCommission, 10), 100, 10), 2);
+                    }
+
+                    return $commission;
+                }));
+
+                $urls[] = 'https://www.gdeslon.ru/thanks.js?codes=001:'.urlencode($comission).'&order_id='.urlencode($order->numberErp).'&merchant_id=81901';
+            }
+
+            return $urls;
+        });
 
         // заголовок
         $page->title = 'Оформление заказа - Завершение - Enter';

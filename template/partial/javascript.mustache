@@ -61,4 +61,6 @@
     </script>
 {{/googleAnalytics}}
 
-<script async="true" type="text/javascript" src="https://www.gdeslon.ru/landing.js"></script>
+{{#gdeSlonLandingUrls}}
+    <script async="true" type="text/javascript" src="{{.}}"></script>
+{{/gdeSlonLandingUrls}}

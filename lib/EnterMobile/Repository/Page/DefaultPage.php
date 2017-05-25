@@ -183,6 +183,10 @@ class DefaultPage {
             }
         }
 
+        $page->gdeSlonLandingUrls = [
+            'https://www.gdeslon.ru/landing.js?mode=other&mid=81901',
+        ];
+
         $page->googleTagManager = false;
         if ($config->googleTagManager->enabled) {
             $page->googleTagManager = new Page\GoogleTagManager();

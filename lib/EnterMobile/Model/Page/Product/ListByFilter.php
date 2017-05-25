@@ -17,6 +17,7 @@ namespace EnterMobile\Model\Page\Product {
         public $page;
         /** @var int */
         public $limit;
-
+        /** @var string[] */
+        public $gdeSlonLandingUrls = [];
     }
 }

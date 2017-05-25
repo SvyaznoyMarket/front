@@ -1,9 +1,9 @@
 define(
     [
-        'jquery', 'underscore', 'mustache'
+        'jquery', 'underscore', 'mustache', 'module/util'
     ],
     function (
-        $, _, mustache
+        $, _, mustache, util
     ) {
         require(['jquery.deparam'], function(){
             function setParamToUrl(name, value) {
@@ -226,6 +226,12 @@ define(
                                     if (_.isObject(response.result.widgets)) {
                                         $body.data('widget', response.result.widgets);
                                         $body.trigger('render');
+                                    }
+
+                                    if (response.result.gdeSlonLandingUrls) {
+                                        $.each(response.result.gdeSlonLandingUrls, function(key, url){
+                                            util.loadScript(url, true);
+                                        });
                                     }
                                 }
                             })
