@@ -1,23 +1,25 @@
 {{#form}}
-<form class="form jsPaymentForms jsPaymentFormPSB" method="post" action="{{url}}">
-    <input type="hidden" name="AMOUNT" value="{{amount}}" />
-    <input type="hidden" name="CURRENCY" value="{{currency}}" />
-    <input type="hidden" name="ORDER" value="{{order}}" />
-    <input type="hidden" name="DESC" value="{{desc}}" />
-    <input type="hidden" name="TERMINAL" value="{{terminal}}" />
-    <input type="hidden" name="TRTYPE" value="{{trtype}}" />
-    <input type="hidden" name="MERCH_NAME" value="{{merchName}}" />
-    <input type="hidden" name="MERCHANT" value="{{merchant}}" />
-    <input type="hidden" name="EMAIL" value="{{email}}" />
-    <input type="hidden" name="TIMESTAMP" value="{{timestamp}}" />
-    <input type="hidden" name="NONCE" value="{{nonce}}" />
-    <input type="hidden" name="BACKREF" value="{{backref}}" />
-    <input type="hidden" name="P_SIGN" value="{{pSign}}" />
+    <div class="js-order-payment-container">
+        <form class="form jsPaymentForms jsPaymentFormPSB" method="post" action="{{url}}">
+            <input type="hidden" name="AMOUNT" value="{{amount}}" />
+            <input type="hidden" name="CURRENCY" value="{{currency}}" />
+            <input type="hidden" name="ORDER" value="{{order}}" />
+            <input type="hidden" name="DESC" value="{{desc}}" />
+            <input type="hidden" name="TERMINAL" value="{{terminal}}" />
+            <input type="hidden" name="TRTYPE" value="{{trtype}}" />
+            <input type="hidden" name="MERCH_NAME" value="{{merchName}}" />
+            <input type="hidden" name="MERCHANT" value="{{merchant}}" />
+            <input type="hidden" name="EMAIL" value="{{email}}" />
+            <input type="hidden" name="TIMESTAMP" value="{{timestamp}}" />
+            <input type="hidden" name="NONCE" value="{{nonce}}" />
+            <input type="hidden" name="BACKREF" value="{{backref}}" />
+            <input type="hidden" name="P_SIGN" value="{{pSign}}" />
 
-    <div class="btn-container">
-        <button type="submit" class="btn btn--orange btn--pay">Оплатить</button>
+            <div class="btn-container">
+                <button type="submit" class="btn btn--orange btn--pay">Оплатить</button>
+            </div>
+        </form>
+
+        <p class="checkout-checkbox-lst__desc js-order-payment-hint">Вы будете перемещены на сайт платежной системы.</p>
     </div>
-</form>
-
-<p class="checkout-checkbox-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
 {{/form}}

@@ -80,6 +80,31 @@
         }
       }
     }
+  &__message {
+    margin-top: 30px;
+    font-size: 14px;
+    border: 1px solid #ec434f;
+    border-left: 5px solid #ec434f;
+    text-align: center;
+    a {
+      text-decoration: underline;
+    }
+
+    &.error {
+      border-color: #ec434f;
+      color: #ec434f;
+      a {
+        color: #ec434f;
+      }
+    }
+    &.warning {
+      border-color: #ffa901;
+      color: #333;
+      a {
+        color: #333;
+      }
+    }
+  }
 
   &__pay-motiv{
     .single-order__greet{

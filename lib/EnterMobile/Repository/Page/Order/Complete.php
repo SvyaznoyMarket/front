@@ -162,7 +162,7 @@ class Complete {
                         && !empty($orderModel->prepaidSum)
                     ;
                 }),
-                'onlinePayment' => call_user_func(function() use (&$orderModel, $paymentMethodImagesById) {
+                'onlinePayment' => call_user_func(function() use (&$orderModel, $paymentMethodImagesById, $priceHelper) {
                     if (!count($orderModel->paymentMethods)) {
                         return false;
                     }
@@ -176,11 +176,16 @@ class Complete {
                     }
 
                     $data = [
+                        'sum'               => null,
                         'images'            => [],
                         'hasOnlineDiscount' => $hasOnlineDiscount,
                     ];
                     foreach ($orderModel->paymentMethods as $paymentMethodModel) {
                         $imageUrl = isset($paymentMethodImagesById[$paymentMethodModel->id]) ? $paymentMethodImagesById[$paymentMethodModel->id] : null;
+
+                        if (!$data['sum'] || $paymentMethodModel->id == $orderModel->paymentMethodId) {
+                            $data['sum'] = $priceHelper->format($paymentMethodModel->sum);
+                        }
 
                         if ($imageUrl) {
                             $data['images'][] = [
@@ -221,6 +226,7 @@ class Complete {
                             'dataValue' => $templateHelper->json([
                                 'methodId'    => $paymentMethodModel->id,
                                 'orderId'     => $orderModel->id,
+                                'orderAccessToken' => $orderModel->token,
                                 'actionAlias' => $paymentMethodModel->discount ? $paymentMethodModel->discount->code : null,
                             ]),
                         ];

@@ -49,7 +49,7 @@ class Payment {
      * @return array
      * @throws \Exception
      */
-    public function getFormByQuery(Query $query) {
+    public function getFormByQuery(Query $query, $paymentMethodId, $orderAccessToken, $orderAction) {
         $result = $query->getResult();
 
         $url = isset($result['url']) ? $result['url'] : $result['detail']['url'];
@@ -69,6 +69,10 @@ class Payment {
 
         return [
             'url'    => $url,
+            'paymentMethodId' => $paymentMethodId,
+            'orderAccessToken' => $orderAccessToken,
+            'requireValidation' => !empty($result['requireValidation']) ? '1' : '',
+            'orderAction' => $orderAction,
             'fields' => $fields,
         ];
     }

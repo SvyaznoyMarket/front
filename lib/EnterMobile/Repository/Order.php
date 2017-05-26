@@ -11,6 +11,7 @@ class Order {
             '5'  => 'i-bank-cart.png',
             '17' => 'i-bank-cart.png',
             '20' => 'i-bank-cart.png',
+            '22' => 'i-robokassa.png',
             '16' => 'i-ya-wallet.png',
             '21' => 'i-ya-wallet.png',
             '11' => 'i-webmoney.png',

@@ -45,13 +45,42 @@ define(
 
                 e.stopPropagation();
 
+				function showError($form) {
+					$form.closest('.js-order-payment-container').find('.js-order-payment-hint').addClass('error').text('Ошибка. Попробуйте обновить страницу и выполнить действие снова.');
+				}
+
                 $.ajax({
                     url: url,
                     data: data,
                     type: 'post',
                     timeout: 40000
                 }).done(function(response) {
-                    $container.html(response.form)
+                    $container.html(response.form);
+					var $form = $container.find('form');
+					if ($form.attr('data-require-validation')) {
+						$form.on('submit', function(e, preventCheckOrder) {
+							if (!preventCheckOrder) {
+								e.preventDefault();
+								$.ajax({
+									type: 'POST',
+									url: '/ajax/order/payment/start',
+									data: {
+										'paymentMethodId': $form.attr('data-payment-method-id'),
+										'orderAccessToken': $form.attr('data-order-access-token'),
+										'orderAction': $form.attr('data-order-action')
+									}
+								}).success(function(response){
+									if (response && response.success) {
+										$form.trigger('submit', [true]);
+									} else {
+										showError($form);
+									}
+								}).error(function(){
+									showError($form);
+								});
+							}
+						});
+					}
                 }).always(function() {
                     console.info('unblock screen');
                 }).error(function(xhr, textStatus, error) {

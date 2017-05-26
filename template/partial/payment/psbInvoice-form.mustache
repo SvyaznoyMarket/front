@@ -1,16 +1,18 @@
 {{#form}}
-<form class="form jsPaymentForms jsPaymentFormPSBInvoice" method="post" action="{{url}}">
-    <input type="hidden" name="ContractorID" value="{{contractorId}}" />
-    <input type="hidden" name="InvoiceID" value="{{invoiceId}}" />
-    <input type="hidden" name="Sum" value="{{sum}}" />
-    <input type="hidden" name="PayDescription" value="{{payDescription}}" />
-    <input type="hidden" name="AdditionalInfo" value="{{additionalInfo}}" />
-    <input type="hidden" name="Signature" value="{{signature}}" />
+    <div class="js-order-payment-container">
+        <form class="form jsPaymentForms jsPaymentFormPSBInvoice" method="post" action="{{url}}">
+            <input type="hidden" name="ContractorID" value="{{contractorId}}" />
+            <input type="hidden" name="InvoiceID" value="{{invoiceId}}" />
+            <input type="hidden" name="Sum" value="{{sum}}" />
+            <input type="hidden" name="PayDescription" value="{{payDescription}}" />
+            <input type="hidden" name="AdditionalInfo" value="{{additionalInfo}}" />
+            <input type="hidden" name="Signature" value="{{signature}}" />
 
-    <div class="btn-container">
-        <button type="submit" class="btn btn--orange btn--pay">Оплатить</button>
+            <div class="btn-container">
+                <button type="submit" class="btn btn--orange btn--pay">Оплатить</button>
+            </div>
+        </form>
+
+        <p class="checkout-checkbox-lst__desc js-order-payment-hint">Вы будете перемещены на сайт платежной системы.</p>
     </div>
-</form>
-
-<p class="checkout-checkbox-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
 {{/form}}

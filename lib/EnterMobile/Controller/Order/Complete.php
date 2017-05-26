@@ -60,6 +60,36 @@ class Complete {
 
         (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
+        if ($request->query['InvId']) {
+            $paymentValidateQuery = new Query\Payment\ValidateHash([
+                'method_id' => 22,
+                'hash' => $request->query['SignatureValue'],
+                'OutSum' => $request->query['OutSum'],
+                'InvId' => $request->query['InvId'],
+                'shp_context' => $request->query['shp_context'],
+                'shp_from' => $request->query['shp_from'],
+            ]);
+            $paymentValidateQuery->setTimeout(30);
+            $curl->prepare($paymentValidateQuery);
+            $curl->execute();
+
+            $robokassaValidateHashResult = $paymentValidateQuery->getResult();
+            if (empty($robokassaValidateHashResult['success'])) {
+                $pageRequest = new Repository\Page\Order\Complete\Request();
+                $pageRequest->httpRequest = $request;
+                $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
+                $pageRequest->cart = $cart;
+
+                $page = new Page();
+                (new Repository\Page\Order\Complete())->buildObjectByRequest($page, $pageRequest);
+                $renderer = $this->getRenderer();
+                $renderer->setPartials([
+                    'content' => 'page/order/complete/payment/error/content',
+                ]);
+                return new Http\Response($renderer->render('layout/simple', $page));
+            }
+        }
+
         /** @var Model\Order[] $orders */
         $orders = [];
         /** @var array $orderData */

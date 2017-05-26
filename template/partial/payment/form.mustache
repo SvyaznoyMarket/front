@@ -1,12 +1,14 @@
 {{#form}}
-    <form class="form jsPaymentForms jsPaymentFormPSB" method="post" action="{{url}}">
-    {{#fields}}
-        <input type="hidden" name="{{name}}" value="{{value}}" />
-    {{/fields}}
-        <div class="btn-container">
-            <button type="submit" class="btn btn--orange btn--pay">Оплатить</button>
-        </div>
-    </form>
+    <div class="js-order-payment-container">
+        <form class="form jsPaymentForms jsPaymentFormPSB" method="post" action="{{url}}" data-require-validation="{{requireValidation}}" data-payment-method-id="{{paymentMethodId}}" data-order-access-token="{{orderAccessToken}}" data-order-action="{{orderAction}}">
+        {{#fields}}
+            <input type="hidden" name="{{name}}" value="{{value}}" />
+        {{/fields}}
+            <div class="btn-container">
+                <button type="submit" class="btn btn--orange btn--pay">Оплатить</button>
+            </div>
+        </form>
 
-    <p class="checkout-checkbox-lst__desc">Вы будете перемещены на сайт платежной системы.</p>
+        <p class="checkout-checkbox-lst__desc js-order-payment-hint">Вы будете перемещены на сайт платежной системы.</p>
+    </div>
 {{/form}}

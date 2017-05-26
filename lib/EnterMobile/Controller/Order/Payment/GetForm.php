@@ -32,6 +32,7 @@ class GetForm {
         $paymentRepository = new \EnterRepository\Payment();
 
         $orderId = $request->data['orderId'] ? (string)$request->data['orderId'] : null;
+        $orderAccessToken = $request->data['orderAccessToken'] ? (string)$request->data['orderAccessToken'] : null;
         if (!$orderId) {
             throw new \Exception('Не передан идентификатор заказа', Http\Response::STATUS_BAD_REQUEST);
         }
@@ -68,6 +69,7 @@ class GetForm {
         $data = [
             'back_ref' => $router->getUrlByRoute(new Routing\Order\Complete()),
             'email'    => $user ? $user->email : null,
+            'from'     => $config->hostname,
         ];
 
         $paymentConfigQuery = new Query\Payment\GetConfig($paymentMethodId, $orderId, $data, $actionAlias);
@@ -81,7 +83,7 @@ class GetForm {
         $formContent = $renderer->render(
             'partial/payment/form',
             [
-                'form' => $paymentRepository->getFormByQuery($paymentConfigQuery)
+                'form' => $paymentRepository->getFormByQuery($paymentConfigQuery, $paymentMethodId, $orderAccessToken, $actionAlias)
             ]
         );
 

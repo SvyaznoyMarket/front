@@ -4,7 +4,6 @@
         <section class="checkout">
             <h1 class="checkout__tl">{{#isSingleOrder}}Оформлен заказ <nobr>№<a href="#">{{orders.0.numberErp}}</a></nobr>{{/isSingleOrder}}
             {{^isSingleOrder}}Ваши заказы{{/isSingleOrder}}</h1>
-            {{#isSingleOrder}}<div class="checkout__tl-sum">на сумму <b>{{#orders}}{{sum.name}}{{/orders}}</b> <span class="rubl">p</span></div>{{/isSingleOrder}}
 
             {{#isSingleOrder}}
                 {{#orders}}
@@ -42,17 +41,16 @@
                     {{/point}}
 
                     <!--<div class="single-order__how-to-find js-how-to-find"><span class="bb-dotted">Как добраться</span></div>-->
-                    <div class="single-order__payment-info">Оплата при получении — наличными или картой.</div>
+                    <!--<div class="single-order__payment-info">Оплата при получении — наличными или картой.</div>-->
                 </div>
                     {{#onlinePayment}}
                     <div class="checkout__single-order single-order single-order__payment">
-                        <div class="single-order__greet single-order__greet_tac">Онлайн-оплата в два клика</div>
+                        <div class="single-order__greet single-order__greet_tac">Оплатить онлайн со скидкой</div>
 
                         <div class="single-order__row">
                         {{#hasOnlineDiscount}}
                             <div class="single-order__discount">
-                                <span class="single-order__discount-size">Скидка</span>
-                                <span class="single-order__discount-desc">при оплате онлайн</span>
+                                <span class="single-order__discount-desc">К оплате {{sum}} <span class="rubl">p</span></span>
                             </div>
                         {{/hasOnlineDiscount}}
                         </div>

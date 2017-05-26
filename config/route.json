@@ -184,7 +184,16 @@
         "pattern": "/order/payment/get-form",
         "method": ["POST"]
     },
-
+    "Order\\Payment\\Start": {
+        "name": "Оформление заказа - отправка уведомления о начале онлайн-оплаты",
+        "pattern": "/ajax/order/payment/start",
+        "method": ["POST"]
+    },
+    "Order\\Payment\\Fail": {
+        "name": "",
+        "pattern": "/order/payment/fail",
+        "method": ["GET"]
+    },
     "Product\\Review\\GetList": {
         "name": "Отзывы товара",
         "pattern": "/ajax/product-review-list/{productId}",
