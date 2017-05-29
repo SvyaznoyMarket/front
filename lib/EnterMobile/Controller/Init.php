@@ -78,13 +78,33 @@ class Init {
             return $request->getSchemeAndHttpHost() . $redirectUrl;
         });
 
-        if (!$request->isSecure()) {
+        // todo после продления https сертификата необходимо удалить данный код и раскомментировать код ниже
+        if ($request->isSecure()) {
             if (!$redirectUrl) {
                 $redirectUrl = $request->getUri();
             }
 
-            $redirectUrl = preg_replace('/^http:/is', 'https:', $redirectUrl);
+            $redirectUrl = preg_replace('/^https:/is', 'http:', $redirectUrl);
+
+            if (!$redirectUrl) {
+                return;
+            }
+
+            $this->getLogger()->push(['redirect' => [
+                'url'   => $redirectUrl,
+                'code'  => Http\Response::STATUS_FOUND,
+            ], 'sender' => __FILE__ . ' ' .  __LINE__, 'tag' => ['request']]);
+
+            $response = (new \EnterAggregator\Controller\Redirect())->execute($redirectUrl, Http\Response::STATUS_FOUND);
+            return;
         }
+//        if (!$request->isSecure()) {
+//            if (!$redirectUrl) {
+//                $redirectUrl = $request->getUri();
+//            }
+//
+//            $redirectUrl = preg_replace('/^http:/is', 'https:', $redirectUrl);
+//        }
 
         if (!$redirectUrl) {
             return;
