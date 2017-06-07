@@ -115,6 +115,24 @@ namespace EnterMobileApplication\Controller\Cart {
                     }
                 }
 
+                $excludePaymentMethodIds = ['22'];
+                foreach ($order->possiblePaymentMethodIds as $i => $possiblePaymentMethodId) {
+                    if (in_array($possiblePaymentMethodId, $excludePaymentMethodIds)) {
+                        unset($order->possiblePaymentMethodIds[$i]);
+                    }
+                }
+
+                foreach ($order->possiblePaymentMethods as $i => $possiblePaymentMethod) {
+                    if (in_array($possiblePaymentMethod->id, $excludePaymentMethodIds)) {
+                        unset($order->possiblePaymentMethods[$i]);
+                    }
+                }
+
+                if (!in_array($order->paymentMethodId, $order->possiblePaymentMethodIds)) {
+                    reset($order->possiblePaymentMethodIds);
+                    $order->paymentMethodId = current($order->possiblePaymentMethodIds);
+                }
+
                 $order->possiblePaymentMethodIds = array_values($order->possiblePaymentMethodIds);
                 $order->possiblePaymentMethods = array_values($order->possiblePaymentMethods);
 
