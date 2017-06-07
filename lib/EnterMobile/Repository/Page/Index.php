@@ -40,6 +40,9 @@ class Index {
         $productSliderRepository = new Repository\Partial\ProductSlider();
         $mediaRepository = new \EnterRepository\Media();
 
+        $page->phoneText = $request->region && $request->region->id == 14974 ? $config->moscowPhone : $config->phone;
+        $page->phoneUrl = 'tel:' . preg_replace('/[^\d]+/is', '', $page->phoneText);
+
         $page->dataModule = 'index';
         $page->bodyClass = 'body-main';
 

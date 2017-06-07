@@ -166,7 +166,7 @@ namespace EnterMobileApplication\Controller {
                 'region' => $region,
                 'recommendations' => $recommendations,
                 'viewedProducts' => $viewedProducts,
-                'mainMenu' => (new \EnterMobileApplication\Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery, $secretSalePromoListQuery && (bool)$secretSalePromoListQuery->getResult()),
+                'mainMenu' => (new \EnterMobileApplication\Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery, $region, $config, $secretSalePromoListQuery && (bool)$secretSalePromoListQuery->getResult()),
                 'promos' => (new \EnterMobileApplication\Repository\Promo())->getObjectListByQuery($promoListQuery),
                 'popularBrands' => array_map(function(\EnterModel\Brand $brand) {
                     return [

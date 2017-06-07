@@ -62,7 +62,7 @@ namespace EnterAggregator\Controller\User{
             $curl->execute();
             // меню
             if ($mainMenuQuery) {
-                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
+                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery, $response->region, $config);
             }
 
             $response->userMenu = (new Repository\UserMenu())->getItems($userToken, $response->user);

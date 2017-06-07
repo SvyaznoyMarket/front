@@ -55,6 +55,10 @@ namespace EnterMobile\Model\Page {
         public $headerTitle = true;
         /** @var string[] */
         public $gdeSlonLandingUrls = [];
+        /** @var string */
+        public $phoneUrl = '';
+        /** @var string */
+        public $phoneText = '';
 
         public function __construct() {
             parent::__construct();

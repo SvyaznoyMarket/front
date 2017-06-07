@@ -53,7 +53,7 @@ namespace EnterAggregator\Controller\Shop {
             $curl->execute();
             // меню
             if ($mainMenuQuery) {
-                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
+                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery, $response->region, $config);
             }
 
             $pointsQuery = new Query\Point\GetListFromScms($request->regionId);

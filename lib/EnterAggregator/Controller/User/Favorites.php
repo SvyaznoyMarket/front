@@ -61,7 +61,7 @@ namespace EnterAggregator\Controller\User {
             $curl->execute();
             // меню
             if ($mainMenuQuery) {
-                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
+                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery, $response->region, $config);
             }
 
             $favoriteQuery = new Query\User\Favorite\GetListByUserUi($response->user->ui);

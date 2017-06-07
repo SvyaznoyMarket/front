@@ -266,7 +266,7 @@ namespace EnterAggregator\Controller {
 
             // меню
             if ($mainMenuQuery) {
-                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
+                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery, $response->region, $config);
             }
 
             // отзывы товара

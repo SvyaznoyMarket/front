@@ -54,7 +54,7 @@ namespace EnterTerminal\Controller {
             $curl->execute();
 
             // меню
-            $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
+            $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery, $region, $config);
 
             // ответ
             $response = new Response();

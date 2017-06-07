@@ -98,7 +98,7 @@ class Index {
         (new \EnterRepository\Cart())->updateObjectByQuery($cart, $cartItemQuery, $cartProductListQuery);
 
         // меню
-        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery);
+        $mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery, $region, $config);
 
         // товары
         $productsById = $productRepository->getIndexedObjectListByQueryList([$productListQuery], [$productDescriptionListQuery]);

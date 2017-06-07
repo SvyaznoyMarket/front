@@ -29,7 +29,7 @@ class MainMenu {
      * @param Query $categoryListQuery
      * @return Model\MainMenu
      */
-    public function getObjectByQuery(Query $menuListQuery, Query $categoryListQuery = null) {
+    public function getObjectByQuery(Query $menuListQuery, Query $categoryListQuery = null, \EnterModel\Region $region = null, \EnterAggregator\Config $config = null) {
         $menu = new Model\MainMenu();
 
         try {
@@ -133,6 +133,14 @@ class MainMenu {
         };
         $walkByMenuElementItem($menuData['item']);
 
+        if ($region && $config) {
+            $phoneText = $region->id == 14974 ? $config->moscowPhone : $config->phone;
+            $phoneUrl = 'tel:' . preg_replace('/[^\d]+/is', '', $phoneText);
+        } else {
+            $phoneText = '';
+            $phoneUrl = '';
+        }
+
         $menu->serviceElements = [
             'delivery' => [
                 'link' => '/shops',
@@ -150,8 +158,8 @@ class MainMenu {
                 'iconClass' => 'nav-icon--callback'
             ],
             'phone' => [
-                'link' => 'tel:78007755292',
-                'name' => '+7 (800) 775-52-92',
+                'link' => $phoneUrl,
+                'name' => $phoneText,
                 'iconClass' => 'nav-icon--phone'
             ]
         ];

@@ -77,7 +77,7 @@ class Content {
         $pageRequest->title = $contentPage->title;
         $pageRequest->content = $contentPage->contentHtml;
         $pageRequest->region = $region;
-        $pageRequest->mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery);
+        $pageRequest->mainMenu = (new \EnterRepository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryListQuery, $region, $config);
         $pageRequest->user = (new \EnterMobile\Repository\User())->getObjectByQuery($userItemQuery);
         $pageRequest->cart = $cart;
 

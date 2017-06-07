@@ -318,7 +318,7 @@ namespace EnterAggregator\Controller {
 
             // меню
             if ($mainMenuQuery && $rootCategoryTreeQuery) {
-                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $rootCategoryTreeQuery);
+                $response->mainMenu = (new Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $rootCategoryTreeQuery, $response->region, $config);
             }
 
             // список рейтингов товаров
