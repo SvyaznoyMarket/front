@@ -70,7 +70,7 @@ namespace EnterMobileApplication\Controller {
             $curl->execute();
 
             // меню
-            $mainMenu = (new \EnterMobileApplication\Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery, $secretSalePromoListQuery && (bool)$secretSalePromoListQuery->getResult());
+            $mainMenu = (new \EnterMobileApplication\Repository\MainMenu())->getObjectByQuery($mainMenuQuery, $categoryTreeQuery, $region, $this->getConfig(), $secretSalePromoListQuery && (bool)$secretSalePromoListQuery->getResult());
 
             // ответ
             $response = new Response();

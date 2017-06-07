@@ -10,6 +10,9 @@ return function(\EnterAggregator\Config $config) {
 
     $config->editable = false; // важно!
 
+    $config->phone = '+7 (800) 775-52-92';
+    $config->moscowPhone = '+7 (495) 108-07-73';
+
     $config->session->name = 'enter';
     $config->session->cookieLifetime = 2592000; // 30 дней
     $config->session->cookieDomain = '.enter.ru';

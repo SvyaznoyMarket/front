@@ -16,8 +16,8 @@ class MainMenu extends \EnterRepository\MainMenu {
      * @param bool $returnSecretSale
      * @return Model\MainMenu
      */
-    public function getObjectByQuery(Query $menuListQuery, Query $categoryListQuery = null, $returnSecretSale = false) {
-        $menu = parent::getObjectByQuery($menuListQuery, $categoryListQuery);
+    public function getObjectByQuery(Query $menuListQuery, Query $categoryListQuery = null, \EnterModel\Region $region = null, \EnterAggregator\Config $config = null, $returnSecretSale = false) {
+        $menu = parent::getObjectByQuery($menuListQuery, $categoryListQuery, $region, $config);
 
         if ($returnSecretSale) {
             $menu->elements[] = $this->getSecretSaleElement();

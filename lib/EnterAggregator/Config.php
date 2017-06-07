@@ -23,6 +23,10 @@ namespace EnterAggregator {
          */
         public $editable;
         /** @var string */
+        public $phone = '';
+        /** @var string */
+        public $moscowPhone = '';
+        /** @var string */
         public $hostname;
         /** @var Config\Logger */
         public $logger;
